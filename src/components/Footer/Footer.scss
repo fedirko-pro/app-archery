@@ -1,5 +1,5 @@
-@import '../../sass/helpers/variables';
-@import '../../sass/helpers/mixins';
+@use '../../sass/helpers/variables' as *;
+@use '../../sass/helpers/mixins';
 
 footer {
   border-top: 4px solid $yellow;
@@ -24,7 +24,7 @@ footer {
   }
   .central_button {
     display: block;
-    background: white url("../../../src/img/UArchery.png") center no-repeat;
+    background: white url('../../../src/img/UArchery.png') center no-repeat;
     background-size: contain;
     border-radius: 50%;
     width: 32px;
@@ -32,14 +32,18 @@ footer {
   }
 }
 
-@media screen and (max-width: 1440px) { // max-width: 1440px
+@media screen and (max-width: 1440px) {
+  // max-width: 1440px
 }
 
-@media screen and (max-width: 1024px) { // max-width: 1024px
+@media screen and (max-width: 1024px) {
+  // max-width: 1024px
 }
 
-@media screen and (max-width: 768px) { // max-width: 768px
+@media screen and (max-width: 768px) {
+  // max-width: 768px
 }
 
-@media screen and (max-width: 590px) { // max-width: 590px
+@media screen and (max-width: 590px) {
+  // max-width: 590px
 }

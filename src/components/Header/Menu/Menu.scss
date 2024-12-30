@@ -1,5 +1,5 @@
-@import '../../../sass/helpers/variables';
-@import '../../../sass/helpers/mixins';
+@use '../../../sass/helpers/variables' as *;
+@use '../../../sass/helpers/mixins';
 
 .header_menu {
   display: flex;
@@ -62,7 +62,7 @@
             top: 100%;
             background: white;
             width: 100%;
-            box-shadow: 1px 1px 1px rgba(0,0,0,0.1);
+            box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
             li {
               &:hover,
               &.current-menu-item {
@@ -81,10 +81,7 @@
   }
 }
 
-@media screen and (max-width: 1440px) { // max-width: 1440px
-}
-
-@media screen and (max-width: 1024px) { // max-width: 1024px
+  // max-width: 1024px
   .header_menu {
     display: block;
     position: absolute;
@@ -155,11 +152,11 @@
       }
     }
   }
+
+@media screen and (max-width: 768px) {
+  // max-width: 768px
 }
 
-@media screen and (max-width: 768px) { // max-width: 768px
-}
-
-@media screen and (max-width: 590px) { // max-width: 590px
-
+@media screen and (max-width: 590px) {
+  // max-width: 590px
 }

@@ -1,9 +1,5 @@
-@import '../../../sass/helpers/variables';
-@import '../../../sass/helpers/mixins';
-
-.hamburger {
-  display: none;
-}
+@use '../../../sass/helpers/variables';
+@use '../../../sass/helpers/mixins';
 
 .menu_icon {
   width: 20px;
@@ -13,7 +9,8 @@
     background-size: cover;
   }
   &.support {
-    background: url('../../../../src/img/icons/hand-holding-heart.svg') center no-repeat;
+    background: url('../../../../src/img/icons/hand-holding-heart.svg') center
+      no-repeat;
     background-size: cover;
   }
 }
@@ -25,10 +22,6 @@
   text-transform: uppercase;
 }
 
-@media screen and (max-width: 1440px) { // max-width: 1440px
-}
-
-@media screen and (max-width: 1024px) { // max-width: 1024px
   header {
     .hamburger {
       display: flex;
@@ -56,10 +49,11 @@
       }
     }
   }
+
+@media screen and (max-width: 768px) {
+  // max-width: 768px
 }
 
-@media screen and (max-width: 768px) { // max-width: 768px
-}
-
-@media screen and (max-width: 590px) { // max-width: 590px
+@media screen and (max-width: 590px) {
+  // max-width: 590px
 }

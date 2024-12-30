@@ -1,5 +1,5 @@
-@import '../../sass/helpers/variables';
-@import '../../sass/helpers/mixins';
+@use '../../sass/helpers/variables' as *;
+@use '../../sass/helpers/mixins';
 
 header {
   padding: 0;
@@ -40,7 +40,8 @@ header {
       background-size: cover;
     }
     &.support {
-      background: url('../../../src/img/icons/hand-holding-heart.svg') center no-repeat;
+      background: url('../../../src/img/icons/hand-holding-heart.svg') center
+        no-repeat;
       background-size: cover;
     }
   }
@@ -78,7 +79,8 @@ header {
     &.active {
       background: $blue;
       .menu_icon {
-        background: url('../../../src/img/icons/search_yellow.svg') center no-repeat;
+        background: url('../../../src/img/icons/search_yellow.svg') center
+          no-repeat;
         background-size: cover;
       }
       .menu_title {
@@ -87,17 +89,15 @@ header {
     }
     &.active {
       .menu_icon {
-        background: url('../../../src/img/icons/cross_yellow.svg') center no-repeat;
+        background: url('../../../src/img/icons/cross_yellow.svg') center
+          no-repeat;
         background-size: cover;
       }
     }
   }
 }
 
-@media screen and (max-width: 1440px) { // max-width: 1440px
-}
-
-@media screen and (max-width: 1024px) { // max-width: 1024px
+  // max-width: 1024px
   header {
     .hamburger {
       display: flex;
@@ -131,10 +131,11 @@ header {
       padding: 16px;
     }
   }
+
+@media screen and (max-width: 768px) {
+  // max-width: 768px
 }
 
-@media screen and (max-width: 768px) { // max-width: 768px
-}
-
-@media screen and (max-width: 590px) { // max-width: 590px
+@media screen and (max-width: 590px) {
+  // max-width: 590px
 }
