@@ -5,7 +5,7 @@ import tsParser from '@typescript-eslint/parser';
 
 export default [
   {
-    files: ['**/*.{js,jsx,ts,tsx}'], // Match JavaScript and TypeScript files
+    files: ['src/**/*.{js,jsx,ts,tsx}'], // Match JavaScript and TypeScript files
     languageOptions: {
       ecmaVersion: 'latest',
       sourceType: 'module',

@@ -16,7 +16,6 @@ export default function ConverterInputs(props) {
       autoComplete="off"
     >
       <TextField
-        id="filled-number"
         label={props.labelFirst}
         value={firstValue.toString()}
         type="number"
@@ -34,7 +33,6 @@ export default function ConverterInputs(props) {
       />
       <span className="equal">=</span>
       <TextField
-        id="filled-number"
         label={props.labelSecond}
         value={secondValue.toString()}
         type="number"
