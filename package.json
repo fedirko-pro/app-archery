@@ -15,7 +15,7 @@
     "react-router-dom": "^7.1.1",
     "sass": "^1.62.1",
     "typescript": "^5.7.2",
-    "vite": "^6.0.14",
+    "vite": "^6.1.6",
     "vite-plugin-pwa": "^0.21.1",
     "web-vitals": "^2.1.4",
     "workbox-build": "^7.3.0",
