@@ -2,8 +2,8 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import Divider from '@mui/material/Divider';
+import FormControlLabel from '@mui/material/FormControlLabel';
 import FormLabel from '@mui/material/FormLabel';
 import FormControl from '@mui/material/FormControl';
 import Link from '@mui/material/Link';
@@ -14,6 +14,9 @@ import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
 import ForgotPassword from './ForgotPassword.jsx';
 import { GoogleIcon, FacebookIcon } from '../CustomIcons.jsx';
+import { useAuth } from '../../contexts/AuthContext';
+import { Alert } from '@mui/material';
+import env from '../../config/env.js';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -62,6 +65,9 @@ export default function SignIn() {
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
   const [open, setOpen] = React.useState(false);
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
+
+  const { login, error, clearError } = useAuth();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -69,18 +75,6 @@ export default function SignIn() {
 
   const handleClose = () => {
     setOpen(false);
-  };
-
-  const handleSubmit = (event) => {
-    if (emailError || passwordError) {
-      event.preventDefault();
-      return;
-    }
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
   };
 
   const validateInputs = () => {
@@ -110,6 +104,30 @@ export default function SignIn() {
     return isValid;
   };
 
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    
+    if (!validateInputs()) {
+      return;
+    }
+
+    setIsSubmitting(true);
+    clearError();
+
+    try {
+      const data = new FormData(event.currentTarget);
+      await login(data.get('email'), data.get('password'));
+    } catch (error) {
+      // Login failed
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleGoogleSignIn = () => {
+    window.location.href = env.GOOGLE_AUTH_URL;
+  };
+
   return (
     <SignInContainer direction="column" justifyContent="space-between">
       <Card variant="outlined">
@@ -120,6 +138,13 @@ export default function SignIn() {
         >
           Sign in
         </Typography>
+        
+        {error && (
+          <Alert severity="error" onClose={clearError}>
+            {error}
+          </Alert>
+        )}
+        
         <Box
           component="form"
           onSubmit={handleSubmit}
@@ -186,9 +211,9 @@ export default function SignIn() {
             type="submit"
             fullWidth
             variant="contained"
-            onClick={validateInputs}
+            disabled={isSubmitting}
           >
-            Sign in
+            {isSubmitting ? 'Signing in...' : 'Sign in'}
           </Button>
           <Typography sx={{ textAlign: 'center' }}>
             Don&apos;t have an account?{' '}
@@ -199,12 +224,14 @@ export default function SignIn() {
             </span>
           </Typography>
         </Box>
-        <Divider>or</Divider>
+        <Divider>
+          <Typography sx={{ color: 'text.secondary' }}>or</Typography>
+        </Divider>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           <Button
             fullWidth
             variant="outlined"
-            onClick={() => alert('Sign in with Google')}
+            onClick={handleGoogleSignIn}
             startIcon={<GoogleIcon />}
           >
             Sign in with Google
@@ -212,7 +239,7 @@ export default function SignIn() {
           <Button
             fullWidth
             variant="outlined"
-            onClick={() => alert('Sign in with Facebook')}
+            onClick={() => alert('Facebook signin not implemented yet')}
             startIcon={<FacebookIcon />}
           >
             Sign in with Facebook

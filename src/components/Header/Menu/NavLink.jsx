@@ -1,12 +1,46 @@
-import { useMatch, Link } from 'react-router-dom';
+import { useMatch, useNavigate } from 'react-router-dom';
 
-function NavLink({ to, children, target, clickHandle }) {
+function NavLink({ to, children, target, clickHandle, onClick }) {
   const match = useMatch(to);
+  const navigate = useNavigate();
+  
+  const handleClick = (e) => {
+    e.preventDefault();
+    
+    if (onClick) {
+      onClick(e);
+      return;
+    }
+    
+    navigate(to);
+    
+    setTimeout(() => {
+      if (clickHandle) {
+        clickHandle();
+      }
+    }, 300);
+  };
+
   return (
     <li className={match ? 'current-menu-item' : ''}>
-      <Link to={to} onClick={clickHandle} target={target}>
+      <button 
+        onClick={handleClick}
+        style={{
+          background: 'none',
+          border: 'none',
+          color: 'inherit',
+          font: 'inherit',
+          cursor: 'pointer',
+          padding: '16px 32px',
+          width: '100%',
+          textAlign: 'left',
+          fontSize: '20px',
+          color: '#ffd700',
+          pointerEvents: 'auto'
+        }}
+      >
         {children}
-      </Link>
+      </button>
     </li>
   );
 }
