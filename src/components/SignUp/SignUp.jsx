@@ -13,6 +13,9 @@ import Stack from '@mui/material/Stack';
 import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
 import { FacebookIcon, GoogleIcon } from '../CustomIcons.jsx';
+import { useAuth } from '../../contexts/AuthContext';
+import { Alert } from '@mui/material';
+import env from '../../config/env.js';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -51,16 +54,21 @@ const SignUpContainer = styled(Stack)(({ theme }) => ({
 export default function SignUp() {
   const [nameError, setNameError] = React.useState(false);
   const [nameErrorMessage, setNameErrorMessage] = React.useState('');
+  const [lastNameError, setLastNameError] = React.useState(false);
+  const [lastNameErrorMessage, setLastNameErrorMessage] = React.useState('');
   const [emailError, setEmailError] = React.useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
-  // This code only runs on the client side, to determine the system color preference
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
+  
+  const { register, error, clearError } = useAuth();
 
   const validateInputs = () => {
     const email = document.getElementById('email');
     const password = document.getElementById('password');
-    const name = document.getElementById('name');
+    const firstName = document.getElementById('firstName');
+    const lastName = document.getElementById('lastName');
 
     let isValid = true;
 
@@ -82,30 +90,57 @@ export default function SignUp() {
       setPasswordErrorMessage('');
     }
 
-    if (!name.value || name.value.length < 1) {
+    if (!firstName.value || firstName.value.length < 1) {
       setNameError(true);
-      setNameErrorMessage('Name is required.');
+      setNameErrorMessage('First name is required.');
       isValid = false;
     } else {
       setNameError(false);
       setNameErrorMessage('');
     }
 
+    if (!lastName.value || lastName.value.length < 1) {
+      setLastNameError(true);
+      setLastNameErrorMessage('Last name is required.');
+      isValid = false;
+    } else {
+      setLastNameError(false);
+      setLastNameErrorMessage('');
+    }
+
     return isValid;
   };
 
-  const handleSubmit = (event) => {
-    if (nameError || emailError || passwordError) {
-      event.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    
+    if (!validateInputs()) {
       return;
     }
-    const data = new FormData(event.currentTarget);
-    console.log({
-      name: data.get('name'),
-      lastName: data.get('lastName'),
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+
+    setIsSubmitting(true);
+    clearError();
+
+    try {
+      const data = new FormData(event.currentTarget);
+      const userData = {
+        firstName: data.get('firstName'),
+        lastName: data.get('lastName'),
+        email: data.get('email'),
+        password: data.get('password'),
+        authProvider: 'local',
+      };
+
+      await register(userData);
+    } catch (error) {
+      // Registration failed
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleGoogleSignUp = () => {
+    window.location.href = env.GOOGLE_AUTH_URL;
   };
 
   return (
@@ -118,23 +153,44 @@ export default function SignUp() {
         >
           Sign up
         </Typography>
+        
+        {error && (
+          <Alert severity="error" onClose={clearError}>
+            {error}
+          </Alert>
+        )}
+        
         <Box
           component="form"
           onSubmit={handleSubmit}
           sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
         >
           <FormControl>
-            <FormLabel htmlFor="name">Full name</FormLabel>
+            <FormLabel htmlFor="firstName">First name</FormLabel>
             <TextField
-              autoComplete="name"
-              name="name"
+              autoComplete="given-name"
+              name="firstName"
               required
               fullWidth
-              id="name"
-              placeholder="Jon Snow"
+              id="firstName"
+              placeholder="Robin"
               error={nameError}
               helperText={nameErrorMessage}
               color={nameError ? 'error' : 'primary'}
+            />
+          </FormControl>
+          <FormControl>
+            <FormLabel htmlFor="lastName">Last name</FormLabel>
+            <TextField
+              autoComplete="family-name"
+              name="lastName"
+              required
+              fullWidth
+              id="lastName"
+              placeholder="Hood"
+              error={lastNameError}
+              helperText={lastNameErrorMessage}
+              color={lastNameError ? 'error' : 'primary'}
             />
           </FormControl>
           <FormControl>
@@ -149,7 +205,7 @@ export default function SignUp() {
               variant="outlined"
               error={emailError}
               helperText={emailErrorMessage}
-              color={passwordError ? 'error' : 'primary'}
+              color={emailError ? 'error' : 'primary'}
             />
           </FormControl>
           <FormControl>
@@ -168,17 +224,18 @@ export default function SignUp() {
               color={passwordError ? 'error' : 'primary'}
             />
           </FormControl>
-          <FormControlLabel
+          {/* TODO: Implement email updates functionality */}
+          {/* <FormControlLabel
             control={<Checkbox value="allowExtraEmails" color="primary" />}
             label="I want to receive updates via email."
-          />
+          /> */}
           <Button
             type="submit"
             fullWidth
             variant="contained"
-            onClick={validateInputs}
+            disabled={isSubmitting}
           >
-            Sign up
+            {isSubmitting ? 'Signing up...' : 'Sign up'}
           </Button>
           <Typography sx={{ textAlign: 'center' }}>
             Already have an account?{' '}
@@ -196,19 +253,20 @@ export default function SignUp() {
           <Button
             fullWidth
             variant="outlined"
-            onClick={() => alert('Sign up with Google')}
+            onClick={handleGoogleSignUp}
             startIcon={<GoogleIcon />}
           >
             Sign up with Google
           </Button>
-          <Button
+          {/* TODO: Implement Facebook OAuth integration */}
+          {/* <Button
             fullWidth
             variant="outlined"
-            onClick={() => alert('Sign up with Facebook')}
+            onClick={() => alert('Facebook signup not implemented yet')}
             startIcon={<FacebookIcon />}
           >
             Sign up with Facebook
-          </Button>
+          </Button> */}
         </Box>
       </Card>
     </SignUpContainer>

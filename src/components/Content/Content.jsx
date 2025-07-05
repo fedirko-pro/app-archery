@@ -15,6 +15,7 @@ import CompetitionsList
   from '../Competition/CompetitionsList/CompetitionsList.jsx';
 import Achievements from '../Achievments/Achievements.jsx';
 import Settings from '../Settings/Settings.jsx';
+import GoogleCallback from '../GoogleCallback/GoogleCallback.jsx';
 
 function Content() {
   return (
@@ -24,6 +25,7 @@ function Content() {
 
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/auth/google/callback" element={<GoogleCallback />} />
 
         <Route path="/profile" element={<Profile />} />
         <Route path="/achievements" element={<Achievements />} />

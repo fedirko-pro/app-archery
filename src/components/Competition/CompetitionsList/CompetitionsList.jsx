@@ -25,7 +25,7 @@ export default function CompetitionsList() {
         {
           id: 1,
           avatar: 'https://i.pravatar.cc/100?img=1',
-          firstName: 'John',
+          firstName: 'Robin Hood',
           lastName: 'Doe',
           role: 'leader',
         },
