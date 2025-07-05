@@ -6,13 +6,13 @@ import {
   Typography,
   Box, Grid
 } from '@mui/material';
-import './Settings.scss'; // Import the SCSS file
+import './settings.scss'; // Import the SCSS file
 
 const Settings = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [profileData, setProfileData] = useState({
-    name: 'John Doe',
-    username: '@johndoe',
+    name: 'Robin Hood',
+    username: '@robinhood',
     bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
     location: 'New York, USA',
     website: 'https://example.com',

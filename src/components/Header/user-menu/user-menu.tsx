@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import '../Header.scss';
-import Menu from '../Menu/Menu';
+import '../header.scss';
+import Menu from '../menu/menu';
 import Avatar from '@mui/material/Avatar';
-import { useAuth } from '../../../contexts/AuthContext';
+import { useAuth } from '../../../contexts/auth-context';
 import type { MenuItem } from '../../../types';
 
 const UserMenu: React.FC = () => {

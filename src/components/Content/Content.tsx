@@ -1,20 +1,20 @@
-import './Content.scss';
+import './content.scss';
 import { Route, Routes } from 'react-router-dom';
-import About from '../../pages/About.tsx';
-import Converter from '../Converter/Converter.tsx';
-import Encyclopedia from '../../pages/Encyclopedia.tsx';
-import Training from '../../pages/Trainings.tsx';
-import PatrolList from '../Competition/PatrolList/PatrolList.tsx';
-import UserPage from '../Competition/UserPage/UserPage.tsx';
-import SignIn from '../SignIn/SignIn.tsx';
-import SignUp from '../SignUp/SignUp.tsx';
-import Profile from '../Profile/Profile.tsx';
-import Competition from '../Competition/Competition.tsx';
+import About from '../../pages/about.tsx';
+import Converter from '../converter/converter.tsx';
+import Encyclopedia from '../../pages/encyclopedia.tsx';
+import Training from '../../pages/trainings.tsx';
+import PatrolList from '../competition/patrol-list/patrol-list.tsx';
+import UserPage from '../competition/user-page/user-page.tsx';
+import SignIn from '../sign-in/sign-in.tsx';
+import SignUp from '../sign-up/sign-up.tsx';
+import Profile from '../profile/profile.tsx';
+import Competition from '../competition/competition.tsx';
 import CompetitionsList
-  from '../Competition/CompetitionsList/CompetitionsList.tsx';
-import Achievements from '../Achievments/Achievements.tsx';
-import Settings from '../Settings/Settings.tsx';
-import GoogleCallback from '../GoogleCallback/GoogleCallback.tsx';
+  from '../competition/competitions-list/competitions-list.tsx';
+import Achievements from '../achievements/achievements.tsx';
+import Settings from '../settings/settings.tsx';
+import GoogleCallback from '../google-callback/google-callback.tsx';
 
 function Content() {
   return (

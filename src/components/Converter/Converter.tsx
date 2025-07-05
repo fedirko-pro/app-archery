@@ -3,8 +3,8 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import ConverterInputs from './ConverterInputs.tsx';
-import './Converter.scss';
+import ConverterInputs from './converter-inputs.tsx';
+import './converter.scss';
 import { useState } from 'react';
 
 export default function Converter() {

@@ -9,8 +9,8 @@ import {
   Alert,
   CircularProgress,
 } from '@mui/material';
-import './Profile.scss';
-import { useAuth } from '../../contexts/AuthContext';
+import './profile.scss';
+import { useAuth } from '../../contexts/auth-context';
 import apiService from '../../services/api';
 
 const Profile = () => {

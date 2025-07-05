@@ -11,7 +11,7 @@ import {
   TableRow,
 } from '@mui/material';
 import { LockOpen } from '@mui/icons-material';
-import './UserPage.scss';
+import './user-page.scss';
 import Box from '@mui/material/Box';
 
 export default function UserPage() {

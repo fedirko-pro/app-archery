@@ -2,8 +2,8 @@ import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import './CompetitionsList.scss';
-import UserCard from '../UserCard/UserCard.tsx';
+import './competitions-list.scss';
+import UserCard from '../user-card/user-card.tsx';
 import Box from '@mui/material/Box';
 import { useState } from 'react';
 

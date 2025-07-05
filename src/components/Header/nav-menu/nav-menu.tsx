@@ -1,6 +1,6 @@
-import '../Header.scss';
+import '../header.scss';
 import classNames from 'classnames';
-import Menu from '../Menu/Menu.tsx';
+import Menu from '../menu/menu.tsx';
 import { useState } from 'react';
 
 function NavMenu() {

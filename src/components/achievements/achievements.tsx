@@ -1,4 +1,4 @@
-import './Achievements.scss';
+import './achievements.scss';
 import tmp from './tmp.webp';
 
 const Achievements = () => {

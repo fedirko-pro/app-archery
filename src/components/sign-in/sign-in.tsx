@@ -10,9 +10,9 @@ import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
-import ForgotPassword from './ForgotPassword';
-import { GoogleIcon } from '../CustomIcons';
-import { useAuth } from '../../contexts/AuthContext';
+import ForgotPassword from './forgot-password';
+import { GoogleIcon } from '../custom-icons';
+import { useAuth } from '../../contexts/auth-context';
 import { Alert } from '@mui/material';
 import env from '../../config/env';
 

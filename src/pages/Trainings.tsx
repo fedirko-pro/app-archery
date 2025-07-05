@@ -5,10 +5,10 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import { Delete } from '@mui/icons-material';
-import AlertDialog from '../components/Dialogs/AlertDialog.tsx';
+import AlertDialog from '../components/dialogs/alert-dialog.tsx';
 import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 import InfoIcon from '@mui/icons-material/Info';
-import InfoDialog from '../components/Dialogs/InfoDialog.tsx';
+import InfoDialog from '../components/dialogs/info-dialog.tsx';
 
 interface Training {
   title: string;

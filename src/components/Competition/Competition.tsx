@@ -1,4 +1,4 @@
-import './Competition.scss';
+import './competition.scss';
 
 export default function Competition() {
 

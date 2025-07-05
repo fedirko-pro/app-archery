@@ -1,6 +1,6 @@
 import React from 'react';
-import './Menu.scss';
-import NavLink from './NavLink';
+import './menu.scss';
+import NavLink from './nav-link';
 import classNames from 'classnames';
 import type { MenuProps } from '../../../types';
 
