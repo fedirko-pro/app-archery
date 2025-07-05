@@ -14,7 +14,7 @@ import { GoogleIcon } from '../custom-icons';
 import { useAuth } from '../../contexts/auth-context';
 import { Alert } from '@mui/material';
 import env from '../../config/env';
-import type { RegisterData } from '../../types';
+import type { RegisterData } from '../../contexts/types';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',

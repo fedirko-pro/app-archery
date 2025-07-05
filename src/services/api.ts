@@ -1,12 +1,12 @@
 import env from '../config/env';
 import type { 
   User, 
-  UserProfile, 
   LoginCredentials, 
   RegisterData, 
-  AuthResponse, 
-  ApiError 
-} from '../types';
+  AuthResponse 
+} from '../contexts/types';
+import type { UserProfile } from '../components/profile/types';
+import type { ApiError } from './types';
 
 interface RequestOptions extends RequestInit {
   headers?: Record<string, string>;

@@ -2,7 +2,7 @@ import React from 'react';
 import './menu.scss';
 import NavLink from './nav-link';
 import classNames from 'classnames';
-import type { MenuProps } from '../../../types';
+import type { MenuProps } from './types';
 
 export const Menu: React.FC<MenuProps> = ({ active, items, position, clickHandle, onLogout }) => {
   const handleMenuClick = (e: React.MouseEvent<HTMLDivElement>): void => {

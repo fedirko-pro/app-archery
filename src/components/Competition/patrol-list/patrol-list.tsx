@@ -25,7 +25,7 @@ export default function PatrolList() {
         {
           id: 1,
           avatar: 'https://i.pravatar.cc/100?img=1',
-          firstName: 'Robin Hood',
+          firstName: 'John',
           lastName: 'Doe',
           role: 'leader',
         },

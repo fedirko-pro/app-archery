@@ -1,6 +1,6 @@
 import React from 'react';
 import { useMatch, useNavigate } from 'react-router-dom';
-import type { NavLinkProps } from '../../../types';
+import type { NavLinkProps } from './types';
 
 const NavLink: React.FC<NavLinkProps> = ({ to, children, clickHandle, onClick }) => {
   const match = useMatch(to);
