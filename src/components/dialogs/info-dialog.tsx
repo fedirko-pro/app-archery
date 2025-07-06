@@ -5,8 +5,9 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useRef, useEffect } from 'react';
+import type { InfoDialogProps } from './types';
 
-export default function InfoDialog(props: any) {
+export default function InfoDialog(props: InfoDialogProps) {
   const descriptionElementRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (props.open) {

@@ -131,7 +131,7 @@ export default function SignUp() {
       };
 
       await register(userData);
-    } catch (error) {
+    } catch {
       // Registration failed
     } finally {
       setIsSubmitting(false);

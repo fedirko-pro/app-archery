@@ -1,4 +1,4 @@
-import type { Environment } from '../types';
+import type { Environment } from './types';
 
 interface ValidationResult {
   isValid: boolean;
@@ -53,7 +53,7 @@ const isValidUrl = (string: string): boolean => {
   try {
     new URL(string);
     return true;
-  } catch (_) {
+  } catch {
     return false;
   }
 };

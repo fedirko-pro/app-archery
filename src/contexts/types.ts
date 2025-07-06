@@ -8,6 +8,7 @@ export interface User {
   location?: string;
   website?: string;
   authProvider: 'local' | 'google' | 'facebook';
+  password?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -43,6 +44,7 @@ export interface AuthContextType {
   login: (email: string, password: string) => Promise<AuthResponse>;
   register: (userData: RegisterData) => Promise<User>;
   changePassword: (passwordData: ChangePasswordData) => Promise<void>;
+  setPassword: (password: string, confirmPassword: string) => Promise<void>;
   logout: () => void;
   updateUser: (userData: User) => void;
   clearError: () => void;

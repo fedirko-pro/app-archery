@@ -13,6 +13,7 @@ import Competition from '../competition/competition.tsx';
 import CompetitionsList
   from '../competition/competitions-list/competitions-list.tsx';
 import Achievements from '../achievements/achievements.tsx';
+import ResetPassword from '../reset-password/reset-password.tsx';
 // TODO: Settings temporarily disabled - functionality moved to Profile
 // import Settings from '../settings/settings.tsx';
 import GoogleCallback from '../google-callback/google-callback.tsx';
@@ -26,6 +27,7 @@ function Content() {
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/auth/google/callback" element={<GoogleCallback />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
 
         <Route path="/profile" element={<Profile />} />
         <Route path="/achievements" element={<Achievements />} />

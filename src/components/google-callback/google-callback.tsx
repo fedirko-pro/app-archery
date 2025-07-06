@@ -27,7 +27,7 @@ const GoogleCallback = () => {
         } else {
           navigate('/signin');
         }
-      } catch (error) {
+      } catch {
         setError('Authentication failed');
         setTimeout(() => navigate('/signin'), 3000);
       }

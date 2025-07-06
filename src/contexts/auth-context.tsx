@@ -30,7 +30,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           const userData = await apiService.getProfile();
           setUser(userData);
         }
-      } catch (error) {
+      } catch {
         apiService.logout();
       } finally {
         setLoading(false);
@@ -108,6 +108,27 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
+  const setPassword = async (password: string, confirmPassword: string): Promise<void> => {
+    try {
+      setError(null);
+      setLoading(true);
+      
+      await apiService.setPassword(password, confirmPassword);
+      
+      // Refresh user data to update the password status
+      const userData = await apiService.getProfile();
+      setUser(userData);
+      
+      navigate('/profile');
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to set password';
+      setError(errorMessage);
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const clearError = (): void => {
     setError(null);
   };
@@ -119,6 +140,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     login,
     register,
     changePassword,
+    setPassword,
     logout,
     updateUser,
     clearError,

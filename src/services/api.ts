@@ -6,7 +6,7 @@ import type {
   AuthResponse,
   ChangePasswordData
 } from '../contexts/types';
-import type { UserProfile } from '../components/profile/types';
+import type { ProfileData } from '../components/profile/types';
 import type { ApiError } from './types';
 
 interface RequestOptions extends RequestInit {
@@ -83,11 +83,32 @@ class ApiService {
     });
   }
 
+  async forgotPassword(email: string): Promise<{ message: string }> {
+    return await this.request<{ message: string }>('/auth/forgot-password', {
+      method: 'POST',
+      body: JSON.stringify({ email }),
+    });
+  }
+
+  async resetPassword(token: string, password: string, confirmPassword: string): Promise<{ message: string }> {
+    return await this.request<{ message: string }>('/auth/reset-password', {
+      method: 'POST',
+      body: JSON.stringify({ token, password, confirmPassword }),
+    });
+  }
+
+  async setPassword(password: string, confirmPassword: string): Promise<{ message: string }> {
+    return await this.request<{ message: string }>('/auth/set-password', {
+      method: 'POST',
+      body: JSON.stringify({ password, confirmPassword }),
+    });
+  }
+
   async getProfile(): Promise<User> {
     return await this.request<User>('/users/profile');
   }
 
-  async updateProfile(profileData: UserProfile): Promise<User> {
+  async updateProfile(profileData: ProfileData): Promise<User> {
     return await this.request<User>('/users/profile', {
       method: 'PUT',
       body: JSON.stringify(profileData),

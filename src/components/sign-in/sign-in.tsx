@@ -117,7 +117,7 @@ const SignIn: React.FC = () => {
       const email = data.get('email') as string;
       const password = data.get('password') as string;
       await login(email, password);
-    } catch (error) {
+    } catch {
       // Login failed
     } finally {
       setIsSubmitting(false);

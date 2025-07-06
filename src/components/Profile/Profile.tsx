@@ -22,7 +22,7 @@ import apiService from '../../services/api';
 import type { ProfileData, PasswordChangeForm, PasswordValidation } from './types';
 
 const Profile = () => {
-  const { user, updateUser, changePassword, error: authError, clearError } = useAuth();
+  const { user, updateUser, changePassword, setPassword, error: authError, clearError } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -37,7 +37,6 @@ const Profile = () => {
     picture: '',
   });
 
-  // Password change states
   const [passwordForm, setPasswordForm] = useState<PasswordChangeForm>({
     currentPassword: '',
     newPassword: '',
@@ -61,6 +60,11 @@ const Profile = () => {
   
   const [isChangingPassword, setIsChangingPassword] = useState(false);
   const [passwordSuccess, setPasswordSuccess] = useState(false);
+
+
+  const isOAuthUser = user?.authProvider !== 'local';
+  const hasNoPassword = !user?.password;
+  const shouldShowSetPassword = isOAuthUser && hasNoPassword;
 
   useEffect(() => {
     if (user) {
@@ -113,7 +117,7 @@ const Profile = () => {
       
       setSuccess('Profile updated successfully!');
       setIsEditing(false);
-    } catch (error) {
+    } catch {
       setError('Failed to update profile. Please try again.');
     } finally {
       setIsSaving(false);
@@ -147,10 +151,12 @@ const Profile = () => {
 
     let isValid = true;
 
-    if (!passwordForm.currentPassword) {
-      validation.currentPasswordError = true;
-      validation.currentPasswordMessage = 'Current password is required';
-      isValid = false;
+    if (user?.password && user?.authProvider === 'local') {
+      if (!passwordForm.currentPassword) {
+        validation.currentPasswordError = true;
+        validation.currentPasswordMessage = 'Current password is required';
+        isValid = false;
+      }
     }
 
     if (!passwordForm.newPassword) {
@@ -177,7 +183,7 @@ const Profile = () => {
       isValid = false;
     }
 
-    if (passwordForm.currentPassword && passwordForm.newPassword && 
+    if (user?.password && passwordForm.currentPassword && passwordForm.newPassword && 
         passwordForm.currentPassword === passwordForm.newPassword) {
       validation.newPasswordError = true;
       validation.newPasswordMessage = 'New password must be different from current password';
@@ -199,7 +205,12 @@ const Profile = () => {
     clearError();
 
     try {
-      await changePassword(passwordForm);
+      if (shouldShowSetPassword) {
+        await setPassword(passwordForm.newPassword, passwordForm.confirmPassword);
+      } else {
+        await changePassword(passwordForm);
+      }
+      
       setPasswordSuccess(true);
       setPasswordForm({
         currentPassword: '',
@@ -207,7 +218,7 @@ const Profile = () => {
         confirmPassword: ''
       });
       setShowPasswords({ current: false, new: false, confirm: false });
-    } catch (error) {
+    } catch {
       // Error is handled by AuthContext
     } finally {
       setIsChangingPassword(false);
@@ -416,12 +427,15 @@ const Profile = () => {
               
               <Divider sx={{ my: 3 }} />
               
-              {/* Password Change Section */}
               <Card>
                 <CardHeader
                   avatar={<Security color="primary" />}
-                  title="Change Password"
-                  subheader="Update your password to keep your account secure"
+                  title={shouldShowSetPassword ? "Set Password" : "Change Password"}
+                  subheader={
+                    shouldShowSetPassword 
+                      ? "Set a password to enable email/password login"
+                      : "Update your password to keep your account secure"
+                  }
                 />
                 <CardContent>
                   {authError && (
@@ -432,107 +446,182 @@ const Profile = () => {
                   
                   {passwordSuccess && (
                     <Alert severity="success" sx={{ mb: 2 }} onClose={() => setPasswordSuccess(false)}>
-                      Password changed successfully!
+                      {shouldShowSetPassword 
+                        ? "Password set successfully! You can now login with email/password."
+                        : "Password changed successfully!"
+                      }
                     </Alert>
                   )}
                   
-                  <Box component="form" onSubmit={handlePasswordSubmit}>
-                    <TextField
-                      fullWidth
-                      margin="normal"
-                      label="Current Password"
-                      type={showPasswords.current ? 'text' : 'password'}
-                      value={passwordForm.currentPassword}
-                      onChange={handlePasswordChange('currentPassword')}
-                      error={passwordValidation.currentPasswordError}
-                      helperText={passwordValidation.currentPasswordMessage}
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <Lock fontSize="small" />
-                          </InputAdornment>
-                        ),
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            <IconButton
-                              onClick={() => togglePasswordVisibility('current')}
-                              edge="end"
-                            >
-                              {showPasswords.current ? <VisibilityOff /> : <Visibility />}
-                            </IconButton>
-                          </InputAdornment>
-                        )
-                      }}
-                    />
-
-                    <TextField
-                      fullWidth
-                      margin="normal"
-                      label="New Password"
-                      type={showPasswords.new ? 'text' : 'password'}
-                      value={passwordForm.newPassword}
-                      onChange={handlePasswordChange('newPassword')}
-                      error={passwordValidation.newPasswordError}
-                      helperText={passwordValidation.newPasswordMessage}
-                      InputProps={{
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            <IconButton
-                              onClick={() => togglePasswordVisibility('new')}
-                              edge="end"
-                            >
-                              {showPasswords.new ? <VisibilityOff /> : <Visibility />}
-                            </IconButton>
-                          </InputAdornment>
-                        )
-                      }}
-                    />
-
-                    {passwordForm.newPassword && (
-                      <Typography 
-                        variant="caption" 
-                        sx={{ color: passwordStrength.color, display: 'block', mt: 1 }}
-                      >
-                        Password strength: {passwordStrength.strength}
-                      </Typography>
-                    )}
-
-                    <TextField
-                      fullWidth
-                      margin="normal"
-                      label="Confirm New Password"
-                      type={showPasswords.confirm ? 'text' : 'password'}
-                      value={passwordForm.confirmPassword}
-                      onChange={handlePasswordChange('confirmPassword')}
-                      error={passwordValidation.confirmPasswordError}
-                      helperText={passwordValidation.confirmPasswordMessage}
-                      InputProps={{
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            <IconButton
-                              onClick={() => togglePasswordVisibility('confirm')}
-                              edge="end"
-                            >
-                              {showPasswords.confirm ? <VisibilityOff /> : <Visibility />}
-                            </IconButton>
-                          </InputAdornment>
-                        )
-                      }}
-                    />
-
-                    <Box sx={{ mt: 3 }}>
-                      <Button
-                        type="submit"
-                        variant="contained"
-                        color="primary"
-                        disabled={isChangingPassword}
-                        startIcon={isChangingPassword ? <CircularProgress size={20} /> : null}
+                  {shouldShowSetPassword ? (
+                    <Box component="form" onSubmit={handlePasswordSubmit}>
+                      <TextField
                         fullWidth
-                      >
-                        {isChangingPassword ? 'Changing Password...' : 'Change Password'}
-                      </Button>
+                        margin="normal"
+                        label="New Password"
+                        type={showPasswords.new ? 'text' : 'password'}
+                        value={passwordForm.newPassword}
+                        onChange={handlePasswordChange('newPassword')}
+                        error={passwordValidation.newPasswordError}
+                        helperText={passwordValidation.newPasswordMessage}
+                        InputProps={{
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <IconButton
+                                onClick={() => togglePasswordVisibility('new')}
+                                edge="end"
+                              >
+                                {showPasswords.new ? <VisibilityOff /> : <Visibility />}
+                              </IconButton>
+                            </InputAdornment>
+                          )
+                        }}
+                      />
+
+                      {passwordForm.newPassword && (
+                        <Typography 
+                          variant="caption" 
+                          sx={{ color: passwordStrength.color, display: 'block', mt: 1 }}
+                        >
+                          Password strength: {passwordStrength.strength}
+                        </Typography>
+                      )}
+
+                      <TextField
+                        fullWidth
+                        margin="normal"
+                        label="Confirm New Password"
+                        type={showPasswords.confirm ? 'text' : 'password'}
+                        value={passwordForm.confirmPassword}
+                        onChange={handlePasswordChange('confirmPassword')}
+                        error={passwordValidation.confirmPasswordError}
+                        helperText={passwordValidation.confirmPasswordMessage}
+                        InputProps={{
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <IconButton
+                                onClick={() => togglePasswordVisibility('confirm')}
+                                edge="end"
+                              >
+                                {showPasswords.confirm ? <VisibilityOff /> : <Visibility />}
+                              </IconButton>
+                            </InputAdornment>
+                          )
+                        }}
+                      />
+
+                      <Box sx={{ mt: 3 }}>
+                        <Button
+                          type="submit"
+                          variant="contained"
+                          color="primary"
+                          disabled={isChangingPassword}
+                          startIcon={isChangingPassword ? <CircularProgress size={20} /> : null}
+                          fullWidth
+                        >
+                          {isChangingPassword ? 'Setting Password...' : 'Set Password'}
+                        </Button>
+                      </Box>
                     </Box>
-                  </Box>
+                  ) : (
+                    <Box component="form" onSubmit={handlePasswordSubmit}>
+                      <TextField
+                        fullWidth
+                        margin="normal"
+                        label="Current Password"
+                        type={showPasswords.current ? 'text' : 'password'}
+                        value={passwordForm.currentPassword}
+                        onChange={handlePasswordChange('currentPassword')}
+                        error={passwordValidation.currentPasswordError}
+                        helperText={passwordValidation.currentPasswordMessage}
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              <Lock fontSize="small" />
+                            </InputAdornment>
+                          ),
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <IconButton
+                                onClick={() => togglePasswordVisibility('current')}
+                                edge="end"
+                              >
+                                {showPasswords.current ? <VisibilityOff /> : <Visibility />}
+                              </IconButton>
+                            </InputAdornment>
+                          )
+                        }}
+                      />
+
+                      <TextField
+                        fullWidth
+                        margin="normal"
+                        label="New Password"
+                        type={showPasswords.new ? 'text' : 'password'}
+                        value={passwordForm.newPassword}
+                        onChange={handlePasswordChange('newPassword')}
+                        error={passwordValidation.newPasswordError}
+                        helperText={passwordValidation.newPasswordMessage}
+                        InputProps={{
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <IconButton
+                                onClick={() => togglePasswordVisibility('new')}
+                                edge="end"
+                              >
+                                {showPasswords.new ? <VisibilityOff /> : <Visibility />}
+                              </IconButton>
+                            </InputAdornment>
+                          )
+                        }}
+                      />
+
+                      {passwordForm.newPassword && (
+                        <Typography 
+                          variant="caption" 
+                          sx={{ color: passwordStrength.color, display: 'block', mt: 1 }}
+                        >
+                          Password strength: {passwordStrength.strength}
+                        </Typography>
+                      )}
+
+                      <TextField
+                        fullWidth
+                        margin="normal"
+                        label="Confirm New Password"
+                        type={showPasswords.confirm ? 'text' : 'password'}
+                        value={passwordForm.confirmPassword}
+                        onChange={handlePasswordChange('confirmPassword')}
+                        error={passwordValidation.confirmPasswordError}
+                        helperText={passwordValidation.confirmPasswordMessage}
+                        InputProps={{
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <IconButton
+                                onClick={() => togglePasswordVisibility('confirm')}
+                                edge="end"
+                              >
+                                {showPasswords.confirm ? <VisibilityOff /> : <Visibility />}
+                              </IconButton>
+                            </InputAdornment>
+                          )
+                        }}
+                      />
+
+                      <Box sx={{ mt: 3 }}>
+                        <Button
+                          type="submit"
+                          variant="contained"
+                          color="primary"
+                          disabled={isChangingPassword}
+                          startIcon={isChangingPassword ? <CircularProgress size={20} /> : null}
+                          fullWidth
+                        >
+                          {isChangingPassword ? 'Changing Password...' : 'Change Password'}
+                        </Button>
+                      </Box>
+                    </Box>
+                  )}
                 </CardContent>
               </Card>
             </div>
