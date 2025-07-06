@@ -2,9 +2,11 @@ import '../header.scss';
 import classNames from 'classnames';
 import Menu from '../menu/menu.tsx';
 import { useState } from 'react';
+import { useAuth } from '../../../contexts/auth-context';
 
 function NavMenu() {
   const [active, setActive] = useState(false);
+  const { user } = useAuth();
 
   const clickHandler = () => {
     setActive(!active);
@@ -15,7 +17,7 @@ function NavMenu() {
     }
   };
 
-  const menuItems = [
+  const baseMenuItems = [
     {
       link: '/trainings',
       label: 'My trainings',
@@ -53,6 +55,16 @@ function NavMenu() {
       label: 'About',
     },
   ];
+
+  const menuItems = user?.role === 'admin' 
+    ? [
+        {
+          link: '/admin',
+          label: 'Users',
+        },
+        ...baseMenuItems,
+      ]
+    : baseMenuItems;
 
   return (
     <>

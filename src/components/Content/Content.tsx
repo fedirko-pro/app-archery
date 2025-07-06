@@ -14,6 +14,10 @@ import CompetitionsList
   from '../competition/competitions-list/competitions-list.tsx';
 import Achievements from '../achievements/achievements.tsx';
 import ResetPassword from '../reset-password/reset-password.tsx';
+import AdminPanel from '../admin/admin-panel.tsx';
+import ProtectedAdminRoute from '../admin/protected-admin-route.tsx';
+import UserProfileView from '../admin/user-profile-view/user-profile-view.tsx';
+import UserEdit from '../admin/user-edit/user-edit.tsx';
 // TODO: Settings temporarily disabled - functionality moved to Profile
 // import Settings from '../settings/settings.tsx';
 import GoogleCallback from '../google-callback/google-callback.tsx';
@@ -31,6 +35,30 @@ function Content() {
 
         <Route path="/profile" element={<Profile />} />
         <Route path="/achievements" element={<Achievements />} />
+        <Route 
+          path="/admin" 
+          element={
+            <ProtectedAdminRoute>
+              <AdminPanel />
+            </ProtectedAdminRoute>
+          } 
+        />
+        <Route 
+          path="/admin/users/:userId/profile" 
+          element={
+            <ProtectedAdminRoute>
+              <UserProfileView />
+            </ProtectedAdminRoute>
+          } 
+        />
+        <Route 
+          path="/admin/users/:userId/edit" 
+          element={
+            <ProtectedAdminRoute>
+              <UserEdit />
+            </ProtectedAdminRoute>
+          } 
+        />
         {/* TODO: Settings route temporarily disabled - functionality moved to Profile */}
         {/* <Route path="/settings" element={<Settings />} /> */}
 

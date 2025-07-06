@@ -1,0 +1,38 @@
+.admin-panel {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  .admin-header {
+    margin-bottom: 24px;
+    
+    h1 {
+      margin-bottom: 16px;
+      color: #333;
+    }
+  }
+
+  .users-table {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+
+  .user-edit-form {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 24px;
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+  }
+
+  .back-button {
+    margin-bottom: 16px;
+  }
+} 

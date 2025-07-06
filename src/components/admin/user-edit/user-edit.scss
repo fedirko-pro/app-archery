@@ -1,4 +1,4 @@
-.profile-container {
+.user-edit-container {
   width: 100%;
   max-width: 900px;
   margin: 0 auto;
@@ -7,7 +7,7 @@
   overflow: hidden;
 }
 
-.profile-hero {
+.user-edit-hero {
   width: 100%;
   height: 200px;
   background-image: url('https://via.placeholder.com/900x200');
@@ -15,48 +15,33 @@
   background-position: center;
 }
 
-.profile-info {
+.user-edit-info {
   display: flex;
   flex-wrap: wrap;
   padding: 20px;
   position: relative;
 }
 
-.profile-avatar-container {
+.user-edit-avatar-container {
   position: relative;
   margin-top: -75px;
   margin-right: 20px;
 }
 
-.profile-avatar {
+.user-edit-avatar {
   width: 150px;
   height: 150px;
   border-radius: 50%;
   border: 5px solid white;
 }
 
-.profile-details,
-.profile-edit {
+.user-edit-form {
   flex: 1;
-}
-
-.profile-bio {
-  margin-top: 10px;
-}
-
-.profile-edit {
   display: flex;
   flex-direction: column;
 }
 
-.profile-edit button {
+.user-edit-form button {
   margin-top: 15px;
   margin-right: 10px;
-}
-
-.admin-profile-container {
-  border: none !important;
-  border-radius: 0 !important;
-  background: #fff !important;
-  box-shadow: none !important;
-}
+} 

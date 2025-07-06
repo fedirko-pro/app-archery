@@ -129,6 +129,23 @@ class ApiService {
     });
   }
 
+  async getAllUsers(): Promise<User[]> {
+    return await this.request<User[]>('/users/admin/all');
+  }
+
+  async adminUpdateUser(userId: string, userData: any): Promise<User> {
+    return await this.request<User>(`/users/admin/${userId}`, {
+      method: 'PATCH',
+      body: JSON.stringify(userData),
+    });
+  }
+
+  async adminResetUserPassword(userId: string): Promise<{ message: string }> {
+    return await this.request<{ message: string }>(`/auth/admin/reset-password/${userId}`, {
+      method: 'POST',
+    });
+  }
+
   isAuthenticated(): boolean {
     return !!this.getToken();
   }
