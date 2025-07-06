@@ -36,10 +36,11 @@ const UserMenu: React.FC = () => {
           link: '/achievements',
           label: 'My achievements',
         },
-        {
-          link: '/settings',
-          label: 'Settings',
-        },
+        // TODO: Settings temporarily disabled - functionality moved to Profile
+        // {
+        //   link: '/settings',
+        //   label: 'Settings',
+        // },
       ]
     : [
         {

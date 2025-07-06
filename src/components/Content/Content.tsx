@@ -13,7 +13,8 @@ import Competition from '../competition/competition.tsx';
 import CompetitionsList
   from '../competition/competitions-list/competitions-list.tsx';
 import Achievements from '../achievements/achievements.tsx';
-import Settings from '../settings/settings.tsx';
+// TODO: Settings temporarily disabled - functionality moved to Profile
+// import Settings from '../settings/settings.tsx';
 import GoogleCallback from '../google-callback/google-callback.tsx';
 
 function Content() {
@@ -28,7 +29,8 @@ function Content() {
 
         <Route path="/profile" element={<Profile />} />
         <Route path="/achievements" element={<Achievements />} />
-        <Route path="/settings" element={<Settings />} />
+        {/* TODO: Settings route temporarily disabled - functionality moved to Profile */}
+        {/* <Route path="/settings" element={<Settings />} /> */}
 
         <Route path="/converter" element={<Converter />} />
         <Route path="/competitions" element={<CompetitionsList />} />

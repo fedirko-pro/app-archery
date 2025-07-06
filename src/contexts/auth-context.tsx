@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 import apiService from '../services/api';
-import type { User, RegisterData, AuthResponse, AuthContextType } from './types';
+import type { User, RegisterData, AuthResponse, AuthContextType, ChangePasswordData } from './types';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -91,6 +91,23 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setUser(userData);
   };
 
+  const changePassword = async (passwordData: ChangePasswordData): Promise<void> => {
+    try {
+      setError(null);
+      setLoading(true);
+      
+      await apiService.changePassword(passwordData);
+      
+      navigate('/profile');
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to change password';
+      setError(errorMessage);
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const clearError = (): void => {
     setError(null);
   };
@@ -101,6 +118,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     error,
     login,
     register,
+    changePassword,
     logout,
     updateUser,
     clearError,

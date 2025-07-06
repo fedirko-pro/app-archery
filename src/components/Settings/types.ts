@@ -1,13 +1,3 @@
-export interface ProfileData {
-  firstName: string;
-  lastName: string;
-  email: string;
-  bio: string;
-  location: string;
-  website: string;
-  picture: string;
-}
-
 export interface PasswordChangeForm {
   currentPassword: string;
   newPassword: string;

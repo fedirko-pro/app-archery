@@ -3,7 +3,8 @@ import type {
   User, 
   LoginCredentials, 
   RegisterData, 
-  AuthResponse 
+  AuthResponse,
+  ChangePasswordData
 } from '../contexts/types';
 import type { UserProfile } from '../components/profile/types';
 import type { ApiError } from './types';
@@ -90,6 +91,20 @@ class ApiService {
     return await this.request<User>('/users/profile', {
       method: 'PUT',
       body: JSON.stringify(profileData),
+    });
+  }
+
+  async changePassword(passwordData: ChangePasswordData): Promise<void> {
+    const token = this.getToken();
+    console.log('Change password request:', {
+      url: `${this.baseURL}/users/change-password`,
+      hasToken: !!token,
+      tokenLength: token?.length
+    });
+    
+    return await this.request<void>('/users/change-password', {
+      method: 'PUT',
+      body: JSON.stringify(passwordData),
     });
   }
 

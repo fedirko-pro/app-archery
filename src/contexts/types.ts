@@ -25,6 +25,12 @@ export interface RegisterData {
   authProvider: 'local';
 }
 
+export interface ChangePasswordData {
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+}
+
 export interface AuthResponse {
   access_token: string;
   user: User;
@@ -36,6 +42,7 @@ export interface AuthContextType {
   error: string | null;
   login: (email: string, password: string) => Promise<AuthResponse>;
   register: (userData: RegisterData) => Promise<User>;
+  changePassword: (passwordData: ChangePasswordData) => Promise<void>;
   logout: () => void;
   updateUser: (userData: User) => void;
   clearError: () => void;
