@@ -110,21 +110,15 @@ class ApiService {
 
   async updateProfile(profileData: ProfileData): Promise<User> {
     return await this.request<User>('/users/profile', {
-      method: 'PUT',
+      method: 'PATCH',
       body: JSON.stringify(profileData),
     });
   }
 
   async changePassword(passwordData: ChangePasswordData): Promise<void> {
     const token = this.getToken();
-    console.log('Change password request:', {
-      url: `${this.baseURL}/users/change-password`,
-      hasToken: !!token,
-      tokenLength: token?.length
-    });
-    
     return await this.request<void>('/users/change-password', {
-      method: 'PUT',
+      method: 'PATCH',
       body: JSON.stringify(passwordData),
     });
   }
@@ -143,6 +137,79 @@ class ApiService {
   async adminResetUserPassword(userId: string): Promise<{ message: string }> {
     return await this.request<{ message: string }>(`/auth/admin/reset-password/${userId}`, {
       method: 'POST',
+    });
+  }
+
+  async getAllTournaments(): Promise<any[]> {
+    return await this.request<any[]>('/tournaments');
+  }
+
+  async getTournament(id: string): Promise<any> {
+    return await this.request<any>(`/tournaments/${id}`);
+  }
+
+  async createTournament(tournamentData: any): Promise<any> {
+    return await this.request<any>('/tournaments', {
+      method: 'POST',
+      body: JSON.stringify(tournamentData),
+    });
+  }
+
+  async updateTournament(id: string, tournamentData: any): Promise<any> {
+    return await this.request<any>(`/tournaments/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(tournamentData),
+    });
+  }
+
+  async deleteTournament(id: string): Promise<void> {
+    return await this.request<void>(`/tournaments/${id}`, {
+      method: 'DELETE',
+    });
+  }
+
+  async getAllPatrols(): Promise<any[]> {
+    return await this.request<any[]>('/patrols');
+  }
+
+  async getPatrolsByTournament(tournamentId: string): Promise<any[]> {
+    return await this.request<any[]>(`/patrols/tournament/${tournamentId}`);
+  }
+
+  async getPatrol(id: string): Promise<any> {
+    return await this.request<any>(`/patrols/${id}`);
+  }
+
+  async createPatrol(patrolData: any): Promise<any> {
+    return await this.request<any>('/patrols', {
+      method: 'POST',
+      body: JSON.stringify(patrolData),
+    });
+  }
+
+  async updatePatrol(id: string, patrolData: any): Promise<any> {
+    return await this.request<any>(`/patrols/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(patrolData),
+    });
+  }
+
+  async deletePatrol(id: string): Promise<void> {
+    return await this.request<void>(`/patrols/${id}`, {
+      method: 'DELETE',
+    });
+  }
+
+  async addPatrolMember(patrolId: string, userId: string, role: string): Promise<any> {
+    return await this.request<any>(`/patrols/${patrolId}/members`, {
+      method: 'POST',
+      body: JSON.stringify({ userId, role }),
+    });
+  }
+
+  async removePatrolMember(patrolId: string, userId: string): Promise<void> {
+    return await this.request<void>(`/patrols/${patrolId}/members/${userId}`, {
+      method: 'DELETE',
     });
   }
 

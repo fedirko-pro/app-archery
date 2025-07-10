@@ -7,6 +7,8 @@ import {
   CircularProgress,
 } from '@mui/material';
 import type { ProfileData } from '../types';
+import Autocomplete from '@mui/material/Autocomplete';
+import Chip from '@mui/material/Chip';
 
 interface ProfileEditFormProps {
   profileData: ProfileData;
@@ -20,10 +22,14 @@ interface ProfileEditFormProps {
 const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
   profileData,
   isSaving,
+  isAdminView,
   onSave,
   onCancel,
   onChange,
 }) => {
+  const CATEGORY_OPTIONS = [
+    'HLB', 'TRB', 'BB', 'LB', 'CU', 'TR', 'OL', 'INSTINCTIVE', 'TRAD', 'HUNTER', 'JUNIOR', 'SENIOR'
+  ];
   return (
     <div className="profile-edit">
       <Grid container spacing={2}>
@@ -111,6 +117,64 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
             placeholder="https://example.com/avatar.jpg"
           />
         </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            label="Federation Number"
+            name="federationNumber"
+            value={profileData.federationNumber || ''}
+            onChange={onChange}
+            fullWidth
+            margin="normal"
+            placeholder="Enter your federation number"
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <Autocomplete
+            multiple
+            options={CATEGORY_OPTIONS}
+            value={profileData.categories || []}
+            onChange={(newValue) => {
+              onChange({
+                target: {
+                  name: 'categories',
+                  value: newValue,
+                }
+              } as any);
+            }}
+            renderTags={(value: string[], getTagProps) =>
+              value.map((option: string, index: number) => (
+                <Chip variant="outlined" label={option} {...getTagProps({ index })} />
+              ))
+            }
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                variant="outlined"
+                label="Categories"
+                placeholder="Select categories"
+              />
+            )}
+            filterSelectedOptions
+          />
+        </Grid>
+        {isAdminView && (
+          <Grid item xs={12} sm={6}>
+            <TextField
+              select
+              label="Role"
+              name="role"
+              value={profileData.role || 'user'}
+              onChange={onChange}
+              fullWidth
+              margin="normal"
+              SelectProps={{ native: true }}
+              helperText="Change the user's role"
+            >
+              <option value="user">User</option>
+              <option value="admin">Admin</option>
+            </TextField>
+          </Grid>
+        )}
       </Grid>
 
       <Box sx={{ mt: 2, display: 'flex', gap: 2, justifyContent: 'flex-end' }}>

@@ -12,6 +12,8 @@ export interface User {
   password?: string;
   createdAt: string;
   updatedAt: string;
+  federationNumber?: string;
+  categories?: string[];
 }
 
 export interface LoginCredentials {

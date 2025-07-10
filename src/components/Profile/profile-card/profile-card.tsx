@@ -7,6 +7,7 @@ import {
   Button,
 } from '@mui/material';
 import type { ProfileData } from '../types';
+import { useNavigate } from 'react-router-dom';
 
 interface ProfileCardProps {
   profileData: ProfileData;
@@ -23,10 +24,10 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   user,
   isEditing,
   isAdminView = false,
-  onEditToggle,
   getFullName,
   getJoinDate,
 }) => {
+  const navigate = useNavigate();
   return (
     <div className="profile-container">
       <Box className="profile-hero" />
@@ -68,11 +69,11 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
               <Typography variant="body2" color="text.secondary">
                 {getJoinDate()}
               </Typography>
-              {!isAdminView && onEditToggle && (
+              {!isAdminView && (
                 <Button
                   variant="contained"
                   color="primary"
-                  onClick={onEditToggle}
+                  onClick={() => navigate('/profile/edit')}
                   sx={{ mt: 2 }}
                 >
                   Edit Profile

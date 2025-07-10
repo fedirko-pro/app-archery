@@ -21,6 +21,8 @@ import UserEdit from '../admin/user-edit/user-edit.tsx';
 // TODO: Settings temporarily disabled - functionality moved to Profile
 // import Settings from '../settings/settings.tsx';
 import GoogleCallback from '../google-callback/google-callback.tsx';
+import TournamentList from '../tournament/tournament-list/tournament-list';
+import ProfileEditPage from '../profile/profile-edit-page.tsx';
 
 function Content() {
   return (
@@ -34,6 +36,7 @@ function Content() {
         <Route path="/reset-password" element={<ResetPassword />} />
 
         <Route path="/profile" element={<Profile />} />
+        <Route path="/profile/edit" element={<ProfileEditPage />} />
         <Route path="/achievements" element={<Achievements />} />
         <Route 
           path="/admin" 
@@ -70,6 +73,7 @@ function Content() {
         <Route path="/about" element={<About />} />
         <Route path="/encyclopedia" element={<Encyclopedia />} />
         <Route path="/trainings" element={<Training />} />
+        <Route path="/tournaments" element={<TournamentList />} />
       </Routes>
     </main>
   );
