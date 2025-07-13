@@ -3,6 +3,7 @@ import {
   Box,
   CircularProgress,
 } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import './profile.scss';
 import { useAuth } from '../../contexts/auth-context';
 import ProfileCard from './profile-card/profile-card';
@@ -16,12 +17,14 @@ interface ProfileProps {
 
 const Profile: React.FC<ProfileProps> = ({ userOverride, isAdminView = false }) => {
   const { user: authUser } = useAuth();
+  const navigate = useNavigate();
   
   const user = userOverride || authUser;
   
   const [isEditing, setIsEditing] = useState(false);
   const [setError] = useState<string | null>(null);
   const [setSuccess] = useState<string | null>(null);
+  const [backendError, setBackendError] = useState<string | null>(null);
   const [profileData, setProfileData] = useState<ProfileData>({
     firstName: '',
     lastName: '',
@@ -40,7 +43,24 @@ const Profile: React.FC<ProfileProps> = ({ userOverride, isAdminView = false }) 
     confirmPassword: ''
   });
 
-  
+  // Перевіряємо доступність бекенду
+  useEffect(() => {
+    const checkBackendHealth = async () => {
+      try {
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/auth/google/test`);
+        if (!response.ok) {
+          console.error('Backend health check failed:', response.status);
+        } else {
+          console.log('Backend is healthy');
+        }
+      } catch (error) {
+        console.error('Backend health check error:', error);
+      }
+    };
+
+    checkBackendHealth();
+  }, []);
+
   useEffect(() => {
     if (user) {
       setProfileData({

@@ -22,6 +22,9 @@ import UserEdit from '../admin/user-edit/user-edit.tsx';
 // import Settings from '../settings/settings.tsx';
 import GoogleCallback from '../google-callback/google-callback.tsx';
 import TournamentList from '../tournament/tournament-list/tournament-list';
+import UserApplications from '../tournament/user-applications/user-applications';
+import AdminApplications from '../tournament/admin-applications/admin-applications';
+import PublicApplication from '../tournament/public-application/public-application';
 import ProfileEditPage from '../profile/profile-edit-page.tsx';
 
 function Content() {
@@ -74,6 +77,16 @@ function Content() {
         <Route path="/encyclopedia" element={<Encyclopedia />} />
         <Route path="/trainings" element={<Training />} />
         <Route path="/tournaments" element={<TournamentList />} />
+        <Route path="/apply/:tournamentId" element={<PublicApplication />} />
+        <Route path="/applications" element={<UserApplications />} />
+        <Route 
+          path="/admin/applications" 
+          element={
+            <ProtectedAdminRoute>
+              <AdminApplications />
+            </ProtectedAdminRoute>
+          } 
+        />
       </Routes>
     </main>
   );

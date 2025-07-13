@@ -14,9 +14,10 @@ import {
   DialogActions,
   TextField,
 } from '@mui/material';
-import { Add, Edit, Delete } from '@mui/icons-material';
+import { Add, Edit, Delete, Send } from '@mui/icons-material';
 import { useAuth } from '../../../contexts/auth-context';
 import apiService from '../../../services/api';
+import { Link } from 'react-router-dom';
 
 interface Tournament {
   id: string;
@@ -35,6 +36,7 @@ const TournamentList: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [openDialog, setOpenDialog] = useState(false);
+
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -137,26 +139,37 @@ const TournamentList: React.FC = () => {
                     <strong>Location:</strong> {tournament.address}
                   </Typography>
                 )}
-                {user?.role === 'admin' && (
-                  <Box sx={{ mt: 2, display: 'flex', gap: 1 }}>
-                    <Button
-                      size="small"
-                      variant="outlined"
-                      startIcon={<Edit />}
-                    >
-                      Edit
-                    </Button>
-                    <Button
-                      size="small"
-                      variant="outlined"
-                      color="error"
-                      startIcon={<Delete />}
-                      onClick={() => handleDeleteTournament(tournament.id)}
-                    >
-                      Delete
-                    </Button>
-                  </Box>
-                )}
+                <Box sx={{ mt: 2, display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+                  <Button
+                    size="small"
+                    variant="contained"
+                    startIcon={<Send />}
+                    component={Link}
+                    to={`/apply/${tournament.id}`}
+                  >
+                    Apply
+                  </Button>
+                  {user?.role === 'admin' && (
+                    <>
+                      <Button
+                        size="small"
+                        variant="outlined"
+                        startIcon={<Edit />}
+                      >
+                        Edit
+                      </Button>
+                      <Button
+                        size="small"
+                        variant="outlined"
+                        color="error"
+                        startIcon={<Delete />}
+                        onClick={() => handleDeleteTournament(tournament.id)}
+                      >
+                        Delete
+                      </Button>
+                    </>
+                  )}
+                </Box>
               </CardContent>
             </Card>
           </Grid>

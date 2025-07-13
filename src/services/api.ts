@@ -46,6 +46,7 @@ class ApiService {
     };
 
     try {
+      console.log('API request:', url, config);
       const response = await fetch(url, config);
       
       if (!response.ok) {
@@ -56,6 +57,15 @@ class ApiService {
       return await response.json() as T;
     } catch (error) {
       console.error('API request failed:', error);
+      console.error('Request URL:', url);
+      console.error('Request config:', config);
+      
+      // Якщо це помилка мережі, спробуємо перевірити доступність бекенду
+      if (error instanceof TypeError && error.message.includes('Load failed')) {
+        console.error('Network error - backend might be down');
+        throw new Error('Backend server is not available. Please check if the server is running.');
+      }
+      
       throw error;
     }
   }
@@ -209,6 +219,50 @@ class ApiService {
 
   async removePatrolMember(patrolId: string, userId: string): Promise<void> {
     return await this.request<void>(`/patrols/${patrolId}/members/${userId}`, {
+      method: 'DELETE',
+    });
+  }
+
+  async createTournamentApplication(applicationData: {
+    tournamentId: string;
+    category?: string;
+    division?: string;
+    equipment?: string;
+    notes?: string;
+  }): Promise<any> {
+    return await this.request<any>('/tournament-applications', {
+      method: 'POST',
+      body: JSON.stringify(applicationData),
+    });
+  }
+
+  async getMyApplications(): Promise<any[]> {
+    return await this.request<any[]>('/tournament-applications/my-applications');
+  }
+
+  async getTournamentApplications(tournamentId: string): Promise<any[]> {
+    return await this.request<any[]>(`/tournament-applications/tournament/${tournamentId}`);
+  }
+
+  async getTournamentApplicationStats(tournamentId: string): Promise<any> {
+    return await this.request<any>(`/tournament-applications/tournament/${tournamentId}/stats`);
+  }
+
+  async updateApplicationStatus(applicationId: string, status: string, rejectionReason?: string): Promise<any> {
+    return await this.request<any>(`/tournament-applications/${applicationId}/status`, {
+      method: 'PUT',
+      body: JSON.stringify({ status, rejectionReason }),
+    });
+  }
+
+  async withdrawApplication(applicationId: string): Promise<any> {
+    return await this.request<any>(`/tournament-applications/${applicationId}`, {
+      method: 'DELETE',
+    });
+  }
+
+  async deleteApplication(applicationId: string): Promise<void> {
+    return await this.request<void>(`/tournament-applications/${applicationId}/admin`, {
       method: 'DELETE',
     });
   }
