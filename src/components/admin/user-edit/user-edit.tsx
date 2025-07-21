@@ -14,6 +14,7 @@ import { ArrowBack } from '@mui/icons-material';
 import apiService from '../../../services/api';
 import type { User } from '../../../contexts/types';
 import '../../profile/profile.scss';
+import ProfileEditForm from '../../profile/profile-edit-form/profile-edit-form';
 
 const UserEdit: React.FC = () => {
   const { userId } = useParams<{ userId: string }>();
@@ -28,6 +29,8 @@ const UserEdit: React.FC = () => {
     website: '',
     picture: '',
     role: '',
+    federationNumber: '',
+    categories: '',
   });
   
   const [loading, setLoading] = useState(true);
@@ -64,6 +67,8 @@ const UserEdit: React.FC = () => {
         website: foundUser.website || '',
         picture: foundUser.picture || '',
         role: foundUser.role || 'user',
+        federationNumber: foundUser.federationNumber || '',
+        categories: foundUser.categories ? foundUser.categories.join(', ') : '',
       });
     } catch (error) {
       setError('Failed to fetch user data');
@@ -90,8 +95,15 @@ const UserEdit: React.FC = () => {
     setError(null);
     setSuccess(null);
 
+    const submitData = {
+      ...formData,
+      categories: formData.categories
+        ? formData.categories.split(',').map((cat) => cat.trim()).filter(Boolean)
+        : [],
+    };
+
     try {
-      const updatedUser = await apiService.adminUpdateUser(user.id, formData);
+      const updatedUser = await apiService.adminUpdateUser(user.id, submitData);
       setSuccess('User updated successfully!');
       setUser(updatedUser);
       
@@ -152,6 +164,14 @@ const UserEdit: React.FC = () => {
     );
   }
 
+  // Приводимо formData до формату ProfileData для ProfileEditForm
+  const profileData = {
+    ...formData,
+    categories: typeof formData.categories === 'string'
+      ? formData.categories.split(',').map((cat) => cat.trim()).filter(Boolean)
+      : formData.categories,
+  };
+
   return (
     <>
       <Box
@@ -173,128 +193,26 @@ const UserEdit: React.FC = () => {
           Back to Admin Panel
         </Button>
       </Box>
-      <div className="profile-container">
-        <Box className="profile-hero" />
-        <Grid container className="profile-info">
-          <Grid item xs={12} sm={4} className="profile-avatar-container">
-            <Avatar
-              className="profile-avatar"
-              alt="User Avatar"
-              src={formData.picture || user.picture}
-              sx={{ width: 120, height: 120 }}
-            />
-          </Grid>
-          <Grid item xs={12} sm={8}>
-            {error && (
-              <Alert severity="error" sx={{ mb: 2 }} onClose={() => setError(null)}>
-                {error}
-              </Alert>
-            )}
-            {success && (
-              <Alert severity="success" sx={{ mb: 2 }} onClose={() => setSuccess(null)}>
-                {success}
-              </Alert>
-            )}
-            <div className="profile-edit">
-              <TextField
-                label="First Name"
-                name="firstName"
-                value={formData.firstName}
-                onChange={handleChange}
-                fullWidth
-                margin="normal"
-              />
-              <TextField
-                label="Last Name"
-                name="lastName"
-                value={formData.lastName}
-                onChange={handleChange}
-                fullWidth
-                margin="normal"
-              />
-              <TextField
-                label="Email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                fullWidth
-                margin="normal"
-                type="email"
-              />
-              <TextField
-                label="Bio"
-                name="bio"
-                value={formData.bio}
-                onChange={handleChange}
-                fullWidth
-                multiline
-                rows={3}
-                margin="normal"
-                placeholder="Tell us about this user..."
-              />
-              <TextField
-                label="Location"
-                name="location"
-                value={formData.location}
-                onChange={handleChange}
-                fullWidth
-                margin="normal"
-                placeholder="City, Country"
-              />
-              <TextField
-                label="Website"
-                name="website"
-                value={formData.website}
-                onChange={handleChange}
-                fullWidth
-                margin="normal"
-                placeholder="https://example.com"
-              />
-              <TextField
-                label="Profile Picture URL"
-                name="picture"
-                value={formData.picture}
-                onChange={handleChange}
-                fullWidth
-                margin="normal"
-                placeholder="https://example.com/avatar.jpg"
-              />
-              <TextField
-                select
-                label="Role"
-                name="role"
-                value={formData.role}
-                onChange={handleChange}
-                fullWidth
-                margin="normal"
-                SelectProps={{ native: true }}
-                helperText="Change the user's role"
-              >
-                <option value="user">User</option>
-                <option value="admin">Admin</option>
-              </TextField>
-              <Box sx={{ mt: 2, display: 'flex', gap: 2 }}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={handleSubmit}
-                  disabled={saving}
-                >
-                  {saving ? <CircularProgress size={20} /> : 'Save Changes'}
-                </Button>
-                <Button
-                  variant="outlined"
-                  color="secondary"
-                  onClick={handleCancel}
-                  disabled={saving}
-                >
-                  Cancel
-                </Button>
-              </Box>
-            </div>
-          </Grid>
-        </Grid>
-      </div>
+      <Box sx={{ maxWidth: 700, mx: 'auto', mt: 4 }}>
+        {error && (
+          <Alert severity="error" sx={{ mb: 2 }} onClose={() => setError(null)}>
+            {error}
+          </Alert>
+        )}
+        {success && (
+          <Alert severity="success" sx={{ mb: 2 }} onClose={() => setSuccess(null)}>
+            {success}
+          </Alert>
+        )}
+        <ProfileEditForm
+          profileData={profileData}
+          isSaving={saving}
+          isAdminView={true}
+          onChange={handleChange}
+          onSave={handleSubmit}
+          onCancel={handleCancel}
+        />
+      </Box>
     </>
   );
 };

@@ -46,6 +46,7 @@ class ApiService {
     };
 
     try {
+      console.log('API request:', url, config);
       const response = await fetch(url, config);
       
       if (!response.ok) {
@@ -56,6 +57,15 @@ class ApiService {
       return await response.json() as T;
     } catch (error) {
       console.error('API request failed:', error);
+      console.error('Request URL:', url);
+      console.error('Request config:', config);
+      
+      // Якщо це помилка мережі, спробуємо перевірити доступність бекенду
+      if (error instanceof TypeError && error.message.includes('Load failed')) {
+        console.error('Network error - backend might be down');
+        throw new Error('Backend server is not available. Please check if the server is running.');
+      }
+      
       throw error;
     }
   }
@@ -110,21 +120,15 @@ class ApiService {
 
   async updateProfile(profileData: ProfileData): Promise<User> {
     return await this.request<User>('/users/profile', {
-      method: 'PUT',
+      method: 'PATCH',
       body: JSON.stringify(profileData),
     });
   }
 
   async changePassword(passwordData: ChangePasswordData): Promise<void> {
     const token = this.getToken();
-    console.log('Change password request:', {
-      url: `${this.baseURL}/users/change-password`,
-      hasToken: !!token,
-      tokenLength: token?.length
-    });
-    
     return await this.request<void>('/users/change-password', {
-      method: 'PUT',
+      method: 'PATCH',
       body: JSON.stringify(passwordData),
     });
   }
@@ -143,6 +147,123 @@ class ApiService {
   async adminResetUserPassword(userId: string): Promise<{ message: string }> {
     return await this.request<{ message: string }>(`/auth/admin/reset-password/${userId}`, {
       method: 'POST',
+    });
+  }
+
+  async getAllTournaments(): Promise<any[]> {
+    return await this.request<any[]>('/tournaments');
+  }
+
+  async getTournament(id: string): Promise<any> {
+    return await this.request<any>(`/tournaments/${id}`);
+  }
+
+  async createTournament(tournamentData: any): Promise<any> {
+    return await this.request<any>('/tournaments', {
+      method: 'POST',
+      body: JSON.stringify(tournamentData),
+    });
+  }
+
+  async updateTournament(id: string, tournamentData: any): Promise<any> {
+    return await this.request<any>(`/tournaments/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(tournamentData),
+    });
+  }
+
+  async deleteTournament(id: string): Promise<void> {
+    return await this.request<void>(`/tournaments/${id}`, {
+      method: 'DELETE',
+    });
+  }
+
+  async getAllPatrols(): Promise<any[]> {
+    return await this.request<any[]>('/patrols');
+  }
+
+  async getPatrolsByTournament(tournamentId: string): Promise<any[]> {
+    return await this.request<any[]>(`/patrols/tournament/${tournamentId}`);
+  }
+
+  async getPatrol(id: string): Promise<any> {
+    return await this.request<any>(`/patrols/${id}`);
+  }
+
+  async createPatrol(patrolData: any): Promise<any> {
+    return await this.request<any>('/patrols', {
+      method: 'POST',
+      body: JSON.stringify(patrolData),
+    });
+  }
+
+  async updatePatrol(id: string, patrolData: any): Promise<any> {
+    return await this.request<any>(`/patrols/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(patrolData),
+    });
+  }
+
+  async deletePatrol(id: string): Promise<void> {
+    return await this.request<void>(`/patrols/${id}`, {
+      method: 'DELETE',
+    });
+  }
+
+  async addPatrolMember(patrolId: string, userId: string, role: string): Promise<any> {
+    return await this.request<any>(`/patrols/${patrolId}/members`, {
+      method: 'POST',
+      body: JSON.stringify({ userId, role }),
+    });
+  }
+
+  async removePatrolMember(patrolId: string, userId: string): Promise<void> {
+    return await this.request<void>(`/patrols/${patrolId}/members/${userId}`, {
+      method: 'DELETE',
+    });
+  }
+
+  async createTournamentApplication(applicationData: {
+    tournamentId: string;
+    category?: string;
+    division?: string;
+    equipment?: string;
+    notes?: string;
+  }): Promise<any> {
+    return await this.request<any>('/tournament-applications', {
+      method: 'POST',
+      body: JSON.stringify(applicationData),
+    });
+  }
+
+  async getMyApplications(): Promise<any[]> {
+    return await this.request<any[]>('/tournament-applications/my-applications');
+  }
+
+  async getTournamentApplications(tournamentId: string): Promise<any[]> {
+    return await this.request<any[]>(`/tournament-applications/tournament/${tournamentId}`);
+  }
+
+  async getTournamentApplicationStats(tournamentId: string): Promise<any> {
+    return await this.request<any>(`/tournament-applications/tournament/${tournamentId}/stats`);
+  }
+
+  async updateApplicationStatus(applicationId: string, status: string, rejectionReason?: string): Promise<any> {
+    return await this.request<any>(`/tournament-applications/${applicationId}/status`, {
+      method: 'PUT',
+      body: JSON.stringify({ status, rejectionReason }),
+    });
+  }
+
+  async withdrawApplication(applicationId: string): Promise<any> {
+    return await this.request<any>(`/tournament-applications/${applicationId}`, {
+      method: 'DELETE',
+    });
+  }
+
+  async deleteApplication(applicationId: string): Promise<void> {
+    return await this.request<void>(`/tournament-applications/${applicationId}/admin`, {
+      method: 'DELETE',
     });
   }
 

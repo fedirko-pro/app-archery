@@ -14,6 +14,7 @@ import ForgotPassword from './forgot-password';
 import { GoogleIcon } from '../custom-icons';
 import { useAuth } from '../../contexts/auth-context';
 import { Alert } from '@mui/material';
+import { useLocation } from 'react-router-dom';
 import env from '../../config/env';
 
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -64,6 +65,7 @@ const SignIn: React.FC = () => {
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState<string>('');
   const [open, setOpen] = React.useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = React.useState<boolean>(false);
+  const location = useLocation();
 
   const { login, error, clearError } = useAuth();
 
@@ -125,6 +127,20 @@ const SignIn: React.FC = () => {
   };
 
   const handleGoogleSignIn = (): void => {
+    // Перевіряємо чи є pending application в state або sessionStorage
+    const pendingData = location.state?.pendingData || sessionStorage.getItem('pendingApplication');
+    
+    // Зберігаємо pending application в sessionStorage перед переходом на Google OAuth
+    if (pendingData) {
+      const pendingApplication = typeof pendingData === 'string' ? JSON.parse(pendingData) : pendingData;
+      sessionStorage.setItem('pendingApplication', JSON.stringify(pendingApplication));
+      console.log('Sign in - saved pending application to sessionStorage:', pendingApplication);
+    } else {
+      console.log('Sign in - no pending application found');
+    }
+    
+    // Просто переходимо на Google OAuth без query параметрів
+    console.log('Sign in - redirecting to Google OAuth:', env.GOOGLE_AUTH_URL);
     window.location.href = env.GOOGLE_AUTH_URL;
   };
 

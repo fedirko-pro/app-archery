@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import apiService from '../services/api';
 import type { User, RegisterData, AuthResponse, AuthContextType, ChangePasswordData } from './types';
@@ -21,6 +21,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const pendingApplicationProcessedRef = useRef(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -40,6 +41,21 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     checkAuth();
   }, []);
 
+  const handlePostAuthRedirect = () => {
+    const pendingApplication = sessionStorage.getItem('pendingApplication');
+    console.log('Auth context - pending application:', pendingApplication);
+    
+    if (pendingApplication) {
+      const { redirectTo } = JSON.parse(pendingApplication);
+      console.log('Auth context - redirecting to:', redirectTo);
+      sessionStorage.removeItem('pendingApplication');
+      navigate(redirectTo);
+    } else {
+      console.log('Auth context - no pending application, redirecting to profile');
+      navigate('/profile');
+    }
+  };
+
   const login = async (email: string, password: string): Promise<AuthResponse> => {
     try {
       setError(null);
@@ -49,7 +65,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const userData = await apiService.getProfile();
       
       setUser(userData);
-      navigate('/profile');
+      handlePostAuthRedirect();
       
       return response;
     } catch (error) {
@@ -68,7 +84,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       
       const response = await apiService.register(userData);
       
-      await login(userData.email, userData.password);
+      // Після успішної реєстрації автоматично логінимо користувача
+      const loginResponse = await apiService.login(userData.email, userData.password);
+      const userProfile = await apiService.getProfile();
+      
+      setUser(userProfile);
+      handlePostAuthRedirect();
       
       return response;
     } catch (error) {
@@ -84,11 +105,49 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     apiService.logout();
     setUser(null);
     setError(null);
+    pendingApplicationProcessedRef.current = false;
     navigate('/signin');
   };
 
   const updateUser = (userData: User): void => {
     setUser(userData);
+  };
+
+  const handleGoogleAuth = (userData: User): void => {
+    console.log('Auth context - handleGoogleAuth called with userData:', userData);
+    setUser(userData);
+    console.log('Auth context - user set, checking pending application');
+    
+    // Запобігаємо повторній обробці
+    if (pendingApplicationProcessedRef.current) {
+      console.log('Auth context - pending application already processed, skipping');
+      return;
+    }
+    
+    // Перевіряємо pending application одразу після автентифікації
+    const pendingApplication = sessionStorage.getItem('pendingApplication');
+    console.log('Auth context - checking pending application after Google auth:', pendingApplication);
+    
+    if (pendingApplication) {
+      try {
+        const { redirectTo } = JSON.parse(pendingApplication);
+        console.log('Auth context - found pending application, redirecting to:', redirectTo);
+        sessionStorage.removeItem('pendingApplication');
+        pendingApplicationProcessedRef.current = true;
+        console.log('Auth context - calling navigate to:', redirectTo);
+        navigate(redirectTo);
+      } catch (error) {
+        console.error('Auth context - error parsing pending application:', error);
+        sessionStorage.removeItem('pendingApplication');
+        pendingApplicationProcessedRef.current = true;
+        console.log('Auth context - error occurred, going to profile');
+        navigate('/profile');
+      }
+    } else {
+      console.log('Auth context - no pending application, going to profile');
+      pendingApplicationProcessedRef.current = true;
+      navigate('/profile');
+    }
   };
 
   const changePassword = async (passwordData: ChangePasswordData): Promise<void> => {
@@ -143,6 +202,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setPassword,
     logout,
     updateUser,
+    handleGoogleAuth,
     clearError,
     isAuthenticated: !!user,
   };

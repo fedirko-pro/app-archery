@@ -23,8 +23,8 @@ function NavMenu() {
       label: 'My trainings',
     },
     {
-      link: '/Competitions',
-      label: 'Competitions',
+      link: '/tournaments',
+      label: 'Tournaments',
     },
     {
       link: '/Competition',

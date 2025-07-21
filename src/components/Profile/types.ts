@@ -6,6 +6,9 @@ export interface ProfileData {
   location: string;
   website: string;
   picture: string;
+  federationNumber?: string;
+  categories?: string[];
+  role?: string;
 }
 
 export interface PasswordChangeForm {

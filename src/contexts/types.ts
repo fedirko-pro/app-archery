@@ -12,6 +12,8 @@ export interface User {
   password?: string;
   createdAt: string;
   updatedAt: string;
+  federationNumber?: string;
+  categories?: string[];
 }
 
 export interface LoginCredentials {
@@ -48,6 +50,7 @@ export interface AuthContextType {
   setPassword: (password: string, confirmPassword: string) => Promise<void>;
   logout: () => void;
   updateUser: (userData: User) => void;
+  handleGoogleAuth: (userData: User) => void;
   clearError: () => void;
   isAuthenticated: boolean;
 } 

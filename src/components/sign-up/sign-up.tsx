@@ -139,6 +139,15 @@ export default function SignUp() {
   };
 
   const handleGoogleSignUp = () => {
+    // Перевіряємо чи є pending application в sessionStorage
+    const pendingData = sessionStorage.getItem('pendingApplication');
+    
+    // Зберігаємо pending application в sessionStorage перед переходом на Google OAuth
+    if (pendingData) {
+      console.log('Sign up - pending application already in sessionStorage:', pendingData);
+    }
+    
+    // Просто переходимо на Google OAuth без query параметрів
     window.location.href = env.GOOGLE_AUTH_URL;
   };
 
