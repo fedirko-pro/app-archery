@@ -1,31 +1,31 @@
 import './content.scss';
 import { Route, Routes } from 'react-router-dom';
 import About from '../../pages/about.tsx';
-import Converter from '../converter/converter.tsx';
+import Converter from '../../pages/converter/converter.tsx';
 import Encyclopedia from '../../pages/encyclopedia.tsx';
 import Training from '../../pages/trainings.tsx';
-import PatrolList from '../competition/patrol-list/patrol-list.tsx';
-import UserPage from '../competition/user-page/user-page.tsx';
-import SignIn from '../sign-in/sign-in.tsx';
-import SignUp from '../sign-up/sign-up.tsx';
-import Profile from '../profile/profile.tsx';
-import Competition from '../competition/competition.tsx';
+import PatrolList from '../../pages/competition/patrol-list/patrol-list.tsx';
+import UserPage from '../../pages/competition/user-page/user-page.tsx';
+import SignIn from '../../pages/sign-in/sign-in.tsx';
+import SignUp from '../../pages/sign-up/sign-up.tsx';
+import Profile from '../../pages/profile/profile.tsx';
+import Competition from '../../pages/competition/competition.tsx';
 import CompetitionsList
-  from '../competition/competitions-list/competitions-list.tsx';
-import Achievements from '../achievements/achievements.tsx';
-import ResetPassword from '../reset-password/reset-password.tsx';
-import AdminPanel from '../admin/admin-panel.tsx';
-import ProtectedAdminRoute from '../admin/protected-admin-route.tsx';
-import UserProfileView from '../admin/user-profile-view/user-profile-view.tsx';
-import UserEdit from '../admin/user-edit/user-edit.tsx';
+  from '../../pages/competition/competitions-list/competitions-list.tsx';
+import Achievements from '../../pages/achievements/achievements.tsx';
+import ResetPassword from '../../pages/reset-password/reset-password.tsx';
+import AdminPanel from '../../pages/admin/admin-panel.tsx';
+import ProtectedAdminRoute from '../../pages/admin/protected-admin-route.tsx';
+import UserProfileView from '../../pages/admin/user-profile-view/user-profile-view.tsx';
+import UserEdit from '../../pages/admin/user-edit/user-edit.tsx';
 // TODO: Settings temporarily disabled - functionality moved to Profile
 // import Settings from '../settings/settings.tsx';
-import GoogleCallback from '../google-callback/google-callback.tsx';
-import TournamentList from '../tournament/tournament-list/tournament-list.tsx';
-import UserApplications from '../tournament/user-applications/user-applications.tsx';
-import AdminApplications from '../tournament/admin-applications/admin-applications.tsx';
-import PublicApplication from '../tournament/public-application/public-application.tsx';
-import ProfileEditPage from '../profile/profile-edit-page.tsx';
+import GoogleCallback from '../../pages/google-callback/google-callback.tsx';
+import TournamentList from '../../pages/tournament/tournament-list/tournament-list.tsx';
+import UserApplications from '../../pages/tournament/user-applications/user-applications.tsx';
+import AdminApplications from '../../pages/tournament/admin-applications/admin-applications.tsx';
+import PublicApplication from '../../pages/tournament/public-application/public-application.tsx';
+import ProfileEditPage from '../../pages/profile/profile-edit-page.tsx';
 
 function Content() {
   return (

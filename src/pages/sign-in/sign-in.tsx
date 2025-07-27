@@ -11,7 +11,7 @@ import Stack from '@mui/material/Stack';
 import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
 import ForgotPassword from './forgot-password';
-import { GoogleIcon } from '../custom-icons';
+import { GoogleIcon } from '../../components/custom-icons';
 import { useAuth } from '../../contexts/auth-context';
 import { Alert } from '@mui/material';
 import { useLocation } from 'react-router-dom';

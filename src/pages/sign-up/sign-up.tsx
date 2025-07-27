@@ -10,7 +10,7 @@ import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
-import { GoogleIcon } from '../custom-icons';
+import { GoogleIcon } from '../../components/custom-icons';
 import { useAuth } from '../../contexts/auth-context';
 import { Alert } from '@mui/material';
 import env from '../../config/env';
