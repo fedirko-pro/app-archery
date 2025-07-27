@@ -7,7 +7,11 @@ import type { MenuSection } from '../menu/types';
 
 const UserMenu: React.FC = () => {
   const [active, setActive] = useState<boolean>(false);
-  const { user, isAuthenticated, logout } = useAuth();
+  const { user, isAuthenticated, logout, loading } = useAuth();
+
+  if (loading) {
+    return null; // або показати loading spinner
+  }
 
   const hamburgerClick = (): void => {
     setActive(!active);
@@ -31,10 +35,11 @@ const UserMenu: React.FC = () => {
       link: '/profile',
       label: 'My profile',
     },
-    {
-      link: '/achievements',
-      label: 'My achievements',
-    },
+    // TODO: Implement My achievements
+    // {
+    //   link: '/achievements',
+    //   label: 'My achievements',
+    // },
     // TODO: Settings temporarily disabled - functionality moved to Profile
     // {
     //   link: '/settings',
@@ -55,7 +60,9 @@ const UserMenu: React.FC = () => {
 
   const sections: MenuSection[] = [
     {
-      items: isAuthenticated ? authenticatedMenuItems : unauthenticatedMenuItems,
+      items: isAuthenticated
+        ? authenticatedMenuItems
+        : unauthenticatedMenuItems,
       isAdmin: false,
     },
   ];
@@ -82,4 +89,4 @@ const UserMenu: React.FC = () => {
   );
 };
 
-export default UserMenu; 
+export default UserMenu;

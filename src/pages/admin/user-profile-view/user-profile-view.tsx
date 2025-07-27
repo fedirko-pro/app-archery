@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Box, Button, Alert, CircularProgress, Typography } from '@mui/material';
+import { Box, Button, Alert, CircularProgress } from '@mui/material';
 import { ArrowBack } from '@mui/icons-material';
 import ProfileCard from '../../profile/profile-card/profile-card';
 import ProfileEditForm from '../../profile/profile-edit-form/profile-edit-form';
@@ -17,7 +17,7 @@ const UserProfileView: React.FC = () => {
   const [isSaving, setIsSaving] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
+
   const [profileData, setProfileData] = useState<ProfileData>({
     firstName: '',
     lastName: '',
@@ -38,15 +38,15 @@ const UserProfileView: React.FC = () => {
     try {
       setLoading(true);
       setError(null);
-      
+
       const allUsers = await apiService.getAllUsers();
-      const foundUser = allUsers.find(u => u.id === userId);
-      
+      const foundUser = allUsers.find((u) => u.id === userId);
+
       if (!foundUser) {
         setError('User not found');
         return;
       }
-      
+
       setUser(foundUser);
       setProfileData({
         firstName: foundUser.firstName || '',
@@ -79,33 +79,29 @@ const UserProfileView: React.FC = () => {
     }
     setIsEditing(!isEditing);
     setError(null);
-    setSuccess(null);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setProfileData(prev => ({
+    setProfileData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const handleSave = async () => {
     if (!user) return;
-    
+
     setIsSaving(true);
     setError(null);
-    setSuccess(null);
 
     try {
-      const updatedUser = await apiService.adminUpdateUser(user.id, profileData);
-      setSuccess('User updated successfully!');
+      const updatedUser = await apiService.adminUpdateUser(
+        user.id,
+        profileData,
+      );
       setUser(updatedUser);
       setIsEditing(false);
-      
-      setTimeout(() => {
-        setSuccess(null);
-      }, 3000);
     } catch (error) {
       setError('Failed to update user. Please try again.');
       console.error('Error updating user:', error);
@@ -119,7 +115,7 @@ const UserProfileView: React.FC = () => {
   };
 
   const handleBack = () => {
-    navigate('/admin');
+    navigate('/admin/users');
   };
 
   const getFullName = () => {
@@ -131,9 +127,9 @@ const UserProfileView: React.FC = () => {
   const getJoinDate = () => {
     if (user?.createdAt) {
       const date = new Date(user.createdAt);
-      return `Joined ${date.toLocaleDateString('en-US', { 
-        year: 'numeric', 
-        month: 'long' 
+      return `Joined ${date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
       })}`;
     }
     return 'Recently joined';
@@ -141,7 +137,12 @@ const UserProfileView: React.FC = () => {
 
   if (loading) {
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight="50vh">
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        minHeight="50vh"
+      >
         <CircularProgress />
       </Box>
     );
@@ -150,11 +151,7 @@ const UserProfileView: React.FC = () => {
   if (error) {
     return (
       <Box>
-        <Button
-          startIcon={<ArrowBack />}
-          onClick={handleBack}
-          sx={{ mb: 2 }}
-        >
+        <Button startIcon={<ArrowBack />} onClick={handleBack} sx={{ mb: 2 }}>
           Back to Admin Panel
         </Button>
         <Alert severity="error">{error}</Alert>
@@ -165,11 +162,7 @@ const UserProfileView: React.FC = () => {
   if (!user) {
     return (
       <Box>
-        <Button
-          startIcon={<ArrowBack />}
-          onClick={handleBack}
-          sx={{ mb: 2 }}
-        >
+        <Button startIcon={<ArrowBack />} onClick={handleBack} sx={{ mb: 2 }}>
           Back to Admin Panel
         </Button>
         <Alert severity="error">User not found</Alert>
@@ -187,7 +180,7 @@ const UserProfileView: React.FC = () => {
           maxWidth: '900px',
           margin: '32px auto 24px auto',
           width: '100%',
-          px: 2
+          px: 2,
         }}
       >
         <Button
@@ -232,4 +225,4 @@ const UserProfileView: React.FC = () => {
   );
 };
 
-export default UserProfileView; 
+export default UserProfileView;

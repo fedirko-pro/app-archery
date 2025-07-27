@@ -10,8 +10,7 @@ import SignIn from '../../pages/sign-in/sign-in.tsx';
 import SignUp from '../../pages/sign-up/sign-up.tsx';
 import Profile from '../../pages/profile/profile.tsx';
 import Competition from '../../pages/competition/competition.tsx';
-import CompetitionsList
-  from '../../pages/competition/competitions-list/competitions-list.tsx';
+import CompetitionsList from '../../pages/competition/competitions-list/competitions-list.tsx';
 import Achievements from '../../pages/achievements/achievements.tsx';
 import ResetPassword from '../../pages/reset-password/reset-password.tsx';
 import AdminPanel from '../../pages/admin/admin-panel.tsx';
@@ -41,29 +40,29 @@ function Content() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/profile/edit" element={<ProfileEditPage />} />
         <Route path="/achievements" element={<Achievements />} />
-        <Route 
-          path="/admin" 
+        <Route
+          path="/admin/users"
           element={
             <ProtectedAdminRoute>
               <AdminPanel />
             </ProtectedAdminRoute>
-          } 
+          }
         />
-        <Route 
-          path="/admin/users/:userId/profile" 
+        <Route
+          path="/admin/users/:userId/profile"
           element={
             <ProtectedAdminRoute>
               <UserProfileView />
             </ProtectedAdminRoute>
-          } 
+          }
         />
-        <Route 
-          path="/admin/users/:userId/edit" 
+        <Route
+          path="/admin/users/:userId/edit"
           element={
             <ProtectedAdminRoute>
               <UserEdit />
             </ProtectedAdminRoute>
-          } 
+          }
         />
         {/* TODO: Settings route temporarily disabled - functionality moved to Profile */}
         {/* <Route path="/settings" element={<Settings />} /> */}
@@ -79,13 +78,13 @@ function Content() {
         <Route path="/tournaments" element={<TournamentList />} />
         <Route path="/apply/:tournamentId" element={<PublicApplication />} />
         <Route path="/applications" element={<UserApplications />} />
-        <Route 
-          path="/admin/applications" 
+        <Route
+          path="/admin/applications"
           element={
             <ProtectedAdminRoute>
               <AdminApplications />
             </ProtectedAdminRoute>
-          } 
+          }
         />
       </Routes>
     </main>

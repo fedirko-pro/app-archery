@@ -8,7 +8,6 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Button,
   Typography,
   Alert,
   CircularProgress,
@@ -16,10 +15,9 @@ import {
   Tooltip,
 } from '@mui/material';
 import { Edit, Email, Visibility } from '@mui/icons-material';
-import { useAuth } from '../../../contexts/auth-context';
 import apiService from '../../../services/api';
 import type { User } from '../../../contexts/types';
-import { useNavigate } from 'react-router-dom';
+import { formatDate } from '../../../utils/date-utils';
 
 interface UsersListProps {
   onEditUser: (user: User) => void;
@@ -31,10 +29,9 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
-  const [resettingPassword, setResettingPassword] = useState<string | null>(null);
-  
-  const { user: currentUser } = useAuth();
-  const navigate = useNavigate();
+  const [resettingPassword, setResettingPassword] = useState<string | null>(
+    null,
+  );
 
   useEffect(() => {
     fetchUsers();
@@ -57,9 +54,9 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
     try {
       setResettingPassword(userId);
       setError(null);
-      
+
       await apiService.adminResetUserPassword(userId);
-      
+
       setSuccess(`Password reset email sent to ${userEmail}`);
       setTimeout(() => setSuccess(null), 5000);
     } catch (error) {
@@ -80,7 +77,12 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
 
   if (loading) {
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight="200px">
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        minHeight="200px"
+      >
         <CircularProgress />
       </Box>
     );
@@ -91,15 +93,19 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
       <Typography variant="h4" gutterBottom>
         Users Management
       </Typography>
-      
+
       {error && (
         <Alert severity="error" sx={{ mb: 2 }} onClose={() => setError(null)}>
           {error}
         </Alert>
       )}
-      
+
       {success && (
-        <Alert severity="success" sx={{ mb: 2 }} onClose={() => setSuccess(null)}>
+        <Alert
+          severity="success"
+          sx={{ mb: 2 }}
+          onClose={() => setSuccess(null)}
+        >
           {success}
         </Alert>
       )}
@@ -121,10 +127,9 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
               <TableRow key={user.id} hover>
                 <TableCell>
                   <Typography variant="body2">
-                    {user.firstName && user.lastName 
+                    {user.firstName && user.lastName
                       ? `${user.firstName} ${user.lastName}`
-                      : 'Not set'
-                    }
+                      : 'Not set'}
                   </Typography>
                 </TableCell>
                 <TableCell>{user.email}</TableCell>
@@ -132,7 +137,8 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
                   <Typography
                     variant="body2"
                     sx={{
-                      color: user.role === 'admin' ? 'error.main' : 'text.primary',
+                      color:
+                        user.role === 'admin' ? 'error.main' : 'text.primary',
                       fontWeight: user.role === 'admin' ? 'bold' : 'normal',
                     }}
                   >
@@ -143,20 +149,22 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
                   <Typography
                     variant="body2"
                     sx={{
-                      color: user.authProvider === 'google' ? 'primary.main' : 'text.primary',
+                      color:
+                        user.authProvider === 'google'
+                          ? 'primary.main'
+                          : 'text.primary',
                     }}
                   >
                     {user.authProvider}
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  {user.createdAt 
-                    ? new Date(user.createdAt).toLocaleDateString()
-                    : 'Unknown'
-                  }
+                  {user.createdAt ? formatDate(user.createdAt) : 'Unknown'}
                 </TableCell>
                 <TableCell align="center">
-                  <Box sx={{ display: 'flex', gap: 1, justifyContent: 'center' }}>
+                  <Box
+                    sx={{ display: 'flex', gap: 1, justifyContent: 'center' }}
+                  >
                     <Tooltip title="View Profile">
                       <IconButton
                         size="small"
@@ -166,7 +174,7 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
                         <Visibility />
                       </IconButton>
                     </Tooltip>
-                    
+
                     <Tooltip title="Edit Profile">
                       <IconButton
                         size="small"
@@ -176,7 +184,7 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
                         <Edit />
                       </IconButton>
                     </Tooltip>
-                    
+
                     <Tooltip title="Reset Password">
                       <IconButton
                         size="small"
@@ -198,4 +206,4 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
   );
 };
 
-export default UsersList; 
+export default UsersList;

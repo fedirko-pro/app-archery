@@ -4,7 +4,6 @@ import {
   Typography,
   Card,
   CardContent,
-  Grid,
   Chip,
   Button,
   Alert,
@@ -27,8 +26,9 @@ import {
   Paper,
 } from '@mui/material';
 import { Check, Close, Visibility } from '@mui/icons-material';
-import { useAuth } from '../../../contexts/auth-context';
+
 import apiService from '../../../services/api';
+import { formatDate, getApplicationDeadline } from '../../../utils/date-utils';
 
 interface TournamentApplication {
   id: string;
@@ -37,6 +37,7 @@ interface TournamentApplication {
     title: string;
     startDate: string;
     endDate: string;
+    applicationDeadline?: string;
   };
   applicant: {
     id: string;
@@ -62,13 +63,13 @@ interface ApplicationStats {
 }
 
 const AdminApplications: React.FC = () => {
-  const { user } = useAuth();
   const [applications, setApplications] = useState<TournamentApplication[]>([]);
   const [stats, setStats] = useState<ApplicationStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedTournament, setSelectedTournament] = useState<string>('');
   const [tournaments, setTournaments] = useState<any[]>([]);
+  const [currentTournament, setCurrentTournament] = useState<any>(null);
   const [statusDialog, setStatusDialog] = useState<{
     open: boolean;
     application: TournamentApplication | null;
@@ -93,8 +94,9 @@ const AdminApplications: React.FC = () => {
       setTournaments(data);
       if (data.length > 0) {
         setSelectedTournament(data[0].id);
+        setCurrentTournament(data[0]);
       }
-    } catch (error) {
+    } catch {
       setError('Failed to fetch tournaments');
     }
   };
@@ -104,7 +106,8 @@ const AdminApplications: React.FC = () => {
 
     try {
       setLoading(true);
-      const data = await apiService.getTournamentApplications(selectedTournament);
+      const data =
+        await apiService.getTournamentApplications(selectedTournament);
       setApplications(data);
     } catch (error) {
       setError('Failed to fetch applications');
@@ -118,7 +121,8 @@ const AdminApplications: React.FC = () => {
     if (!selectedTournament) return;
 
     try {
-      const data = await apiService.getTournamentApplicationStats(selectedTournament);
+      const data =
+        await apiService.getTournamentApplicationStats(selectedTournament);
       setStats(data);
     } catch (error) {
       console.error('Error fetching stats:', error);
@@ -132,9 +136,14 @@ const AdminApplications: React.FC = () => {
       await apiService.updateApplicationStatus(
         statusDialog.application.id,
         statusDialog.newStatus,
-        statusDialog.rejectionReason || undefined
+        statusDialog.rejectionReason || undefined,
       );
-      setStatusDialog({ open: false, application: null, newStatus: '', rejectionReason: '' });
+      setStatusDialog({
+        open: false,
+        application: null,
+        newStatus: '',
+        rejectionReason: '',
+      });
       fetchApplications();
       fetchStats();
     } catch (error) {
@@ -173,7 +182,12 @@ const AdminApplications: React.FC = () => {
 
   if (loading) {
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight="200px">
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        minHeight="200px"
+      >
         <CircularProgress />
       </Box>
     );
@@ -191,13 +205,63 @@ const AdminApplications: React.FC = () => {
         </Alert>
       )}
 
+      {currentTournament && (
+        <Card sx={{ mb: 3 }}>
+          <CardContent>
+            <Typography variant="h6" gutterBottom>
+              <a
+                href={`/tournaments`}
+                style={{ color: 'inherit', textDecoration: 'none' }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.textDecoration = 'underline')
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.textDecoration = 'none')
+                }
+              >
+                {currentTournament.title}
+              </a>
+            </Typography>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
+              <Box sx={{ minWidth: '200px' }}>
+                <Typography variant="body2" color="text.secondary">
+                  <strong>Start Date:</strong>{' '}
+                  {formatDate(currentTournament.startDate)}
+                </Typography>
+              </Box>
+              <Box sx={{ minWidth: '200px' }}>
+                <Typography variant="body2" color="text.secondary">
+                  <strong>End Date:</strong>{' '}
+                  {formatDate(currentTournament.endDate)}
+                </Typography>
+              </Box>
+              <Box sx={{ minWidth: '200px' }}>
+                <Typography variant="body2" color="text.secondary">
+                  <strong>Application Deadline:</strong>{' '}
+                  {currentTournament.applicationDeadline
+                    ? formatDate(currentTournament.applicationDeadline)
+                    : formatDate(
+                        getApplicationDeadline(currentTournament.startDate),
+                      )}
+                </Typography>
+              </Box>
+            </Box>
+          </CardContent>
+        </Card>
+      )}
+
       <Box sx={{ mb: 3 }}>
         <FormControl sx={{ minWidth: 300 }}>
           <InputLabel>Select Tournament</InputLabel>
           <Select
             value={selectedTournament}
             label="Select Tournament"
-            onChange={(e) => setSelectedTournament(e.target.value)}
+            onChange={(e) => {
+              const tournamentId = e.target.value;
+              setSelectedTournament(tournamentId);
+              const tournament = tournaments.find((t) => t.id === tournamentId);
+              setCurrentTournament(tournament);
+            }}
           >
             {tournaments.map((tournament) => (
               <MenuItem key={tournament.id} value={tournament.id}>
@@ -209,8 +273,8 @@ const AdminApplications: React.FC = () => {
       </Box>
 
       {stats && (
-        <Grid container spacing={2} sx={{ mb: 3 }}>
-          <Grid item xs={12} sm={6} md={3}>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mb: 3 }}>
+          <Box sx={{ minWidth: '200px', flex: '1 1 200px' }}>
             <Card>
               <CardContent>
                 <Typography variant="h6" color="primary">
@@ -218,8 +282,8 @@ const AdminApplications: React.FC = () => {
                 </Typography>
               </CardContent>
             </Card>
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
+          </Box>
+          <Box sx={{ minWidth: '200px', flex: '1 1 200px' }}>
             <Card>
               <CardContent>
                 <Typography variant="h6" color="warning.main">
@@ -227,8 +291,8 @@ const AdminApplications: React.FC = () => {
                 </Typography>
               </CardContent>
             </Card>
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
+          </Box>
+          <Box sx={{ minWidth: '200px', flex: '1 1 200px' }}>
             <Card>
               <CardContent>
                 <Typography variant="h6" color="success.main">
@@ -236,8 +300,8 @@ const AdminApplications: React.FC = () => {
                 </Typography>
               </CardContent>
             </Card>
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
+          </Box>
+          <Box sx={{ minWidth: '200px', flex: '1 1 200px' }}>
             <Card>
               <CardContent>
                 <Typography variant="h6" color="error.main">
@@ -245,8 +309,8 @@ const AdminApplications: React.FC = () => {
                 </Typography>
               </CardContent>
             </Card>
-          </Grid>
-        </Grid>
+          </Box>
+        </Box>
       )}
 
       {applications.length === 0 ? (
@@ -276,7 +340,8 @@ const AdminApplications: React.FC = () => {
                 <TableRow key={application.id}>
                   <TableCell>
                     <Typography variant="body2">
-                      {application.applicant.firstName} {application.applicant.lastName}
+                      {application.applicant.firstName}{' '}
+                      {application.applicant.lastName}
                     </Typography>
                     <Typography variant="caption" color="text.secondary">
                       {application.applicant.email}
@@ -292,20 +357,20 @@ const AdminApplications: React.FC = () => {
                       size="small"
                     />
                   </TableCell>
-                  <TableCell>
-                    {new Date(application.createdAt).toLocaleDateString()}
-                  </TableCell>
+                  <TableCell>{formatDate(application.createdAt)}</TableCell>
                   <TableCell>
                     <Box sx={{ display: 'flex', gap: 1 }}>
                       <Button
                         size="small"
                         startIcon={<Visibility />}
-                        onClick={() => setStatusDialog({
-                          open: true,
-                          application,
-                          newStatus: application.status,
-                          rejectionReason: application.rejectionReason || ''
-                        })}
+                        onClick={() =>
+                          setStatusDialog({
+                            open: true,
+                            application,
+                            newStatus: application.status,
+                            rejectionReason: application.rejectionReason || '',
+                          })
+                        }
                       >
                         View
                       </Button>
@@ -315,12 +380,14 @@ const AdminApplications: React.FC = () => {
                             size="small"
                             color="success"
                             startIcon={<Check />}
-                            onClick={() => setStatusDialog({
-                              open: true,
-                              application,
-                              newStatus: 'approved',
-                              rejectionReason: ''
-                            })}
+                            onClick={() =>
+                              setStatusDialog({
+                                open: true,
+                                application,
+                                newStatus: 'approved',
+                                rejectionReason: '',
+                              })
+                            }
                           >
                             Approve
                           </Button>
@@ -328,12 +395,14 @@ const AdminApplications: React.FC = () => {
                             size="small"
                             color="error"
                             startIcon={<Close />}
-                            onClick={() => setStatusDialog({
-                              open: true,
-                              application,
-                              newStatus: 'rejected',
-                              rejectionReason: ''
-                            })}
+                            onClick={() =>
+                              setStatusDialog({
+                                open: true,
+                                application,
+                                newStatus: 'rejected',
+                                rejectionReason: '',
+                              })
+                            }
                           >
                             Reject
                           </Button>
@@ -348,56 +417,74 @@ const AdminApplications: React.FC = () => {
         </TableContainer>
       )}
 
-      <Dialog 
-        open={statusDialog.open} 
-        onClose={() => setStatusDialog({ open: false, application: null, newStatus: '', rejectionReason: '' })}
+      <Dialog
+        open={statusDialog.open}
+        onClose={() =>
+          setStatusDialog({
+            open: false,
+            application: null,
+            newStatus: '',
+            rejectionReason: '',
+          })
+        }
         maxWidth="md"
         fullWidth
       >
         <DialogTitle>
-          {statusDialog.application ? `Application Details - ${statusDialog.application.applicant.firstName} ${statusDialog.application.applicant.lastName}` : 'Application Details'}
+          {statusDialog.application
+            ? `Application Details - ${statusDialog.application.applicant.firstName} ${statusDialog.application.applicant.lastName}`
+            : 'Application Details'}
         </DialogTitle>
         <DialogContent>
           {statusDialog.application && (
             <Box sx={{ mt: 2 }}>
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
-                  <Typography variant="subtitle2">Tournament</Typography>
-                  <Typography variant="body2" gutterBottom>
-                    {statusDialog.application.tournament.title}
-                  </Typography>
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Typography variant="subtitle2">Category</Typography>
-                  <Typography variant="body2" gutterBottom>
-                    {statusDialog.application.category || '-'}
-                  </Typography>
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Typography variant="subtitle2">Division</Typography>
-                  <Typography variant="body2" gutterBottom>
-                    {statusDialog.application.division || '-'}
-                  </Typography>
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Typography variant="subtitle2">Equipment</Typography>
-                  <Typography variant="body2" gutterBottom>
-                    {statusDialog.application.equipment || '-'}
-                  </Typography>
-                </Grid>
-                <Grid item xs={12}>
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+                  <Box sx={{ flex: '1 1 300px' }}>
+                    <Typography variant="subtitle2">Tournament</Typography>
+                    <Typography variant="body2" gutterBottom>
+                      {statusDialog.application.tournament.title}
+                    </Typography>
+                  </Box>
+                  <Box sx={{ flex: '1 1 300px' }}>
+                    <Typography variant="subtitle2">Category</Typography>
+                    <Typography variant="body2" gutterBottom>
+                      {statusDialog.application.category || '-'}
+                    </Typography>
+                  </Box>
+                </Box>
+                <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+                  <Box sx={{ flex: '1 1 300px' }}>
+                    <Typography variant="subtitle2">Division</Typography>
+                    <Typography variant="body2" gutterBottom>
+                      {statusDialog.application.division || '-'}
+                    </Typography>
+                  </Box>
+                  <Box sx={{ flex: '1 1 300px' }}>
+                    <Typography variant="subtitle2">Equipment</Typography>
+                    <Typography variant="body2" gutterBottom>
+                      {statusDialog.application.equipment || '-'}
+                    </Typography>
+                  </Box>
+                </Box>
+                <Box>
                   <Typography variant="subtitle2">Notes</Typography>
                   <Typography variant="body2" gutterBottom>
                     {statusDialog.application.notes || 'No notes provided'}
                   </Typography>
-                </Grid>
-                <Grid item xs={12}>
+                </Box>
+                <Box>
                   <FormControl fullWidth>
                     <InputLabel>Status</InputLabel>
                     <Select
                       value={statusDialog.newStatus}
                       label="Status"
-                      onChange={(e) => setStatusDialog(prev => ({ ...prev, newStatus: e.target.value }))}
+                      onChange={(e) =>
+                        setStatusDialog((prev) => ({
+                          ...prev,
+                          newStatus: e.target.value,
+                        }))
+                      }
                     >
                       <MenuItem value="pending">Pending</MenuItem>
                       <MenuItem value="approved">Approved</MenuItem>
@@ -405,26 +492,40 @@ const AdminApplications: React.FC = () => {
                       <MenuItem value="withdrawn">Withdrawn</MenuItem>
                     </Select>
                   </FormControl>
-                </Grid>
+                </Box>
                 {statusDialog.newStatus === 'rejected' && (
-                  <Grid item xs={12}>
+                  <Box>
                     <TextField
                       fullWidth
                       label="Rejection Reason"
                       multiline
                       rows={3}
                       value={statusDialog.rejectionReason}
-                      onChange={(e) => setStatusDialog(prev => ({ ...prev, rejectionReason: e.target.value }))}
+                      onChange={(e) =>
+                        setStatusDialog((prev) => ({
+                          ...prev,
+                          rejectionReason: e.target.value,
+                        }))
+                      }
                       placeholder="Please provide a reason for rejection..."
                     />
-                  </Grid>
+                  </Box>
                 )}
-              </Grid>
+              </Box>
             </Box>
           )}
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setStatusDialog({ open: false, application: null, newStatus: '', rejectionReason: '' })}>
+          <Button
+            onClick={() =>
+              setStatusDialog({
+                open: false,
+                application: null,
+                newStatus: '',
+                rejectionReason: '',
+              })
+            }
+          >
             Cancel
           </Button>
           <Button onClick={handleStatusUpdate} variant="contained">
@@ -436,4 +537,4 @@ const AdminApplications: React.FC = () => {
   );
 };
 
-export default AdminApplications; 
+export default AdminApplications;

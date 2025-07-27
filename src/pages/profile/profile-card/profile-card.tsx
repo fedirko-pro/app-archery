@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  Avatar,
-  Typography,
-  Box,
-  Grid,
-  Button,
-} from '@mui/material';
+import { Avatar, Typography, Box, Button } from '@mui/material';
 import type { ProfileData } from '../types';
 import { useNavigate } from 'react-router-dom';
 
@@ -32,17 +26,24 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
     <div className="profile-container">
       <Box className="profile-hero" />
 
-      <Grid container className="profile-info">
-        <Grid item xs={12} sm={4} className="profile-avatar-container">
+      <Box
+        className="profile-info"
+        sx={{
+          display: 'flex',
+          flexDirection: { xs: 'column', sm: 'row' },
+          gap: 3,
+        }}
+      >
+        <Box className="profile-avatar-container" sx={{ flexShrink: 0 }}>
           <Avatar
             className="profile-avatar"
             alt="Profile Avatar"
             src={profileData.picture || user.picture}
             sx={{ width: 120, height: 120 }}
           />
-        </Grid>
+        </Box>
 
-        <Grid item xs={12} sm={8}>
+        <Box sx={{ flex: 1 }}>
           {!isEditing ? (
             <div className="profile-details">
               <Typography variant="h4">{getFullName()}</Typography>
@@ -61,7 +62,12 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
               )}
               {profileData.website && (
                 <Typography variant="body2">
-                  🌐 <a href={profileData.website} target="_blank" rel="noopener noreferrer">
+                  🌐{' '}
+                  <a
+                    href={profileData.website}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     {profileData.website}
                   </a>
                 </Typography>
@@ -81,10 +87,10 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
               )}
             </div>
           ) : null}
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
     </div>
   );
 };
 
-export default ProfileCard; 
+export default ProfileCard;

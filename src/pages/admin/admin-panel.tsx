@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Typography, Alert } from '@mui/material';
 import UsersList from './users-list/users-list';
@@ -20,9 +20,10 @@ const AdminPanel: React.FC = () => {
       <Typography variant="h3" gutterBottom>
         Admin Panel
       </Typography>
-      
+
       <Alert severity="info" sx={{ mb: 3 }}>
-        Manage users, view profiles, and reset passwords. Only administrators can access this panel.
+        Manage users, view profiles, and reset passwords. Only administrators
+        can access this panel.
       </Alert>
 
       <UsersList
@@ -33,4 +34,4 @@ const AdminPanel: React.FC = () => {
   );
 };
 
-export default AdminPanel; 
+export default AdminPanel;

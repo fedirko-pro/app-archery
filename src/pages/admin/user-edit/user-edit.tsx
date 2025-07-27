@@ -1,15 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import {
-  Box,
-  TextField,
-  Button,
-  Alert,
-  CircularProgress,
-  Typography,
-  Avatar,
-  Grid,
-} from '@mui/material';
+import { Box, Button, Alert, CircularProgress } from '@mui/material';
 import { ArrowBack } from '@mui/icons-material';
 import apiService from '../../../services/api';
 import type { User } from '../../../contexts/types';
@@ -32,7 +23,7 @@ const UserEdit: React.FC = () => {
     federationNumber: '',
     categories: '',
   });
-  
+
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -48,15 +39,15 @@ const UserEdit: React.FC = () => {
     try {
       setLoading(true);
       setError(null);
-      
+
       const allUsers = await apiService.getAllUsers();
-      const foundUser = allUsers.find(u => u.id === userId);
-      
+      const foundUser = allUsers.find((u) => u.id === userId);
+
       if (!foundUser) {
         setError('User not found');
         return;
       }
-      
+
       setUser(foundUser);
       setFormData({
         firstName: foundUser.firstName || '',
@@ -80,17 +71,17 @@ const UserEdit: React.FC = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!user) return;
-    
+
     setSaving(true);
     setError(null);
     setSuccess(null);
@@ -98,7 +89,10 @@ const UserEdit: React.FC = () => {
     const submitData = {
       ...formData,
       categories: formData.categories
-        ? formData.categories.split(',').map((cat) => cat.trim()).filter(Boolean)
+        ? formData.categories
+            .split(',')
+            .map((cat) => cat.trim())
+            .filter(Boolean)
         : [],
     };
 
@@ -106,7 +100,7 @@ const UserEdit: React.FC = () => {
       const updatedUser = await apiService.adminUpdateUser(user.id, submitData);
       setSuccess('User updated successfully!');
       setUser(updatedUser);
-      
+
       setTimeout(() => {
         navigate(`/admin/users/${userId}/profile`);
       }, 2000);
@@ -123,12 +117,17 @@ const UserEdit: React.FC = () => {
   };
 
   const handleBack = () => {
-    navigate('/admin');
+    navigate('/admin/users');
   };
 
   if (loading) {
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight="50vh">
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        minHeight="50vh"
+      >
         <CircularProgress />
       </Box>
     );
@@ -137,11 +136,7 @@ const UserEdit: React.FC = () => {
   if (error) {
     return (
       <Box>
-        <Button
-          startIcon={<ArrowBack />}
-          onClick={handleBack}
-          sx={{ mb: 2 }}
-        >
+        <Button startIcon={<ArrowBack />} onClick={handleBack} sx={{ mb: 2 }}>
           Back to Admin Panel
         </Button>
         <Alert severity="error">{error}</Alert>
@@ -152,11 +147,7 @@ const UserEdit: React.FC = () => {
   if (!user) {
     return (
       <Box>
-        <Button
-          startIcon={<ArrowBack />}
-          onClick={handleBack}
-          sx={{ mb: 2 }}
-        >
+        <Button startIcon={<ArrowBack />} onClick={handleBack} sx={{ mb: 2 }}>
           Back to Admin Panel
         </Button>
         <Alert severity="error">User not found</Alert>
@@ -167,9 +158,13 @@ const UserEdit: React.FC = () => {
   // Приводимо formData до формату ProfileData для ProfileEditForm
   const profileData = {
     ...formData,
-    categories: typeof formData.categories === 'string'
-      ? formData.categories.split(',').map((cat) => cat.trim()).filter(Boolean)
-      : formData.categories,
+    categories:
+      typeof formData.categories === 'string'
+        ? formData.categories
+            .split(',')
+            .map((cat) => cat.trim())
+            .filter(Boolean)
+        : formData.categories,
   };
 
   return (
@@ -182,7 +177,7 @@ const UserEdit: React.FC = () => {
           maxWidth: '900px',
           margin: '32px auto 0 auto',
           width: '100%',
-          px: 2
+          px: 2,
         }}
       >
         <Button
@@ -200,7 +195,11 @@ const UserEdit: React.FC = () => {
           </Alert>
         )}
         {success && (
-          <Alert severity="success" sx={{ mb: 2 }} onClose={() => setSuccess(null)}>
+          <Alert
+            severity="success"
+            sx={{ mb: 2 }}
+            onClose={() => setSuccess(null)}
+          >
             {success}
           </Alert>
         )}
@@ -209,7 +208,7 @@ const UserEdit: React.FC = () => {
           isSaving={saving}
           isAdminView={true}
           onChange={handleChange}
-          onSave={handleSubmit}
+          onSave={() => handleSubmit({} as React.FormEvent)}
           onCancel={handleCancel}
         />
       </Box>
@@ -217,4 +216,4 @@ const UserEdit: React.FC = () => {
   );
 };
 
-export default UserEdit; 
+export default UserEdit;

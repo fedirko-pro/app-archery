@@ -34,16 +34,13 @@ export default function Training() {
   const handleClose = () => {
     setConfirm(false);
     setShowInfo(false);
-    console.log('cancel');
   };
   const handleConfirm = () => {
     setConfirm(false);
     handleRemoveItem();
-    console.log('delete!');
   };
 
   const handleRemoveItem = () => {
-    console.log('active training - ', activeTraining);
     setTrainings(trainings.filter((elem) => elem.date !== activeTraining));
     setActiveTraining(null);
   };

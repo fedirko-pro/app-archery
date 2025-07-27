@@ -62,7 +62,8 @@ const SignIn: React.FC = () => {
   const [emailError, setEmailError] = React.useState<boolean>(false);
   const [emailErrorMessage, setEmailErrorMessage] = React.useState<string>('');
   const [passwordError, setPasswordError] = React.useState<boolean>(false);
-  const [passwordErrorMessage, setPasswordErrorMessage] = React.useState<string>('');
+  const [passwordErrorMessage, setPasswordErrorMessage] =
+    React.useState<string>('');
   const [open, setOpen] = React.useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = React.useState<boolean>(false);
   const location = useLocation();
@@ -104,9 +105,11 @@ const SignIn: React.FC = () => {
     return isValid;
   };
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
+  const handleSubmit = async (
+    event: React.FormEvent<HTMLFormElement>,
+  ): Promise<void> => {
     event.preventDefault();
-    
+
     if (!validateInputs()) {
       return;
     }
@@ -127,20 +130,19 @@ const SignIn: React.FC = () => {
   };
 
   const handleGoogleSignIn = (): void => {
-    // Перевіряємо чи є pending application в state або sessionStorage
-    const pendingData = location.state?.pendingData || sessionStorage.getItem('pendingApplication');
-    
-    // Зберігаємо pending application в sessionStorage перед переходом на Google OAuth
+    const pendingData =
+      location.state?.pendingData ||
+      sessionStorage.getItem('pendingApplication');
+
     if (pendingData) {
-      const pendingApplication = typeof pendingData === 'string' ? JSON.parse(pendingData) : pendingData;
-      sessionStorage.setItem('pendingApplication', JSON.stringify(pendingApplication));
-      console.log('Sign in - saved pending application to sessionStorage:', pendingApplication);
-    } else {
-      console.log('Sign in - no pending application found');
+      const pendingApplication =
+        typeof pendingData === 'string' ? JSON.parse(pendingData) : pendingData;
+      sessionStorage.setItem(
+        'pendingApplication',
+        JSON.stringify(pendingApplication),
+      );
     }
-    
-    // Просто переходимо на Google OAuth без query параметрів
-    console.log('Sign in - redirecting to Google OAuth:', env.GOOGLE_AUTH_URL);
+
     window.location.href = env.GOOGLE_AUTH_URL;
   };
 
@@ -154,13 +156,13 @@ const SignIn: React.FC = () => {
         >
           Sign in
         </Typography>
-        
+
         {error && (
           <Alert severity="error" onClose={clearError}>
             {error}
           </Alert>
         )}
-        
+
         <Box
           component="form"
           onSubmit={handleSubmit}
@@ -263,4 +265,4 @@ const SignIn: React.FC = () => {
   );
 };
 
-export default SignIn; 
+export default SignIn;

@@ -60,7 +60,7 @@ export default function SignUp() {
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
   const [isSubmitting, setIsSubmitting] = React.useState(false);
-  
+
   const { register, error, clearError } = useAuth();
 
   const validateInputs = () => {
@@ -112,7 +112,7 @@ export default function SignUp() {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    
+
     if (!validateInputs()) {
       return;
     }
@@ -141,12 +141,12 @@ export default function SignUp() {
   const handleGoogleSignUp = () => {
     // Перевіряємо чи є pending application в sessionStorage
     const pendingData = sessionStorage.getItem('pendingApplication');
-    
+
     // Зберігаємо pending application в sessionStorage перед переходом на Google OAuth
     if (pendingData) {
-      console.log('Sign up - pending application already in sessionStorage:', pendingData);
+      // Pending application already in sessionStorage
     }
-    
+
     // Просто переходимо на Google OAuth без query параметрів
     window.location.href = env.GOOGLE_AUTH_URL;
   };
@@ -161,13 +161,13 @@ export default function SignUp() {
         >
           Sign up
         </Typography>
-        
+
         {error && (
           <Alert severity="error" onClose={clearError}>
             {error}
           </Alert>
         )}
-        
+
         <Box
           component="form"
           onSubmit={handleSubmit}

@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Box,
-  CircularProgress,
-} from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { Box, CircularProgress } from '@mui/material';
+
 import './profile.scss';
 import { useAuth } from '../../contexts/auth-context';
 import ProfileCard from './profile-card/profile-card';
-import type { ProfileData, PasswordChangeForm } from './types';
+import type { ProfileData } from './types';
 import type { User } from '../../contexts/types';
 
 interface ProfileProps {
@@ -15,16 +12,15 @@ interface ProfileProps {
   isAdminView?: boolean;
 }
 
-const Profile: React.FC<ProfileProps> = ({ userOverride, isAdminView = false }) => {
+const Profile: React.FC<ProfileProps> = ({
+  userOverride,
+  isAdminView = false,
+}) => {
   const { user: authUser } = useAuth();
-  const navigate = useNavigate();
-  
   const user = userOverride || authUser;
-  
+
   const [isEditing, setIsEditing] = useState(false);
-  const [setError] = useState<string | null>(null);
-  const [setSuccess] = useState<string | null>(null);
-  const [backendError, setBackendError] = useState<string | null>(null);
+
   const [profileData, setProfileData] = useState<ProfileData>({
     firstName: '',
     lastName: '',
@@ -37,21 +33,14 @@ const Profile: React.FC<ProfileProps> = ({ userOverride, isAdminView = false }) 
     categories: [],
   });
 
-  const [passwordForm] = useState<PasswordChangeForm>({
-    currentPassword: '',
-    newPassword: '',
-    confirmPassword: ''
-  });
-
-  // Перевіряємо доступність бекенду
   useEffect(() => {
     const checkBackendHealth = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/auth/google/test`);
+        const response = await fetch(
+          `${import.meta.env.VITE_API_BASE_URL}/auth/google/test`,
+        );
         if (!response.ok) {
           console.error('Backend health check failed:', response.status);
-        } else {
-          console.log('Backend is healthy');
         }
       } catch (error) {
         console.error('Backend health check error:', error);
@@ -94,26 +83,6 @@ const Profile: React.FC<ProfileProps> = ({ userOverride, isAdminView = false }) 
     setIsEditing(!isEditing);
   };
 
-  const getPasswordStrength = (password: string): { strength: string; color: string } => {
-    if (!password) return { strength: '', color: '' };
-    
-    const hasLower = /[a-z]/.test(password);
-    const hasUpper = /[A-Z]/.test(password);
-    const hasNumber = /\d/.test(password);
-    const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
-    const length = password.length;
-    
-    const score = [hasLower, hasUpper, hasNumber, hasSpecial].filter(Boolean).length + 
-                  (length >= 8 ? 1 : 0) + (length >= 12 ? 1 : 0);
-    
-    if (score <= 2) return { strength: 'Weak', color: '#f44336' };
-    if (score <= 4) return { strength: 'Fair', color: '#ff9800' };
-    if (score <= 6) return { strength: 'Good', color: '#2196f3' };
-    return { strength: 'Strong', color: '#4caf50' };
-  };
-
-  const passwordStrength = getPasswordStrength(passwordForm.newPassword);
-
   const getFullName = () => {
     const firstName = profileData.firstName || user?.firstName || '';
     const lastName = profileData.lastName || user?.lastName || '';
@@ -123,9 +92,9 @@ const Profile: React.FC<ProfileProps> = ({ userOverride, isAdminView = false }) 
   const getJoinDate = () => {
     if (user?.createdAt) {
       const date = new Date(user.createdAt);
-      return `Joined ${date.toLocaleDateString('en-US', { 
-        year: 'numeric', 
-        month: 'long' 
+      return `Joined ${date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
       })}`;
     }
     return 'Recently joined';
@@ -133,7 +102,12 @@ const Profile: React.FC<ProfileProps> = ({ userOverride, isAdminView = false }) 
 
   if (!user) {
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight="50vh">
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        minHeight="50vh"
+      >
         <CircularProgress />
       </Box>
     );

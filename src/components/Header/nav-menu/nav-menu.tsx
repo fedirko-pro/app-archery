@@ -6,7 +6,11 @@ import { useAuth } from '../../../contexts/auth-context.tsx';
 
 function NavMenu() {
   const [active, setActive] = useState(false);
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return null;
+  }
 
   const clickHandler = () => {
     setActive(!active);
@@ -18,18 +22,24 @@ function NavMenu() {
   };
 
   const regularMenuItems = [
-    {
-      link: '/trainings',
-      label: 'My trainings',
-    },
+    // TODO: Implement My trainings
+    // {
+    //   link: '/trainings',
+    //   label: 'My trainings',
+    // },
     {
       link: '/tournaments',
       label: 'Tournaments',
     },
     {
-      link: '/Competition',
-      label: 'Competition (DEMO)',
+      link: '/applications',
+      label: 'My applications',
     },
+    // TODO: Implement Competition (DEMO)
+    // {
+    //   link: '/Competition',
+    //   label: 'Competition (DEMO)',
+    // },
     {
       link: '/Competition/patrols',
       label: 'Patrols list (DEMO)',
@@ -46,10 +56,11 @@ function NavMenu() {
       link: '/converter',
       label: 'Converter',
     },
-    {
-      link: '/encyclopedia',
-      label: 'Knowledge base',
-    },
+    // TODO: Implement Knowledge base
+    // {
+    //   link: '/encyclopedia',
+    //   label: 'Knowledge base',
+    // },
     {
       link: '/about',
       label: 'About',
@@ -58,8 +69,12 @@ function NavMenu() {
 
   const adminMenuItems = [
     {
-      link: '/admin',
+      link: '/admin/users',
       label: 'Users',
+    },
+    {
+      link: '/admin/applications',
+      label: 'User applications',
     },
   ];
 

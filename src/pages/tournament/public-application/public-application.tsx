@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import {
   Box,
   Typography,
@@ -16,9 +16,9 @@ import TournamentApplicationForm from '../tournament-application-form/tournament
 const PublicApplication: React.FC = () => {
   const { tournamentId } = useParams<{ tournamentId: string }>();
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+
   const { user, loading: authLoading } = useAuth();
-  
+
   const [tournament, setTournament] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -45,9 +45,8 @@ const PublicApplication: React.FC = () => {
   const handleSignUp = () => {
     const pendingData = {
       tournamentId,
-      redirectTo: `/apply/${tournamentId}`
+      redirectTo: `/apply/${tournamentId}`,
     };
-    console.log('Setting pending application (signup):', pendingData);
     sessionStorage.setItem('pendingApplication', JSON.stringify(pendingData));
     navigate('/signup');
   };
@@ -55,27 +54,30 @@ const PublicApplication: React.FC = () => {
   const handleSignIn = () => {
     const pendingData = {
       tournamentId,
-      redirectTo: `/apply/${tournamentId}`
+      redirectTo: `/apply/${tournamentId}`,
     };
-    console.log('Setting pending application:', pendingData);
     sessionStorage.setItem('pendingApplication', JSON.stringify(pendingData));
-    
-    // Переходимо на сторінку входу з інформацією про турнір
-    navigate('/signin', { 
-      state: { fromApplication: true, tournamentId, pendingData } 
+
+    navigate('/signin', {
+      state: { fromApplication: true, tournamentId, pendingData },
     });
   };
 
   const handleApplicationSuccess = () => {
     sessionStorage.removeItem('pendingApplication');
-    navigate('/applications', { 
-      state: { message: 'Application submitted successfully!' }
+    navigate('/applications', {
+      state: { message: 'Application submitted successfully!' },
     });
   };
 
   if (authLoading || loading) {
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight="400px">
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        minHeight="400px"
+      >
         <CircularProgress />
       </Box>
     );
@@ -84,11 +86,9 @@ const PublicApplication: React.FC = () => {
   if (error || !tournament) {
     return (
       <Box sx={{ p: 3, maxWidth: 600, mx: 'auto' }}>
-        <Alert severity="error">
-          {error || 'Tournament not found'}
-        </Alert>
-        <Button 
-          variant="contained" 
+        <Alert severity="error">{error || 'Tournament not found'}</Alert>
+        <Button
+          variant="contained"
           sx={{ mt: 2 }}
           onClick={() => navigate('/tournaments')}
         >
@@ -106,12 +106,19 @@ const PublicApplication: React.FC = () => {
             <Typography variant="h4" gutterBottom>
               Apply for {tournament.title}
             </Typography>
-            
+
             <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
-              To submit your application for this tournament, you need to create an account or sign in to your existing account.
+              To submit your application for this tournament, you need to create
+              an account or sign in to your existing account.
             </Typography>
 
-            <Box sx={{ display: 'flex', gap: 2, flexDirection: { xs: 'column', sm: 'row' } }}>
+            <Box
+              sx={{
+                display: 'flex',
+                gap: 2,
+                flexDirection: { xs: 'column', sm: 'row' },
+              }}
+            >
               <Button
                 variant="contained"
                 size="large"
@@ -131,7 +138,8 @@ const PublicApplication: React.FC = () => {
             </Box>
 
             <Typography variant="body2" color="text.secondary" sx={{ mt: 2 }}>
-              After registration or sign in, you'll be redirected back to this application form.
+              After registration or sign in, you'll be redirected back to this
+              application form.
             </Typography>
           </CardContent>
         </Card>
@@ -151,4 +159,4 @@ const PublicApplication: React.FC = () => {
   );
 };
 
-export default PublicApplication; 
+export default PublicApplication;

@@ -5,7 +5,6 @@ import {
   Typography,
   Card,
   CardContent,
-  Grid,
   Chip,
   Button,
   Alert,
@@ -14,11 +13,10 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  TextField,
 } from '@mui/material';
-import { Delete, Edit } from '@mui/icons-material';
-import { useAuth } from '../../../contexts/auth-context';
+import { Delete } from '@mui/icons-material';
 import apiService from '../../../services/api';
+import { formatDate } from '../../../utils/date-utils';
 
 interface TournamentApplication {
   id: string;
@@ -38,13 +36,12 @@ interface TournamentApplication {
 }
 
 const UserApplications: React.FC = () => {
-  const { user } = useAuth();
   const location = useLocation();
   const [applications, setApplications] = useState<TournamentApplication[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(
-    location.state?.message || null
+    location.state?.message || null,
   );
   const [withdrawDialog, setWithdrawDialog] = useState<{
     open: boolean;
@@ -111,7 +108,12 @@ const UserApplications: React.FC = () => {
 
   if (loading) {
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight="200px">
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        minHeight="200px"
+      >
         <CircularProgress />
       </Box>
     );
@@ -130,7 +132,11 @@ const UserApplications: React.FC = () => {
       )}
 
       {successMessage && (
-        <Alert severity="success" sx={{ mb: 2 }} onClose={() => setSuccessMessage(null)}>
+        <Alert
+          severity="success"
+          sx={{ mb: 2 }}
+          onClose={() => setSuccessMessage(null)}
+        >
           {successMessage}
         </Alert>
       )}
@@ -144,12 +150,25 @@ const UserApplications: React.FC = () => {
           </CardContent>
         </Card>
       ) : (
-        <Grid container spacing={3}>
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' },
+            gap: 3,
+          }}
+        >
           {applications.map((application) => (
-            <Grid item xs={12} md={6} key={application.id}>
+            <Box key={application.id}>
               <Card>
                 <CardContent>
-                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'flex-start',
+                      mb: 2,
+                    }}
+                  >
                     <Typography variant="h6" gutterBottom>
                       {application.tournament.title}
                     </Typography>
@@ -160,42 +179,70 @@ const UserApplications: React.FC = () => {
                     />
                   </Box>
 
-                  <Typography variant="body2" color="text.secondary" gutterBottom>
-                    <strong>Dates:</strong> {new Date(application.tournament.startDate).toLocaleDateString()} - {new Date(application.tournament.endDate).toLocaleDateString()}
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    gutterBottom
+                  >
+                    <strong>Dates:</strong>{' '}
+                    {formatDate(application.tournament.startDate)} -{' '}
+                    {formatDate(application.tournament.endDate)}
                   </Typography>
 
                   {application.category && (
-                    <Typography variant="body2" color="text.secondary" gutterBottom>
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      gutterBottom
+                    >
                       <strong>Category:</strong> {application.category}
                     </Typography>
                   )}
 
                   {application.division && (
-                    <Typography variant="body2" color="text.secondary" gutterBottom>
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      gutterBottom
+                    >
                       <strong>Division:</strong> {application.division}
                     </Typography>
                   )}
 
                   {application.equipment && (
-                    <Typography variant="body2" color="text.secondary" gutterBottom>
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      gutterBottom
+                    >
                       <strong>Equipment:</strong> {application.equipment}
                     </Typography>
                   )}
 
                   {application.notes && (
-                    <Typography variant="body2" color="text.secondary" gutterBottom>
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      gutterBottom
+                    >
                       <strong>Notes:</strong> {application.notes}
                     </Typography>
                   )}
 
                   {application.rejectionReason && (
                     <Alert severity="error" sx={{ mt: 1 }}>
-                      <strong>Rejection Reason:</strong> {application.rejectionReason}
+                      <strong>Rejection Reason:</strong>{' '}
+                      {application.rejectionReason}
                     </Alert>
                   )}
 
-                  <Typography variant="caption" color="text.secondary" display="block" sx={{ mt: 1 }}>
-                    Applied on: {new Date(application.createdAt).toLocaleDateString()}
+                  <Typography
+                    variant="caption"
+                    color="text.secondary"
+                    display="block"
+                    sx={{ mt: 1 }}
+                  >
+                    Applied on: {formatDate(application.createdAt)}
                   </Typography>
 
                   {application.status === 'pending' && (
@@ -205,7 +252,12 @@ const UserApplications: React.FC = () => {
                         color="error"
                         size="small"
                         startIcon={<Delete />}
-                        onClick={() => setWithdrawDialog({ open: true, applicationId: application.id })}
+                        onClick={() =>
+                          setWithdrawDialog({
+                            open: true,
+                            applicationId: application.id,
+                          })
+                        }
                       >
                         Withdraw Application
                       </Button>
@@ -213,20 +265,28 @@ const UserApplications: React.FC = () => {
                   )}
                 </CardContent>
               </Card>
-            </Grid>
+            </Box>
           ))}
-        </Grid>
+        </Box>
       )}
 
-      <Dialog open={withdrawDialog.open} onClose={() => setWithdrawDialog({ open: false, applicationId: null })}>
+      <Dialog
+        open={withdrawDialog.open}
+        onClose={() => setWithdrawDialog({ open: false, applicationId: null })}
+      >
         <DialogTitle>Withdraw Application</DialogTitle>
         <DialogContent>
           <Typography>
-            Are you sure you want to withdraw this application? This action cannot be undone.
+            Are you sure you want to withdraw this application? This action
+            cannot be undone.
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setWithdrawDialog({ open: false, applicationId: null })}>
+          <Button
+            onClick={() =>
+              setWithdrawDialog({ open: false, applicationId: null })
+            }
+          >
             Cancel
           </Button>
           <Button onClick={handleWithdraw} color="error" variant="contained">
@@ -238,4 +298,4 @@ const UserApplications: React.FC = () => {
   );
 };
 
-export default UserApplications; 
+export default UserApplications;

@@ -3,7 +3,6 @@ import {
   TextField,
   Button,
   Box,
-  Grid,
   CircularProgress,
   Card,
   CardHeader,
@@ -51,100 +50,103 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
   showEmailField = true,
   emailDisabled = false,
 }) => {
-  const displayName = formData.firstName && formData.lastName 
-    ? `${formData.firstName} ${formData.lastName}`
-    : formData.email || 'User';
+  const displayName =
+    formData.firstName && formData.lastName
+      ? `${formData.firstName} ${formData.lastName}`
+      : formData.email || 'User';
 
   const formContent = (
-    <Grid container spacing={2}>
-      <Grid item xs={12} sm={6}>
-        <TextField
-          label="First Name"
-          name="firstName"
-          value={formData.firstName}
-          onChange={onChange}
-          fullWidth
-          margin="normal"
-        />
-      </Grid>
-      
-      <Grid item xs={12} sm={6}>
-        <TextField
-          label="Last Name"
-          name="lastName"
-          value={formData.lastName}
-          onChange={onChange}
-          fullWidth
-          margin="normal"
-        />
-      </Grid>
-      
-      {showEmailField && (
-        <Grid item xs={12}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+      <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+        <Box sx={{ flex: '1 1 300px' }}>
           <TextField
-            label="Email"
-            name="email"
-            value={formData.email}
+            label="First Name"
+            name="firstName"
+            value={formData.firstName}
             onChange={onChange}
             fullWidth
             margin="normal"
-            type="email"
-            disabled={emailDisabled}
-            helperText={emailDisabled ? "Email cannot be changed" : undefined}
           />
-        </Grid>
+        </Box>
+
+        <Box sx={{ flex: '1 1 300px' }}>
+          <TextField
+            label="Last Name"
+            name="lastName"
+            value={formData.lastName}
+            onChange={onChange}
+            fullWidth
+            margin="normal"
+          />
+        </Box>
+      </Box>
+
+      {showEmailField && (
+        <TextField
+          label="Email"
+          name="email"
+          value={formData.email}
+          onChange={onChange}
+          fullWidth
+          margin="normal"
+          type="email"
+          disabled={emailDisabled}
+          helperText={emailDisabled ? 'Email cannot be changed' : undefined}
+        />
       )}
-      
-      <Grid item xs={12}>
-        <TextField
-          label="Bio"
-          name="bio"
-          value={formData.bio}
-          onChange={onChange}
-          fullWidth
-          multiline
-          rows={3}
-          margin="normal"
-          placeholder={isAdminView ? "Tell us about this user..." : "Tell us about yourself..."}
-        />
-      </Grid>
-      
-      <Grid item xs={12} sm={6}>
-        <TextField
-          label="Location"
-          name="location"
-          value={formData.location}
-          onChange={onChange}
-          fullWidth
-          margin="normal"
-          placeholder="City, Country"
-        />
-      </Grid>
-      
-      <Grid item xs={12} sm={6}>
-        <TextField
-          label="Website"
-          name="website"
-          value={formData.website}
-          onChange={onChange}
-          fullWidth
-          margin="normal"
-          placeholder="https://example.com"
-        />
-      </Grid>
-      
-      <Grid item xs={12}>
-        <TextField
-          label="Profile Picture URL"
-          name="picture"
-          value={formData.picture}
-          onChange={onChange}
-          fullWidth
-          margin="normal"
-          placeholder="https://example.com/avatar.jpg"
-        />
-      </Grid>
-    </Grid>
+
+      <TextField
+        label="Bio"
+        name="bio"
+        value={formData.bio}
+        onChange={onChange}
+        fullWidth
+        multiline
+        rows={3}
+        margin="normal"
+        placeholder={
+          isAdminView
+            ? 'Tell us about this user...'
+            : 'Tell us about yourself...'
+        }
+      />
+
+      <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+        <Box sx={{ flex: '1 1 300px' }}>
+          <TextField
+            label="Location"
+            name="location"
+            value={formData.location}
+            onChange={onChange}
+            fullWidth
+            margin="normal"
+            placeholder="City, Country"
+          />
+        </Box>
+
+        <Box sx={{ flex: '1 1 300px' }}>
+          <TextField
+            label="Website"
+            name="website"
+            value={formData.website}
+            onChange={onChange}
+            fullWidth
+            margin="normal"
+            placeholder="https://example.com"
+          />
+        </Box>
+      </Box>
+
+      <TextField
+        label="Profile Picture URL"
+        name="picture"
+        value={formData.picture}
+        onChange={onChange}
+        fullWidth
+        margin="normal"
+        placeholder="https://example.com/avatar.jpg"
+      />
+    </Box>
   );
 
   const actionButtons = (
@@ -157,14 +159,14 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
       >
         Cancel
       </Button>
-      
+
       <Button
         variant="contained"
         onClick={onSave}
         disabled={isSaving}
         startIcon={isSaving ? <CircularProgress size={20} /> : <Save />}
       >
-        {isSaving ? 'Saving...' : (isAdminView ? 'Save Changes' : 'Save Profile')}
+        {isSaving ? 'Saving...' : isAdminView ? 'Save Changes' : 'Save Profile'}
       </Button>
     </Box>
   );
@@ -182,17 +184,18 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
             />
           }
           title={displayName}
-          subheader={userRole && userAuthProvider 
-            ? `Role: ${userRole} | Provider: ${userAuthProvider}`
-            : undefined
+          subheader={
+            userRole && userAuthProvider
+              ? `Role: ${userRole} | Provider: ${userAuthProvider}`
+              : undefined
           }
         />
-        
+
         <CardContent>
           {formContent}
-          
+
           <Divider sx={{ my: 3 }} />
-          
+
           {actionButtons}
         </CardContent>
       </Card>
@@ -207,14 +210,12 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
           {title}
         </Typography>
       )}
-      
+
       {formContent}
-      
-      <Box sx={{ mt: 2 }}>
-        {actionButtons}
-      </Box>
+
+      <Box sx={{ mt: 2 }}>{actionButtons}</Box>
     </div>
   );
 };
 
-export default ProfileForm; 
+export default ProfileForm;
