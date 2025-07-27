@@ -2,7 +2,7 @@ import '../header.scss';
 import classNames from 'classnames';
 import Menu from '../menu/menu.tsx';
 import { useState } from 'react';
-import { useAuth } from '../../../contexts/auth-context';
+import { useAuth } from '../../../contexts/auth-context.tsx';
 
 function NavMenu() {
   const [active, setActive] = useState(false);

@@ -21,10 +21,10 @@ import UserEdit from '../admin/user-edit/user-edit.tsx';
 // TODO: Settings temporarily disabled - functionality moved to Profile
 // import Settings from '../settings/settings.tsx';
 import GoogleCallback from '../google-callback/google-callback.tsx';
-import TournamentList from '../tournament/tournament-list/tournament-list';
-import UserApplications from '../tournament/user-applications/user-applications';
-import AdminApplications from '../tournament/admin-applications/admin-applications';
-import PublicApplication from '../tournament/public-application/public-application';
+import TournamentList from '../tournament/tournament-list/tournament-list.tsx';
+import UserApplications from '../tournament/user-applications/user-applications.tsx';
+import AdminApplications from '../tournament/admin-applications/admin-applications.tsx';
+import PublicApplication from '../tournament/public-application/public-application.tsx';
 import ProfileEditPage from '../profile/profile-edit-page.tsx';
 
 function Content() {
