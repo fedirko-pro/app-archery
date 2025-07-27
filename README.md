@@ -10,35 +10,31 @@ A comprehensive web application for managing archery competitions, tournaments, 
   - Google OAuth integration
   - Role-based access control (Admin/User)
   - Password reset functionality
-
-- **Competition Management**
-  - Create and manage competitions
-  - Patrol-based scoring system
-  - Real-time competition tracking
-  - User performance analytics
+  - Set password for OAuth users
 
 - **Tournament System**
   - Tournament creation and management
   - Application system for tournaments
   - Admin approval workflow
   - Public tournament applications
+  - Multiple applications per user (different categories)
+  - Application deadline management
+  - Tournament status tracking
 
 - **User Profiles**
   - Comprehensive user profiles
-  - Achievement system
-  - Performance tracking
   - Profile editing capabilities
+  - Password change functionality
+  - User achievements (planned)
 
 - **Admin Panel**
   - User management
-  - Competition oversight
+  - Tournament oversight
   - Application approvals
   - System administration
 
 - **Utility Tools**
   - Score converter
-  - Archery encyclopedia
-  - Training resources
 
 ## 🛠 Tech Stack
 
@@ -63,29 +59,31 @@ A comprehensive web application for managing archery competitions, tournaments, 
 ## 📁 Project Structure
 
 ```
-├── app-archery/                 # Frontend React application
+├── client/                   # Frontend React application
 │   ├── src/
-│   │   ├── components/         # React components
-│   │   │   ├── admin/         # Admin panel components
-│   │   │   ├── competition/   # Competition management
-│   │   │   ├── profile/       # User profile components
-│   │   │   ├── tournament/    # Tournament components
+│   │   ├── components/      # React components
+│   │   │   ├── header/      # Navigation components
+│   │   │   ├── admin/       # Admin panel components
+│   │   │   ├── profile/     # User profile components
+│   │   │   ├── tournament/  # Tournament components
 │   │   │   └── ...
-│   │   ├── pages/            # Page components
-│   │   ├── contexts/         # React contexts
-│   │   ├── services/         # API services
-│   │   └── sass/            # Styles
-│   ├── public/              # Static assets
+│   │   ├── pages/          # Page components
+│   │   ├── contexts/       # React contexts
+│   │   ├── services/       # API services
+│   │   ├── utils/          # Utility functions
+│   │   └── sass/          # Styles
+│   ├── public/            # Static assets
 │   └── package.json
 │
-└── archery-app-backend/      # Backend NestJS application
+└── server/                 # Backend NestJS application
     ├── src/
-    │   ├── auth/            # Authentication module
-    │   ├── user/            # User management
-    │   ├── email/           # Email functionality
-    │   ├── migrations/      # Database migrations
+    │   ├── auth/          # Authentication module
+    │   ├── user/          # User management
+    │   ├── tournament/    # Tournament management
+    │   ├── email/         # Email functionality
+    │   ├── migrations/    # Database migrations
     │   └── ...
-    ├── mikro-orm.config.ts  # Database configuration
+    ├── mikro-orm.config.ts # Database configuration
     └── package.json
 ```
 
@@ -224,6 +222,11 @@ npm run start:prod
 - `npm run start` - Preview production build
 - `npm run lint` - Run ESLint
 - `npm run format` - Format code with Prettier
+
+### Code Quality
+- **Pre-commit hooks** - Automatic ESLint and Prettier on commit
+- **TypeScript strict mode** - Enhanced type safety
+- **ESLint configuration** - Code quality enforcement
 
 ### Backend (archery-app-backend)
 - `npm run start:dev` - Start development server with hot reload
