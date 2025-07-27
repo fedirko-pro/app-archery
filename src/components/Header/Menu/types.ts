@@ -4,9 +4,15 @@ export interface MenuItem {
   onClick?: (e: React.MouseEvent) => void;
 }
 
+export interface MenuSection {
+  title?: string;
+  items: MenuItem[];
+  isAdmin?: boolean;
+}
+
 export interface MenuProps {
   active: boolean;
-  items: MenuItem[];
+  sections: MenuSection[];
   position: 'left' | 'right';
   clickHandle: () => void;
   onLogout?: (() => void) | null;

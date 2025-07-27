@@ -2,7 +2,7 @@ import React from 'react';
 import { useMatch, useNavigate } from 'react-router-dom';
 import type { NavLinkProps } from './types';
 
-const NavLink: React.FC<NavLinkProps> = ({ to, children, clickHandle, onClick }) => {
+const NavLink: React.FC<NavLinkProps> = ({ to, children, clickHandle, onClick, className }) => {
   const match = useMatch(to);
   const navigate = useNavigate();
   
@@ -27,6 +27,7 @@ const NavLink: React.FC<NavLinkProps> = ({ to, children, clickHandle, onClick })
     <li className={match ? 'current-menu-item' : ''}>
       <button 
         onClick={handleClick}
+        className={className}
         style={{
           background: 'none',
           border: 'none',

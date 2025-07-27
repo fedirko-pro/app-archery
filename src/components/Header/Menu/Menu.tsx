@@ -1,15 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './menu.scss';
 import NavLink from './nav-link';
 import classNames from 'classnames';
 import type { MenuProps } from './types';
 
-export const Menu: React.FC<MenuProps> = ({ active, items, position, clickHandle, onLogout }) => {
+export const Menu: React.FC<MenuProps> = ({ active, sections, position, clickHandle, onLogout }) => {
+  const [adminSectionOpen, setAdminSectionOpen] = useState(false);
+
   const handleMenuClick = (e: React.MouseEvent<HTMLDivElement>): void => {
     if ((e.target as Element).closest('button')) {
       return;
     }
     clickHandle();
+  };
+
+  const toggleAdminSection = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setAdminSectionOpen(!adminSectionOpen);
   };
 
   return (
@@ -19,15 +27,62 @@ export const Menu: React.FC<MenuProps> = ({ active, items, position, clickHandle
       style={{ pointerEvents: active ? 'auto' : 'none' }}
     >
       <ul className="menu_list" style={{ pointerEvents: 'auto' }}>
-        {items.map((item) => (
-          <NavLink
-            key={item.label}
-            to={item.link}
-            clickHandle={clickHandle}
-            onClick={item.onClick}
-          >
-            {item.label}
-          </NavLink>
+        {sections.map((section, sectionIndex) => (
+          <React.Fragment key={sectionIndex}>
+            {section.isAdmin && (
+              <>
+                <li className="menu_separator" style={{ pointerEvents: 'auto' }}>
+                  <hr style={{ 
+                    border: 'none', 
+                    height: '1px', 
+                    backgroundColor: '#333', 
+                    margin: '8px 32px' 
+                  }} />
+                </li>
+                <li style={{ pointerEvents: 'auto' }}>
+                  <button 
+                    onClick={toggleAdminSection}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      font: 'inherit',
+                      cursor: 'pointer',
+                      padding: '16px 32px',
+                      width: '100%',
+                      textAlign: 'left',
+                      fontSize: '20px',
+                      color: '#ffd700',
+                      pointerEvents: 'auto',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between'
+                    }}
+                  >
+                    Admin
+                    <span style={{ 
+                      transform: adminSectionOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                      transition: 'transform 0.3s ease'
+                    }}>
+                      ▼
+                    </span>
+                  </button>
+                </li>
+              </>
+            )}
+            {(!section.isAdmin || adminSectionOpen) && 
+              section.items.map((item) => (
+                <NavLink
+                  key={item.label}
+                  to={item.link}
+                  clickHandle={clickHandle}
+                  onClick={item.onClick}
+                  className={section.isAdmin ? 'admin-menu-item' : ''}
+                >
+                  {item.label}
+                </NavLink>
+              ))
+            }
+          </React.Fragment>
         ))}
         {onLogout && (
           <li style={{ pointerEvents: 'auto' }}>

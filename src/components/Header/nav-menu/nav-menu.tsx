@@ -17,7 +17,7 @@ function NavMenu() {
     }
   };
 
-  const baseMenuItems = [
+  const regularMenuItems = [
     {
       link: '/trainings',
       label: 'My trainings',
@@ -56,15 +56,26 @@ function NavMenu() {
     },
   ];
 
-  const menuItems = user?.role === 'admin' 
-    ? [
-        {
-          link: '/admin',
-          label: 'Users',
-        },
-        ...baseMenuItems,
-      ]
-    : baseMenuItems;
+  const adminMenuItems = [
+    {
+      link: '/admin',
+      label: 'Users',
+    },
+  ];
+
+  const sections = [
+    {
+      items: regularMenuItems,
+      isAdmin: false,
+    },
+  ];
+
+  if (user?.role === 'admin') {
+    sections.push({
+      items: adminMenuItems,
+      isAdmin: true,
+    });
+  }
 
   return (
     <>
@@ -78,7 +89,7 @@ function NavMenu() {
       </div>
       <Menu
         active={active}
-        items={menuItems}
+        sections={sections}
         position={'left'}
         clickHandle={clickHandler}
       />

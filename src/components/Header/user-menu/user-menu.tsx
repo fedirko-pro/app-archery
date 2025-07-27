@@ -3,7 +3,7 @@ import '../header.scss';
 import Menu from '../menu/menu';
 import Avatar from '@mui/material/Avatar';
 import { useAuth } from '../../../contexts/auth-context';
-import type { MenuItem } from '../menu/types';
+import type { MenuSection } from '../menu/types';
 
 const UserMenu: React.FC = () => {
   const [active, setActive] = useState<boolean>(false);
@@ -26,32 +26,39 @@ const UserMenu: React.FC = () => {
     }, 100);
   };
 
-  const menuItems: MenuItem[] = isAuthenticated 
-    ? [
-        {
-          link: '/profile',
-          label: 'My profile',
-        },
-        {
-          link: '/achievements',
-          label: 'My achievements',
-        },
-        // TODO: Settings temporarily disabled - functionality moved to Profile
-        // {
-        //   link: '/settings',
-        //   label: 'Settings',
-        // },
-      ]
-    : [
-        {
-          link: '/signin',
-          label: 'Sign In',
-        },
-        {
-          link: '/signup',
-          label: 'Sign Up',
-        },
-      ];
+  const authenticatedMenuItems = [
+    {
+      link: '/profile',
+      label: 'My profile',
+    },
+    {
+      link: '/achievements',
+      label: 'My achievements',
+    },
+    // TODO: Settings temporarily disabled - functionality moved to Profile
+    // {
+    //   link: '/settings',
+    //   label: 'Settings',
+    // },
+  ];
+
+  const unauthenticatedMenuItems = [
+    {
+      link: '/signin',
+      label: 'Sign In',
+    },
+    {
+      link: '/signup',
+      label: 'Sign Up',
+    },
+  ];
+
+  const sections: MenuSection[] = [
+    {
+      items: isAuthenticated ? authenticatedMenuItems : unauthenticatedMenuItems,
+      isAdmin: false,
+    },
+  ];
 
   return (
     <>
@@ -66,7 +73,7 @@ const UserMenu: React.FC = () => {
       />
       <Menu
         active={active}
-        items={menuItems}
+        sections={sections}
         position={'right'}
         clickHandle={hamburgerClick}
         onLogout={isAuthenticated ? handleLogout : null}

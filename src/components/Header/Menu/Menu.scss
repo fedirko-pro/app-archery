@@ -113,6 +113,11 @@
       height: 100%;
       padding: 16px 0;
       overflow: scroll;
+      
+      .menu_separator {
+        margin: 8px 0;
+      }
+      
       li.menu-item-has-children {
         display: flex;
         flex-direction: column;
@@ -140,6 +145,12 @@
           padding: 16px 32px;
           font-size: 20px;
           color: $yellow;
+          
+          &.admin-menu-item {
+            padding-left: 48px;
+            font-size: 18px;
+            color: #ffb347;
+          }
         }
         &.current-menu-item {
           > a {
