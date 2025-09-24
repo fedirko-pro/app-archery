@@ -1,9 +1,9 @@
 import React from 'react';
 import './sass/main.scss';
-import Header from './components/header/header';
+import Header from './components/Header/Header';
 import { BrowserRouter as Router } from 'react-router-dom';
-import Footer from './components/footer/footer';
-import Content from './components/content/content';
+import Footer from './components/Footer/Footer';
+import Content from './components/Content/Content';
 import { AuthProvider } from './contexts/auth-context';
 import EnvError from './components/env-error/env-error';
 
@@ -20,4 +20,4 @@ const App: React.FC = () => {
   );
 };
 
-export default App; 
+export default App;

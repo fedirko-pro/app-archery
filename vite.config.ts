@@ -5,6 +5,13 @@ import { VitePWA } from 'vite-plugin-pwa';
 export default defineConfig(({ mode }) => {
   // @ts-ignore
   const env = loadEnv(mode, process.cwd(), '');
+  const apiBase = env.VITE_API_BASE_URL || 'http://localhost:3000';
+  let apiOrigin = apiBase;
+  try {
+    apiOrigin = new URL(apiBase).origin;
+  } catch {
+    // keep as-is if not a valid URL; env validation should catch this in app
+  }
   return {
     plugins: [
       react(),
@@ -49,6 +56,43 @@ export default defineConfig(({ mode }) => {
               "type": "image/png"
             }
           ]
+        },
+        workbox: {
+          runtimeCaching: [
+            // Do not cache API requests at all (avoid caching private/auth responses)
+            {
+              urlPattern: ({ url }) => url.origin === apiOrigin,
+              handler: 'NetworkOnly',
+              options: { cacheName: 'api-network-only' },
+            },
+            // HTML navigations (SPA): network-first with cache fallback
+            {
+              urlPattern: ({ request }) => request.mode === 'navigate',
+              handler: 'NetworkFirst',
+              options: {
+                cacheName: 'html-cache',
+                expiration: { maxEntries: 50, maxAgeSeconds: 7 * 24 * 60 * 60 },
+              },
+            },
+            // Scripts and styles: cache-first
+            {
+              urlPattern: ({ request }) => request.destination === 'script' || request.destination === 'style',
+              handler: 'CacheFirst',
+              options: {
+                cacheName: 'assets-cache',
+                expiration: { maxEntries: 100, maxAgeSeconds: 30 * 24 * 60 * 60 },
+              },
+            },
+            // Images: cache-first with expiration
+            {
+              urlPattern: ({ request }) => request.destination === 'image',
+              handler: 'CacheFirst',
+              options: {
+                cacheName: 'images-cache',
+                expiration: { maxEntries: 200, maxAgeSeconds: 60 * 24 * 60 * 60 },
+              },
+            },
+          ],
         },
       }),
     ],

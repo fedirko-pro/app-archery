@@ -1,36 +1,5 @@
 ## UArchery PWA and API Audit – Recommendations
 
-### Must fix (high impact, correctness/stability)
-
-- **Consolidate service worker implementation**: You currently use `vite-plugin-pwa` and also register a custom SW (`public/service-worker.js`) in `src/main.tsx`. Keep a single approach to avoid conflicts.
-  - Recommended: keep `vite-plugin-pwa` with `registerType: 'autoUpdate'`, remove `public/service-worker.js` and the manual registration in `src/main.tsx`.
-  - Alternative: disable `vite-plugin-pwa` and keep a single custom `service-worker.js`.
-
-- **Remove duplicate fetch handlers in custom SW**: If you keep a custom SW, merge the two `fetch` listeners into one. Having two `fetch` listeners with `event.respondWith` will throw and break offline handling. Scope runtime caching properly (see below).
-
-- **Fix import path casing (Linux/CI breakage)**:
-  - `src/main.tsx` imports `./app` but the file is `App.tsx`. Use `./App`.
-  - `src/App.tsx` imports lowercased component paths while folders are capitalized (e.g., `./components/Header/Header`). Align all imports with actual casing.
-
-- **Handle 204/empty responses in API client**: `src/services/api.ts` calls `response.json()` unconditionally. For 204 No Content or empty bodies, parse conditionally (e.g., branch on `response.status === 204` or missing `content-type/content-length`). Return `undefined` for void endpoints.
-
-- **Avoid caching private API responses in SW**: Do not cache authenticated or mutating requests in the SW. Use:
-  - Static assets: cache-first.
-  - Safe GET APIs: network-first or stale-while-revalidate with cache names/expirations.
-  - Auth/mutations: network-only. Never cache tokens or user-specific data.
-
-- **Unify environment validation**: You validate both in `src/env.validation.ts` and `src/config/env.ts`. Choose one source of truth.
-  - Recommended: centralize in `src/config/env.ts`, throw in PROD when required vars are missing/invalid, and avoid PROD defaults that mask misconfigurations.
-  - Remove or disable `src/env.validation.ts` to prevent double throws.
-
-- **Dependency hygiene**: Move build-time tooling to `devDependencies` to avoid shipping dev libs:
-  - Move: `vite`, `@vitejs/plugin-react`, `typescript`, `vite-plugin-pwa`, `workbox-*`, and `web-vitals` (unless used at runtime) to `devDependencies`.
-  - Keep only runtime libraries in `dependencies`.
-
-- **ESLint config duplication**: Remove CRA-style `eslintConfig` from `package.json` since `eslint.config.js` is used. This prevents conflicts.
-
-- **Husky setup**: Change `prepare` script to `"husky install"`, and add actual hooks (e.g., `pre-commit` running lint and format).
-
 ### Should improve (security, performance, UX, DX)
 
 - **Token handling and auth security**:
@@ -41,7 +10,7 @@
 - **Adopt vite-plugin-pwa fully**:
   - Use `virtual:pwa-register` to surface update-available prompts and handle reloads.
   - Configure `workbox.runtimeCaching` for HTML, static assets, images, and safe GET APIs.
-  - Use `navigateFallback` for SPA deep links, and serve `offline.html` only when truly offline and navigating.
+  - Use `navigateFallback` for SPA deep links. No separate `offline.html` page is required.
   - Consider Background Sync for queued POSTs (e.g., applications) if offline edits are important.
 
 - **API error handling and offline awareness**:

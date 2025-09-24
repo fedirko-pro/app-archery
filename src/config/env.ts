@@ -34,12 +34,22 @@ const validateEnv = (): ValidationResult => {
     console.error('❌ Invalid environment variables:', invalidVars);
   }
 
-  if (import.meta.env.DEV && (missingVars.length > 0 || invalidVars.length > 0)) {
-    console.warn('⚠️ Environment validation failed. Some features may not work correctly.');
+  if (
+    import.meta.env.DEV &&
+    (missingVars.length > 0 || invalidVars.length > 0)
+  ) {
+    console.warn(
+      '⚠️ Environment validation failed. Some features may not work correctly.',
+    );
   }
 
-  if (import.meta.env.PROD && (missingVars.length > 0 || invalidVars.length > 0)) {
-    throw new Error(`Environment validation failed: ${[...missingVars, ...invalidVars].join(', ')}`);
+  if (
+    import.meta.env.PROD &&
+    (missingVars.length > 0 || invalidVars.length > 0)
+  ) {
+    throw new Error(
+      `Environment validation failed: ${[...missingVars, ...invalidVars].join(', ')}`,
+    );
   }
 
   return {
@@ -59,10 +69,14 @@ const isValidUrl = (string: string): boolean => {
 };
 
 export const env: Environment = {
-  API_BASE_URL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000',
-  GOOGLE_AUTH_URL: import.meta.env.VITE_GOOGLE_AUTH_URL || 'http://localhost:3000/auth/google',
+  API_BASE_URL:
+    (import.meta.env.VITE_API_BASE_URL as string | undefined) ||
+    (import.meta.env.DEV ? 'http://localhost:3000' : ''),
+  GOOGLE_AUTH_URL:
+    (import.meta.env.VITE_GOOGLE_AUTH_URL as string | undefined) ||
+    (import.meta.env.DEV ? 'http://localhost:3000/auth/google' : ''),
 };
 
 validateEnv();
 
-export default env; 
+export default env;

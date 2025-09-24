@@ -58,7 +58,22 @@ class ApiService {
         );
       }
 
-      return (await response.json()) as T;
+      const status = response.status;
+      if (status === 204 || status === 205) {
+        return undefined as T;
+      }
+
+      const contentType = response.headers.get('content-type') || '';
+      if (!contentType.includes('application/json')) {
+        return undefined as T;
+      }
+
+      const text = await response.text();
+      if (!text) {
+        return undefined as T;
+      }
+
+      return JSON.parse(text) as T;
     } catch (error) {
       if (error instanceof TypeError && error.message.includes('Load failed')) {
         throw new Error(
