@@ -119,7 +119,7 @@ A comprehensive web application for managing archery competitions, tournaments, 
 
 4. **Start development server:**
    ```bash
-   npm run dev
+   pnpm run dev
    ```
 
 ### Backend Setup
