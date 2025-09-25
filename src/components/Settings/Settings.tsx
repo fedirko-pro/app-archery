@@ -329,6 +329,8 @@ const Settings: React.FC = () => {
 export default Settings;
 */
 
+import './Settings.scss';
+
 // Temporary placeholder component
 const Settings: React.FC = () => {
   return (

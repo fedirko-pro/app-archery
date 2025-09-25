@@ -1,3 +1,5 @@
+@use '../../../sass/helpers/variables' as *;
+
 .user-edit-container {
   width: 100%;
   max-width: 900px;
@@ -9,8 +11,8 @@
 
 .user-edit-hero {
   width: 100%;
-  height: 200px;
-  background-image: url('https://via.placeholder.com/900x200');
+  height: 155px;
+  background-color: $blue;
   background-size: cover;
   background-position: center;
 }

@@ -7,12 +7,6 @@
   - Implement refresh token rotation and centralized 401 handling with automatic refresh + replay.
   - Add CSRF protection if you keep cookies.
 
-- **Adopt vite-plugin-pwa fully**:
-  - Use `virtual:pwa-register` to surface update-available prompts and handle reloads.
-  - Configure `workbox.runtimeCaching` for HTML, static assets, images, and safe GET APIs.
-  - Use `navigateFallback` for SPA deep links. No separate `offline.html` page is required.
-  - Consider Background Sync for queued POSTs (e.g., applications) if offline edits are important.
-
 - **API error handling and offline awareness**:
   - Map network failures to friendly offline messages (`navigator.onLine` as a hint).
   - Consider exponential backoff/retry for idempotent GETs.

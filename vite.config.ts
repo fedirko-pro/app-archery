@@ -1,4 +1,6 @@
+// @ts-nocheck
 import { defineConfig, loadEnv } from 'vite';
+import path from 'node:path';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 
@@ -13,10 +15,23 @@ export default defineConfig(({ mode }) => {
     // keep as-is if not a valid URL; env validation should catch this in app
   }
   return {
+    resolve: {
+      alias: {
+        '@': path.resolve(__dirname, 'src'),
+      },
+    },
+    css: {
+      preprocessorOptions: {
+        scss: {
+          additionalData: "@use '@/sass/helpers/mixins' as mx;\n",
+        },
+      },
+    },
     plugins: [
       react(),
       VitePWA({
         registerType: 'autoUpdate',
+        includeAssets: ['logo192.png', 'logo512.png', 'desktop.png', 'phone.png'],
         manifest: {
           "short_name": "UArchery",
           "name": "UArchery APP",
@@ -58,6 +73,9 @@ export default defineConfig(({ mode }) => {
           ]
         },
         workbox: {
+          navigateFallback: '/index.html',
+          cleanupOutdatedCaches: true,
+          clientsClaim: true,
           runtimeCaching: [
             // Do not cache API requests at all (avoid caching private/auth responses)
             {
