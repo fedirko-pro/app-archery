@@ -19,7 +19,7 @@ import {
   Divider
 } from '@mui/material';
 import { Visibility, VisibilityOff, Security, Lock } from '@mui/icons-material';
-import { useAuth } from '../../contexts/auth-context';
+import { useAuth } from '@/contexts/auth-context';
 import type { PasswordChangeForm, PasswordValidation } from './types';
 import './settings.scss';
 

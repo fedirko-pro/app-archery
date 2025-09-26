@@ -1,18 +1,21 @@
+import './converter.scss';
+
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import ConverterInputs from './converter-inputs.tsx';
-import './converter.scss';
 import { useState } from 'react';
+
+import ConverterInputs from './converter-inputs';
 
 export default function Converter() {
   const [expanded, setExpanded] = useState<string | false>('false');
 
-  const handleChange = (panel: string) => (_event: React.SyntheticEvent, isExpanded: boolean) => {
-    setExpanded(isExpanded ? panel : 'false');
-  };
+  const handleChange =
+    (panel: string) => (_event: React.SyntheticEvent, isExpanded: boolean) => {
+      setExpanded(isExpanded ? panel : 'false');
+    };
 
   return (
     <section>

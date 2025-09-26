@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { Delete } from '@mui/icons-material';
 import {
   Box,
   Typography,
@@ -14,9 +13,11 @@ import {
   DialogContent,
   DialogActions,
 } from '@mui/material';
-import { Delete } from '@mui/icons-material';
-import apiService from '../../../services/api';
-import { formatDate } from '../../../utils/date-utils';
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+
+import apiService from '@/services/api';
+import { formatDate } from '@/utils/date-utils';
 
 interface TournamentApplication {
   id: string;

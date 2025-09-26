@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { Check, Close, Visibility } from '@mui/icons-material';
 import {
   Box,
   Typography,
@@ -25,10 +25,10 @@ import {
   TableRow,
   Paper,
 } from '@mui/material';
-import { Check, Close, Visibility } from '@mui/icons-material';
+import React, { useState, useEffect } from 'react';
 
-import apiService from '../../../services/api';
-import { formatDate, getApplicationDeadline } from '../../../utils/date-utils';
+import apiService from '@/services/api';
+import { formatDate, getApplicationDeadline } from '@/utils/date-utils';
 
 interface TournamentApplication {
   id: string;

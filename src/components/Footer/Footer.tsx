@@ -1,4 +1,5 @@
-import './footer.scss';
+import './Footer.scss';
+
 import { Link, NavLink } from 'react-router-dom';
 
 const Footer = () => (

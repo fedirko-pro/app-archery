@@ -1,8 +1,10 @@
+import './admin-panel.scss';
+
+import { Box, Typography, Alert } from '@mui/material';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, Typography, Alert } from '@mui/material';
-import UsersList from './users-list/users-list';
-import './admin-panel.scss';
+
+import UsersList from '@/pages/admin/users-list/users-list';
 
 const AdminPanel: React.FC = () => {
   const navigate = useNavigate();

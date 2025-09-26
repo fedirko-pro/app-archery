@@ -1,15 +1,33 @@
+import { Visibility, VisibilityOff, Security, Lock } from '@mui/icons-material';
+import { Box, CircularProgress, Alert } from '@mui/material';
+import {
+  TextField,
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  IconButton,
+  InputAdornment,
+  Divider,
+  Typography,
+} from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, CircularProgress, Alert } from '@mui/material';
-import { useAuth } from '../../contexts/auth-context';
-import apiService from '../../services/api';
+
 import ProfileEditForm from './profile-edit-form/profile-edit-form';
 import type { ProfileData } from './types';
-import { TextField, Button, Card, CardContent, CardHeader, IconButton, InputAdornment, Divider, Typography } from '@mui/material';
-import { Visibility, VisibilityOff, Security, Lock } from '@mui/icons-material';
+import { useAuth } from '@/contexts/auth-context';
+import apiService from '@/services/api';
 
 const ProfileEditPage: React.FC = () => {
-  const { user, updateUser, changePassword, setPassword, error: authError, clearError } = useAuth();
+  const {
+    user,
+    updateUser,
+    changePassword,
+    setPassword,
+    error: authError,
+    clearError,
+  } = useAuth();
   const navigate = useNavigate();
   const [profileData, setProfileData] = useState<ProfileData | null>(null);
   const [isSaving, setIsSaving] = useState(false);
@@ -19,7 +37,7 @@ const ProfileEditPage: React.FC = () => {
   const [passwordForm, setPasswordForm] = useState({
     currentPassword: '',
     newPassword: '',
-    confirmPassword: ''
+    confirmPassword: '',
   });
   const [passwordValidation, setPasswordValidation] = useState({
     currentPasswordError: false,
@@ -27,9 +45,13 @@ const ProfileEditPage: React.FC = () => {
     newPasswordError: false,
     newPasswordMessage: '',
     confirmPasswordError: false,
-    confirmPasswordMessage: ''
+    confirmPasswordMessage: '',
   });
-  const [showPasswords, setShowPasswords] = useState({ current: false, new: false, confirm: false });
+  const [showPasswords, setShowPasswords] = useState({
+    current: false,
+    new: false,
+    confirm: false,
+  });
   const [isChangingPassword, setIsChangingPassword] = useState(false);
   const [passwordSuccess, setPasswordSuccess] = useState(false);
 
@@ -55,12 +77,17 @@ const ProfileEditPage: React.FC = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setProfileData(prev => {
+    setProfileData((prev) => {
       if (!prev) return prev;
       if (name === 'categories') {
         return {
           ...prev,
-          categories: Array.isArray(value) ? value : value.split(',').map((s: string) => s.trim()).filter(Boolean),
+          categories: Array.isArray(value)
+            ? value
+            : value
+                .split(',')
+                .map((s: string) => s.trim())
+                .filter(Boolean),
         };
       }
       return {
@@ -90,18 +117,18 @@ const ProfileEditPage: React.FC = () => {
   };
 
   // Password logic
-  const handlePasswordChange = (field: keyof typeof passwordForm) => (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const value = e.target.value;
-    setPasswordForm(prev => ({ ...prev, [field]: value }));
-    setPasswordValidation(prev => ({
-      ...prev,
-      [`${field}Error`]: false,
-      [`${field}Message`]: ''
-    }));
-    setPasswordSuccess(false);
-  };
+  const handlePasswordChange =
+    (field: keyof typeof passwordForm) =>
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.value;
+      setPasswordForm((prev) => ({ ...prev, [field]: value }));
+      setPasswordValidation((prev) => ({
+        ...prev,
+        [`${field}Error`]: false,
+        [`${field}Message`]: '',
+      }));
+      setPasswordSuccess(false);
+    };
 
   const validatePasswordForm = (): boolean => {
     const validation = {
@@ -110,7 +137,7 @@ const ProfileEditPage: React.FC = () => {
       newPasswordError: false,
       newPasswordMessage: '',
       confirmPasswordError: false,
-      confirmPasswordMessage: ''
+      confirmPasswordMessage: '',
     };
     let isValid = true;
     if (user?.password && user?.authProvider === 'local') {
@@ -126,11 +153,15 @@ const ProfileEditPage: React.FC = () => {
       isValid = false;
     } else if (passwordForm.newPassword.length < 8) {
       validation.newPasswordError = true;
-      validation.newPasswordMessage = 'Password must be at least 8 characters long';
+      validation.newPasswordMessage =
+        'Password must be at least 8 characters long';
       isValid = false;
-    } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(passwordForm.newPassword)) {
+    } else if (
+      !/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(passwordForm.newPassword)
+    ) {
       validation.newPasswordError = true;
-      validation.newPasswordMessage = 'Password must contain at least one uppercase letter, one lowercase letter, and one number';
+      validation.newPasswordMessage =
+        'Password must contain at least one uppercase letter, one lowercase letter, and one number';
       isValid = false;
     }
     if (!passwordForm.confirmPassword) {
@@ -142,9 +173,15 @@ const ProfileEditPage: React.FC = () => {
       validation.confirmPasswordMessage = 'Passwords do not match';
       isValid = false;
     }
-    if (user?.password && passwordForm.currentPassword && passwordForm.newPassword && passwordForm.currentPassword === passwordForm.newPassword) {
+    if (
+      user?.password &&
+      passwordForm.currentPassword &&
+      passwordForm.newPassword &&
+      passwordForm.currentPassword === passwordForm.newPassword
+    ) {
       validation.newPasswordError = true;
-      validation.newPasswordMessage = 'New password must be different from current password';
+      validation.newPasswordMessage =
+        'New password must be different from current password';
       isValid = false;
     }
     setPasswordValidation(validation);
@@ -158,12 +195,19 @@ const ProfileEditPage: React.FC = () => {
     clearError();
     try {
       if (shouldShowSetPassword) {
-        await setPassword(passwordForm.newPassword, passwordForm.confirmPassword);
+        await setPassword(
+          passwordForm.newPassword,
+          passwordForm.confirmPassword,
+        );
       } else {
         await changePassword(passwordForm);
       }
       setPasswordSuccess(true);
-      setPasswordForm({ currentPassword: '', newPassword: '', confirmPassword: '' });
+      setPasswordForm({
+        currentPassword: '',
+        newPassword: '',
+        confirmPassword: '',
+      });
       setShowPasswords({ current: false, new: false, confirm: false });
     } catch {
       // Error is handled by AuthContext
@@ -173,17 +217,22 @@ const ProfileEditPage: React.FC = () => {
   };
 
   const togglePasswordVisibility = (field: 'current' | 'new' | 'confirm') => {
-    setShowPasswords(prev => ({ ...prev, [field]: !prev[field] }));
+    setShowPasswords((prev) => ({ ...prev, [field]: !prev[field] }));
   };
 
-  const getPasswordStrength = (password: string): { strength: string; color: string } => {
+  const getPasswordStrength = (
+    password: string,
+  ): { strength: string; color: string } => {
     if (!password) return { strength: '', color: '' };
     const hasLower = /[a-z]/.test(password);
     const hasUpper = /[A-Z]/.test(password);
     const hasNumber = /\d/.test(password);
     const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
     const length = password.length;
-    const score = [hasLower, hasUpper, hasNumber, hasSpecial].filter(Boolean).length + (length >= 8 ? 1 : 0) + (length >= 12 ? 1 : 0);
+    const score =
+      [hasLower, hasUpper, hasNumber, hasSpecial].filter(Boolean).length +
+      (length >= 8 ? 1 : 0) +
+      (length >= 12 ? 1 : 0);
     if (score <= 2) return { strength: 'Weak', color: '#f44336' };
     if (score <= 4) return { strength: 'Fair', color: '#ff9800' };
     if (score <= 6) return { strength: 'Good', color: '#2196f3' };
@@ -192,12 +241,25 @@ const ProfileEditPage: React.FC = () => {
   const passwordStrength = getPasswordStrength(passwordForm.newPassword);
 
   if (!profileData) {
-    return <Box display="flex" justifyContent="center" alignItems="center" minHeight="50vh"><CircularProgress /></Box>;
+    return (
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        minHeight="50vh"
+      >
+        <CircularProgress />
+      </Box>
+    );
   }
 
   return (
     <Box sx={{ maxWidth: 700, mx: 'auto', mt: 6 }}>
-      {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
+      {error && (
+        <Alert severity="error" sx={{ mb: 2 }}>
+          {error}
+        </Alert>
+      )}
       <ProfileEditForm
         profileData={profileData}
         isSaving={isSaving}
@@ -209,10 +271,11 @@ const ProfileEditPage: React.FC = () => {
       <Card>
         <CardHeader
           avatar={<Security color="primary" />}
-          title={shouldShowSetPassword ? "Set Password" : "Change Password"}
-          subheader={shouldShowSetPassword
-            ? "Set a password to enable email/password login"
-            : "Update your password to keep your account secure"
+          title={shouldShowSetPassword ? 'Set Password' : 'Change Password'}
+          subheader={
+            shouldShowSetPassword
+              ? 'Set a password to enable email/password login'
+              : 'Update your password to keep your account secure'
           }
         />
         <CardContent>
@@ -222,11 +285,14 @@ const ProfileEditPage: React.FC = () => {
             </Alert>
           )}
           {passwordSuccess && (
-            <Alert severity="success" sx={{ mb: 2 }} onClose={() => setPasswordSuccess(false)}>
+            <Alert
+              severity="success"
+              sx={{ mb: 2 }}
+              onClose={() => setPasswordSuccess(false)}
+            >
               {shouldShowSetPassword
-                ? "Password set successfully! You can now login with email/password."
-                : "Password changed successfully!"
-              }
+                ? 'Password set successfully! You can now login with email/password.'
+                : 'Password changed successfully!'}
             </Alert>
           )}
           <Box component="form" onSubmit={handlePasswordSubmit}>
@@ -248,11 +314,18 @@ const ProfileEditPage: React.FC = () => {
                   ),
                   endAdornment: (
                     <InputAdornment position="end">
-                      <IconButton onClick={() => togglePasswordVisibility('current')} edge="end">
-                        {showPasswords.current ? <VisibilityOff /> : <Visibility />}
+                      <IconButton
+                        onClick={() => togglePasswordVisibility('current')}
+                        edge="end"
+                      >
+                        {showPasswords.current ? (
+                          <VisibilityOff />
+                        ) : (
+                          <Visibility />
+                        )}
                       </IconButton>
                     </InputAdornment>
-                  )
+                  ),
                 }}
               />
             )}
@@ -268,15 +341,21 @@ const ProfileEditPage: React.FC = () => {
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
-                    <IconButton onClick={() => togglePasswordVisibility('new')} edge="end">
+                    <IconButton
+                      onClick={() => togglePasswordVisibility('new')}
+                      edge="end"
+                    >
                       {showPasswords.new ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
                   </InputAdornment>
-                )
+                ),
               }}
             />
             {passwordForm.newPassword && (
-              <Typography variant="caption" sx={{ color: passwordStrength.color, display: 'block', mt: 1 }}>
+              <Typography
+                variant="caption"
+                sx={{ color: passwordStrength.color, display: 'block', mt: 1 }}
+              >
                 Password strength: {passwordStrength.strength}
               </Typography>
             )}
@@ -292,11 +371,18 @@ const ProfileEditPage: React.FC = () => {
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
-                    <IconButton onClick={() => togglePasswordVisibility('confirm')} edge="end">
-                      {showPasswords.confirm ? <VisibilityOff /> : <Visibility />}
+                    <IconButton
+                      onClick={() => togglePasswordVisibility('confirm')}
+                      edge="end"
+                    >
+                      {showPasswords.confirm ? (
+                        <VisibilityOff />
+                      ) : (
+                        <Visibility />
+                      )}
                     </IconButton>
                   </InputAdornment>
-                )
+                ),
               }}
             />
             <Box sx={{ mt: 3 }}>
@@ -305,13 +391,18 @@ const ProfileEditPage: React.FC = () => {
                 variant="contained"
                 color="primary"
                 disabled={isChangingPassword}
-                startIcon={isChangingPassword ? <CircularProgress size={20} /> : null}
+                startIcon={
+                  isChangingPassword ? <CircularProgress size={20} /> : null
+                }
                 fullWidth
               >
                 {isChangingPassword
-                  ? (shouldShowSetPassword ? 'Setting Password...' : 'Changing Password...')
-                  : (shouldShowSetPassword ? 'Set Password' : 'Change Password')
-                }
+                  ? shouldShowSetPassword
+                    ? 'Setting Password...'
+                    : 'Changing Password...'
+                  : shouldShowSetPassword
+                    ? 'Set Password'
+                    : 'Change Password'}
               </Button>
             </Box>
           </Box>
@@ -321,4 +412,4 @@ const ProfileEditPage: React.FC = () => {
   );
 };
 
-export default ProfileEditPage; 
+export default ProfileEditPage;

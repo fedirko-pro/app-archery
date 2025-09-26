@@ -1,8 +1,11 @@
-import { useState, useEffect } from 'react';
 import { Alert, Box, Typography, Button } from '@mui/material';
+import { useState, useEffect } from 'react';
 
 const EnvError = () => {
-  const [envErrors, setEnvErrors] = useState<{ missingVars: string[], invalidVars: string[] } | null>(null);
+  const [envErrors, setEnvErrors] = useState<{
+    missingVars: string[];
+    invalidVars: string[];
+  } | null>(null);
 
   useEffect(() => {
     const checkEnv = () => {
@@ -46,12 +49,24 @@ const EnvError = () => {
   }
 
   return (
-    <Box sx={{ position: 'fixed', top: 16, right: 16, zIndex: 9999, maxWidth: 400 }}>
-      <Alert 
-        severity="error" 
+    <Box
+      sx={{
+        position: 'fixed',
+        top: 16,
+        right: 16,
+        zIndex: 9999,
+        maxWidth: 400,
+      }}
+    >
+      <Alert
+        severity="error"
         onClose={() => setEnvErrors(null)}
         action={
-          <Button color="inherit" size="small" onClick={() => setEnvErrors(null)}>
+          <Button
+            color="inherit"
+            size="small"
+            onClick={() => setEnvErrors(null)}
+          >
             Dismiss
           </Button>
         }
@@ -59,7 +74,7 @@ const EnvError = () => {
         <Typography variant="h6" gutterBottom>
           Environment Configuration Error
         </Typography>
-        
+
         {envErrors.missingVars.length > 0 && (
           <Box sx={{ mb: 2 }}>
             <Typography variant="subtitle2" color="error">
@@ -98,4 +113,4 @@ const EnvError = () => {
   );
 };
 
-export default EnvError; 
+export default EnvError;

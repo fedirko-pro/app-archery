@@ -1,18 +1,26 @@
+import { Box, CircularProgress } from '@mui/material';
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { Box, CircularProgress } from '@mui/material';
-import { useAuth } from '../../contexts/auth-context';
+
+import { useAuth } from '@/contexts/auth-context';
 
 interface ProtectedAdminRouteProps {
   children: React.ReactNode;
 }
 
-const ProtectedAdminRoute: React.FC<ProtectedAdminRouteProps> = ({ children }) => {
+const ProtectedAdminRoute: React.FC<ProtectedAdminRouteProps> = ({
+  children,
+}) => {
   const { user, loading } = useAuth();
 
   if (loading) {
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight="50vh">
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        minHeight="50vh"
+      >
         <CircularProgress />
       </Box>
     );
@@ -29,4 +37,4 @@ const ProtectedAdminRoute: React.FC<ProtectedAdminRouteProps> = ({ children }) =
   return <>{children}</>;
 };
 
-export default ProtectedAdminRoute; 
+export default ProtectedAdminRoute;

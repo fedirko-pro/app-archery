@@ -36,16 +36,6 @@
   - Preload critical fonts/assets, compress large images, and use responsive images.
   - Configure Workbox image caching with expiration/maximum entries.
 
-- **Developer experience consistency**:
-  - Use TS path aliases (`@/...`) consistently; enforce import order and naming conventions.
-  - Standardize file/folder casing and ensure imports match exactly.
-
 ### Suggested next steps
 
-1. Remove custom SW and manual registration; configure `vite-plugin-pwa` with proper `runtimeCaching` and `navigateFallback`.
-2. Fix import casing and 204 handling in `src/services/api.ts`.
-3. Unify env validation under `src/config/env.ts` (throw in PROD), remove duplicate.
-4. Move build-time tools to `devDependencies`; clean `eslintConfig` from `package.json`; set `prepare` to `husky install`.
 5. Plan token storage changes (cookies + refresh) and route-based code splitting.
-
-

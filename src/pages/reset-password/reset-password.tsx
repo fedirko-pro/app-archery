@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { Visibility, VisibilityOff, Lock } from '@mui/icons-material';
 import {
   Box,
   Button,
@@ -11,11 +11,12 @@ import {
   CardHeader,
   IconButton,
   InputAdornment,
-  Container
+  Container,
 } from '@mui/material';
-import { Visibility, VisibilityOff, Lock } from '@mui/icons-material';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import apiService from '../../services/api';
+
+import apiService from '@/services/api';
 
 const ResetPassword: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -26,7 +27,7 @@ const ResetPassword: React.FC = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPasswords, setShowPasswords] = useState({
     password: false,
-    confirmPassword: false
+    confirmPassword: false,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -40,7 +41,7 @@ const ResetPassword: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!token) {
       setError('Invalid reset link. Please request a new password reset.');
       return;
@@ -57,7 +58,9 @@ const ResetPassword: React.FC = () => {
     }
 
     if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(password)) {
-      setError('Password must contain at least one uppercase letter, one lowercase letter, and one number');
+      setError(
+        'Password must contain at least one uppercase letter, one lowercase letter, and one number',
+      );
       return;
     }
 
@@ -66,12 +69,15 @@ const ResetPassword: React.FC = () => {
 
     try {
       await apiService.resetPassword(token, password, confirmPassword);
-      setSuccess('Password has been reset successfully! Redirecting to login...');
+      setSuccess(
+        'Password has been reset successfully! Redirecting to login...',
+      );
       setTimeout(() => {
         navigate('/signin');
       }, 2000);
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Failed to reset password';
+      const errorMessage =
+        error instanceof Error ? error.message : 'Failed to reset password';
       setError(errorMessage);
     } finally {
       setIsSubmitting(false);
@@ -79,24 +85,28 @@ const ResetPassword: React.FC = () => {
   };
 
   const togglePasswordVisibility = (field: 'password' | 'confirmPassword') => {
-    setShowPasswords(prev => ({
+    setShowPasswords((prev) => ({
       ...prev,
-      [field]: !prev[field]
+      [field]: !prev[field],
     }));
   };
 
-  const getPasswordStrength = (password: string): { strength: string; color: string } => {
+  const getPasswordStrength = (
+    password: string,
+  ): { strength: string; color: string } => {
     if (!password) return { strength: '', color: '' };
-    
+
     const hasLower = /[a-z]/.test(password);
     const hasUpper = /[A-Z]/.test(password);
     const hasNumber = /\d/.test(password);
     const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
     const length = password.length;
-    
-    const score = [hasLower, hasUpper, hasNumber, hasSpecial].filter(Boolean).length + 
-                  (length >= 8 ? 1 : 0) + (length >= 12 ? 1 : 0);
-    
+
+    const score =
+      [hasLower, hasUpper, hasNumber, hasSpecial].filter(Boolean).length +
+      (length >= 8 ? 1 : 0) +
+      (length >= 12 ? 1 : 0);
+
     if (score <= 2) return { strength: 'Weak', color: '#f44336' };
     if (score <= 4) return { strength: 'Fair', color: '#ff9800' };
     if (score <= 6) return { strength: 'Good', color: '#2196f3' };
@@ -134,17 +144,21 @@ const ResetPassword: React.FC = () => {
         />
         <CardContent>
           {error && (
-            <Alert severity="error" sx={{ mb: 2 }} onClose={() => setError(null)}>
+            <Alert
+              severity="error"
+              sx={{ mb: 2 }}
+              onClose={() => setError(null)}
+            >
               {error}
             </Alert>
           )}
-          
+
           {success && (
             <Alert severity="success" sx={{ mb: 2 }}>
               {success}
             </Alert>
           )}
-          
+
           <Box component="form" onSubmit={handleSubmit}>
             <TextField
               fullWidth
@@ -161,16 +175,20 @@ const ResetPassword: React.FC = () => {
                       onClick={() => togglePasswordVisibility('password')}
                       edge="end"
                     >
-                      {showPasswords.password ? <VisibilityOff /> : <Visibility />}
+                      {showPasswords.password ? (
+                        <VisibilityOff />
+                      ) : (
+                        <Visibility />
+                      )}
                     </IconButton>
                   </InputAdornment>
-                )
+                ),
               }}
             />
 
             {password && (
-              <Typography 
-                variant="caption" 
+              <Typography
+                variant="caption"
                 sx={{ color: passwordStrength.color, display: 'block', mt: 1 }}
               >
                 Password strength: {passwordStrength.strength}
@@ -189,13 +207,19 @@ const ResetPassword: React.FC = () => {
                 endAdornment: (
                   <InputAdornment position="end">
                     <IconButton
-                      onClick={() => togglePasswordVisibility('confirmPassword')}
+                      onClick={() =>
+                        togglePasswordVisibility('confirmPassword')
+                      }
                       edge="end"
                     >
-                      {showPasswords.confirmPassword ? <VisibilityOff /> : <Visibility />}
+                      {showPasswords.confirmPassword ? (
+                        <VisibilityOff />
+                      ) : (
+                        <Visibility />
+                      )}
                     </IconButton>
                   </InputAdornment>
-                )
+                ),
               }}
             />
 
@@ -213,8 +237,8 @@ const ResetPassword: React.FC = () => {
             </Box>
 
             <Box sx={{ mt: 2, textAlign: 'center' }}>
-              <Button 
-                variant="text" 
+              <Button
+                variant="text"
                 onClick={() => navigate('/signin')}
                 disabled={isSubmitting}
               >
@@ -228,4 +252,4 @@ const ResetPassword: React.FC = () => {
   );
 };
 
-export default ResetPassword; 
+export default ResetPassword;

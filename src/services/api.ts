@@ -1,13 +1,13 @@
-import env from '../config/env';
+import type { ApiError } from './types';
+import env from '@/config/env';
 import type {
   User,
   LoginCredentials,
   RegisterData,
   AuthResponse,
   ChangePasswordData,
-} from '../contexts/types';
-import type { ProfileData } from '../pages/profile/types';
-import type { ApiError } from './types';
+} from '@/contexts/types';
+import type { ProfileData } from '@/pages/profile/types';
 
 interface RequestOptions extends RequestInit {
   headers?: Record<string, string>;

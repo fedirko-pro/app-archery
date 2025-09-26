@@ -1,8 +1,10 @@
-import '../header.scss';
+import '../Header.scss';
+
 import classNames from 'classnames';
-import Menu from '../menu/menu.tsx';
 import { useState } from 'react';
-import { useAuth } from '../../../contexts/auth-context.tsx';
+
+import Menu from '@/components/Header/Menu/Menu';
+import { useAuth } from '@/contexts/auth-context';
 
 function NavMenu() {
   const [active, setActive] = useState(false);

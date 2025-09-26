@@ -1,4 +1,5 @@
 import './user-card.scss';
+
 import Avatar from '@mui/material/Avatar';
 
 export default function UserCard(props: any) {

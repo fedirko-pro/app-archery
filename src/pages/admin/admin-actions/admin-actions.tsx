@@ -1,11 +1,8 @@
-import React, { useState } from 'react';
-import {
-  Box,
-  Button,
-  Alert,
-} from '@mui/material';
 import { Edit, Email } from '@mui/icons-material';
-import apiService from '../../../services/api';
+import { Box, Button, Alert } from '@mui/material';
+import React, { useState } from 'react';
+
+import apiService from '@/services/api';
 
 interface AdminActionsProps {
   userId: string;
@@ -26,9 +23,9 @@ const AdminActions: React.FC<AdminActionsProps> = ({
     try {
       setResettingPassword(true);
       setError(null);
-      
+
       await apiService.adminResetUserPassword(userId);
-      
+
       setSuccess(`Password reset email sent to ${userEmail}`);
       setTimeout(() => setSuccess(null), 5000);
     } catch (error) {
@@ -46,9 +43,13 @@ const AdminActions: React.FC<AdminActionsProps> = ({
           {error}
         </Alert>
       )}
-      
+
       {success && (
-        <Alert severity="success" sx={{ mb: 2 }} onClose={() => setSuccess(null)}>
+        <Alert
+          severity="success"
+          sx={{ mb: 2 }}
+          onClose={() => setSuccess(null)}
+        >
           {success}
         </Alert>
       )}
@@ -62,7 +63,7 @@ const AdminActions: React.FC<AdminActionsProps> = ({
         >
           Edit Profile
         </Button>
-        
+
         <Button
           variant="outlined"
           color="secondary"
@@ -77,4 +78,4 @@ const AdminActions: React.FC<AdminActionsProps> = ({
   );
 };
 
-export default AdminActions; 
+export default AdminActions;

@@ -1,3 +1,6 @@
+import './user-page.scss';
+
+import { LockOpen } from '@mui/icons-material';
 import {
   FormControl,
   MenuItem,
@@ -10,8 +13,6 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
-import { LockOpen } from '@mui/icons-material';
-import './user-page.scss';
 import Box from '@mui/material/Box';
 
 export default function UserPage() {

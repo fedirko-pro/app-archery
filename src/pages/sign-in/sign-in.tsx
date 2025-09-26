@@ -1,21 +1,22 @@
-import * as React from 'react';
+import { Alert } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import MuiCard from '@mui/material/Card';
 import Divider from '@mui/material/Divider';
-import FormLabel from '@mui/material/FormLabel';
 import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
 import Link from '@mui/material/Link';
+import Stack from '@mui/material/Stack';
+import { styled } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import Stack from '@mui/material/Stack';
-import MuiCard from '@mui/material/Card';
-import { styled } from '@mui/material/styles';
-import ForgotPassword from './forgot-password';
-import { GoogleIcon } from '../../components/custom-icons';
-import { useAuth } from '../../contexts/auth-context';
-import { Alert } from '@mui/material';
+import * as React from 'react';
 import { useLocation } from 'react-router-dom';
-import env from '../../config/env';
+
+import ForgotPassword from './forgot-password';
+import { GoogleIcon } from '@/components/custom-icons';
+import env from '@/config/env';
+import { useAuth } from '@/contexts/auth-context';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',

@@ -7,7 +7,7 @@ import React, {
   useRef,
 } from 'react';
 import { useNavigate } from 'react-router-dom';
-import apiService from '../services/api';
+
 import type {
   User,
   RegisterData,
@@ -15,6 +15,7 @@ import type {
   AuthContextType,
   ChangePasswordData,
 } from './types';
+import apiService from '@/services/api';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -145,7 +146,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         sessionStorage.removeItem('pendingApplication');
         pendingApplicationProcessedRef.current = true;
         navigate(redirectTo);
-      } catch (error) {
+      } catch {
         sessionStorage.removeItem('pendingApplication');
         pendingApplicationProcessedRef.current = true;
         navigate('/profile');

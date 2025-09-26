@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { Add, Edit, Delete, Send } from '@mui/icons-material';
 import {
   Box,
   Typography,
@@ -15,11 +15,12 @@ import {
   FormControlLabel,
   Checkbox,
 } from '@mui/material';
-import { Add, Edit, Delete, Send } from '@mui/icons-material';
-import { useAuth } from '../../../contexts/auth-context';
-import apiService from '../../../services/api';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { formatDate } from '../../../utils/date-utils';
+
+import { useAuth } from '@/contexts/auth-context';
+import apiService from '@/services/api';
+import { formatDate } from '@/utils/date-utils';
 
 interface Tournament {
   id: string;

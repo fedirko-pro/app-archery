@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import {
   Box,
   Typography,
@@ -13,7 +12,9 @@ import {
   Alert,
   CircularProgress,
 } from '@mui/material';
-import apiService from '../../../services/api';
+import React, { useState } from 'react';
+
+import apiService from '@/services/api';
 
 interface TournamentApplicationFormProps {
   tournamentId: string;

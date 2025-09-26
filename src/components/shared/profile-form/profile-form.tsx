@@ -1,4 +1,4 @@
-import React from 'react';
+import { Save, Cancel } from '@mui/icons-material';
 import {
   TextField,
   Button,
@@ -11,7 +11,7 @@ import {
   Typography,
   Divider,
 } from '@mui/material';
-import { Save, Cancel } from '@mui/icons-material';
+import React from 'react';
 
 export interface ProfileFormData {
   firstName: string;

@@ -1,8 +1,10 @@
+import './Header.scss';
+
 import React from 'react';
-import './header.scss';
 import { NavLink } from 'react-router-dom';
-import NavMenu from './nav-menu/nav-menu';
-import UserMenu from './user-menu/user-menu';
+
+import NavMenu from '@/components/Header/nav-menu/nav-menu';
+import UserMenu from '@/components/Header/user-menu/user-menu';
 
 const Header: React.FC = () => {
   return (
@@ -18,4 +20,4 @@ const Header: React.FC = () => {
   );
 };
 
-export default Header; 
+export default Header;

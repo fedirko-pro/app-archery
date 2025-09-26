@@ -1,8 +1,9 @@
-import React from 'react';
 import { TextField, Button, Box, CircularProgress } from '@mui/material';
-import type { ProfileData } from '../types';
 import Autocomplete from '@mui/material/Autocomplete';
 import Chip from '@mui/material/Chip';
+import React from 'react';
+
+import type { ProfileData } from '@/pages/profile/types';
 
 interface ProfileEditFormProps {
   profileData: ProfileData;

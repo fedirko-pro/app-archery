@@ -1,14 +1,15 @@
-import { useState, useEffect } from 'react';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import Avatar from '@mui/material/Avatar';
 import { Delete } from '@mui/icons-material';
-import AlertDialog from '../components/dialogs/alert-dialog.tsx';
 import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 import InfoIcon from '@mui/icons-material/Info';
-import InfoDialog from '../components/dialogs/info-dialog.tsx';
+import Avatar from '@mui/material/Avatar';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import ListItemText from '@mui/material/ListItemText';
+import { useState, useEffect } from 'react';
+
+import AlertDialog from '@/components/dialogs/alert-dialog';
+import InfoDialog from '@/components/dialogs/info-dialog';
 
 interface Training {
   title: string;

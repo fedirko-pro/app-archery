@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { Edit, Email, Visibility } from '@mui/icons-material';
 import {
   Box,
   Table,
@@ -14,10 +14,11 @@ import {
   IconButton,
   Tooltip,
 } from '@mui/material';
-import { Edit, Email, Visibility } from '@mui/icons-material';
-import apiService from '../../../services/api';
-import type { User } from '../../../contexts/types';
-import { formatDate } from '../../../utils/date-utils';
+import React, { useState, useEffect } from 'react';
+
+import type { User } from '@/contexts/types';
+import apiService from '@/services/api';
+import { formatDate } from '@/utils/date-utils';
 
 interface UsersListProps {
   onEditUser: (user: User) => void;

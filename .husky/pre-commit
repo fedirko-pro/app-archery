@@ -1,7 +1,3 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
-
-# Run ESLint and Prettier on staged files via lint-staged
-npx --no -- lint-staged
-
-npx lint-staged 
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+pnpm lint-staged

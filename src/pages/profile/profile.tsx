@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { Box, CircularProgress } from '@mui/material';
-
 import './profile.scss';
-import { useAuth } from '../../contexts/auth-context';
+
+import { Box, CircularProgress } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+
 import ProfileCard from './profile-card/profile-card';
 import type { ProfileData } from './types';
-import type { User } from '../../contexts/types';
+import { useAuth } from '@/contexts/auth-context';
+import type { User } from '@/contexts/types';
 
 interface ProfileProps {
   userOverride?: User;

@@ -1,30 +1,32 @@
-import './content.scss';
+import './Content.scss';
+
 import { Route, Routes } from 'react-router-dom';
-import About from '../../pages/about.tsx';
-import Converter from '../../pages/converter/converter.tsx';
-import Encyclopedia from '../../pages/encyclopedia.tsx';
-import Training from '../../pages/trainings.tsx';
-import PatrolList from '../../pages/competition/patrol-list/patrol-list.tsx';
-import UserPage from '../../pages/competition/user-page/user-page.tsx';
-import SignIn from '../../pages/sign-in/sign-in.tsx';
-import SignUp from '../../pages/sign-up/sign-up.tsx';
-import Profile from '../../pages/profile/profile.tsx';
-import Competition from '../../pages/competition/competition.tsx';
-import CompetitionsList from '../../pages/competition/competitions-list/competitions-list.tsx';
-import Achievements from '../../pages/achievements/achievements.tsx';
-import ResetPassword from '../../pages/reset-password/reset-password.tsx';
-import AdminPanel from '../../pages/admin/admin-panel.tsx';
-import ProtectedAdminRoute from '../../pages/admin/protected-admin-route.tsx';
-import UserProfileView from '../../pages/admin/user-profile-view/user-profile-view.tsx';
-import UserEdit from '../../pages/admin/user-edit/user-edit.tsx';
+
+import About from '@/pages/About';
+import Achievements from '@/pages/achievements/achievements';
+import AdminPanel from '@/pages/admin/admin-panel';
+import ProtectedAdminRoute from '@/pages/admin/protected-admin-route';
+import UserEdit from '@/pages/admin/user-edit/user-edit';
+import UserProfileView from '@/pages/admin/user-profile-view/user-profile-view';
+import Competition from '@/pages/competition/competition';
+import CompetitionsList from '@/pages/competition/competitions-list/competitions-list';
+import PatrolList from '@/pages/competition/patrol-list/patrol-list';
+import UserPage from '@/pages/competition/user-page/user-page';
+import Converter from '@/pages/converter/converter';
+import Encyclopedia from '@/pages/Encyclopedia';
 // TODO: Settings temporarily disabled - functionality moved to Profile
-// import Settings from '../settings/settings.tsx';
-import GoogleCallback from '../../pages/google-callback/google-callback.tsx';
-import TournamentList from '../../pages/tournament/tournament-list/tournament-list.tsx';
-import UserApplications from '../../pages/tournament/user-applications/user-applications.tsx';
-import AdminApplications from '../../pages/tournament/admin-applications/admin-applications.tsx';
-import PublicApplication from '../../pages/tournament/public-application/public-application.tsx';
-import ProfileEditPage from '../../pages/profile/profile-edit-page.tsx';
+// import Settings from '@/components/Settings/Settings.tsx';
+import GoogleCallback from '@/pages/google-callback/google-callback';
+import Profile from '@/pages/profile/profile';
+import ProfileEditPage from '@/pages/profile/profile-edit-page';
+import ResetPassword from '@/pages/reset-password/reset-password';
+import SignIn from '@/pages/sign-in/sign-in';
+import SignUp from '@/pages/sign-up/sign-up';
+import AdminApplications from '@/pages/tournament/admin-applications/admin-applications';
+import PublicApplication from '@/pages/tournament/public-application/public-application';
+import TournamentList from '@/pages/tournament/tournament-list/tournament-list';
+import UserApplications from '@/pages/tournament/user-applications/user-applications';
+import Training from '@/pages/Trainings';
 
 function Content() {
   return (
