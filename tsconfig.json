@@ -13,6 +13,7 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
+    "types": ["vite/client", "vite-plugin-pwa/client"],
 
     /* Linting */
     "strict": true,
@@ -20,17 +21,8 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
 
-    /* Path mapping */
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["src/*"],
-      "@/components/*": ["src/components/*"],
-      "@/pages/*": ["src/pages/*"],
-      "@/services/*": ["src/services/*"],
-      "@/contexts/*": ["src/contexts/*"],
-      "@/config/*": ["src/config/*"],
-      "@/types/*": ["src/types/*"]
-    }
+    /* Path mapping (removed alias) */
+    "baseUrl": "."
   },
   "include": [
     "src/**/*"

@@ -18,9 +18,9 @@ import {
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-import { useAuth } from '@/contexts/auth-context';
-import apiService from '@/services/api';
-import { formatDate } from '@/utils/date-utils';
+import { useAuth } from '../../../contexts/auth-context';
+import apiService from '../../../services/api';
+import { formatDate } from '../../../utils/date-utils';
 
 interface Tournament {
   id: string;

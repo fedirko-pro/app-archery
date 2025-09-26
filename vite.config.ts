@@ -15,15 +15,14 @@ export default defineConfig(({ mode }) => {
     // keep as-is if not a valid URL; env validation should catch this in app
   }
   return {
-    resolve: {
-      alias: {
-        '@': path.resolve(__dirname, 'src'),
-      },
-    },
     css: {
       preprocessorOptions: {
         scss: {
-          additionalData: "@use '@/sass/helpers/mixins' as mx;\n",
+          additionalData: "@use 'helpers/mixins' as mx;\n",
+          // Support absolute-like Sass imports from src/sass without aliases
+          includePaths: ['src/sass', 'src'],
+          // For modern compiler API
+          loadPaths: ['src/sass', 'src'],
         },
       },
     },

@@ -12,10 +12,10 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
 
-import { GoogleIcon } from '@/components/custom-icons';
-import env from '@/config/env';
-import { useAuth } from '@/contexts/auth-context';
-import type { RegisterData } from '@/contexts/types';
+import { GoogleIcon } from '../../components/custom-icons';
+import env from '../../config/env';
+import { useAuth } from '../../contexts/auth-context';
+import type { RegisterData } from '../../contexts/types';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',

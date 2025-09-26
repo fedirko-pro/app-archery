@@ -53,4 +53,4 @@ export interface AuthContextType {
   handleGoogleAuth: (userData: User) => void;
   clearError: () => void;
   isAuthenticated: boolean;
-} 
+}

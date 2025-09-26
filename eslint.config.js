@@ -32,7 +32,7 @@ export default [
       '@typescript-eslint/no-unused-vars': ['warn'],
       '@typescript-eslint/explicit-function-return-type': 'off',
 
-      // Enforce import resolution (respects TS path aliases)
+      // Enforce import resolution
       'import/no-unresolved': ['error', { caseSensitive: true }],
       // Enforce import order and grouping
       'perfectionist/sort-imports': [
@@ -47,11 +47,7 @@ export default [
             'unknown',
           ],
           newlinesBetween: 'always',
-          customGroups: {
-            value: {
-              internal: ['^@/'],
-            },
-          },
+          // no custom alias groups
         },
       ],
       // Prefer explicit extensions only for non-TS
@@ -72,6 +68,7 @@ export default [
       react: {
         version: 'detect',
       },
+      // Use TS resolver so extensionless TS imports resolve in lint
       'import-x/resolver': {
         typescript: {
           project: './tsconfig.json',

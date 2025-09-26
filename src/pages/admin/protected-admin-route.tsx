@@ -2,7 +2,7 @@ import { Box, CircularProgress } from '@mui/material';
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 
-import { useAuth } from '@/contexts/auth-context';
+import { useAuth } from '../../contexts/auth-context';
 
 interface ProtectedAdminRouteProps {
   children: React.ReactNode;

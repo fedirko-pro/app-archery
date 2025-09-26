@@ -8,8 +8,8 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemText from '@mui/material/ListItemText';
 import { useState, useEffect } from 'react';
 
-import AlertDialog from '@/components/dialogs/alert-dialog';
-import InfoDialog from '@/components/dialogs/info-dialog';
+import AlertDialog from '../components/dialogs/alert-dialog';
+import InfoDialog from '../components/dialogs/info-dialog';
 
 interface Training {
   title: string;

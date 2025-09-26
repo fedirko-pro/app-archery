@@ -10,9 +10,9 @@ import {
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
-import { useAuth } from '@/contexts/auth-context';
-import TournamentApplicationForm from '@/pages/tournament/tournament-application-form/tournament-application-form';
-import apiService from '@/services/api';
+import { useAuth } from '../../../contexts/auth-context';
+import apiService from '../../../services/api';
+import TournamentApplicationForm from '../tournament-application-form/tournament-application-form';
 
 const PublicApplication: React.FC = () => {
   const { tournamentId } = useParams<{ tournamentId: string }>();

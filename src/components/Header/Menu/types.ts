@@ -24,4 +24,4 @@ export interface NavLinkProps {
   className?: string;
   onClick?: (e: React.MouseEvent) => void;
   clickHandle?: () => void;
-} 
+}

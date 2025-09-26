@@ -2,7 +2,7 @@ import { Edit, Email } from '@mui/icons-material';
 import { Box, Button, Alert } from '@mui/material';
 import React, { useState } from 'react';
 
-import apiService from '@/services/api';
+import apiService from '../../../services/api';
 
 interface AdminActionsProps {
   userId: string;

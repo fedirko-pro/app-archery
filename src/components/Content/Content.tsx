@@ -2,31 +2,32 @@ import './Content.scss';
 
 import { Route, Routes } from 'react-router-dom';
 
-import About from '@/pages/About';
-import Achievements from '@/pages/achievements/achievements';
-import AdminPanel from '@/pages/admin/admin-panel';
-import ProtectedAdminRoute from '@/pages/admin/protected-admin-route';
-import UserEdit from '@/pages/admin/user-edit/user-edit';
-import UserProfileView from '@/pages/admin/user-profile-view/user-profile-view';
-import Competition from '@/pages/competition/competition';
-import CompetitionsList from '@/pages/competition/competitions-list/competitions-list';
-import PatrolList from '@/pages/competition/patrol-list/patrol-list';
-import UserPage from '@/pages/competition/user-page/user-page';
-import Converter from '@/pages/converter/converter';
-import Encyclopedia from '@/pages/Encyclopedia';
+import About from '../../pages/About';
+import Achievements from '../../pages/achievements/achievements';
+import AdminPanel from '../../pages/admin/admin-panel';
+import ProtectedAdminRoute from '../../pages/admin/protected-admin-route';
+import UserEdit from '../../pages/admin/user-edit/user-edit';
+import UserProfileView from '../../pages/admin/user-profile-view/user-profile-view';
+import Competition from '../../pages/competition/competition';
+import CompetitionsList from '../../pages/competition/competitions-list/competitions-list';
+import PatrolList from '../../pages/competition/patrol-list/patrol-list';
+import UserPage from '../../pages/competition/user-page/user-page';
+import Converter from '../../pages/converter/converter';
+import Encyclopedia from '../../pages/Encyclopedia';
 // TODO: Settings temporarily disabled - functionality moved to Profile
-// import Settings from '@/components/Settings/Settings.tsx';
-import GoogleCallback from '@/pages/google-callback/google-callback';
-import Profile from '@/pages/profile/profile';
-import ProfileEditPage from '@/pages/profile/profile-edit-page';
-import ResetPassword from '@/pages/reset-password/reset-password';
-import SignIn from '@/pages/sign-in/sign-in';
-import SignUp from '@/pages/sign-up/sign-up';
-import AdminApplications from '@/pages/tournament/admin-applications/admin-applications';
-import PublicApplication from '@/pages/tournament/public-application/public-application';
-import TournamentList from '@/pages/tournament/tournament-list/tournament-list';
-import UserApplications from '@/pages/tournament/user-applications/user-applications';
-import Training from '@/pages/Trainings';
+// import Settings from '../Settings/Settings.tsx';
+import GoogleCallback from '../../pages/google-callback/google-callback';
+import Profile from '../../pages/profile/profile';
+import ProfileEditPage from '../../pages/profile/profile-edit-page';
+import ProtectedRoute from '../../pages/protected-route';
+import ResetPassword from '../../pages/reset-password/reset-password';
+import SignIn from '../../pages/sign-in/sign-in';
+import SignUp from '../../pages/sign-up/sign-up';
+import AdminApplications from '../../pages/tournament/admin-applications/admin-applications';
+import PublicApplication from '../../pages/tournament/public-application/public-application';
+import TournamentList from '../../pages/tournament/tournament-list/tournament-list';
+import UserApplications from '../../pages/tournament/user-applications/user-applications';
+import Training from '../../pages/Trainings';
 
 function Content() {
   return (
@@ -39,8 +40,22 @@ function Content() {
         <Route path="/auth/google/callback" element={<GoogleCallback />} />
         <Route path="/reset-password" element={<ResetPassword />} />
 
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/profile/edit" element={<ProfileEditPage />} />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile/edit"
+          element={
+            <ProtectedRoute>
+              <ProfileEditPage />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/achievements" element={<Achievements />} />
         <Route
           path="/admin/users"

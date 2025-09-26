@@ -3,7 +3,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import Chip from '@mui/material/Chip';
 import React from 'react';
 
-import type { ProfileData } from '@/pages/profile/types';
+import type { ProfileData } from '../types';
 
 interface ProfileEditFormProps {
   profileData: ProfileData;

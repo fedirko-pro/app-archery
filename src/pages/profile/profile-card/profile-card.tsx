@@ -2,7 +2,7 @@ import { Avatar, Typography, Box, Button } from '@mui/material';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import type { ProfileData } from '@/pages/profile/types';
+import type { ProfileData } from '../types';
 
 interface ProfileCardProps {
   profileData: ProfileData;

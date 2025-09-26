@@ -22,33 +22,33 @@
   text-transform: uppercase;
 }
 
-  header {
-    .hamburger {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      opacity: 1;
-      transition: all 0.3s;
-      padding: 16px;
-      span {
-        display: block;
-        width: 32px;
-        height: 3px;
-        border-radius: 2px;
-        margin: 8px 0;
-        background: $blue;
-        &:first-of-type,
-        &:last-of-type {
-          margin: 0;
-        }
-      }
-      &.hidden_smooth {
-        transition: all 0.3s;
-        opacity: 0;
+header {
+  .hamburger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    opacity: 1;
+    transition: all 0.3s;
+    padding: 16px;
+    span {
+      display: block;
+      width: 32px;
+      height: 3px;
+      border-radius: 2px;
+      margin: 8px 0;
+      background: $blue;
+      &:first-of-type,
+      &:last-of-type {
+        margin: 0;
       }
     }
+    &.hidden_smooth {
+      transition: all 0.3s;
+      opacity: 0;
+    }
   }
+}
 
 @media screen and (max-width: 768px) {
   // max-width: 768px

@@ -4,7 +4,7 @@ import { Box, Typography, Alert } from '@mui/material';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import UsersList from '@/pages/admin/users-list/users-list';
+import UsersList from './users-list/users-list';
 
 const AdminPanel: React.FC = () => {
   const navigate = useNavigate();

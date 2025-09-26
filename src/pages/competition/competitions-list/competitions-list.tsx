@@ -7,7 +7,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import Box from '@mui/material/Box';
 import { useState } from 'react';
 
-import UserCard from '@/pages/competition/user-card/user-card';
+import UserCard from '../user-card/user-card';
 
 export default function CompetitionsList() {
   const [expanded, setExpanded] = useState<string | false>('false');

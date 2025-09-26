@@ -2,9 +2,9 @@ import { Box, CircularProgress, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
-import { useAuth } from '@/contexts/auth-context';
-import type { User } from '@/contexts/types';
-import apiService from '@/services/api';
+import { useAuth } from '../../contexts/auth-context';
+import type { User } from '../../contexts/types';
+import apiService from '../../services/api';
 
 const GoogleCallback = () => {
   const [searchParams] = useSearchParams();

@@ -3,12 +3,12 @@ import { Box, Button, Alert, CircularProgress } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
-import type { User } from '@/contexts/types';
-import AdminActions from '@/pages/admin/admin-actions/admin-actions';
-import ProfileCard from '@/pages/profile/profile-card/profile-card';
-import ProfileEditForm from '@/pages/profile/profile-edit-form/profile-edit-form';
-import type { ProfileData } from '@/pages/profile/types';
-import apiService from '@/services/api';
+import type { User } from '../../../contexts/types';
+import apiService from '../../../services/api';
+import ProfileCard from '../../profile/profile-card/profile-card';
+import ProfileEditForm from '../../profile/profile-edit-form/profile-edit-form';
+import type { ProfileData } from '../../profile/types';
+import AdminActions from '../admin-actions/admin-actions';
 
 const UserProfileView: React.FC = () => {
   const { userId } = useParams<{ userId: string }>();

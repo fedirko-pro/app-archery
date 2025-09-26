@@ -3,10 +3,10 @@ import './profile.scss';
 import { Box, CircularProgress } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 
+import { useAuth } from '../../contexts/auth-context';
+import type { User } from '../../contexts/types';
 import ProfileCard from './profile-card/profile-card';
 import type { ProfileData } from './types';
-import { useAuth } from '@/contexts/auth-context';
-import type { User } from '@/contexts/types';
 
 interface ProfileProps {
   userOverride?: User;

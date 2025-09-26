@@ -11,4 +11,4 @@ export interface PasswordValidation {
   newPasswordMessage: string;
   confirmPasswordError: boolean;
   confirmPasswordMessage: string;
-} 
+}

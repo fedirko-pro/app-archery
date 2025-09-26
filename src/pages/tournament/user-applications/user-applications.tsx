@@ -16,8 +16,8 @@ import {
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import apiService from '@/services/api';
-import { formatDate } from '@/utils/date-utils';
+import apiService from '../../../services/api';
+import { formatDate } from '../../../utils/date-utils';
 
 interface TournamentApplication {
   id: string;

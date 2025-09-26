@@ -8,6 +8,7 @@ import React, {
 } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import apiService from '../services/api';
 import type {
   User,
   RegisterData,
@@ -15,7 +16,6 @@ import type {
   AuthContextType,
   ChangePasswordData,
 } from './types';
-import apiService from '@/services/api';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 

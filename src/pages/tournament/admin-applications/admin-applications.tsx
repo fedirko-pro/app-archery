@@ -27,8 +27,8 @@ import {
 } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 
-import apiService from '@/services/api';
-import { formatDate, getApplicationDeadline } from '@/utils/date-utils';
+import apiService from '../../../services/api';
+import { formatDate, getApplicationDeadline } from '../../../utils/date-utils';
 
 interface TournamentApplication {
   id: string;

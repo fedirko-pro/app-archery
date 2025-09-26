@@ -16,9 +16,9 @@ import {
 } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 
-import type { User } from '@/contexts/types';
-import apiService from '@/services/api';
-import { formatDate } from '@/utils/date-utils';
+import type { User } from '../../../contexts/types';
+import apiService from '../../../services/api';
+import { formatDate } from '../../../utils/date-utils';
 
 interface UsersListProps {
   onEditUser: (user: User) => void;

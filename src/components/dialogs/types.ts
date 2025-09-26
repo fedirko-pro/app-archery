@@ -10,4 +10,4 @@ export interface AlertDialogProps {
   handleConfirm: () => void;
   question: string;
   hint: string;
-} 
+}

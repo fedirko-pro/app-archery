@@ -14,10 +14,10 @@ import {
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { useAuth } from '../../contexts/auth-context';
+import apiService from '../../services/api';
 import ProfileEditForm from './profile-edit-form/profile-edit-form';
 import type { ProfileData } from './types';
-import { useAuth } from '@/contexts/auth-context';
-import apiService from '@/services/api';
 
 const ProfileEditPage: React.FC = () => {
   const {

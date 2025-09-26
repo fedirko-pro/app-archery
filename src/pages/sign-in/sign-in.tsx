@@ -13,10 +13,10 @@ import Typography from '@mui/material/Typography';
 import * as React from 'react';
 import { useLocation } from 'react-router-dom';
 
+import { GoogleIcon } from '../../components/custom-icons';
+import env from '../../config/env';
+import { useAuth } from '../../contexts/auth-context';
 import ForgotPassword from './forgot-password';
-import { GoogleIcon } from '@/components/custom-icons';
-import env from '@/config/env';
-import { useAuth } from '@/contexts/auth-context';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',

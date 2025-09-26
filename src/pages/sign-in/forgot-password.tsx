@@ -9,7 +9,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import React, { useState } from 'react';
 
-import apiService from '@/services/api';
+import apiService from '../../services/api';
 
 interface ForgotPasswordProps {
   open: boolean;

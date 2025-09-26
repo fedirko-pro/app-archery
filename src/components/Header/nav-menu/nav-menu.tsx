@@ -3,8 +3,8 @@ import '../Header.scss';
 import classNames from 'classnames';
 import { useState } from 'react';
 
-import Menu from '@/components/Header/Menu/Menu';
-import { useAuth } from '@/contexts/auth-context';
+import { useAuth } from '../../../contexts/auth-context';
+import Menu from '../Menu/Menu';
 
 function NavMenu() {
   const [active, setActive] = useState(false);

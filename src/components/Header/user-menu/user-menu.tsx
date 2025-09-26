@@ -3,9 +3,9 @@ import '../Header.scss';
 import Avatar from '@mui/material/Avatar';
 import React, { useState } from 'react';
 
-import Menu from '@/components/Header/Menu/Menu';
-import type { MenuSection } from '@/components/Header/Menu/types';
-import { useAuth } from '@/contexts/auth-context';
+import { useAuth } from '../../../contexts/auth-context';
+import Menu from '../Menu/Menu';
+import type { MenuSection } from '../Menu/types';
 
 const UserMenu: React.FC = () => {
   const [active, setActive] = useState<boolean>(false);

@@ -8,4 +8,4 @@ export interface ResetPasswordValidation {
   passwordMessage: string;
   confirmPasswordError: boolean;
   confirmPasswordMessage: string;
-} 
+}
