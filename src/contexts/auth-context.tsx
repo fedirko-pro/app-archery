@@ -129,31 +129,47 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setUser(userData);
   };
 
-  const handleGoogleAuth = (userData: User): void => {
-    setUser(userData);
+  const handleGoogleAuth = async (): Promise<void> => {
+    try {
+      setLoading(true);
 
-    // Запобігаємо повторній обробці
-    if (pendingApplicationProcessedRef.current) {
-      return;
-    }
+      if (!apiService.isAuthenticated()) {
+        navigate('/signin');
+        return;
+      }
 
-    // Перевіряємо pending application одразу після автентифікації
-    const pendingApplication = sessionStorage.getItem('pendingApplication');
+      const userData = await apiService.getProfile();
+      setUser(userData);
 
-    if (pendingApplication) {
-      try {
-        const { redirectTo } = JSON.parse(pendingApplication);
-        sessionStorage.removeItem('pendingApplication');
-        pendingApplicationProcessedRef.current = true;
-        navigate(redirectTo);
-      } catch {
-        sessionStorage.removeItem('pendingApplication');
+      // Запобігаємо повторній обробці
+      if (pendingApplicationProcessedRef.current) {
+        return;
+      }
+
+      // Перевіряємо pending application одразу після автентифікації
+      const pendingApplication = sessionStorage.getItem('pendingApplication');
+
+      if (pendingApplication) {
+        try {
+          const { redirectTo } = JSON.parse(pendingApplication);
+          sessionStorage.removeItem('pendingApplication');
+          pendingApplicationProcessedRef.current = true;
+          navigate(redirectTo);
+        } catch {
+          sessionStorage.removeItem('pendingApplication');
+          pendingApplicationProcessedRef.current = true;
+          navigate('/profile');
+        }
+      } else {
         pendingApplicationProcessedRef.current = true;
         navigate('/profile');
       }
-    } else {
-      pendingApplicationProcessedRef.current = true;
-      navigate('/profile');
+    } catch {
+      apiService.logout();
+      setUser(null);
+      navigate('/signin');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -218,7 +234,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     updateUser,
     handleGoogleAuth,
     clearError,
-    isAuthenticated: !!user,
+    isAuthenticated: apiService.isAuthenticated(),
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

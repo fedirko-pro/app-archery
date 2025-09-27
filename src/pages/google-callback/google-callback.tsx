@@ -3,8 +3,6 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { useAuth } from '../../contexts/auth-context';
-import type { User } from '../../contexts/types';
-import apiService from '../../services/api';
 
 const GoogleCallback = () => {
   const [searchParams] = useSearchParams();
@@ -33,13 +31,7 @@ const GoogleCallback = () => {
 
         if (token) {
           localStorage.setItem('authToken', token);
-
-          try {
-            const userData = await apiService.getProfile();
-            handleGoogleAuth(userData);
-          } catch {
-            handleGoogleAuth({} as User);
-          }
+          await handleGoogleAuth();
         } else {
           window.location.href = '/signin';
         }
