@@ -96,20 +96,12 @@ function NavMenu() {
 
   return (
     <>
-      <div
-        className={classNames('hamburger', { hidden_smooth: active })}
-        onClick={clickHandler}
-      >
+      <div className={classNames('hamburger', { hidden_smooth: active })} onClick={clickHandler}>
         <span></span>
         <span></span>
         <span></span>
       </div>
-      <Menu
-        active={active}
-        sections={sections}
-        position={'left'}
-        clickHandle={clickHandler}
-      />
+      <Menu active={active} sections={sections} position={'left'} clickHandle={clickHandler} />
     </>
   );
 }

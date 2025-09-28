@@ -3,8 +3,8 @@ import './Header.scss';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-import NavMenu from './nav-menu/nav-menu';
-import UserMenu from './user-menu/user-menu';
+import NavMenu from './nav-menu/NavMenu';
+import UserMenu from './user-menu/UserMenu';
 
 const Header: React.FC = () => {
   return (

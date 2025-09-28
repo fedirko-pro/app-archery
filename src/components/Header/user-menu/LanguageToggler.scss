@@ -1,0 +1,25 @@
+@use '../../../sass/helpers/variables' as *;
+
+.language_toggle_button_group {
+  .MuiToggleButton-root {
+    color: #ffd700;
+    border-color: #ffd700;
+    min-width: 50px;
+  }
+
+  .MuiToggleButtonGroup-grouped:not(:last-of-type) {
+    border-right-color: #ffd700;
+  }
+  .MuiToggleButtonGroup-grouped:not(:first-of-type) {
+    border-left-color: #ffd700;
+    margin-left: -1px;
+  }
+
+  .MuiToggleButton-root.Mui-selected {
+    color: $white;
+    background: $blue;
+  }
+  .MuiToggleButton-root.Mui-selected:hover {
+    background: $blue;
+  }
+}

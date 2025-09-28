@@ -1,88 +1,7 @@
 @use '../../../sass/helpers/variables' as *;
 @use '../../../sass/helpers/mixins';
 
-.header_menu {
-  display: flex;
-  flex-direction: row;
-
-  .menu_list {
-    display: flex;
-    flex-direction: row;
-    li {
-      display: flex;
-      align-items: center;
-      a {
-        display: block;
-        padding: 16px 24px;
-        text-transform: uppercase;
-        color: $blue;
-      }
-      &:hover,
-      &.current-menu-item {
-        background: $blue;
-        a {
-          color: $yellow;
-          text-decoration: none;
-        }
-      }
-      &.menu-item-has-children {
-        position: relative;
-        padding-right: 40px;
-        &:after {
-          content: '';
-          position: absolute;
-          top: 35%;
-          right: 32px;
-          display: block;
-          width: 16px;
-          height: 16px;
-          border: 3px solid transparent;
-          border-right-color: $blue;
-          border-bottom-color: $blue;
-          transform: rotate(45deg);
-        }
-        .sub-menu {
-          display: none;
-        }
-        &.current-menu-item {
-          &:after {
-            border-right-color: $yellow;
-            border-bottom-color: $yellow;
-          }
-        }
-        &:hover {
-          &:after {
-            border-right-color: $yellow;
-            border-bottom-color: $yellow;
-          }
-          .sub-menu {
-            display: block;
-            position: absolute;
-            z-index: 1;
-            top: 100%;
-            background: white;
-            width: 100%;
-            box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
-            li {
-              &:hover,
-              &.current-menu-item {
-                a {
-                  color: $yellow;
-                }
-              }
-            }
-            a {
-              color: $blue;
-            }
-          }
-        }
-      }
-    }
-  }
-}
-
-// max-width: 1024px
-.header_menu {
+.menu {
   display: block;
   position: absolute;
   z-index: 2;
@@ -92,6 +11,7 @@
   width: 100%;
   transition: all 0.3s;
   padding: 0 10% 0 0;
+
   &.right {
     left: auto;
     right: -100%;
@@ -103,36 +23,69 @@
       transition: all 0.3s;
     }
   }
+
   &.active {
     left: 0;
     transition: all 0.3s;
   }
-  .menu_list {
+
+  .menu_container {
+    display: flex;
     flex-direction: column;
-    background: rgba(0, 0, 0, 0.9);
     height: 100%;
+    background: rgba(0, 0, 0, 0.95);
     padding: 16px 0;
-    overflow: scroll;
 
-    .menu_separator {
-      margin: 8px 0;
-    }
-
-    li.menu-item-has-children {
-      display: flex;
+    .menu_list {
       flex-direction: column;
-      align-items: flex-start;
-      &:after {
-        display: none;
+      height: 100%;
+      overflow: scroll;
+
+      .menu_separator {
+        margin: 8px 0;
       }
-      .sub-menu {
-        display: block;
-        margin-left: 24px;
-        position: relative;
-        background: transparent;
-        li {
-          a {
-            font-size: 16px;
+
+      li.menu-item-has-children {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        &:after {
+          display: none;
+        }
+        .sub-menu {
+          display: block;
+          margin-left: 24px;
+          position: relative;
+          background: transparent;
+          li {
+            button {
+              font-size: 16px;
+              &:after {
+                display: none;
+              }
+            }
+          }
+        }
+      }
+      li {
+        button {
+          padding: 16px 32px;
+          font-size: 20px;
+          color: $yellow;
+          width: 100%;
+          text-align: left;
+          background: none;
+
+          &.admin-menu-item {
+            padding-left: 48px;
+            font-size: 18px;
+            color: #ffb347;
+          }
+        }
+        &.current-menu-item {
+          > button {
+            color: $white;
+            background: $blue;
             &:after {
               display: none;
             }
@@ -140,34 +93,18 @@
         }
       }
     }
-    li {
-      a {
-        padding: 16px 32px;
-        font-size: 20px;
-        color: $yellow;
 
-        &.admin-menu-item {
-          padding-left: 48px;
-          font-size: 18px;
-          color: #ffb347;
-        }
-      }
-      &.current-menu-item {
-        > a {
-          color: $yellow;
-          &:after {
-            display: none;
-          }
-        }
-      }
+    .menu_footer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px 32px;
     }
   }
 }
 
-@media screen and (max-width: 768px) {
-  // max-width: 768px
+@media screen and (min-width: 768px) {
 }
 
-@media screen and (max-width: 590px) {
-  // max-width: 590px
+@media screen and (min-width: 1024px) {
 }

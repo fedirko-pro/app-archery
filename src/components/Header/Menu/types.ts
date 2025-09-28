@@ -16,6 +16,7 @@ export interface MenuProps {
   position: 'left' | 'right';
   clickHandle: () => void;
   onLogout?: (() => void) | null;
+  footer?: React.ReactNode;
 }
 
 export interface NavLinkProps {

@@ -6,9 +6,13 @@ import React, { useState } from 'react';
 import { useAuth } from '../../../contexts/auth-context';
 import Menu from '../Menu/Menu';
 import type { MenuSection } from '../Menu/types';
+import LanguageToggler from './LanguageToggler';
 
 const UserMenu: React.FC = () => {
   const [active, setActive] = useState<boolean>(false);
+  // Reserved for future integration with app-wide i18n if needed
+  // const [language, setLanguage] = useState<string>('en');
+
   const { user, isAuthenticated, logout, loading } = useAuth();
 
   if (loading) {
@@ -32,10 +36,12 @@ const UserMenu: React.FC = () => {
     }, 100);
   };
 
+  // const handleLanguageChange = (_lang: string) => setLanguage(_lang);
+
   const authenticatedMenuItems = [
     {
       link: '/profile',
-      label: 'My profile',
+      label: 'My profile (' + user?.firstName + ' ' + user?.lastName + ')',
     },
     // TODO: Implement My achievements
     // {
@@ -62,9 +68,7 @@ const UserMenu: React.FC = () => {
 
   const sections: MenuSection[] = [
     {
-      items: isAuthenticated
-        ? authenticatedMenuItems
-        : unauthenticatedMenuItems,
+      items: isAuthenticated ? authenticatedMenuItems : unauthenticatedMenuItems,
       isAdmin: false,
     },
   ];
@@ -86,6 +90,7 @@ const UserMenu: React.FC = () => {
         position={'right'}
         clickHandle={hamburgerClick}
         onLogout={isAuthenticated ? handleLogout : null}
+        footer={<LanguageToggler />}
       />
     </>
   );
