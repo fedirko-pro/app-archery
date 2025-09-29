@@ -1,4 +1,4 @@
-@use '../../sass/helpers/variables';
+@use '../../sass/helpers/variables' as *;
 @use '../../sass/helpers/mixins';
 
 .menu_icon {
@@ -30,6 +30,7 @@ header {
     opacity: 1;
     transition: all 0.3s;
     padding: 16px;
+
     span {
       display: block;
       width: 32px;

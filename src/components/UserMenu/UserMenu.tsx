@@ -19,7 +19,7 @@ const UserMenu: React.FC = () => {
     return null; // або показати loading spinner
   }
 
-  const hamburgerClick = (): void => {
+  const menuClick = (): void => {
     setActive(!active);
     if (!active) {
       document.body.classList.add('lock');
@@ -76,7 +76,7 @@ const UserMenu: React.FC = () => {
   return (
     <>
       <Avatar
-        onClick={hamburgerClick}
+        onClick={menuClick}
         sx={{
           marginRight: '16px',
           cursor: 'pointer',
@@ -88,7 +88,7 @@ const UserMenu: React.FC = () => {
         active={active}
         sections={sections}
         position={'right'}
-        clickHandle={hamburgerClick}
+        clickHandle={menuClick}
         onLogout={isAuthenticated ? handleLogout : null}
         footer={<LanguageToggler />}
       />

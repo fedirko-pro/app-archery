@@ -1,4 +1,4 @@
-import '../../components/Header/Header.scss';
+import './NavMenu.scss';
 
 import classNames from 'classnames';
 import { useState } from 'react';
