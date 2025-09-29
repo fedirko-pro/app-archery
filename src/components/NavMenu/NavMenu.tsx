@@ -1,9 +1,9 @@
-import '../Header.scss';
+import '../../components/Header/Header.scss';
 
 import classNames from 'classnames';
 import { useState } from 'react';
 
-import { useAuth } from '../../../contexts/auth-context';
+import { useAuth } from '../../contexts/auth-context';
 import Menu from '../Menu/Menu';
 
 function NavMenu() {

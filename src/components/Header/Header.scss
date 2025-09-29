@@ -40,8 +40,7 @@ header {
       background-size: cover;
     }
     &.support {
-      background: url('../../../src/img/icons/hand-holding-heart.svg') center
-        no-repeat;
+      background: url('../../../src/img/icons/hand-holding-heart.svg') center no-repeat;
       background-size: cover;
     }
   }
@@ -79,8 +78,7 @@ header {
     &.active {
       background: $blue;
       .menu_icon {
-        background: url('../../../src/img/icons/search_yellow.svg') center
-          no-repeat;
+        background: url('../../../src/img/icons/search_yellow.svg') center no-repeat;
         background-size: cover;
       }
       .menu_title {
@@ -89,53 +87,9 @@ header {
     }
     &.active {
       .menu_icon {
-        background: url('../../../src/img/icons/cross_yellow.svg') center
-          no-repeat;
+        background: url('../../../src/img/icons/cross_yellow.svg') center no-repeat;
         background-size: cover;
       }
     }
   }
-}
-
-// max-width: 1024px
-header {
-  .hamburger {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    opacity: 1;
-    transition: all 0.3s;
-    padding: 16px;
-    span {
-      display: block;
-      width: 32px;
-      height: 3px;
-      border-radius: 2px;
-      margin: 8px 0;
-      background: $blue;
-      &:first-of-type,
-      &:last-of-type {
-        margin: 0;
-      }
-    }
-    &.hidden_smooth {
-      transition: all 0.3s;
-      opacity: 0;
-    }
-  }
-
-  .menu_search,
-  .menu_support,
-  .menu_member {
-    padding: 16px;
-  }
-}
-
-@media screen and (max-width: 768px) {
-  // max-width: 768px
-}
-
-@media screen and (max-width: 590px) {
-  // max-width: 590px
 }

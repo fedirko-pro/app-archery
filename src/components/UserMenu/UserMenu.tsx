@@ -1,12 +1,12 @@
-import '../Header.scss';
+import '../Header/Header.scss';
 
 import Avatar from '@mui/material/Avatar';
 import React, { useState } from 'react';
 
-import { useAuth } from '../../../contexts/auth-context';
+import { useAuth } from '../../contexts/auth-context';
+import LanguageToggler from '../LanguageToggler/LanguageToggler';
 import Menu from '../Menu/Menu';
 import type { MenuSection } from '../Menu/types';
-import LanguageToggler from './LanguageToggler';
 
 const UserMenu: React.FC = () => {
   const [active, setActive] = useState<boolean>(false);

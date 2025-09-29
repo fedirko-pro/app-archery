@@ -1,15 +1,15 @@
-@use '../../../sass/helpers/variables';
-@use '../../../sass/helpers/mixins';
+@use '../../sass/helpers/variables';
+@use '../../sass/helpers/mixins';
 
 .menu_icon {
   width: 20px;
   height: 20px;
   &.member {
-    background: url('../../../../src/img/icons/user.svg') center no-repeat;
+    background: url('../../../src/img/icons/user.svg') center no-repeat;
     background-size: cover;
   }
   &.support {
-    background: url('../../../../src/img/icons/hand-holding-heart.svg') center no-repeat;
+    background: url('../../../src/img/icons/hand-holding-heart.svg') center no-repeat;
     background-size: cover;
   }
 }
@@ -47,12 +47,4 @@ header {
       opacity: 0;
     }
   }
-}
-
-@media screen and (max-width: 768px) {
-  // max-width: 768px
-}
-
-@media screen and (max-width: 590px) {
-  // max-width: 590px
 }

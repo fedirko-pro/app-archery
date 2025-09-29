@@ -33,13 +33,11 @@ function Content() {
   return (
     <main>
       <Routes>
-        <Route path="/" element={<Converter />} />
-
+        <Route path="/" element={<Converter />} /> // todo: main page different for users and admins
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/auth/google/callback" element={<GoogleCallback />} />
         <Route path="/reset-password" element={<ResetPassword />} />
-
         <Route
           path="/profile"
           element={
@@ -83,7 +81,6 @@ function Content() {
         />
         {/* TODO: Settings route temporarily disabled - functionality moved to Profile */}
         {/* <Route path="/settings" element={<Settings />} /> */}
-
         <Route path="/converter" element={<Converter />} />
         <Route path="/competitions" element={<CompetitionsList />} />
         <Route path="/competition" element={<Competition />} />
