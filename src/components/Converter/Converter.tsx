@@ -7,7 +7,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 
-import ConverterInputs from './converter-inputs';
+import ConverterInputs from './ConverterInputs';
 
 export default function Converter() {
   const [expanded, setExpanded] = useState<string | false>('false');
@@ -18,9 +18,7 @@ export default function Converter() {
     };
 
   return (
-    <section>
-      <div className="container">
-        <h2>Converter of most common archery measures</h2>
+      <>
         <Accordion
           expanded={expanded === 'panel1'}
           onChange={handleChange('panel1')}
@@ -96,7 +94,31 @@ export default function Converter() {
             />
           </AccordionDetails>
         </Accordion>
-      </div>
-    </section>
+        <Accordion
+          expanded={expanded === 'panel4'}
+          onChange={handleChange('panel4')}
+        >
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel4bh-content"
+            id="panel4bh-header"
+          >
+            <Typography sx={{ width: '33%', flexShrink: 0 }}>
+              Yard - m
+            </Typography>
+            <Typography sx={{ color: 'text.secondary' }}>
+              Yard - Meter
+            </Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <div>Range distance conversions</div>
+            <ConverterInputs
+              labelFirst="Yard"
+              labelSecond="Meter"
+              coef={0.9144}
+            />
+          </AccordionDetails>
+        </Accordion>
+      </>
   );
 }

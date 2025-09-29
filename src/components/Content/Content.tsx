@@ -12,7 +12,7 @@ import Competition from '../../pages/competition/competition';
 import CompetitionsList from '../../pages/competition/competitions-list/competitions-list';
 import PatrolList from '../../pages/competition/patrol-list/patrol-list';
 import UserPage from '../../pages/competition/user-page/user-page';
-import Converter from '../../pages/converter/converter';
+import ConverterPage from '../../pages/ConverterPage';
 import Encyclopedia from '../../pages/Encyclopedia';
 // TODO: Settings temporarily disabled - functionality moved to Profile
 // import Settings from '../Settings/Settings.tsx';
@@ -33,7 +33,7 @@ function Content() {
   return (
     <main>
       <Routes>
-        <Route path="/" element={<Converter />} /> // todo: main page different for users and admins
+        <Route path="/" element={<ConverterPage />} /> // todo: main page different for users and admins
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/auth/google/callback" element={<GoogleCallback />} />
@@ -81,7 +81,7 @@ function Content() {
         />
         {/* TODO: Settings route temporarily disabled - functionality moved to Profile */}
         {/* <Route path="/settings" element={<Settings />} /> */}
-        <Route path="/converter" element={<Converter />} />
+        <Route path="/converter" element={<ConverterPage />} />
         <Route path="/competitions" element={<CompetitionsList />} />
         <Route path="/competition" element={<Competition />} />
         <Route path="/competition/patrols" element={<PatrolList />} />
