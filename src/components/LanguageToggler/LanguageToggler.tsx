@@ -22,6 +22,7 @@ const LanguageToggler: React.FC = () => {
       <ToggleButton value="en">EN</ToggleButton>
       <ToggleButton value="pt">PT</ToggleButton>
       <ToggleButton value="it">IT</ToggleButton>
+      <ToggleButton value="ua">UA</ToggleButton>
     </ToggleButtonGroup>
   );
 };
