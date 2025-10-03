@@ -1,0 +1,109 @@
+import { Accordion, AccordionDetails, AccordionSummary, Box, IconButton, Typography } from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import apiService from '../../services/api';
+import type { CategoryDto } from '../../services/types';
+import { useAuth } from '../../contexts/auth-context';
+
+/**
+ * Categories page renders a single-expandable MUI accordion with bow categories.
+ * Regular users see only the accordion. Admins also see edit/delete actions.
+ */
+const Categories: React.FC = () => {
+  const [categories, setCategories] = useState<CategoryDto[]>([]);
+  const [expanded, setExpanded] = useState<string | false>(false);
+  const navigate = useNavigate();
+  const { user } = useAuth();
+
+  // Load categories once on mount
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const data = await apiService.getCategories();
+        setCategories(data);
+      } catch (e) {
+        // no-op for FE stub
+        console.error(e);
+      }
+    };
+    load();
+  }, []);
+
+  const isAdmin = user?.role === 'admin';
+
+  return (
+    <section>
+      <div className="container">
+        <Typography variant="h4" gutterBottom>Bow categories</Typography>
+
+        {categories.map((category) => (
+          <Accordion
+            key={(category.id || category.code).toLowerCase()}
+            sx={{ mb: 1 }}
+            expanded={expanded === (category.id || category.code)}
+            onChange={(_, isExpanded) => setExpanded(isExpanded ? (category.id || category.code) : false)}
+          >
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              <Box display="flex" alignItems="center" width="100%" gap={2}>
+                <Typography variant="subtitle1" sx={{ fontWeight: 700, minWidth: 64 }}>
+                  {category.code}
+                </Typography>
+                <Typography variant="subtitle1">{category.name}</Typography>
+                {isAdmin && (
+                  <Box sx={{ ml: 'auto' }}>
+                    <IconButton
+                      aria-label="edit"
+                      size="small"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/admin/categories/${category.id || category.code.toLowerCase()}/edit`);
+                      }}
+                    >
+                      <EditIcon fontSize="small" />
+                    </IconButton>
+                    <IconButton
+                      aria-label="delete"
+                      size="small"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/admin/categories/${category.id || category.code.toLowerCase()}/edit`);
+                      }}
+                    >
+                      <DeleteIcon fontSize="small" />
+                    </IconButton>
+                  </Box>
+                )}
+              </Box>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Box sx={{ whiteSpace: 'pre-wrap' }}>
+                {category.description}
+              </Box>
+              {(category.rule_reference || category.rule_citation) && (
+                <Typography variant="body2" sx={{ mt: 1, color: 'text.secondary' }}>
+                  Rule reference: {category.rule_reference}
+                  {category.rule_citation && (
+                    <>
+                      {category.rule_reference ? ' — ' : ''}
+                      <a href={"/rules#" + encodeURIComponent(category.rule_reference || category.rule_citation)}>
+                        {category.rule_citation}
+                      </a>
+                    </>
+                  )}
+                </Typography>
+              )}
+            </AccordionDetails>
+          </Accordion>
+        ))}
+      </div>
+    </section>
+  );
+};
+
+export default Categories;
+
+

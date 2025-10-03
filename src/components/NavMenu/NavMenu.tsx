@@ -58,6 +58,14 @@ function NavMenu() {
       link: '/converter',
       label: 'Converter',
     },
+    {
+      link: '/categories',
+      label: 'Categories',
+    },
+    {
+      link: '/rules',
+      label: 'Rules',
+    },
     // TODO: Implement Knowledge base
     // {
     //   link: '/encyclopedia',

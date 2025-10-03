@@ -28,6 +28,9 @@ import PublicApplication from '../../pages/tournament/public-application/public-
 import TournamentList from '../../pages/tournament/tournament-list/tournament-list';
 import UserApplications from '../../pages/tournament/user-applications/user-applications';
 import Training from '../../pages/Trainings';
+import Categories from '../../pages/categories/Categories';
+import CategoryEdit from '../../pages/categories/admin/category-edit';
+import Rules from '../../pages/rules/Rules';
 
 function Content() {
   return (
@@ -87,6 +90,8 @@ function Content() {
         <Route path="/competition/patrols" element={<PatrolList />} />
         <Route path="/competition/user" element={<UserPage />} />
         <Route path="/about" element={<About />} />
+        <Route path="/categories" element={<Categories />} />
+        <Route path="/rules" element={<Rules />} />
         <Route path="/encyclopedia" element={<Encyclopedia />} />
         <Route path="/trainings" element={<Training />} />
         <Route path="/tournaments" element={<TournamentList />} />
@@ -97,6 +102,14 @@ function Content() {
           element={
             <ProtectedAdminRoute>
               <AdminApplications />
+            </ProtectedAdminRoute>
+          }
+        />
+        <Route
+          path="/admin/categories/:id/edit"
+          element={
+            <ProtectedAdminRoute>
+              <CategoryEdit />
             </ProtectedAdminRoute>
           }
         />

@@ -7,12 +7,18 @@ import type {
   ChangePasswordData,
 } from '../contexts/types';
 import type { ProfileData } from '../pages/profile/types';
-import type { ApiError } from './types';
+import type { ApiError, CategoryDto, RuleDto } from './types';
+import categoriesData from '../data/categories';
+import rulesData from '../data/rules';
 
 interface RequestOptions extends RequestInit {
   headers?: Record<string, string>;
 }
 
+/**
+ * Centralized API client for backend integration.
+ * Temporarily also provides FE-only data sources while BE is not ready.
+ */
 class ApiService {
   private baseURL: string;
 
@@ -32,6 +38,9 @@ class ApiService {
     localStorage.removeItem('authToken');
   }
 
+  /**
+   * Perform an authenticated JSON request to the backend API.
+   */
   private async request<T>(
     endpoint: string,
     options: RequestOptions = {},
@@ -320,6 +329,47 @@ class ApiService {
 
   logout(): void {
     this.removeToken();
+  }
+
+  /**
+   * Fetch categories from a FE-only local data module.
+   * Replaced by backend once available.
+   */
+  async getCategories(): Promise<CategoryDto[]> {
+    return categoriesData as CategoryDto[];
+  }
+
+  /**
+   * Resolve a single category by id or code (case-insensitive).
+   */
+  async getCategoryById(id: string): Promise<CategoryDto | undefined> {
+    const categories = await this.getCategories();
+    const target = id.toLowerCase();
+    return categories.find((c) => {
+      const candidate = (c.id ? String(c.id) : c.code).toLowerCase();
+      return candidate === target;
+    });
+  }
+
+  /**
+   * FE-only stub. Will be implemented when backend is ready.
+   */
+  async upsertCategory(_: CategoryDto): Promise<CategoryDto> {
+    throw new Error('Categories API not available yet. FE stub only.');
+  }
+
+  /**
+   * FE-only stub. Will be implemented when backend is ready.
+   */
+  async deleteCategory(_: string): Promise<void> {
+    throw new Error('Categories API not available yet. FE stub only.');
+  }
+
+  /**
+   * Fetch rules (FE-only dataset for now)
+   */
+  async getRules(): Promise<RuleDto[]> {
+    return rulesData as RuleDto[];
   }
 }
 
