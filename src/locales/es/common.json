@@ -18,7 +18,7 @@
       "downloadPdf": "Descargar PDF"
     },
     "categories": {
-      "title": "Categorías de arco",
+      "title": "Categorías de arco (ordenadas A-Z)",
       "ruleReference": "Referencia de regla"
     },
     "converter": { "title": "Conversor de las medidas más comunes en arquería" },
