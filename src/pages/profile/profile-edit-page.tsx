@@ -12,8 +12,7 @@ import {
   Typography,
 } from '@mui/material';
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 
 import { useAuth } from '../../contexts/auth-context';
 import apiService from '../../services/api';
@@ -30,8 +29,6 @@ const ProfileEditPage: React.FC = () => {
     clearError,
   } = useAuth();
   const navigate = useNavigate();
-  const { lang } = useParams();
-  const { t } = useTranslation('common');
   const [profileData, setProfileData] = useState<ProfileData | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -73,8 +70,7 @@ const ProfileEditPage: React.FC = () => {
         website: user.website || '',
         picture: user.picture || '',
         federationNumber: user.federationNumber || '',
-        categories: user.categories || [],
-        language: (user as any).language || 'pt',
+        categories: Array.isArray(user.categories) ? user.categories : [],
       });
     }
   }, [user]);
@@ -83,20 +79,19 @@ const ProfileEditPage: React.FC = () => {
     const { name, value } = e.target;
     setProfileData((prev) => {
       if (!prev) return prev;
-      if (name === 'categories') {
-        return {
-          ...prev,
-          categories: Array.isArray(value)
-            ? value
-            : value
-                .split(',')
-                .map((s: string) => s.trim())
-                .filter(Boolean),
-        };
-      }
       return {
         ...prev,
         [name]: value,
+      };
+    });
+  };
+
+  const handleCategoriesChange = (newValue: string[]) => {
+    setProfileData((prev) => {
+      if (!prev) return prev;
+      return {
+        ...prev,
+        categories: Array.isArray(newValue) ? newValue : [],
       };
     });
   };
@@ -108,7 +103,7 @@ const ProfileEditPage: React.FC = () => {
     try {
       const updatedUser = await apiService.updateProfile(profileData);
       updateUser(updatedUser);
-      navigate(`/${lang}/profile`);
+      navigate('/profile');
     } catch {
       setError('Failed to update profile. Please try again.');
     } finally {
@@ -117,7 +112,7 @@ const ProfileEditPage: React.FC = () => {
   };
 
   const handleCancel = () => {
-    navigate(`/${lang}/profile`);
+    navigate('/profile');
   };
 
   // Password logic
@@ -258,8 +253,7 @@ const ProfileEditPage: React.FC = () => {
   }
 
   return (
-    <section>
-      <div className="container">
+    <Box sx={{ maxWidth: 700, mx: 'auto', mt: 6 }}>
       {error && (
         <Alert severity="error" sx={{ mb: 2 }}>
           {error}
@@ -269,6 +263,7 @@ const ProfileEditPage: React.FC = () => {
         profileData={profileData}
         isSaving={isSaving}
         onChange={handleChange}
+        onCategoriesChange={handleCategoriesChange}
         onSave={handleSave}
         onCancel={handleCancel}
       />
@@ -276,11 +271,11 @@ const ProfileEditPage: React.FC = () => {
       <Card>
         <CardHeader
           avatar={<Security color="primary" />}
-          title={shouldShowSetPassword ? t('profile.setPassword') : t('profile.changePassword')}
+          title={shouldShowSetPassword ? 'Set Password' : 'Change Password'}
           subheader={
             shouldShowSetPassword
-              ? t('profile.setPasswordSubtitle')
-              : t('profile.changePasswordSubtitle')
+              ? 'Set a password to enable email/password login'
+              : 'Update your password to keep your account secure'
           }
         />
         <CardContent>
@@ -296,8 +291,8 @@ const ProfileEditPage: React.FC = () => {
               onClose={() => setPasswordSuccess(false)}
             >
               {shouldShowSetPassword
-                ? t('profile.setPasswordSuccess')
-                : t('profile.changePasswordSuccess')}
+                ? 'Password set successfully! You can now login with email/password.'
+                : 'Password changed successfully!'}
             </Alert>
           )}
           <Box component="form" onSubmit={handlePasswordSubmit}>
@@ -305,7 +300,7 @@ const ProfileEditPage: React.FC = () => {
               <TextField
                 fullWidth
                 margin="normal"
-              label={t('forms.currentPassword')}
+                label="Current Password"
                 type={showPasswords.current ? 'text' : 'password'}
                 value={passwordForm.currentPassword}
                 onChange={handlePasswordChange('currentPassword')}
@@ -337,7 +332,7 @@ const ProfileEditPage: React.FC = () => {
             <TextField
               fullWidth
               margin="normal"
-              label={t('forms.newPassword')}
+              label="New Password"
               type={showPasswords.new ? 'text' : 'password'}
               value={passwordForm.newPassword}
               onChange={handlePasswordChange('newPassword')}
@@ -361,13 +356,13 @@ const ProfileEditPage: React.FC = () => {
                 variant="caption"
                 sx={{ color: passwordStrength.color, display: 'block', mt: 1 }}
               >
-                {t('reset.strength')}: {passwordStrength.strength}
+                Password strength: {passwordStrength.strength}
               </Typography>
             )}
             <TextField
               fullWidth
               margin="normal"
-              label={t('forms.confirmPassword')}
+              label="Confirm New Password"
               type={showPasswords.confirm ? 'text' : 'password'}
               value={passwordForm.confirmPassword}
               onChange={handlePasswordChange('confirmPassword')}
@@ -403,18 +398,17 @@ const ProfileEditPage: React.FC = () => {
               >
                 {isChangingPassword
                   ? shouldShowSetPassword
-                    ? t('profile.settingPassword')
-                    : t('profile.changingPassword')
+                    ? 'Setting Password...'
+                    : 'Changing Password...'
                   : shouldShowSetPassword
-                    ? t('profile.setPassword')
-                    : t('profile.changePassword')}
+                    ? 'Set Password'
+                    : 'Change Password'}
               </Button>
             </Box>
           </Box>
-          </CardContent>
-        </Card>
-      </div>
-    </section>
+        </CardContent>
+      </Card>
+    </Box>
   );
 };
 
