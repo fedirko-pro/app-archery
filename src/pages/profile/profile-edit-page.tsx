@@ -12,8 +12,8 @@ import {
   Typography,
 } from '@mui/material';
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-
+import { useNavigate, useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../contexts/auth-context';
 import apiService from '../../services/api';
 import ProfileEditForm from './profile-edit-form/profile-edit-form';
@@ -30,6 +30,8 @@ const ProfileEditPage: React.FC = () => {
   } = useAuth();
   const navigate = useNavigate();
   const [profileData, setProfileData] = useState<ProfileData | null>(null);
+  const { lang } = useParams();
+  const { t } = useTranslation('common');
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -71,6 +73,7 @@ const ProfileEditPage: React.FC = () => {
         picture: user.picture || '',
         federationNumber: user.federationNumber || '',
         categories: Array.isArray(user.categories) ? user.categories : [],
+        language: (user as any).language || 'pt',
       });
     }
   }, [user]);
@@ -103,7 +106,7 @@ const ProfileEditPage: React.FC = () => {
     try {
       const updatedUser = await apiService.updateProfile(profileData);
       updateUser(updatedUser);
-      navigate('/profile');
+      navigate(`/${lang}/profile`);
     } catch {
       setError('Failed to update profile. Please try again.');
     } finally {
@@ -112,7 +115,7 @@ const ProfileEditPage: React.FC = () => {
   };
 
   const handleCancel = () => {
-    navigate('/profile');
+    navigate(`/${lang}/profile`);
   };
 
   // Password logic
@@ -271,11 +274,11 @@ const ProfileEditPage: React.FC = () => {
       <Card>
         <CardHeader
           avatar={<Security color="primary" />}
-          title={shouldShowSetPassword ? 'Set Password' : 'Change Password'}
+          title={shouldShowSetPassword ? t('profile.setPassword') : t('profile.changePassword')}
           subheader={
             shouldShowSetPassword
-              ? 'Set a password to enable email/password login'
-              : 'Update your password to keep your account secure'
+              ? t('profile.setPasswordSubtitle')
+              : t('profile.changePasswordSubtitle')
           }
         />
         <CardContent>
@@ -291,8 +294,8 @@ const ProfileEditPage: React.FC = () => {
               onClose={() => setPasswordSuccess(false)}
             >
               {shouldShowSetPassword
-                ? 'Password set successfully! You can now login with email/password.'
-                : 'Password changed successfully!'}
+                ? t('profile.setPasswordSuccess')
+                : t('profile.changePasswordSuccess')}
             </Alert>
           )}
           <Box component="form" onSubmit={handlePasswordSubmit}>
@@ -300,7 +303,7 @@ const ProfileEditPage: React.FC = () => {
               <TextField
                 fullWidth
                 margin="normal"
-                label="Current Password"
+                label={t('forms.currentPassword')}
                 type={showPasswords.current ? 'text' : 'password'}
                 value={passwordForm.currentPassword}
                 onChange={handlePasswordChange('currentPassword')}
@@ -332,7 +335,7 @@ const ProfileEditPage: React.FC = () => {
             <TextField
               fullWidth
               margin="normal"
-              label="New Password"
+              label={t('forms.newPassword')}
               type={showPasswords.new ? 'text' : 'password'}
               value={passwordForm.newPassword}
               onChange={handlePasswordChange('newPassword')}
@@ -356,13 +359,13 @@ const ProfileEditPage: React.FC = () => {
                 variant="caption"
                 sx={{ color: passwordStrength.color, display: 'block', mt: 1 }}
               >
-                Password strength: {passwordStrength.strength}
+                 {t('reset.strength')}: {passwordStrength.strength}
               </Typography>
             )}
             <TextField
               fullWidth
               margin="normal"
-              label="Confirm New Password"
+              label={t('forms.confirmPassword')}
               type={showPasswords.confirm ? 'text' : 'password'}
               value={passwordForm.confirmPassword}
               onChange={handlePasswordChange('confirmPassword')}
@@ -396,13 +399,13 @@ const ProfileEditPage: React.FC = () => {
                 }
                 fullWidth
               >
-                {isChangingPassword
+                 {isChangingPassword
                   ? shouldShowSetPassword
-                    ? 'Setting Password...'
-                    : 'Changing Password...'
+                    ? t('profile.settingPassword')
+                    : t('profile.changingPassword')
                   : shouldShowSetPassword
-                    ? 'Set Password'
-                    : 'Change Password'}
+                    ? t('profile.setPassword')
+                    : t('profile.changePassword')}
               </Button>
             </Box>
           </Box>
