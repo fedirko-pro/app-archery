@@ -6,10 +6,12 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import ConverterInputs from './ConverterInputs';
 
 export default function Converter() {
+  const { t } = useTranslation('common');
   const [expanded, setExpanded] = useState<string | false>('false');
 
   const handleChange =
@@ -29,17 +31,17 @@ export default function Converter() {
             id="panel1bh-header"
           >
             <Typography sx={{ width: '33%', flexShrink: 0 }}>
-              Inch - cm
+              {t('converter.inchCm.short')}
             </Typography>
             <Typography sx={{ color: 'text.secondary' }}>
-              Inch - Centimeter
+              {t('converter.inchCm.long')}
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <div>Used to measure bow and arrow length, etc.</div>
+            <div>{t('converter.inchCm.desc')}</div>
             <ConverterInputs
-              labelFirst="Inch"
-              labelSecond="Centimeter"
+              labelFirst={t('units.inch')}
+              labelSecond={t('units.centimeter')}
               coef={2.56}
             />
           </AccordionDetails>
@@ -54,17 +56,17 @@ export default function Converter() {
             id="panel2bh-header"
           >
             <Typography sx={{ width: '33%', flexShrink: 0 }}>
-              Pound - kg
+              {t('converter.poundKg.short')}
             </Typography>
             <Typography sx={{ color: 'text.secondary' }}>
-              Pound - Kilogram
+              {t('converter.poundKg.long')}
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <div>Used to measure bow poundage</div>
+            <div>{t('converter.poundKg.desc')}</div>
             <ConverterInputs
-              labelFirst="Pound"
-              labelSecond="Kilogram"
+              labelFirst={t('units.pound')}
+              labelSecond={t('units.kilogram')}
               coef={0.453592}
             />
           </AccordionDetails>
@@ -79,17 +81,17 @@ export default function Converter() {
             id="panel3bh-header"
           >
             <Typography sx={{ width: '33%', flexShrink: 0 }}>
-              Grain - g
+              {t('converter.grainG.short')}
             </Typography>
             <Typography sx={{ color: 'text.secondary' }}>
-              Grain - Gram
+              {t('converter.grainG.long')}
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <div>Used to measure arrow/broadhead weight, etc.</div>
+            <div>{t('converter.grainG.desc')}</div>
             <ConverterInputs
-              labelFirst="Grain"
-              labelSecond="Gram"
+              labelFirst={t('units.grain')}
+              labelSecond={t('units.gram')}
               coef={0.0647989}
             />
           </AccordionDetails>
@@ -104,17 +106,17 @@ export default function Converter() {
             id="panel4bh-header"
           >
             <Typography sx={{ width: '33%', flexShrink: 0 }}>
-              Yard - m
+              {t('converter.yardM.short')}
             </Typography>
             <Typography sx={{ color: 'text.secondary' }}>
-              Yard - Meter
+              {t('converter.yardM.long')}
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <div>Range distance conversions</div>
+            <div>{t('converter.yardM.desc')}</div>
             <ConverterInputs
-              labelFirst="Yard"
-              labelSecond="Meter"
+              labelFirst={t('units.yard')}
+              labelSecond={t('units.meter')}
               coef={0.9144}
             />
           </AccordionDetails>

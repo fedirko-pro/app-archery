@@ -2,6 +2,9 @@ import './Menu.scss';
 
 import classNames from 'classnames';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useParams } from 'react-router-dom';
+import { normalizeAppLang } from '../../utils/i18n-lang';
 
 import NavLink from './NavLink';
 import type { MenuProps } from './types';
@@ -14,6 +17,9 @@ export const Menu: React.FC<MenuProps> = ({
   onLogout,
   footer,
 }) => {
+  const { t } = useTranslation('common');
+  const { lang } = useParams();
+  normalizeAppLang(lang);
   const [adminSectionOpen, setAdminSectionOpen] = useState(false);
 
   const handleMenuClick = (e: React.MouseEvent<HTMLDivElement>): void => {
@@ -70,7 +76,7 @@ export const Menu: React.FC<MenuProps> = ({
                         justifyContent: 'space-between',
                       }}
                     >
-                      Admin
+                      {t('menu.admin')}
                       <span
                         style={{
                           transform: adminSectionOpen ? 'rotate(180deg)' : 'rotate(0deg)',
@@ -106,7 +112,7 @@ export const Menu: React.FC<MenuProps> = ({
                   onLogout();
                 }}
               >
-                Log out
+                {t('auth.logout')}
               </button>
             </li>
           )}

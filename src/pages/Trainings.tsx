@@ -7,6 +7,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemText from '@mui/material/ListItemText';
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import AlertDialog from '../components/dialogs/alert-dialog';
 import InfoDialog from '../components/dialogs/info-dialog';
@@ -18,6 +19,7 @@ interface Training {
 }
 
 export default function Training() {
+  const { t } = useTranslation('common');
   const [showInfo, setShowInfo] = useState(false);
   const [confirm, setConfirm] = useState(false);
   const [trainings, setTrainings] = useState<Training[]>([]);
@@ -71,13 +73,11 @@ export default function Training() {
       <InfoDialog
         open={showInfo}
         handleClose={() => handleClose()}
-        description={`Chapter "My trainings" allows to create any amount of personal trainings, select target, distance, arrows count, etc.
-                For every training detailed statistic is available. User can share his stats.
-                IMPORTANT: information from training is not sending anywhere and is stored only on your device (at least now)`}
+        description={t('trainings.info')}
       />
       <div className="container">
         <h2>
-          My trainings&nbsp;
+          {t('trainings.title')}&nbsp;
           <button
             className="button clear_button"
             type="button"
@@ -87,8 +87,8 @@ export default function Training() {
           </button>
         </h2>
         <AlertDialog
-          question="Delete training?"
-          hint="All resuts for this training will be deleted"
+          question={t('trainings.deleteQ')}
+          hint={t('trainings.deleteHint')}
           open={confirm}
           handleClose={() => handleClose()}
           handleConfirm={() => handleConfirm()}

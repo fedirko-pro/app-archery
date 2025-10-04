@@ -1,0 +1,232 @@
+{
+  "footer": { "about": "About" },
+  
+  "menu": { "admin": "Admin", "myProfile": "My profile ({{name}})" },
+  "nav": {
+    "tournaments": "Tournaments",
+    "myApplications": "My applications",
+    "converter": "Converter",
+    "categories": "Categories",
+    "rules": "Rules",
+    "about": "About",
+    "users": "Users",
+    "userApplications": "User applications"
+  },
+  "pages": {
+    "rules": {
+      "title": "Rules",
+      "openOfficialPage": "Open official page",
+      "downloadPdf": "Download PDF"
+    },
+    "categories": {
+      "title": "Bow categories",
+      "ruleReference": "Rule reference"
+    },
+    "converter": { "title": "Converter of most common archery measures" },
+    "about": {
+      "title": "About this App",
+      "intro": "This app was created to help archery federation and simplify tournaments management. Also it is a \"multi-tool\" for modern archery.",
+      "currentTitle": "Current functionality:",
+      "current": {
+        "tournaments": "Tournaments management",
+        "applications": "Applications management",
+        "patrols": "Patrols management",
+        "users": "User management",
+        "rules": "Rules management",
+        "converter": "Universal converter",
+        "aboutPage": "\"About\" page"
+      },
+      "plannedTitle": "Planned functionality:",
+      "planned": {
+        "trainingLog": "Training log",
+        "profile": "Archers profile",
+        "shareProfile": "Possibility to share the profile",
+        "localCompetition": "Local competition",
+        "globalCompetition": "Global competition",
+        "duels": "Friendly challenges (duels)",
+        "news": "News",
+        "calendar": "Calendar",
+        "knowledgeBase": "Archery knowledge base",
+        "more": "And much more..."
+      },
+      "contact": "Regarding additional functionality (or other questions) drop me an email to",
+      "copyrightPrefix": "© 2023",
+      "copyrightSuffix": ". All rights reserved."
+    },
+    "tournaments": {
+      "title": "Tournaments",
+      "create": "Create Tournament",
+      "edit": "Edit",
+      "delete": "Delete",
+      "apply": "Apply",
+      "viewApplications": "View Applications",
+      "start": "Start",
+      "end": "End",
+      "location": "Location",
+      "multipleApplications": "Multiple applications",
+      "multipleAllowed": "Allowed (different categories)",
+      "multipleNotAllowed": "Not allowed",
+      "fetchError": "Failed to fetch tournaments",
+      "createError": "Failed to create tournament",
+      "deleteError": "Failed to delete tournament",
+      "deleteConfirm": "Are you sure you want to delete this tournament?",
+      "updateError": "Failed to update tournament",
+      "editDialogTitle": "Edit Tournament",
+      "createDialogTitle": "Create Tournament",
+      "form": {
+        "title": "Title",
+        "description": "Description",
+        "startDate": "Start Date",
+        "endDate": "End Date (optional - defaults to start date)",
+        "endDateHelper": "Leave empty to use start date",
+        "applicationDeadline": "Application Deadline (optional - defaults to 5 days before start)",
+        "applicationDeadlineHelper": "Leave empty to set 5 days before start date",
+        "address": "Address",
+        "allowMultipleLabel": "Allow multiple applications from one user (different categories only)"
+      }
+    },
+    "applications": {
+      "title": "My Tournament Applications",
+      "fetchError": "Failed to fetch applications",
+      "empty": "You haven't submitted any tournament applications yet.",
+      "dates": "Dates",
+      "category": "Category",
+      "division": "Division",
+      "equipment": "Equipment",
+      "notes": "Notes",
+      "rejectionReason": "Rejection Reason",
+      "appliedOn": "Applied on",
+      "withdraw": "Withdraw",
+      "withdrawTitle": "Withdraw Application",
+      "withdrawConfirm": "Are you sure you want to withdraw this application? This action cannot be undone."
+    },
+    "publicApplication": {
+      "notFound": "Tournament not found",
+      "applyFor": "Apply for {{title}}",
+      "signInPrompt": "To submit your application for this tournament, you need to create an account or sign in to your existing account.",
+      "redirectInfo": "After registration or sign in, you'll be redirected back to this application form."
+    },
+    "applicationForm": {
+      "title": "Submit Application for {{title}}",
+      "submit": "Submit Application",
+      "submitting": "Submitting...",
+      "submitError": "Failed to submit application",
+      "category": "Category",
+      "division": "Division",
+      "equipment": "Equipment",
+      "notes": "Additional Notes",
+      "notesPlaceholder": "Any additional information about your participation...",
+      "opts": {
+        "recurve": "Recurve",
+        "compound": "Compound",
+        "barebow": "Barebow",
+        "traditional": "Traditional",
+        "longbow": "Longbow",
+        "men": "Men",
+        "women": "Women",
+        "mixed": "Mixed",
+        "olympic": "Olympic Recurve",
+        "compoundBow": "Compound Bow",
+        "traditionalBow": "Traditional Bow"
+      }
+    }
+  },
+  "trainings": {
+    "title": "My trainings",
+    "info": "Chapter \"My trainings\" allows to create any amount of personal trainings, select target, distance, arrows count, etc.\nFor every training detailed statistic is available. User can share his stats.\nIMPORTANT: information from training is not sending anywhere and is stored only on your device (at least now)",
+    "deleteQ": "Delete training?",
+    "deleteHint": "All results for this training will be deleted",
+    "add": "Add training"
+  },
+  "competition": { "title": "Competition page", "testTournament": "Test tournament 2024 (demo)", "patrolsTitle": "Patrols list" },
+  "units": {
+    "inch": "Inch",
+    "centimeter": "Centimeter",
+    "pound": "Pound",
+    "kilogram": "Kilogram",
+    "grain": "Grain",
+    "gram": "Gram",
+    "yard": "Yard",
+    "meter": "Meter"
+  },
+  "converter": {
+    "inchCm": {
+      "short": "Inch - cm",
+      "long": "Inch - Centimeter",
+      "desc": "Used to measure bow and arrow length, etc."
+    },
+    "poundKg": {
+      "short": "Pound - kg",
+      "long": "Pound - Kilogram",
+      "desc": "Used to measure bow poundage"
+    },
+    "grainG": {
+      "short": "Grain - g",
+      "long": "Grain - Gram",
+      "desc": "Used to measure arrow/broadhead weight, etc."
+    },
+    "yardM": {
+      "short": "Yard - m",
+      "long": "Yard - Meter",
+      "desc": "Range distance conversions"
+    }
+  },
+  "common": { "or": "or", "cancel": "Cancel", "update": "Update", "create": "Create", "back": "Back" },
+  "forms": { "email": "Email", "password": "Password", "firstName": "First name", "lastName": "Last name", "currentPassword": "Current Password", "newPassword": "New Password", "confirmPassword": "Confirm New Password", "bio": "Bio", "location": "Location", "website": "Website", "profilePictureUrl": "Profile Picture URL", "federationNumber": "Federation Number", "categories": "Categories", "selectCategories": "Select categories", "language": "Language", "role": "Role" },
+  "reset": {
+    "invalidLink": "Invalid reset link. Please request a new password reset.",
+    "minLength": "Password must be at least 8 characters long",
+    "mismatch": "Passwords do not match",
+    "requirements": "Password must contain at least one uppercase letter, one lowercase letter, and one number",
+    "success": "Password has been reset successfully! Redirecting to login...",
+    "failed": "Failed to reset password",
+    "title": "Reset Password",
+    "subtitle": "Enter your new password below",
+    "new": "New Password",
+    "confirm": "Confirm New Password",
+    "strength": "Password strength",
+    "submit": "Reset Password",
+    "submitLoading": "Resetting Password..."
+  },
+  "profile": {
+    "setPassword": "Set Password",
+    "changePassword": "Change Password",
+    "setPasswordSubtitle": "Set a password to enable email/password login",
+    "changePasswordSubtitle": "Update your password to keep your account secure",
+    "setPasswordSuccess": "Password set successfully! You can now login with email/password.",
+    "changePasswordSuccess": "Password changed successfully!",
+    "settingPassword": "Setting Password...",
+    "changingPassword": "Changing Password...",
+    "emailImmutable": "Email cannot be changed",
+    "bioPlaceholder": "Tell us about yourself...",
+    "locationPlaceholder": "City, Country",
+    "websitePlaceholder": "https://example.com",
+    "avatarPlaceholder": "https://example.com/avatar.jpg",
+    "fedNumberPlaceholder": "Enter your federation number",
+    "changeUserRole": "Change the user's role",
+    "saving": "Saving...",
+    "saveProfile": "Save Profile"
+  },
+  "role": { "user": "User", "admin": "Admin" },
+  "notFound": {
+    "title": "Page not found",
+    "subtitle": "The page you are looking for might have been removed or is temporarily unavailable.",
+    "goHome": "Go to Home"
+  },
+  
+  "auth": {
+    "logout": "Log out",
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "forgotPassword": "Forgot your password?",
+    "noAccount": "Don't have an account?",
+    "signingIn": "Signing in...",
+    "signInWithGoogle": "Sign in with Google",
+    "alreadyAccount": "Already have an account?",
+    "signUpWithGoogle": "Sign up with Google",
+    "signingUp": "Signing up...",
+    "backToSignIn": "Back to Sign In"
+  }
+}
+
+

@@ -1,51 +1,50 @@
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
-const About = () => (
-  <section>
-    <div className="container">
-      <h2>About this App</h2>
-      <p>
-        This app was created to help archery federation and simplify tournaments management. Also it
-        is a "multi-tool" for modern archery.
-      </p>
-      <p>Current functionality:</p>
-      <ul>
-        <li>Tournaments management</li>
-        <li>Applications management</li>
-        <li>Patrols management</li>
-        <li>User management</li>
-        <li>Rules management</li>
-        <li>Universal converter</li>
-        <li>"About" page</li>
-      </ul>
-      <p>Planned functionality:</p>
-      <ul>
-        <li>Training log</li>
-        <li>Archers profile</li>
-        <li>Possibility to share the profile</li>
-        <li>Local competition</li>
-        <li>Global competition</li>
-        <li>Friendly challenges (duels)</li>
-        <li>News</li>
-        <li>Calendar</li>
-        <li>Archery knowledge base</li>
-        <li>And much more...</li>
-      </ul>
-      <hr />
-      <p>
-        Regarding additional functionality (or other questions) drop me an email to <br />
-        <Link to="mailto:serhii.fedirko@gmail.com">serhii.fedirko@gmail.com</Link>
-      </p>
-      <hr />
-      <p>
-        © 2023{' '}
-        <Link to="https://fedirko.pro" target="_blank">
-          FEDIRKO.PRO
-        </Link>
-        . All rights reserved.
-      </p>
-    </div>
-  </section>
-);
+const About = () => {
+  const { t } = useTranslation('common');
+  return (
+    <section>
+      <div className="container">
+        <h2>{t('pages.about.title')}</h2>
+        <p>{t('pages.about.intro')}</p>
+        <p>{t('pages.about.currentTitle')}</p>
+        <ul>
+          <li>{t('pages.about.current.tournaments')}</li>
+          <li>{t('pages.about.current.applications')}</li>
+          <li>{t('pages.about.current.patrols')}</li>
+          <li>{t('pages.about.current.users')}</li>
+          <li>{t('pages.about.current.rules')}</li>
+          <li>{t('pages.about.current.converter')}</li>
+          <li>{t('pages.about.current.aboutPage')}</li>
+        </ul>
+        <p>{t('pages.about.plannedTitle')}</p>
+        <ul>
+          <li>{t('pages.about.planned.trainingLog')}</li>
+          <li>{t('pages.about.planned.profile')}</li>
+          <li>{t('pages.about.planned.shareProfile')}</li>
+          <li>{t('pages.about.planned.localCompetition')}</li>
+          <li>{t('pages.about.planned.globalCompetition')}</li>
+          <li>{t('pages.about.planned.duels')}</li>
+          <li>{t('pages.about.planned.news')}</li>
+          <li>{t('pages.about.planned.calendar')}</li>
+          <li>{t('pages.about.planned.knowledgeBase')}</li>
+          <li>{t('pages.about.planned.more')}</li>
+        </ul>
+        <hr />
+        <p>
+          {t('pages.about.contact')}{' '}
+          <Link to="mailto:serhii.fedirko@gmail.com">serhii.fedirko@gmail.com</Link>
+        </p>
+        <hr />
+        <p>
+          {t('pages.about.copyrightPrefix')}{' '}
+          <Link to="https://fedirko.pro" target="_blank">FEDIRKO.PRO</Link>
+          {t('pages.about.copyrightSuffix')}
+        </p>
+      </div>
+    </section>
+  );
+};
 
 export default About;

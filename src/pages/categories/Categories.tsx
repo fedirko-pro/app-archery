@@ -3,7 +3,8 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import apiService from '../../services/api';
 import type { CategoryDto } from '../../services/types';
@@ -17,6 +18,8 @@ const Categories: React.FC = () => {
   const [categories, setCategories] = useState<CategoryDto[]>([]);
   const [expanded, setExpanded] = useState<string | false>(false);
   const navigate = useNavigate();
+  const { lang } = useParams();
+  const { t } = useTranslation('common');
   const { user } = useAuth();
 
   // Load categories once on mount
@@ -38,7 +41,7 @@ const Categories: React.FC = () => {
   return (
     <section>
       <div className="container">
-        <Typography variant="h4" gutterBottom>Bow categories</Typography>
+        <Typography variant="h4" gutterBottom>{t('pages.categories.title')}</Typography>
 
         {categories.map((category) => (
           <Accordion
@@ -60,7 +63,7 @@ const Categories: React.FC = () => {
                       size="small"
                       onClick={(e) => {
                         e.stopPropagation();
-                        navigate(`/admin/categories/${category.id || category.code.toLowerCase()}/edit`);
+                        navigate(`/${lang}/admin/categories/${category.id || category.code.toLowerCase()}/edit`);
                       }}
                     >
                       <EditIcon fontSize="small" />
@@ -70,7 +73,7 @@ const Categories: React.FC = () => {
                       size="small"
                       onClick={(e) => {
                         e.stopPropagation();
-                        navigate(`/admin/categories/${category.id || category.code.toLowerCase()}/edit`);
+                        navigate(`/${lang}/admin/categories/${category.id || category.code.toLowerCase()}/edit`);
                       }}
                     >
                       <DeleteIcon fontSize="small" />
@@ -85,11 +88,11 @@ const Categories: React.FC = () => {
               </Box>
               {(category.rule_reference || category.rule_citation) && (
                 <Typography variant="body2" sx={{ mt: 1, color: 'text.secondary' }}>
-                  Rule reference: {category.rule_reference}
+                  {t('pages.categories.ruleReference')}: {category.rule_reference}
                   {category.rule_citation && (
                     <>
                       {category.rule_reference ? ' — ' : ''}
-                      <a href={"/rules#" + encodeURIComponent(category.rule_reference || category.rule_citation)}>
+                      <a href={`/${lang}/rules#${encodeURIComponent(category.rule_reference || category.rule_citation)}`}>
                         {category.rule_citation}
                       </a>
                     </>

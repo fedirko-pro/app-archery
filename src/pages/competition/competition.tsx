@@ -1,5 +1,7 @@
 import './competition.scss';
+import { useTranslation } from 'react-i18next';
 
 export default function Competition() {
-  return <div className="user_card">Competition page</div>;
+  const { t } = useTranslation('common');
+  return <div className="user_card">{t('competition.title')}</div>;
 }

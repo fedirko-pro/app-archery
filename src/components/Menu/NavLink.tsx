@@ -1,10 +1,13 @@
 import React from 'react';
-import { useMatch, useNavigate } from 'react-router-dom';
+import { useMatch, useNavigate, useParams } from 'react-router-dom';
+import { normalizeAppLang } from '../../utils/i18n-lang';
 
 import type { NavLinkProps } from './types';
 
 const NavLink: React.FC<NavLinkProps> = ({ to, children, clickHandle, onClick, className }) => {
-  const match = useMatch(to);
+  const { lang } = useParams();
+  const currentLang = normalizeAppLang(lang);
+  const match = useMatch(`/${currentLang}${to}`);
   const navigate = useNavigate();
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>): void => {
@@ -15,7 +18,7 @@ const NavLink: React.FC<NavLinkProps> = ({ to, children, clickHandle, onClick, c
       return;
     }
 
-    navigate(to);
+    navigate(`/${currentLang}${to}`);
 
     setTimeout(() => {
       if (clickHandle) {

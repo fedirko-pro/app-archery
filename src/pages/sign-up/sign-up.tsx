@@ -11,6 +11,8 @@ import { styled } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
+import { useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import { GoogleIcon } from '../../components/custom-icons';
 import env from '../../config/env';
@@ -52,6 +54,8 @@ const SignUpContainer = styled(Stack)(({ theme }) => ({
 }));
 
 export default function SignUp() {
+  const { t } = useTranslation('common');
+  const { lang } = useParams();
   const [nameError, setNameError] = React.useState(false);
   const [nameErrorMessage, setNameErrorMessage] = React.useState('');
   const [lastNameError, setLastNameError] = React.useState(false);
@@ -160,7 +164,7 @@ export default function SignUp() {
           variant="h4"
           sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)' }}
         >
-          Sign up
+          {t('auth.signUp')}
         </Typography>
 
         {error && (
@@ -175,7 +179,7 @@ export default function SignUp() {
           sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
         >
           <FormControl>
-            <FormLabel htmlFor="firstName">First name</FormLabel>
+            <FormLabel htmlFor="firstName">{t('forms.firstName')}</FormLabel>
             <TextField
               autoComplete="given-name"
               name="firstName"
@@ -189,7 +193,7 @@ export default function SignUp() {
             />
           </FormControl>
           <FormControl>
-            <FormLabel htmlFor="lastName">Last name</FormLabel>
+            <FormLabel htmlFor="lastName">{t('forms.lastName')}</FormLabel>
             <TextField
               autoComplete="family-name"
               name="lastName"
@@ -203,7 +207,7 @@ export default function SignUp() {
             />
           </FormControl>
           <FormControl>
-            <FormLabel htmlFor="email">Email</FormLabel>
+            <FormLabel htmlFor="email">{t('forms.email')}</FormLabel>
             <TextField
               required
               fullWidth
@@ -218,7 +222,7 @@ export default function SignUp() {
             />
           </FormControl>
           <FormControl>
-            <FormLabel htmlFor="password">Password</FormLabel>
+            <FormLabel htmlFor="password">{t('forms.password')}</FormLabel>
             <TextField
               required
               fullWidth
@@ -244,19 +248,19 @@ export default function SignUp() {
             variant="contained"
             disabled={isSubmitting}
           >
-            {isSubmitting ? 'Signing up...' : 'Sign up'}
+            {isSubmitting ? t('auth.signingUp') : t('auth.signUp')}
           </Button>
           <Typography sx={{ textAlign: 'center' }}>
-            Already have an account?{' '}
+            {t('auth.alreadyAccount')} {' '}
             <span>
-              <Link href="/signin" variant="body2" sx={{ alignSelf: 'center' }}>
-                Sign in
+              <Link href={`/${lang}/signin`} variant="body2" sx={{ alignSelf: 'center' }}>
+                {t('auth.signIn')}
               </Link>
             </span>
           </Typography>
         </Box>
         <Divider>
-          <Typography sx={{ color: 'text.secondary' }}>or</Typography>
+          <Typography sx={{ color: 'text.secondary' }}>{t('common.or')}</Typography>
         </Divider>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           <Button
@@ -265,7 +269,7 @@ export default function SignUp() {
             onClick={handleGoogleSignUp}
             startIcon={<GoogleIcon />}
           >
-            Sign up with Google
+            {t('auth.signUpWithGoogle')}
           </Button>
           {/* TODO: Implement Facebook OAuth integration */}
           {/* <Button

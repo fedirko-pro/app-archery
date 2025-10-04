@@ -11,7 +11,8 @@ import { styled } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import { GoogleIcon } from '../../components/custom-icons';
 import env from '../../config/env';
@@ -68,6 +69,8 @@ const SignIn: React.FC = () => {
   const [open, setOpen] = React.useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = React.useState<boolean>(false);
   const location = useLocation();
+  const { lang } = useParams();
+  const { t } = useTranslation('common');
 
   const { login, error, clearError } = useAuth();
 
@@ -155,7 +158,7 @@ const SignIn: React.FC = () => {
           variant="h4"
           sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)' }}
         >
-          Sign in
+          {t('auth.signIn')}
         </Typography>
 
         {error && (
@@ -175,8 +178,8 @@ const SignIn: React.FC = () => {
             gap: 2,
           }}
         >
-          <FormControl>
-            <FormLabel htmlFor="email">Email</FormLabel>
+      <FormControl>
+            <FormLabel htmlFor="email">{t('forms.email')}</FormLabel>
             <TextField
               error={emailError}
               helperText={emailErrorMessage}
@@ -195,7 +198,7 @@ const SignIn: React.FC = () => {
           </FormControl>
           <FormControl>
             <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-              <FormLabel htmlFor="password">Password</FormLabel>
+            <FormLabel htmlFor="password">{t('forms.password')}</FormLabel>
               <Link
                 component="button"
                 type="button"
@@ -203,7 +206,7 @@ const SignIn: React.FC = () => {
                 variant="body2"
                 sx={{ alignSelf: 'baseline' }}
               >
-                Forgot your password?
+                {t('auth.forgotPassword')}
               </Link>
             </Box>
             <TextField
@@ -227,19 +230,19 @@ const SignIn: React.FC = () => {
             variant="contained"
             disabled={isSubmitting}
           >
-            {isSubmitting ? 'Signing in...' : 'Sign in'}
+            {isSubmitting ? t('auth.signingIn') : t('auth.signIn')}
           </Button>
           <Typography sx={{ textAlign: 'center' }}>
-            Don&apos;t have an account?{' '}
+            {t('auth.noAccount')}{' '}
             <span>
-              <Link href="/signup" variant="body2">
-                Sign up
+              <Link href={`/${lang}/signup`} variant="body2">
+                {t('auth.signUp')}
               </Link>
             </span>
           </Typography>
         </Box>
         <Divider>
-          <Typography sx={{ color: 'text.secondary' }}>or</Typography>
+          <Typography sx={{ color: 'text.secondary' }}>{t('common.or')}</Typography>
         </Divider>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           <Button
@@ -248,7 +251,7 @@ const SignIn: React.FC = () => {
             onClick={handleGoogleSignIn}
             startIcon={<GoogleIcon />}
           >
-            Sign in with Google
+            {t('auth.signInWithGoogle')}
           </Button>
           {/* TODO: Implement Facebook OAuth integration */}
           {/* <Button

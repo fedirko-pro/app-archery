@@ -14,13 +14,16 @@ import {
   Container,
 } from '@mui/material';
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import apiService from '../../services/api';
 
 const ResetPassword: React.FC = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const { lang } = useParams();
+  const { t } = useTranslation('common');
   const token = searchParams.get('token');
 
   const [password, setPassword] = useState('');
@@ -35,7 +38,7 @@ const ResetPassword: React.FC = () => {
 
   useEffect(() => {
     if (!token) {
-      setError('Invalid reset link. Please request a new password reset.');
+      setError(t('reset.invalidLink'));
     }
   }, [token]);
 
@@ -43,24 +46,22 @@ const ResetPassword: React.FC = () => {
     e.preventDefault();
 
     if (!token) {
-      setError('Invalid reset link. Please request a new password reset.');
+      setError(t('reset.invalidLink'));
       return;
     }
 
     if (!password || password.length < 8) {
-      setError('Password must be at least 8 characters long');
+      setError(t('reset.minLength'));
       return;
     }
 
     if (password !== confirmPassword) {
-      setError('Passwords do not match');
+      setError(t('reset.mismatch'));
       return;
     }
 
     if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(password)) {
-      setError(
-        'Password must contain at least one uppercase letter, one lowercase letter, and one number',
-      );
+      setError(t('reset.requirements'));
       return;
     }
 
@@ -69,15 +70,12 @@ const ResetPassword: React.FC = () => {
 
     try {
       await apiService.resetPassword(token, password, confirmPassword);
-      setSuccess(
-        'Password has been reset successfully! Redirecting to login...',
-      );
+      setSuccess(t('reset.success'));
       setTimeout(() => {
-        navigate('/signin');
+        navigate(`/${lang}/signin`);
       }, 2000);
     } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : 'Failed to reset password';
+      const errorMessage = error instanceof Error ? error.message : t('reset.failed');
       setError(errorMessage);
     } finally {
       setIsSubmitting(false);
@@ -121,11 +119,11 @@ const ResetPassword: React.FC = () => {
         <Card>
           <CardContent>
             <Alert severity="error">
-              Invalid reset link. Please request a new password reset.
+              {t('reset.invalidLink')}
             </Alert>
             <Box sx={{ mt: 2, textAlign: 'center' }}>
-              <Button variant="contained" onClick={() => navigate('/signin')}>
-                Back to Sign In
+              <Button variant="contained" onClick={() => navigate(`/${lang}/signin`)}>
+                {t('auth.backToSignIn')}
               </Button>
             </Box>
           </CardContent>
@@ -138,8 +136,8 @@ const ResetPassword: React.FC = () => {
     <Container maxWidth="sm" sx={{ mt: 4 }}>
       <Card>
         <CardHeader
-          title="Reset Password"
-          subheader="Enter your new password below"
+          title={t('reset.title')}
+          subheader={t('reset.subtitle')}
           avatar={<Lock color="primary" />}
         />
         <CardContent>
@@ -163,7 +161,7 @@ const ResetPassword: React.FC = () => {
             <TextField
               fullWidth
               margin="normal"
-              label="New Password"
+              label={t('reset.new')}
               type={showPasswords.password ? 'text' : 'password'}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -191,14 +189,14 @@ const ResetPassword: React.FC = () => {
                 variant="caption"
                 sx={{ color: passwordStrength.color, display: 'block', mt: 1 }}
               >
-                Password strength: {passwordStrength.strength}
+                {t('reset.strength')}: {passwordStrength.strength}
               </Typography>
             )}
 
             <TextField
               fullWidth
               margin="normal"
-              label="Confirm New Password"
+              label={t('reset.confirm')}
               type={showPasswords.confirmPassword ? 'text' : 'password'}
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
@@ -232,17 +230,17 @@ const ResetPassword: React.FC = () => {
                 startIcon={isSubmitting ? <CircularProgress size={20} /> : null}
                 fullWidth
               >
-                {isSubmitting ? 'Resetting Password...' : 'Reset Password'}
+                {isSubmitting ? t('reset.submitLoading') : t('reset.submit')}
               </Button>
             </Box>
 
             <Box sx={{ mt: 2, textAlign: 'center' }}>
               <Button
                 variant="text"
-                onClick={() => navigate('/signin')}
+                onClick={() => navigate(`/${lang}/signin`)}
                 disabled={isSubmitting}
               >
-                Back to Sign In
+                {t('auth.backToSignIn')}
               </Button>
             </Box>
           </Box>

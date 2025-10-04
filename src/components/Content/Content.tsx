@@ -1,6 +1,9 @@
 import './Content.scss';
 
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Outlet, Route, Routes, useParams } from 'react-router-dom';
+import { useEffect } from 'react';
+import i18n from '../../i18n';
+import { isRtlLanguage, normalizeAppLang, toI18nLang } from '../../utils/i18n-lang';
 
 import About from '../../pages/About';
 import Achievements from '../../pages/achievements/achievements';
@@ -31,88 +34,110 @@ import Training from '../../pages/Trainings';
 import Categories from '../../pages/categories/Categories';
 import CategoryEdit from '../../pages/categories/admin/category-edit';
 import Rules from '../../pages/rules/Rules';
+import NotFound from '../../pages/NotFound';
+
+function LangLayout() {
+  const params = useParams();
+  const appLang = normalizeAppLang(params.lang);
+
+  useEffect(() => {
+    const i18nLang = toI18nLang(appLang);
+    if (i18n.language !== i18nLang) {
+      void i18n.changeLanguage(i18nLang);
+    }
+    document.documentElement.setAttribute('lang', i18nLang);
+    document.documentElement.setAttribute('dir', isRtlLanguage(appLang) ? 'rtl' : 'ltr');
+  }, [appLang]);
+
+  return <Outlet />;
+}
 
 function Content() {
   return (
     <main>
       <Routes>
-        <Route path="/" element={<ConverterPage />} /> // todo: main page different for users and admins
-        <Route path="/signin" element={<SignIn />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/auth/google/callback" element={<GoogleCallback />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
-        <Route
-          path="/profile"
-          element={
-            <ProtectedRoute>
-              <Profile />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/profile/edit"
-          element={
-            <ProtectedRoute>
-              <ProfileEditPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route path="/achievements" element={<Achievements />} />
-        <Route
-          path="/admin/users"
-          element={
-            <ProtectedAdminRoute>
-              <AdminPanel />
-            </ProtectedAdminRoute>
-          }
-        />
-        <Route
-          path="/admin/users/:userId/profile"
-          element={
-            <ProtectedAdminRoute>
-              <UserProfileView />
-            </ProtectedAdminRoute>
-          }
-        />
-        <Route
-          path="/admin/users/:userId/edit"
-          element={
-            <ProtectedAdminRoute>
-              <UserEdit />
-            </ProtectedAdminRoute>
-          }
-        />
-        {/* TODO: Settings route temporarily disabled - functionality moved to Profile */}
-        {/* <Route path="/settings" element={<Settings />} /> */}
-        <Route path="/converter" element={<ConverterPage />} />
-        <Route path="/competitions" element={<CompetitionsList />} />
-        <Route path="/competition" element={<Competition />} />
-        <Route path="/competition/patrols" element={<PatrolList />} />
-        <Route path="/competition/user" element={<UserPage />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/categories" element={<Categories />} />
-        <Route path="/rules" element={<Rules />} />
-        <Route path="/encyclopedia" element={<Encyclopedia />} />
-        <Route path="/trainings" element={<Training />} />
-        <Route path="/tournaments" element={<TournamentList />} />
-        <Route path="/apply/:tournamentId" element={<PublicApplication />} />
-        <Route path="/applications" element={<UserApplications />} />
-        <Route
-          path="/admin/applications"
-          element={
-            <ProtectedAdminRoute>
-              <AdminApplications />
-            </ProtectedAdminRoute>
-          }
-        />
-        <Route
-          path="/admin/categories/:id/edit"
-          element={
-            <ProtectedAdminRoute>
-              <CategoryEdit />
-            </ProtectedAdminRoute>
-          }
-        />
+        <Route path="/" element={<Navigate to="/pt" replace />} />
+        <Route path=":lang" element={<LangLayout />}>
+          <Route index element={<ConverterPage />} />
+          <Route path="signin" element={<SignIn />} />
+          <Route path="signup" element={<SignUp />} />
+          <Route path="auth/google/callback" element={<GoogleCallback />} />
+          <Route path="reset-password" element={<ResetPassword />} />
+          <Route
+            path="profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="profile/edit"
+            element={
+              <ProtectedRoute>
+                <ProfileEditPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="achievements" element={<Achievements />} />
+          <Route
+            path="admin/users"
+            element={
+              <ProtectedAdminRoute>
+                <AdminPanel />
+              </ProtectedAdminRoute>
+            }
+          />
+          <Route
+            path="admin/users/:userId/profile"
+            element={
+              <ProtectedAdminRoute>
+                <UserProfileView />
+              </ProtectedAdminRoute>
+            }
+          />
+          <Route
+            path="admin/users/:userId/edit"
+            element={
+              <ProtectedAdminRoute>
+                <UserEdit />
+              </ProtectedAdminRoute>
+            }
+          />
+          {/* TODO: Settings route temporarily disabled - functionality moved to Profile */}
+          {/* <Route path="settings" element={<Settings />} /> */}
+          <Route path="converter" element={<ConverterPage />} />
+          <Route path="competitions" element={<CompetitionsList />} />
+          <Route path="competition" element={<Competition />} />
+          <Route path="competition/patrols" element={<PatrolList />} />
+          <Route path="competition/user" element={<UserPage />} />
+          <Route path="about" element={<About />} />
+          <Route path="categories" element={<Categories />} />
+          <Route path="rules" element={<Rules />} />
+          <Route path="encyclopedia" element={<Encyclopedia />} />
+          <Route path="trainings" element={<Training />} />
+          <Route path="tournaments" element={<TournamentList />} />
+          <Route path="apply/:tournamentId" element={<PublicApplication />} />
+          <Route path="applications" element={<UserApplications />} />
+          <Route
+            path="admin/applications"
+            element={
+              <ProtectedAdminRoute>
+                <AdminApplications />
+              </ProtectedAdminRoute>
+            }
+          />
+          <Route
+            path="admin/categories/:id/edit"
+            element={
+              <ProtectedAdminRoute>
+                <CategoryEdit />
+              </ProtectedAdminRoute>
+            }
+          />
+          <Route path="*" element={<NotFound />} />
+        </Route>
+        <Route path="*" element={<Navigate to="/pt" replace />} />
       </Routes>
     </main>
   );

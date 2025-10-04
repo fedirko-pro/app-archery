@@ -6,10 +6,12 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Box from '@mui/material/Box';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import UserCard from '../user-card/user-card';
 
 export default function PatrolList() {
+  const { t } = useTranslation('common');
   const [expanded, setExpanded] = useState<string | false>('false');
 
   const handleChange =
@@ -262,8 +264,8 @@ export default function PatrolList() {
   return (
     <section>
       <div className="container">
-        <h1>Test tournament 2024 (demo)</h1>
-        <h2>Patrols list</h2>
+        <h1>{t('competition.testTournament')}</h1>
+        <h2>{t('competition.patrolsTitle')}</h2>
         {patrols.map((patrol) => (
           <Accordion
             key={'panel' + patrol.id}

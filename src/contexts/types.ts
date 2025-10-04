@@ -14,6 +14,7 @@ export interface User {
   updatedAt: string;
   federationNumber?: string;
   categories?: string[];
+  language?: 'pt' | 'en' | 'it' | 'ua' | 'es';
 }
 
 export interface LoginCredentials {

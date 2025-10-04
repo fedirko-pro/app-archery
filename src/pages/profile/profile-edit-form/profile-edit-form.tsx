@@ -1,7 +1,9 @@
 import { TextField, Button, Box, CircularProgress } from '@mui/material';
+import MenuItem from '@mui/material/MenuItem';
 import Autocomplete from '@mui/material/Autocomplete';
 import Chip from '@mui/material/Chip';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 import type { ProfileData } from '../types';
 
@@ -22,6 +24,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
   onCancel,
   onChange,
 }) => {
+  const { t } = useTranslation('common');
   const CATEGORY_OPTIONS = [
     'HLB',
     'TRB',
@@ -42,7 +45,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
         <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
           <Box sx={{ flex: '1 1 300px' }}>
             <TextField
-              label="First Name"
+              label={t('forms.firstName')}
               name="firstName"
               value={profileData.firstName}
               onChange={onChange}
@@ -53,7 +56,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
 
           <Box sx={{ flex: '1 1 300px' }}>
             <TextField
-              label="Last Name"
+              label={t('forms.lastName')}
               name="lastName"
               value={profileData.lastName}
               onChange={onChange}
@@ -64,18 +67,18 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
         </Box>
 
         <TextField
-          label="Email"
+          label={t('forms.email')}
           name="email"
           value={profileData.email}
           onChange={onChange}
           fullWidth
           margin="normal"
           disabled
-          helperText="Email cannot be changed"
+          helperText={t('profile.emailImmutable', 'Email cannot be changed')}
         />
 
         <TextField
-          label="Bio"
+          label={t('forms.bio', 'Bio')}
           name="bio"
           value={profileData.bio}
           onChange={onChange}
@@ -83,56 +86,73 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
           multiline
           rows={3}
           margin="normal"
-          placeholder="Tell us about yourself..."
+          placeholder={t('profile.bioPlaceholder', 'Tell us about yourself...')}
         />
 
         <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
           <Box sx={{ flex: '1 1 300px' }}>
             <TextField
-              label="Location"
+              label={t('forms.location', 'Location')}
               name="location"
               value={profileData.location}
               onChange={onChange}
               fullWidth
               margin="normal"
-              placeholder="City, Country"
+              placeholder={t('profile.locationPlaceholder', 'City, Country')}
             />
           </Box>
 
           <Box sx={{ flex: '1 1 300px' }}>
             <TextField
-              label="Website"
+              label={t('forms.website', 'Website')}
               name="website"
               value={profileData.website}
               onChange={onChange}
               fullWidth
               margin="normal"
-              placeholder="https://example.com"
+              placeholder={t('profile.websitePlaceholder', 'https://example.com')}
             />
           </Box>
         </Box>
 
         <TextField
-          label="Profile Picture URL"
+          label={t('forms.profilePictureUrl', 'Profile Picture URL')}
           name="picture"
           value={profileData.picture}
           onChange={onChange}
           fullWidth
           margin="normal"
-          placeholder="https://example.com/avatar.jpg"
+          placeholder={t('profile.avatarPlaceholder', 'https://example.com/avatar.jpg')}
         />
 
         <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
           <Box sx={{ flex: '1 1 300px' }}>
             <TextField
-              label="Federation Number"
+              label={t('forms.federationNumber', 'Federation Number')}
               name="federationNumber"
               value={profileData.federationNumber || ''}
               onChange={onChange}
               fullWidth
               margin="normal"
-              placeholder="Enter your federation number"
+              placeholder={t('profile.fedNumberPlaceholder', 'Enter your federation number')}
             />
+          </Box>
+          <Box sx={{ flex: '1 1 300px' }}>
+            <TextField
+              select
+              label={t('forms.language', 'Language')}
+              name="language"
+              value={profileData.language || 'pt'}
+              onChange={onChange}
+              fullWidth
+              margin="normal"
+            >
+              <MenuItem value="pt">Português (PT)</MenuItem>
+              <MenuItem value="en">English (EN)</MenuItem>
+              <MenuItem value="it">Italiano (IT)</MenuItem>
+              <MenuItem value="es">Español (ES)</MenuItem>
+              <MenuItem value="ua">Українська (UA)</MenuItem>
+            </TextField>
           </Box>
           <Box sx={{ flex: '1 1 300px' }}>
             <Autocomplete
@@ -160,8 +180,8 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
                 <TextField
                   {...params}
                   variant="outlined"
-                  label="Categories"
-                  placeholder="Select categories"
+                  label={t('forms.categories', 'Categories')}
+                  placeholder={t('forms.selectCategories', 'Select categories')}
                 />
               )}
               filterSelectedOptions
@@ -172,17 +192,16 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
         {isAdminView && (
           <TextField
             select
-            label="Role"
+            label={t('forms.role', 'Role')}
             name="role"
             value={profileData.role || 'user'}
             onChange={onChange}
             fullWidth
             margin="normal"
-            SelectProps={{ native: true }}
-            helperText="Change the user's role"
+            helperText={t('profile.changeUserRole', "Change the user's role")}
           >
-            <option value="user">User</option>
-            <option value="admin">Admin</option>
+            <MenuItem value="user">{t('role.user', 'User')}</MenuItem>
+            <MenuItem value="admin">{t('role.admin', 'Admin')}</MenuItem>
           </TextField>
         )}
       </Box>
@@ -194,7 +213,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
           onClick={onCancel}
           disabled={isSaving}
         >
-          Cancel
+          {t('common.cancel')}
         </Button>
 
         <Button
@@ -204,7 +223,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
           disabled={isSaving}
           startIcon={isSaving ? <CircularProgress size={20} /> : null}
         >
-          {isSaving ? 'Saving...' : 'Save Profile'}
+          {isSaving ? t('profile.saving', 'Saving...') : t('profile.saveProfile', 'Save Profile')}
         </Button>
       </Box>
     </div>

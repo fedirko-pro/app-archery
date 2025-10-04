@@ -1,0 +1,214 @@
+{
+  "footer": { "about": "Acerca de" },
+  "menu": { "admin": "Admin", "myProfile": "Mi perfil ({{name}})" },
+  "nav": {
+    "tournaments": "Torneos",
+    "myApplications": "Mis solicitudes",
+    "converter": "Conversor",
+    "categories": "Categorías",
+    "rules": "Reglas",
+    "about": "Acerca de",
+    "users": "Usuarios",
+    "userApplications": "Solicitudes de usuarios"
+  },
+  "pages": {
+    "rules": {
+      "title": "Reglas",
+      "openOfficialPage": "Abrir página oficial",
+      "downloadPdf": "Descargar PDF"
+    },
+    "categories": {
+      "title": "Categorías de arco",
+      "ruleReference": "Referencia de regla"
+    },
+    "converter": { "title": "Conversor de las medidas más comunes en arquería" },
+    "about": {
+      "title": "Acerca de esta aplicación",
+      "intro": "Esta app fue creada para ayudar a la federación de arquería y simplificar la gestión de torneos. También es una \"multiherramienta\" para la arquería moderna.",
+      "currentTitle": "Funcionalidad actual:",
+      "current": {
+        "tournaments": "Gestión de torneos",
+        "applications": "Gestión de solicitudes",
+        "patrols": "Gestión de patrullas",
+        "users": "Gestión de usuarios",
+        "rules": "Gestión de reglas",
+        "converter": "Conversor universal",
+        "aboutPage": "Página \"Acerca de\""
+      },
+      "plannedTitle": "Funcionalidad planificada:",
+      "planned": {
+        "trainingLog": "Registro de entrenamientos",
+        "profile": "Perfil de arqueros",
+        "shareProfile": "Posibilidad de compartir el perfil",
+        "localCompetition": "Competencia local",
+        "globalCompetition": "Competencia global",
+        "duels": "Desafíos amistosos (duelos)",
+        "news": "Noticias",
+        "calendar": "Calendario",
+        "knowledgeBase": "Base de conocimientos de arquería",
+        "more": "Y mucho más..."
+      },
+      "contact": "Para funcionalidad adicional (u otras preguntas) envíame un correo a",
+      "copyrightPrefix": "© 2023",
+      "copyrightSuffix": ". Todos los derechos reservados."
+    },
+    "tournaments": {
+      "title": "Torneos",
+      "create": "Crear torneo",
+      "edit": "Editar",
+      "delete": "Eliminar",
+      "apply": "Aplicar",
+      "viewApplications": "Ver solicitudes",
+      "start": "Inicio",
+      "end": "Fin",
+      "location": "Ubicación",
+      "multipleApplications": "Solicitudes múltiples",
+      "multipleAllowed": "Permitido (categorías diferentes)",
+      "multipleNotAllowed": "No permitido",
+      "fetchError": "No se pudieron obtener los torneos",
+      "createError": "No se pudo crear el torneo",
+      "deleteError": "No se pudo eliminar el torneo",
+      "deleteConfirm": "¿Seguro que deseas eliminar este torneo?",
+      "updateError": "No se pudo actualizar el torneo",
+      "editDialogTitle": "Editar torneo",
+      "createDialogTitle": "Crear torneo",
+      "form": {
+        "title": "Título",
+        "description": "Descripción",
+        "startDate": "Fecha de inicio",
+        "endDate": "Fecha de fin (opcional - por defecto la fecha de inicio)",
+        "endDateHelper": "Déjalo vacío para usar la fecha de inicio",
+        "applicationDeadline": "Fecha límite de solicitud (opcional - 5 días antes del inicio)",
+        "applicationDeadlineHelper": "Déjalo vacío para establecer 5 días antes del inicio",
+        "address": "Dirección",
+        "allowMultipleLabel": "Permitir múltiples solicitudes por usuario (solo categorías diferentes)"
+      }
+    },
+    "applications": {
+      "title": "Mis solicitudes de torneos",
+      "fetchError": "No se pudieron obtener las solicitudes",
+      "empty": "Todavía no has enviado ninguna solicitud de torneo.",
+      "dates": "Fechas",
+      "category": "Categoría",
+      "division": "División",
+      "equipment": "Equipo",
+      "notes": "Notas",
+      "rejectionReason": "Motivo del rechazo",
+      "appliedOn": "Aplicado el",
+      "withdraw": "Retirar",
+      "withdrawTitle": "Retirar solicitud",
+      "withdrawConfirm": "¿Seguro que deseas retirar esta solicitud? Esta acción no se puede deshacer."
+    },
+    "publicApplication": {
+      "notFound": "Torneo no encontrado",
+      "applyFor": "Aplicar para {{title}}",
+      "signInPrompt": "Para enviar tu solicitud a este torneo, necesitas crear una cuenta o iniciar sesión en tu cuenta existente.",
+      "redirectInfo": "Después del registro o inicio de sesión, volverás a este formulario."
+    },
+    "applicationForm": {
+      "title": "Enviar solicitud para {{title}}",
+      "submit": "Enviar solicitud",
+      "submitting": "Enviando...",
+      "submitError": "No se pudo enviar la solicitud",
+      "category": "Categoría",
+      "division": "División",
+      "equipment": "Equipo",
+      "notes": "Notas adicionales",
+      "notesPlaceholder": "Cualquier información adicional sobre tu participación...",
+      "opts": {
+        "recurve": "Recurvo",
+        "compound": "Compuesto",
+        "barebow": "Barebow",
+        "traditional": "Tradicional",
+        "longbow": "Longbow",
+        "men": "Hombres",
+        "women": "Mujeres",
+        "mixed": "Mixto",
+        "olympic": "Recurvo Olímpico",
+        "compoundBow": "Arco compuesto",
+        "traditionalBow": "Arco tradicional"
+      }
+    }
+  },
+  "forms": { "email": "Email", "password": "Contraseña", "firstName": "Nombre", "lastName": "Apellido", "currentPassword": "Contraseña actual", "newPassword": "Nueva contraseña", "confirmPassword": "Confirmar nueva contraseña", "bio": "Bio", "location": "Ubicación", "website": "Sitio web", "profilePictureUrl": "URL de la foto de perfil", "federationNumber": "Número de federación", "categories": "Categorías", "selectCategories": "Selecciona categorías", "language": "Idioma", "role": "Rol" },
+  "reset": {
+    "invalidLink": "Enlace de restablecimiento inválido. Solicita un nuevo restablecimiento de contraseña.",
+    "minLength": "La contraseña debe tener al menos 8 caracteres",
+    "mismatch": "Las contraseñas no coinciden",
+    "requirements": "La contraseña debe contener al menos una mayúscula, una minúscula y un número",
+    "success": "¡La contraseña se ha restablecido correctamente! Redirigiendo al inicio de sesión...",
+    "failed": "No se pudo restablecer la contraseña",
+    "title": "Restablecer contraseña",
+    "subtitle": "Ingresa tu nueva contraseña abajo",
+    "new": "Nueva contraseña",
+    "confirm": "Confirmar nueva contraseña",
+    "strength": "Fortaleza de la contraseña",
+    "submit": "Restablecer contraseña",
+    "submitLoading": "Restableciendo contraseña..."
+  },
+  "profile": {
+    "setPassword": "Establecer contraseña",
+    "changePassword": "Cambiar contraseña",
+    "setPasswordSubtitle": "Establece una contraseña para habilitar el inicio de sesión con email/contraseña",
+    "changePasswordSubtitle": "Actualiza tu contraseña para mantener tu cuenta segura",
+    "setPasswordSuccess": "¡Contraseña establecida correctamente! Ahora puedes iniciar sesión con email/contraseña.",
+    "changePasswordSuccess": "¡Contraseña cambiada correctamente!",
+    "settingPassword": "Estableciendo contraseña...",
+    "changingPassword": "Cambiando contraseña...",
+    "emailImmutable": "El email no se puede cambiar",
+    "bioPlaceholder": "Cuéntanos sobre ti...",
+    "locationPlaceholder": "Ciudad, País",
+    "websitePlaceholder": "https://example.com",
+    "avatarPlaceholder": "https://example.com/avatar.jpg",
+    "fedNumberPlaceholder": "Introduce tu número de federación",
+    "changeUserRole": "Cambiar rol del usuario",
+    "saving": "Guardando...",
+    "saveProfile": "Guardar perfil"
+  },
+  "role": { "user": "Usuario", "admin": "Admin" },
+  "notFound": {
+    "title": "Página no encontrada",
+    "subtitle": "La página que buscas puede haber sido eliminada o no estar disponible temporalmente.",
+    "goHome": "Ir al inicio"
+  },
+  "common": { "or": "o", "cancel": "Cancelar", "update": "Actualizar", "create": "Crear", "back": "Atrás" },
+  "auth": {
+    "logout": "Cerrar sesión",
+    "signIn": "Iniciar sesión",
+    "signUp": "Registrarse",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "noAccount": "¿No tienes una cuenta?",
+    "signingIn": "Iniciando sesión...",
+    "signInWithGoogle": "Iniciar sesión con Google",
+    "alreadyAccount": "¿Ya tienes una cuenta?",
+    "signUpWithGoogle": "Registrarse con Google",
+    "signingUp": "Registrándose...",
+    "backToSignIn": "Volver al inicio de sesión"
+  },
+  "trainings": {
+    "title": "Mis entrenamientos",
+    "info": "La sección \"Mis entrenamientos\" permite crear cualquier cantidad de entrenamientos personales, seleccionar objetivo, distancia, cantidad de flechas, etc.\nPara cada entrenamiento hay estadísticas detalladas. El usuario puede compartir sus resultados.\nIMPORTANTE: la información del entrenamiento no se envía a ningún lugar y se almacena solo en tu dispositivo (por ahora)",
+    "deleteQ": "¿Eliminar entrenamiento?",
+    "deleteHint": "Todos los resultados de este entrenamiento serán eliminados",
+    "add": "Agregar entrenamiento"
+  },
+  "competition": { "title": "Página de competición", "testTournament": "Torneo de prueba 2024 (demo)", "patrolsTitle": "Lista de patrullas" },
+  "units": {
+    "inch": "Pulgada",
+    "centimeter": "Centímetro",
+    "pound": "Libra",
+    "kilogram": "Kilogramo",
+    "grain": "Grain",
+    "gram": "Gramo",
+    "yard": "Yarda",
+    "meter": "Metro"
+  },
+  "converter": {
+    "inchCm": { "short": "Pulgada - cm", "long": "Pulgada - Centímetro", "desc": "Usado para medir longitud de arco y flecha, etc." },
+    "poundKg": { "short": "Libra - kg", "long": "Libra - Kilogramo", "desc": "Usado para medir la potencia del arco" },
+    "grainG": { "short": "Grain - g", "long": "Grain - Gramo", "desc": "Usado para medir el peso de la flecha/punta, etc." },
+    "yardM": { "short": "Yarda - m", "long": "Yarda - Metro", "desc": "Conversiones de distancia de tiro" }
+  }
+}
+
+

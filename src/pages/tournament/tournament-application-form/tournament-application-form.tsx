@@ -13,6 +13,7 @@ import {
   CircularProgress,
 } from '@mui/material';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import apiService from '../../../services/api';
 
@@ -29,6 +30,7 @@ const TournamentApplicationForm: React.FC<TournamentApplicationFormProps> = ({
   onSuccess,
   onCancel,
 }) => {
+  const { t } = useTranslation('common');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState({
@@ -53,9 +55,7 @@ const TournamentApplicationForm: React.FC<TournamentApplicationFormProps> = ({
         onSuccess();
       }
     } catch (error) {
-      setError(
-        error instanceof Error ? error.message : 'Failed to submit application',
-      );
+      setError(error instanceof Error ? error.message : t('pages.applicationForm.submitError'));
     } finally {
       setLoading(false);
     }
@@ -73,7 +73,7 @@ const TournamentApplicationForm: React.FC<TournamentApplicationFormProps> = ({
       <Card>
         <CardContent>
           <Typography variant="h5" gutterBottom>
-            Submit Application for {tournamentTitle}
+            {t('pages.applicationForm.title', { title: tournamentTitle })}
           </Typography>
 
           {error && (
@@ -91,66 +91,66 @@ const TournamentApplicationForm: React.FC<TournamentApplicationFormProps> = ({
               <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
                 <Box sx={{ flex: '1 1 300px' }}>
                   <FormControl fullWidth>
-                    <InputLabel>Category</InputLabel>
+                    <InputLabel>{t('pages.applicationForm.category')}</InputLabel>
                     <Select
                       value={formData.category}
-                      label="Category"
+                      label={t('pages.applicationForm.category')}
                       onChange={(e) =>
                         handleInputChange('category', e.target.value)
                       }
                     >
-                      <MenuItem value="recurve">Recurve</MenuItem>
-                      <MenuItem value="compound">Compound</MenuItem>
-                      <MenuItem value="barebow">Barebow</MenuItem>
-                      <MenuItem value="traditional">Traditional</MenuItem>
-                      <MenuItem value="longbow">Longbow</MenuItem>
+                      <MenuItem value="recurve">{t('pages.applicationForm.opts.recurve')}</MenuItem>
+                      <MenuItem value="compound">{t('pages.applicationForm.opts.compound')}</MenuItem>
+                      <MenuItem value="barebow">{t('pages.applicationForm.opts.barebow')}</MenuItem>
+                      <MenuItem value="traditional">{t('pages.applicationForm.opts.traditional')}</MenuItem>
+                      <MenuItem value="longbow">{t('pages.applicationForm.opts.longbow')}</MenuItem>
                     </Select>
                   </FormControl>
                 </Box>
 
                 <Box sx={{ flex: '1 1 300px' }}>
                   <FormControl fullWidth>
-                    <InputLabel>Division</InputLabel>
+                    <InputLabel>{t('pages.applicationForm.division')}</InputLabel>
                     <Select
                       value={formData.division}
-                      label="Division"
+                      label={t('pages.applicationForm.division')}
                       onChange={(e) =>
                         handleInputChange('division', e.target.value)
                       }
                     >
-                      <MenuItem value="men">Men</MenuItem>
-                      <MenuItem value="women">Women</MenuItem>
-                      <MenuItem value="mixed">Mixed</MenuItem>
+                      <MenuItem value="men">{t('pages.applicationForm.opts.men')}</MenuItem>
+                      <MenuItem value="women">{t('pages.applicationForm.opts.women')}</MenuItem>
+                      <MenuItem value="mixed">{t('pages.applicationForm.opts.mixed')}</MenuItem>
                     </Select>
                   </FormControl>
                 </Box>
               </Box>
 
               <FormControl fullWidth>
-                <InputLabel>Equipment</InputLabel>
+                <InputLabel>{t('pages.applicationForm.equipment')}</InputLabel>
                 <Select
                   value={formData.equipment}
-                  label="Equipment"
+                  label={t('pages.applicationForm.equipment')}
                   onChange={(e) =>
                     handleInputChange('equipment', e.target.value)
                   }
                 >
-                  <MenuItem value="olympic">Olympic Recurve</MenuItem>
-                  <MenuItem value="compound">Compound Bow</MenuItem>
-                  <MenuItem value="barebow">Barebow</MenuItem>
-                  <MenuItem value="traditional">Traditional Bow</MenuItem>
-                  <MenuItem value="longbow">Longbow</MenuItem>
+                  <MenuItem value="olympic">{t('pages.applicationForm.opts.olympic')}</MenuItem>
+                  <MenuItem value="compound">{t('pages.applicationForm.opts.compoundBow')}</MenuItem>
+                  <MenuItem value="barebow">{t('pages.applicationForm.opts.barebow')}</MenuItem>
+                  <MenuItem value="traditional">{t('pages.applicationForm.opts.traditionalBow')}</MenuItem>
+                  <MenuItem value="longbow">{t('pages.applicationForm.opts.longbow')}</MenuItem>
                 </Select>
               </FormControl>
 
               <TextField
                 fullWidth
-                label="Additional Notes"
+                label={t('pages.applicationForm.notes')}
                 multiline
                 rows={4}
                 value={formData.notes}
                 onChange={(e) => handleInputChange('notes', e.target.value)}
-                placeholder="Any additional information about your participation..."
+                placeholder={t('pages.applicationForm.notesPlaceholder')}
               />
 
               <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end' }}>
@@ -160,7 +160,7 @@ const TournamentApplicationForm: React.FC<TournamentApplicationFormProps> = ({
                     onClick={onCancel}
                     disabled={loading}
                   >
-                    Cancel
+                    {t('common.cancel')}
                   </Button>
                 )}
                 <Button
@@ -169,7 +169,7 @@ const TournamentApplicationForm: React.FC<TournamentApplicationFormProps> = ({
                   disabled={loading}
                   startIcon={loading ? <CircularProgress size={20} /> : null}
                 >
-                  {loading ? 'Submitting...' : 'Submit Application'}
+                  {loading ? t('pages.applicationForm.submitting') : t('pages.applicationForm.submit')}
                 </Button>
               </Box>
             </Box>

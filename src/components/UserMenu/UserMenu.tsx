@@ -2,6 +2,9 @@ import '../Header/Header.scss';
 
 import Avatar from '@mui/material/Avatar';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useParams } from 'react-router-dom';
+import { normalizeAppLang } from '../../utils/i18n-lang';
 
 import { useAuth } from '../../contexts/auth-context';
 import LanguageToggler from '../LanguageToggler/LanguageToggler';
@@ -9,6 +12,9 @@ import Menu from '../Menu/Menu';
 import type { MenuSection } from '../Menu/types';
 
 const UserMenu: React.FC = () => {
+  const { t } = useTranslation('common');
+  const { lang } = useParams();
+  normalizeAppLang(lang);
   const [active, setActive] = useState<boolean>(false);
   // Reserved for future integration with app-wide i18n if needed
   // const [language, setLanguage] = useState<string>('en');
@@ -41,7 +47,7 @@ const UserMenu: React.FC = () => {
   const authenticatedMenuItems = [
     {
       link: '/profile',
-      label: 'My profile (' + user?.firstName + ' ' + user?.lastName + ')',
+      label: t('menu.myProfile', { name: (user?.firstName || '') + ' ' + (user?.lastName || '') }),
     },
     // TODO: Implement My achievements
     // {
@@ -58,11 +64,11 @@ const UserMenu: React.FC = () => {
   const unauthenticatedMenuItems = [
     {
       link: '/signin',
-      label: 'Sign In',
+      label: t('auth.signIn'),
     },
     {
       link: '/signup',
-      label: 'Sign Up',
+      label: t('auth.signUp'),
     },
   ];
 

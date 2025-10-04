@@ -9,6 +9,7 @@ export interface ProfileData {
   federationNumber?: string;
   categories?: string[];
   role?: string;
+  language?: 'pt' | 'en' | 'it' | 'ua' | 'es';
 }
 
 export interface PasswordChangeForm {

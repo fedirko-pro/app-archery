@@ -1,6 +1,7 @@
 import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Link as MuiLink, Typography } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 
 import apiService from '../../services/api';
@@ -12,6 +13,7 @@ import type { RuleDto } from '../../services/types';
  */
 const Rules: React.FC = () => {
   const [rules, setRules] = useState<RuleDto[]>([]);
+  const { t } = useTranslation('common');
   const [expanded, setExpanded] = useState<string | false>(false);
   const { hash } = useLocation();
 
@@ -48,7 +50,7 @@ const Rules: React.FC = () => {
   return (
     <section>
       <div className="container">
-        <Typography variant="h4" gutterBottom>Rules</Typography>
+        <Typography variant="h4" gutterBottom>{t('pages.rules.title')}</Typography>
 
         {rules.map((rule) => (
           <Accordion
@@ -81,12 +83,12 @@ const Rules: React.FC = () => {
               <Box sx={{ mt: 1, display: 'flex', gap: 2, alignItems: 'center', flexWrap: 'wrap' }}>
                 {rule.link && (
                   <MuiLink href={rule.link} target="_blank" rel="noopener noreferrer">
-                    Open official page
+                    {t('pages.rules.openOfficialPage')}
                   </MuiLink>
                 )}
                 {buildDownloadHref(rule.download_link) && (
                   <Button variant="outlined" component="a" href={buildDownloadHref(rule.download_link)} download>
-                    Download PDF
+                    {t('pages.rules.downloadPdf')}
                   </Button>
                 )}
               </Box>

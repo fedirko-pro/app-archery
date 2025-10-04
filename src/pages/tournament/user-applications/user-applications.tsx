@@ -15,6 +15,7 @@ import {
 } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import apiService from '../../../services/api';
 import { formatDate } from '../../../utils/date-utils';
@@ -38,6 +39,7 @@ interface TournamentApplication {
 
 const UserApplications: React.FC = () => {
   const location = useLocation();
+  const { t } = useTranslation('common');
   const [applications, setApplications] = useState<TournamentApplication[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -59,7 +61,7 @@ const UserApplications: React.FC = () => {
       const data = await apiService.getMyApplications();
       setApplications(data);
     } catch (error) {
-      setError('Failed to fetch applications');
+      setError(t('pages.applications.fetchError'));
       console.error('Error fetching applications:', error);
     } finally {
       setLoading(false);
@@ -123,7 +125,7 @@ const UserApplications: React.FC = () => {
   return (
     <Box sx={{ p: 3 }}>
       <Typography variant="h4" gutterBottom>
-        My Tournament Applications
+        {t('pages.applications.title')}
       </Typography>
 
       {error && (
@@ -146,7 +148,7 @@ const UserApplications: React.FC = () => {
         <Card>
           <CardContent>
             <Typography variant="body1" color="text.secondary" align="center">
-              You haven't submitted any tournament applications yet.
+              {t('pages.applications.empty')}
             </Typography>
           </CardContent>
         </Card>
@@ -185,7 +187,7 @@ const UserApplications: React.FC = () => {
                     color="text.secondary"
                     gutterBottom
                   >
-                    <strong>Dates:</strong>{' '}
+                    <strong>{t('pages.applications.dates')}:</strong>{' '}
                     {formatDate(application.tournament.startDate)} -{' '}
                     {formatDate(application.tournament.endDate)}
                   </Typography>
@@ -196,7 +198,7 @@ const UserApplications: React.FC = () => {
                       color="text.secondary"
                       gutterBottom
                     >
-                      <strong>Category:</strong> {application.category}
+                      <strong>{t('pages.applications.category')}:</strong> {application.category}
                     </Typography>
                   )}
 
@@ -206,7 +208,7 @@ const UserApplications: React.FC = () => {
                       color="text.secondary"
                       gutterBottom
                     >
-                      <strong>Division:</strong> {application.division}
+                      <strong>{t('pages.applications.division')}:</strong> {application.division}
                     </Typography>
                   )}
 
@@ -216,7 +218,7 @@ const UserApplications: React.FC = () => {
                       color="text.secondary"
                       gutterBottom
                     >
-                      <strong>Equipment:</strong> {application.equipment}
+                      <strong>{t('pages.applications.equipment')}:</strong> {application.equipment}
                     </Typography>
                   )}
 
@@ -226,13 +228,13 @@ const UserApplications: React.FC = () => {
                       color="text.secondary"
                       gutterBottom
                     >
-                      <strong>Notes:</strong> {application.notes}
+                      <strong>{t('pages.applications.notes')}:</strong> {application.notes}
                     </Typography>
                   )}
 
                   {application.rejectionReason && (
                     <Alert severity="error" sx={{ mt: 1 }}>
-                      <strong>Rejection Reason:</strong>{' '}
+                      <strong>{t('pages.applications.rejectionReason')}:</strong>{' '}
                       {application.rejectionReason}
                     </Alert>
                   )}
@@ -243,7 +245,7 @@ const UserApplications: React.FC = () => {
                     display="block"
                     sx={{ mt: 1 }}
                   >
-                    Applied on: {formatDate(application.createdAt)}
+                    {t('pages.applications.appliedOn')}: {formatDate(application.createdAt)}
                   </Typography>
 
                   {application.status === 'pending' && (
@@ -260,7 +262,7 @@ const UserApplications: React.FC = () => {
                           })
                         }
                       >
-                        Withdraw Application
+                        {t('pages.applications.withdraw')}
                       </Button>
                     </Box>
                   )}
@@ -275,11 +277,10 @@ const UserApplications: React.FC = () => {
         open={withdrawDialog.open}
         onClose={() => setWithdrawDialog({ open: false, applicationId: null })}
       >
-        <DialogTitle>Withdraw Application</DialogTitle>
+        <DialogTitle>{t('pages.applications.withdrawTitle')}</DialogTitle>
         <DialogContent>
           <Typography>
-            Are you sure you want to withdraw this application? This action
-            cannot be undone.
+            {t('pages.applications.withdrawConfirm')}
           </Typography>
         </DialogContent>
         <DialogActions>
@@ -288,10 +289,10 @@ const UserApplications: React.FC = () => {
               setWithdrawDialog({ open: false, applicationId: null })
             }
           >
-            Cancel
+            {t('common.cancel')}
           </Button>
           <Button onClick={handleWithdraw} color="error" variant="contained">
-            Withdraw
+            {t('pages.applications.withdraw')}
           </Button>
         </DialogActions>
       </Dialog>

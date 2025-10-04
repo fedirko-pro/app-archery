@@ -8,6 +8,7 @@ import type {
 } from '../contexts/types';
 import type { ProfileData } from '../pages/profile/types';
 import type { ApiError, CategoryDto, RuleDto } from './types';
+import { getCurrentI18nLang } from '../utils/i18n-lang';
 import categoriesData from '../data/categories';
 import rulesData from '../data/rules';
 
@@ -51,6 +52,7 @@ class ApiService {
     const config: RequestInit = {
       headers: {
         'Content-Type': 'application/json',
+        'Accept-Language': getCurrentI18nLang(),
         ...(token && { Authorization: `Bearer ${token}` }),
         ...options.headers,
       },

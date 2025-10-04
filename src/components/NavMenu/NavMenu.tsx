@@ -2,11 +2,13 @@ import './NavMenu.scss';
 
 import classNames from 'classnames';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { useAuth } from '../../contexts/auth-context';
 import Menu from '../Menu/Menu';
 
 function NavMenu() {
+  const { t } = useTranslation('common');
   const [active, setActive] = useState(false);
   const { user, loading } = useAuth();
 
@@ -29,63 +31,30 @@ function NavMenu() {
     //   link: '/trainings',
     //   label: 'My trainings',
     // },
-    {
-      link: '/tournaments',
-      label: 'Tournaments',
-    },
-    {
-      link: '/applications',
-      label: 'My applications',
-    },
+    { link: '/tournaments', label: t('nav.tournaments') },
+    { link: '/applications', label: t('nav.myApplications') },
     // TODO: Implement Competition (DEMO)
     // {
     //   link: '/Competition',
     //   label: 'Competition (DEMO)',
     // },
-    {
-      link: '/Competition/patrols',
-      label: 'Patrols list (DEMO)',
-    },
-    {
-      link: '/Competition/patrols',
-      label: 'Patrol (DEMO)',
-    },
-    {
-      link: '/Competition/user',
-      label: 'User card (demo)',
-    },
-    {
-      link: '/converter',
-      label: 'Converter',
-    },
-    {
-      link: '/categories',
-      label: 'Categories',
-    },
-    {
-      link: '/rules',
-      label: 'Rules',
-    },
+    { link: '/Competition/patrols', label: 'Patrols list (DEMO)' },
+    { link: '/Competition/patrols', label: 'Patrol (DEMO)' },
+    { link: '/Competition/user', label: 'User card (demo)' },
+    { link: '/converter', label: t('nav.converter') },
+    { link: '/categories', label: t('nav.categories') },
+    { link: '/rules', label: t('nav.rules') },
     // TODO: Implement Knowledge base
     // {
     //   link: '/encyclopedia',
     //   label: 'Knowledge base',
     // },
-    {
-      link: '/about',
-      label: 'About',
-    },
+    { link: '/about', label: t('nav.about') },
   ];
 
   const adminMenuItems = [
-    {
-      link: '/admin/users',
-      label: 'Users',
-    },
-    {
-      link: '/admin/applications',
-      label: 'User applications',
-    },
+    { link: '/admin/users', label: t('nav.users') },
+    { link: '/admin/applications', label: t('nav.userApplications') },
   ];
 
   const sections = [

@@ -1,13 +1,20 @@
 import './Footer.scss';
 
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { normalizeAppLang } from '../../utils/i18n-lang';
 
-const Footer = () => (
-  <footer>
-    <NavLink to="/converter">v.1.0.2 &copy; FEDIRKO.PRO</NavLink>
-    <Link to="/" target="_self" className="central_button" />
-    <NavLink to="/about">About</NavLink>
-  </footer>
-);
+const Footer = () => {
+  const { t } = useTranslation('common');
+  const { lang } = useParams();
+  const currentLang = normalizeAppLang(lang);
+  return (
+    <footer>
+      <NavLink to={`/${currentLang}/converter`}>v.1.0.2 &copy; FEDIRKO.PRO</NavLink>
+      <Link to={`/${currentLang}`} target="_self" className="central_button" />
+      <NavLink to={`/${currentLang}/about`}>{t('footer.about')}</NavLink>
+    </footer>
+  );
+};
 
 export default Footer;

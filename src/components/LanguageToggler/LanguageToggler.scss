@@ -1,25 +1,53 @@
 @use '../../sass/helpers/variables' as *;
 
-.language_toggle_button_group {
-  .MuiToggleButton-root {
+.language_toggle_button_group,
+.language_select {
+  min-width: 88px;
+  background: transparent;
+  &__control {
+    width: 100%;
+  }
+  .MuiSelect-select {
     color: #ffd700;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    // padding-block: 4px;
+  }
+  .MuiOutlinedInput-notchedOutline {
     border-color: #ffd700;
-    min-width: 50px;
+    border-width: 1px;
+  }
+  .Mui-focused .MuiOutlinedInput-notchedOutline {
+    border-color: #ffd700 !important;
+  }
+  .MuiSvgIcon-root {
+    color: #ffd700;
   }
 
-  .MuiToggleButtonGroup-grouped:not(:last-of-type) {
-    border-right-color: #ffd700;
+  &__option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
-  .MuiToggleButtonGroup-grouped:not(:first-of-type) {
-    border-left-color: #ffd700;
-    margin-left: -1px;
+  &__menuPaper {
+    border: 1px solid #ffd700;
+    background: rgba(0, 0, 0, 0.9);
+    color: #ffd700;
   }
-
-  .MuiToggleButton-root.Mui-selected {
-    color: $white;
-    background: $blue;
+  &__menuList {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
   }
-  .MuiToggleButton-root.Mui-selected:hover {
-    background: $blue;
+  &__flag {
+    font-size: 24px;
+    line-height: 1;
+  }
+  &__code {
+    letter-spacing: 0.25px;
+  }
+  .MuiMenuItem-root.Mui-selected,
+  .MuiMenuItem-root.Mui-selected:hover {
+    background-color: rgba(255, 215, 0, 0.5) !important;
   }
 }

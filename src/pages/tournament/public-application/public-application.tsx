@@ -9,6 +9,7 @@ import {
 } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import { useAuth } from '../../../contexts/auth-context';
 import apiService from '../../../services/api';
@@ -17,6 +18,7 @@ import TournamentApplicationForm from '../tournament-application-form/tournament
 const PublicApplication: React.FC = () => {
   const { tournamentId } = useParams<{ tournamentId: string }>();
   const navigate = useNavigate();
+  const { t } = useTranslation('common');
 
   const { user, loading: authLoading } = useAuth();
 
@@ -36,7 +38,7 @@ const PublicApplication: React.FC = () => {
       const data = await apiService.getTournament(tournamentId!);
       setTournament(data);
     } catch (error) {
-      setError('Tournament not found');
+      setError(t('pages.publicApplication.notFound'));
       console.error('Error fetching tournament:', error);
     } finally {
       setLoading(false);
@@ -87,13 +89,13 @@ const PublicApplication: React.FC = () => {
   if (error || !tournament) {
     return (
       <Box sx={{ p: 3, maxWidth: 600, mx: 'auto' }}>
-        <Alert severity="error">{error || 'Tournament not found'}</Alert>
+        <Alert severity="error">{error || t('pages.publicApplication.notFound')}</Alert>
         <Button
           variant="contained"
           sx={{ mt: 2 }}
-          onClick={() => navigate('/tournaments')}
+          onClick={() => navigate(-1)}
         >
-          Back to Tournaments
+          {t('common.back')}
         </Button>
       </Box>
     );
@@ -105,12 +107,11 @@ const PublicApplication: React.FC = () => {
         <Card>
           <CardContent>
             <Typography variant="h4" gutterBottom>
-              Apply for {tournament.title}
+              {t('pages.publicApplication.applyFor', { title: tournament.title })}
             </Typography>
 
             <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
-              To submit your application for this tournament, you need to create
-              an account or sign in to your existing account.
+              {t('pages.publicApplication.signInPrompt')}
             </Typography>
 
             <Box
@@ -126,7 +127,7 @@ const PublicApplication: React.FC = () => {
                 fullWidth
                 onClick={handleSignUp}
               >
-                Create Account
+                {t('auth.signUp')}
               </Button>
               <Button
                 variant="outlined"
@@ -134,13 +135,12 @@ const PublicApplication: React.FC = () => {
                 fullWidth
                 onClick={handleSignIn}
               >
-                Sign In
+                {t('auth.signIn')}
               </Button>
             </Box>
 
             <Typography variant="body2" color="text.secondary" sx={{ mt: 2 }}>
-              After registration or sign in, you'll be redirected back to this
-              application form.
+              {t('pages.publicApplication.redirectInfo')}
             </Typography>
           </CardContent>
         </Card>
