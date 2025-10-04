@@ -27,7 +27,11 @@ const Categories: React.FC = () => {
     const load = async () => {
       try {
         const data = await apiService.getCategories();
-        setCategories(data);
+        // Sort categories alphabetically by code
+        const sortedCategories = data.sort((a, b) => 
+          (a.code || '').localeCompare(b.code || '')
+        );
+        setCategories(sortedCategories);
       } catch (e) {
         // no-op for FE stub
         console.error(e);
