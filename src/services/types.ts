@@ -16,7 +16,13 @@ export interface CategoryDto {
   id?: string;
   code: string;
   name: string;
-  description: string; // plain text (multiline supported)
+  // Multilingual descriptions (plain text, multiline supported)
+  description?: string;
+  description_en?: string;
+  description_pt?: string;
+  description_it?: string;
+  description_uk?: string;
+  description_es?: string;
   rule_reference?: string;
   rule_citation?: string;
 }
@@ -28,7 +34,13 @@ export interface RuleDto {
   rule_code: string; // e.g. IFAA, FABP, HDH-IAA
   rule_name: string;
   edition?: string;
-  description: string; // plain text
+  // Multilingual descriptions (plain text)
+  description?: string;
+  description_en?: string;
+  description_pt?: string;
+  description_it?: string;
+  description_uk?: string;
+  description_es?: string;
   link?: string; // external info page
   download_link?: string; // path under public/pdf/rules or external
 }
