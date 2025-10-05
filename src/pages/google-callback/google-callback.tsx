@@ -31,10 +31,10 @@ const GoogleCallback = () => {
 
         if (token) {
           localStorage.setItem('authToken', token);
-          await handleGoogleAuth();
-        } else {
-          window.location.href = '/signin';
         }
+
+        // Proceed regardless of token to support cookie-based auth
+        await handleGoogleAuth();
       } catch {
         setError('Authentication failed');
         setTimeout(() => (window.location.href = '/signin'), 3000);

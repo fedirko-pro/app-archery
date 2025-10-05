@@ -115,17 +115,19 @@ const Profile: React.FC<ProfileProps> = ({
   }
 
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center', mt: 6 }}>
-      <ProfileCard
-        profileData={profileData}
-        user={user}
-        isEditing={false}
-        isAdminView={isAdminView}
-        onEditToggle={handleEditToggle}
-        getFullName={getFullName}
-        getJoinDate={getJoinDate}
-      />
-    </Box>
+    <section>
+      <div className="container">
+        <ProfileCard
+          profileData={profileData}
+          user={user}
+          isEditing={false}
+          isAdminView={isAdminView}
+          onEditToggle={handleEditToggle}
+          getFullName={getFullName}
+          getJoinDate={getJoinDate}
+        />
+      </div>
+    </section>
   );
 };
 

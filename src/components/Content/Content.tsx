@@ -16,7 +16,7 @@ import CompetitionsList from '../../pages/competition/competitions-list/competit
 import PatrolList from '../../pages/competition/patrol-list/patrol-list';
 import UserPage from '../../pages/competition/user-page/user-page';
 import ConverterPage from '../../pages/ConverterPage';
-import Encyclopedia from '../../pages/Encyclopedia';
+import Encyclopedia from '../../pages/encyclopedia';
 // TODO: Settings temporarily disabled - functionality moved to Profile
 // import Settings from '../Settings/Settings.tsx';
 import GoogleCallback from '../../pages/google-callback/google-callback';
@@ -57,6 +57,9 @@ function Content() {
     <main>
       <Routes>
         <Route path="/" element={<Navigate to="/pt" replace />} />
+        {/* Language-agnostic auth routes to avoid 404s from backend redirects */}
+        <Route path="/auth/google/callback" element={<GoogleCallback />} />
+        <Route path="/signin" element={<Navigate to="/pt/signin" replace />} />
         <Route path=":lang" element={<LangLayout />}>
           <Route index element={<ConverterPage />} />
           <Route path="signin" element={<SignIn />} />
