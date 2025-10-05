@@ -22,6 +22,8 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   getFullName,
   getJoinDate,
 }) => {
+  console.log('profileData', profileData);
+  console.log('user', user);
   const navigate = useNavigate();
   return (
     <div className="profile-container">
@@ -38,7 +40,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
         <Box className="profile-avatar-container" sx={{ flexShrink: 0 }}>
           <Avatar
             className="profile-avatar"
-            alt="Profile Avatar"
+            alt={getFullName()}
             src={profileData.picture || user.picture}
             sx={{ width: 120, height: 120 }}
           />
