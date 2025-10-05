@@ -57,4 +57,26 @@ export function getCurrentI18nLang(): string {
   return 'pt';
 }
 
+/** Choose localized description by app language with sensible fallbacks. */
+export function pickLocalizedDescription(
+  record: { [k: string]: any },
+  appLang: AppLanguage,
+  baseKey: string = 'description'
+): string | undefined {
+  const langForKey = appLang === 'ua' ? 'uk' : appLang;
+  const langKey = `${baseKey}_${langForKey}`;
+  const direct = record[langKey];
+  if (typeof direct === 'string' && direct.trim()) return direct;
+
+  // fallback order: pt -> en -> it -> es -> uk -> plain description
+  const fallbacks: Array<AppLanguage | 'uk'> = ['pt', 'en', 'it', 'es', 'ua', 'uk'];
+  for (const fb of fallbacks) {
+    const fbKey = fb === 'ua' ? 'uk' : fb;
+    const v = record[`${baseKey}_${fbKey}`];
+    if (typeof v === 'string' && v.trim()) return v;
+  }
+  const plain = record[baseKey];
+  return typeof plain === 'string' && plain.trim() ? plain : undefined;
+}
+
 

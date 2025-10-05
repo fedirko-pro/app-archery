@@ -15,7 +15,18 @@ const CategoryEdit: React.FC = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
 
-  const [form, setForm] = useState<CategoryDto>({ id: id || '', code: '', name: '', description: '', rule_reference: '', rule_citation: '' });
+  const [form, setForm] = useState<CategoryDto>({
+    id: id || '',
+    code: '',
+    name: '',
+    description_en: '',
+    description_pt: '',
+    description_it: '',
+    description_uk: '',
+    description_es: '',
+    rule_reference: '',
+    rule_citation: '',
+  });
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
@@ -72,11 +83,39 @@ const CategoryEdit: React.FC = () => {
             onChange={(e) => setForm({ ...form, name: e.target.value })}
           />
           <TextField
-            label="Description"
-            value={form.description}
-            onChange={(e) => setForm({ ...form, description: e.target.value })}
+            label="Description (EN)"
+            value={form.description_en || ''}
+            onChange={(e) => setForm({ ...form, description_en: e.target.value })}
             multiline
-            minRows={4}
+            minRows={3}
+          />
+          <TextField
+            label="Description (PT)"
+            value={form.description_pt || ''}
+            onChange={(e) => setForm({ ...form, description_pt: e.target.value })}
+            multiline
+            minRows={3}
+          />
+          <TextField
+            label="Description (IT)"
+            value={form.description_it || ''}
+            onChange={(e) => setForm({ ...form, description_it: e.target.value })}
+            multiline
+            minRows={3}
+          />
+          <TextField
+            label="Description (UA)"
+            value={form.description_uk || ''}
+            onChange={(e) => setForm({ ...form, description_uk: e.target.value })}
+            multiline
+            minRows={3}
+          />
+          <TextField
+            label="Description (ES)"
+            value={form.description_es || ''}
+            onChange={(e) => setForm({ ...form, description_es: e.target.value })}
+            multiline
+            minRows={3}
           />
           <TextField
             label="Rule reference"

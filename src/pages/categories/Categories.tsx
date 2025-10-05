@@ -4,6 +4,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { normalizeAppLang, pickLocalizedDescription } from '../../utils/i18n-lang';
 import { useTranslation } from 'react-i18next';
 
 import apiService from '../../services/api';
@@ -19,6 +20,7 @@ const Categories: React.FC = () => {
   const [expanded, setExpanded] = useState<string | false>(false);
   const navigate = useNavigate();
   const { lang } = useParams();
+  const appLang = normalizeAppLang(lang);
   const { t } = useTranslation('common');
   const { user } = useAuth();
 
@@ -88,7 +90,7 @@ const Categories: React.FC = () => {
             </AccordionSummary>
             <AccordionDetails>
               <Box sx={{ whiteSpace: 'pre-wrap' }}>
-                {category.description}
+                {pickLocalizedDescription(category as any, appLang) || ''}
               </Box>
               {(category.rule_reference || category.rule_citation) && (
                 <Typography variant="body2" sx={{ mt: 1, color: 'text.secondary' }}>

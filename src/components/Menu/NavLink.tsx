@@ -1,12 +1,13 @@
 import React from 'react';
-import { useMatch, useNavigate, useParams } from 'react-router-dom';
-import { normalizeAppLang } from '../../utils/i18n-lang';
+import { useLocation, useMatch, useNavigate } from 'react-router-dom';
+import { fromI18nLang, getCurrentI18nLang, normalizeAppLang } from '../../utils/i18n-lang';
 
 import type { NavLinkProps } from './types';
 
 const NavLink: React.FC<NavLinkProps> = ({ to, children, clickHandle, onClick, className }) => {
-  const { lang } = useParams();
-  const currentLang = normalizeAppLang(lang);
+  const location = useLocation();
+  const inferredLang = fromI18nLang(getCurrentI18nLang());
+  const currentLang = normalizeAppLang(location.pathname.split('/')[1] || inferredLang);
   const match = useMatch(`/${currentLang}${to}`);
   const navigate = useNavigate();
 

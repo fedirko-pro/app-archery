@@ -2,7 +2,8 @@ import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Link as Mui
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
+import { normalizeAppLang, pickLocalizedDescription } from '../../utils/i18n-lang';
 
 import apiService from '../../services/api';
 import type { RuleDto } from '../../services/types';
@@ -16,6 +17,8 @@ const Rules: React.FC = () => {
   const { t } = useTranslation('common');
   const [expanded, setExpanded] = useState<string | false>(false);
   const { hash } = useLocation();
+  const { lang } = useParams();
+  const appLang = normalizeAppLang(lang);
 
   useEffect(() => {
     const load = async () => {
@@ -79,7 +82,7 @@ const Rules: React.FC = () => {
                   {rule.edition}
                 </Typography>
               )}
-              <Box sx={{ whiteSpace: 'pre-wrap' }}>{rule.description}</Box>
+              <Box sx={{ whiteSpace: 'pre-wrap' }}>{pickLocalizedDescription(rule as any, appLang) || ''}</Box>
               <Box sx={{ mt: 1, display: 'flex', gap: 2, alignItems: 'center', flexWrap: 'wrap' }}>
                 {rule.link && (
                   <MuiLink href={rule.link} target="_blank" rel="noopener noreferrer">
