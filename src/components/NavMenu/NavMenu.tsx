@@ -32,14 +32,13 @@ function NavMenu() {
     //   label: 'My trainings',
     // },
     { link: '/tournaments', label: t('nav.tournaments') },
-    { link: '/applications', label: t('nav.myApplications') },
+    ...(user ? [{ link: '/applications', label: t('nav.myApplications') }] : []),
     // TODO: Implement Competition (DEMO)
     // {
     //   link: '/Competition',
     //   label: 'Competition (DEMO)',
     // },
     { link: '/Competition/patrols', label: 'Patrols list (DEMO)' },
-    { link: '/Competition/patrols', label: 'Patrol (DEMO)' },
     { link: '/Competition/user', label: 'User card (demo)' },
     { link: '/converter', label: t('nav.converter') },
     { link: '/categories', label: t('nav.categories') },
