@@ -1,4 +1,4 @@
-import { Accordion, AccordionDetails, AccordionSummary, Box, IconButton, Typography } from '@mui/material';
+import { Accordion, AccordionDetails, AccordionSummary, Box, Icon, IconButton, Typography } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next';
 import apiService from '../../services/api';
 import type { CategoryDto } from '../../services/types';
 import { useAuth } from '../../contexts/auth-context';
+import { SpaceBarRounded } from '@mui/icons-material';
 
 /**
  * Categories page renders a single-expandable MUI accordion with bow categories.
@@ -63,27 +64,23 @@ const Categories: React.FC = () => {
                 </Typography>
                 <Typography variant="subtitle1">{category.name}</Typography>
                 {isAdmin && (
-                  <Box sx={{ ml: 'auto' }}>
-                    <IconButton
-                      aria-label="edit"
-                      size="small"
+                  <Box sx={{ ml: 'auto', opacity: 0.5 }}>
+                    <span
                       onClick={(e) => {
                         e.stopPropagation();
                         navigate(`/${lang}/admin/categories/${category.id || category.code.toLowerCase()}/edit`);
                       }}
                     >
                       <EditIcon fontSize="small" />
-                    </IconButton>
-                    <IconButton
-                      aria-label="delete"
-                      size="small"
+                    </span>
+                    <span
                       onClick={(e) => {
                         e.stopPropagation();
                         navigate(`/${lang}/admin/categories/${category.id || category.code.toLowerCase()}/edit`);
                       }}
                     >
                       <DeleteIcon fontSize="small" />
-                    </IconButton>
+                    </span>
                   </Box>
                 )}
               </Box>
