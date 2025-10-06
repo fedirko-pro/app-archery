@@ -10,3 +10,16 @@
     text-align: center;
   }
 }
+
+.button {
+  &.submit {
+    padding: 8px 16px;
+    border-radius: 8px;
+  }
+  &.submit:disabled {
+    background: lightgrey;
+    color: gray;
+    border-color: gray;
+    box-shadow: none;
+  }
+}
