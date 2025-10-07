@@ -256,7 +256,8 @@ const ProfileEditPage: React.FC = () => {
   }
 
   return (
-    <Box sx={{ maxWidth: 700, mx: 'auto', mt: 6 }}>
+    <section>
+      <div className="container">
       {error && (
         <Alert severity="error" sx={{ mb: 2 }}>
           {error}
@@ -411,7 +412,8 @@ const ProfileEditPage: React.FC = () => {
           </Box>
         </CardContent>
       </Card>
-    </Box>
+    </div>
+    </section>
   );
 };
 

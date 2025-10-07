@@ -6,7 +6,7 @@ import React, {
   ReactNode,
   useRef,
 } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import apiService from '../services/api';
 import type {
@@ -16,6 +16,7 @@ import type {
   AuthContextType,
   ChangePasswordData,
 } from './types';
+import { fromI18nLang, getCurrentI18nLang, normalizeAppLang } from '../utils/i18n-lang';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -37,6 +38,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [error, setError] = useState<string | null>(null);
   const pendingApplicationProcessedRef = useRef(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const inferredLang = fromI18nLang(getCurrentI18nLang());
+  const currentLang = normalizeAppLang(location.pathname.split('/')[1] || inferredLang);
 
   useEffect(() => {
     const checkAuth = async (): Promise<void> => {
@@ -63,7 +67,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       sessionStorage.removeItem('pendingApplication');
       navigate(redirectTo);
     } else {
-      navigate('/profile');
+      navigate(`/${currentLang}/profile`);
     }
   };
 
@@ -158,11 +162,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         } catch {
           sessionStorage.removeItem('pendingApplication');
           pendingApplicationProcessedRef.current = true;
-          navigate('/profile');
+          navigate(`/${currentLang}/profile`);
         }
       } else {
         pendingApplicationProcessedRef.current = true;
-        navigate('/profile');
+        navigate(`${currentLang}/profile`);
       }
     } catch {
       apiService.logout();
@@ -182,7 +186,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
       await apiService.changePassword(passwordData);
 
-      navigate('/profile');
+      navigate(`/${currentLang}/profile`);
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : 'Failed to change password';
@@ -207,7 +211,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const userData = await apiService.getProfile();
       setUser(userData);
 
-      navigate('/profile');
+      navigate(`${currentLang}/profile`);
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : 'Failed to set password';
