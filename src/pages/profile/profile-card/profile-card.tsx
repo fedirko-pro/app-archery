@@ -1,8 +1,9 @@
 import { Avatar, Typography, Box, Button } from '@mui/material';
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import type { ProfileData } from '../types';
+import { fromI18nLang, getCurrentI18nLang, normalizeAppLang } from '../../../utils/i18n-lang';
 
 interface ProfileCardProps {
   profileData: ProfileData;
@@ -22,9 +23,10 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   getFullName,
   getJoinDate,
 }) => {
-  console.log('profileData', profileData);
-  console.log('user', user);
   const navigate = useNavigate();
+  const location = useLocation();
+  const inferredLang = fromI18nLang(getCurrentI18nLang());
+  const currentLang = normalizeAppLang(location.pathname.split('/')[1] || inferredLang);
   return (
     <div className="profile-container">
       <Box className="profile-hero" />
@@ -82,7 +84,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                 <Button
                   variant="contained"
                   color="primary"
-                  onClick={() => navigate('/profile/edit')}
+                  onClick={() => navigate(`/${currentLang}/profile/edit`)}
                   sx={{ mt: 2 }}
                 >
                   Edit Profile
