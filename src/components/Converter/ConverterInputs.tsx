@@ -5,7 +5,7 @@ import { useState } from 'react';
 export default function ConverterInputs(props: any) {
     const [firstValue, setFirstValue] = useState(0);
     const [secondValue, setSecondValue] = useState(0);
-    const round2 = (n: number) => Math.round(n * 100) / 100;
+    const round3 = (n: number) => Math.round(n * 1000) / 1000;
   
     return (
       <Box
@@ -28,8 +28,8 @@ export default function ConverterInputs(props: any) {
           }}
           onChange={(e) => {
             let val = e.target.value.length ? parseFloat(e.target.value) : 0;
-            const roundedFirst = round2(val);
-            const roundedSecond = round2(val * props.coef);
+            const roundedFirst = round3(val);
+            const roundedSecond = round3(val * props.coef);
             setFirstValue(roundedFirst);
             setSecondValue(roundedSecond);
           }}
@@ -49,8 +49,8 @@ export default function ConverterInputs(props: any) {
           }}
           onChange={(e) => {
             let val = e.target.value.length ? parseFloat(e.target.value) : 0;
-            const roundedSecond = round2(val);
-            const roundedFirst = round2(val / props.coef);
+            const roundedSecond = round3(val);
+            const roundedFirst = round3(val / props.coef);
             setSecondValue(roundedSecond);
             setFirstValue(roundedFirst);
           }}

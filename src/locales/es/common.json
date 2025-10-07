@@ -147,6 +147,7 @@
     "submitLoading": "Restableciendo contraseña..."
   },
   "profile": {
+    "editProfile": "Editar perfil",
     "setPassword": "Establecer contraseña",
     "changePassword": "Cambiar contraseña",
     "setPasswordSubtitle": "Establece una contraseña para habilitar el inicio de sesión con email/contraseña",

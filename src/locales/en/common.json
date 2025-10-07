@@ -189,6 +189,7 @@
     "submitLoading": "Resetting Password..."
   },
   "profile": {
+    "editProfile": "Edit Profile",
     "setPassword": "Set Password",
     "changePassword": "Change Password",
     "setPasswordSubtitle": "Set a password to enable email/password login",

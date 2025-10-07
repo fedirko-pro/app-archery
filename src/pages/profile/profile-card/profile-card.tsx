@@ -1,6 +1,7 @@
 import { Avatar, Typography, Box, Button } from '@mui/material';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import type { ProfileData } from '../types';
 
@@ -25,10 +26,10 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   console.log('profileData', profileData);
   console.log('user', user);
   const navigate = useNavigate();
+  const { t } = useTranslation('common');
   return (
     <div className="profile-container">
       <Box className="profile-hero" />
-
       <Box
         className="profile-info"
         sx={{
@@ -85,7 +86,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                   onClick={() => navigate('/profile/edit')}
                   sx={{ mt: 2 }}
                 >
-                  Edit Profile
+                  {t('profile.editProfile')}
                 </Button>
               )}
             </div>

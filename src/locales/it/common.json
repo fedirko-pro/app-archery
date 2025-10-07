@@ -148,6 +148,7 @@
     "submitLoading": "Reimpostazione password..."
   },
   "profile": {
+    "editProfile": "Modifica profilo",
     "setPassword": "Imposta password",
     "changePassword": "Cambia password",
     "setPasswordSubtitle": "Imposta una password per abilitare l'accesso email/password",

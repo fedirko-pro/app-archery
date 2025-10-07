@@ -148,6 +148,7 @@
     "submitLoading": "Скидання пароля..."
   },
   "profile": {
+    "editProfile": "Редагувати профіль",
     "setPassword": "Встановити пароль",
     "changePassword": "Змінити пароль",
     "setPasswordSubtitle": "Встановіть пароль, щоб увімкнути вхід через email/пароль",

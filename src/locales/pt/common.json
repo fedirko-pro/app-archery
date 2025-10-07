@@ -148,6 +148,7 @@
     "submitLoading": "Redefinindo senha..."
   },
   "profile": {
+    "editProfile": "Editar perfil",
     "setPassword": "Definir senha",
     "changePassword": "Alterar senha",
     "setPasswordSubtitle": "Defina uma senha para habilitar login por email/senha",
