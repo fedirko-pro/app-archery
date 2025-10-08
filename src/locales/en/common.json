@@ -172,7 +172,7 @@
     }
   },
   "common": { "or": "or", "cancel": "Cancel", "update": "Update", "create": "Create", "back": "Back" },
-  "forms": { "email": "Email", "password": "Password", "firstName": "First name", "lastName": "Last name", "currentPassword": "Current Password", "newPassword": "New Password", "confirmPassword": "Confirm New Password", "bio": "Bio", "location": "Location", "website": "Website", "profilePictureUrl": "Profile Picture URL", "federationNumber": "Federation Number", "categories": "Categories", "selectCategories": "Select categories", "language": "Language", "role": "Role" },
+  "forms": { "email": "Email", "password": "Password", "firstName": "First name", "lastName": "Last name", "currentPassword": "Current Password", "newPassword": "New Password", "confirmPassword": "Confirm New Password", "bio": "Bio", "location": "Location", "website": "Website", "profilePictureUrl": "Profile Picture URL", "federationNumber": "Federation Number", "categories": "Categories", "selectCategories": "Select categories", "applicationLanguage": "Application language", "role": "Role" },
   "reset": {
     "invalidLink": "Invalid reset link. Please request a new password reset.",
     "minLength": "Password must be at least 8 characters long",

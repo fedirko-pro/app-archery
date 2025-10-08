@@ -131,7 +131,7 @@
       }
     }
   },
-  "forms": { "email": "Email", "password": "Senha", "firstName": "Nome", "lastName": "Sobrenome", "currentPassword": "Senha atual", "newPassword": "Nova senha", "confirmPassword": "Confirmar nova senha", "bio": "Bio", "location": "Localização", "website": "Website", "profilePictureUrl": "URL da foto de perfil", "federationNumber": "Número da federação", "categories": "Categorias", "selectCategories": "Selecione categorias", "language": "Idioma", "role": "Função" },
+  "forms": { "email": "Email", "password": "Senha", "firstName": "Nome", "lastName": "Sobrenome", "currentPassword": "Senha atual", "newPassword": "Nova senha", "confirmPassword": "Confirmar nova senha", "bio": "Bio", "location": "Localização", "website": "Website", "profilePictureUrl": "URL da foto de perfil", "federationNumber": "Número da federação", "categories": "Categorias", "selectCategories": "Selecione categorias", "applicationLanguage": "Idioma do aplicativo", "role": "Função" },
   "reset": {
     "invalidLink": "Link de redefinição inválido. Solicite uma nova redefinição de senha.",
     "minLength": "A senha deve ter pelo menos 8 caracteres",

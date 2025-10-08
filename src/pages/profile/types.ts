@@ -4,12 +4,11 @@ export interface ProfileData {
   email: string;
   bio: string;
   location: string;
-  website: string;
   picture: string;
   federationNumber?: string;
   categories?: string[];
   role?: string;
-  language?: 'pt' | 'en' | 'it' | 'ua' | 'es';
+  appLanguage?: 'pt' | 'en' | 'it' | 'ua' | 'es';
 }
 
 export interface PasswordChangeForm {

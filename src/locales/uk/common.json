@@ -131,7 +131,7 @@
       }
     }
   },
-  "forms": { "email": "Email", "password": "Пароль", "firstName": "Ім'я", "lastName": "Прізвище", "currentPassword": "Поточний пароль", "newPassword": "Новий пароль", "confirmPassword": "Підтвердіть новий пароль", "bio": "Біографія", "location": "Місцезнаходження", "website": "Вебсайт", "profilePictureUrl": "URL фото профілю", "federationNumber": "Номер федерації", "categories": "Категорії", "selectCategories": "Оберіть категорії", "language": "Мова", "role": "Роль" },
+  "forms": { "email": "Email", "password": "Пароль", "firstName": "Ім'я", "lastName": "Прізвище", "currentPassword": "Поточний пароль", "newPassword": "Новий пароль", "confirmPassword": "Підтвердіть новий пароль", "bio": "Біографія", "location": "Місцезнаходження", "website": "Вебсайт", "profilePictureUrl": "URL фото профілю", "federationNumber": "Номер федерації", "categories": "Категорії", "selectCategories": "Оберіть категорії", "applicationLanguage": "Мова застосунку", "role": "Роль" },
   "reset": {
     "invalidLink": "Недійсне посилання для скидання. Будь ласка, попросіть нове скидання пароля.",
     "minLength": "Пароль має містити щонайменше 8 символів",

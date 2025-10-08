@@ -103,18 +103,6 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
               placeholder={t('profile.locationPlaceholder', 'City, Country')}
             />
           </Box>
-
-          <Box sx={{ flex: '1 1 300px' }}>
-            <TextField
-              label={t('forms.website', 'Website')}
-              name="website"
-              value={profileData.website}
-              onChange={onChange}
-              fullWidth
-              margin="normal"
-              placeholder={t('profile.websitePlaceholder', 'https://example.com')}
-            />
-          </Box>
         </Box>
 
         <TextField
@@ -142,9 +130,9 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
           <Box sx={{ flex: '1 1 300px' }}>
             <TextField
               select
-              label={t('forms.language', 'Language')}
-              name="language"
-              value={profileData.language || 'pt'}
+              label={t('forms.applicationLanguage', 'Application language')}
+              name="appLanguage"
+              value={profileData.appLanguage || 'pt'}
               onChange={onChange}
               fullWidth
               margin="normal"

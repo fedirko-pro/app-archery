@@ -67,18 +67,6 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                   📍 {profileData.location}
                 </Typography>
               )}
-              {profileData.website && (
-                <Typography variant="body2">
-                  🌐{' '}
-                  <a
-                    href={profileData.website}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {profileData.website}
-                  </a>
-                </Typography>
-              )}
               <Typography variant="body2" color="text.secondary">
                 {getJoinDate()}
               </Typography>
