@@ -25,7 +25,6 @@ const UserProfileView: React.FC = () => {
     email: '',
     bio: '',
     location: '',
-    website: '',
     picture: '',
   });
 
@@ -55,7 +54,6 @@ const UserProfileView: React.FC = () => {
         email: foundUser.email || '',
         bio: foundUser.bio || '',
         location: foundUser.location || '',
-        website: foundUser.website || '',
         picture: foundUser.picture || '',
       });
     } catch (error) {
@@ -74,7 +72,6 @@ const UserProfileView: React.FC = () => {
         email: user?.email || '',
         bio: user?.bio || '',
         location: user?.location || '',
-        website: user?.website || '',
         picture: user?.picture || '',
       });
     }

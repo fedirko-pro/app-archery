@@ -19,7 +19,6 @@ export interface ProfileFormData {
   email: string;
   bio: string;
   location: string;
-  website: string;
   picture: string;
 }
 
@@ -121,18 +120,6 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
             fullWidth
             margin="normal"
             placeholder="City, Country"
-          />
-        </Box>
-
-        <Box sx={{ flex: '1 1 300px' }}>
-          <TextField
-            label="Website"
-            name="website"
-            value={formData.website}
-            onChange={onChange}
-            fullWidth
-            margin="normal"
-            placeholder="https://example.com"
           />
         </Box>
       </Box>

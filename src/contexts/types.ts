@@ -7,14 +7,13 @@ export interface User {
   picture?: string;
   bio?: string;
   location?: string;
-  website?: string;
   authProvider: 'local' | 'google' | 'facebook';
   password?: string;
   createdAt: string;
   updatedAt: string;
   federationNumber?: string;
   categories?: string[];
-  language?: 'pt' | 'en' | 'it' | 'ua' | 'es';
+  appLanguage?: 'pt' | 'en' | 'it' | 'ua' | 'es';
 }
 
 export interface LoginCredentials {
