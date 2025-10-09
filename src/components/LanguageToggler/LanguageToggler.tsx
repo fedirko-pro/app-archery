@@ -15,7 +15,7 @@ const LanguageToggler: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { user } = useAuth();
-  const currentLang = normalizeAppLang(params.lang || user?.language || 'pt');
+  const currentLang = normalizeAppLang(params.lang || (user as any)?.appLanguage || (user as any)?.app_language || (user as any)?.language || 'pt');
   const [language, setLanguage] = React.useState<string>(currentLang);
 
   const options: Array<{ value: string; code: string; flag: string }> = [

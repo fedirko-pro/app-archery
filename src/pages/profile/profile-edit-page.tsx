@@ -69,11 +69,10 @@ const ProfileEditPage: React.FC = () => {
         email: user.email || '',
         bio: user.bio || '',
         location: user.location || '',
-        website: user.website || '',
         picture: user.picture || '',
         federationNumber: user.federationNumber || '',
         categories: Array.isArray(user.categories) ? user.categories : [],
-        language: (user as any).language || 'pt',
+        appLanguage: (user as any).appLanguage || (user as any).app_language || (user as any).language || 'pt',
       });
     }
   }, [user]);

@@ -130,7 +130,7 @@
       }
     }
   },
-  "forms": { "email": "Email", "password": "Contraseña", "firstName": "Nombre", "lastName": "Apellido", "currentPassword": "Contraseña actual", "newPassword": "Nueva contraseña", "confirmPassword": "Confirmar nueva contraseña", "bio": "Bio", "location": "Ubicación", "website": "Sitio web", "profilePictureUrl": "URL de la foto de perfil", "federationNumber": "Número de federación", "categories": "Categorías", "selectCategories": "Selecciona categorías", "language": "Idioma", "role": "Rol" },
+  "forms": { "email": "Email", "password": "Contraseña", "firstName": "Nombre", "lastName": "Apellido", "currentPassword": "Contraseña actual", "newPassword": "Nueva contraseña", "confirmPassword": "Confirmar nueva contraseña", "bio": "Bio", "location": "Ubicación", "website": "Sitio web", "profilePictureUrl": "URL de la foto de perfil", "federationNumber": "Número de federación", "categories": "Categorías", "selectCategories": "Selecciona categorías", "applicationLanguage": "Idioma de la aplicación", "role": "Rol" },
   "reset": {
     "invalidLink": "Enlace de restablecimiento inválido. Solicita un nuevo restablecimiento de contraseña.",
     "minLength": "La contraseña debe tener al menos 8 caracteres",
@@ -147,6 +147,7 @@
     "submitLoading": "Restableciendo contraseña..."
   },
   "profile": {
+    "editProfile": "Editar perfil",
     "setPassword": "Establecer contraseña",
     "changePassword": "Cambiar contraseña",
     "setPasswordSubtitle": "Establece una contraseña para habilitar el inicio de sesión con email/contraseña",

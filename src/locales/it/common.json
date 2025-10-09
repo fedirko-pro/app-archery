@@ -131,7 +131,7 @@
       }
     }
   },
-  "forms": { "email": "Email", "password": "Password", "firstName": "Nome", "lastName": "Cognome", "currentPassword": "Password attuale", "newPassword": "Nuova password", "confirmPassword": "Conferma nuova password", "bio": "Bio", "location": "Località", "website": "Sito web", "profilePictureUrl": "URL immagine profilo", "federationNumber": "Numero di federazione", "categories": "Categorie", "selectCategories": "Seleziona categorie", "language": "Lingua", "role": "Ruolo" },
+  "forms": { "email": "Email", "password": "Password", "firstName": "Nome", "lastName": "Cognome", "currentPassword": "Password attuale", "newPassword": "Nuova password", "confirmPassword": "Conferma nuova password", "bio": "Bio", "location": "Località", "website": "Sito web", "profilePictureUrl": "URL immagine profilo", "federationNumber": "Numero di federazione", "categories": "Categorie", "selectCategories": "Seleziona categorie", "applicationLanguage": "Lingua dell'applicazione", "role": "Ruolo" },
   "reset": {
     "invalidLink": "Link di reimpostazione non valido. Richiedi una nuova reimpostazione della password.",
     "minLength": "La password deve contenere almeno 8 caratteri",
@@ -148,6 +148,7 @@
     "submitLoading": "Reimpostazione password..."
   },
   "profile": {
+    "editProfile": "Modifica profilo",
     "setPassword": "Imposta password",
     "changePassword": "Cambia password",
     "setPasswordSubtitle": "Imposta una password per abilitare l'accesso email/password",

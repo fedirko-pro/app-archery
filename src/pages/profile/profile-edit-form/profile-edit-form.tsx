@@ -136,9 +136,9 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
           <Box sx={{ flex: '1 1 300px' }}>
             <TextField
               select
-              label={t('forms.language', 'Language')}
-              name="language"
-              value={profileData.language || 'pt'}
+              label={t('forms.applicationLanguage', 'Application language')}
+              name="appLanguage"
+              value={profileData.appLanguage || 'pt'}
               onChange={onChange}
               fullWidth
               margin="normal"
