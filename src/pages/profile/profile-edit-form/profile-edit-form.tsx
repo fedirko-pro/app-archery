@@ -7,6 +7,7 @@ import apiService from '../../../services/api';
 import { useTranslation } from 'react-i18next';
 
 import type { ProfileData } from '../types';
+import AvatarUploader from '../../../components/AvatarUploader';
 
 interface ProfileEditFormProps {
   profileData: ProfileData;
@@ -16,6 +17,7 @@ interface ProfileEditFormProps {
   onCancel: () => void;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onCategoriesChange: (categories: string[]) => void;
+  onPictureChange?: (dataUrl: string | null) => void;
 }
 
 const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
@@ -26,6 +28,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
   onCancel,
   onChange,
   onCategoriesChange,
+  onPictureChange,
 }) => {
   const { t } = useTranslation('common');
   const [categoryOptions, setCategoryOptions] = useState<string[]>([]);
@@ -119,6 +122,15 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
           fullWidth
           margin="normal"
           placeholder={t('profile.avatarPlaceholder', 'https://example.com/avatar.jpg')}
+        />
+
+        <AvatarUploader
+          value={profileData.picture}
+          onChange={(dataUrl) => {
+            if (onPictureChange) {
+              onPictureChange(dataUrl);
+            }
+          }}
         />
 
         <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>

@@ -267,6 +267,12 @@ const ProfileEditPage: React.FC = () => {
           isSaving={isSaving}
           onChange={handleChange}
           onCategoriesChange={handleCategoriesChange}
+          onPictureChange={(dataUrl) => {
+            setProfileData((prev) => {
+              if (!prev) return prev;
+              return { ...prev, picture: dataUrl || '' };
+            });
+          }}
           onSave={handleSave}
           onCancel={handleCancel}
         />

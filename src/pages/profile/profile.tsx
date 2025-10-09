@@ -2,10 +2,12 @@ import './profile.scss';
 
 import { Box, CircularProgress } from '@mui/material';
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { useAuth } from '../../contexts/auth-context';
 import type { User } from '../../contexts/types';
 import ProfileCard from './profile-card/profile-card';
+import { getCurrentI18nLang } from '../../utils/i18n-lang';
 import type { ProfileData } from './types';
 
 interface ProfileProps {
@@ -19,6 +21,7 @@ const Profile: React.FC<ProfileProps> = ({
 }) => {
   const { user: authUser } = useAuth();
   const user = userOverride || authUser;
+  const { t } = useTranslation('common');
 
   const [isEditing, setIsEditing] = useState(false);
 
@@ -90,12 +93,14 @@ const Profile: React.FC<ProfileProps> = ({
   const getJoinDate = () => {
     if (user?.createdAt) {
       const date = new Date(user.createdAt);
-      return `Joined ${date.toLocaleDateString('en-US', {
+      const locale = getCurrentI18nLang();
+      const formatted = date.toLocaleDateString(locale, {
         year: 'numeric',
         month: 'long',
-      })}`;
+      });
+      return `${t('profile.joined', 'Joined')} ${formatted}`;
     }
-    return 'Recently joined';
+    return t('profile.recentlyJoined', 'Recently joined');
   };
 
   if (!user) {
@@ -113,17 +118,15 @@ const Profile: React.FC<ProfileProps> = ({
 
   return (
     <section>
-      <div className="container">
-        <ProfileCard
-          profileData={profileData}
-          user={user}
-          isEditing={false}
-          isAdminView={isAdminView}
-          onEditToggle={handleEditToggle}
-          getFullName={getFullName}
-          getJoinDate={getJoinDate}
-        />
-      </div>
+      <ProfileCard
+        profileData={profileData}
+        user={user}
+        isEditing={false}
+        isAdminView={isAdminView}
+        onEditToggle={handleEditToggle}
+        getFullName={getFullName}
+        getJoinDate={getJoinDate}
+      />
     </section>
   );
 };

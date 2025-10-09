@@ -148,6 +148,11 @@
     "submitLoading": "Reimpostazione password..."
   },
   "profile": {
+    "joined": "Iscritto",
+    "recentlyJoined": "Iscritto di recente",
+    "bowCategories": "Categorie dell'arco",
+    "aboutMe": "Su di me",
+    "location": "Località",
     "editProfile": "Modifica profilo",
     "setPassword": "Imposta password",
     "changePassword": "Cambia password",
@@ -165,7 +170,17 @@
     "fedNumberPlaceholder": "Inserisci il tuo numero di federazione",
     "changeUserRole": "Modifica ruolo utente",
     "saving": "Salvataggio...",
-    "saveProfile": "Salva profilo"
+    "saveProfile": "Salva profilo",
+    "avatar": "Avatar",
+    "uploadPhoto": "Carica foto",
+    "changePhoto": "Cambia foto",
+    "cropAndSave": "Ritaglia e salva",
+    "removePhoto": "Rimuovi foto",
+    "unsupportedType": "Tipo di file non supportato. Consentiti: PNG, JPG, JPEG",
+    "imageTooLarge": "Immagine troppo grande (max 3MB).",
+    "dragToReposition": "Seleziona un'immagine e trascina per riposizionare",
+    "zoom": "Zoom",
+    "avatarSubheader": "Seleziona un'immagine, quindi trascinala per riposizionarla (PNG, JPG fino a 3MB)"
   },
   "role": { "user": "Utente", "admin": "Admin" },
   "notFound": {
