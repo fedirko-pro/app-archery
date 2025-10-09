@@ -148,6 +148,11 @@
     "submitLoading": "Reimpostazione password..."
   },
   "profile": {
+    "joined": "Iscritto",
+    "recentlyJoined": "Iscritto di recente",
+    "bowCategories": "Categorie dell'arco",
+    "aboutMe": "Su di me",
+    "location": "Località",
     "editProfile": "Modifica profilo",
     "setPassword": "Imposta password",
     "changePassword": "Cambia password",

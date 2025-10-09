@@ -189,6 +189,11 @@
     "submitLoading": "Resetting Password..."
   },
   "profile": {
+    "joined": "Joined",
+    "recentlyJoined": "Recently joined",
+    "bowCategories": "Bow Categories",
+    "aboutMe": "About Me",
+    "location": "Location",
     "editProfile": "Edit Profile",
     "setPassword": "Set Password",
     "changePassword": "Change Password",

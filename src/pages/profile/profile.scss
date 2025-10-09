@@ -2,20 +2,24 @@
 
 .profile-container {
   width: 100%;
-  max-width: 900px;
   margin: 0 auto;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  overflow: hidden;
 }
 
 .profile-hero {
   width: 100%;
   height: 120px;
-  background-image: url('../../img/default_bg.png');
+  background-image: url('../../img/default_bg_375.png');
   background-color: $blue;
   background-size: cover;
   background-position: center;
+
+  @media (min-width: 800px) {
+    background-image: url('../../img/default_bg_800.png');
+  }
+  
+  @media (min-width: 1200px) {
+    background-image: url('../../img/default_bg_1200.png');
+  }
 }
 
 .profile-info {
@@ -28,23 +32,50 @@
 .profile-avatar-container {
   position: relative;
   margin-top: -75px;
-  margin-right: 20px;
-}
+  display: flex;
+  flex-direction: row;
 
-.profile-avatar {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  border: 5px solid white;
+  .profile-avatar {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 5px solid white;
+  }
+
+  .profile-name {
+    padding: 64px 8px 0;
+
+    .title {
+      font-size: 24px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    
+    .subtitle {
+      font-size: 16px;
+      font-weight: 400;
+      color: $gray;
+    }
+  }
 }
 
 .profile-details,
 .profile-edit {
-  flex: 1;
-}
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px 0;
 
-.profile-bio {
-  margin-top: 10px;
+  .label {
+    margin-bottom: 4px;
+    font-size: 12px;
+    color: $gray;
+  }
+
+  .bow-category {
+    background-color: $blue;
+    color: $white;
+  }
 }
 
 .profile-edit {

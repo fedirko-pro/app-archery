@@ -147,6 +147,11 @@
     "submitLoading": "Restableciendo contraseña..."
   },
   "profile": {
+    "joined": "Se unió",
+    "recentlyJoined": "Se unió recientemente",
+    "bowCategories": "Categorías de arco",
+    "aboutMe": "Sobre mí",
+    "location": "Ubicación",
     "editProfile": "Editar perfil",
     "setPassword": "Establecer contraseña",
     "changePassword": "Cambiar contraseña",

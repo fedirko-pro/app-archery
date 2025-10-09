@@ -148,6 +148,11 @@
     "submitLoading": "Redefinindo senha..."
   },
   "profile": {
+    "joined": "Entrou",
+    "recentlyJoined": "Entrou recentemente",
+    "bowCategories": "Categorias de arco",
+    "aboutMe": "Sobre mim",
+    "location": "Localização",
     "editProfile": "Editar perfil",
     "setPassword": "Definir senha",
     "changePassword": "Alterar senha",

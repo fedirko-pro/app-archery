@@ -9,6 +9,8 @@ import ProfileCard from '../../profile/profile-card/profile-card';
 import ProfileEditForm from '../../profile/profile-edit-form/profile-edit-form';
 import type { ProfileData } from '../../profile/types';
 import AdminActions from '../admin-actions/admin-actions';
+import { useTranslation } from 'react-i18next';
+import { getCurrentI18nLang } from '../../../utils/i18n-lang';
 
 const UserProfileView: React.FC = () => {
   const { userId } = useParams<{ userId: string }>();
@@ -18,6 +20,7 @@ const UserProfileView: React.FC = () => {
   const [isSaving, setIsSaving] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { t } = useTranslation('common');
 
   const [profileData, setProfileData] = useState<ProfileData>({
     firstName: '',
@@ -26,6 +29,7 @@ const UserProfileView: React.FC = () => {
     bio: '',
     location: '',
     picture: '',
+    categories: [],
   });
 
   useEffect(() => {
@@ -55,6 +59,7 @@ const UserProfileView: React.FC = () => {
         bio: foundUser.bio || '',
         location: foundUser.location || '',
         picture: foundUser.picture || '',
+        categories: Array.isArray((foundUser as any).categories) ? (foundUser as any).categories : [],
       });
     } catch (error) {
       setError('Failed to fetch user data');
@@ -73,6 +78,7 @@ const UserProfileView: React.FC = () => {
         bio: user?.bio || '',
         location: user?.location || '',
         picture: user?.picture || '',
+        categories: Array.isArray((user as any)?.categories) ? (user as any).categories : [],
       });
     }
     setIsEditing(!isEditing);
@@ -108,6 +114,13 @@ const UserProfileView: React.FC = () => {
     }
   };
 
+  const handleCategoriesChange = (categories: string[]) => {
+    setProfileData((prev) => ({
+      ...prev,
+      categories: Array.isArray(categories) ? categories : [],
+    }));
+  };
+
   const handleEditUser = () => {
     navigate(`/admin/users/${userId}/edit`);
   };
@@ -125,12 +138,14 @@ const UserProfileView: React.FC = () => {
   const getJoinDate = () => {
     if (user?.createdAt) {
       const date = new Date(user.createdAt);
-      return `Joined ${date.toLocaleDateString('en-US', {
+      const locale = getCurrentI18nLang();
+      const formatted = date.toLocaleDateString(locale, {
         year: 'numeric',
         month: 'long',
-      })}`;
+      });
+      return `${t('profile.joined', 'Joined')} ${formatted}`;
     }
-    return 'Recently joined';
+    return t('profile.recentlyJoined', 'Recently joined');
   };
 
   if (loading) {
@@ -215,6 +230,7 @@ const UserProfileView: React.FC = () => {
               onSave={handleSave}
               onCancel={handleEditToggle}
               onChange={handleChange}
+              onCategoriesChange={handleCategoriesChange}
             />
           )}
         </Box>
