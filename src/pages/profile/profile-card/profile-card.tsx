@@ -1,4 +1,5 @@
 import { Avatar, Box, Button, Chip, Stack } from '@mui/material';
+import userIcon from '../../../img/icons/user.svg';
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -38,7 +39,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
           <Avatar
             className="profile-avatar"
             alt={getFullName()}
-            src={profileData.picture || user.picture}
+            src={profileData.picture || user.picture || userIcon}
             sx={{ width: 120, height: 120 }}
           />
           <div className="profile-name">

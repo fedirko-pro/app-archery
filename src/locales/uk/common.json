@@ -171,7 +171,17 @@
     "fedNumberPlaceholder": "Введіть номер федерації",
     "changeUserRole": "Змінити роль користувача",
     "saving": "Збереження...",
-    "saveProfile": "Зберегти профіль"
+    "saveProfile": "Зберегти профіль",
+    "avatar": "Аватар",
+    "uploadPhoto": "Завантажити фото",
+    "changePhoto": "Змінити фото",
+    "cropAndSave": "Обрізати та зберегти",
+    "removePhoto": "Видалити фото",
+    "unsupportedType": "Непідтримуваний тип файлу. Дозволено: PNG, JPG, JPEG",
+    "imageTooLarge": "Занадто велике зображення (макс. 3MB).",
+    "dragToReposition": "Виберіть зображення і перетягніть для позиціонування",
+    "zoom": "Масштаб",
+    "avatarSubheader": "Виберіть зображення і перетягніть для позиціонування (PNG, JPG до 3MB)"
   },
   "notFound": {
     "title": "Сторінку не знайдено",

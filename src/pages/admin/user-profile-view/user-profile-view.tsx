@@ -231,6 +231,9 @@ const UserProfileView: React.FC = () => {
               onCancel={handleEditToggle}
               onChange={handleChange}
               onCategoriesChange={handleCategoriesChange}
+              onPictureChange={(dataUrl) => {
+                setProfileData((prev) => ({ ...prev, picture: dataUrl || '' }));
+              }}
             />
           )}
         </Box>
