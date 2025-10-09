@@ -2,7 +2,8 @@ import { TextField, Button, Box, CircularProgress } from '@mui/material';
 import MenuItem from '@mui/material/MenuItem';
 import Autocomplete from '@mui/material/Autocomplete';
 import Chip from '@mui/material/Chip';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import apiService from '../../../services/api';
 import { useTranslation } from 'react-i18next';
 
 import type { ProfileData } from '../types';
@@ -27,20 +28,29 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
   onCategoriesChange,
 }) => {
   const { t } = useTranslation('common');
-  const CATEGORY_OPTIONS = [
-    'HLB',
-    'TRB',
-    'BB',
-    'LB',
-    'CU',
-    'TR',
-    'OL',
-    'INSTINCTIVE',
-    'TRAD',
-    'HUNTER',
-    'JUNIOR',
-    'SENIOR',
-  ];
+  const [categoryOptions, setCategoryOptions] = useState<string[]>([]);
+  const [isLoadingCategories, setIsLoadingCategories] = useState<boolean>(false);
+
+  useEffect(() => {
+    const loadCategories = async () => {
+      setIsLoadingCategories(true);
+      try {
+        const data = await apiService.getCategories();
+        const codes = (data || [])
+          .map((c) => c.code)
+          .filter((code): code is string => Boolean(code));
+        const uniqueCodes = Array.from(new Set(codes.map((c) => c.toUpperCase()))).sort((a, b) => a.localeCompare(b));
+        setCategoryOptions(uniqueCodes);
+      } catch (e) {
+        // no-op for FE stub
+        console.error(e);
+      } finally {
+        setIsLoadingCategories(false);
+      }
+    };
+    loadCategories();
+  }, []);
+  
   return (
     <div className="profile-edit">
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
@@ -90,20 +100,16 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
           margin="normal"
           placeholder={t('profile.bioPlaceholder', 'Tell us about yourself...')}
         />
-
-        <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
-          <Box sx={{ flex: '1 1 300px' }}>
-            <TextField
-              label={t('forms.location', 'Location')}
-              name="location"
-              value={profileData.location}
-              onChange={onChange}
-              fullWidth
-              margin="normal"
-              placeholder={t('profile.locationPlaceholder', 'City, Country')}
-            />
-          </Box>
-        </Box>
+      
+        <TextField
+          label={t('forms.location', 'Location')}
+          name="location"
+          value={profileData.location}
+          onChange={onChange}
+          fullWidth
+          margin="normal"
+          placeholder={t('profile.locationPlaceholder', 'City, Country')}
+        />
 
         <TextField
           label={t('forms.profilePictureUrl', 'Profile Picture URL')}
@@ -144,41 +150,41 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
               <MenuItem value="ua">Українська (UA)</MenuItem>
             </TextField>
           </Box>
-          <Box sx={{ flex: '1 1 300px' }}>
-            <Autocomplete
-              multiple
-              options={CATEGORY_OPTIONS}
-              value={Array.isArray(profileData.categories) ? profileData.categories : []}
-              onChange={(_, newValue) => {
-                if (Array.isArray(newValue)) {
-                  onCategoriesChange(newValue);
-                }
-              }}
-              renderTags={(value: string[], getTagProps) =>
-                value.map((option: string, index: number) => {
-                  const { key, ...otherProps } = getTagProps({ index });
-                  return (
-                    <Chip
-                      key={key}
-                      variant="outlined"
-                      label={option}
-                      {...otherProps}
-                    />
-                  );
-                })
-              }
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  variant="outlined"
-                  label={t('forms.categories', 'Categories')}
-                  placeholder={t('forms.selectCategories', 'Select categories')}
-                />
-              )}
-              filterSelectedOptions
-            />
-          </Box>
         </Box>
+
+        <Autocomplete
+          multiple
+          options={categoryOptions}
+          value={Array.isArray(profileData.categories) ? profileData.categories : []}
+          onChange={(_, newValue) => {
+            if (Array.isArray(newValue)) {
+              onCategoriesChange(newValue);
+            }
+          }}
+          loading={isLoadingCategories}
+          renderTags={(value: string[], getTagProps) =>
+            value.map((option: string, index: number) => {
+              const { key, ...otherProps } = getTagProps({ index });
+              return (
+                <Chip
+                  key={key}
+                  variant="outlined"
+                  label={option}
+                  {...otherProps}
+                />
+              );
+            })
+          }
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              variant="outlined"
+              label={t('forms.categories', 'Categories')}
+              placeholder={t('forms.selectCategories', 'Select categories')}
+            />
+          )}
+          filterSelectedOptions
+        />
 
         {isAdminView && (
           <TextField
@@ -197,7 +203,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
         )}
       </Box>
 
-      <Box sx={{ mt: 2, display: 'flex', gap: 2, justifyContent: 'flex-end' }}>
+      <Box sx={{ mt: 2, display: 'flex', gap: 2, justifyContent: 'right' }}>
         <Button
           variant="outlined"
           color="secondary"

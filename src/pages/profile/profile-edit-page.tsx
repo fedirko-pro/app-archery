@@ -257,71 +257,128 @@ const ProfileEditPage: React.FC = () => {
   return (
     <section>
       <div className="container">
-      {error && (
-        <Alert severity="error" sx={{ mb: 2 }}>
-          {error}
-        </Alert>
-      )}
-      <ProfileEditForm
-        profileData={profileData}
-        isSaving={isSaving}
-        onChange={handleChange}
-        onCategoriesChange={handleCategoriesChange}
-        onSave={handleSave}
-        onCancel={handleCancel}
-      />
-      <Divider sx={{ my: 4 }} />
-      <Card>
-        <CardHeader
-          avatar={<Security color="primary" />}
-          title={shouldShowSetPassword ? t('profile.setPassword') : t('profile.changePassword')}
-          subheader={
-            shouldShowSetPassword
-              ? t('profile.setPasswordSubtitle')
-              : t('profile.changePasswordSubtitle')
-          }
+        {error && (
+          <Alert severity="error" sx={{ mb: 2 }}>
+            {error}
+          </Alert>
+        )}
+        <ProfileEditForm
+          profileData={profileData}
+          isSaving={isSaving}
+          onChange={handleChange}
+          onCategoriesChange={handleCategoriesChange}
+          onSave={handleSave}
+          onCancel={handleCancel}
         />
-        <CardContent>
-          {authError && (
-            <Alert severity="error" sx={{ mb: 2 }} onClose={clearError}>
-              {authError}
-            </Alert>
-          )}
-          {passwordSuccess && (
-            <Alert
-              severity="success"
-              sx={{ mb: 2 }}
-              onClose={() => setPasswordSuccess(false)}
-            >
-              {shouldShowSetPassword
-                ? t('profile.setPasswordSuccess')
-                : t('profile.changePasswordSuccess')}
-            </Alert>
-          )}
-          <Box component="form" onSubmit={handlePasswordSubmit}>
-            {!shouldShowSetPassword && (
+        <Divider sx={{ my: 4 }} />
+        <Card>
+          <CardHeader
+            avatar={<Security color="primary" />}
+            title={shouldShowSetPassword ? t('profile.setPassword') : t('profile.changePassword')}
+            subheader={
+              shouldShowSetPassword
+                ? t('profile.setPasswordSubtitle')
+                : t('profile.changePasswordSubtitle')
+            }
+          />
+          <CardContent>
+            {authError && (
+              <Alert severity="error" sx={{ mb: 2 }} onClose={clearError}>
+                {authError}
+              </Alert>
+            )}
+            {passwordSuccess && (
+              <Alert
+                severity="success"
+                sx={{ mb: 2 }}
+                onClose={() => setPasswordSuccess(false)}
+              >
+                {shouldShowSetPassword
+                  ? t('profile.setPasswordSuccess')
+                  : t('profile.changePasswordSuccess')}
+              </Alert>
+            )}
+            <Box component="form" onSubmit={handlePasswordSubmit}>
+              {!shouldShowSetPassword && (
+                <TextField
+                  fullWidth
+                  margin="normal"
+                  label={t('forms.currentPassword')}
+                  type={showPasswords.current ? 'text' : 'password'}
+                  value={passwordForm.currentPassword}
+                  onChange={handlePasswordChange('currentPassword')}
+                  error={passwordValidation.currentPasswordError}
+                  helperText={passwordValidation.currentPasswordMessage}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <Lock fontSize="small" />
+                      </InputAdornment>
+                    ),
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={() => togglePasswordVisibility('current')}
+                          edge="end"
+                        >
+                          {showPasswords.current ? (
+                            <VisibilityOff />
+                          ) : (
+                            <Visibility />
+                          )}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              )}
               <TextField
                 fullWidth
                 margin="normal"
-                label={t('forms.currentPassword')}
-                type={showPasswords.current ? 'text' : 'password'}
-                value={passwordForm.currentPassword}
-                onChange={handlePasswordChange('currentPassword')}
-                error={passwordValidation.currentPasswordError}
-                helperText={passwordValidation.currentPasswordMessage}
+                label={t('forms.newPassword')}
+                type={showPasswords.new ? 'text' : 'password'}
+                value={passwordForm.newPassword}
+                onChange={handlePasswordChange('newPassword')}
+                error={passwordValidation.newPasswordError}
+                helperText={passwordValidation.newPasswordMessage}
                 InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <Lock fontSize="small" />
-                    </InputAdornment>
-                  ),
                   endAdornment: (
                     <InputAdornment position="end">
                       <IconButton
-                        onClick={() => togglePasswordVisibility('current')}
+                        onClick={() => togglePasswordVisibility('new')}
                         edge="end"
                       >
-                        {showPasswords.current ? (
+                        {showPasswords.new ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+              {passwordForm.newPassword && (
+                <Typography
+                  variant="caption"
+                  sx={{ color: passwordStrength.color, display: 'block', mt: 1 }}
+                >
+                  {t('reset.strength')}: {passwordStrength.strength}
+                </Typography>
+              )}
+              <TextField
+                fullWidth
+                margin="normal"
+                label={t('forms.confirmPassword')}
+                type={showPasswords.confirm ? 'text' : 'password'}
+                value={passwordForm.confirmPassword}
+                onChange={handlePasswordChange('confirmPassword')}
+                error={passwordValidation.confirmPasswordError}
+                helperText={passwordValidation.confirmPasswordMessage}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={() => togglePasswordVisibility('confirm')}
+                        edge="end"
+                      >
+                        {showPasswords.confirm ? (
                           <VisibilityOff />
                         ) : (
                           <Visibility />
@@ -331,87 +388,30 @@ const ProfileEditPage: React.FC = () => {
                   ),
                 }}
               />
-            )}
-            <TextField
-              fullWidth
-              margin="normal"
-              label={t('forms.newPassword')}
-              type={showPasswords.new ? 'text' : 'password'}
-              value={passwordForm.newPassword}
-              onChange={handlePasswordChange('newPassword')}
-              error={passwordValidation.newPasswordError}
-              helperText={passwordValidation.newPasswordMessage}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      onClick={() => togglePasswordVisibility('new')}
-                      edge="end"
-                    >
-                      {showPasswords.new ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
-            {passwordForm.newPassword && (
-              <Typography
-                variant="caption"
-                sx={{ color: passwordStrength.color, display: 'block', mt: 1 }}
-              >
-                 {t('reset.strength')}: {passwordStrength.strength}
-              </Typography>
-            )}
-            <TextField
-              fullWidth
-              margin="normal"
-              label={t('forms.confirmPassword')}
-              type={showPasswords.confirm ? 'text' : 'password'}
-              value={passwordForm.confirmPassword}
-              onChange={handlePasswordChange('confirmPassword')}
-              error={passwordValidation.confirmPasswordError}
-              helperText={passwordValidation.confirmPasswordMessage}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      onClick={() => togglePasswordVisibility('confirm')}
-                      edge="end"
-                    >
-                      {showPasswords.confirm ? (
-                        <VisibilityOff />
-                      ) : (
-                        <Visibility />
-                      )}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
-            <Box sx={{ mt: 3 }}>
-              <Button
-                type="submit"
-                variant="contained"
-                color="primary"
-                disabled={isChangingPassword}
-                startIcon={
-                  isChangingPassword ? <CircularProgress size={20} /> : null
-                }
-                fullWidth
-              >
-                 {isChangingPassword
-                  ? shouldShowSetPassword
-                    ? t('profile.settingPassword')
-                    : t('profile.changingPassword')
-                  : shouldShowSetPassword
-                    ? t('profile.setPassword')
-                    : t('profile.changePassword')}
-              </Button>
+              <Box sx={{ mt: 3 }}>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  disabled={isChangingPassword}
+                  startIcon={
+                    isChangingPassword ? <CircularProgress size={20} /> : null
+                  }
+                  fullWidth
+                >
+                  {isChangingPassword
+                    ? shouldShowSetPassword
+                      ? t('profile.settingPassword')
+                      : t('profile.changingPassword')
+                    : shouldShowSetPassword
+                      ? t('profile.setPassword')
+                      : t('profile.changePassword')}
+                </Button>
+              </Box>
             </Box>
-          </Box>
-        </CardContent>
-      </Card>
-    </div>
+          </CardContent>
+        </Card>
+      </div>
     </section>
   );
 };
