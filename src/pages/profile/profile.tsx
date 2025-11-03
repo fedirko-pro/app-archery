@@ -1,7 +1,7 @@
 import './profile.scss';
 
 import { Box, CircularProgress } from '@mui/material';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useAuth } from '../../contexts/auth-context';
@@ -24,6 +24,7 @@ const Profile: React.FC<ProfileProps> = ({
   const { t } = useTranslation('common');
 
   const [isEditing, setIsEditing] = useState(false);
+  const healthCheckExecutedRef = useRef(false);
 
   const [profileData, setProfileData] = useState<ProfileData>({
     firstName: '',
@@ -38,6 +39,12 @@ const Profile: React.FC<ProfileProps> = ({
 
   useEffect(() => {
     const checkBackendHealth = async () => {
+      // Prevent duplicate health checks
+      if (healthCheckExecutedRef.current) {
+        return;
+      }
+      healthCheckExecutedRef.current = true;
+
       try {
         const response = await fetch(
           `${import.meta.env.VITE_API_BASE_URL}/auth/google/test`,

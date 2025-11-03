@@ -57,6 +57,12 @@ export function getCurrentI18nLang(): string {
   return 'pt';
 }
 
+export function getDefaultAppLang(): AppLanguage {
+  // Get the current i18n language and convert it to app language
+  const i18nLang = getCurrentI18nLang();
+  return fromI18nLang(i18nLang);
+}
+
 /** Choose localized description by app language with sensible fallbacks. */
 export function pickLocalizedDescription(
   record: { [k: string]: any },

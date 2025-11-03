@@ -15,7 +15,7 @@ import {
   FormControlLabel,
   Checkbox,
 } from '@mui/material';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
@@ -58,14 +58,7 @@ const TournamentList: React.FC = () => {
     null,
   );
 
-  useEffect(() => {
-    fetchTournaments();
-    if (user) {
-      fetchUserApplications();
-    }
-  }, [user]);
-
-  const fetchTournaments = async () => {
+  const fetchTournaments = useCallback(async () => {
     try {
       setLoading(true);
       const data = await apiService.getAllTournaments();
@@ -76,16 +69,23 @@ const TournamentList: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [t]);
 
-  const fetchUserApplications = async () => {
+  const fetchUserApplications = useCallback(async () => {
     try {
       const data = await apiService.getMyApplications();
       setUserApplications(data);
     } catch (error) {
       console.error('Error fetching user applications:', error);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchTournaments();
+    if (user) {
+      fetchUserApplications();
+    }
+  }, [user, fetchTournaments, fetchUserApplications]);
 
   const hasApplicationForTournament = (tournamentId: string) => {
     return userApplications.some((app) => app.tournament.id === tournamentId);

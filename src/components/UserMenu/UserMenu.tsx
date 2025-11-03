@@ -21,6 +21,15 @@ const UserMenu: React.FC = () => {
 
   const { user, isAuthenticated, logout, loading } = useAuth();
 
+  // Debug logging - remove after testing
+  React.useEffect(() => {
+    console.log('UserMenu - user updated:', {
+      isAuthenticated,
+      hasPicture: !!user?.picture,
+      picture: user?.picture
+    });
+  }, [user, isAuthenticated]);
+
   if (loading) {
     return null; // або показати loading spinner
   }
@@ -87,9 +96,17 @@ const UserMenu: React.FC = () => {
           marginRight: '16px',
           cursor: 'pointer',
         }}
-        src={user?.picture}
+        src={user?.picture || undefined}
         alt={user?.firstName || 'User'}
-      />
+        imgProps={{
+          onError: (e) => {
+            console.error('Avatar image failed to load:', user?.picture);
+            e.currentTarget.style.display = 'none';
+          }
+        }}
+      >
+        {!user?.picture && user?.firstName ? user.firstName[0].toUpperCase() : null}
+      </Avatar>
       <Menu
         active={active}
         sections={sections}

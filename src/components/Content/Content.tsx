@@ -3,7 +3,7 @@ import './Content.scss';
 import { Navigate, Outlet, Route, Routes, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import i18n from '../../i18n';
-import { isRtlLanguage, normalizeAppLang, toI18nLang } from '../../utils/i18n-lang';
+import { isRtlLanguage, normalizeAppLang, toI18nLang, getDefaultAppLang } from '../../utils/i18n-lang';
 
 import About from '../../pages/About';
 import Achievements from '../../pages/achievements/achievements';
@@ -16,7 +16,7 @@ import CompetitionsList from '../../pages/competition/competitions-list/competit
 import PatrolList from '../../pages/competition/patrol-list/patrol-list';
 import UserPage from '../../pages/competition/user-page/user-page';
 import ConverterPage from '../../pages/ConverterPage';
-import Encyclopedia from '../../pages/encyclopedia';
+import Encyclopedia from '../../pages/Encyclopedia';
 // TODO: Settings temporarily disabled - functionality moved to Profile
 // import Settings from '../Settings/Settings.tsx';
 import GoogleCallback from '../../pages/google-callback/google-callback';
@@ -53,15 +53,17 @@ function LangLayout() {
 }
 
 function Content() {
+  const defaultLang = getDefaultAppLang();
+
   return (
     <main>
       <Routes>
-        <Route path="/" element={<Navigate to="/pt" replace />} />
+        <Route path="/" element={<Navigate to={`/${defaultLang}/tournaments`} replace />} />
         {/* Language-agnostic auth routes to avoid 404s from backend redirects */}
         <Route path="/auth/google/callback" element={<GoogleCallback />} />
-        <Route path="/signin" element={<Navigate to="/pt/signin" replace />} />
+        <Route path="/signin" element={<Navigate to={`/${defaultLang}/signin`} replace />} />
         <Route path=":lang" element={<LangLayout />}>
-          <Route index element={<ConverterPage />} />
+          <Route index element={<Navigate to="tournaments" replace />} />
           <Route path="signin" element={<SignIn />} />
           <Route path="signup" element={<SignUp />} />
           <Route path="auth/google/callback" element={<GoogleCallback />} />
@@ -140,7 +142,7 @@ function Content() {
           />
           <Route path="*" element={<NotFound />} />
         </Route>
-        <Route path="*" element={<Navigate to="/pt" replace />} />
+        <Route path="*" element={<Navigate to={`/${defaultLang}`} replace />} />
       </Routes>
     </main>
   );
