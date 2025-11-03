@@ -148,6 +148,11 @@
     "submitLoading": "Redefinindo senha..."
   },
   "profile": {
+    "joined": "Entrou",
+    "recentlyJoined": "Entrou recentemente",
+    "bowCategories": "Categorias de arco",
+    "aboutMe": "Sobre mim",
+    "location": "Localização",
     "editProfile": "Editar perfil",
     "setPassword": "Definir senha",
     "changePassword": "Alterar senha",
@@ -165,7 +170,17 @@
     "fedNumberPlaceholder": "Informe seu número de federação",
     "changeUserRole": "Alterar função do usuário",
     "saving": "Salvando...",
-    "saveProfile": "Salvar perfil"
+    "saveProfile": "Salvar perfil",
+    "avatar": "Avatar",
+    "uploadPhoto": "Enviar foto",
+    "changePhoto": "Alterar foto",
+    "cropAndSave": "Cortar e salvar",
+    "removePhoto": "Remover foto",
+    "unsupportedType": "Tipo de arquivo não suportado. Permitidos: PNG, JPG, JPEG",
+    "imageTooLarge": "Imagem muito grande (máx. 3MB).",
+    "dragToReposition": "Selecione uma imagem e arraste para reposicionar",
+    "zoom": "Zoom",
+    "avatarSubheader": "Selecione uma imagem e arraste para reposicionar (PNG, JPG até 3MB)"
   },
   "role": { "user": "Usuário", "admin": "Admin" },
   "notFound": {
