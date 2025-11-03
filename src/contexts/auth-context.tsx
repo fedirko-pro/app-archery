@@ -60,15 +60,25 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, []);
 
   const handlePostAuthRedirect = () => {
-    const pendingApplication = sessionStorage.getItem('pendingApplication');
+    // First priority: check for a stored return URL from protected route
+    const returnUrl = sessionStorage.getItem('returnUrl');
+    if (returnUrl) {
+      sessionStorage.removeItem('returnUrl');
+      navigate(returnUrl);
+      return;
+    }
 
+    // Second priority: check for pending application (tournament application flow)
+    const pendingApplication = sessionStorage.getItem('pendingApplication');
     if (pendingApplication) {
       const { redirectTo } = JSON.parse(pendingApplication);
       sessionStorage.removeItem('pendingApplication');
       navigate(redirectTo);
-    } else {
-      navigate(`/${currentLang}/profile`);
+      return;
     }
+
+    // Default: redirect to tournaments page
+    navigate(`/${currentLang}/tournaments`);
   };
 
   const login = async (
@@ -126,7 +136,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setUser(null);
     setError(null);
     pendingApplicationProcessedRef.current = false;
-    navigate('/signin');
+    navigate(`/${currentLang}/tournaments`);
   };
 
   const updateUser = (userData: User): void => {
@@ -138,7 +148,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setLoading(true);
 
       if (!apiService.isAuthenticated()) {
-        navigate('/signin');
+        navigate(`/${currentLang}/signin`);
         return;
       }
 
@@ -150,28 +160,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         return;
       }
 
-      // Перевіряємо pending application одразу після автентифікації
-      const pendingApplication = sessionStorage.getItem('pendingApplication');
+      pendingApplicationProcessedRef.current = true;
 
-      if (pendingApplication) {
-        try {
-          const { redirectTo } = JSON.parse(pendingApplication);
-          sessionStorage.removeItem('pendingApplication');
-          pendingApplicationProcessedRef.current = true;
-          navigate(redirectTo);
-        } catch {
-          sessionStorage.removeItem('pendingApplication');
-          pendingApplicationProcessedRef.current = true;
-          navigate(`/${currentLang}/profile`);
-        }
-      } else {
-        pendingApplicationProcessedRef.current = true;
-        navigate(`${currentLang}/profile`);
-      }
+      // Use the same redirect logic as normal login
+      handlePostAuthRedirect();
     } catch {
       apiService.logout();
       setUser(null);
-      navigate('/signin');
+      navigate(`/${currentLang}/signin`);
     } finally {
       setLoading(false);
     }

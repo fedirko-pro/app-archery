@@ -26,7 +26,15 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   }
 
   if (!isAuthenticated) {
-    return <Navigate to="/signin" replace state={{ from: location }} />;
+    // Store the attempted URL to redirect after login
+    const returnUrl = location.pathname + location.search;
+    sessionStorage.setItem('returnUrl', returnUrl);
+
+    // Extract language from path to maintain it in signin redirect
+    const pathSegments = location.pathname.split('/').filter(Boolean);
+    const lang = pathSegments[0] || 'pt';
+
+    return <Navigate to={`/${lang}/signin`} replace />;
   }
 
   return <>{children}</>;
