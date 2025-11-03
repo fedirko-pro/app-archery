@@ -3,6 +3,7 @@ import React, {
   useContext,
   useState,
   useEffect,
+  useCallback,
   ReactNode,
   useRef,
 } from 'react';
@@ -37,6 +38,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const pendingApplicationProcessedRef = useRef(false);
+  const authCheckExecutedRef = useRef(false);
   const navigate = useNavigate();
   const location = useLocation();
   const inferredLang = fromI18nLang(getCurrentI18nLang());
@@ -44,6 +46,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   useEffect(() => {
     const checkAuth = async (): Promise<void> => {
+      // Prevent duplicate auth checks
+      if (authCheckExecutedRef.current) {
+        return;
+      }
+      authCheckExecutedRef.current = true;
+
       try {
         if (apiService.isAuthenticated()) {
           const userData = await apiService.getProfile();
@@ -136,6 +144,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setUser(null);
     setError(null);
     pendingApplicationProcessedRef.current = false;
+    authCheckExecutedRef.current = false;
     navigate(`/${currentLang}/tournaments`);
   };
 
@@ -143,7 +152,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setUser(userData);
   };
 
-  const handleGoogleAuth = async (): Promise<void> => {
+  const handleGoogleAuth = useCallback(async (): Promise<void> => {
     try {
       setLoading(true);
 
@@ -171,7 +180,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     } finally {
       setLoading(false);
     }
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentLang, navigate]);
 
   const changePassword = async (
     passwordData: ChangePasswordData,
