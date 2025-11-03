@@ -1,4 +1,5 @@
-import { Avatar, Typography, Box, Button } from '@mui/material';
+import { Avatar, Box, Button, Chip, Stack } from '@mui/material';
+import userIcon from '../../../img/icons/user.svg';
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -33,56 +34,58 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   return (
     <div className="profile-container">
       <Box className="profile-hero" />
-      <Box
-        className="profile-info"
-        sx={{
-          display: 'flex',
-          flexDirection: { xs: 'column', sm: 'row' },
-          gap: 3,
-        }}
-      >
+      <Box className="profile-info">
         <Box className="profile-avatar-container" sx={{ flexShrink: 0 }}>
           <Avatar
             className="profile-avatar"
             alt={getFullName()}
-            src={profileData.picture || user.picture}
+            src={profileData.picture || user.picture || userIcon}
             sx={{ width: 120, height: 120 }}
           />
+          <div className="profile-name">
+            <div className="title">{getFullName()}</div>
+            <div className="subtitle">{profileData.email || user.email}</div>
+          </div>
         </Box>
-
-        <Box sx={{ flex: 1 }}>
-          {!isEditing ? (
-            <div className="profile-details">
-              <Typography variant="h4">{getFullName()}</Typography>
-              <Typography variant="subtitle1" color="text.secondary">
-                {profileData.email || user.email}
-              </Typography>
-              {profileData.bio && (
-                <Typography variant="body1" className="profile-bio">
-                  {profileData.bio}
-                </Typography>
-              )}
-              {profileData.location && (
-                <Typography variant="body2" color="text.secondary">
-                  📍 {profileData.location}
-                </Typography>
-              )}
-              <Typography variant="body2" color="text.secondary">
-                {getJoinDate()}
-              </Typography>
-              {!isAdminView && (
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={() => navigate(`/${currentLang}/profile/edit`)}
-                  sx={{ mt: 2 }}
-                >
-                  {t('profile.editProfile')}
-                </Button>
-              )}
+        {!isEditing ? (
+          <div className="profile-details">
+            {Array.isArray(profileData.categories) && profileData.categories.length > 0 && (
+              <div>
+                <div className="label">{t('profile.bowCategories', 'Bow Categories')}</div>
+                <Stack direction="row" spacing={1} sx={{ mt: 1, flexWrap: 'wrap' }}>
+                  {profileData.categories.map((cat) => (
+                    <Chip key={cat} className="bow-category" label={cat} sx={{ mr: 1, mb: 1 }} />
+                  ))}
+                </Stack>
+              </div>
+            )}
+            {profileData.bio && (
+              <div className="profile-bio">
+                <div className="label">{t('profile.aboutMe', 'About Me')}</div>
+                {profileData.bio}
+              </div>
+            )}
+            {profileData.location && (
+              <div className="profile-location">
+                <div className="label">{t('profile.location', 'Location')}</div>
+                📍 {profileData.location}
+              </div>
+            )}
+            <div color="text.secondary">
+              {getJoinDate()}
             </div>
-          ) : null}
-        </Box>
+            {!isAdminView && (
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => navigate(`/${currentLang}/profile/edit`)}
+                sx={{ mt: 2 }}
+              >
+                {t('profile.editProfile')}
+              </Button>
+            )}
+          </div>
+        ) : null}
       </Box>
     </div>
   );

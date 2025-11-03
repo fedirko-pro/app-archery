@@ -189,6 +189,11 @@
     "submitLoading": "Resetting Password..."
   },
   "profile": {
+    "joined": "Joined",
+    "recentlyJoined": "Recently joined",
+    "bowCategories": "Bow Categories",
+    "aboutMe": "About Me",
+    "location": "Location",
     "editProfile": "Edit Profile",
     "setPassword": "Set Password",
     "changePassword": "Change Password",
@@ -206,7 +211,17 @@
     "fedNumberPlaceholder": "Enter your federation number",
     "changeUserRole": "Change the user's role",
     "saving": "Saving...",
-    "saveProfile": "Save Profile"
+    "saveProfile": "Save Profile",
+    "avatar": "Avatar",
+    "uploadPhoto": "Upload Photo",
+    "changePhoto": "Change Photo",
+    "cropAndSave": "Crop and Save",
+    "removePhoto": "Remove Photo",
+    "unsupportedType": "Unsupported file type. Allowed: PNG, JPG, JPEG",
+    "imageTooLarge": "Image is too large (max 3MB).",
+    "dragToReposition": "Select an image, then drag to reposition",
+    "zoom": "Zoom",
+    "avatarSubheader": "Select an image, then drag to reposition (PNG, JPG up to 3MB)"
   },
   "role": { "user": "User", "admin": "Admin" },
   "notFound": {
