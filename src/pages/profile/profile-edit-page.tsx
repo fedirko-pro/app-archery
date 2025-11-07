@@ -106,8 +106,10 @@ const ProfileEditPage: React.FC = () => {
       const updatedUser = await apiService.updateProfile(profileData);
       updateUser(updatedUser);
       navigate(`/${lang}/profile`);
-    } catch {
-      setError('Failed to update profile. Please try again.');
+    } catch (err: any) {
+      const errorMessage = err?.message || 'Failed to update profile. Please try again.';
+      setError(errorMessage);
+      console.error('Profile update error:', err);
     } finally {
       setIsSaving(false);
     }

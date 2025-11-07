@@ -1,0 +1,39 @@
+.banner-uploader {
+  /* container styles can go here if needed */
+}
+
+.banner-uploader__viewport {
+  width: var(--banner-width, 600px);
+  height: var(--banner-height, 200px);
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #f0f0f0;
+  position: relative;
+  user-select: none;
+  touch-action: none;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.banner-uploader__image {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform-origin: top left;
+  will-change: transform;
+}
+
+.banner-uploader__placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 16px;
+  padding-right: 16px;
+  text-align: center;
+  color: #666;
+}
+
+.banner-uploader__file-input {
+  display: none;
+}

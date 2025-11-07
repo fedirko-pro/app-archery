@@ -1,0 +1,26 @@
+.file-attachments {
+  /* container styles */
+}
+
+.file-attachments__file-input {
+  display: none;
+}
+
+.file-attachments__list {
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 8px;
+  padding: 0;
+  overflow: hidden;
+}
+
+.file-attachments__list-item {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.02);
+  }
+}
