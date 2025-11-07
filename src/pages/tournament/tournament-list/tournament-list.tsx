@@ -215,8 +215,20 @@ const TournamentList: React.FC = () => {
             variant="contained"
             startIcon={<Add />}
             onClick={() => setOpenDialog(true)}
+            sx={{
+              '& .MuiButton-startIcon': {
+                margin: { xs: 0, sm: '0 8px 0 -4px' },
+              },
+              minWidth: { xs: 'auto', sm: '64px' },
+              padding: { xs: '6px 12px', sm: '6px 16px' },
+            }}
           >
-            {t('pages.tournaments.create')}
+            <Box
+              component="span"
+              sx={{ display: { xs: 'none', sm: 'inline' } }}
+            >
+              {t('pages.tournaments.create')}
+            </Box>
           </Button>
         )}
       </Box>
