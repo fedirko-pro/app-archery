@@ -13,12 +13,12 @@ import {
   CircularProgress,
   IconButton,
   Tooltip,
+  Avatar,
 } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 
 import type { User } from '../../../contexts/types';
 import apiService from '../../../services/api';
-import { formatDate } from '../../../utils/date-utils';
 
 interface UsersListProps {
   onEditUser: (user: User) => void;
@@ -112,20 +112,34 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
       )}
 
       <TableContainer component={Paper}>
-        <Table>
+        <Table
+          sx={{
+            '& .MuiTableCell-root': {
+              padding: '8px',
+            },
+          }}
+        >
           <TableHead>
             <TableRow>
+              <TableCell>Avatar</TableCell>
               <TableCell>Name</TableCell>
               <TableCell>Email</TableCell>
-              <TableCell>Role</TableCell>
-              <TableCell>Auth Provider</TableCell>
-              <TableCell>Created</TableCell>
               <TableCell align="center">Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {users.map((user) => (
               <TableRow key={user.id} hover>
+                <TableCell>
+                  <Avatar
+                    src={user.picture}
+                    alt={`${user.firstName} ${user.lastName}`}
+                    sx={{ width: 40, height: 40 }}
+                  >
+                    {!user.picture &&
+                      `${user.firstName?.[0] || ''}${user.lastName?.[0] || ''}`}
+                  </Avatar>
+                </TableCell>
                 <TableCell>
                   <Typography variant="body2">
                     {user.firstName && user.lastName
@@ -134,34 +148,6 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
                   </Typography>
                 </TableCell>
                 <TableCell>{user.email}</TableCell>
-                <TableCell>
-                  <Typography
-                    variant="body2"
-                    sx={{
-                      color:
-                        user.role === 'admin' ? 'error.main' : 'text.primary',
-                      fontWeight: user.role === 'admin' ? 'bold' : 'normal',
-                    }}
-                  >
-                    {user.role}
-                  </Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography
-                    variant="body2"
-                    sx={{
-                      color:
-                        user.authProvider === 'google'
-                          ? 'primary.main'
-                          : 'text.primary',
-                    }}
-                  >
-                    {user.authProvider}
-                  </Typography>
-                </TableCell>
-                <TableCell>
-                  {user.createdAt ? formatDate(user.createdAt) : 'Unknown'}
-                </TableCell>
                 <TableCell align="center">
                   <Box
                     sx={{ display: 'flex', gap: 1, justifyContent: 'center' }}

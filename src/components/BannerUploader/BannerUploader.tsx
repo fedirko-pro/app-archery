@@ -2,23 +2,27 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Box, Button, Card, CardContent, CardHeader, Slider, Typography, CircularProgress } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { apiService } from '../../services/api';
-import './AvatarUploader.scss';
+import './BannerUploader.scss';
 
-interface AvatarUploaderProps {
+interface BannerUploaderProps {
   value?: string;
   onChange: (url: string | null) => void;
-  size?: number; // viewport size in px (square)
-  outputSize?: number; // output canvas size (square)
+  width?: number; // viewport width in px
+  height?: number; // viewport height in px
+  outputWidth?: number; // output canvas width
+  outputHeight?: number; // output canvas height
 }
 
 const MAX_SIZE_BYTES = 10 * 1024 * 1024; // 10MB (API limit)
 const ACCEPTED_TYPES = ['image/png', 'image/jpeg', 'image/jpg'];
 
-const AvatarUploader: React.FC<AvatarUploaderProps> = ({
+const BannerUploader: React.FC<BannerUploaderProps> = ({
   value,
   onChange,
-  size = 240,
-  outputSize = 512,
+  width = 600,
+  height = 200,
+  outputWidth = 1200,
+  outputHeight = 400,
 }) => {
   const { t } = useTranslation('common');
   const [imageSrc, setImageSrc] = useState<string | undefined>(value);
@@ -48,13 +52,15 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({
       setImageEl(img);
       setNaturalSize({ w: img.naturalWidth, h: img.naturalHeight });
       setZoom(1);
-      const baseScale = Math.max(size / img.naturalWidth, size / img.naturalHeight);
+      const baseScaleW = width / img.naturalWidth;
+      const baseScaleH = height / img.naturalHeight;
+      const baseScale = Math.max(baseScaleW, baseScaleH);
       const scaledW = img.naturalWidth * baseScale;
       const scaledH = img.naturalHeight * baseScale;
-      setOffset({ x: (size - scaledW) / 2, y: (size - scaledH) / 2 });
+      setOffset({ x: (width - scaledW) / 2, y: (height - scaledH) / 2 });
     };
     img.src = imageSrc;
-  }, [imageSrc, size]);
+  }, [imageSrc, width, height]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -78,12 +84,14 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({
 
   const clampOffset = (nx: number, ny: number) => {
     if (!naturalSize) return { x: nx, y: ny };
-    const baseScale = Math.max(size / naturalSize.w, size / naturalSize.h);
+    const baseScaleW = width / naturalSize.w;
+    const baseScaleH = height / naturalSize.h;
+    const baseScale = Math.max(baseScaleW, baseScaleH);
     const scale = baseScale * zoom;
     const scaledW = naturalSize.w * scale;
     const scaledH = naturalSize.h * scale;
-    const minX = Math.min(0, size - scaledW);
-    const minY = Math.min(0, size - scaledH);
+    const minX = Math.min(0, width - scaledW);
+    const minY = Math.min(0, height - scaledH);
     const maxX = 0;
     const maxY = 0;
     return {
@@ -139,11 +147,13 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({
     if (!naturalSize) return;
     const z = Array.isArray(value) ? value[0] : value;
     const prevZoom = zoom;
-    const baseScale = Math.max(size / naturalSize.w, size / naturalSize.h);
+    const baseScaleW = width / naturalSize.w;
+    const baseScaleH = height / naturalSize.h;
+    const baseScale = Math.max(baseScaleW, baseScaleH);
     const prevScale = baseScale * prevZoom;
     const nextScale = baseScale * z;
-    const centerX = size / 2;
-    const centerY = size / 2;
+    const centerX = width / 2;
+    const centerY = height / 2;
     const relX = (centerX - offset.x) / prevScale;
     const relY = (centerY - offset.y) / prevScale;
     const nextOffsetX = centerX - relX * nextScale;
@@ -160,39 +170,29 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({
     setError(null);
 
     try {
-      const baseScale = Math.max(size / naturalSize.w, size / naturalSize.h);
+      const baseScaleW = width / naturalSize.w;
+      const baseScaleH = height / naturalSize.h;
+      const baseScale = Math.max(baseScaleW, baseScaleH);
       const scale = baseScale * zoom;
-      const sx = Math.max(0, Math.min(naturalSize.w - size / scale, -offset.x / scale));
-      const sy = Math.max(0, Math.min(naturalSize.h - size / scale, -offset.y / scale));
-      const sSize = size / scale;
-
-      // Validate crop parameters
-      const cropX = Math.round(sx);
-      const cropY = Math.round(sy);
-      const cropWidth = Math.round(sSize);
-      const cropHeight = Math.round(sSize);
-
-      if (isNaN(cropX) || isNaN(cropY) || isNaN(cropWidth) || isNaN(cropHeight) ||
-          cropX < 0 || cropY < 0 || cropWidth <= 0 || cropHeight <= 0) {
-        setError(t('profile.invalidCrop', 'Invalid crop parameters. Please try adjusting the image.'));
-        setUploading(false);
-        return;
-      }
+      const sx = Math.max(0, Math.min(naturalSize.w - width / scale, -offset.x / scale));
+      const sy = Math.max(0, Math.min(naturalSize.h - height / scale, -offset.y / scale));
+      const sWidth = width / scale;
+      const sHeight = height / scale;
 
       // Upload to backend with crop parameters
       const result = await apiService.uploadImage(
         currentFileRef.current,
-        'avatar',
+        'banner',
         {
-          cropX,
-          cropY,
-          cropWidth,
-          cropHeight,
+          cropX: Math.round(sx),
+          cropY: Math.round(sy),
+          cropWidth: Math.round(sWidth),
+          cropHeight: Math.round(sHeight),
           quality: 85,
         }
       );
 
-      // Backend now returns full URL, so we can use it directly
+      // Update with the uploaded image URL
       onChange(result.url);
       setImageSrc(result.url);
     } catch (err) {
@@ -214,14 +214,21 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({
     if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
+  const getBaseScale = () => {
+    if (!naturalSize) return 1;
+    const baseScaleW = width / naturalSize.w;
+    const baseScaleH = height / naturalSize.h;
+    return Math.max(baseScaleW, baseScaleH);
+  };
+
   return (
-    <Card className="avatar-uploader">
+    <Card className="banner-uploader">
       <CardHeader
-        title={t('profile.avatar', 'Avatar')}
-        subheader={t('profile.avatarSubheader', 'Select an image, then drag to reposition (PNG, JPG up to 3MB)')}
+        title={t('pages.tournaments.banner', 'Tournament Banner')}
+        subheader={t('pages.tournaments.bannerSubheader', 'Select an image, then drag to reposition (PNG, JPG up to 3MB)')}
       />
       <CardContent>
-        <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, alignItems: 'center' }}>
             <div
                 ref={containerRef}
                 onMouseDown={handleMouseDown}
@@ -231,26 +238,29 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({
                 onTouchStart={handleTouchStart}
                 onTouchMove={handleTouchMove}
                 onTouchEnd={handleTouchEnd}
-                className="avatar-uploader__viewport"
-                style={{ ['--avatar-size' as any]: `${size}px` }}
+                className="banner-uploader__viewport"
+                style={{
+                  ['--banner-width' as any]: `${width}px`,
+                  ['--banner-height' as any]: `${height}px`
+                }}
             >
                 {imageEl ? (
                 <img
                     src={imageSrc}
-                    alt="avatar-crop"
+                    alt="banner-crop"
                     draggable={false}
-                    className="avatar-uploader__image"
+                    className="banner-uploader__image"
                     style={{
-                    transform: `translate(${offset.x}px, ${offset.y}px) scale(${Math.max(size / (naturalSize?.w || 1), size / (naturalSize?.h || 1)) * zoom})`
+                      transform: `translate(${offset.x}px, ${offset.y}px) scale(${getBaseScale() * zoom})`
                     }}
                 />
                 ) : (
-                <div className="avatar-uploader__placeholder">
-                    {t('profile.dragToReposition', 'Select an image, then drag to reposition')}
+                <div className="banner-uploader__placeholder">
+                    {t('pages.tournaments.dragToReposition', 'Select an image, then drag to reposition')}
                 </div>
                 )}
             </div>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mt: 1 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, width: '100%', maxWidth: width }}>
                 <Typography variant="caption" sx={{ color: 'text.secondary' }}>
                 {t('profile.zoom', 'Zoom')}
                 </Typography>
@@ -260,18 +270,18 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({
                 min={1}
                 max={3}
                 step={0.01}
-                sx={{ width: size - 80 }}
+                sx={{ flex: 1 }}
                 disabled={!imageEl}
                 />
             </Box>
 
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+            <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', justifyContent: 'center' }}>
             <input
                 type="file"
                 accept={ACCEPTED_TYPES.join(',')}
                 onChange={handleFileChange}
                 ref={fileInputRef}
-                className="avatar-uploader__file-input"
+                className="banner-uploader__file-input"
             />
             <Button variant="outlined" onClick={() => fileInputRef.current?.click()} disabled={uploading}>
                 {imageEl ? t('profile.changePhoto', 'Change Photo') : t('profile.uploadPhoto', 'Upload Photo')}
@@ -288,7 +298,7 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({
                 {t('profile.removePhoto', 'Remove Photo')}
             </Button>
             {error && (
-                <Typography variant="caption" color="error">{error}</Typography>
+                <Typography variant="caption" color="error" sx={{ width: '100%', textAlign: 'center' }}>{error}</Typography>
             )}
             </Box>
         </Box>
@@ -297,6 +307,4 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({
   );
 };
 
-export default AvatarUploader;
-
-
+export default BannerUploader;

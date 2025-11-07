@@ -1,19 +1,13 @@
-import { Add, Edit, Delete, Send } from '@mui/icons-material';
+import { Add, Edit, Delete, Send, Visibility } from '@mui/icons-material';
 import {
   Box,
   Typography,
   Button,
   Card,
   CardContent,
+  CardMedia,
   Alert,
   CircularProgress,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  TextField,
-  FormControlLabel,
-  Checkbox,
 } from '@mui/material';
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link, useParams } from 'react-router-dom';
@@ -22,6 +16,8 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../../contexts/auth-context';
 import apiService from '../../../services/api';
 import { formatDate } from '../../../utils/date-utils';
+import { FileAttachment } from '../../../components/FileAttachments/FileAttachments';
+import defaultBanner from '../../../img/default_turnament_bg.png';
 
 interface Tournament {
   id: string;
@@ -31,6 +27,8 @@ interface Tournament {
   endDate: string;
   address?: string;
   allowMultipleApplications?: boolean;
+  banner?: string;
+  attachments?: FileAttachment[];
   createdBy: any;
   createdAt: string;
 }
@@ -43,20 +41,6 @@ const TournamentList: React.FC = () => {
   const [userApplications, setUserApplications] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [openDialog, setOpenDialog] = useState(false);
-
-  const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-    startDate: '',
-    endDate: '',
-    applicationDeadline: '',
-    address: '',
-    allowMultipleApplications: true,
-  });
-  const [editingTournament, setEditingTournament] = useState<Tournament | null>(
-    null,
-  );
 
   const fetchTournaments = useCallback(async () => {
     try {
@@ -96,26 +80,6 @@ const TournamentList: React.FC = () => {
       .length;
   };
 
-  const handleCreateTournament = async () => {
-    try {
-      await apiService.createTournament(formData);
-      setOpenDialog(false);
-      setFormData({
-        title: '',
-        description: '',
-        startDate: '',
-        endDate: '',
-        applicationDeadline: '',
-        address: '',
-        allowMultipleApplications: true,
-      });
-      fetchTournaments();
-    } catch (error) {
-      setError(t('pages.tournaments.createError'));
-      console.error('Error creating tournament:', error);
-    }
-  };
-
   const handleDeleteTournament = async (id: string) => {
     if (window.confirm(t('pages.tournaments.deleteConfirm'))) {
       try {
@@ -133,57 +97,6 @@ const TournamentList: React.FC = () => {
         }
       }
     }
-  };
-
-  const handleEditTournament = (tournament: Tournament) => {
-    setEditingTournament(tournament);
-    setFormData({
-      title: tournament.title,
-      description: tournament.description || '',
-      startDate: tournament.startDate.split('T')[0],
-      endDate: tournament.endDate.split('T')[0],
-      applicationDeadline: '', // Will be handled by backend
-      address: tournament.address || '',
-      allowMultipleApplications: tournament.allowMultipleApplications ?? true,
-    });
-    setOpenDialog(true);
-  };
-
-  const handleUpdateTournament = async () => {
-    if (!editingTournament) return;
-
-    try {
-      await apiService.updateTournament(editingTournament.id, formData);
-      setOpenDialog(false);
-      setEditingTournament(null);
-      setFormData({
-        title: '',
-        description: '',
-        startDate: '',
-        endDate: '',
-        applicationDeadline: '',
-        address: '',
-        allowMultipleApplications: true,
-      });
-      fetchTournaments();
-    } catch (error) {
-      setError(t('pages.tournaments.updateError'));
-      console.error('Error updating tournament:', error);
-    }
-  };
-
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
-    setEditingTournament(null);
-    setFormData({
-      title: '',
-      description: '',
-      startDate: '',
-      endDate: '',
-      applicationDeadline: '',
-      address: '',
-      allowMultipleApplications: true,
-    });
   };
 
   if (loading) {
@@ -214,9 +127,22 @@ const TournamentList: React.FC = () => {
           <Button
             variant="contained"
             startIcon={<Add />}
-            onClick={() => setOpenDialog(true)}
+            component={Link}
+            to={`/${lang}/tournaments/create`}
+            sx={{
+              '& .MuiButton-startIcon': {
+                margin: { xs: 0, sm: '0 8px 0 -4px' },
+              },
+              minWidth: { xs: 'auto', sm: '64px' },
+              padding: { xs: '8px 12px', sm: '8px 16px' },
+            }}
           >
-            {t('pages.tournaments.create')}
+            <Box
+              component="span"
+              sx={{ display: { xs: 'none', sm: 'inline' } }}
+            >
+              {t('pages.tournaments.create')}
+            </Box>
           </Button>
         )}
       </Box>
@@ -237,6 +163,13 @@ const TournamentList: React.FC = () => {
         {tournaments.map((tournament) => (
           <Box key={tournament.id}>
             <Card>
+              <CardMedia
+                component="img"
+                height="140"
+                image={tournament.banner || defaultBanner}
+                alt={tournament.title}
+                sx={{ objectFit: 'cover' }}
+              />
               <CardContent>
                 <Typography variant="h6" gutterBottom>
                   {tournament.title}
@@ -268,6 +201,15 @@ const TournamentList: React.FC = () => {
                     : t('pages.tournaments.multipleNotAllowed')}
                 </Typography>
                 <Box sx={{ mt: 2, display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+                  <Button
+                    size="small"
+                    variant="outlined"
+                    startIcon={<Visibility />}
+                    component={Link}
+                    to={`/${lang}/tournaments/${tournament.id}`}
+                  >
+                    {t('pages.tournaments.viewDetails', 'View Details')}
+                  </Button>
                   {hasApplicationForTournament(tournament.id) && (
                     <Button
                       size="small"
@@ -282,23 +224,24 @@ const TournamentList: React.FC = () => {
                   )}
                   {(tournament.allowMultipleApplications ||
                     !hasApplicationForTournament(tournament.id)) && (
-                    <Button
-                      size="small"
-                      variant="contained"
-                      startIcon={<Send />}
-                      component={Link}
-                      to={`/${lang}/apply/${tournament.id}`}
-                    >
-                      {t('pages.tournaments.apply')}
-                    </Button>
-                  )}
+                      <Button
+                        size="small"
+                        variant="contained"
+                        startIcon={<Send />}
+                        component={Link}
+                        to={`/${lang}/apply/${tournament.id}`}
+                      >
+                        {t('pages.tournaments.apply')}
+                      </Button>
+                    )}
                   {user?.role === 'admin' && (
                     <>
                       <Button
                         size="small"
                         variant="outlined"
                         startIcon={<Edit />}
-                        onClick={() => handleEditTournament(tournament)}
+                        component={Link}
+                        to={`/${lang}/tournaments/${tournament.id}/edit`}
                       >
                         {t('pages.tournaments.edit')}
                       </Button>
@@ -319,113 +262,6 @@ const TournamentList: React.FC = () => {
           </Box>
         ))}
       </Box>
-
-      <Dialog
-        open={openDialog}
-        onClose={handleCloseDialog}
-        maxWidth="sm"
-        fullWidth
-      >
-        <DialogTitle>
-          {editingTournament ? t('pages.tournaments.editDialogTitle') : t('pages.tournaments.createDialogTitle')}
-        </DialogTitle>
-        <DialogContent>
-          <TextField
-            label={t('pages.tournaments.form.title')}
-            value={formData.title}
-            onChange={(e) =>
-              setFormData({ ...formData, title: e.target.value })
-            }
-            fullWidth
-            margin="normal"
-            required
-          />
-          <TextField
-            label={t('pages.tournaments.form.description')}
-            value={formData.description}
-            onChange={(e) =>
-              setFormData({ ...formData, description: e.target.value })
-            }
-            fullWidth
-            margin="normal"
-            multiline
-            rows={3}
-          />
-          <TextField
-            label={t('pages.tournaments.form.startDate')}
-            type="date"
-            value={formData.startDate}
-            onChange={(e) =>
-              setFormData({ ...formData, startDate: e.target.value })
-            }
-            fullWidth
-            margin="normal"
-            required
-            InputLabelProps={{ shrink: true }}
-          />
-          <TextField
-            label={t('pages.tournaments.form.endDate')}
-            type="date"
-            value={formData.endDate}
-            onChange={(e) =>
-              setFormData({ ...formData, endDate: e.target.value })
-            }
-            fullWidth
-            margin="normal"
-            InputLabelProps={{ shrink: true }}
-            helperText={t('pages.tournaments.form.endDateHelper')}
-          />
-          <TextField
-            label={t('pages.tournaments.form.applicationDeadline')}
-            type="date"
-            value={formData.applicationDeadline}
-            onChange={(e) =>
-              setFormData({ ...formData, applicationDeadline: e.target.value })
-            }
-            fullWidth
-            margin="normal"
-            InputLabelProps={{ shrink: true }}
-            helperText={t('pages.tournaments.form.applicationDeadlineHelper')}
-          />
-          <TextField
-            label={t('pages.tournaments.form.address')}
-            value={formData.address}
-            onChange={(e) =>
-              setFormData({ ...formData, address: e.target.value })
-            }
-            fullWidth
-            margin="normal"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={formData.allowMultipleApplications}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    allowMultipleApplications: e.target.checked,
-                  })
-                }
-              />
-            }
-            label={t('pages.tournaments.form.allowMultipleLabel')}
-            sx={{ mt: 2 }}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseDialog}>{t('common.cancel')}</Button>
-          <Button
-            onClick={
-              editingTournament
-                ? handleUpdateTournament
-                : handleCreateTournament
-            }
-            variant="contained"
-          >
-            {editingTournament ? t('common.update') : t('common.create')}
-          </Button>
-        </DialogActions>
-      </Dialog>
     </Box>
   );
 };

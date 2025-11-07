@@ -10,7 +10,7 @@ import apiService from '../../../services/api';
 import ProfileEditForm from '../../profile/profile-edit-form/profile-edit-form';
 
 const UserEdit: React.FC = () => {
-  const { userId } = useParams<{ userId: string }>();
+  const { userId, lang } = useParams<{ userId: string; lang: string }>();
   const navigate = useNavigate();
   const [user, setUser] = useState<User | null>(null);
   const [formData, setFormData] = useState({
@@ -102,7 +102,7 @@ const UserEdit: React.FC = () => {
       setUser(updatedUser);
 
       setTimeout(() => {
-        navigate(`/admin/users/${userId}/profile`);
+        navigate(`/${lang}/admin/users/${userId}/profile`);
       }, 2000);
     } catch (error) {
       setError('Failed to update user. Please try again.');
@@ -113,11 +113,11 @@ const UserEdit: React.FC = () => {
   };
 
   const handleCancel = () => {
-    navigate(`/admin/users/${userId}/profile`);
+    navigate(`/${lang}/admin/users/${userId}/profile`);
   };
 
   const handleBack = () => {
-    navigate('/admin/users');
+    navigate(`/${lang}/admin/users`);
   };
 
   if (loading) {
@@ -168,27 +168,17 @@ const UserEdit: React.FC = () => {
   };
 
   return (
-    <>
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'flex-start',
-          maxWidth: '900px',
-          margin: '32px auto 0 auto',
-          width: '100%',
-          px: 2,
-        }}
-      >
-        <Button
-          startIcon={<ArrowBack />}
-          onClick={handleBack}
-          sx={{ minWidth: 0 }}
-        >
-          Back to Admin Panel
-        </Button>
-      </Box>
-      <Box sx={{ maxWidth: 700, mx: 'auto', mt: 4 }}>
+    <section>
+      <div className="container">
+        <Box sx={{ mb: 2 }}>
+          <Button
+            startIcon={<ArrowBack />}
+            onClick={handleBack}
+            sx={{ minWidth: 0 }}
+          >
+            Back to Admin Panel
+          </Button>
+        </Box>
         {error && (
           <Alert severity="error" sx={{ mb: 2 }} onClose={() => setError(null)}>
             {error}
@@ -211,8 +201,8 @@ const UserEdit: React.FC = () => {
           onSave={() => handleSubmit({} as React.FormEvent)}
           onCancel={handleCancel}
         />
-      </Box>
-    </>
+      </div>
+    </section>
   );
 };
 
