@@ -73,6 +73,26 @@
       "updateError": "Falha ao atualizar torneio",
       "editDialogTitle": "Editar torneio",
       "createDialogTitle": "Criar torneio",
+      "viewDetails": "Ver detalhes",
+      "backToList": "Voltar aos torneios",
+      "notFound": "Torneio não encontrado",
+      "banner": "Banner do torneio",
+      "bannerSubheader": "Selecione uma imagem e arraste para reposicionar (PNG, JPG até 3MB)",
+      "dragToReposition": "Selecione uma imagem e arraste para reposicionar",
+      "attachments": "Anexos adicionais",
+      "attachmentsSubheader": "Carregar regras personalizadas, imagens ou documentos (PNG, JPG, PDF, DOC, DOCX até {{maxSize}} cada, máx {{maxFiles}} arquivos)",
+      "addFiles": "Adicionar arquivos",
+      "filesCount": "{{count}}/{{max}} arquivos",
+      "noAttachments": "Nenhum anexo adicionado ainda",
+      "tooManyFiles": "Máximo de {{maxFiles}} arquivos permitido. Você pode carregar mais {{remaining}} arquivo(s).",
+      "unsupportedFileType": "{{fileName}}: Tipo de arquivo não suportado. Permitido: PNG, JPG, PDF, DOC, DOCX",
+      "fileTooLarge": "{{fileName}}: Arquivo muito grande (máx {{maxSize}})",
+      "fileReadError": "{{fileName}}: Falha ao ler arquivo",
+      "uploadFailed": "Falha no upload. Tente novamente.",
+      "uploading": "Carregando...",
+      "deleteFileFailed": "Falha ao excluir arquivo. Tente novamente.",
+      "creating": "Criando...",
+      "updating": "Atualizando...",
       "form": {
         "title": "Título",
         "description": "Descrição",
@@ -82,7 +102,8 @@
         "applicationDeadline": "Prazo de inscrição (opcional - 5 dias antes do início)",
         "applicationDeadlineHelper": "Deixe vazio para definir 5 dias antes da data de início",
         "address": "Endereço",
-        "allowMultipleLabel": "Permitir múltiplas inscrições por usuário (apenas categorias diferentes)"
+        "allowMultipleLabel": "Permitir múltiplas inscrições por usuário (apenas categorias diferentes)",
+        "basicInfo": "Informações básicas"
       }
     },
     "applications": {

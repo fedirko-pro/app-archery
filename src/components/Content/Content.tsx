@@ -29,6 +29,9 @@ import SignUp from '../../pages/sign-up/sign-up';
 import AdminApplications from '../../pages/tournament/admin-applications/admin-applications';
 import PublicApplication from '../../pages/tournament/public-application/public-application';
 import TournamentList from '../../pages/tournament/tournament-list/tournament-list';
+import TournamentDetail from '../../pages/tournament/tournament-detail/tournament-detail';
+import TournamentCreate from '../../pages/tournament/tournament-create/tournament-create';
+import TournamentEdit from '../../pages/tournament/tournament-edit/tournament-edit';
 import UserApplications from '../../pages/tournament/user-applications/user-applications';
 import Training from '../../pages/Trainings';
 import Categories from '../../pages/categories/Categories';
@@ -121,7 +124,20 @@ function Content() {
           <Route path="rules" element={<Rules />} />
           <Route path="encyclopedia" element={<Encyclopedia />} />
           <Route path="trainings" element={<Training />} />
-          <Route path="tournaments" element={<TournamentList />} />
+          <Route path="tournaments">
+            <Route index element={<TournamentList />} />
+            <Route path="create" element={
+              <ProtectedAdminRoute>
+                <TournamentCreate />
+              </ProtectedAdminRoute>
+            } />
+            <Route path=":tournamentId" element={<TournamentDetail />} />
+            <Route path=":tournamentId/edit" element={
+              <ProtectedAdminRoute>
+                <TournamentEdit />
+              </ProtectedAdminRoute>
+            } />
+          </Route>
           <Route path="apply/:tournamentId" element={<PublicApplication />} />
           <Route path="applications" element={<UserApplications />} />
           <Route

@@ -60,6 +60,9 @@
       "delete": "Delete",
       "apply": "Apply",
       "viewApplications": "View Applications",
+      "viewDetails": "View Details",
+      "backToList": "Back to tournaments",
+      "notFound": "Tournament not found",
       "start": "Start",
       "end": "End",
       "location": "Location",
@@ -73,6 +76,23 @@
       "updateError": "Failed to update tournament",
       "editDialogTitle": "Edit Tournament",
       "createDialogTitle": "Create Tournament",
+      "banner": "Tournament Banner",
+      "bannerSubheader": "Select an image, then drag to reposition (PNG, JPG up to 3MB)",
+      "dragToReposition": "Select an image, then drag to reposition",
+      "attachments": "Additional Attachments",
+      "attachmentsSubheader": "Upload custom rules, images, or documents (PNG, JPG, PDF, DOC, DOCX up to {{maxSize}} each, max {{maxFiles}} files)",
+      "addFiles": "Add Files",
+      "filesCount": "{{count}}/{{max}} files",
+      "noAttachments": "No attachments added yet",
+      "tooManyFiles": "Maximum {{maxFiles}} files allowed. You can upload {{remaining}} more file(s).",
+      "unsupportedFileType": "{{fileName}}: Unsupported file type. Allowed: PNG, JPG, PDF, DOC, DOCX",
+      "fileTooLarge": "{{fileName}}: File is too large (max {{maxSize}})",
+      "fileReadError": "{{fileName}}: Failed to read file",
+      "uploadFailed": "Upload failed. Please try again.",
+      "uploading": "Uploading...",
+      "deleteFileFailed": "Failed to delete file. Please try again.",
+      "creating": "Creating...",
+      "updating": "Updating...",
       "form": {
         "title": "Title",
         "description": "Description",
@@ -82,7 +102,8 @@
         "applicationDeadline": "Application Deadline (optional - defaults to 5 days before start)",
         "applicationDeadlineHelper": "Leave empty to set 5 days before start date",
         "address": "Address",
-        "allowMultipleLabel": "Allow multiple applications from one user (different categories only)"
+        "allowMultipleLabel": "Allow multiple applications from one user (different categories only)",
+        "basicInfo": "Basic Information"
       }
     },
     "applications": {
@@ -171,7 +192,7 @@
       "desc": "Range distance conversions"
     }
   },
-  "common": { "or": "or", "cancel": "Cancel", "update": "Update", "create": "Create", "back": "Back" },
+  "common": { "or": "or", "cancel": "Cancel", "update": "Update", "create": "Create", "back": "Back", "download": "Download", "backToList": "Back to list" },
   "forms": { "email": "Email", "password": "Password", "firstName": "First name", "lastName": "Last name", "currentPassword": "Current Password", "newPassword": "New Password", "confirmPassword": "Confirm New Password", "bio": "Bio", "location": "Location", "website": "Website", "profilePictureUrl": "Profile Picture URL", "federationNumber": "Federation Number", "categories": "Categories", "selectCategories": "Select categories", "applicationLanguage": "Application language", "role": "Role" },
   "reset": {
     "invalidLink": "Invalid reset link. Please request a new password reset.",

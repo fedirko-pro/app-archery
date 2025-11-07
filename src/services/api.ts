@@ -373,6 +373,121 @@ class ApiService {
   async getRules(): Promise<RuleDto[]> {
     return rulesData as RuleDto[];
   }
+
+  /**
+   * Upload an image (avatar or banner) with optional cropping and processing.
+   * Returns the URL and metadata of the uploaded image.
+   */
+  async uploadImage(
+    file: File,
+    type: 'avatar' | 'banner',
+    options?: {
+      cropX?: number;
+      cropY?: number;
+      cropWidth?: number;
+      cropHeight?: number;
+      quality?: number;
+    },
+  ): Promise<{
+    url: string;
+    filename: string;
+    size: number;
+    dimensions: { width: number; height: number };
+  }> {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('type', type);
+
+    if (options) {
+      if (options.cropX !== undefined)
+        formData.append('cropX', String(options.cropX));
+      if (options.cropY !== undefined)
+        formData.append('cropY', String(options.cropY));
+      if (options.cropWidth !== undefined)
+        formData.append('cropWidth', String(options.cropWidth));
+      if (options.cropHeight !== undefined)
+        formData.append('cropHeight', String(options.cropHeight));
+      if (options.quality !== undefined)
+        formData.append('quality', String(options.quality));
+    }
+
+    const url = `${this.baseURL}/upload/image`;
+    const token = this.getToken();
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Accept-Language': getCurrentI18nLang(),
+        ...(token && { Authorization: `Bearer ${token}` }),
+      },
+      body: formData,
+    });
+
+    if (!response.ok) {
+      const errorData = (await response.json().catch(() => ({}))) as ApiError;
+      throw new Error(
+        errorData.message || `HTTP error! status: ${response.status}`,
+      );
+    }
+
+    return response.json();
+  }
+
+  /**
+   * Upload an attachment file for a tournament.
+   * Returns the metadata of the uploaded attachment.
+   */
+  async uploadAttachment(
+    file: File,
+    tournamentId: string,
+  ): Promise<{
+    id: string;
+    url: string;
+    filename: string;
+    size: number;
+    mimeType: string;
+    uploadedAt: string;
+  }> {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('tournamentId', tournamentId);
+
+    const url = `${this.baseURL}/upload/attachment`;
+    const token = this.getToken();
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Accept-Language': getCurrentI18nLang(),
+        ...(token && { Authorization: `Bearer ${token}` }),
+      },
+      body: formData,
+    });
+
+    if (!response.ok) {
+      const errorData = (await response.json().catch(() => ({}))) as ApiError;
+      throw new Error(
+        errorData.message || `HTTP error! status: ${response.status}`,
+      );
+    }
+
+    return response.json();
+  }
+
+  /**
+   * Delete an attachment file from a tournament.
+   */
+  async deleteAttachment(
+    tournamentId: string,
+    filename: string,
+  ): Promise<void> {
+    return await this.request<void>(
+      `/upload/attachment/${tournamentId}/${filename}`,
+      {
+        method: 'DELETE',
+      },
+    );
+  }
 }
 
 export const apiService = new ApiService();

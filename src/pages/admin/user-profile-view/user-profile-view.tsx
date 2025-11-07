@@ -13,7 +13,7 @@ import { useTranslation } from 'react-i18next';
 import { getCurrentI18nLang } from '../../../utils/i18n-lang';
 
 const UserProfileView: React.FC = () => {
-  const { userId } = useParams<{ userId: string }>();
+  const { userId, lang } = useParams<{ userId: string; lang: string }>();
   const navigate = useNavigate();
   const [user, setUser] = useState<User | null>(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -122,11 +122,11 @@ const UserProfileView: React.FC = () => {
   };
 
   const handleEditUser = () => {
-    navigate(`/admin/users/${userId}/edit`);
+    navigate(`/${lang}/admin/users/${userId}/edit`);
   };
 
   const handleBack = () => {
-    navigate('/admin/users');
+    navigate(`/${lang}/admin/users`);
   };
 
   const getFullName = () => {
@@ -184,61 +184,49 @@ const UserProfileView: React.FC = () => {
   }
 
   return (
-    <>
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'flex-start',
-          maxWidth: '900px',
-          margin: '32px auto 24px auto',
-          width: '100%',
-          px: 2,
-        }}
-      >
-        <Button
-          startIcon={<ArrowBack />}
-          onClick={handleBack}
-          sx={{ minWidth: 0 }}
-        >
-          Back to Admin Panel
-        </Button>
-      </Box>
-      <div className="profile-container admin-profile-container">
-        <Box sx={{ px: 0 }}>
-          {!isEditing ? (
-            <>
-              <ProfileCard
-                profileData={profileData}
-                user={user}
-                isEditing={isEditing}
-                isAdminView={true}
-                getFullName={getFullName}
-                getJoinDate={getJoinDate}
-              />
-              <AdminActions
-                userId={user.id}
-                userEmail={user.email}
-                onEditUser={handleEditUser}
-              />
-            </>
-          ) : (
-            <ProfileEditForm
-              profileData={profileData}
-              isSaving={isSaving}
-              isAdminView={true}
-              onSave={handleSave}
-              onCancel={handleEditToggle}
-              onChange={handleChange}
-              onCategoriesChange={handleCategoriesChange}
-              onPictureChange={(dataUrl) => {
-                setProfileData((prev) => ({ ...prev, picture: dataUrl || '' }));
-              }}
-            />
-          )}
+    <section>
+      <div className="container">
+        <Box sx={{ mb: 2 }}>
+          <Button
+            startIcon={<ArrowBack />}
+            onClick={handleBack}
+            sx={{ minWidth: 0 }}
+          >
+            Back to Admin Panel
+          </Button>
         </Box>
+        {!isEditing ? (
+          <>
+            <ProfileCard
+              profileData={profileData}
+              user={user}
+              isEditing={isEditing}
+              isAdminView={true}
+              getFullName={getFullName}
+              getJoinDate={getJoinDate}
+            />
+            <AdminActions
+              userId={user.id}
+              userEmail={user.email}
+              onEditUser={handleEditUser}
+            />
+          </>
+        ) : (
+          <ProfileEditForm
+            profileData={profileData}
+            isSaving={isSaving}
+            isAdminView={true}
+            onSave={handleSave}
+            onCancel={handleEditToggle}
+            onChange={handleChange}
+            onCategoriesChange={handleCategoriesChange}
+            onPictureChange={(dataUrl) => {
+              setProfileData((prev) => ({ ...prev, picture: dataUrl || '' }));
+            }}
+          />
+        )}
       </div>
-    </>
+    </section>
   );
 };
 

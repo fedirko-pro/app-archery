@@ -2,19 +2,20 @@ import './admin-panel.scss';
 
 import { Box, Typography, Alert } from '@mui/material';
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import UsersList from './users-list/users-list';
 
 const AdminPanel: React.FC = () => {
   const navigate = useNavigate();
+  const { lang } = useParams();
 
   const handleEditUser = (user: any) => {
-    navigate(`/admin/users/${user.id}/edit`);
+    navigate(`/${lang}/admin/users/${user.id}/edit`);
   };
 
   const handleViewProfile = (userId: string) => {
-    navigate(`/admin/users/${userId}/profile`);
+    navigate(`/${lang}/admin/users/${userId}/profile`);
   };
 
   return (
