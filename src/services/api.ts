@@ -169,6 +169,10 @@ class ApiService {
     return await this.request<User[]>('/users/admin/all');
   }
 
+  async getUserById(userId: string): Promise<User> {
+    return await this.request<User>(`/users/admin/${userId}`);
+  }
+
   async adminUpdateUser(userId: string, userData: any): Promise<User> {
     return await this.request<User>(`/users/admin/${userId}`, {
       method: 'PATCH',

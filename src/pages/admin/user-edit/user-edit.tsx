@@ -2,27 +2,30 @@ import '../../profile/profile.scss';
 
 import { ArrowBack } from '@mui/icons-material';
 import { Box, Button, Alert, CircularProgress } from '@mui/material';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 import type { User } from '../../../contexts/types';
+import type { ProfileData } from '../../profile/types';
 import apiService from '../../../services/api';
 import ProfileEditForm from '../../profile/profile-edit-form/profile-edit-form';
+
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const UserEdit: React.FC = () => {
   const { userId, lang } = useParams<{ userId: string; lang: string }>();
   const navigate = useNavigate();
   const [user, setUser] = useState<User | null>(null);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<ProfileData>({
     firstName: '',
     lastName: '',
     email: '',
     bio: '',
     location: '',
     picture: '',
-    role: '',
+    role: 'user',
     federationNumber: '',
-    categories: '',
+    categories: [],
   });
 
   const [loading, setLoading] = useState(true);
@@ -30,24 +33,14 @@ const UserEdit: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (userId) {
-      fetchUser();
-    }
-  }, [userId]);
+  const fetchUser = useCallback(async () => {
+    if (!userId) return;
 
-  const fetchUser = async () => {
     try {
       setLoading(true);
       setError(null);
 
-      const allUsers = await apiService.getAllUsers();
-      const foundUser = allUsers.find((u) => u.id === userId);
-
-      if (!foundUser) {
-        setError('User not found');
-        return;
-      }
+      const foundUser = await apiService.getUserById(userId);
 
       setUser(foundUser);
       setFormData({
@@ -59,7 +52,7 @@ const UserEdit: React.FC = () => {
         picture: foundUser.picture || '',
         role: foundUser.role || 'user',
         federationNumber: foundUser.federationNumber || '',
-        categories: foundUser.categories ? foundUser.categories.join(', ') : '',
+        categories: foundUser.categories || [],
       });
     } catch (error) {
       setError('Failed to fetch user data');
@@ -67,6 +60,26 @@ const UserEdit: React.FC = () => {
     } finally {
       setLoading(false);
     }
+  }, [userId]);
+
+  useEffect(() => {
+    fetchUser();
+  }, [fetchUser]);
+
+  const validateForm = (): string | null => {
+    if (!formData.firstName.trim()) {
+      return 'First name is required';
+    }
+    if (!formData.lastName.trim()) {
+      return 'Last name is required';
+    }
+    if (!formData.email.trim()) {
+      return 'Email is required';
+    }
+    if (!EMAIL_REGEX.test(formData.email)) {
+      return 'Invalid email format';
+    }
+    return null;
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -75,35 +88,48 @@ const UserEdit: React.FC = () => {
       ...prev,
       [name]: value,
     }));
+    // Clear error when user starts typing
+    if (error) {
+      setError(null);
+    }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleCategoriesChange = (categories: string[]) => {
+    setFormData((prev) => ({
+      ...prev,
+      categories,
+    }));
+  };
 
+  const handlePictureChange = (dataUrl: string | null) => {
+    setFormData((prev) => ({
+      ...prev,
+      picture: dataUrl || '',
+    }));
+  };
+
+  const handleSave = async () => {
     if (!user) return;
+
+    const validationError = validateForm();
+    if (validationError) {
+      setError(validationError);
+      return;
+    }
 
     setSaving(true);
     setError(null);
     setSuccess(null);
 
-    const submitData = {
-      ...formData,
-      categories: formData.categories
-        ? formData.categories
-            .split(',')
-            .map((cat) => cat.trim())
-            .filter(Boolean)
-        : [],
-    };
-
     try {
-      const updatedUser = await apiService.adminUpdateUser(user.id, submitData);
+      const updatedUser = await apiService.adminUpdateUser(user.id, formData);
       setSuccess('User updated successfully!');
       setUser(updatedUser);
 
+      // Navigate after showing success message
       setTimeout(() => {
         navigate(`/${lang}/admin/users/${userId}/profile`);
-      }, 2000);
+      }, 1500);
     } catch (error) {
       setError('Failed to update user. Please try again.');
       console.error('Error updating user:', error);
@@ -133,7 +159,7 @@ const UserEdit: React.FC = () => {
     );
   }
 
-  if (error) {
+  if (error && !user) {
     return (
       <Box>
         <Button startIcon={<ArrowBack />} onClick={handleBack} sx={{ mb: 2 }}>
@@ -154,18 +180,6 @@ const UserEdit: React.FC = () => {
       </Box>
     );
   }
-
-  // Приводимо formData до формату ProfileData для ProfileEditForm
-  const profileData = {
-    ...formData,
-    categories:
-      typeof formData.categories === 'string'
-        ? formData.categories
-            .split(',')
-            .map((cat) => cat.trim())
-            .filter(Boolean)
-        : formData.categories,
-  };
 
   return (
     <section>
@@ -194,11 +208,13 @@ const UserEdit: React.FC = () => {
           </Alert>
         )}
         <ProfileEditForm
-          profileData={profileData}
+          profileData={formData}
           isSaving={saving}
           isAdminView={true}
           onChange={handleChange}
-          onSave={() => handleSubmit({} as React.FormEvent)}
+          onCategoriesChange={handleCategoriesChange}
+          onPictureChange={handlePictureChange}
+          onSave={handleSave}
           onCancel={handleCancel}
         />
       </div>
