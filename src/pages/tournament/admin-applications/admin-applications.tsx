@@ -26,6 +26,7 @@ import {
   Paper,
 } from '@mui/material';
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 
 import apiService from '../../../services/api';
 import { formatDate, getApplicationDeadline } from '../../../utils/date-utils';
@@ -63,6 +64,7 @@ interface ApplicationStats {
 }
 
 const AdminApplications: React.FC = () => {
+  const { tournamentId } = useParams<{ tournamentId?: string }>();
   const [applications, setApplications] = useState<TournamentApplication[]>([]);
   const [stats, setStats] = useState<ApplicationStats | null>(null);
   const [loading, setLoading] = useState(true);
@@ -92,7 +94,12 @@ const AdminApplications: React.FC = () => {
     try {
       const data = await apiService.getAllTournaments();
       setTournaments(data);
-      if (data.length > 0) {
+      // If tournamentId is provided in URL, use it, otherwise use first tournament
+      if (tournamentId) {
+        setSelectedTournament(tournamentId);
+        const tournament = data.find((t: any) => t.id === tournamentId);
+        setCurrentTournament(tournament);
+      } else if (data.length > 0) {
         setSelectedTournament(data[0].id);
         setCurrentTournament(data[0]);
       }
