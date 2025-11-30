@@ -28,6 +28,7 @@ import {
   Description,
   AttachFile,
   GetApp,
+  Assignment,
 } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 
@@ -243,15 +244,26 @@ const TournamentDetail: React.FC = () => {
               {t('pages.tournaments.apply', 'Apply to tournament')}
             </Button>
             {user?.role === 'admin' && (
-              <Button
-                variant="outlined"
-                size="large"
-                startIcon={<Edit />}
-                component={Link}
-                to={`/${lang}/tournaments/${tournament.id}/edit`}
-              >
-                {t('pages.tournaments.edit', 'Edit')}
-              </Button>
+              <>
+                <Button
+                  variant="outlined"
+                  size="large"
+                  startIcon={<Edit />}
+                  component={Link}
+                  to={`/${lang}/tournaments/${tournament.id}/edit`}
+                >
+                  {t('pages.tournaments.edit', 'Edit')}
+                </Button>
+                <Button
+                  variant="outlined"
+                  size="large"
+                  startIcon={<Assignment />}
+                  component={Link}
+                  to={`/${lang}/admin/applications/${tournament.id}`}
+                >
+                  {t('pages.tournaments.checkApplications', 'Check Applications')}
+                </Button>
+              </>
             )}
           </Box>
         </CardContent>

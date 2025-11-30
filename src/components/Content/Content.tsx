@@ -149,6 +149,14 @@ function Content() {
             }
           />
           <Route
+            path="admin/applications/:tournamentId"
+            element={
+              <ProtectedAdminRoute>
+                <AdminApplications />
+              </ProtectedAdminRoute>
+            }
+          />
+          <Route
             path="admin/categories/:id/edit"
             element={
               <ProtectedAdminRoute>
