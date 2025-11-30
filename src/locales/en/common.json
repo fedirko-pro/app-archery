@@ -150,6 +150,70 @@
         "compoundBow": "Compound Bow",
         "traditionalBow": "Traditional Bow"
       }
+    },
+    "adminApplications": {
+      "title": "Tournament Applications Management",
+      "selectTournament": "Select Tournament",
+      "noApplications": "No applications found for this tournament.",
+      "fetchError": "Failed to fetch applications",
+      "fetchTournamentsError": "Failed to fetch tournaments",
+      "statsTotal": "Total",
+      "statsPending": "Pending",
+      "statsApproved": "Approved",
+      "statsRejected": "Rejected",
+      "table": {
+        "avatar": "Avatar",
+        "applicant": "Applicant",
+        "category": "Category",
+        "division": "Division",
+        "equipment": "Equipment",
+        "status": "Status",
+        "applied": "Applied",
+        "actions": "Actions"
+      },
+      "actions": {
+        "view": "View",
+        "approve": "Approve",
+        "reject": "Reject",
+        "approving": "Approving...",
+        "rejecting": "Rejecting..."
+      },
+      "status": {
+        "pending": "Pending",
+        "approved": "Approved",
+        "rejected": "Rejected",
+        "withdrawn": "Withdrawn"
+      },
+      "dialog": {
+        "title": "Application Details - {{name}}",
+        "titleFallback": "Application Details",
+        "tournament": "Tournament",
+        "category": "Category",
+        "division": "Division",
+        "equipment": "Equipment",
+        "notes": "Notes",
+        "noNotes": "No notes provided",
+        "statusLabel": "Status",
+        "rejectionReason": "Rejection Reason",
+        "rejectionReasonPlaceholder": "Please provide a reason for rejection...",
+        "cancel": "Cancel",
+        "updateStatus": "Update Status"
+      },
+      "notifications": {
+        "approvedSuccess": "{{name}}'s application approved successfully",
+        "rejectedSuccess": "{{name}}'s application rejected successfully",
+        "updateSuccess": "Application status updated successfully",
+        "approveFailed": "Failed to approve {{name}}'s application",
+        "rejectFailed": "Failed to reject {{name}}'s application",
+        "updateFailed": "Failed to update application status",
+        "approveFailedGeneric": "Failed to approve application",
+        "rejectFailedGeneric": "Failed to reject application"
+      },
+      "tournament": {
+        "startDate": "Start Date",
+        "endDate": "End Date",
+        "applicationDeadline": "Application Deadline"
+      }
     }
   },
   "trainings": {

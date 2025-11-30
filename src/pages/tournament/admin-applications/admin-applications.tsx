@@ -1,5 +1,6 @@
 import { Check, Close, Visibility } from '@mui/icons-material';
 import {
+  Avatar,
   Box,
   Typography,
   Card,
@@ -24,11 +25,14 @@ import {
   TableHead,
   TableRow,
   Paper,
+  Snackbar,
 } from '@mui/material';
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 
 import apiService from '../../../services/api';
+import userIcon from '../../../img/icons/user.svg';
 import { formatDate, getApplicationDeadline } from '../../../utils/date-utils';
 
 interface TournamentApplication {
@@ -45,6 +49,7 @@ interface TournamentApplication {
     firstName: string;
     lastName: string;
     email: string;
+    picture?: string;
   };
   status: 'pending' | 'approved' | 'rejected' | 'withdrawn';
   category?: string;
@@ -64,6 +69,7 @@ interface ApplicationStats {
 }
 
 const AdminApplications: React.FC = () => {
+  const { t } = useTranslation('common');
   const { tournamentId } = useParams<{ tournamentId?: string }>();
   const [applications, setApplications] = useState<TournamentApplication[]>([]);
   const [stats, setStats] = useState<ApplicationStats | null>(null);
@@ -78,6 +84,12 @@ const AdminApplications: React.FC = () => {
     newStatus: string;
     rejectionReason: string;
   }>({ open: false, application: null, newStatus: '', rejectionReason: '' });
+  const [updatingApplicationId, setUpdatingApplicationId] = useState<string | null>(null);
+  const [snackbar, setSnackbar] = useState<{
+    open: boolean;
+    message: string;
+    severity: 'success' | 'error' | 'info' | 'warning';
+  }>({ open: false, message: '', severity: 'success' });
 
   useEffect(() => {
     fetchTournaments();
@@ -104,7 +116,7 @@ const AdminApplications: React.FC = () => {
         setCurrentTournament(data[0]);
       }
     } catch {
-      setError('Failed to fetch tournaments');
+      setError(t('pages.adminApplications.fetchTournamentsError'));
     }
   };
 
@@ -117,7 +129,7 @@ const AdminApplications: React.FC = () => {
         await apiService.getTournamentApplications(selectedTournament);
       setApplications(data);
     } catch (error) {
-      setError('Failed to fetch applications');
+      setError(t('pages.adminApplications.fetchError'));
       console.error('Error fetching applications:', error);
     } finally {
       setLoading(false);
@@ -153,10 +165,80 @@ const AdminApplications: React.FC = () => {
       });
       fetchApplications();
       fetchStats();
+      setSnackbar({
+        open: true,
+        message: t('pages.adminApplications.notifications.updateSuccess'),
+        severity: 'success',
+      });
     } catch (error) {
-      setError('Failed to update application status');
+      setError(t('pages.adminApplications.notifications.updateFailed'));
       console.error('Error updating status:', error);
+      setSnackbar({
+        open: true,
+        message: t('pages.adminApplications.notifications.updateFailed'),
+        severity: 'error',
+      });
     }
+  };
+
+  const handleQuickStatusUpdate = async (
+    applicationId: string,
+    newStatus: 'approved' | 'rejected',
+  ) => {
+    const application = applications.find((app) => app.id === applicationId);
+    const applicantName = application
+      ? `${application.applicant.firstName} ${application.applicant.lastName}`
+      : '';
+
+    try {
+      setUpdatingApplicationId(applicationId);
+      setError(null);
+
+      await apiService.updateApplicationStatus(applicationId, newStatus);
+
+      await Promise.all([fetchApplications(), fetchStats()]);
+
+      const messageKey =
+        newStatus === 'approved'
+          ? 'pages.adminApplications.notifications.approvedSuccess'
+          : 'pages.adminApplications.notifications.rejectedSuccess';
+
+      setSnackbar({
+        open: true,
+        message: t(messageKey, { name: applicantName }),
+        severity: 'success',
+      });
+    } catch (error) {
+      const errorMessageKey =
+        newStatus === 'approved'
+          ? 'pages.adminApplications.notifications.approveFailed'
+          : 'pages.adminApplications.notifications.rejectFailed';
+
+      const fallbackKey =
+        newStatus === 'approved'
+          ? 'pages.adminApplications.notifications.approveFailedGeneric'
+          : 'pages.adminApplications.notifications.rejectFailedGeneric';
+
+      setError(
+        applicantName
+          ? t(errorMessageKey, { name: applicantName })
+          : t(fallbackKey),
+      );
+      console.error('Error updating status:', error);
+      setSnackbar({
+        open: true,
+        message: applicantName
+          ? t(errorMessageKey, { name: applicantName })
+          : t(fallbackKey),
+        severity: 'error',
+      });
+    } finally {
+      setUpdatingApplicationId(null);
+    }
+  };
+
+  const handleCloseSnackbar = () => {
+    setSnackbar({ ...snackbar, open: false });
   };
 
   const getStatusColor = (status: string) => {
@@ -175,13 +257,13 @@ const AdminApplications: React.FC = () => {
   const getStatusLabel = (status: string) => {
     switch (status) {
       case 'pending':
-        return 'Pending';
+        return t('pages.adminApplications.status.pending');
       case 'approved':
-        return 'Approved';
+        return t('pages.adminApplications.status.approved');
       case 'rejected':
-        return 'Rejected';
+        return t('pages.adminApplications.status.rejected');
       case 'withdrawn':
-        return 'Withdrawn';
+        return t('pages.adminApplications.status.withdrawn');
       default:
         return status;
     }
@@ -203,7 +285,7 @@ const AdminApplications: React.FC = () => {
   return (
     <Box sx={{ p: 3 }}>
       <Typography variant="h4" gutterBottom>
-        Tournament Applications Management
+        {t('pages.adminApplications.title')}
       </Typography>
 
       {error && (
@@ -232,19 +314,19 @@ const AdminApplications: React.FC = () => {
             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
               <Box sx={{ minWidth: '200px' }}>
                 <Typography variant="body2" color="text.secondary">
-                  <strong>Start Date:</strong>{' '}
+                  <strong>{t('pages.adminApplications.tournament.startDate')}:</strong>{' '}
                   {formatDate(currentTournament.startDate)}
                 </Typography>
               </Box>
               <Box sx={{ minWidth: '200px' }}>
                 <Typography variant="body2" color="text.secondary">
-                  <strong>End Date:</strong>{' '}
+                  <strong>{t('pages.adminApplications.tournament.endDate')}:</strong>{' '}
                   {formatDate(currentTournament.endDate)}
                 </Typography>
               </Box>
               <Box sx={{ minWidth: '200px' }}>
                 <Typography variant="body2" color="text.secondary">
-                  <strong>Application Deadline:</strong>{' '}
+                  <strong>{t('pages.adminApplications.tournament.applicationDeadline')}:</strong>{' '}
                   {currentTournament.applicationDeadline
                     ? formatDate(currentTournament.applicationDeadline)
                     : formatDate(
@@ -259,10 +341,10 @@ const AdminApplications: React.FC = () => {
 
       <Box sx={{ mb: 3 }}>
         <FormControl sx={{ minWidth: 300 }}>
-          <InputLabel>Select Tournament</InputLabel>
+          <InputLabel>{t('pages.adminApplications.selectTournament')}</InputLabel>
           <Select
             value={selectedTournament}
-            label="Select Tournament"
+            label={t('pages.adminApplications.selectTournament')}
             onChange={(e) => {
               const tournamentId = e.target.value;
               setSelectedTournament(tournamentId);
@@ -285,7 +367,7 @@ const AdminApplications: React.FC = () => {
             <Card>
               <CardContent>
                 <Typography variant="h6" color="primary">
-                  Total: {stats.total}
+                  {t('pages.adminApplications.statsTotal')}: {stats.total}
                 </Typography>
               </CardContent>
             </Card>
@@ -294,7 +376,7 @@ const AdminApplications: React.FC = () => {
             <Card>
               <CardContent>
                 <Typography variant="h6" color="warning.main">
-                  Pending: {stats.pending}
+                  {t('pages.adminApplications.statsPending')}: {stats.pending}
                 </Typography>
               </CardContent>
             </Card>
@@ -303,7 +385,7 @@ const AdminApplications: React.FC = () => {
             <Card>
               <CardContent>
                 <Typography variant="h6" color="success.main">
-                  Approved: {stats.approved}
+                  {t('pages.adminApplications.statsApproved')}: {stats.approved}
                 </Typography>
               </CardContent>
             </Card>
@@ -312,7 +394,7 @@ const AdminApplications: React.FC = () => {
             <Card>
               <CardContent>
                 <Typography variant="h6" color="error.main">
-                  Rejected: {stats.rejected}
+                  {t('pages.adminApplications.statsRejected')}: {stats.rejected}
                 </Typography>
               </CardContent>
             </Card>
@@ -324,7 +406,7 @@ const AdminApplications: React.FC = () => {
         <Card>
           <CardContent>
             <Typography variant="body1" color="text.secondary" align="center">
-              No applications found for this tournament.
+              {t('pages.adminApplications.noApplications')}
             </Typography>
           </CardContent>
         </Card>
@@ -333,18 +415,26 @@ const AdminApplications: React.FC = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Applicant</TableCell>
-                <TableCell>Category</TableCell>
-                <TableCell>Division</TableCell>
-                <TableCell>Equipment</TableCell>
-                <TableCell>Status</TableCell>
-                <TableCell>Applied</TableCell>
-                <TableCell>Actions</TableCell>
+                <TableCell sx={{ width: '60px' }}>{t('pages.adminApplications.table.avatar')}</TableCell>
+                <TableCell>{t('pages.adminApplications.table.applicant')}</TableCell>
+                <TableCell>{t('pages.adminApplications.table.category')}</TableCell>
+                <TableCell>{t('pages.adminApplications.table.division')}</TableCell>
+                <TableCell>{t('pages.adminApplications.table.equipment')}</TableCell>
+                <TableCell>{t('pages.adminApplications.table.status')}</TableCell>
+                <TableCell>{t('pages.adminApplications.table.applied')}</TableCell>
+                <TableCell>{t('pages.adminApplications.table.actions')}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {applications.map((application) => (
                 <TableRow key={application.id}>
+                  <TableCell>
+                    <Avatar
+                      alt={`${application.applicant.firstName} ${application.applicant.lastName}`}
+                      src={application.applicant.picture || userIcon}
+                      sx={{ width: 40, height: 40 }}
+                    />
+                  </TableCell>
                   <TableCell>
                     <Typography variant="body2">
                       {application.applicant.firstName}{' '}
@@ -379,7 +469,7 @@ const AdminApplications: React.FC = () => {
                           })
                         }
                       >
-                        View
+                        {t('pages.adminApplications.actions.view')}
                       </Button>
                       {application.status === 'pending' && (
                         <>
@@ -388,30 +478,26 @@ const AdminApplications: React.FC = () => {
                             color="success"
                             startIcon={<Check />}
                             onClick={() =>
-                              setStatusDialog({
-                                open: true,
-                                application,
-                                newStatus: 'approved',
-                                rejectionReason: '',
-                              })
+                              handleQuickStatusUpdate(application.id, 'approved')
                             }
+                            disabled={updatingApplicationId === application.id}
                           >
-                            Approve
+                            {updatingApplicationId === application.id
+                              ? t('pages.adminApplications.actions.approving')
+                              : t('pages.adminApplications.actions.approve')}
                           </Button>
                           <Button
                             size="small"
                             color="error"
                             startIcon={<Close />}
                             onClick={() =>
-                              setStatusDialog({
-                                open: true,
-                                application,
-                                newStatus: 'rejected',
-                                rejectionReason: '',
-                              })
+                              handleQuickStatusUpdate(application.id, 'rejected')
                             }
+                            disabled={updatingApplicationId === application.id}
                           >
-                            Reject
+                            {updatingApplicationId === application.id
+                              ? t('pages.adminApplications.actions.rejecting')
+                              : t('pages.adminApplications.actions.reject')}
                           </Button>
                         </>
                       )}
@@ -439,8 +525,10 @@ const AdminApplications: React.FC = () => {
       >
         <DialogTitle>
           {statusDialog.application
-            ? `Application Details - ${statusDialog.application.applicant.firstName} ${statusDialog.application.applicant.lastName}`
-            : 'Application Details'}
+            ? t('pages.adminApplications.dialog.title', {
+                name: `${statusDialog.application.applicant.firstName} ${statusDialog.application.applicant.lastName}`,
+              })
+            : t('pages.adminApplications.dialog.titleFallback')}
         </DialogTitle>
         <DialogContent>
           {statusDialog.application && (
@@ -448,13 +536,13 @@ const AdminApplications: React.FC = () => {
               <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                 <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
                   <Box sx={{ flex: '1 1 300px' }}>
-                    <Typography variant="subtitle2">Tournament</Typography>
+                    <Typography variant="subtitle2">{t('pages.adminApplications.dialog.tournament')}</Typography>
                     <Typography variant="body2" gutterBottom>
                       {statusDialog.application.tournament.title}
                     </Typography>
                   </Box>
                   <Box sx={{ flex: '1 1 300px' }}>
-                    <Typography variant="subtitle2">Category</Typography>
+                    <Typography variant="subtitle2">{t('pages.adminApplications.dialog.category')}</Typography>
                     <Typography variant="body2" gutterBottom>
                       {statusDialog.application.category || '-'}
                     </Typography>
@@ -462,30 +550,30 @@ const AdminApplications: React.FC = () => {
                 </Box>
                 <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
                   <Box sx={{ flex: '1 1 300px' }}>
-                    <Typography variant="subtitle2">Division</Typography>
+                    <Typography variant="subtitle2">{t('pages.adminApplications.dialog.division')}</Typography>
                     <Typography variant="body2" gutterBottom>
                       {statusDialog.application.division || '-'}
                     </Typography>
                   </Box>
                   <Box sx={{ flex: '1 1 300px' }}>
-                    <Typography variant="subtitle2">Equipment</Typography>
+                    <Typography variant="subtitle2">{t('pages.adminApplications.dialog.equipment')}</Typography>
                     <Typography variant="body2" gutterBottom>
                       {statusDialog.application.equipment || '-'}
                     </Typography>
                   </Box>
                 </Box>
                 <Box>
-                  <Typography variant="subtitle2">Notes</Typography>
+                  <Typography variant="subtitle2">{t('pages.adminApplications.dialog.notes')}</Typography>
                   <Typography variant="body2" gutterBottom>
-                    {statusDialog.application.notes || 'No notes provided'}
+                    {statusDialog.application.notes || t('pages.adminApplications.dialog.noNotes')}
                   </Typography>
                 </Box>
                 <Box>
                   <FormControl fullWidth>
-                    <InputLabel>Status</InputLabel>
+                    <InputLabel>{t('pages.adminApplications.dialog.statusLabel')}</InputLabel>
                     <Select
                       value={statusDialog.newStatus}
-                      label="Status"
+                      label={t('pages.adminApplications.dialog.statusLabel')}
                       onChange={(e) =>
                         setStatusDialog((prev) => ({
                           ...prev,
@@ -493,10 +581,10 @@ const AdminApplications: React.FC = () => {
                         }))
                       }
                     >
-                      <MenuItem value="pending">Pending</MenuItem>
-                      <MenuItem value="approved">Approved</MenuItem>
-                      <MenuItem value="rejected">Rejected</MenuItem>
-                      <MenuItem value="withdrawn">Withdrawn</MenuItem>
+                      <MenuItem value="pending">{t('pages.adminApplications.status.pending')}</MenuItem>
+                      <MenuItem value="approved">{t('pages.adminApplications.status.approved')}</MenuItem>
+                      <MenuItem value="rejected">{t('pages.adminApplications.status.rejected')}</MenuItem>
+                      <MenuItem value="withdrawn">{t('pages.adminApplications.status.withdrawn')}</MenuItem>
                     </Select>
                   </FormControl>
                 </Box>
@@ -504,7 +592,7 @@ const AdminApplications: React.FC = () => {
                   <Box>
                     <TextField
                       fullWidth
-                      label="Rejection Reason"
+                      label={t('pages.adminApplications.dialog.rejectionReason')}
                       multiline
                       rows={3}
                       value={statusDialog.rejectionReason}
@@ -514,7 +602,7 @@ const AdminApplications: React.FC = () => {
                           rejectionReason: e.target.value,
                         }))
                       }
-                      placeholder="Please provide a reason for rejection..."
+                      placeholder={t('pages.adminApplications.dialog.rejectionReasonPlaceholder')}
                     />
                   </Box>
                 )}
@@ -533,13 +621,28 @@ const AdminApplications: React.FC = () => {
               })
             }
           >
-            Cancel
+            {t('pages.adminApplications.dialog.cancel')}
           </Button>
           <Button onClick={handleStatusUpdate} variant="contained">
-            Update Status
+            {t('pages.adminApplications.dialog.updateStatus')}
           </Button>
         </DialogActions>
       </Dialog>
+
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={4000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity={snackbar.severity}
+          sx={{ width: '100%' }}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

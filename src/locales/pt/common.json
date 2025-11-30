@@ -150,6 +150,70 @@
         "compoundBow": "Arco composto",
         "traditionalBow": "Arco tradicional"
       }
+    },
+    "adminApplications": {
+      "title": "Gestão de inscrições em torneios",
+      "selectTournament": "Selecionar torneio",
+      "noApplications": "Nenhuma inscrição encontrada para este torneio.",
+      "fetchError": "Falha ao carregar inscrições",
+      "fetchTournamentsError": "Falha ao carregar torneios",
+      "statsTotal": "Total",
+      "statsPending": "Pendentes",
+      "statsApproved": "Aprovadas",
+      "statsRejected": "Rejeitadas",
+      "table": {
+        "avatar": "Avatar",
+        "applicant": "Inscrito",
+        "category": "Categoria",
+        "division": "Divisão",
+        "equipment": "Equipamento",
+        "status": "Status",
+        "applied": "Inscrito em",
+        "actions": "Ações"
+      },
+      "actions": {
+        "view": "Ver",
+        "approve": "Aprovar",
+        "reject": "Rejeitar",
+        "approving": "Aprovando...",
+        "rejecting": "Rejeitando..."
+      },
+      "status": {
+        "pending": "Pendente",
+        "approved": "Aprovada",
+        "rejected": "Rejeitada",
+        "withdrawn": "Cancelada"
+      },
+      "dialog": {
+        "title": "Detalhes da inscrição - {{name}}",
+        "titleFallback": "Detalhes da inscrição",
+        "tournament": "Torneio",
+        "category": "Categoria",
+        "division": "Divisão",
+        "equipment": "Equipamento",
+        "notes": "Observações",
+        "noNotes": "Nenhuma observação fornecida",
+        "statusLabel": "Status",
+        "rejectionReason": "Motivo da rejeição",
+        "rejectionReasonPlaceholder": "Por favor, forneça um motivo para a rejeição...",
+        "cancel": "Cancelar",
+        "updateStatus": "Atualizar status"
+      },
+      "notifications": {
+        "approvedSuccess": "Inscrição de {{name}} aprovada com sucesso",
+        "rejectedSuccess": "Inscrição de {{name}} rejeitada com sucesso",
+        "updateSuccess": "Status da inscrição atualizado com sucesso",
+        "approveFailed": "Falha ao aprovar inscrição de {{name}}",
+        "rejectFailed": "Falha ao rejeitar inscrição de {{name}}",
+        "updateFailed": "Falha ao atualizar status da inscrição",
+        "approveFailedGeneric": "Falha ao aprovar inscrição",
+        "rejectFailedGeneric": "Falha ao rejeitar inscrição"
+      },
+      "tournament": {
+        "startDate": "Data de início",
+        "endDate": "Data de término",
+        "applicationDeadline": "Prazo de inscrição"
+      }
     }
   },
   "forms": { "email": "Email", "password": "Senha", "firstName": "Nome", "lastName": "Sobrenome", "currentPassword": "Senha atual", "newPassword": "Nova senha", "confirmPassword": "Confirmar nova senha", "bio": "Bio", "location": "Localização", "website": "Website", "profilePictureUrl": "URL da foto de perfil", "federationNumber": "Número da federação", "categories": "Categorias", "selectCategories": "Selecione categorias", "applicationLanguage": "Idioma do aplicativo", "role": "Função" },

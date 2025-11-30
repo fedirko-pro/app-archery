@@ -129,6 +129,70 @@
         "compoundBow": "Блочний лук",
         "traditionalBow": "Традиційний лук"
       }
+    },
+    "adminApplications": {
+      "title": "Управління заявками на турніри",
+      "selectTournament": "Оберіть турнір",
+      "noApplications": "Заявок для цього турніру не знайдено.",
+      "fetchError": "Не вдалося завантажити заявки",
+      "fetchTournamentsError": "Не вдалося завантажити турніри",
+      "statsTotal": "Всього",
+      "statsPending": "В очікуванні",
+      "statsApproved": "Схвалено",
+      "statsRejected": "Відхилено",
+      "table": {
+        "avatar": "Аватар",
+        "applicant": "Заявник",
+        "category": "Категорія",
+        "division": "Дивізіон",
+        "equipment": "Обладнання",
+        "status": "Статус",
+        "applied": "Подано",
+        "actions": "Дії"
+      },
+      "actions": {
+        "view": "Переглянути",
+        "approve": "Схвалити",
+        "reject": "Відхилити",
+        "approving": "Схвалення...",
+        "rejecting": "Відхилення..."
+      },
+      "status": {
+        "pending": "В очікуванні",
+        "approved": "Схвалено",
+        "rejected": "Відхилено",
+        "withdrawn": "Відкликано"
+      },
+      "dialog": {
+        "title": "Деталі заявки - {{name}}",
+        "titleFallback": "Деталі заявки",
+        "tournament": "Турнір",
+        "category": "Категорія",
+        "division": "Дивізіон",
+        "equipment": "Обладнання",
+        "notes": "Нотатки",
+        "noNotes": "Нотатки не надано",
+        "statusLabel": "Статус",
+        "rejectionReason": "Причина відхилення",
+        "rejectionReasonPlaceholder": "Будь ласка, вкажіть причину відхилення...",
+        "cancel": "Скасувати",
+        "updateStatus": "Оновити статус"
+      },
+      "notifications": {
+        "approvedSuccess": "Заявку {{name}} успішно схвалено",
+        "rejectedSuccess": "Заявку {{name}} успішно відхилено",
+        "updateSuccess": "Статус заявки успішно оновлено",
+        "approveFailed": "Не вдалося схвалити заявку {{name}}",
+        "rejectFailed": "Не вдалося відхилити заявку {{name}}",
+        "updateFailed": "Не вдалося оновити статус заявки",
+        "approveFailedGeneric": "Не вдалося схвалити заявку",
+        "rejectFailedGeneric": "Не вдалося відхилити заявку"
+      },
+      "tournament": {
+        "startDate": "Дата початку",
+        "endDate": "Дата закінчення",
+        "applicationDeadline": "Дедлайн подачі заявок"
+      }
     }
   },
   "forms": { "email": "Email", "password": "Пароль", "firstName": "Ім'я", "lastName": "Прізвище", "currentPassword": "Поточний пароль", "newPassword": "Новий пароль", "confirmPassword": "Підтвердіть новий пароль", "bio": "Біографія", "location": "Місцезнаходження", "website": "Вебсайт", "profilePictureUrl": "URL фото профілю", "federationNumber": "Номер федерації", "categories": "Категорії", "selectCategories": "Оберіть категорії", "applicationLanguage": "Мова застосунку", "role": "Роль" },

@@ -129,6 +129,70 @@
         "compoundBow": "Arco Compound",
         "traditionalBow": "Arco Tradizionale"
       }
+    },
+    "adminApplications": {
+      "title": "Gestione domande di partecipazione ai tornei",
+      "selectTournament": "Seleziona torneo",
+      "noApplications": "Nessuna domanda trovata per questo torneo.",
+      "fetchError": "Errore nel caricamento delle domande",
+      "fetchTournamentsError": "Errore nel caricamento dei tornei",
+      "statsTotal": "Totale",
+      "statsPending": "In sospeso",
+      "statsApproved": "Approvate",
+      "statsRejected": "Rifiutate",
+      "table": {
+        "avatar": "Avatar",
+        "applicant": "Richiedente",
+        "category": "Categoria",
+        "division": "Divisione",
+        "equipment": "Attrezzatura",
+        "status": "Stato",
+        "applied": "Richiesta",
+        "actions": "Azioni"
+      },
+      "actions": {
+        "view": "Visualizza",
+        "approve": "Approva",
+        "reject": "Rifiuta",
+        "approving": "Approvazione...",
+        "rejecting": "Rifiuto..."
+      },
+      "status": {
+        "pending": "In sospeso",
+        "approved": "Approvata",
+        "rejected": "Rifiutata",
+        "withdrawn": "Ritirata"
+      },
+      "dialog": {
+        "title": "Dettagli domanda - {{name}}",
+        "titleFallback": "Dettagli domanda",
+        "tournament": "Torneo",
+        "category": "Categoria",
+        "division": "Divisione",
+        "equipment": "Attrezzatura",
+        "notes": "Note",
+        "noNotes": "Nessuna nota fornita",
+        "statusLabel": "Stato",
+        "rejectionReason": "Motivo del rifiuto",
+        "rejectionReasonPlaceholder": "Per favore, fornisci un motivo per il rifiuto...",
+        "cancel": "Annulla",
+        "updateStatus": "Aggiorna stato"
+      },
+      "notifications": {
+        "approvedSuccess": "Domanda di {{name}} approvata con successo",
+        "rejectedSuccess": "Domanda di {{name}} rifiutata con successo",
+        "updateSuccess": "Stato della domanda aggiornato con successo",
+        "approveFailed": "Errore nell'approvazione della domanda di {{name}}",
+        "rejectFailed": "Errore nel rifiuto della domanda di {{name}}",
+        "updateFailed": "Errore nell'aggiornamento dello stato della domanda",
+        "approveFailedGeneric": "Errore nell'approvazione della domanda",
+        "rejectFailedGeneric": "Errore nel rifiuto della domanda"
+      },
+      "tournament": {
+        "startDate": "Data di inizio",
+        "endDate": "Data di fine",
+        "applicationDeadline": "Scadenza domanda"
+      }
     }
   },
   "forms": { "email": "Email", "password": "Password", "firstName": "Nome", "lastName": "Cognome", "currentPassword": "Password attuale", "newPassword": "Nuova password", "confirmPassword": "Conferma nuova password", "bio": "Bio", "location": "Località", "website": "Sito web", "profilePictureUrl": "URL immagine profilo", "federationNumber": "Numero di federazione", "categories": "Categorie", "selectCategories": "Seleziona categorie", "applicationLanguage": "Lingua dell'applicazione", "role": "Ruolo" },
