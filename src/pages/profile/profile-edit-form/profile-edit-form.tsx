@@ -193,11 +193,13 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
           <MenuItem value="">
             <em>{t('forms.noClub', 'No Club')}</em>
           </MenuItem>
-          {clubs.map((club) => (
-            <MenuItem key={club.id} value={club.id}>
-              {club.name} {club.location && `(${club.location})`}
-            </MenuItem>
-          ))}
+          {clubs
+            .filter((club): club is ClubDto & { id: string } => Boolean(club.id))
+            .map((club) => (
+              <MenuItem key={club.id} value={club.id}>
+                {club.name} {club.location && `(${club.location})`}
+              </MenuItem>
+            ))}
         </TextField>
 
         <Autocomplete
