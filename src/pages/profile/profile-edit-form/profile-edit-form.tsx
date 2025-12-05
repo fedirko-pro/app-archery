@@ -7,6 +7,7 @@ import apiService from '../../../services/api';
 import { useTranslation } from 'react-i18next';
 
 import type { ProfileData } from '../types';
+import type { ClubDto } from '../../../services/types';
 import AvatarUploader from '../../../components/AvatarUploader';
 
 interface ProfileEditFormProps {
@@ -33,25 +34,40 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
   const { t } = useTranslation('common');
   const [categoryOptions, setCategoryOptions] = useState<string[]>([]);
   const [isLoadingCategories, setIsLoadingCategories] = useState<boolean>(false);
+  const [clubs, setClubs] = useState<ClubDto[]>([]);
+  const [isLoadingClubs, setIsLoadingClubs] = useState<boolean>(false);
 
   useEffect(() => {
     const loadCategories = async () => {
       setIsLoadingCategories(true);
       try {
-        const data = await apiService.getCategories();
+        const data = await apiService.getBowCategories();
         const codes = (data || [])
           .map((c) => c.code)
           .filter((code): code is string => Boolean(code));
         const uniqueCodes = Array.from(new Set(codes.map((c) => c.toUpperCase()))).sort((a, b) => a.localeCompare(b));
         setCategoryOptions(uniqueCodes);
       } catch (e) {
-        // no-op for FE stub
-        console.error(e);
+        console.error('Failed to load categories:', e);
       } finally {
         setIsLoadingCategories(false);
       }
     };
+
+    const loadClubs = async () => {
+      setIsLoadingClubs(true);
+      try {
+        const data = await apiService.getClubs();
+        setClubs(data);
+      } catch (e) {
+        console.error('Failed to load clubs:', e);
+      } finally {
+        setIsLoadingClubs(false);
+      }
+    };
+
     loadCategories();
+    loadClubs();
   }, []);
   
   return (
@@ -163,6 +179,26 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
             </TextField>
           </Box>
         </Box>
+
+        <TextField
+          select
+          label={t('forms.club', 'Club')}
+          name="clubId"
+          value={profileData.clubId || ''}
+          onChange={onChange}
+          fullWidth
+          margin="normal"
+          disabled={isLoadingClubs}
+        >
+          <MenuItem value="">
+            <em>{t('forms.noClub', 'No Club')}</em>
+          </MenuItem>
+          {clubs.map((club) => (
+            <MenuItem key={club.id} value={club.id}>
+              {club.name} {club.location && `(${club.location})`}
+            </MenuItem>
+          ))}
+        </TextField>
 
         <Autocomplete
           multiple

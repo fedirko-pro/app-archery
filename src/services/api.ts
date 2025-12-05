@@ -7,10 +7,19 @@ import type {
   ChangePasswordData,
 } from '../contexts/types';
 import type { ProfileData } from '../pages/profile/types';
-import type { ApiError, CategoryDto, RuleDto } from './types';
+import type {
+  ApiError,
+  BowCategory,
+  CategoryDto,
+  ClubDto,
+  CreateBowCategoryDto,
+  DivisionDto,
+  RuleDto,
+  UpdateBowCategoryDto,
+} from './types';
 import { getCurrentI18nLang } from '../utils/i18n-lang';
 import categoriesData from '../data/categories';
-import rulesData from '../data/rules';
+import divisionsData from '../data/divisions';
 
 interface RequestOptions extends RequestInit {
   headers?: Record<string, string>;
@@ -94,6 +103,40 @@ class ApiService {
 
       throw error;
     }
+  }
+
+  /**
+   * Helper method for GET requests.
+   */
+  private async get<T>(endpoint: string): Promise<T> {
+    return this.request<T>(endpoint, { method: 'GET' });
+  }
+
+  /**
+   * Helper method for POST requests.
+   */
+  private async post<T>(endpoint: string, body?: unknown): Promise<T> {
+    return this.request<T>(endpoint, {
+      method: 'POST',
+      body: body ? JSON.stringify(body) : undefined,
+    });
+  }
+
+  /**
+   * Helper method for PATCH requests.
+   */
+  private async patch<T>(endpoint: string, body?: unknown): Promise<T> {
+    return this.request<T>(endpoint, {
+      method: 'PATCH',
+      body: body ? JSON.stringify(body) : undefined,
+    });
+  }
+
+  /**
+   * Helper method for DELETE requests.
+   */
+  private async delete<T = void>(endpoint: string): Promise<T> {
+    return this.request<T>(endpoint, { method: 'DELETE' });
   }
 
   async login(email: string, password: string): Promise<AuthResponse> {
@@ -338,6 +381,61 @@ class ApiService {
   }
 
   /**
+   * Fetch all bow categories from the backend.
+   * @param ruleId Optional filter by rule ID
+   */
+  async getBowCategories(ruleId?: string): Promise<BowCategory[]> {
+    const endpoint = ruleId ? `/bow-categories?ruleId=${ruleId}` : '/bow-categories';
+    return this.get<BowCategory[]>(endpoint);
+  }
+
+  /**
+   * Fetch a single bow category by ID from the backend.
+   */
+  async getBowCategoryById(id: string): Promise<BowCategory | undefined> {
+    try {
+      return await this.get<BowCategory>(`/bow-categories/${id}`);
+    } catch (error) {
+      console.error(`Failed to fetch bow category ${id}:`, error);
+      return undefined;
+    }
+  }
+
+  /**
+   * Fetch a single bow category by code from the backend.
+   */
+  async getBowCategoryByCode(code: string): Promise<BowCategory | undefined> {
+    try {
+      return await this.get<BowCategory>(`/bow-categories/code/${code}`);
+    } catch (error) {
+      console.error(`Failed to fetch bow category with code ${code}:`, error);
+      return undefined;
+    }
+  }
+
+  /**
+   * Create a new bow category (admin only).
+   */
+  async createBowCategory(categoryData: CreateBowCategoryDto): Promise<BowCategory> {
+    return this.post<BowCategory>('/bow-categories', categoryData);
+  }
+
+  /**
+   * Update an existing bow category (admin only).
+   */
+  async updateBowCategory(id: string, categoryData: UpdateBowCategoryDto): Promise<BowCategory> {
+    return this.patch<BowCategory>(`/bow-categories/${id}`, categoryData);
+  }
+
+  /**
+   * Delete a bow category (admin only).
+   */
+  async deleteBowCategory(id: string): Promise<void> {
+    await this.delete(`/bow-categories/${id}`);
+  }
+
+  /**
+   * @deprecated Use getBowCategories() instead. This method is kept for backward compatibility.
    * Fetch categories from a FE-only local data module.
    * Replaced by backend once available.
    */
@@ -346,6 +444,7 @@ class ApiService {
   }
 
   /**
+   * @deprecated Use getBowCategoryById() or getBowCategoryByCode() instead.
    * Resolve a single category by id or code (case-insensitive).
    */
   async getCategoryById(id: string): Promise<CategoryDto | undefined> {
@@ -358,6 +457,7 @@ class ApiService {
   }
 
   /**
+   * @deprecated Use createBowCategory() or updateBowCategory() instead.
    * FE-only stub. Will be implemented when backend is ready.
    */
   async upsertCategory(_: CategoryDto): Promise<CategoryDto> {
@@ -365,6 +465,7 @@ class ApiService {
   }
 
   /**
+   * @deprecated Use deleteBowCategory() instead.
    * FE-only stub. Will be implemented when backend is ready.
    */
   async deleteCategory(_: string): Promise<void> {
@@ -372,25 +473,153 @@ class ApiService {
   }
 
   /**
-   * Fetch rules (FE-only dataset for now)
+   * Fetch all rules from the backend.
    */
   async getRules(): Promise<RuleDto[]> {
-    return rulesData as RuleDto[];
+    return this.get<RuleDto[]>('/rules');
   }
 
   /**
-   * Upload an image (avatar or banner) with optional cropping and processing.
+   * Fetch a single rule by ID from the backend.
+   */
+  async getRuleById(id: string): Promise<RuleDto | undefined> {
+    try {
+      return await this.get<RuleDto>(`/rules/${id}`);
+    } catch (error) {
+      console.error(`Failed to fetch rule ${id}:`, error);
+      return undefined;
+    }
+  }
+
+  /**
+   * Fetch a single rule by code from the backend.
+   */
+  async getRuleByCode(ruleCode: string): Promise<RuleDto | undefined> {
+    try {
+      return await this.get<RuleDto>(`/rules/code/${ruleCode}`);
+    } catch (error) {
+      console.error(`Failed to fetch rule with code ${ruleCode}:`, error);
+      return undefined;
+    }
+  }
+
+  /**
+   * Create a new rule (admin only).
+   */
+  async createRule(ruleData: Omit<RuleDto, 'id' | 'createdAt' | 'updatedAt' | 'divisions' | 'bowCategories'>): Promise<RuleDto> {
+    return this.post<RuleDto>('/rules', ruleData);
+  }
+
+  /**
+   * Update an existing rule (admin only).
+   */
+  async updateRule(id: string, ruleData: Partial<Omit<RuleDto, 'id' | 'createdAt' | 'updatedAt' | 'divisions' | 'bowCategories'>>): Promise<RuleDto> {
+    return this.patch<RuleDto>(`/rules/${id}`, ruleData);
+  }
+
+  /**
+   * Delete a rule (admin only).
+   * Note: Cannot delete if divisions or bow categories are linked to this rule.
+   */
+  async deleteRule(id: string): Promise<void> {
+    await this.delete(`/rules/${id}`);
+  }
+
+  /**
+   * Fetch all clubs from the backend.
+   */
+  async getClubs(): Promise<ClubDto[]> {
+    return this.get<ClubDto[]>('/clubs');
+  }
+
+  /**
+   * Fetch a single club by ID from the backend.
+   */
+  async getClubById(id: string): Promise<ClubDto | undefined> {
+    try {
+      return await this.get<ClubDto>(`/clubs/${id}`);
+    } catch (error) {
+      console.error(`Failed to fetch club ${id}:`, error);
+      return undefined;
+    }
+  }
+
+  /**
+   * Create or update a club (admin only).
+   * If club.id is provided, updates the existing club.
+   * Otherwise, creates a new club.
+   */
+  async upsertClub(club: ClubDto): Promise<ClubDto> {
+    if (club.id) {
+      // Update existing club - remove readonly fields
+      const { id, createdAt, updatedAt, ...updateData } = club;
+      return this.patch<ClubDto>(`/clubs/${id}`, updateData);
+    } else {
+      // Create new club - remove all system-generated fields
+      const { id, createdAt, updatedAt, ...createData } = club;
+      return this.post<ClubDto>('/clubs', createData);
+    }
+  }
+
+  /**
+   * Delete a club by ID (admin only).
+   */
+  async deleteClub(id: string): Promise<void> {
+    await this.delete(`/clubs/${id}`);
+  }
+
+  /**
+   * Fetch divisions from a FE-only local data module.
+   * Replaced by backend once available.
+   */
+  async getDivisions(): Promise<DivisionDto[]> {
+    return divisionsData as DivisionDto[];
+  }
+
+  /**
+   * Fetch divisions filtered by rule code.
+   */
+  async getDivisionsByRule(ruleCode: string): Promise<DivisionDto[]> {
+    const divisions = await this.getDivisions();
+    return divisions.filter((d) => d.rule_code === ruleCode);
+  }
+
+  /**
+   * Resolve a single division by id.
+   */
+  async getDivisionById(id: string): Promise<DivisionDto | undefined> {
+    const divisions = await this.getDivisions();
+    return divisions.find((d) => d.id === id);
+  }
+
+  /**
+   * FE-only stub. Will be implemented when backend is ready.
+   */
+  async upsertDivision(_: DivisionDto): Promise<DivisionDto> {
+    throw new Error('Divisions API not available yet. FE stub only.');
+  }
+
+  /**
+   * FE-only stub. Will be implemented when backend is ready.
+   */
+  async deleteDivision(_: string): Promise<void> {
+    throw new Error('Divisions API not available yet. FE stub only.');
+  }
+
+  /**
+   * Upload an image (avatar, banner, or logo) with optional cropping and processing.
    * Returns the URL and metadata of the uploaded image.
    */
   async uploadImage(
     file: File,
-    type: 'avatar' | 'banner',
+    type: 'avatar' | 'banner' | 'logo',
     options?: {
       cropX?: number;
       cropY?: number;
       cropWidth?: number;
       cropHeight?: number;
       quality?: number;
+      entityId?: string;
     },
   ): Promise<{
     url: string;
@@ -413,6 +642,8 @@ class ApiService {
         formData.append('cropHeight', String(options.cropHeight));
       if (options.quality !== undefined)
         formData.append('quality', String(options.quality));
+      if (options.entityId !== undefined)
+        formData.append('entityId', options.entityId);
     }
 
     const url = `${this.baseURL}/upload/image`;

@@ -16,7 +16,22 @@
     "rules": {
       "title": "Regras",
       "openOfficialPage": "Abrir página oficial",
-      "downloadPdf": "Baixar PDF"
+      "downloadPdf": "Baixar PDF",
+      "createRule": "Criar Regra",
+      "editRule": "Editar Regra",
+      "ruleCode": "Código da Regra",
+      "ruleName": "Nome da Regra",
+      "edition": "Edição",
+      "descriptionEn": "Descrição (Inglês)",
+      "descriptionPt": "Descrição (Português)",
+      "descriptionIt": "Descrição (Italiano)",
+      "descriptionUk": "Descrição (Ucraniano)",
+      "descriptionEs": "Descrição (Espanhol)",
+      "link": "Link da Página Oficial",
+      "downloadLink": "Link para Download",
+      "deleteConfirmTitle": "Excluir Regra?",
+      "deleteConfirmMessage": "Tem certeza de que deseja excluir esta regra?",
+      "deleteWarning": "Esta regra não pode ser excluída se tiver divisões ou categorias de arco relacionadas."
     },
     "categories": {
       "title": "Categorias de arco (ordenadas A-Z)",
@@ -313,7 +328,7 @@
       "desc": "Conversões de distância de tiro"
     }
   },
-  "common": { "or": "ou", "cancel": "Cancelar", "update": "Atualizar", "create": "Criar", "back": "Voltar" },
+  "common": { "or": "ou", "cancel": "Cancelar", "update": "Atualizar", "create": "Criar", "back": "Voltar", "save": "Salvar", "saving": "Salvando...", "delete": "Excluir", "deleting": "Excluindo..." },
   "auth": {
     "logout": "Sair",
     "signIn": "Entrar",
@@ -322,6 +337,10 @@
     "noAccount": "Não tem uma conta?",
     "signingIn": "Entrando...",
     "signInWithGoogle": "Entrar com Google"
+  },
+  "clubs": {
+    "clubLogo": "Logotipo do Clube",
+    "logoSubheader": "Selecione uma imagem e arraste para reposicionar (PNG, JPG até 10MB)"
   }
 }
 

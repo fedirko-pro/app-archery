@@ -1,4 +1,4 @@
-import { Check, Close, Visibility } from '@mui/icons-material';
+import { Check, Close, Visibility, Groups } from '@mui/icons-material';
 import {
   Avatar,
   Box,
@@ -29,7 +29,7 @@ import {
 } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import apiService from '../../../services/api';
 import userIcon from '../../../img/icons/user.svg';
@@ -70,7 +70,8 @@ interface ApplicationStats {
 
 const AdminApplications: React.FC = () => {
   const { t } = useTranslation('common');
-  const { tournamentId } = useParams<{ tournamentId?: string }>();
+  const navigate = useNavigate();
+  const { tournamentId, lang } = useParams<{ tournamentId?: string; lang?: string }>();
   const [applications, setApplications] = useState<TournamentApplication[]>([]);
   const [stats, setStats] = useState<ApplicationStats | null>(null);
   const [loading, setLoading] = useState(true);
@@ -284,9 +285,31 @@ const AdminApplications: React.FC = () => {
 
   return (
     <Box sx={{ p: 3 }}>
-      <Typography variant="h4" gutterBottom>
-        {t('pages.adminApplications.title')}
-      </Typography>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          mb: 2,
+          flexWrap: 'wrap',
+          gap: 2,
+        }}
+      >
+        <Typography variant="h4">
+          {t('pages.adminApplications.title')}
+        </Typography>
+        {selectedTournament && (
+          <Button
+            variant="contained"
+            startIcon={<Groups />}
+            onClick={() =>
+              navigate(`/${lang}/tournaments/${selectedTournament}/patrols`)
+            }
+          >
+            Manage Patrols
+          </Button>
+        )}
+      </Box>
 
       {error && (
         <Alert severity="error" sx={{ mb: 2 }} onClose={() => setError(null)}>

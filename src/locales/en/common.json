@@ -16,7 +16,22 @@
     "rules": {
       "title": "Rules",
       "openOfficialPage": "Open official page",
-      "downloadPdf": "Download PDF"
+      "downloadPdf": "Download PDF",
+      "createRule": "Create Rule",
+      "editRule": "Edit Rule",
+      "ruleCode": "Rule Code",
+      "ruleName": "Rule Name",
+      "edition": "Edition",
+      "descriptionEn": "Description (English)",
+      "descriptionPt": "Description (Portuguese)",
+      "descriptionIt": "Description (Italian)",
+      "descriptionUk": "Description (Ukrainian)",
+      "descriptionEs": "Description (Spanish)",
+      "link": "Official Page Link",
+      "downloadLink": "Download Link",
+      "deleteConfirmTitle": "Delete Rule?",
+      "deleteConfirmMessage": "Are you sure you want to delete this rule?",
+      "deleteWarning": "This rule cannot be deleted if it has related divisions or bow categories."
     },
     "categories": {
       "title": "Bow categories (sorted A-Z)",
@@ -256,7 +271,7 @@
       "desc": "Range distance conversions"
     }
   },
-  "common": { "or": "or", "cancel": "Cancel", "update": "Update", "create": "Create", "back": "Back", "download": "Download", "backToList": "Back to list" },
+  "common": { "or": "or", "cancel": "Cancel", "update": "Update", "create": "Create", "back": "Back", "download": "Download", "backToList": "Back to list", "save": "Save", "saving": "Saving...", "delete": "Delete", "deleting": "Deleting..." },
   "forms": { "email": "Email", "password": "Password", "firstName": "First name", "lastName": "Last name", "currentPassword": "Current Password", "newPassword": "New Password", "confirmPassword": "Confirm New Password", "bio": "Bio", "location": "Location", "website": "Website", "profilePictureUrl": "Profile Picture URL", "federationNumber": "Federation Number", "categories": "Categories", "selectCategories": "Select categories", "applicationLanguage": "Application language", "role": "Role" },
   "reset": {
     "invalidLink": "Invalid reset link. Please request a new password reset.",
@@ -327,6 +342,10 @@
     "signUpWithGoogle": "Sign up with Google",
     "signingUp": "Signing up...",
     "backToSignIn": "Back to Sign In"
+  },
+  "clubs": {
+    "clubLogo": "Club Logo",
+    "logoSubheader": "Select an image, then drag to reposition (PNG, JPG up to 10MB)"
   }
 }
 

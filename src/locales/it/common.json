@@ -16,7 +16,22 @@
     "rules": {
       "title": "Regole",
       "openOfficialPage": "Apri pagina ufficiale",
-      "downloadPdf": "Scarica PDF"
+      "downloadPdf": "Scarica PDF",
+      "createRule": "Crea Regola",
+      "editRule": "Modifica Regola",
+      "ruleCode": "Codice Regola",
+      "ruleName": "Nome Regola",
+      "edition": "Edizione",
+      "descriptionEn": "Descrizione (Inglese)",
+      "descriptionPt": "Descrizione (Portoghese)",
+      "descriptionIt": "Descrizione (Italiano)",
+      "descriptionUk": "Descrizione (Ucraino)",
+      "descriptionEs": "Descrizione (Spagnolo)",
+      "link": "Link alla Pagina Ufficiale",
+      "downloadLink": "Link per il Download",
+      "deleteConfirmTitle": "Eliminare Regola?",
+      "deleteConfirmMessage": "Sei sicuro di voler eliminare questa regola?",
+      "deleteWarning": "Questa regola non può essere eliminata se ha divisioni o categorie di arco collegate."
     },
     "categories": {
       "title": "Categorie dell'arco (ordinate A-Z)",
@@ -292,7 +307,7 @@
       "desc": "Conversioni di distanza del campo"
     }
   },
-  "common": { "or": "oppure", "cancel": "Annulla", "update": "Aggiorna", "create": "Crea", "back": "Indietro" },
+  "common": { "or": "oppure", "cancel": "Annulla", "update": "Aggiorna", "create": "Crea", "back": "Indietro", "save": "Salva", "saving": "Salvataggio...", "delete": "Elimina", "deleting": "Eliminazione..." },
   "auth": {
     "logout": "Esci",
     "signIn": "Accedi",
@@ -301,6 +316,10 @@
     "noAccount": "Non hai un account?",
     "signingIn": "Accesso in corso...",
     "signInWithGoogle": "Accedi con Google"
+  },
+  "clubs": {
+    "clubLogo": "Logo del Club",
+    "logoSubheader": "Seleziona un'immagine, quindi trascina per riposizionare (PNG, JPG fino a 10MB)"
   }
 }
 

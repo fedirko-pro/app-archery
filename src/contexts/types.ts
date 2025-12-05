@@ -12,6 +12,7 @@ export interface User {
   createdAt: string;
   updatedAt: string;
   federationNumber?: string;
+  clubId?: string;
   categories?: string[];
   appLanguage?: 'pt' | 'en' | 'it' | 'ua' | 'es';
 }

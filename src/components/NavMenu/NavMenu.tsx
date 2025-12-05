@@ -42,6 +42,8 @@ function NavMenu() {
     { link: '/Competition/user', label: 'User card (demo)' },
     { link: '/converter', label: t('nav.converter') },
     { link: '/categories', label: t('nav.categories') },
+    { link: '/clubs', label: t('nav.clubs', 'Clubs') },
+    { link: '/divisions', label: t('nav.divisions', 'Divisions') },
     { link: '/rules', label: t('nav.rules') },
     // TODO: Implement Knowledge base
     // {

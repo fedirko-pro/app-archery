@@ -12,14 +12,16 @@ import {
   Alert,
   CircularProgress,
 } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import apiService from '../../../services/api';
+import type { BowCategory, DivisionDto } from '../../../services/types';
 
 interface TournamentApplicationFormProps {
   tournamentId: string;
   tournamentTitle: string;
+  tournamentRuleCode?: string;
   onSuccess?: () => void;
   onCancel?: () => void;
 }
@@ -27,18 +29,45 @@ interface TournamentApplicationFormProps {
 const TournamentApplicationForm: React.FC<TournamentApplicationFormProps> = ({
   tournamentId,
   tournamentTitle,
+  tournamentRuleCode,
   onSuccess,
   onCancel,
 }) => {
   const { t } = useTranslation('common');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [categories, setCategories] = useState<BowCategory[]>([]);
+  const [divisions, setDivisions] = useState<DivisionDto[]>([]);
+  const [loadingOptions, setLoadingOptions] = useState(true);
+
   const [formData, setFormData] = useState({
-    category: '',
+    nationality: '',
+    sex: '',
     division: '',
-    equipment: '',
+    category: '',
     notes: '',
   });
+
+  useEffect(() => {
+    const loadOptions = async () => {
+      setLoadingOptions(true);
+      try {
+        const [categoriesData, divisionsData] = await Promise.all([
+          apiService.getBowCategories(),
+          tournamentRuleCode
+            ? apiService.getDivisionsByRule(tournamentRuleCode)
+            : apiService.getDivisions(),
+        ]);
+        setCategories(categoriesData);
+        setDivisions(divisionsData);
+      } catch (error) {
+        console.error('Failed to load options:', error);
+      } finally {
+        setLoadingOptions(false);
+      }
+    };
+    loadOptions();
+  }, [tournamentRuleCode]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -90,58 +119,75 @@ const TournamentApplicationForm: React.FC<TournamentApplicationFormProps> = ({
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
               <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
                 <Box sx={{ flex: '1 1 300px' }}>
-                  <FormControl fullWidth>
-                    <InputLabel>{t('pages.applicationForm.category')}</InputLabel>
-                    <Select
-                      value={formData.category}
-                      label={t('pages.applicationForm.category')}
-                      onChange={(e) =>
-                        handleInputChange('category', e.target.value)
-                      }
-                    >
-                      <MenuItem value="recurve">{t('pages.applicationForm.opts.recurve')}</MenuItem>
-                      <MenuItem value="compound">{t('pages.applicationForm.opts.compound')}</MenuItem>
-                      <MenuItem value="barebow">{t('pages.applicationForm.opts.barebow')}</MenuItem>
-                      <MenuItem value="traditional">{t('pages.applicationForm.opts.traditional')}</MenuItem>
-                      <MenuItem value="longbow">{t('pages.applicationForm.opts.longbow')}</MenuItem>
-                    </Select>
-                  </FormControl>
+                  <TextField
+                    label={t('pages.applicationForm.nationality', 'Nationality')}
+                    value={formData.nationality}
+                    onChange={(e) =>
+                      handleInputChange('nationality', e.target.value)
+                    }
+                    fullWidth
+                    required
+                    placeholder="e.g. Ukrainian"
+                  />
                 </Box>
 
                 <Box sx={{ flex: '1 1 300px' }}>
-                  <FormControl fullWidth>
-                    <InputLabel>{t('pages.applicationForm.division')}</InputLabel>
+                  <FormControl fullWidth required>
+                    <InputLabel>{t('pages.applicationForm.sex', 'Sex')}</InputLabel>
                     <Select
-                      value={formData.division}
-                      label={t('pages.applicationForm.division')}
+                      value={formData.sex}
+                      label={t('pages.applicationForm.sex', 'Sex')}
                       onChange={(e) =>
-                        handleInputChange('division', e.target.value)
+                        handleInputChange('sex', e.target.value)
                       }
                     >
-                      <MenuItem value="men">{t('pages.applicationForm.opts.men')}</MenuItem>
-                      <MenuItem value="women">{t('pages.applicationForm.opts.women')}</MenuItem>
-                      <MenuItem value="mixed">{t('pages.applicationForm.opts.mixed')}</MenuItem>
+                      <MenuItem value="M">{t('pages.applicationForm.opts.male', 'Male')}</MenuItem>
+                      <MenuItem value="F">{t('pages.applicationForm.opts.female', 'Female')}</MenuItem>
+                      <MenuItem value="Other">{t('pages.applicationForm.opts.other', 'Other')}</MenuItem>
                     </Select>
                   </FormControl>
                 </Box>
               </Box>
 
-              <FormControl fullWidth>
-                <InputLabel>{t('pages.applicationForm.equipment')}</InputLabel>
-                <Select
-                  value={formData.equipment}
-                  label={t('pages.applicationForm.equipment')}
-                  onChange={(e) =>
-                    handleInputChange('equipment', e.target.value)
-                  }
-                >
-                  <MenuItem value="olympic">{t('pages.applicationForm.opts.olympic')}</MenuItem>
-                  <MenuItem value="compound">{t('pages.applicationForm.opts.compoundBow')}</MenuItem>
-                  <MenuItem value="barebow">{t('pages.applicationForm.opts.barebow')}</MenuItem>
-                  <MenuItem value="traditional">{t('pages.applicationForm.opts.traditionalBow')}</MenuItem>
-                  <MenuItem value="longbow">{t('pages.applicationForm.opts.longbow')}</MenuItem>
-                </Select>
-              </FormControl>
+              <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+                <Box sx={{ flex: '1 1 300px' }}>
+                  <FormControl fullWidth required disabled={loadingOptions}>
+                    <InputLabel>{t('pages.applicationForm.division', 'Division')}</InputLabel>
+                    <Select
+                      value={formData.division}
+                      label={t('pages.applicationForm.division', 'Division')}
+                      onChange={(e) =>
+                        handleInputChange('division', e.target.value)
+                      }
+                    >
+                      {divisions.map((division) => (
+                        <MenuItem key={division.id} value={division.id}>
+                          {division.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Box>
+
+                <Box sx={{ flex: '1 1 300px' }}>
+                  <FormControl fullWidth required disabled={loadingOptions}>
+                    <InputLabel>{t('pages.applicationForm.category', 'Bow Category')}</InputLabel>
+                    <Select
+                      value={formData.category}
+                      label={t('pages.applicationForm.category', 'Bow Category')}
+                      onChange={(e) =>
+                        handleInputChange('category', e.target.value)
+                      }
+                    >
+                      {categories.map((category) => (
+                        <MenuItem key={category.code} value={category.code}>
+                          {category.code} - {category.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Box>
+              </Box>
 
               <TextField
                 fullWidth

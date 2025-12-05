@@ -15,7 +15,22 @@
     "rules": {
       "title": "Reglas",
       "openOfficialPage": "Abrir página oficial",
-      "downloadPdf": "Descargar PDF"
+      "downloadPdf": "Descargar PDF",
+      "createRule": "Crear Regla",
+      "editRule": "Editar Regla",
+      "ruleCode": "Código de Regla",
+      "ruleName": "Nombre de Regla",
+      "edition": "Edición",
+      "descriptionEn": "Descripción (Inglés)",
+      "descriptionPt": "Descripción (Portugués)",
+      "descriptionIt": "Descripción (Italiano)",
+      "descriptionUk": "Descripción (Ucraniano)",
+      "descriptionEs": "Descripción (Español)",
+      "link": "Enlace a Página Oficial",
+      "downloadLink": "Enlace de Descarga",
+      "deleteConfirmTitle": "¿Eliminar Regla?",
+      "deleteConfirmMessage": "¿Está seguro de que desea eliminar esta regla?",
+      "deleteWarning": "Esta regla no puede eliminarse si tiene divisiones o categorías de arco relacionadas."
     },
     "categories": {
       "title": "Categorías de arco (ordenadas A-Z)",
@@ -251,7 +266,7 @@
     "subtitle": "La página que buscas puede haber sido eliminada o no estar disponible temporalmente.",
     "goHome": "Ir al inicio"
   },
-  "common": { "or": "o", "cancel": "Cancelar", "update": "Actualizar", "create": "Crear", "back": "Atrás" },
+  "common": { "or": "o", "cancel": "Cancelar", "update": "Actualizar", "create": "Crear", "back": "Atrás", "save": "Guardar", "saving": "Guardando...", "delete": "Eliminar", "deleting": "Eliminando..." },
   "auth": {
     "logout": "Cerrar sesión",
     "signIn": "Iniciar sesión",
@@ -288,6 +303,10 @@
     "poundKg": { "short": "Libra - kg", "long": "Libra - Kilogramo", "desc": "Usado para medir la potencia del arco" },
     "grainG": { "short": "Grain - g", "long": "Grain - Gramo", "desc": "Usado para medir el peso de la flecha/punta, etc." },
     "yardM": { "short": "Yarda - m", "long": "Yarda - Metro", "desc": "Conversiones de distancia de tiro" }
+  },
+  "clubs": {
+    "clubLogo": "Logo del Club",
+    "logoSubheader": "Selecciona una imagen y luego arrastra para reposicionar (PNG, JPG hasta 10MB)"
   }
 }
 
