@@ -59,12 +59,12 @@ export function recalculateWarnings(
       });
     }
 
-    // Check sex homogeneity
-    const sexes = patrol.members
-      .map((id) => participants.get(id)?.sex)
+    // Check gender homogeneity
+    const genders = patrol.members
+      .map((id) => participants.get(id)?.gender)
       .filter(Boolean) as string[];
 
-    if (new Set(sexes).size > 1) {
+    if (new Set(genders).size > 1) {
       warnings.push({
         patrolId: patrol.id,
         type: 'mixed-genders',

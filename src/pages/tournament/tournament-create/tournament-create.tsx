@@ -40,6 +40,7 @@ const TournamentCreate: React.FC = () => {
     applicationDeadline: '',
     address: '',
     ruleCode: '',
+    targetCount: 18,
     allowMultipleApplications: true,
     banner: '',
     attachments: [] as FileAttachment[],
@@ -63,7 +64,7 @@ const TournamentCreate: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!formData.title || !formData.startDate) {
+    if (!formData.title || !formData.startDate || !formData.ruleCode) {
       setError(t('pages.tournaments.createError', 'Failed to create tournament'));
       return;
     }
@@ -116,6 +117,7 @@ const TournamentCreate: React.FC = () => {
                 onChange={(e) =>
                   setFormData({ ...formData, ruleCode: e.target.value })
                 }
+                required
               >
                 <MenuItem value="">
                   <em>{t('pages.tournaments.form.selectRules', 'Select Rules')}</em>
@@ -188,6 +190,17 @@ const TournamentCreate: React.FC = () => {
               onChange={(e) => setFormData({ ...formData, address: e.target.value })}
               fullWidth
               margin="normal"
+            />
+
+            <TextField
+              label={t('pages.tournaments.form.targetCount', 'Number of Targets')}
+              type="number"
+              value={formData.targetCount}
+              onChange={(e) => setFormData({ ...formData, targetCount: parseInt(e.target.value) || 18 })}
+              fullWidth
+              margin="normal"
+              inputProps={{ min: 1, max: 100 }}
+              helperText={t('pages.tournaments.form.targetCountHelper', 'Number of targets/patrols for the tournament')}
             />
 
             <FormControlLabel

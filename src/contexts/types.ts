@@ -12,6 +12,8 @@ export interface User {
   createdAt: string;
   updatedAt: string;
   federationNumber?: string;
+  nationality?: string;
+  gender?: string;
   clubId?: string;
   categories?: string[];
   appLanguage?: 'pt' | 'en' | 'it' | 'ua' | 'es';

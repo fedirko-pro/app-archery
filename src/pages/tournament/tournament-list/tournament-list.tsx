@@ -25,10 +25,17 @@ interface Tournament {
   description?: string;
   startDate: string;
   endDate: string;
+  applicationDeadline?: string;
   address?: string;
   allowMultipleApplications?: boolean;
   banner?: string;
   attachments?: FileAttachment[];
+  ruleCode?: string;
+  rule?: {
+    id: string;
+    ruleCode: string;
+    ruleName: string;
+  };
   createdBy: any;
   createdAt: string;
 }
@@ -183,23 +190,26 @@ const TournamentList: React.FC = () => {
                     {tournament.description}
                   </Typography>
                 )}
+                <Typography variant="body2" sx={{ mb: 1 }}>
+                  <strong>{t('pages.tournaments.rules', 'Rules')}:</strong>{' '}
+                  {tournament.ruleCode 
+                    ? (tournament.rule?.ruleName || tournament.ruleCode)
+                    : <em style={{ color: '#999' }}>{t('pages.tournaments.noRulesAssigned', 'Not specified')}</em>
+                  }
+                </Typography>
                 <Typography variant="body2">
                   <strong>{t('pages.tournaments.start')}:</strong> {formatDate(tournament.startDate)}
                 </Typography>
-                <Typography variant="body2">
-                  <strong>{t('pages.tournaments.end')}:</strong> {formatDate(tournament.endDate)}
-                </Typography>
+                {tournament.applicationDeadline && (
+                  <Typography variant="body2" color="warning.main">
+                    <strong>{t('pages.tournaments.applicationDeadline', 'Application Deadline')}:</strong> {formatDate(tournament.applicationDeadline)}
+                  </Typography>
+                )}
                 {tournament.address && (
                   <Typography variant="body2">
                     <strong>{t('pages.tournaments.location')}:</strong> {tournament.address}
                   </Typography>
                 )}
-                <Typography variant="body2" color="text.secondary">
-                  <strong>{t('pages.tournaments.multipleApplications')}:</strong>{' '}
-                  {tournament.allowMultipleApplications
-                    ? t('pages.tournaments.multipleAllowed')
-                    : t('pages.tournaments.multipleNotAllowed')}
-                </Typography>
                 <Box sx={{ mt: 2, display: 'flex', gap: 1, flexWrap: 'wrap' }}>
                   <Button
                     size="small"

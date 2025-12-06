@@ -44,15 +44,15 @@ export function canDropMember(
     );
   }
 
-  // Check sex homogeneity
-  const targetSexes = targetPatrol.members
-    .map((id) => participants.get(id)?.sex)
+  // Check gender homogeneity
+  const targetGenders = targetPatrol.members
+    .map((id) => participants.get(id)?.gender)
     .filter(Boolean) as string[];
-  const dominantSex = getMostCommon(targetSexes);
+  const dominantGender = getMostCommon(targetGenders);
 
-  if (dominantSex && member.sex !== dominantSex) {
+  if (dominantGender && member.gender !== dominantGender) {
     warnings.push(
-      `Member sex differs from patrol's dominant sex`,
+      `Member gender differs from patrol's dominant gender`,
     );
   }
 

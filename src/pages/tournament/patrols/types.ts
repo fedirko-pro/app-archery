@@ -6,7 +6,7 @@ export interface Participant {
   name: string;
   club: string;
   division: string; // 'cub', 'junior', 'adult', 'veteran'
-  sex: string; // 'M', 'F', 'Other'
+  gender: string; // 'M', 'F', 'Other'
 }
 
 /**
@@ -45,6 +45,6 @@ export interface PatrolStats {
   clubDiversityScore: number; // percentage
   homogeneityScores: {
     division: number; // percentage
-    sex: number; // percentage
+    gender: number; // percentage
   };
 }

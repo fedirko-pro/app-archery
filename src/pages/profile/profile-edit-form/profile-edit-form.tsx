@@ -164,6 +164,41 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
           <Box sx={{ flex: '1 1 300px' }}>
             <TextField
               select
+              label={t('forms.nationality', 'Nationality')}
+              name="nationality"
+              value={profileData.nationality || 'Portuguesa'}
+              onChange={onChange}
+              fullWidth
+              margin="normal"
+            >
+              <MenuItem value="Portuguesa">Portuguesa</MenuItem>
+              <MenuItem value="Outro">Outro</MenuItem>
+            </TextField>
+          </Box>
+        </Box>
+
+        <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+          <Box sx={{ flex: '1 1 300px' }}>
+            <TextField
+              select
+              label={t('forms.gender', 'Gender')}
+              name="gender"
+              value={profileData.gender || 'M'}
+              onChange={onChange}
+              fullWidth
+              margin="normal"
+            >
+              <MenuItem value="M">{t('forms.genderMale', 'Male')}</MenuItem>
+              <MenuItem value="F">{t('forms.genderFemale', 'Female')}</MenuItem>
+              <MenuItem value="Other">{t('forms.genderOther', 'Other')}</MenuItem>
+            </TextField>
+          </Box>
+        </Box>
+
+        <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+          <Box sx={{ flex: '1 1 300px' }}>
+            <TextField
+              select
               label={t('forms.applicationLanguage', 'Application language')}
               name="appLanguage"
               value={profileData.appLanguage || 'pt'}

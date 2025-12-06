@@ -29,6 +29,9 @@ import {
   AttachFile,
   GetApp,
   Assignment,
+  Gavel,
+  EventBusy,
+  GpsFixed,
 } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 
@@ -44,10 +47,18 @@ interface Tournament {
   description?: string;
   startDate: string;
   endDate: string;
+  applicationDeadline?: string;
   address?: string;
   allowMultipleApplications?: boolean;
+  targetCount?: number;
   banner?: string;
   attachments?: FileAttachment[];
+  ruleCode?: string;
+  rule?: {
+    id: string;
+    ruleCode: string;
+    ruleName: string;
+  };
   createdBy: any;
   createdAt: string;
 }
@@ -157,6 +168,15 @@ const TournamentDetail: React.FC = () => {
           <Divider sx={{ my: 3 }} />
 
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+            {tournament.ruleCode && (
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <Gavel color="action" fontSize="small" />
+                <Typography variant="body1">
+                  <strong>{t('pages.tournaments.rules', 'Rules')}:</strong> {tournament.rule?.ruleName || tournament.ruleCode}
+                </Typography>
+              </Box>
+            )}
+
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               <CalendarToday color="action" fontSize="small" />
               <Typography variant="body1">
@@ -171,11 +191,29 @@ const TournamentDetail: React.FC = () => {
               </Typography>
             </Box>
 
+            {tournament.applicationDeadline && (
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <EventBusy color="warning" fontSize="small" />
+                <Typography variant="body1" color="warning.main">
+                  <strong>{t('pages.tournaments.applicationDeadline', 'Application Deadline')}:</strong> {formatDate(tournament.applicationDeadline)}
+                </Typography>
+              </Box>
+            )}
+
             {tournament.address && (
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 <LocationOn color="action" fontSize="small" />
                 <Typography variant="body1">
                   <strong>{t('pages.tournaments.location')}:</strong> {tournament.address}
+                </Typography>
+              </Box>
+            )}
+
+            {tournament.targetCount && (
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <GpsFixed color="action" fontSize="small" />
+                <Typography variant="body1">
+                  <strong>{t('pages.tournaments.targetCount', 'Number of Targets')}:</strong> {tournament.targetCount}
                 </Typography>
               </Box>
             )}

@@ -112,7 +112,7 @@ const MemberCard: React.FC<MemberCardProps> = ({
           sx={{ fontSize: '0.7rem', height: 22 }}
         />
         <Chip
-          label={participant.sex}
+          label={participant.gender}
           size="small"
           variant="outlined"
           sx={{ fontSize: '0.7rem', height: 22 }}

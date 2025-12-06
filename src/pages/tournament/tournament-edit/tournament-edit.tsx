@@ -11,11 +11,16 @@ import {
   Checkbox,
   Alert,
   CircularProgress,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from '@mui/material';
 import { ArrowBack, Save } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 
 import apiService from '../../../services/api';
+import type { RuleDto } from '../../../services/types';
 import BannerUploader from '../../../components/BannerUploader/BannerUploader';
 import FileAttachments, { FileAttachment } from '../../../components/FileAttachments/FileAttachments';
 
@@ -25,10 +30,18 @@ interface Tournament {
   description?: string;
   startDate: string;
   endDate: string;
+  applicationDeadline?: string;
   address?: string;
   allowMultipleApplications?: boolean;
+  targetCount?: number;
   banner?: string;
   attachments?: FileAttachment[];
+  ruleCode?: string;
+  rule?: {
+    id: string;
+    ruleCode: string;
+    ruleName: string;
+  };
   createdBy: any;
   createdAt: string;
 }
@@ -41,6 +54,8 @@ const TournamentEdit: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [tournament, setTournament] = useState<Tournament | null>(null);
+  const [rules, setRules] = useState<RuleDto[]>([]);
+  const [loadingRules, setLoadingRules] = useState(true);
 
   const [formData, setFormData] = useState({
     title: '',
@@ -49,10 +64,27 @@ const TournamentEdit: React.FC = () => {
     endDate: '',
     applicationDeadline: '',
     address: '',
+    ruleCode: '',
+    targetCount: 18,
     allowMultipleApplications: true,
     banner: '',
     attachments: [] as FileAttachment[],
   });
+
+  useEffect(() => {
+    const loadRules = async () => {
+      setLoadingRules(true);
+      try {
+        const data = await apiService.getRules();
+        setRules(data);
+      } catch (error) {
+        console.error('Failed to load rules:', error);
+      } finally {
+        setLoadingRules(false);
+      }
+    };
+    loadRules();
+  }, []);
 
   useEffect(() => {
     const fetchTournament = async () => {
@@ -66,8 +98,10 @@ const TournamentEdit: React.FC = () => {
           description: data.description || '',
           startDate: data.startDate.split('T')[0],
           endDate: data.endDate.split('T')[0],
-          applicationDeadline: '',
+          applicationDeadline: data.applicationDeadline ? data.applicationDeadline.split('T')[0] : '',
           address: data.address || '',
+          ruleCode: data.ruleCode || '',
+          targetCount: data.targetCount || 18,
           allowMultipleApplications: data.allowMultipleApplications ?? true,
           banner: data.banner || '',
           attachments: data.attachments || [],
@@ -154,6 +188,27 @@ const TournamentEdit: React.FC = () => {
               {t('pages.tournaments.form.basicInfo', 'Basic Information')}
             </Typography>
 
+            <FormControl fullWidth margin="normal" required disabled={loadingRules}>
+              <InputLabel>{t('pages.tournaments.form.rules', 'Rules')}</InputLabel>
+              <Select
+                value={formData.ruleCode}
+                label={t('pages.tournaments.form.rules', 'Rules')}
+                onChange={(e) =>
+                  setFormData({ ...formData, ruleCode: e.target.value })
+                }
+                required
+              >
+                <MenuItem value="">
+                  <em>{t('pages.tournaments.form.selectRules', 'Select Rules')}</em>
+                </MenuItem>
+                {rules.map((rule) => (
+                  <MenuItem key={rule.ruleCode} value={rule.ruleCode}>
+                    {rule.ruleCode} - {rule.ruleName}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
             <TextField
               label={t('pages.tournaments.form.title')}
               value={formData.title}
@@ -214,6 +269,17 @@ const TournamentEdit: React.FC = () => {
               onChange={(e) => setFormData({ ...formData, address: e.target.value })}
               fullWidth
               margin="normal"
+            />
+
+            <TextField
+              label={t('pages.tournaments.form.targetCount', 'Number of Targets')}
+              type="number"
+              value={formData.targetCount}
+              onChange={(e) => setFormData({ ...formData, targetCount: parseInt(e.target.value) || 18 })}
+              fullWidth
+              margin="normal"
+              inputProps={{ min: 1, max: 100 }}
+              helperText={t('pages.tournaments.form.targetCountHelper', 'Number of targets/patrols for the tournament')}
             />
 
             <FormControlLabel

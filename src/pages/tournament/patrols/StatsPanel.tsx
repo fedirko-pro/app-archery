@@ -101,13 +101,13 @@ const StatsPanel: React.FC<StatsPanelProps> = ({
 
           <Grid item xs={12} sm={6} md={3}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-              {getStatusIcon(stats.homogeneityScores.sex, 60)}
+              {getStatusIcon(stats.homogeneityScores.gender, 60)}
               <Box>
                 <Typography variant="body2" color="text.secondary">
                   Gender Homogeneity
                 </Typography>
                 <Typography variant="h6">
-                  {formatPercentage(stats.homogeneityScores.sex)}
+                  {formatPercentage(stats.homogeneityScores.gender)}
                 </Typography>
               </Box>
             </Box>

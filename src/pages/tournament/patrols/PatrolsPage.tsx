@@ -360,7 +360,7 @@ function generateMockData() {
   // Generate mock participants
   const clubs = ['Club A', 'Club B', 'Club C', 'Club D'];
   const divisions = ['cub', 'junior', 'adult', 'veteran'];
-  const sexes = ['M', 'F'];
+  const genders = ['M', 'F'];
 
   for (let i = 1; i <= 50; i++) {
     participants.set(`p${i}`, {
@@ -368,7 +368,7 @@ function generateMockData() {
       name: `Participant ${i}`,
       club: clubs[Math.floor(Math.random() * clubs.length)],
       division: divisions[Math.floor(Math.random() * divisions.length)],
-      sex: sexes[Math.floor(Math.random() * sexes.length)],
+      gender: genders[Math.floor(Math.random() * genders.length)],
     });
   }
 
@@ -400,7 +400,7 @@ function generateMockData() {
     clubDiversityScore: 85,
     homogeneityScores: {
       division: 90,
-      sex: 70,
+      gender: 70,
     },
   };
 

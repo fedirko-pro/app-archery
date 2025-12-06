@@ -4,17 +4,18 @@ import {
   Button,
   Card,
   CardContent,
-  TextField,
   FormControl,
   InputLabel,
   Select,
   MenuItem,
   Alert,
   CircularProgress,
+  TextField,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { useAuth } from '../../../contexts/auth-context';
 import apiService from '../../../services/api';
 import type { BowCategory, DivisionDto } from '../../../services/types';
 
@@ -34,6 +35,7 @@ const TournamentApplicationForm: React.FC<TournamentApplicationFormProps> = ({
   onCancel,
 }) => {
   const { t } = useTranslation('common');
+  const { user } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [categories, setCategories] = useState<BowCategory[]>([]);
@@ -41,8 +43,8 @@ const TournamentApplicationForm: React.FC<TournamentApplicationFormProps> = ({
   const [loadingOptions, setLoadingOptions] = useState(true);
 
   const [formData, setFormData] = useState({
-    nationality: '',
-    sex: '',
+    nationality: user?.nationality || 'Portuguesa',
+    gender: user?.gender || 'M',
     division: '',
     category: '',
     notes: '',
@@ -53,15 +55,24 @@ const TournamentApplicationForm: React.FC<TournamentApplicationFormProps> = ({
       setLoadingOptions(true);
       try {
         const [categoriesData, divisionsData] = await Promise.all([
-          apiService.getBowCategories(),
+          tournamentRuleCode
+            ? apiService.getBowCategoriesByRule(tournamentRuleCode)
+            : apiService.getBowCategories(),
           tournamentRuleCode
             ? apiService.getDivisionsByRule(tournamentRuleCode)
             : apiService.getDivisions(),
         ]);
         setCategories(categoriesData);
-        setDivisions(divisionsData);
+        
+        // Remove duplicates by id to prevent showing duplicate divisions
+        const uniqueDivisions = Array.from(
+          new Map(divisionsData.map((d) => [d.id, d])).values()
+        );
+        setDivisions(uniqueDivisions);
       } catch (error) {
         console.error('Failed to load options:', error);
+        setCategories([]);
+        setDivisions([]);
       } finally {
         setLoadingOptions(false);
       }
@@ -119,26 +130,29 @@ const TournamentApplicationForm: React.FC<TournamentApplicationFormProps> = ({
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
               <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
                 <Box sx={{ flex: '1 1 300px' }}>
-                  <TextField
-                    label={t('pages.applicationForm.nationality', 'Nationality')}
-                    value={formData.nationality}
-                    onChange={(e) =>
-                      handleInputChange('nationality', e.target.value)
-                    }
-                    fullWidth
-                    required
-                    placeholder="e.g. Ukrainian"
-                  />
+                  <FormControl fullWidth required>
+                    <InputLabel>{t('pages.applicationForm.nationality', 'Nationality')}</InputLabel>
+                    <Select
+                      value={formData.nationality}
+                      label={t('pages.applicationForm.nationality', 'Nationality')}
+                      onChange={(e) =>
+                        handleInputChange('nationality', e.target.value)
+                      }
+                    >
+                      <MenuItem value="Portuguesa">Portuguesa</MenuItem>
+                      <MenuItem value="Outro">Outro</MenuItem>
+                    </Select>
+                  </FormControl>
                 </Box>
 
                 <Box sx={{ flex: '1 1 300px' }}>
                   <FormControl fullWidth required>
-                    <InputLabel>{t('pages.applicationForm.sex', 'Sex')}</InputLabel>
+                    <InputLabel>{t('pages.applicationForm.gender', 'Gender')}</InputLabel>
                     <Select
-                      value={formData.sex}
-                      label={t('pages.applicationForm.sex', 'Sex')}
+                      value={formData.gender}
+                      label={t('pages.applicationForm.gender', 'Gender')}
                       onChange={(e) =>
-                        handleInputChange('sex', e.target.value)
+                        handleInputChange('gender', e.target.value)
                       }
                     >
                       <MenuItem value="M">{t('pages.applicationForm.opts.male', 'Male')}</MenuItem>
@@ -160,11 +174,16 @@ const TournamentApplicationForm: React.FC<TournamentApplicationFormProps> = ({
                         handleInputChange('division', e.target.value)
                       }
                     >
-                      {divisions.map((division) => (
-                        <MenuItem key={division.id} value={division.id}>
-                          {division.name}
-                        </MenuItem>
-                      ))}
+                      {divisions
+                        .filter((division, index, self) => 
+                          // Remove duplicates by id
+                          index === self.findIndex((d) => d.id === division.id)
+                        )
+                        .map((division) => (
+                          <MenuItem key={division.id} value={division.id}>
+                            {division.name}
+                          </MenuItem>
+                        ))}
                     </Select>
                   </FormControl>
                 </Box>

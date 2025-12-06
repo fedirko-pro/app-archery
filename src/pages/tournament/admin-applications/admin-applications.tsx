@@ -128,7 +128,13 @@ const AdminApplications: React.FC = () => {
       setLoading(true);
       const data =
         await apiService.getTournamentApplications(selectedTournament);
-      setApplications(data);
+      // Sort applications by applicant name (firstName + lastName)
+      const sortedData = [...data].sort((a, b) => {
+        const nameA = `${a.applicant.firstName} ${a.applicant.lastName}`.toLowerCase();
+        const nameB = `${b.applicant.firstName} ${b.applicant.lastName}`.toLowerCase();
+        return nameA.localeCompare(nameB);
+      });
+      setApplications(sortedData);
     } catch (error) {
       setError(t('pages.adminApplications.fetchError'));
       console.error('Error fetching applications:', error);
@@ -158,13 +164,22 @@ const AdminApplications: React.FC = () => {
         statusDialog.newStatus,
         statusDialog.rejectionReason || undefined,
       );
+      
+      // Update local state to keep position in list
+      setApplications((prev) =>
+        prev.map((app) =>
+          app.id === statusDialog.application!.id
+            ? { ...app, status: statusDialog.newStatus as any, rejectionReason: statusDialog.rejectionReason }
+            : app
+        )
+      );
+      
       setStatusDialog({
         open: false,
         application: null,
         newStatus: '',
         rejectionReason: '',
       });
-      fetchApplications();
       fetchStats();
       setSnackbar({
         open: true,
@@ -197,7 +212,14 @@ const AdminApplications: React.FC = () => {
 
       await apiService.updateApplicationStatus(applicationId, newStatus);
 
-      await Promise.all([fetchApplications(), fetchStats()]);
+      // Update local state to keep position in list
+      setApplications((prev) =>
+        prev.map((app) =>
+          app.id === applicationId ? { ...app, status: newStatus } : app
+        )
+      );
+      
+      fetchStats();
 
       const messageKey =
         newStatus === 'approved'
@@ -355,6 +377,12 @@ const AdminApplications: React.FC = () => {
                     : formatDate(
                         getApplicationDeadline(currentTournament.startDate),
                       )}
+                </Typography>
+              </Box>
+              <Box sx={{ minWidth: '200px' }}>
+                <Typography variant="body2" color="text.secondary">
+                  <strong>{t('pages.tournaments.rules', 'Rules')}:</strong>{' '}
+                  {currentTournament.rule?.ruleName || currentTournament.ruleCode || t('pages.tournaments.notSpecified', 'Not specified')}
                 </Typography>
               </Box>
             </Box>

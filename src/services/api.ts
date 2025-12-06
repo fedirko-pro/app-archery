@@ -414,6 +414,24 @@ class ApiService {
   }
 
   /**
+   * Fetch bow categories filtered by rule code.
+   * @param ruleCode The rule code (e.g., 'IFAA', 'FABP')
+   */
+  async getBowCategoriesByRule(ruleCode: string): Promise<BowCategory[]> {
+    try {
+      const rule = await this.getRuleByCode(ruleCode);
+      if (!rule || !rule.id) {
+        console.warn(`Rule with code ${ruleCode} not found`);
+        return [];
+      }
+      return await this.getBowCategories(rule.id);
+    } catch (error) {
+      console.error(`Failed to fetch bow categories for rule ${ruleCode}:`, error);
+      return [];
+    }
+  }
+
+  /**
    * Create a new bow category (admin only).
    */
   async createBowCategory(categoryData: CreateBowCategoryDto): Promise<BowCategory> {
@@ -569,27 +587,118 @@ class ApiService {
   }
 
   /**
-   * Fetch divisions from a FE-only local data module.
-   * Replaced by backend once available.
+   * Fetch divisions from the backend API.
    */
-  async getDivisions(): Promise<DivisionDto[]> {
-    return divisionsData as DivisionDto[];
+  async getDivisions(ruleId?: string): Promise<DivisionDto[]> {
+    try {
+      const url = ruleId ? `/divisions?ruleId=${ruleId}` : '/divisions';
+      const divisions = await this.get<any[]>(url);
+      
+      // Check if divisions is an array and not empty
+      if (!Array.isArray(divisions) || divisions.length === 0) {
+        console.warn('Backend returned empty or invalid divisions array, using fallback data');
+        return divisionsData as DivisionDto[];
+      }
+      
+      // Transform backend response to DivisionDto format
+      // Backend returns divisions with populated rule object
+      const transformed = divisions
+        .filter((div: any) => div && div.id && div.name) // Filter out invalid entries
+        .map((div: any) => ({
+          id: div.id,
+          name: div.name,
+          description: div.description || undefined,
+          rule_id: div.rule?.id,
+          rule_code: div.rule?.ruleCode, // Extract ruleCode from rule object
+          created_at: div.createdAt,
+          updated_at: div.updatedAt,
+        }));
+
+      // Remove duplicates by id
+      const uniqueDivisions = Array.from(
+        new Map(transformed.map((d) => [d.id, d])).values()
+      );
+
+      // If no valid divisions after transformation, use fallback
+      if (uniqueDivisions.length === 0) {
+        console.warn('No valid divisions after transformation, using fallback data');
+        return divisionsData as DivisionDto[];
+      }
+
+      return uniqueDivisions;
+    } catch (error) {
+      console.error('Failed to fetch divisions from backend, using fallback data:', error);
+      // Fallback to static data if backend is unavailable
+      return divisionsData as DivisionDto[];
+    }
   }
 
   /**
    * Fetch divisions filtered by rule code.
    */
   async getDivisionsByRule(ruleCode: string): Promise<DivisionDto[]> {
-    const divisions = await this.getDivisions();
-    return divisions.filter((d) => d.rule_code === ruleCode);
+    try {
+      // First, find the rule by code
+      const rule = await this.getRuleByCode(ruleCode);
+      if (!rule || !rule.id) {
+        console.warn(`Rule with code ${ruleCode} not found, using fallback data`);
+        // Fallback to static data filtering
+        const divisions = divisionsData as DivisionDto[];
+        return divisions.filter((d) => d.rule_code === ruleCode);
+      }
+
+      // Then fetch divisions for that rule
+      const divisions = await this.getDivisions(rule.id);
+      
+      // If getDivisions returned fallback data, filter it by rule_code
+      if (divisions.length > 0 && divisions.some((d) => d.rule_code === ruleCode)) {
+        // Filter by rule_code to ensure consistency
+        const filtered = divisions.filter((d) => d.rule_code === ruleCode);
+
+        // Remove duplicates by id
+        const uniqueDivisions = Array.from(
+          new Map(filtered.map((d) => [d.id, d])).values()
+        );
+
+        return uniqueDivisions;
+      }
+
+      // If no divisions found, try fallback
+      console.warn(`No divisions found for rule ${ruleCode}, using fallback data`);
+      const fallbackDivisions = divisionsData as DivisionDto[];
+      return fallbackDivisions.filter((d) => d.rule_code === ruleCode);
+    } catch (error) {
+      console.error(`Failed to fetch divisions for rule ${ruleCode}:`, error);
+      // Fallback to static data filtering
+      const divisions = divisionsData as DivisionDto[];
+      return divisions.filter((d) => d.rule_code === ruleCode);
+    }
   }
 
   /**
    * Resolve a single division by id.
    */
   async getDivisionById(id: string): Promise<DivisionDto | undefined> {
-    const divisions = await this.getDivisions();
-    return divisions.find((d) => d.id === id);
+    try {
+      const division = await this.get<any>(`/divisions/${id}`);
+      if (!division) return undefined;
+
+      // Transform backend response to DivisionDto format
+      return {
+        id: division.id,
+        name: division.name,
+        description: division.description,
+        rule_id: division.rule?.id,
+        rule_code: division.rule?.ruleCode,
+        created_at: division.createdAt,
+        updated_at: division.updatedAt,
+      };
+    } catch (error) {
+      console.error(`Failed to fetch division ${id}:`, error);
+      // Fallback to static data
+      const divisions = divisionsData as DivisionDto[];
+      return divisions.find((d) => d.id === id);
+    }
   }
 
   /**
