@@ -61,17 +61,91 @@ const PatrolsPage: React.FC = () => {
     setIsLoading(true);
     setError(null);
     try {
-      // TODO: Replace with actual API call when backend is ready
-      // const response = await apiService.getPatrolsByTournament(tournamentId!);
-
-      // Mock data for now
-      const mockData = generateMockData();
-      setPatrols(mockData.patrols);
-      setParticipants(mockData.participants);
-      setStats(mockData.stats);
-    } catch (error) {
+      // Get existing patrols or auto-generate if none exist
+      const response = await apiService.getOrGeneratePatrols(tournamentId!);
+      
+      // Transform backend data to component format
+      const { patrols: backendPatrols, stats: backendStats, isNewlyGenerated } = response;
+      
+      // Build participants map from patrol members
+      const participantsMap = new Map<string, Participant>();
+      const transformedPatrols: Patrol[] = [];
+      
+      for (const bp of backendPatrols) {
+        const memberIds: string[] = [];
+        const judgeIds: string[] = [];
+        let leaderId: string | null = null;
+        
+        // Process members
+        if (bp.members && Array.isArray(bp.members)) {
+          for (const member of bp.members) {
+            const user = member.user;
+            if (!user) continue;
+            
+            // Add to participants map
+            participantsMap.set(user.id, {
+              id: user.id,
+              name: `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.email,
+              club: user.club?.name || 'No Club',
+              division: user.division || 'Unknown',
+              bowCategory: user.bowCategory || 'Unknown',
+              gender: user.gender || 'Other',
+            });
+            
+            memberIds.push(user.id);
+            
+            // Track roles
+            if (member.role === 'leader') {
+              leaderId = user.id;
+            } else if (member.role === 'judge') {
+              judgeIds.push(user.id);
+            }
+          }
+        }
+        
+        // Extract target number from name (e.g., "Target 1" -> 1)
+        const targetMatch = bp.name?.match(/\d+/);
+        const targetNumber = targetMatch ? parseInt(targetMatch[0], 10) : transformedPatrols.length + 1;
+        
+        transformedPatrols.push({
+          id: bp.id,
+          targetNumber,
+          members: memberIds,
+          leaderId,
+          judgeIds,
+        });
+      }
+      
+      setPatrols(transformedPatrols);
+      setParticipants(participantsMap);
+      
+      // Set stats if available
+      if (backendStats) {
+        setStats(backendStats);
+      } else {
+        // Calculate basic stats from patrols
+        const totalParticipants = participantsMap.size;
+        const averagePatrolSize = transformedPatrols.length > 0 
+          ? totalParticipants / transformedPatrols.length 
+          : 0;
+        setStats({
+          totalParticipants,
+          averagePatrolSize,
+          clubDiversityScore: 0,
+          homogeneityScores: { division: 0, gender: 0 },
+        });
+      }
+      
+      if (isNewlyGenerated) {
+        setSnackbar({
+          open: true,
+          message: 'Patrols generated automatically from approved applications',
+          severity: 'success',
+        });
+      }
+    } catch (error: any) {
       console.error('Failed to load patrols:', error);
-      setError('Failed to load patrols. Please try again.');
+      setError(error.message || 'Failed to load patrols. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -80,11 +154,26 @@ const PatrolsPage: React.FC = () => {
   const handleSave = async () => {
     setIsSaving(true);
     try {
-      // TODO: Replace with actual API call
-      // await apiService.updatePatrols(tournamentId!, patrols);
-
-      // Mock save for now
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      // Update each patrol's members and roles on the backend
+      for (const patrol of patrols) {
+        // Update patrol members - this would need a batch update endpoint
+        // For now, we'll update role assignments
+        for (const memberId of patrol.members) {
+          let role = 'member';
+          if (memberId === patrol.leaderId) {
+            role = 'leader';
+          } else if (patrol.judgeIds.includes(memberId)) {
+            role = 'judge';
+          }
+          
+          // Update member role
+          try {
+            await apiService.addPatrolMember(patrol.id, memberId, role);
+          } catch (e) {
+            // Member might already exist, continue
+          }
+        }
+      }
 
       setIsDirty(false);
       setSnackbar({
@@ -92,11 +181,11 @@ const PatrolsPage: React.FC = () => {
         message: 'Patrols saved successfully!',
         severity: 'success',
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to save:', error);
       setSnackbar({
         open: true,
-        message: 'Failed to save patrols. Please try again.',
+        message: error.message || 'Failed to save patrols. Please try again.',
         severity: 'error',
       });
     } finally {
@@ -222,7 +311,7 @@ const PatrolsPage: React.FC = () => {
   const handleRegenerate = async () => {
     if (
       !confirm(
-        'This will discard all changes and regenerate patrols. Continue?',
+        'This will DELETE all existing patrols and regenerate new ones from approved applications. Continue?',
       )
     ) {
       return;
@@ -230,21 +319,73 @@ const PatrolsPage: React.FC = () => {
 
     setIsLoading(true);
     try {
-      // TODO: Replace with actual API call
-      // const response = await apiService.generatePatrols(tournamentId!);
-
-      // Mock regenerate for now
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      const mockData = generateMockData();
-      setPatrols(mockData.patrols);
-      setParticipants(mockData.participants);
-      setStats(mockData.stats);
+      // Delete existing and generate new patrols
+      const response = await apiService.regeneratePatrols(tournamentId!);
+      
+      // Transform backend data to component format (same as loadPatrols)
+      const { patrols: backendPatrols, stats: backendStats } = response;
+      
+      const participantsMap = new Map<string, Participant>();
+      const transformedPatrols: Patrol[] = [];
+      
+      for (const bp of backendPatrols) {
+        const memberIds: string[] = [];
+        const judgeIds: string[] = [];
+        let leaderId: string | null = null;
+        
+        if (bp.members && Array.isArray(bp.members)) {
+          for (const member of bp.members) {
+            const user = member.user;
+            if (!user) continue;
+            
+            participantsMap.set(user.id, {
+              id: user.id,
+              name: `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.email,
+              club: user.club?.name || 'No Club',
+              division: user.division || 'Unknown',
+              bowCategory: user.bowCategory || 'Unknown',
+              gender: user.gender || 'Other',
+            });
+            
+            memberIds.push(user.id);
+            
+            if (member.role === 'leader') {
+              leaderId = user.id;
+            } else if (member.role === 'judge') {
+              judgeIds.push(user.id);
+            }
+          }
+        }
+        
+        const targetMatch = bp.name?.match(/\d+/);
+        const targetNumber = targetMatch ? parseInt(targetMatch[0], 10) : transformedPatrols.length + 1;
+        
+        transformedPatrols.push({
+          id: bp.id,
+          targetNumber,
+          members: memberIds,
+          leaderId,
+          judgeIds,
+        });
+      }
+      
+      setPatrols(transformedPatrols);
+      setParticipants(participantsMap);
+      if (backendStats) {
+        setStats(backendStats);
+      }
       setIsDirty(false);
-    } catch (error) {
+      
+      setSnackbar({
+        open: true,
+        message: 'Patrols regenerated successfully!',
+        severity: 'success',
+      });
+    } catch (error: any) {
       console.error('Failed to regenerate:', error);
       setSnackbar({
         open: true,
-        message: 'Failed to regenerate patrols',
+        message: error.message || 'Failed to regenerate patrols',
         severity: 'error',
       });
     } finally {
@@ -320,17 +461,19 @@ const PatrolsPage: React.FC = () => {
       <StatsPanel stats={stats} patrols={patrols} participants={participants} />
 
       <Grid container spacing={2}>
-        {patrols.map((patrol) => (
-          <Grid item xs={12} sm={6} md={4} key={patrol.id}>
-            <PatrolCard
-              patrol={patrol}
-              participants={participants}
-              warnings={warnings.filter((w) => w.patrolId === patrol.id)}
-              onMemberDrop={handleMemberDrop}
-              onRoleChange={handleRoleChange}
-            />
-          </Grid>
-        ))}
+        {[...patrols]
+          .sort((a, b) => a.targetNumber - b.targetNumber)
+          .map((patrol) => (
+            <Grid item xs={12} sm={6} md={4} key={patrol.id}>
+              <PatrolCard
+                patrol={patrol}
+                participants={participants}
+                warnings={warnings.filter((w) => w.patrolId === patrol.id)}
+                onMemberDrop={handleMemberDrop}
+                onRoleChange={handleRoleChange}
+              />
+            </Grid>
+          ))}
       </Grid>
 
       {patrols.length === 0 && (
@@ -351,60 +494,5 @@ const PatrolsPage: React.FC = () => {
     </Box>
   );
 };
-
-// Mock data generator for development
-function generateMockData() {
-  const participants = new Map<string, Participant>();
-  const patrols: Patrol[] = [];
-
-  // Generate mock participants
-  const clubs = ['Club A', 'Club B', 'Club C', 'Club D'];
-  const divisions = ['cub', 'junior', 'adult', 'veteran'];
-  const genders = ['M', 'F'];
-
-  for (let i = 1; i <= 50; i++) {
-    participants.set(`p${i}`, {
-      id: `p${i}`,
-      name: `Participant ${i}`,
-      club: clubs[Math.floor(Math.random() * clubs.length)],
-      division: divisions[Math.floor(Math.random() * divisions.length)],
-      gender: genders[Math.floor(Math.random() * genders.length)],
-    });
-  }
-
-  // Generate mock patrols
-  const participantIds = Array.from(participants.keys());
-  let participantIndex = 0;
-
-  for (let i = 1; i <= 10; i++) {
-    const members: string[] = [];
-    for (let j = 0; j < 5; j++) {
-      if (participantIndex < participantIds.length) {
-        members.push(participantIds[participantIndex]);
-        participantIndex++;
-      }
-    }
-
-    patrols.push({
-      id: `patrol${i}`,
-      targetNumber: i,
-      members,
-      leaderId: members[0] || null,
-      judgeIds: members.slice(1, 3),
-    });
-  }
-
-  const stats: PatrolStats = {
-    totalParticipants: participants.size,
-    averagePatrolSize: participants.size / patrols.length,
-    clubDiversityScore: 85,
-    homogeneityScores: {
-      division: 90,
-      gender: 70,
-    },
-  };
-
-  return { participants, patrols, stats };
-}
 
 export default PatrolsPage;

@@ -11,11 +11,8 @@ import AdminPanel from '../../pages/admin/admin-panel';
 import ProtectedAdminRoute from '../../pages/admin/protected-admin-route';
 import UserEdit from '../../pages/admin/user-edit/user-edit';
 import UserProfileView from '../../pages/admin/user-profile-view/user-profile-view';
-import Competition from '../../pages/competition/competition';
-import CompetitionsList from '../../pages/competition/competitions-list/competitions-list';
-import PatrolList from '../../pages/competition/patrol-list/patrol-list';
-import UserPage from '../../pages/competition/user-page/user-page';
 import ConverterPage from '../../pages/ConverterPage';
+import UserPage from '../../pages/competition/user-page/user-page';
 import Encyclopedia from '../../pages/Encyclopedia';
 // TODO: Settings temporarily disabled - functionality moved to Profile
 // import Settings from '../Settings/Settings.tsx';
@@ -120,9 +117,6 @@ function Content() {
           {/* TODO: Settings route temporarily disabled - functionality moved to Profile */}
           {/* <Route path="settings" element={<Settings />} /> */}
           <Route path="converter" element={<ConverterPage />} />
-          <Route path="competitions" element={<CompetitionsList />} />
-          <Route path="competition" element={<Competition />} />
-          <Route path="competition/patrols" element={<PatrolList />} />
           <Route path="competition/user" element={<UserPage />} />
           <Route path="about" element={<About />} />
           <Route path="categories" element={<Categories />} />

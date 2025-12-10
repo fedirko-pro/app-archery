@@ -14,8 +14,10 @@ import {
   IconButton,
   Tooltip,
   Avatar,
+  Chip,
 } from '@mui/material';
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import type { User } from '../../../contexts/types';
 import apiService from '../../../services/api';
@@ -26,6 +28,7 @@ interface UsersListProps {
 }
 
 const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
+  const { t } = useTranslation('common');
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -121,9 +124,12 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
         >
           <TableHead>
             <TableRow>
-              <TableCell>Avatar</TableCell>
+              <TableCell sx={{ width: 50 }}></TableCell>
               <TableCell>Name</TableCell>
               <TableCell>Email</TableCell>
+              <TableCell>Gender</TableCell>
+              <TableCell>Club</TableCell>
+              <TableCell>{t('pages.admin.favoriteCategories', 'Favorite Categories')}</TableCell>
               <TableCell align="center">Actions</TableCell>
             </TableRow>
           </TableHead>
@@ -134,20 +140,62 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
                   <Avatar
                     src={user.picture}
                     alt={`${user.firstName} ${user.lastName}`}
-                    sx={{ width: 40, height: 40 }}
+                    sx={{ width: 32, height: 32 }}
                   >
                     {!user.picture &&
                       `${user.firstName?.[0] || ''}${user.lastName?.[0] || ''}`}
                   </Avatar>
                 </TableCell>
                 <TableCell>
-                  <Typography variant="body2">
+                  <Typography variant="body2" fontWeight={500}>
                     {user.firstName && user.lastName
                       ? `${user.firstName} ${user.lastName}`
                       : 'Not set'}
                   </Typography>
+                  {user.role === 'admin' && (
+                    <Chip label="Admin" size="small" color="primary" sx={{ ml: 1, height: 18, fontSize: '0.7rem' }} />
+                  )}
                 </TableCell>
-                <TableCell>{user.email}</TableCell>
+                <TableCell>
+                  <Typography variant="body2" color="text.secondary">
+                    {user.email}
+                  </Typography>
+                </TableCell>
+                <TableCell align="center">
+                  {user.gender ? (
+                    <Chip
+                      label={user.gender}
+                      size="small"
+                      variant="outlined"
+                      color={user.gender === 'M' ? 'info' : user.gender === 'F' ? 'secondary' : 'default'}
+                      sx={{ height: 20, minWidth: 28, '& .MuiChip-label': { px: 0.5 } }}
+                    />
+                  ) : (
+                    <Typography variant="body2" color="text.disabled">-</Typography>
+                  )}
+                </TableCell>
+                <TableCell>
+                  <Typography variant="body2" noWrap sx={{ maxWidth: 150 }}>
+                    {user.club?.name || <span style={{ color: '#999' }}>-</span>}
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  {user.categories && user.categories.length > 0 ? (
+                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, maxWidth: 200 }}>
+                      {user.categories.map((category) => (
+                        <Chip
+                          key={category}
+                          label={category}
+                          size="small"
+                          variant="outlined"
+                          sx={{ height: 20, fontSize: '0.7rem' }}
+                        />
+                      ))}
+                    </Box>
+                  ) : (
+                    <Typography variant="body2" color="text.disabled">-</Typography>
+                  )}
+                </TableCell>
                 <TableCell align="center">
                   <Box
                     sx={{ display: 'flex', gap: 1, justifyContent: 'center' }}

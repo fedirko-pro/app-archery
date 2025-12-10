@@ -103,7 +103,14 @@ const MemberCard: React.FC<MemberCardProps> = ({
         </Box>
       </Box>
 
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, flexWrap: 'wrap' }}>
+        <Chip
+          label={participant.bowCategory}
+          size="small"
+          variant="filled"
+          color="primary"
+          sx={{ fontSize: '0.7rem', height: 22 }}
+        />
         <Chip
           label={participant.division}
           size="small"

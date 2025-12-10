@@ -309,6 +309,77 @@ class ApiService {
     });
   }
 
+  /**
+   * Generate patrol preview for a tournament (without saving)
+   */
+  async generatePatrolsPreview(tournamentId: string): Promise<{
+    patrols: any[];
+    stats: any;
+  }> {
+    return await this.request<{ patrols: any[]; stats: any }>(
+      `/patrols/tournaments/${tournamentId}/generate`,
+      { method: 'POST' },
+    );
+  }
+
+  /**
+   * Generate and save patrols for a tournament
+   */
+  async generateAndSavePatrols(tournamentId: string): Promise<{
+    patrols: any[];
+    stats: any;
+  }> {
+    return await this.request<{ patrols: any[]; stats: any }>(
+      `/patrols/tournaments/${tournamentId}/generate-and-save`,
+      { method: 'POST' },
+    );
+  }
+
+  /**
+   * Get or generate patrols for a tournament.
+   * If patrols exist, returns them. If not, generates and saves new ones.
+   */
+  async getOrGeneratePatrols(tournamentId: string): Promise<{
+    patrols: any[];
+    stats?: any;
+    isNewlyGenerated: boolean;
+  }> {
+    // First try to get existing patrols
+    const existingPatrols = await this.getPatrolsByTournament(tournamentId);
+    
+    if (existingPatrols && existingPatrols.length > 0) {
+      return {
+        patrols: existingPatrols,
+        isNewlyGenerated: false,
+      };
+    }
+
+    // No patrols exist, generate and save new ones
+    const result = await this.generateAndSavePatrols(tournamentId);
+    return {
+      patrols: result.patrols,
+      stats: result.stats,
+      isNewlyGenerated: true,
+    };
+  }
+
+  /**
+   * Regenerate patrols for a tournament (deletes existing and creates new)
+   */
+  async regeneratePatrols(tournamentId: string): Promise<{
+    patrols: any[];
+    stats: any;
+  }> {
+    // First delete all existing patrols
+    const existingPatrols = await this.getPatrolsByTournament(tournamentId);
+    for (const patrol of existingPatrols) {
+      await this.deletePatrol(patrol.id);
+    }
+    
+    // Generate and save new patrols
+    return await this.generateAndSavePatrols(tournamentId);
+  }
+
   async createTournamentApplication(applicationData: {
     tournamentId: string;
     category?: string;

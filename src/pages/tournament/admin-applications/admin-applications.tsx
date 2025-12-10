@@ -50,11 +50,12 @@ interface TournamentApplication {
     lastName: string;
     email: string;
     picture?: string;
+    gender?: string;
   };
   status: 'pending' | 'approved' | 'rejected' | 'withdrawn';
   category?: string;
-  division?: string;
-  equipment?: string;
+  division?: { id: string; name: string } | null;
+  bowCategory?: { id: string; name: string; code?: string } | null;
   notes?: string;
   rejectionReason?: string;
   createdAt: string;
@@ -468,9 +469,9 @@ const AdminApplications: React.FC = () => {
               <TableRow>
                 <TableCell sx={{ width: '60px' }}>{t('pages.adminApplications.table.avatar')}</TableCell>
                 <TableCell>{t('pages.adminApplications.table.applicant')}</TableCell>
+                <TableCell>{t('pages.adminApplications.table.gender', 'Gender')}</TableCell>
                 <TableCell>{t('pages.adminApplications.table.category')}</TableCell>
                 <TableCell>{t('pages.adminApplications.table.division')}</TableCell>
-                <TableCell>{t('pages.adminApplications.table.equipment')}</TableCell>
                 <TableCell>{t('pages.adminApplications.table.status')}</TableCell>
                 <TableCell>{t('pages.adminApplications.table.applied')}</TableCell>
                 <TableCell>{t('pages.adminApplications.table.actions')}</TableCell>
@@ -495,9 +496,21 @@ const AdminApplications: React.FC = () => {
                       {application.applicant.email}
                     </Typography>
                   </TableCell>
-                  <TableCell>{application.category || '-'}</TableCell>
-                  <TableCell>{application.division || '-'}</TableCell>
-                  <TableCell>{application.equipment || '-'}</TableCell>
+                  <TableCell align="center">
+                    {application.applicant.gender ? (
+                      <Chip
+                        label={application.applicant.gender}
+                        size="small"
+                        variant="outlined"
+                        color={application.applicant.gender === 'M' ? 'info' : application.applicant.gender === 'F' ? 'secondary' : 'default'}
+                        sx={{ height: 20, minWidth: 28, '& .MuiChip-label': { px: 0.5 } }}
+                      />
+                    ) : (
+                      <Typography variant="body2" color="text.disabled">-</Typography>
+                    )}
+                  </TableCell>
+                  <TableCell>{application.bowCategory?.name || application.bowCategory?.code || application.category || '-'}</TableCell>
+                  <TableCell>{application.division?.name || '-'}</TableCell>
                   <TableCell>
                     <Chip
                       label={getStatusLabel(application.status)}
@@ -595,7 +608,7 @@ const AdminApplications: React.FC = () => {
                   <Box sx={{ flex: '1 1 300px' }}>
                     <Typography variant="subtitle2">{t('pages.adminApplications.dialog.category')}</Typography>
                     <Typography variant="body2" gutterBottom>
-                      {statusDialog.application.category || '-'}
+                      {statusDialog.application.bowCategory?.name || statusDialog.application.category || '-'}
                     </Typography>
                   </Box>
                 </Box>
@@ -603,13 +616,7 @@ const AdminApplications: React.FC = () => {
                   <Box sx={{ flex: '1 1 300px' }}>
                     <Typography variant="subtitle2">{t('pages.adminApplications.dialog.division')}</Typography>
                     <Typography variant="body2" gutterBottom>
-                      {statusDialog.application.division || '-'}
-                    </Typography>
-                  </Box>
-                  <Box sx={{ flex: '1 1 300px' }}>
-                    <Typography variant="subtitle2">{t('pages.adminApplications.dialog.equipment')}</Typography>
-                    <Typography variant="body2" gutterBottom>
-                      {statusDialog.application.equipment || '-'}
+                      {statusDialog.application.division?.name || '-'}
                     </Typography>
                   </Box>
                 </Box>

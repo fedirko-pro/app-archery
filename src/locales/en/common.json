@@ -166,6 +166,9 @@
         "traditionalBow": "Traditional Bow"
       }
     },
+    "admin": {
+      "favoriteCategories": "Favorite Categories"
+    },
     "adminApplications": {
       "title": "Tournament Applications Management",
       "selectTournament": "Select Tournament",
@@ -179,6 +182,7 @@
       "table": {
         "avatar": "Avatar",
         "applicant": "Applicant",
+        "gender": "Gender",
         "category": "Category",
         "division": "Division",
         "equipment": "Equipment",
@@ -238,7 +242,6 @@
     "deleteHint": "All results for this training will be deleted",
     "add": "Add training"
   },
-  "competition": { "title": "Competition page", "testTournament": "Test tournament 2024 (demo)", "patrolsTitle": "Patrols list" },
   "units": {
     "inch": "Inch",
     "centimeter": "Centimeter",

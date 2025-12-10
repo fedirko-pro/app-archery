@@ -5,7 +5,8 @@ export interface Participant {
   id: string;
   name: string;
   club: string;
-  division: string; // 'cub', 'junior', 'adult', 'veteran'
+  division: string; // 'Cub Male', 'Junior Female', 'Adult Male', etc.
+  bowCategory: string; // 'RC', 'CP', 'LB', etc.
   gender: string; // 'M', 'F', 'Other'
 }
 
@@ -44,6 +45,7 @@ export interface PatrolStats {
   averagePatrolSize: number;
   clubDiversityScore: number; // percentage
   homogeneityScores: {
+    category: number; // % of patrols where all have the same bow category
     division: number; // percentage
     gender: number; // percentage
   };

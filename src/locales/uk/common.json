@@ -145,6 +145,9 @@
         "traditionalBow": "Традиційний лук"
       }
     },
+    "admin": {
+      "favoriteCategories": "Улюблені категорії"
+    },
     "adminApplications": {
       "title": "Управління заявками на турніри",
       "selectTournament": "Оберіть турнір",
@@ -158,6 +161,7 @@
       "table": {
         "avatar": "Аватар",
         "applicant": "Заявник",
+        "gender": "Стать",
         "category": "Категорія",
         "division": "Дивізіон",
         "equipment": "Обладнання",
@@ -274,7 +278,6 @@
     "deleteHint": "Усі результати для цього тренування будуть видалені",
     "add": "Додати тренування"
   },
-  "competition": { "title": "Сторінка змагань", "testTournament": "Тестовий турнір 2024 (демо)", "patrolsTitle": "Список патрулів" },
   "units": {
     "inch": "Дюйм",
     "centimeter": "Сантиметр",

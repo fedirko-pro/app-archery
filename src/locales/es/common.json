@@ -144,6 +144,9 @@
         "traditionalBow": "Arco tradicional"
       }
     },
+    "admin": {
+      "favoriteCategories": "Categorías Favoritas"
+    },
     "adminApplications": {
       "title": "Gestión de solicitudes de torneos",
       "selectTournament": "Seleccionar torneo",
@@ -157,6 +160,7 @@
       "table": {
         "avatar": "Avatar",
         "applicant": "Solicitante",
+        "gender": "Género",
         "category": "Categoría",
         "division": "División",
         "equipment": "Equipo",
@@ -287,7 +291,6 @@
     "deleteHint": "Todos los resultados de este entrenamiento serán eliminados",
     "add": "Agregar entrenamiento"
   },
-  "competition": { "title": "Página de competición", "testTournament": "Torneo de prueba 2024 (demo)", "patrolsTitle": "Lista de patrullas" },
   "units": {
     "inch": "Pulgada",
     "centimeter": "Centímetro",
