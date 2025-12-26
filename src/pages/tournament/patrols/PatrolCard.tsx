@@ -156,7 +156,22 @@ const PatrolCard: React.FC<PatrolCardProps> = ({
             borderColor: isOver ? 'primary.main' : 'grey.300',
           }}
         >
-          {patrol.members.map((memberId) => {
+          {[...patrol.members]
+            .sort((a, b) => {
+              // Leader first
+              if (a === patrol.leaderId) return -1;
+              if (b === patrol.leaderId) return 1;
+              
+              // Judges next
+              const aIsJudge = patrol.judgeIds.includes(a);
+              const bIsJudge = patrol.judgeIds.includes(b);
+              if (aIsJudge && !bIsJudge) return -1;
+              if (!aIsJudge && bIsJudge) return 1;
+              
+              // Keep original order for others
+              return 0;
+            })
+            .map((memberId) => {
             const participant = participants.get(memberId);
             if (!participant) return null;
 

@@ -32,8 +32,10 @@ import {
   Gavel,
   EventBusy,
   GpsFixed,
+  Share,
 } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
+import { parseISO, isBefore, startOfDay } from 'date-fns';
 
 import { useAuth } from '../../../contexts/auth-context';
 import apiService from '../../../services/api';
@@ -111,6 +113,46 @@ const TournamentDetail: React.FC = () => {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+  };
+
+  const isPastTournament = (tournament: Tournament): boolean => {
+    const today = startOfDay(new Date());
+    const tournamentEndDate = tournament.endDate 
+      ? parseISO(tournament.endDate)
+      : parseISO(tournament.startDate);
+    return isBefore(startOfDay(tournamentEndDate), today);
+  };
+
+  const handleShare = async () => {
+    const tournamentUrl = `${window.location.origin}/${lang}/tournaments/${tournamentId}`;
+    const shareData = {
+      title: tournament?.title || 'Tournament',
+      text: tournament?.description || `Check out this tournament: ${tournament?.title}`,
+      url: tournamentUrl,
+    };
+
+    // Check if Web Share API is supported (mainly mobile devices)
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+      } catch (err) {
+        // User cancelled or error occurred
+        if ((err as Error).name !== 'AbortError') {
+          console.error('Error sharing:', err);
+        }
+      }
+    } else {
+      // Fallback: Copy URL to clipboard
+      try {
+        await navigator.clipboard.writeText(tournamentUrl);
+        // You could show a toast notification here
+        alert(t('pages.tournaments.linkCopied', 'Link copied to clipboard!'));
+      } catch (err) {
+        console.error('Failed to copy link:', err);
+        // Fallback: Show URL in a prompt
+        prompt(t('pages.tournaments.copyLink', 'Copy this link:'), tournamentUrl);
+      }
+    }
   };
 
   if (loading) {
@@ -273,14 +315,24 @@ const TournamentDetail: React.FC = () => {
 
           <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
             <Button
-              variant="contained"
+              variant="outlined"
               size="large"
-              startIcon={<Send />}
-              component={Link}
-              to={`/${lang}/apply/${tournament.id}`}
+              startIcon={<Share />}
+              onClick={handleShare}
             >
-              {t('pages.tournaments.apply', 'Apply to tournament')}
+              {t('pages.tournaments.share', 'Share')}
             </Button>
+            {!isPastTournament(tournament) && (
+              <Button
+                variant="contained"
+                size="large"
+                startIcon={<Send />}
+                component={Link}
+                to={`/${lang}/apply/${tournament.id}`}
+              >
+                {t('pages.tournaments.apply', 'Apply to tournament')}
+              </Button>
+            )}
             {user?.role === 'admin' && (
               <>
                 <Button

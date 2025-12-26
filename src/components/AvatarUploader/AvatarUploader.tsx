@@ -9,6 +9,7 @@ interface AvatarUploaderProps {
   onChange: (url: string | null) => void;
   size?: number; // viewport size in px (square)
   outputSize?: number; // output canvas size (square)
+  userId?: string; // User ID for avatar upload (required for backend)
 }
 
 const MAX_SIZE_BYTES = 10 * 1024 * 1024; // 10MB (API limit)
@@ -19,6 +20,7 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({
   onChange,
   size = 240,
   outputSize = 512,
+  userId,
 }) => {
   const { t } = useTranslation('common');
   const [imageSrc, setImageSrc] = useState<string | undefined>(value);
@@ -180,10 +182,17 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({
       }
 
       // Upload to backend with crop parameters
+      if (!userId) {
+        setError(t('profile.userIdRequired', 'User ID is required for avatar upload'));
+        setUploading(false);
+        return;
+      }
+
       const result = await apiService.uploadImage(
         currentFileRef.current,
         'avatar',
         {
+          entityId: userId,
           cropX,
           cropY,
           cropWidth,

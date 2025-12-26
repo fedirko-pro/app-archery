@@ -270,6 +270,7 @@ const ProfileEditPage: React.FC = () => {
         <ProfileEditForm
           profileData={profileData}
           isSaving={isSaving}
+          userId={user?.id}
           onChange={handleChange}
           onCategoriesChange={handleCategoriesChange}
           onPictureChange={(dataUrl) => {

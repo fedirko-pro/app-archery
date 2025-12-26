@@ -14,6 +14,7 @@ interface ProfileEditFormProps {
   profileData: ProfileData;
   isSaving: boolean;
   isAdminView?: boolean;
+  userId?: string;
   onSave: () => void;
   onCancel: () => void;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -25,6 +26,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
   profileData,
   isSaving,
   isAdminView,
+  userId,
   onSave,
   onCancel,
   onChange,
@@ -142,6 +144,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
 
         <AvatarUploader
           value={profileData.picture}
+          userId={userId}
           onChange={(dataUrl) => {
             if (onPictureChange) {
               onPictureChange(dataUrl);

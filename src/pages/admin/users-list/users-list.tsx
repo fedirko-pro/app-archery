@@ -1,4 +1,4 @@
-import { Edit, Email, Visibility } from '@mui/icons-material';
+import { Edit, Email, Visibility, ArrowUpward, ArrowDownward } from '@mui/icons-material';
 import {
   Box,
   Table,
@@ -16,7 +16,7 @@ import {
   Avatar,
   Chip,
 } from '@mui/material';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import type { User } from '../../../contexts/types';
@@ -36,6 +36,10 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
   const [resettingPassword, setResettingPassword] = useState<string | null>(
     null,
   );
+  const [sortConfig, setSortConfig] = useState<{
+    field: string | null;
+    direction: 'asc' | 'desc';
+  }>({ field: null, direction: 'asc' });
 
   useEffect(() => {
     fetchUsers();
@@ -78,6 +82,52 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
   const handleViewProfile = (userId: string) => {
     onViewProfile(userId);
   };
+
+  const handleSort = (field: string) => {
+    setSortConfig((prev) => ({
+      field,
+      direction:
+        prev.field === field && prev.direction === 'asc' ? 'desc' : 'asc',
+    }));
+  };
+
+  const sortedUsers = useMemo(() => {
+    if (!sortConfig.field) return users;
+
+    return [...users].sort((a, b) => {
+      let aValue: any;
+      let bValue: any;
+
+      switch (sortConfig.field) {
+        case 'name':
+          aValue = `${a.firstName || ''} ${a.lastName || ''}`.toLowerCase();
+          bValue = `${b.firstName || ''} ${b.lastName || ''}`.toLowerCase();
+          break;
+        case 'email':
+          aValue = (a.email || '').toLowerCase();
+          bValue = (b.email || '').toLowerCase();
+          break;
+        case 'gender':
+          aValue = (a.gender || '').toUpperCase();
+          bValue = (b.gender || '').toUpperCase();
+          break;
+        case 'club':
+          aValue = (a.club?.name || '').toLowerCase();
+          bValue = (b.club?.name || '').toLowerCase();
+          break;
+        case 'categories':
+          aValue = (a.categories || []).join(',').toLowerCase();
+          bValue = (b.categories || []).join(',').toLowerCase();
+          break;
+        default:
+          return 0;
+      }
+
+      if (aValue < bValue) return sortConfig.direction === 'asc' ? -1 : 1;
+      if (aValue > bValue) return sortConfig.direction === 'asc' ? 1 : -1;
+      return 0;
+    });
+  }, [users, sortConfig]);
 
   if (loading) {
     return (
@@ -125,16 +175,112 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
           <TableHead>
             <TableRow>
               <TableCell sx={{ width: 50 }}></TableCell>
-              <TableCell>Name</TableCell>
-              <TableCell>Email</TableCell>
-              <TableCell>Gender</TableCell>
-              <TableCell>Club</TableCell>
-              <TableCell>{t('pages.admin.favoriteCategories', 'Favorite Categories')}</TableCell>
+              <TableCell
+                onClick={() => handleSort('name')}
+                sx={{
+                  cursor: 'pointer',
+                  userSelect: 'none',
+                  '&:hover': { backgroundColor: 'action.hover' },
+                }}
+              >
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                  <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
+                    Name
+                  </Typography>
+                  {sortConfig.field === 'name' &&
+                    (sortConfig.direction === 'asc' ? (
+                      <ArrowUpward fontSize="small" />
+                    ) : (
+                      <ArrowDownward fontSize="small" />
+                    ))}
+                </Box>
+              </TableCell>
+              <TableCell
+                onClick={() => handleSort('email')}
+                sx={{
+                  cursor: 'pointer',
+                  userSelect: 'none',
+                  '&:hover': { backgroundColor: 'action.hover' },
+                }}
+              >
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                  <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
+                    Email
+                  </Typography>
+                  {sortConfig.field === 'email' &&
+                    (sortConfig.direction === 'asc' ? (
+                      <ArrowUpward fontSize="small" />
+                    ) : (
+                      <ArrowDownward fontSize="small" />
+                    ))}
+                </Box>
+              </TableCell>
+              <TableCell
+                onClick={() => handleSort('gender')}
+                align="center"
+                sx={{
+                  cursor: 'pointer',
+                  userSelect: 'none',
+                  '&:hover': { backgroundColor: 'action.hover' },
+                }}
+              >
+                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.5 }}>
+                  <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
+                    Gender
+                  </Typography>
+                  {sortConfig.field === 'gender' &&
+                    (sortConfig.direction === 'asc' ? (
+                      <ArrowUpward fontSize="small" />
+                    ) : (
+                      <ArrowDownward fontSize="small" />
+                    ))}
+                </Box>
+              </TableCell>
+              <TableCell
+                onClick={() => handleSort('club')}
+                sx={{
+                  cursor: 'pointer',
+                  userSelect: 'none',
+                  '&:hover': { backgroundColor: 'action.hover' },
+                }}
+              >
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                  <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
+                    Club
+                  </Typography>
+                  {sortConfig.field === 'club' &&
+                    (sortConfig.direction === 'asc' ? (
+                      <ArrowUpward fontSize="small" />
+                    ) : (
+                      <ArrowDownward fontSize="small" />
+                    ))}
+                </Box>
+              </TableCell>
+              <TableCell
+                onClick={() => handleSort('categories')}
+                sx={{
+                  cursor: 'pointer',
+                  userSelect: 'none',
+                  '&:hover': { backgroundColor: 'action.hover' },
+                }}
+              >
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                  <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
+                    {t('pages.admin.favoriteCategories', 'Favorite Categories')}
+                  </Typography>
+                  {sortConfig.field === 'categories' &&
+                    (sortConfig.direction === 'asc' ? (
+                      <ArrowUpward fontSize="small" />
+                    ) : (
+                      <ArrowDownward fontSize="small" />
+                    ))}
+                </Box>
+              </TableCell>
               <TableCell align="center">Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {users.map((user) => (
+            {sortedUsers.map((user) => (
               <TableRow key={user.id} hover>
                 <TableCell>
                   <Avatar

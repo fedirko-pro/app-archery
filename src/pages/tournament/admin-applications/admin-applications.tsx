@@ -1,4 +1,4 @@
-import { Check, Close, Visibility, Groups } from '@mui/icons-material';
+import { Check, Close, Visibility, Groups, ArrowUpward, ArrowDownward } from '@mui/icons-material';
 import {
   Avatar,
   Box,
@@ -27,7 +27,7 @@ import {
   Paper,
   Snackbar,
 } from '@mui/material';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -92,6 +92,10 @@ const AdminApplications: React.FC = () => {
     message: string;
     severity: 'success' | 'error' | 'info' | 'warning';
   }>({ open: false, message: '', severity: 'success' });
+  const [sortConfig, setSortConfig] = useState<{
+    field: string | null;
+    direction: 'asc' | 'desc';
+  }>({ field: null, direction: 'asc' });
 
   useEffect(() => {
     fetchTournaments();
@@ -264,6 +268,56 @@ const AdminApplications: React.FC = () => {
   const handleCloseSnackbar = () => {
     setSnackbar({ ...snackbar, open: false });
   };
+
+  const handleSort = (field: string) => {
+    setSortConfig((prev) => ({
+      field,
+      direction:
+        prev.field === field && prev.direction === 'asc' ? 'desc' : 'asc',
+    }));
+  };
+
+  const sortedApplications = useMemo(() => {
+    if (!sortConfig.field) return applications;
+
+    return [...applications].sort((a, b) => {
+      let aValue: any;
+      let bValue: any;
+
+      switch (sortConfig.field) {
+        case 'applicant':
+          aValue = `${a.applicant.firstName || ''} ${a.applicant.lastName || ''}`.toLowerCase();
+          bValue = `${b.applicant.firstName || ''} ${b.applicant.lastName || ''}`.toLowerCase();
+          break;
+        case 'gender':
+          aValue = (a.applicant.gender || '').toUpperCase();
+          bValue = (b.applicant.gender || '').toUpperCase();
+          break;
+        case 'category':
+          aValue = (a.bowCategory?.name || a.bowCategory?.code || a.category || '').toLowerCase();
+          bValue = (b.bowCategory?.name || b.bowCategory?.code || b.category || '').toLowerCase();
+          break;
+        case 'division':
+          aValue = (a.division?.name || '').toLowerCase();
+          bValue = (b.division?.name || '').toLowerCase();
+          break;
+        case 'status':
+          aValue = (a.status || '').toLowerCase();
+          bValue = (b.status || '').toLowerCase();
+          break;
+        case 'applied':
+          aValue = new Date(a.createdAt).getTime();
+          bValue = new Date(b.createdAt).getTime();
+          break;
+        default:
+          return 0;
+      }
+
+      if (aValue < bValue) return sortConfig.direction === 'asc' ? -1 : 1;
+      if (aValue > bValue) return sortConfig.direction === 'asc' ? 1 : -1;
+      return 0;
+    });
+  }, [applications, sortConfig]);
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -468,17 +522,131 @@ const AdminApplications: React.FC = () => {
             <TableHead>
               <TableRow>
                 <TableCell sx={{ width: '60px' }}>{t('pages.adminApplications.table.avatar')}</TableCell>
-                <TableCell>{t('pages.adminApplications.table.applicant')}</TableCell>
-                <TableCell>{t('pages.adminApplications.table.gender', 'Gender')}</TableCell>
-                <TableCell>{t('pages.adminApplications.table.category')}</TableCell>
-                <TableCell>{t('pages.adminApplications.table.division')}</TableCell>
-                <TableCell>{t('pages.adminApplications.table.status')}</TableCell>
-                <TableCell>{t('pages.adminApplications.table.applied')}</TableCell>
+                <TableCell
+                  onClick={() => handleSort('applicant')}
+                  sx={{
+                    cursor: 'pointer',
+                    userSelect: 'none',
+                    '&:hover': { backgroundColor: 'action.hover' },
+                  }}
+                >
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                    <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
+                      {t('pages.adminApplications.table.applicant')}
+                    </Typography>
+                    {sortConfig.field === 'applicant' &&
+                      (sortConfig.direction === 'asc' ? (
+                        <ArrowUpward fontSize="small" />
+                      ) : (
+                        <ArrowDownward fontSize="small" />
+                      ))}
+                  </Box>
+                </TableCell>
+                <TableCell
+                  onClick={() => handleSort('gender')}
+                  sx={{
+                    cursor: 'pointer',
+                    userSelect: 'none',
+                    '&:hover': { backgroundColor: 'action.hover' },
+                  }}
+                >
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                    <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
+                      {t('pages.adminApplications.table.gender', 'Gender')}
+                    </Typography>
+                    {sortConfig.field === 'gender' &&
+                      (sortConfig.direction === 'asc' ? (
+                        <ArrowUpward fontSize="small" />
+                      ) : (
+                        <ArrowDownward fontSize="small" />
+                      ))}
+                  </Box>
+                </TableCell>
+                <TableCell
+                  onClick={() => handleSort('category')}
+                  sx={{
+                    cursor: 'pointer',
+                    userSelect: 'none',
+                    '&:hover': { backgroundColor: 'action.hover' },
+                  }}
+                >
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                    <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
+                      {t('pages.adminApplications.table.category')}
+                    </Typography>
+                    {sortConfig.field === 'category' &&
+                      (sortConfig.direction === 'asc' ? (
+                        <ArrowUpward fontSize="small" />
+                      ) : (
+                        <ArrowDownward fontSize="small" />
+                      ))}
+                  </Box>
+                </TableCell>
+                <TableCell
+                  onClick={() => handleSort('division')}
+                  sx={{
+                    cursor: 'pointer',
+                    userSelect: 'none',
+                    '&:hover': { backgroundColor: 'action.hover' },
+                  }}
+                >
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                    <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
+                      {t('pages.adminApplications.table.division')}
+                    </Typography>
+                    {sortConfig.field === 'division' &&
+                      (sortConfig.direction === 'asc' ? (
+                        <ArrowUpward fontSize="small" />
+                      ) : (
+                        <ArrowDownward fontSize="small" />
+                      ))}
+                  </Box>
+                </TableCell>
+                <TableCell
+                  onClick={() => handleSort('status')}
+                  sx={{
+                    cursor: 'pointer',
+                    userSelect: 'none',
+                    '&:hover': { backgroundColor: 'action.hover' },
+                  }}
+                >
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                    <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
+                      {t('pages.adminApplications.table.status')}
+                    </Typography>
+                    {sortConfig.field === 'status' &&
+                      (sortConfig.direction === 'asc' ? (
+                        <ArrowUpward fontSize="small" />
+                      ) : (
+                        <ArrowDownward fontSize="small" />
+                      ))}
+                  </Box>
+                </TableCell>
+                <TableCell
+                  onClick={() => handleSort('applied')}
+                  sx={{
+                    cursor: 'pointer',
+                    userSelect: 'none',
+                    '&:hover': { backgroundColor: 'action.hover' },
+                  }}
+                >
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                    <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
+                      {t('pages.adminApplications.table.applied')}
+                    </Typography>
+                    {sortConfig.field === 'applied' &&
+                      (sortConfig.direction === 'asc' ? (
+                        <ArrowUpward fontSize="small" />
+                      ) : (
+                        <ArrowDownward fontSize="small" />
+                      ))}
+                  </Box>
+                </TableCell>
                 <TableCell>{t('pages.adminApplications.table.actions')}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {applications.map((application) => (
+              {sortedApplications.map((application) => (
                 <TableRow key={application.id}>
                   <TableCell>
                     <Avatar

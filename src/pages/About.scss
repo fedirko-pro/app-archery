@@ -1,0 +1,78 @@
+.about-page {
+  padding: 2rem 0;
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+
+  h2 {
+    margin-bottom: 1.5rem;
+    color: var(--primary-color, #1976d2);
+  }
+
+  .about-intro {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    color: var(--text-primary, #333);
+  }
+
+  .features-section {
+    margin-bottom: 2.5rem;
+
+    h3 {
+      margin-bottom: 1rem;
+      color: var(--primary-color, #1976d2);
+      font-size: 1.3rem;
+    }
+
+    .features-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+
+      li {
+        padding: 0.75rem 0;
+        border-bottom: 1px solid var(--border-color, #e0e0e0);
+        line-height: 1.6;
+        color: var(--text-primary, #333);
+
+        &:last-child {
+          border-bottom: none;
+        }
+
+        strong {
+          color: var(--text-primary, #333);
+          font-weight: 600;
+        }
+      }
+    }
+  }
+
+  hr {
+    margin: 2rem 0;
+    border: none;
+    border-top: 1px solid var(--border-color, #e0e0e0);
+  }
+
+  .contact-info,
+  .copyright {
+    text-align: center;
+    color: var(--text-secondary, #666);
+    margin: 1rem 0;
+
+    a {
+      color: var(--primary-color, #1976d2);
+      text-decoration: none;
+      transition: opacity 0.2s;
+
+      &:hover {
+        text-decoration: underline;
+        opacity: 0.8;
+      }
+    }
+  }
+}
+
