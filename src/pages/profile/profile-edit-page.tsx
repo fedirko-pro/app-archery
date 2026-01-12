@@ -71,6 +71,9 @@ const ProfileEditPage: React.FC = () => {
         location: user.location || '',
         picture: user.picture || '',
         federationNumber: user.federationNumber || '',
+        nationality: user.nationality || 'Portuguesa',
+        gender: user.gender || 'M',
+        clubId: user.clubId || '',
         categories: Array.isArray(user.categories) ? user.categories : [],
         appLanguage: (user as any).appLanguage || (user as any).app_language || (user as any).language || 'pt',
       });
@@ -267,6 +270,7 @@ const ProfileEditPage: React.FC = () => {
         <ProfileEditForm
           profileData={profileData}
           isSaving={isSaving}
+          userId={user?.id}
           onChange={handleChange}
           onCategoriesChange={handleCategoriesChange}
           onPictureChange={(dataUrl) => {

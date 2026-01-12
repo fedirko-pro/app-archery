@@ -15,7 +15,22 @@
     "rules": {
       "title": "Reglas",
       "openOfficialPage": "Abrir página oficial",
-      "downloadPdf": "Descargar PDF"
+      "downloadPdf": "Descargar PDF",
+      "createRule": "Crear Regla",
+      "editRule": "Editar Regla",
+      "ruleCode": "Código de Regla",
+      "ruleName": "Nombre de Regla",
+      "edition": "Edición",
+      "descriptionEn": "Descripción (Inglés)",
+      "descriptionPt": "Descripción (Portugués)",
+      "descriptionIt": "Descripción (Italiano)",
+      "descriptionUk": "Descripción (Ucraniano)",
+      "descriptionEs": "Descripción (Español)",
+      "link": "Enlace a Página Oficial",
+      "downloadLink": "Enlace de Descarga",
+      "deleteConfirmTitle": "¿Eliminar Regla?",
+      "deleteConfirmMessage": "¿Está seguro de que desea eliminar esta regla?",
+      "deleteWarning": "Esta regla no puede eliminarse si tiene divisiones o categorías de arco relacionadas."
     },
     "categories": {
       "title": "Categorías de arco (ordenadas A-Z)",
@@ -24,36 +39,43 @@
     "converter": { "title": "Conversor de las medidas más comunes en arquería" },
     "about": {
       "title": "Acerca de esta aplicación",
-      "intro": "Esta app fue creada para ayudar a la federación de arquería y simplificar la gestión de torneos. También es una \"multiherramienta\" para la arquería moderna.",
-      "currentTitle": "Funcionalidad actual:",
+      "intro": "UArchery es una aplicación web integral diseñada para ayudar a las federaciones de tiro con arco a gestionar torneos, participantes y competiciones de manera eficiente. Construida con tecnologías modernas, proporciona una solución completa para la organización de torneos desde el registro hasta la generación de patrullas.",
+      "currentTitle": "Funcionalidades actuales:",
       "current": {
-        "tournaments": "Gestión de torneos",
-        "applications": "Gestión de solicitudes",
-        "patrols": "Gestión de patrullas",
-        "users": "Gestión de usuarios",
-        "rules": "Gestión de reglas",
-        "converter": "Conversor universal",
-        "aboutPage": "Página \"Acerca de\""
+        "auth": "Autenticación y autorización - Autenticación basada en JWT con Google OAuth, restablecimiento de contraseña y control de acceso basado en roles",
+        "profiles": "Perfiles de usuario - Gestión completa de perfiles con carga de avatar, biografía, ubicación, número de federación y categorías de arco favoritas",
+        "tournaments": "Gestión de torneos - Crear, editar y gestionar torneos con banners, adjuntos, mapas de ubicación y plazos de solicitud",
+        "applications": "Solicitudes de torneos - Enviar solicitudes con selección de categoría, división y equipo. Flujo de trabajo de aprobación de administrador con seguimiento de estado",
+        "patrols": "Sistema de patrullas - Generación automática de patrullas con agrupación inteligente por categoría de arco, división y género. Interfaz de gestión drag-and-drop y exportación PDF",
+        "admin": "Panel de administración - Gestión de usuarios, aprobaciones de solicitudes, supervisión de torneos y administración del sistema",
+        "categories": "Gestión de categorías de arco - CRUD completo para categorías de arco con referencias a reglas",
+        "clubs": "Gestión de clubes - Gestionar clubes de tiro con arco con logos, descripciones y ubicaciones",
+        "divisions": "Gestión de divisiones - Gestión de grupos de edad y divisiones vinculadas a reglas",
+        "rules": "Gestión de reglas - Reglas oficiales de tiro con arco con descripciones multilingües y descargas PDF",
+        "converter": "Conversor de unidades - Convertir entre medidas comunes de tiro con arco (pulgadas/cm, libras/kg, granos/gramos, yardas/metros)",
+        "uploads": "Sistema de carga de archivos - Procesamiento de imágenes para avatares y banners, gestión de adjuntos para torneos",
+        "multilang": "Soporte multiidioma - Disponible en inglés, ucraniano, español, italiano y portugués",
+        "pwa": "Aplicación web progresiva - PWA instalable con capacidades offline"
       },
-      "plannedTitle": "Funcionalidad planificada:",
+      "plannedTitle": "Funcionalidades planificadas:",
       "planned": {
-        "trainingLog": "Registro de entrenamientos",
-        "profile": "Perfil de arqueros",
-        "shareProfile": "Posibilidad de compartir el perfil",
-        "localCompetition": "Competencia local",
-        "globalCompetition": "Competencia global",
-        "duels": "Desafíos amistosos (duelos)",
-        "news": "Noticias",
-        "calendar": "Calendario",
-        "knowledgeBase": "Base de conocimientos de arquería",
+        "trainingLog": "Registro de entrenamientos - Seguimiento de sesiones de entrenamiento personal con estadísticas detalladas",
+        "achievements": "Sistema de logros - Seguimiento y compartición integral de logros",
+        "competitions": "Funciones de competición - Gestión mejorada de competiciones y puntuación",
+        "duels": "Desafíos amistosos - Desafiar a otros arqueros a duelos amistosos",
+        "news": "Noticias y actualizaciones - Noticias de torneos y anuncios de federación",
+        "calendar": "Calendario de eventos - Vista de calendario integrada de torneos y eventos",
+        "knowledgeBase": "Base de conocimientos - Enciclopedia y recursos integrales de tiro con arco",
         "more": "Y mucho más..."
       },
-      "contact": "Para funcionalidad adicional (u otras preguntas) envíame un correo a",
-      "copyrightPrefix": "© 2023",
+      "contact": "Para solicitudes de funciones, informes de errores o preguntas, por favor contacte",
+      "copyrightPrefix": "© 2023-2025",
       "copyrightSuffix": ". Todos los derechos reservados."
     },
     "tournaments": {
       "title": "Torneos",
+      "futureTournaments": "Futuros",
+      "pastTournaments": "Pasados",
       "create": "Crear torneo",
       "edit": "Editar",
       "delete": "Eliminar",
@@ -101,6 +123,9 @@
     },
     "publicApplication": {
       "notFound": "Torneo no encontrado",
+      "share": "Compartir",
+      "linkCopied": "¡Enlace copiado al portapapeles!",
+      "copyLink": "Copia este enlace:",
       "applyFor": "Aplicar para {{title}}",
       "signInPrompt": "Para enviar tu solicitud a este torneo, necesitas crear una cuenta o iniciar sesión en tu cuenta existente.",
       "redirectInfo": "Después del registro o inicio de sesión, volverás a este formulario."
@@ -127,6 +152,74 @@
         "olympic": "Recurvo Olímpico",
         "compoundBow": "Arco compuesto",
         "traditionalBow": "Arco tradicional"
+      }
+    },
+    "admin": {
+      "favoriteCategories": "Categorías Favoritas"
+    },
+    "adminApplications": {
+      "title": "Gestión de solicitudes de torneos",
+      "selectTournament": "Seleccionar torneo",
+      "noApplications": "No se encontraron solicitudes para este torneo.",
+      "fetchError": "Error al cargar las solicitudes",
+      "fetchTournamentsError": "Error al cargar los torneos",
+      "statsTotal": "Total",
+      "statsPending": "Pendientes",
+      "statsApproved": "Aprobadas",
+      "statsRejected": "Rechazadas",
+      "table": {
+        "avatar": "Avatar",
+        "applicant": "Solicitante",
+        "gender": "Género",
+        "category": "Categoría",
+        "division": "División",
+        "equipment": "Equipo",
+        "status": "Estado",
+        "applied": "Solicitado",
+        "actions": "Acciones"
+      },
+      "actions": {
+        "view": "Ver",
+        "approve": "Aprobar",
+        "reject": "Rechazar",
+        "approving": "Aprobando...",
+        "rejecting": "Rechazando..."
+      },
+      "status": {
+        "pending": "Pendiente",
+        "approved": "Aprobada",
+        "rejected": "Rechazada",
+        "withdrawn": "Retirada"
+      },
+      "dialog": {
+        "title": "Detalles de la solicitud - {{name}}",
+        "titleFallback": "Detalles de la solicitud",
+        "tournament": "Torneo",
+        "category": "Categoría",
+        "division": "División",
+        "equipment": "Equipo",
+        "notes": "Notas",
+        "noNotes": "No se proporcionaron notas",
+        "statusLabel": "Estado",
+        "rejectionReason": "Motivo del rechazo",
+        "rejectionReasonPlaceholder": "Por favor, proporciona un motivo para el rechazo...",
+        "cancel": "Cancelar",
+        "updateStatus": "Actualizar estado"
+      },
+      "notifications": {
+        "approvedSuccess": "Solicitud de {{name}} aprobada exitosamente",
+        "rejectedSuccess": "Solicitud de {{name}} rechazada exitosamente",
+        "updateSuccess": "Estado de la solicitud actualizado exitosamente",
+        "approveFailed": "Error al aprobar la solicitud de {{name}}",
+        "rejectFailed": "Error al rechazar la solicitud de {{name}}",
+        "updateFailed": "Error al actualizar el estado de la solicitud",
+        "approveFailedGeneric": "Error al aprobar la solicitud",
+        "rejectFailedGeneric": "Error al rechazar la solicitud"
+      },
+      "tournament": {
+        "startDate": "Fecha de inicio",
+        "endDate": "Fecha de finalización",
+        "applicationDeadline": "Fecha límite de solicitud"
       }
     }
   },
@@ -187,7 +280,7 @@
     "subtitle": "La página que buscas puede haber sido eliminada o no estar disponible temporalmente.",
     "goHome": "Ir al inicio"
   },
-  "common": { "or": "o", "cancel": "Cancelar", "update": "Actualizar", "create": "Crear", "back": "Atrás" },
+  "common": { "or": "o", "cancel": "Cancelar", "update": "Actualizar", "create": "Crear", "back": "Atrás", "save": "Guardar", "saving": "Guardando...", "delete": "Eliminar", "deleting": "Eliminando..." },
   "auth": {
     "logout": "Cerrar sesión",
     "signIn": "Iniciar sesión",
@@ -208,7 +301,6 @@
     "deleteHint": "Todos los resultados de este entrenamiento serán eliminados",
     "add": "Agregar entrenamiento"
   },
-  "competition": { "title": "Página de competición", "testTournament": "Torneo de prueba 2024 (demo)", "patrolsTitle": "Lista de patrullas" },
   "units": {
     "inch": "Pulgada",
     "centimeter": "Centímetro",
@@ -224,6 +316,10 @@
     "poundKg": { "short": "Libra - kg", "long": "Libra - Kilogramo", "desc": "Usado para medir la potencia del arco" },
     "grainG": { "short": "Grain - g", "long": "Grain - Gramo", "desc": "Usado para medir el peso de la flecha/punta, etc." },
     "yardM": { "short": "Yarda - m", "long": "Yarda - Metro", "desc": "Conversiones de distancia de tiro" }
+  },
+  "clubs": {
+    "clubLogo": "Logo del Club",
+    "logoSubheader": "Selecciona una imagen y luego arrastra para reposicionar (PNG, JPG hasta 10MB)"
   }
 }
 

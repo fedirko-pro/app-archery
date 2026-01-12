@@ -11,11 +11,8 @@ import AdminPanel from '../../pages/admin/admin-panel';
 import ProtectedAdminRoute from '../../pages/admin/protected-admin-route';
 import UserEdit from '../../pages/admin/user-edit/user-edit';
 import UserProfileView from '../../pages/admin/user-profile-view/user-profile-view';
-import Competition from '../../pages/competition/competition';
-import CompetitionsList from '../../pages/competition/competitions-list/competitions-list';
-import PatrolList from '../../pages/competition/patrol-list/patrol-list';
-import UserPage from '../../pages/competition/user-page/user-page';
 import ConverterPage from '../../pages/ConverterPage';
+import UserPage from '../../pages/competition/user-page/user-page';
 import Encyclopedia from '../../pages/Encyclopedia';
 // TODO: Settings temporarily disabled - functionality moved to Profile
 // import Settings from '../Settings/Settings.tsx';
@@ -33,9 +30,14 @@ import TournamentDetail from '../../pages/tournament/tournament-detail/tournamen
 import TournamentCreate from '../../pages/tournament/tournament-create/tournament-create';
 import TournamentEdit from '../../pages/tournament/tournament-edit/tournament-edit';
 import UserApplications from '../../pages/tournament/user-applications/user-applications';
+import PatrolsPage from '../../pages/tournament/patrols/PatrolsPage';
 import Training from '../../pages/Trainings';
 import Categories from '../../pages/categories/Categories';
 import CategoryEdit from '../../pages/categories/admin/category-edit';
+import Clubs from '../../pages/clubs/Clubs';
+import ClubEdit from '../../pages/clubs/admin/club-edit';
+import Divisions from '../../pages/divisions/Divisions';
+import DivisionEdit from '../../pages/divisions/admin/division-edit';
 import Rules from '../../pages/rules/Rules';
 import NotFound from '../../pages/NotFound';
 
@@ -115,12 +117,11 @@ function Content() {
           {/* TODO: Settings route temporarily disabled - functionality moved to Profile */}
           {/* <Route path="settings" element={<Settings />} /> */}
           <Route path="converter" element={<ConverterPage />} />
-          <Route path="competitions" element={<CompetitionsList />} />
-          <Route path="competition" element={<Competition />} />
-          <Route path="competition/patrols" element={<PatrolList />} />
           <Route path="competition/user" element={<UserPage />} />
           <Route path="about" element={<About />} />
           <Route path="categories" element={<Categories />} />
+          <Route path="clubs" element={<Clubs />} />
+          <Route path="divisions" element={<Divisions />} />
           <Route path="rules" element={<Rules />} />
           <Route path="encyclopedia" element={<Encyclopedia />} />
           <Route path="trainings" element={<Training />} />
@@ -135,6 +136,11 @@ function Content() {
             <Route path=":tournamentId/edit" element={
               <ProtectedAdminRoute>
                 <TournamentEdit />
+              </ProtectedAdminRoute>
+            } />
+            <Route path=":tournamentId/patrols" element={
+              <ProtectedAdminRoute>
+                <PatrolsPage />
               </ProtectedAdminRoute>
             } />
           </Route>
@@ -157,10 +163,50 @@ function Content() {
             }
           />
           <Route
+            path="admin/categories/create"
+            element={
+              <ProtectedAdminRoute>
+                <CategoryEdit />
+              </ProtectedAdminRoute>
+            }
+          />
+          <Route
             path="admin/categories/:id/edit"
             element={
               <ProtectedAdminRoute>
                 <CategoryEdit />
+              </ProtectedAdminRoute>
+            }
+          />
+          <Route
+            path="admin/clubs/:id/edit"
+            element={
+              <ProtectedAdminRoute>
+                <ClubEdit />
+              </ProtectedAdminRoute>
+            }
+          />
+          <Route
+            path="admin/clubs/create"
+            element={
+              <ProtectedAdminRoute>
+                <ClubEdit />
+              </ProtectedAdminRoute>
+            }
+          />
+          <Route
+            path="admin/divisions/:id/edit"
+            element={
+              <ProtectedAdminRoute>
+                <DivisionEdit />
+              </ProtectedAdminRoute>
+            }
+          />
+          <Route
+            path="admin/divisions/create"
+            element={
+              <ProtectedAdminRoute>
+                <DivisionEdit />
               </ProtectedAdminRoute>
             }
           />

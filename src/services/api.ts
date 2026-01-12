@@ -7,10 +7,19 @@ import type {
   ChangePasswordData,
 } from '../contexts/types';
 import type { ProfileData } from '../pages/profile/types';
-import type { ApiError, CategoryDto, RuleDto } from './types';
+import type {
+  ApiError,
+  BowCategory,
+  CategoryDto,
+  ClubDto,
+  CreateBowCategoryDto,
+  DivisionDto,
+  RuleDto,
+  UpdateBowCategoryDto,
+} from './types';
 import { getCurrentI18nLang } from '../utils/i18n-lang';
 import categoriesData from '../data/categories';
-import rulesData from '../data/rules';
+import divisionsData from '../data/divisions';
 
 interface RequestOptions extends RequestInit {
   headers?: Record<string, string>;
@@ -94,6 +103,40 @@ class ApiService {
 
       throw error;
     }
+  }
+
+  /**
+   * Helper method for GET requests.
+   */
+  private async get<T>(endpoint: string): Promise<T> {
+    return this.request<T>(endpoint, { method: 'GET' });
+  }
+
+  /**
+   * Helper method for POST requests.
+   */
+  private async post<T>(endpoint: string, body?: unknown): Promise<T> {
+    return this.request<T>(endpoint, {
+      method: 'POST',
+      body: body ? JSON.stringify(body) : undefined,
+    });
+  }
+
+  /**
+   * Helper method for PATCH requests.
+   */
+  private async patch<T>(endpoint: string, body?: unknown): Promise<T> {
+    return this.request<T>(endpoint, {
+      method: 'PATCH',
+      body: body ? JSON.stringify(body) : undefined,
+    });
+  }
+
+  /**
+   * Helper method for DELETE requests.
+   */
+  private async delete<T = void>(endpoint: string): Promise<T> {
+    return this.request<T>(endpoint, { method: 'DELETE' });
   }
 
   async login(email: string, password: string): Promise<AuthResponse> {
@@ -266,6 +309,77 @@ class ApiService {
     });
   }
 
+  /**
+   * Generate patrol preview for a tournament (without saving)
+   */
+  async generatePatrolsPreview(tournamentId: string): Promise<{
+    patrols: any[];
+    stats: any;
+  }> {
+    return await this.request<{ patrols: any[]; stats: any }>(
+      `/patrols/tournaments/${tournamentId}/generate`,
+      { method: 'POST' },
+    );
+  }
+
+  /**
+   * Generate and save patrols for a tournament
+   */
+  async generateAndSavePatrols(tournamentId: string): Promise<{
+    patrols: any[];
+    stats: any;
+  }> {
+    return await this.request<{ patrols: any[]; stats: any }>(
+      `/patrols/tournaments/${tournamentId}/generate-and-save`,
+      { method: 'POST' },
+    );
+  }
+
+  /**
+   * Get or generate patrols for a tournament.
+   * If patrols exist, returns them. If not, generates and saves new ones.
+   */
+  async getOrGeneratePatrols(tournamentId: string): Promise<{
+    patrols: any[];
+    stats?: any;
+    isNewlyGenerated: boolean;
+  }> {
+    // First try to get existing patrols
+    const existingPatrols = await this.getPatrolsByTournament(tournamentId);
+    
+    if (existingPatrols && existingPatrols.length > 0) {
+      return {
+        patrols: existingPatrols,
+        isNewlyGenerated: false,
+      };
+    }
+
+    // No patrols exist, generate and save new ones
+    const result = await this.generateAndSavePatrols(tournamentId);
+    return {
+      patrols: result.patrols,
+      stats: result.stats,
+      isNewlyGenerated: true,
+    };
+  }
+
+  /**
+   * Regenerate patrols for a tournament (deletes existing and creates new)
+   */
+  async regeneratePatrols(tournamentId: string): Promise<{
+    patrols: any[];
+    stats: any;
+  }> {
+    // First delete all existing patrols
+    const existingPatrols = await this.getPatrolsByTournament(tournamentId);
+    for (const patrol of existingPatrols) {
+      await this.deletePatrol(patrol.id);
+    }
+    
+    // Generate and save new patrols
+    return await this.generateAndSavePatrols(tournamentId);
+  }
+
   async createTournamentApplication(applicationData: {
     tournamentId: string;
     category?: string;
@@ -338,6 +452,79 @@ class ApiService {
   }
 
   /**
+   * Fetch all bow categories from the backend.
+   * @param ruleId Optional filter by rule ID
+   */
+  async getBowCategories(ruleId?: string): Promise<BowCategory[]> {
+    const endpoint = ruleId ? `/bow-categories?ruleId=${ruleId}` : '/bow-categories';
+    return this.get<BowCategory[]>(endpoint);
+  }
+
+  /**
+   * Fetch a single bow category by ID from the backend.
+   */
+  async getBowCategoryById(id: string): Promise<BowCategory | undefined> {
+    try {
+      return await this.get<BowCategory>(`/bow-categories/${id}`);
+    } catch (error) {
+      console.error(`Failed to fetch bow category ${id}:`, error);
+      return undefined;
+    }
+  }
+
+  /**
+   * Fetch a single bow category by code from the backend.
+   */
+  async getBowCategoryByCode(code: string): Promise<BowCategory | undefined> {
+    try {
+      return await this.get<BowCategory>(`/bow-categories/code/${code}`);
+    } catch (error) {
+      console.error(`Failed to fetch bow category with code ${code}:`, error);
+      return undefined;
+    }
+  }
+
+  /**
+   * Fetch bow categories filtered by rule code.
+   * @param ruleCode The rule code (e.g., 'IFAA', 'FABP')
+   */
+  async getBowCategoriesByRule(ruleCode: string): Promise<BowCategory[]> {
+    try {
+      const rule = await this.getRuleByCode(ruleCode);
+      if (!rule || !rule.id) {
+        console.warn(`Rule with code ${ruleCode} not found`);
+        return [];
+      }
+      return await this.getBowCategories(rule.id);
+    } catch (error) {
+      console.error(`Failed to fetch bow categories for rule ${ruleCode}:`, error);
+      return [];
+    }
+  }
+
+  /**
+   * Create a new bow category (admin only).
+   */
+  async createBowCategory(categoryData: CreateBowCategoryDto): Promise<BowCategory> {
+    return this.post<BowCategory>('/bow-categories', categoryData);
+  }
+
+  /**
+   * Update an existing bow category (admin only).
+   */
+  async updateBowCategory(id: string, categoryData: UpdateBowCategoryDto): Promise<BowCategory> {
+    return this.patch<BowCategory>(`/bow-categories/${id}`, categoryData);
+  }
+
+  /**
+   * Delete a bow category (admin only).
+   */
+  async deleteBowCategory(id: string): Promise<void> {
+    await this.delete(`/bow-categories/${id}`);
+  }
+
+  /**
+   * @deprecated Use getBowCategories() instead. This method is kept for backward compatibility.
    * Fetch categories from a FE-only local data module.
    * Replaced by backend once available.
    */
@@ -346,6 +533,7 @@ class ApiService {
   }
 
   /**
+   * @deprecated Use getBowCategoryById() or getBowCategoryByCode() instead.
    * Resolve a single category by id or code (case-insensitive).
    */
   async getCategoryById(id: string): Promise<CategoryDto | undefined> {
@@ -358,6 +546,7 @@ class ApiService {
   }
 
   /**
+   * @deprecated Use createBowCategory() or updateBowCategory() instead.
    * FE-only stub. Will be implemented when backend is ready.
    */
   async upsertCategory(_: CategoryDto): Promise<CategoryDto> {
@@ -365,6 +554,7 @@ class ApiService {
   }
 
   /**
+   * @deprecated Use deleteBowCategory() instead.
    * FE-only stub. Will be implemented when backend is ready.
    */
   async deleteCategory(_: string): Promise<void> {
@@ -372,25 +562,244 @@ class ApiService {
   }
 
   /**
-   * Fetch rules (FE-only dataset for now)
+   * Fetch all rules from the backend.
    */
   async getRules(): Promise<RuleDto[]> {
-    return rulesData as RuleDto[];
+    return this.get<RuleDto[]>('/rules');
   }
 
   /**
-   * Upload an image (avatar or banner) with optional cropping and processing.
+   * Fetch a single rule by ID from the backend.
+   */
+  async getRuleById(id: string): Promise<RuleDto | undefined> {
+    try {
+      return await this.get<RuleDto>(`/rules/${id}`);
+    } catch (error) {
+      console.error(`Failed to fetch rule ${id}:`, error);
+      return undefined;
+    }
+  }
+
+  /**
+   * Fetch a single rule by code from the backend.
+   */
+  async getRuleByCode(ruleCode: string): Promise<RuleDto | undefined> {
+    try {
+      return await this.get<RuleDto>(`/rules/code/${ruleCode}`);
+    } catch (error) {
+      console.error(`Failed to fetch rule with code ${ruleCode}:`, error);
+      return undefined;
+    }
+  }
+
+  /**
+   * Create a new rule (admin only).
+   */
+  async createRule(ruleData: Omit<RuleDto, 'id' | 'createdAt' | 'updatedAt' | 'divisions' | 'bowCategories'>): Promise<RuleDto> {
+    return this.post<RuleDto>('/rules', ruleData);
+  }
+
+  /**
+   * Update an existing rule (admin only).
+   */
+  async updateRule(id: string, ruleData: Partial<Omit<RuleDto, 'id' | 'createdAt' | 'updatedAt' | 'divisions' | 'bowCategories'>>): Promise<RuleDto> {
+    return this.patch<RuleDto>(`/rules/${id}`, ruleData);
+  }
+
+  /**
+   * Delete a rule (admin only).
+   * Note: Cannot delete if divisions or bow categories are linked to this rule.
+   */
+  async deleteRule(id: string): Promise<void> {
+    await this.delete(`/rules/${id}`);
+  }
+
+  /**
+   * Fetch all clubs from the backend.
+   */
+  async getClubs(): Promise<ClubDto[]> {
+    return this.get<ClubDto[]>('/clubs');
+  }
+
+  /**
+   * Fetch a single club by ID from the backend.
+   */
+  async getClubById(id: string): Promise<ClubDto | undefined> {
+    try {
+      return await this.get<ClubDto>(`/clubs/${id}`);
+    } catch (error) {
+      console.error(`Failed to fetch club ${id}:`, error);
+      return undefined;
+    }
+  }
+
+  /**
+   * Create or update a club (admin only).
+   * If club.id is provided, updates the existing club.
+   * Otherwise, creates a new club.
+   */
+  async upsertClub(club: ClubDto): Promise<ClubDto> {
+    if (club.id) {
+      // Update existing club - remove readonly fields
+      const { id, createdAt, updatedAt, ...updateData } = club;
+      return this.patch<ClubDto>(`/clubs/${id}`, updateData);
+    } else {
+      // Create new club - remove all system-generated fields
+      const { id, createdAt, updatedAt, ...createData } = club;
+      return this.post<ClubDto>('/clubs', createData);
+    }
+  }
+
+  /**
+   * Delete a club by ID (admin only).
+   */
+  async deleteClub(id: string): Promise<void> {
+    await this.delete(`/clubs/${id}`);
+  }
+
+  /**
+   * Fetch divisions from the backend API.
+   */
+  async getDivisions(ruleId?: string): Promise<DivisionDto[]> {
+    try {
+      const url = ruleId ? `/divisions?ruleId=${ruleId}` : '/divisions';
+      const divisions = await this.get<any[]>(url);
+      
+      // Check if divisions is an array and not empty
+      if (!Array.isArray(divisions) || divisions.length === 0) {
+        console.warn('Backend returned empty or invalid divisions array, using fallback data');
+        return divisionsData as DivisionDto[];
+      }
+      
+      // Transform backend response to DivisionDto format
+      // Backend returns divisions with populated rule object
+      const transformed = divisions
+        .filter((div: any) => div && div.id && div.name) // Filter out invalid entries
+        .map((div: any) => ({
+          id: div.id,
+          name: div.name,
+          description: div.description || undefined,
+          rule_id: div.rule?.id,
+          rule_code: div.rule?.ruleCode, // Extract ruleCode from rule object
+          created_at: div.createdAt,
+          updated_at: div.updatedAt,
+        }));
+
+      // Remove duplicates by id
+      const uniqueDivisions = Array.from(
+        new Map(transformed.map((d) => [d.id, d])).values()
+      );
+
+      // If no valid divisions after transformation, use fallback
+      if (uniqueDivisions.length === 0) {
+        console.warn('No valid divisions after transformation, using fallback data');
+        return divisionsData as DivisionDto[];
+      }
+
+      return uniqueDivisions;
+    } catch (error) {
+      console.error('Failed to fetch divisions from backend, using fallback data:', error);
+      // Fallback to static data if backend is unavailable
+      return divisionsData as DivisionDto[];
+    }
+  }
+
+  /**
+   * Fetch divisions filtered by rule code.
+   */
+  async getDivisionsByRule(ruleCode: string): Promise<DivisionDto[]> {
+    try {
+      // First, find the rule by code
+      const rule = await this.getRuleByCode(ruleCode);
+      if (!rule || !rule.id) {
+        console.warn(`Rule with code ${ruleCode} not found, using fallback data`);
+        // Fallback to static data filtering
+        const divisions = divisionsData as DivisionDto[];
+        return divisions.filter((d) => d.rule_code === ruleCode);
+      }
+
+      // Then fetch divisions for that rule
+      const divisions = await this.getDivisions(rule.id);
+      
+      // If getDivisions returned fallback data, filter it by rule_code
+      if (divisions.length > 0 && divisions.some((d) => d.rule_code === ruleCode)) {
+        // Filter by rule_code to ensure consistency
+        const filtered = divisions.filter((d) => d.rule_code === ruleCode);
+
+        // Remove duplicates by id
+        const uniqueDivisions = Array.from(
+          new Map(filtered.map((d) => [d.id, d])).values()
+        );
+
+        return uniqueDivisions;
+      }
+
+      // If no divisions found, try fallback
+      console.warn(`No divisions found for rule ${ruleCode}, using fallback data`);
+      const fallbackDivisions = divisionsData as DivisionDto[];
+      return fallbackDivisions.filter((d) => d.rule_code === ruleCode);
+    } catch (error) {
+      console.error(`Failed to fetch divisions for rule ${ruleCode}:`, error);
+      // Fallback to static data filtering
+      const divisions = divisionsData as DivisionDto[];
+      return divisions.filter((d) => d.rule_code === ruleCode);
+    }
+  }
+
+  /**
+   * Resolve a single division by id.
+   */
+  async getDivisionById(id: string): Promise<DivisionDto | undefined> {
+    try {
+      const division = await this.get<any>(`/divisions/${id}`);
+      if (!division) return undefined;
+
+      // Transform backend response to DivisionDto format
+      return {
+        id: division.id,
+        name: division.name,
+        description: division.description,
+        rule_id: division.rule?.id,
+        rule_code: division.rule?.ruleCode,
+        created_at: division.createdAt,
+        updated_at: division.updatedAt,
+      };
+    } catch (error) {
+      console.error(`Failed to fetch division ${id}:`, error);
+      // Fallback to static data
+      const divisions = divisionsData as DivisionDto[];
+      return divisions.find((d) => d.id === id);
+    }
+  }
+
+  /**
+   * FE-only stub. Will be implemented when backend is ready.
+   */
+  async upsertDivision(_: DivisionDto): Promise<DivisionDto> {
+    throw new Error('Divisions API not available yet. FE stub only.');
+  }
+
+  /**
+   * FE-only stub. Will be implemented when backend is ready.
+   */
+  async deleteDivision(_: string): Promise<void> {
+    throw new Error('Divisions API not available yet. FE stub only.');
+  }
+
+  /**
+   * Upload an image (avatar, banner, or logo) with optional cropping and processing.
    * Returns the URL and metadata of the uploaded image.
    */
   async uploadImage(
     file: File,
-    type: 'avatar' | 'banner',
+    type: 'avatar' | 'banner' | 'logo',
     options?: {
       cropX?: number;
       cropY?: number;
       cropWidth?: number;
       cropHeight?: number;
       quality?: number;
+      entityId?: string;
     },
   ): Promise<{
     url: string;
@@ -413,6 +822,8 @@ class ApiService {
         formData.append('cropHeight', String(options.cropHeight));
       if (options.quality !== undefined)
         formData.append('quality', String(options.quality));
+      if (options.entityId !== undefined)
+        formData.append('entityId', options.entityId);
     }
 
     const url = `${this.baseURL}/upload/image`;

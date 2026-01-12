@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
   Box,
@@ -7,6 +7,10 @@ import {
   Card,
   CardContent,
   TextField,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
   FormControlLabel,
   Checkbox,
   Alert,
@@ -15,6 +19,7 @@ import { ArrowBack, Save } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 
 import apiService from '../../../services/api';
+import type { RuleDto } from '../../../services/types';
 import BannerUploader from '../../../components/BannerUploader/BannerUploader';
 import FileAttachments, { FileAttachment } from '../../../components/FileAttachments/FileAttachments';
 
@@ -24,6 +29,8 @@ const TournamentCreate: React.FC = () => {
   const { t } = useTranslation('common');
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [rules, setRules] = useState<RuleDto[]>([]);
+  const [loadingRules, setLoadingRules] = useState(true);
 
   const [formData, setFormData] = useState({
     title: '',
@@ -32,15 +39,32 @@ const TournamentCreate: React.FC = () => {
     endDate: '',
     applicationDeadline: '',
     address: '',
+    ruleCode: '',
+    targetCount: 18,
     allowMultipleApplications: true,
     banner: '',
     attachments: [] as FileAttachment[],
   });
 
+  useEffect(() => {
+    const loadRules = async () => {
+      setLoadingRules(true);
+      try {
+        const data = await apiService.getRules();
+        setRules(data);
+      } catch (error) {
+        console.error('Failed to load rules:', error);
+      } finally {
+        setLoadingRules(false);
+      }
+    };
+    loadRules();
+  }, []);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!formData.title || !formData.startDate) {
+    if (!formData.title || !formData.startDate || !formData.ruleCode) {
       setError(t('pages.tournaments.createError', 'Failed to create tournament'));
       return;
     }
@@ -84,6 +108,27 @@ const TournamentCreate: React.FC = () => {
             <Typography variant="h6" gutterBottom>
               {t('pages.tournaments.form.basicInfo', 'Basic Information')}
             </Typography>
+
+            <FormControl fullWidth margin="normal" required disabled={loadingRules}>
+              <InputLabel>{t('pages.tournaments.form.rules', 'Rules')}</InputLabel>
+              <Select
+                value={formData.ruleCode}
+                label={t('pages.tournaments.form.rules', 'Rules')}
+                onChange={(e) =>
+                  setFormData({ ...formData, ruleCode: e.target.value })
+                }
+                required
+              >
+                <MenuItem value="">
+                  <em>{t('pages.tournaments.form.selectRules', 'Select Rules')}</em>
+                </MenuItem>
+                {rules.map((rule) => (
+                  <MenuItem key={rule.ruleCode} value={rule.ruleCode}>
+                    {rule.ruleCode} - {rule.ruleName}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
 
             <TextField
               label={t('pages.tournaments.form.title')}
@@ -145,6 +190,17 @@ const TournamentCreate: React.FC = () => {
               onChange={(e) => setFormData({ ...formData, address: e.target.value })}
               fullWidth
               margin="normal"
+            />
+
+            <TextField
+              label={t('pages.tournaments.form.targetCount', 'Number of Targets')}
+              type="number"
+              value={formData.targetCount}
+              onChange={(e) => setFormData({ ...formData, targetCount: parseInt(e.target.value) || 18 })}
+              fullWidth
+              margin="normal"
+              inputProps={{ min: 1, max: 100 }}
+              helperText={t('pages.tournaments.form.targetCountHelper', 'Number of targets/patrols for the tournament')}
             />
 
             <FormControlLabel

@@ -6,6 +6,9 @@ export interface ProfileData {
   location: string;
   picture: string;
   federationNumber?: string;
+  nationality?: string;
+  gender?: string;
+  clubId?: string;
   categories?: string[];
   role?: string;
   appLanguage?: 'pt' | 'en' | 'it' | 'ua' | 'es';

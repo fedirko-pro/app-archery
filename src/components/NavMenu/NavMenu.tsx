@@ -26,28 +26,14 @@ function NavMenu() {
   };
 
   const regularMenuItems = [
-    // TODO: Implement My trainings
-    // {
-    //   link: '/trainings',
-    //   label: 'My trainings',
-    // },
     { link: '/tournaments', label: t('nav.tournaments') },
     ...(user ? [{ link: '/applications', label: t('nav.myApplications') }] : []),
-    // TODO: Implement Competition (DEMO)
-    // {
-    //   link: '/Competition',
-    //   label: 'Competition (DEMO)',
-    // },
-    { link: '/Competition/patrols', label: 'Patrols list (DEMO)' },
-    { link: '/Competition/user', label: 'User card (demo)' },
     { link: '/converter', label: t('nav.converter') },
+    { link: '/competition/user', label: 'User card (demo)' },
     { link: '/categories', label: t('nav.categories') },
+    { link: '/clubs', label: t('nav.clubs', 'Clubs') },
+    { link: '/divisions', label: t('nav.divisions', 'Divisions') },
     { link: '/rules', label: t('nav.rules') },
-    // TODO: Implement Knowledge base
-    // {
-    //   link: '/encyclopedia',
-    //   label: 'Knowledge base',
-    // },
     { link: '/about', label: t('nav.about') },
   ];
 

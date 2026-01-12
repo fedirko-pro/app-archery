@@ -8,10 +8,13 @@ import {
   CardMedia,
   Alert,
   CircularProgress,
+  Tabs,
+  Tab,
 } from '@mui/material';
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { parseISO, isBefore, startOfDay } from 'date-fns';
 
 import { useAuth } from '../../../contexts/auth-context';
 import apiService from '../../../services/api';
@@ -25,10 +28,17 @@ interface Tournament {
   description?: string;
   startDate: string;
   endDate: string;
+  applicationDeadline?: string;
   address?: string;
   allowMultipleApplications?: boolean;
   banner?: string;
   attachments?: FileAttachment[];
+  ruleCode?: string;
+  rule?: {
+    id: string;
+    ruleCode: string;
+    ruleName: string;
+  };
   createdBy: any;
   createdAt: string;
 }
@@ -41,6 +51,7 @@ const TournamentList: React.FC = () => {
   const [userApplications, setUserApplications] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState(0);
 
   const fetchTournaments = useCallback(async () => {
     try {
@@ -99,6 +110,24 @@ const TournamentList: React.FC = () => {
     }
   };
 
+  const isPastTournament = (tournament: Tournament): boolean => {
+    const today = startOfDay(new Date());
+    const tournamentEndDate = tournament.endDate 
+      ? parseISO(tournament.endDate)
+      : parseISO(tournament.startDate);
+    return isBefore(startOfDay(tournamentEndDate), today);
+  };
+
+  const filteredTournaments = useMemo(() => {
+    if (activeTab === 0) {
+      // Future tournaments (default)
+      return tournaments.filter((tournament) => !isPastTournament(tournament));
+    } else {
+      // Past tournaments
+      return tournaments.filter((tournament) => isPastTournament(tournament));
+    }
+  }, [tournaments, activeTab]);
+
   if (loading) {
     return (
       <Box
@@ -153,6 +182,17 @@ const TournamentList: React.FC = () => {
         </Alert>
       )}
 
+      <Box sx={{ mb: 3 }}>
+        <Tabs
+          value={activeTab}
+          onChange={(_, newValue) => setActiveTab(newValue)}
+          sx={{ borderBottom: 1, borderColor: 'divider' }}
+        >
+          <Tab label={t('pages.tournaments.futureTournaments', 'Future')} />
+          <Tab label={t('pages.tournaments.pastTournaments', 'Past')} />
+        </Tabs>
+      </Box>
+
       <Box
         sx={{
           display: 'grid',
@@ -160,7 +200,9 @@ const TournamentList: React.FC = () => {
           gap: 3,
         }}
       >
-        {tournaments.map((tournament) => (
+        {filteredTournaments.map((tournament) => {
+          const isPast = isPastTournament(tournament);
+          return (
           <Box key={tournament.id}>
             <Card>
               <CardMedia
@@ -183,23 +225,26 @@ const TournamentList: React.FC = () => {
                     {tournament.description}
                   </Typography>
                 )}
+                <Typography variant="body2" sx={{ mb: 1 }}>
+                  <strong>{t('pages.tournaments.rules', 'Rules')}:</strong>{' '}
+                  {tournament.ruleCode 
+                    ? (tournament.rule?.ruleName || tournament.ruleCode)
+                    : <em style={{ color: '#999' }}>{t('pages.tournaments.noRulesAssigned', 'Not specified')}</em>
+                  }
+                </Typography>
                 <Typography variant="body2">
                   <strong>{t('pages.tournaments.start')}:</strong> {formatDate(tournament.startDate)}
                 </Typography>
-                <Typography variant="body2">
-                  <strong>{t('pages.tournaments.end')}:</strong> {formatDate(tournament.endDate)}
-                </Typography>
+                {tournament.applicationDeadline && (
+                  <Typography variant="body2" color="warning.main">
+                    <strong>{t('pages.tournaments.applicationDeadline', 'Application Deadline')}:</strong> {formatDate(tournament.applicationDeadline)}
+                  </Typography>
+                )}
                 {tournament.address && (
                   <Typography variant="body2">
                     <strong>{t('pages.tournaments.location')}:</strong> {tournament.address}
                   </Typography>
                 )}
-                <Typography variant="body2" color="text.secondary">
-                  <strong>{t('pages.tournaments.multipleApplications')}:</strong>{' '}
-                  {tournament.allowMultipleApplications
-                    ? t('pages.tournaments.multipleAllowed')
-                    : t('pages.tournaments.multipleNotAllowed')}
-                </Typography>
                 <Box sx={{ mt: 2, display: 'flex', gap: 1, flexWrap: 'wrap' }}>
                   <Button
                     size="small"
@@ -222,7 +267,7 @@ const TournamentList: React.FC = () => {
                       {getApplicationCountForTournament(tournament.id)})
                     </Button>
                   )}
-                  {(tournament.allowMultipleApplications ||
+                  {!isPast && (tournament.allowMultipleApplications ||
                     !hasApplicationForTournament(tournament.id)) && (
                       <Button
                         size="small"
@@ -260,7 +305,8 @@ const TournamentList: React.FC = () => {
               </CardContent>
             </Card>
           </Box>
-        ))}
+        );
+        })}
       </Box>
     </Box>
   );

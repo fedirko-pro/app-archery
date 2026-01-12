@@ -21,15 +21,6 @@ const UserMenu: React.FC = () => {
 
   const { user, isAuthenticated, logout, loading } = useAuth();
 
-  // Debug logging - remove after testing
-  React.useEffect(() => {
-    console.log('UserMenu - user updated:', {
-      isAuthenticated,
-      hasPicture: !!user?.picture,
-      picture: user?.picture
-    });
-  }, [user, isAuthenticated]);
-
   if (loading) {
     return null; // або показати loading spinner
   }

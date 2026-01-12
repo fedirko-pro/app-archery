@@ -7,12 +7,14 @@ import apiService from '../../../services/api';
 import { useTranslation } from 'react-i18next';
 
 import type { ProfileData } from '../types';
+import type { ClubDto } from '../../../services/types';
 import AvatarUploader from '../../../components/AvatarUploader';
 
 interface ProfileEditFormProps {
   profileData: ProfileData;
   isSaving: boolean;
   isAdminView?: boolean;
+  userId?: string;
   onSave: () => void;
   onCancel: () => void;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -24,6 +26,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
   profileData,
   isSaving,
   isAdminView,
+  userId,
   onSave,
   onCancel,
   onChange,
@@ -33,25 +36,40 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
   const { t } = useTranslation('common');
   const [categoryOptions, setCategoryOptions] = useState<string[]>([]);
   const [isLoadingCategories, setIsLoadingCategories] = useState<boolean>(false);
+  const [clubs, setClubs] = useState<ClubDto[]>([]);
+  const [isLoadingClubs, setIsLoadingClubs] = useState<boolean>(false);
 
   useEffect(() => {
     const loadCategories = async () => {
       setIsLoadingCategories(true);
       try {
-        const data = await apiService.getCategories();
+        const data = await apiService.getBowCategories();
         const codes = (data || [])
           .map((c) => c.code)
           .filter((code): code is string => Boolean(code));
         const uniqueCodes = Array.from(new Set(codes.map((c) => c.toUpperCase()))).sort((a, b) => a.localeCompare(b));
         setCategoryOptions(uniqueCodes);
       } catch (e) {
-        // no-op for FE stub
-        console.error(e);
+        console.error('Failed to load categories:', e);
       } finally {
         setIsLoadingCategories(false);
       }
     };
+
+    const loadClubs = async () => {
+      setIsLoadingClubs(true);
+      try {
+        const data = await apiService.getClubs();
+        setClubs(data);
+      } catch (e) {
+        console.error('Failed to load clubs:', e);
+      } finally {
+        setIsLoadingClubs(false);
+      }
+    };
+
     loadCategories();
+    loadClubs();
   }, []);
   
   return (
@@ -126,6 +144,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
 
         <AvatarUploader
           value={profileData.picture}
+          userId={userId}
           onChange={(dataUrl) => {
             if (onPictureChange) {
               onPictureChange(dataUrl);
@@ -148,6 +167,41 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
           <Box sx={{ flex: '1 1 300px' }}>
             <TextField
               select
+              label={t('forms.nationality', 'Nationality')}
+              name="nationality"
+              value={profileData.nationality || 'Portuguesa'}
+              onChange={onChange}
+              fullWidth
+              margin="normal"
+            >
+              <MenuItem value="Portuguesa">Portuguesa</MenuItem>
+              <MenuItem value="Outro">Outro</MenuItem>
+            </TextField>
+          </Box>
+        </Box>
+
+        <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+          <Box sx={{ flex: '1 1 300px' }}>
+            <TextField
+              select
+              label={t('forms.gender', 'Gender')}
+              name="gender"
+              value={profileData.gender || 'M'}
+              onChange={onChange}
+              fullWidth
+              margin="normal"
+            >
+              <MenuItem value="M">{t('forms.genderMale', 'Male')}</MenuItem>
+              <MenuItem value="F">{t('forms.genderFemale', 'Female')}</MenuItem>
+              <MenuItem value="Other">{t('forms.genderOther', 'Other')}</MenuItem>
+            </TextField>
+          </Box>
+        </Box>
+
+        <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+          <Box sx={{ flex: '1 1 300px' }}>
+            <TextField
+              select
               label={t('forms.applicationLanguage', 'Application language')}
               name="appLanguage"
               value={profileData.appLanguage || 'pt'}
@@ -163,6 +217,28 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
             </TextField>
           </Box>
         </Box>
+
+        <TextField
+          select
+          label={t('forms.club', 'Club')}
+          name="clubId"
+          value={profileData.clubId || ''}
+          onChange={onChange}
+          fullWidth
+          margin="normal"
+          disabled={isLoadingClubs}
+        >
+          <MenuItem value="">
+            <em>{t('forms.noClub', 'No Club')}</em>
+          </MenuItem>
+          {clubs
+            .filter((club): club is ClubDto & { id: string } => Boolean(club.id))
+            .map((club) => (
+              <MenuItem key={club.id} value={club.id}>
+                {club.name} {club.location && `(${club.location})`}
+              </MenuItem>
+            ))}
+        </TextField>
 
         <Autocomplete
           multiple

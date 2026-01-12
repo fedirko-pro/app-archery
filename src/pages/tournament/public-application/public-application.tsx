@@ -153,6 +153,7 @@ const PublicApplication: React.FC = () => {
       <TournamentApplicationForm
         tournamentId={tournamentId!}
         tournamentTitle={tournament.title}
+        tournamentRuleCode={tournament.ruleCode}
         onSuccess={handleApplicationSuccess}
         onCancel={() => navigate('/tournaments')}
       />
