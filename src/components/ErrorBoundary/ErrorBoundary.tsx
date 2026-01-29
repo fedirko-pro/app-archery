@@ -1,5 +1,6 @@
 import { Box, Button, Typography } from '@mui/material';
 import { Component, type ErrorInfo, type ReactNode } from 'react';
+import i18n from '../../i18n';
 
 interface ErrorBoundaryProps {
   children: ReactNode;
@@ -53,7 +54,7 @@ export class ErrorBoundary extends Component<
           }}
         >
           <Typography variant="h5" gutterBottom>
-            Something went wrong
+            {i18n.t('errorBoundary.title', 'Something went wrong')}
           </Typography>
           {import.meta.env.DEV && this.state.error && (
             <Typography
@@ -73,7 +74,7 @@ export class ErrorBoundary extends Component<
             </Typography>
           )}
           <Button variant="contained" onClick={this.handleReload}>
-            Reload page
+            {i18n.t('errorBoundary.reload', 'Reload page')}
           </Button>
         </Box>
       );

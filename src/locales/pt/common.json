@@ -357,6 +357,10 @@
     "yes": "Sim",
     "no": "Não"
   },
+  "errorBoundary": {
+    "title": "Algo correu mal",
+    "reload": "Recarregar página"
+  },
   "clubs": {
     "clubLogo": "Logotipo do Clube",
     "logoSubheader": "Selecione uma imagem e arraste para reposicionar (PNG, JPG até 10MB)"

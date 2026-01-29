@@ -17,6 +17,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import { useAuth } from '../../contexts/auth-context';
 import apiService from '../../services/api';
+import { getAppLanguageFromUser } from '../../utils/i18n-lang';
 import ProfileEditForm from './profile-edit-form/profile-edit-form';
 import type { ProfileData } from './types';
 
@@ -76,8 +77,7 @@ const ProfileEditPage: React.FC = () => {
         gender: user.gender || 'M',
         clubId: user.clubId || '',
         categories: Array.isArray(user.categories) ? user.categories : [],
-        appLanguage:
-          user.appLanguage ?? user.app_language ?? user.language ?? 'pt',
+        appLanguage: getAppLanguageFromUser(user),
       });
     }
   }, [user]);

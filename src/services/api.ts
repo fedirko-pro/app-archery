@@ -16,6 +16,7 @@ import type {
   CategoryDto,
   ClubDto,
   CreateBowCategoryDto,
+  CreateRuleDto,
   DivisionDto,
   RuleDto,
   TournamentDto,
@@ -24,6 +25,7 @@ import type {
   ApplicationStatsDto,
   CreateTournamentApplicationDto,
   UpdateBowCategoryDto,
+  UpdateRuleDto,
 } from './types';
 
 interface RequestOptions extends RequestInit {
@@ -616,14 +618,14 @@ class ApiService {
   /**
    * Create a new rule (admin only).
    */
-  async createRule(ruleData: Omit<RuleDto, 'id' | 'createdAt' | 'updatedAt' | 'divisions' | 'bowCategories'>): Promise<RuleDto> {
+  async createRule(ruleData: CreateRuleDto): Promise<RuleDto> {
     return this.post<RuleDto>('/rules', ruleData);
   }
 
   /**
    * Update an existing rule (admin only).
    */
-  async updateRule(id: string, ruleData: Partial<Omit<RuleDto, 'id' | 'createdAt' | 'updatedAt' | 'divisions' | 'bowCategories'>>): Promise<RuleDto> {
+  async updateRule(id: string, ruleData: UpdateRuleDto): Promise<RuleDto> {
     return this.patch<RuleDto>(`/rules/${id}`, ruleData);
   }
 

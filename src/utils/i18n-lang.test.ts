@@ -5,6 +5,7 @@ import {
   pickLocalizedDescription,
   toI18nLang,
   fromI18nLang,
+  getAppLanguageFromUser,
 } from './i18n-lang';
 
 describe('normalizeAppLang', () => {
@@ -62,5 +63,44 @@ describe('pickLocalizedDescription', () => {
   it('returns undefined for empty or missing', () => {
     expect(pickLocalizedDescription({}, 'en')).toBeUndefined();
     expect(pickLocalizedDescription({ description_en: '  ' }, 'en')).toBeUndefined();
+  });
+});
+
+describe('getAppLanguageFromUser', () => {
+  it('returns appLanguage when present', () => {
+    expect(getAppLanguageFromUser({ appLanguage: 'en' })).toBe('en');
+    expect(getAppLanguageFromUser({ appLanguage: 'ua' })).toBe('ua');
+  });
+
+  it('returns app_language when appLanguage missing', () => {
+    expect(getAppLanguageFromUser({ app_language: 'pt' })).toBe('pt');
+  });
+
+  it('returns language when appLanguage and app_language missing', () => {
+    expect(getAppLanguageFromUser({ language: 'es' })).toBe('es');
+  });
+
+  it('prefers appLanguage over app_language and language', () => {
+    expect(
+      getAppLanguageFromUser({
+        appLanguage: 'en',
+        app_language: 'pt',
+        language: 'es',
+      }),
+    ).toBe('en');
+  });
+
+  it('returns default for null user', () => {
+    expect(getAppLanguageFromUser(null)).toBe('pt');
+    expect(getAppLanguageFromUser(null, 'en')).toBe('en');
+  });
+
+  it('returns default when no language fields', () => {
+    expect(getAppLanguageFromUser({})).toBe('pt');
+    expect(getAppLanguageFromUser({}, 'it')).toBe('it');
+  });
+
+  it('normalizes unsupported language to default', () => {
+    expect(getAppLanguageFromUser({ appLanguage: 'fr' })).toBe('pt');
   });
 });

@@ -19,8 +19,8 @@ const EnvError = () => {
       Object.entries(requiredEnvVars).forEach(([key, value]) => {
         if (!value) {
           missingVars.push(key);
-        } else if (key === 'VITE_API_BASE_URL' && !isValidUrl(value)) {
-          invalidVars.push(`${key}: "${value}" is not a valid URL`);
+        } else if (key === 'VITE_API_BASE_URL' && !isValidUrlOrPath(value)) {
+          invalidVars.push(`${key}: "${value}" is not a valid URL or path (use /api for dev proxy)`);
         }
       });
 
@@ -35,7 +35,9 @@ const EnvError = () => {
     checkEnv();
   }, []);
 
-  const isValidUrl = (string: string): boolean => {
+  /** Allow absolute URLs or paths like /api for Vite dev proxy. */
+  const isValidUrlOrPath = (string: string): boolean => {
+    if (string.startsWith('/')) return true;
     try {
       new URL(string);
       return true;

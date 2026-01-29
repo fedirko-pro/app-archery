@@ -5,40 +5,27 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import type { SelectChangeEvent } from '@mui/material/Select';
 import i18n from 'i18next';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import { useAuth } from '../../contexts/auth-context';
 import type { AppLanguageCode } from '../../contexts/types';
-import { normalizeAppLang, toI18nLang } from '../../utils/i18n-lang';
+import { fromI18nLang, getAppLanguageFromUser, normalizeAppLang, toI18nLang } from '../../utils/i18n-lang';
 
 const LanguageToggler: React.FC = () => {
   const params = useParams();
   const navigate = useNavigate();
   const location = useLocation();
   const { user } = useAuth();
+  const { i18n: i18nInstance } = useTranslation();
+
+  // Always derive current language from URL, then i18n, then user prefs – no local state
   const currentLang = normalizeAppLang(
     params.lang ??
-      user?.appLanguage ??
-      user?.app_language ??
-      user?.language ??
-      'pt',
+      (i18nInstance.language ? fromI18nLang(i18nInstance.language) : undefined) ??
+      getAppLanguageFromUser(user),
   );
-  const [language, setLanguage] = React.useState<string>(currentLang);
-
-  // Sync language state with URL params changes
-  useEffect(() => {
-    const newLang = normalizeAppLang(
-      params.lang ?? user?.appLanguage ?? user?.app_language ?? user?.language ?? 'pt',
-    );
-    setLanguage((prevLang) => {
-      // Only update if the language actually changed
-      if (newLang !== prevLang) {
-        return newLang;
-      }
-      return prevLang;
-    });
-  }, [params.lang, user]);
 
   const options: Array<{ value: string; code: string; flag: string }> = [
     { value: 'pt', code: 'PT', flag: '🇵🇹' },
@@ -51,7 +38,6 @@ const LanguageToggler: React.FC = () => {
   const handleChange = async (event: SelectChangeEvent<string>) => {
     const value = event.target.value as string;
     if (!value) return;
-    setLanguage(value);
     // Preserve current subpath when switching language
     const segments = location.pathname.split('/');
     if (segments.length > 1) {
@@ -65,7 +51,7 @@ const LanguageToggler: React.FC = () => {
   return (
     <Box className="language_select">
       <Select
-        value={language}
+        value={currentLang}
         onChange={handleChange}
         size="small"
         aria-label="language"

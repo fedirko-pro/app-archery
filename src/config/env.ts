@@ -18,8 +18,8 @@ const validateEnv = (): ValidationResult => {
   Object.entries(requiredEnvVars).forEach(([key, value]) => {
     if (!value) {
       missingVars.push(key);
-    } else if (key === 'VITE_API_BASE_URL' && !isValidUrl(value)) {
-      invalidVars.push(`${key}: "${value}" is not a valid URL`);
+    } else if (key === 'VITE_API_BASE_URL' && !isValidUrlOrPath(value)) {
+      invalidVars.push(`${key}: "${value}" is not a valid URL or path (use /api for dev proxy)`);
     } else if (key === 'VITE_GOOGLE_AUTH_URL' && !isValidUrl(value)) {
       invalidVars.push(`${key}: "${value}" is not a valid URL`);
     }
@@ -68,13 +68,20 @@ const isValidUrl = (string: string): boolean => {
   }
 };
 
+/** Allow absolute URLs or paths like /api for Vite dev proxy. */
+const isValidUrlOrPath = (string: string): boolean => {
+  if (string.startsWith('/')) return true;
+  return isValidUrl(string);
+};
+
 export const env: Environment = {
+  // In dev, default to /api so Vite proxy forwards to backend and avoids CORS
   API_BASE_URL:
     (import.meta.env.VITE_API_BASE_URL as string | undefined) ||
-    (import.meta.env.DEV ? 'http://localhost:3000' : ''),
+    (import.meta.env.DEV ? '/api' : ''),
   GOOGLE_AUTH_URL:
     (import.meta.env.VITE_GOOGLE_AUTH_URL as string | undefined) ||
-    (import.meta.env.DEV ? 'http://localhost:3000/auth/google' : ''),
+    (import.meta.env.DEV ? '/api/auth/google' : ''),
 };
 
 validateEnv();

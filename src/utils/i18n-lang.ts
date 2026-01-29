@@ -67,6 +67,23 @@ export function getDefaultAppLang(): AppLanguage {
   return fromI18nLang(i18nLang);
 }
 
+/** User-like object with optional language fields (backend may return appLanguage or language). */
+export type UserLanguageSource = {
+  appLanguage?: string | null;
+  app_language?: string | null;
+  language?: string | null;
+} | null;
+
+/** Get app language from user profile; falls back to default. */
+export function getAppLanguageFromUser(
+  user: UserLanguageSource,
+  defaultLang: AppLanguage = 'pt',
+): AppLanguage {
+  const raw =
+    user?.appLanguage ?? user?.app_language ?? user?.language ?? defaultLang;
+  return normalizeAppLang(raw);
+}
+
 /**
  * Choose localized description by app language with sensible fallbacks.
  * Supports both snake_case (description_en) and camelCase (descriptionEn) formats.

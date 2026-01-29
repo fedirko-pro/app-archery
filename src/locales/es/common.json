@@ -300,6 +300,10 @@
     "yes": "Sí",
     "no": "No"
   },
+  "errorBoundary": {
+    "title": "Algo salió mal",
+    "reload": "Recargar página"
+  },
   "trainings": {
     "title": "Mis entrenamientos",
     "info": "La sección \"Mis entrenamientos\" permite crear cualquier cantidad de entrenamientos personales, seleccionar objetivo, distancia, cantidad de flechas, etc.\nPara cada entrenamiento hay estadísticas detalladas. El usuario puede compartir sus resultados.\nIMPORTANTE: la información del entrenamiento no se envía a ningún lugar y se almacena solo en tu dispositivo (por ahora)",

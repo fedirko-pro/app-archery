@@ -11,8 +11,10 @@ export default defineConfig(({ mode }: { mode: string }) => {
   try {
     apiOrigin = new URL(apiBase).origin;
   } catch {
-    // keep as-is if not a valid URL; env validation should catch this in app
+    apiOrigin = 'http://localhost:3000';
   }
+  const proxyTarget =
+    apiBase.startsWith('http') ? apiBase : 'http://localhost:3000';
   return {
     resolve: {
       alias: {
@@ -120,6 +122,14 @@ export default defineConfig(({ mode }: { mode: string }) => {
     server: {
       port: Number(env.VITE_PORT) || 3001,
       host: true,
+      // Proxy API to backend in dev to avoid CORS (frontend and backend on different ports)
+      proxy: {
+        '/api': {
+          target: proxyTarget,
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/api/, ''),
+        },
+      },
     },
     test: {
       environment: 'jsdom',

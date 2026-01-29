@@ -215,11 +215,20 @@ export interface RuleDto {
   descriptionEs?: string;
   link?: string; // external info page
   downloadLink?: string; // path under public/pdf/rules or external
-  divisions?: any[]; // Related divisions (from backend relation)
-  bowCategories?: any[]; // Related bow categories (from backend relation)
+  divisions?: unknown[]; // Related divisions (from backend relation)
+  bowCategories?: unknown[]; // Related bow categories (from backend relation)
   createdAt?: string;
   updatedAt?: string;
 }
+
+/** Payload for creating a rule (no id, timestamps, or relations). */
+export type CreateRuleDto = Omit<
+  RuleDto,
+  'id' | 'createdAt' | 'updatedAt' | 'divisions' | 'bowCategories'
+>;
+
+/** Payload for updating a rule (all fields optional except exclusions). */
+export type UpdateRuleDto = Partial<CreateRuleDto>;
 
 /**
  * Club descriptor for managing archery clubs.

@@ -37,6 +37,7 @@ import type {
   TournamentDto,
   TournamentApplicationDto,
   ApplicationStatsDto,
+  ApplicationStatus,
 } from '../../../services/types';
 import { formatDate, getApplicationDeadline } from '../../../utils/date-utils';
 
@@ -57,7 +58,7 @@ const AdminApplications: React.FC = () => {
   const [statusDialog, setStatusDialog] = useState<{
     open: boolean;
     application: TournamentApplicationDto | null;
-    newStatus: string;
+    newStatus: ApplicationStatus | '';
     rejectionReason: string;
   }>({ open: false, application: null, newStatus: '', rejectionReason: '' });
   const [updatingApplicationId, setUpdatingApplicationId] = useState<string | null>(null);
@@ -148,7 +149,7 @@ const AdminApplications: React.FC = () => {
       setApplications((prev) =>
         prev.map((app) =>
           app.id === statusDialog.application!.id
-            ? { ...app, status: statusDialog.newStatus as any, rejectionReason: statusDialog.rejectionReason }
+            ? { ...app, status: statusDialog.newStatus as ApplicationStatus, rejectionReason: statusDialog.rejectionReason }
             : app
         )
       );

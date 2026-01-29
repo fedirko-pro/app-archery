@@ -216,7 +216,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const userData = await apiService.getProfile();
       setUser(userData);
 
-      navigate(`${currentLang}/profile`);
+      navigate(`/${currentLang}/profile`);
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : 'Failed to set password';

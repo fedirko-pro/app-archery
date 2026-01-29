@@ -25,7 +25,7 @@ import { useLocation, useParams } from 'react-router-dom';
 
 import { useAuth } from '../../contexts/auth-context';
 import apiService from '../../services/api';
-import type { RuleDto } from '../../services/types';
+import type { CreateRuleDto, RuleDto, UpdateRuleDto } from '../../services/types';
 import { normalizeAppLang, pickLocalizedDescription } from '../../utils/i18n-lang';
 
 /**
@@ -48,8 +48,8 @@ const Rules: React.FC = () => {
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [ruleToDelete, setRuleToDelete] = useState<RuleDto | null>(null);
 
-  // Form states
-  const [formData, setFormData] = useState<Partial<RuleDto>>({
+  // Form states (matches UpdateRuleDto; create uses same shape with required ruleCode/ruleName)
+  const [formData, setFormData] = useState<UpdateRuleDto>({
     ruleCode: '',
     ruleName: '',
     edition: '',
@@ -153,11 +153,23 @@ const Rules: React.FC = () => {
     try {
       if (editingRule && editingRule.id) {
         // Update existing rule
-        await apiService.updateRule(editingRule.id, formData as any);
+        await apiService.updateRule(editingRule.id, formData);
         setSnackbar({ open: true, message: 'Rule updated successfully', severity: 'success' });
       } else {
-        // Create new rule
-        await apiService.createRule(formData as any);
+        // Create new rule (payload validated above: ruleCode and ruleName present)
+        const createPayload: CreateRuleDto = {
+          ruleCode: formData.ruleCode!,
+          ruleName: formData.ruleName!,
+          edition: formData.edition,
+          descriptionEn: formData.descriptionEn,
+          descriptionPt: formData.descriptionPt,
+          descriptionIt: formData.descriptionIt,
+          descriptionUk: formData.descriptionUk,
+          descriptionEs: formData.descriptionEs,
+          link: formData.link,
+          downloadLink: formData.downloadLink,
+        };
+        await apiService.createRule(createPayload);
         setSnackbar({ open: true, message: 'Rule created successfully', severity: 'success' });
       }
 

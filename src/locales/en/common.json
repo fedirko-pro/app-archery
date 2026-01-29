@@ -363,6 +363,10 @@
     "yes": "Yes",
     "no": "No"
   },
+  "errorBoundary": {
+    "title": "Something went wrong",
+    "reload": "Reload page"
+  },
   "clubs": {
     "clubLogo": "Club Logo",
     "logoSubheader": "Select an image, then drag to reposition (PNG, JPG up to 10MB)"

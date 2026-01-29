@@ -7,6 +7,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 
 import type { User } from '../../../contexts/types';
 import apiService from '../../../services/api';
+import { getAppLanguageFromUser } from '../../../utils/i18n-lang';
 import ProfileEditForm from '../../profile/profile-edit-form/profile-edit-form';
 import type { ProfileData } from '../../profile/types';
 
@@ -56,7 +57,7 @@ const UserEdit: React.FC = () => {
         gender: foundUser.gender || 'M',
         clubId: foundUser.clubId || '',
         categories: foundUser.categories || [],
-        appLanguage: (foundUser as any).appLanguage || 'pt',
+        appLanguage: getAppLanguageFromUser(foundUser),
       });
     } catch (error) {
       setError('Failed to fetch user data');

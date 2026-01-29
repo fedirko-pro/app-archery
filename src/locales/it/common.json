@@ -336,6 +336,10 @@
     "yes": "Sì",
     "no": "No"
   },
+  "errorBoundary": {
+    "title": "Qualcosa è andato storto",
+    "reload": "Ricarica pagina"
+  },
   "clubs": {
     "clubLogo": "Logo del Club",
     "logoSubheader": "Seleziona un'immagine, quindi trascina per riposizionare (PNG, JPG fino a 10MB)"
