@@ -207,6 +207,7 @@ cd app-archery
 npm run build
 npm run start  # Preview production build
 ```
+Rule PDFs are served from the **backend** at `/pdf/rules/` (files in `archery-app-backend/pdf/rules/`). The frontend uses `API_BASE_URL/pdf/rules/<filename>`. Keep copies in `public/pdf/rules/` for reference if needed.
 
 ### Backend Build
 ```bash

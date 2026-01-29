@@ -24,6 +24,7 @@ import { useTranslation } from 'react-i18next';
 import { useLocation, useParams } from 'react-router-dom';
 
 import { useAuth } from '../../contexts/auth-context';
+import { env } from '../../config/env';
 import apiService from '../../services/api';
 import type { CreateRuleDto, RuleDto, UpdateRuleDto } from '../../services/types';
 import { normalizeAppLang, pickLocalizedDescription } from '../../utils/i18n-lang';
@@ -95,9 +96,74 @@ const Rules: React.FC = () => {
 
   const buildDownloadHref = (downloadLink?: string) => {
     if (!downloadLink) return undefined;
-    // Prefer files served from public/pdf/rules
+    // External URL: use as-is
     if (downloadLink.startsWith('http')) return downloadLink;
-    return `/pdf/rules/${downloadLink.replace(/^\/+/, '')}`;
+    // Use filename only: support "2021-Book-of-Rules.pdf", "pdf/rules/2021-Book-of-Rules.pdf", "/mnt/data/2021-Book-of-Rules.pdf"
+    const filename = downloadLink.split('/').filter(Boolean).pop() || '';
+    if (!filename) return undefined;
+    const base = (env.API_BASE_URL || '').replace(/\/$/, '');
+    // Served from backend at /pdf/rules/ (Rule.downloadLink in DB is path/filename; files in backend pdf/rules/)
+    return base ? `${base}/pdf/rules/${filename}` : `/pdf/rules/${filename}`;
+  };
+
+  /** Absolute URL for fetch (same as buildDownloadHref when using API_BASE_URL). */
+  const getPdfDownloadUrl = (downloadLink?: string) => {
+    const href = buildDownloadHref(downloadLink);
+    if (!href || href.startsWith('http')) return href;
+    return href.startsWith('/') ? `${window.location.origin}${href}` : href;
+  };
+
+  /** Minimum size (bytes) to consider response a real PDF; smaller responses are likely HTML/error (e.g. ~906 bytes). */
+  const MIN_PDF_SIZE = 1000;
+
+  const handleDownloadPdf = async (downloadLink: string) => {
+    const href = buildDownloadHref(downloadLink);
+    if (!href) return;
+    const url = getPdfDownloadUrl(downloadLink)!;
+    const filename = downloadLink.replace(/^.*\//, '') || 'rule.pdf';
+    try {
+      const res = await fetch(url, { method: 'GET', cache: 'no-store' });
+      const contentType = (res.headers.get('content-type') ?? '').toLowerCase();
+      if (!res.ok) {
+        setSnackbar({
+          open: true,
+          message: t('pages.rules.downloadFailed', 'PDF could not be loaded. The file may not be available.'),
+          severity: 'error',
+        });
+        return;
+      }
+      if (contentType.includes('text/html')) {
+        setSnackbar({
+          open: true,
+          message: t('pages.rules.downloadFailed', 'PDF could not be loaded. The file may not be available.'),
+          severity: 'error',
+        });
+        return;
+      }
+      const blob = await res.blob();
+      if (blob.size < MIN_PDF_SIZE) {
+        setSnackbar({
+          open: true,
+          message: t('pages.rules.downloadFailed', 'PDF could not be loaded. The file may not be available.'),
+          severity: 'error',
+        });
+        return;
+      }
+      const blobUrl = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = blobUrl;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(blobUrl);
+    } catch {
+      setSnackbar({
+        open: true,
+        message: t('pages.rules.downloadFailed', 'PDF could not be loaded.'),
+        severity: 'error',
+      });
+    }
   };
 
   const handleOpenCreateDialog = () => {
@@ -297,7 +363,10 @@ const Rules: React.FC = () => {
                   </MuiLink>
                 )}
                 {buildDownloadHref(rule.downloadLink) && (
-                  <Button variant="outlined" component="a" href={buildDownloadHref(rule.downloadLink)} download>
+                  <Button
+                    variant="outlined"
+                    onClick={() => rule.downloadLink && handleDownloadPdf(rule.downloadLink)}
+                  >
                     {t('pages.rules.downloadPdf')}
                   </Button>
                 )}
