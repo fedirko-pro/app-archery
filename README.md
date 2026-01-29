@@ -113,7 +113,8 @@ A comprehensive web application for managing archery competitions, tournaments, 
 3. **Set up environment variables:**
    Create a `.env` file in the frontend root:
    ```env
-   VITE_API_URL=http://localhost:3000
+   VITE_API_BASE_URL=http://localhost:3000
+   VITE_GOOGLE_AUTH_URL=http://localhost:3000/auth/google
    VITE_PORT=3001
    ```
 
