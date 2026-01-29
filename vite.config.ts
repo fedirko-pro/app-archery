@@ -79,6 +79,7 @@ export default defineConfig(({ mode }: { mode: string }) => {
         },
         workbox: {
           navigateFallback: '/index.html',
+          navigateFallbackDenylist: [/^\/pdf\//],
           cleanupOutdatedCaches: true,
           clientsClaim: true,
           runtimeCaching: [
@@ -87,6 +88,12 @@ export default defineConfig(({ mode }: { mode: string }) => {
               urlPattern: ({ url }) => url.origin === apiOrigin,
               handler: 'NetworkOnly',
               options: { cacheName: 'api-network-only' },
+            },
+            // PDF files: network only, never serve index.html
+            {
+              urlPattern: ({ url }) => url.pathname.startsWith('/pdf/'),
+              handler: 'NetworkOnly',
+              options: { cacheName: 'pdf-network-only' },
             },
             // HTML navigations (SPA): network-first with cache fallback
             {

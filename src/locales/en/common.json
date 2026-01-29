@@ -17,6 +17,7 @@
       "title": "Rules",
       "openOfficialPage": "Open official page",
       "downloadPdf": "Download PDF",
+      "downloadFailed": "PDF could not be loaded. The file may not be available.",
       "createRule": "Create Rule",
       "editRule": "Edit Rule",
       "ruleCode": "Rule Code",
