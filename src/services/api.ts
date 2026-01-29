@@ -6,7 +6,10 @@ import type {
   AuthResponse,
   ChangePasswordData,
 } from '../contexts/types';
+import categoriesData from '../data/categories';
+import divisionsData from '../data/divisions';
 import type { ProfileData } from '../pages/profile/types';
+import { getCurrentI18nLang } from '../utils/i18n-lang';
 import type {
   ApiError,
   BowCategory,
@@ -22,10 +25,6 @@ import type {
   CreateTournamentApplicationDto,
   UpdateBowCategoryDto,
 } from './types';
-import { getCurrentI18nLang } from '../utils/i18n-lang';
-import categoriesData from '../data/categories';
-import divisionsData from '../data/divisions';
-import rulesData from '../data/rules';
 
 interface RequestOptions extends RequestInit {
   headers?: Record<string, string>;
@@ -663,11 +662,11 @@ class ApiService {
   async upsertClub(club: ClubDto): Promise<ClubDto> {
     if (club.id) {
       // Update existing club - remove readonly fields
-      const { id, createdAt, updatedAt, ...updateData } = club;
+      const { id, createdAt: _createdAt, updatedAt: _updatedAt, ...updateData } = club;
       return this.patch<ClubDto>(`/clubs/${id}`, updateData);
     } else {
       // Create new club - remove all system-generated fields
-      const { id, createdAt, updatedAt, ...createData } = club;
+      const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, ...createData } = club;
       return this.post<ClubDto>('/clubs', createData);
     }
   }

@@ -1,6 +1,6 @@
+import { dropTargetForElements } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
 import { Alert, Box, Card, CardContent, Chip, Typography } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
-import { dropTargetForElements } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
 
 import MemberCard from './MemberCard';
 import type { Participant, Patrol, Warning } from './types';

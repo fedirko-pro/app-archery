@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
 import { Button, FormControl, InputLabel, MenuItem, Select, Stack, TextField, Typography } from '@mui/material';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { useAuth } from '../../../contexts/auth-context';
 import apiService from '../../../services/api';
-import type { BowCategory, CreateBowCategoryDto, RuleDto, UpdateBowCategoryDto } from '../../../services/types';
+import type { CreateBowCategoryDto, RuleDto, UpdateBowCategoryDto } from '../../../services/types';
 
 /**
  * Admin-only category editor.

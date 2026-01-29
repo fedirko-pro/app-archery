@@ -19,10 +19,10 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import apiService from '../../../services/api';
-import type { RuleDto, TournamentDto } from '../../../services/types';
 import BannerUploader from '../../../components/BannerUploader/BannerUploader';
 import FileAttachments, { FileAttachment } from '../../../components/FileAttachments/FileAttachments';
+import apiService from '../../../services/api';
+import type { RuleDto, TournamentDto } from '../../../services/types';
 
 const TournamentEdit: React.FC = () => {
   const navigate = useNavigate();

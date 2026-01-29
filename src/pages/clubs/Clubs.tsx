@@ -1,3 +1,6 @@
+import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 import {
   Box,
   Button,
@@ -6,15 +9,12 @@ import {
   CardMedia,
   Typography,
 } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useNavigate, useParams } from 'react-router-dom';
 
-import apiService from '../../services/api';
 import { useAuth } from '../../contexts/auth-context';
+import apiService from '../../services/api';
 import type { ClubDto } from '../../services/types';
 
 /**
@@ -26,7 +26,7 @@ const Clubs: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const { lang } = useParams();
-  const { t } = useTranslation('common');
+  const { t: _t } = useTranslation('common');
   const { user } = useAuth();
 
   const isAdmin = user?.role === 'admin';

@@ -196,7 +196,10 @@ const UserApplications: React.FC = () => {
                       color="text.secondary"
                       gutterBottom
                     >
-                      <strong>{t('pages.applications.division')}:</strong> {application.division}
+                      <strong>{t('pages.applications.division')}:</strong>{' '}
+                      {typeof application.division === 'object' && application.division !== null && 'name' in application.division
+                        ? (application.division as { name: string }).name
+                        : String(application.division)}
                     </Typography>
                   )}
 

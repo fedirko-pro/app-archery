@@ -1,8 +1,8 @@
-import { Box, Card, CardContent, Grid, Typography } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import WarningIcon from '@mui/icons-material/Warning';
 import ErrorIcon from '@mui/icons-material/Error';
 import InfoIcon from '@mui/icons-material/Info';
+import WarningIcon from '@mui/icons-material/Warning';
+import { Box, Card, CardContent, Grid, Typography } from '@mui/material';
 import { useMemo } from 'react';
 
 import type { Participant, Patrol, PatrolStats } from './types';
@@ -139,7 +139,7 @@ const StatsPanel: React.FC<StatsPanelProps> = ({
         </Typography>
 
         <Grid container spacing={2}>
-          <Grid item xs={6} sm={4} md={2}>
+          <Grid size={{ xs: 6, sm: 4, md: 2 }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               <InfoIcon color="info" fontSize="small" />
               <Box>
@@ -153,7 +153,7 @@ const StatsPanel: React.FC<StatsPanelProps> = ({
             </Box>
           </Grid>
 
-          <Grid item xs={6} sm={4} md={2}>
+          <Grid size={{ xs: 6, sm: 4, md: 2 }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               <InfoIcon color="info" fontSize="small" />
               <Box>
@@ -167,7 +167,7 @@ const StatsPanel: React.FC<StatsPanelProps> = ({
             </Box>
           </Grid>
 
-          <Grid item xs={6} sm={4} md={2}>
+          <Grid size={{ xs: 6, sm: 4, md: 2 }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               {getStatusIcon(stats.homogeneityScores.category || 0, 70)}
               <Box>
@@ -181,7 +181,7 @@ const StatsPanel: React.FC<StatsPanelProps> = ({
             </Box>
           </Grid>
 
-          <Grid item xs={6} sm={4} md={2}>
+          <Grid size={{ xs: 6, sm: 4, md: 2 }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               {getStatusIcon(stats.clubDiversityScore, 70)}
               <Box>
@@ -195,7 +195,7 @@ const StatsPanel: React.FC<StatsPanelProps> = ({
             </Box>
           </Grid>
 
-          <Grid item xs={6} sm={4} md={2}>
+          <Grid size={{ xs: 6, sm: 4, md: 2 }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               {getStatusIcon(stats.homogeneityScores.division, 50)}
               <Box>
@@ -209,7 +209,7 @@ const StatsPanel: React.FC<StatsPanelProps> = ({
             </Box>
           </Grid>
 
-          <Grid item xs={6} sm={4} md={2}>
+          <Grid size={{ xs: 6, sm: 4, md: 2 }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               {getStatusIcon(stats.homogeneityScores.gender, 50)}
               <Box>

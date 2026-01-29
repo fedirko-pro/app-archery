@@ -1,8 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Box, Button, Card, CardContent, CardHeader, Slider, Typography, CircularProgress } from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { apiService } from '../../services/api';
 import './LogoUploader.scss';
+
+import { Box, Button, Card, CardContent, CardHeader, Slider, Typography, CircularProgress } from '@mui/material';
+import React, { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
+import { apiService } from '../../services/api';
 
 interface LogoUploaderProps {
   value?: string;
@@ -19,7 +21,7 @@ const LogoUploader: React.FC<LogoUploaderProps> = ({
   value,
   onChange,
   size = 240,
-  outputSize = 512,
+  outputSize: _outputSize = 512,
   entityId,
 }) => {
   const { t } = useTranslation('common');
@@ -55,7 +57,7 @@ const LogoUploader: React.FC<LogoUploaderProps> = ({
       const scaledH = img.naturalHeight * baseScale;
       setOffset({ x: (size - scaledW) / 2, y: (size - scaledH) / 2 });
     };
-    img.onerror = (e) => {
+    img.onerror = () => {
       console.warn('Failed to load logo image (possibly CORS issue):', imageSrc);
       // Don't set error state, just don't show the preview
       setImageEl(null);

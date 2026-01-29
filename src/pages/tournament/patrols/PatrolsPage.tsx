@@ -1,3 +1,6 @@
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
+import RefreshIcon from '@mui/icons-material/Refresh';
+import SaveIcon from '@mui/icons-material/Save';
 import {
   Alert,
   Box,
@@ -7,9 +10,6 @@ import {
   Snackbar,
   Typography,
 } from '@mui/material';
-import SaveIcon from '@mui/icons-material/Save';
-import RefreshIcon from '@mui/icons-material/Refresh';
-import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -17,9 +17,9 @@ import env from '../../../config/env';
 import apiService from '../../../services/api';
 import PatrolCard from './PatrolCard';
 import StatsPanel from './StatsPanel';
+import type { Participant, Patrol, PatrolStats, Warning } from './types';
 import { canDropMember } from './validation';
 import { recalculateWarnings } from './warnings';
-import type { Participant, Patrol, PatrolStats, Warning } from './types';
 
 /**
  * Main patrols management page for tournament admins.
@@ -85,7 +85,7 @@ const PatrolsPage: React.FC = () => {
             // Add to participants map
             participantsMap.set(user.id, {
               id: user.id,
-              name: `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.email,
+              name: `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.email || 'Unknown',
               club: user.club?.name || 'No Club',
               division: user.division || 'Unknown',
               bowCategory: user.bowCategory || 'Unknown',
@@ -119,9 +119,9 @@ const PatrolsPage: React.FC = () => {
       setPatrols(transformedPatrols);
       setParticipants(participantsMap);
       
-      // Set stats if available
-      if (backendStats) {
-        setStats(backendStats);
+      // Set stats if available (API returns compatible shape)
+      if (backendStats && typeof backendStats === 'object' && 'totalParticipants' in backendStats) {
+        setStats(backendStats as PatrolStats);
       } else {
         // Calculate basic stats from patrols
         const totalParticipants = participantsMap.size;
@@ -132,7 +132,7 @@ const PatrolsPage: React.FC = () => {
           totalParticipants,
           averagePatrolSize,
           clubDiversityScore: 0,
-          homogeneityScores: { division: 0, gender: 0 },
+          homogeneityScores: { category: 0, division: 0, gender: 0 },
         });
       }
       
@@ -169,7 +169,7 @@ const PatrolsPage: React.FC = () => {
           // Update member role
           try {
             await apiService.addPatrolMember(patrol.id, memberId, role);
-          } catch (e) {
+          } catch {
             // Member might already exist, continue
           }
         }
@@ -340,7 +340,7 @@ const PatrolsPage: React.FC = () => {
             
             participantsMap.set(user.id, {
               id: user.id,
-              name: `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.email,
+              name: `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.email || 'Unknown',
               club: user.club?.name || 'No Club',
               division: user.division || 'Unknown',
               bowCategory: user.bowCategory || 'Unknown',
@@ -371,8 +371,8 @@ const PatrolsPage: React.FC = () => {
       
       setPatrols(transformedPatrols);
       setParticipants(participantsMap);
-      if (backendStats) {
-        setStats(backendStats);
+      if (backendStats && typeof backendStats === 'object' && 'totalParticipants' in backendStats) {
+        setStats(backendStats as PatrolStats);
       }
       setIsDirty(false);
       
@@ -464,7 +464,7 @@ const PatrolsPage: React.FC = () => {
         {[...patrols]
           .sort((a, b) => a.targetNumber - b.targetNumber)
           .map((patrol) => (
-            <Grid item xs={12} sm={6} md={4} key={patrol.id}>
+            <Grid size={{ xs: 12, sm: 6, md: 4 }} key={patrol.id}>
               <PatrolCard
                 patrol={patrol}
                 participants={participants}

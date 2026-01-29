@@ -11,10 +11,10 @@ import {
   Tabs,
   Tab,
 } from '@mui/material';
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import { isBefore, parseISO, startOfDay } from 'date-fns';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Link, useParams } from 'react-router-dom';
 
 import { useAuth } from '../../../contexts/auth-context';
 import defaultBanner from '../../../img/default_turnament_bg.png';

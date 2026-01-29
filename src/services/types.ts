@@ -42,12 +42,26 @@ export interface TournamentDto {
   createdAt: string;
 }
 
+/** Expanded user object when API returns nested user in patrol member. */
+export interface PatrolMemberUserDto {
+  id: string;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  club?: { name: string };
+  division?: string;
+  bowCategory?: string;
+  gender?: string;
+}
+
 export interface PatrolMemberDto {
   userId: string;
   role: string;
   firstName?: string;
   lastName?: string;
   picture?: string;
+  /** Present when API returns expanded user (e.g. patrol list). */
+  user?: PatrolMemberUserDto;
 }
 
 export interface PatrolDto {

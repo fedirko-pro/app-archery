@@ -10,8 +10,14 @@ import AdminPanel from '../../pages/admin/admin-panel';
 import ProtectedAdminRoute from '../../pages/admin/protected-admin-route';
 import UserEdit from '../../pages/admin/user-edit/user-edit';
 import UserProfileView from '../../pages/admin/user-profile-view/user-profile-view';
-import ConverterPage from '../../pages/ConverterPage';
+import CategoryEdit from '../../pages/categories/admin/category-edit';
+import Categories from '../../pages/categories/Categories';
+import ClubEdit from '../../pages/clubs/admin/club-edit';
+import Clubs from '../../pages/clubs/Clubs';
 import UserPage from '../../pages/competition/user-page/user-page';
+import ConverterPage from '../../pages/ConverterPage';
+import DivisionEdit from '../../pages/divisions/admin/division-edit';
+import Divisions from '../../pages/divisions/Divisions';
 import Encyclopedia from '../../pages/Encyclopedia';
 // TODO: Settings temporarily disabled - functionality moved to Profile
 // import Settings from '../Settings/Settings.tsx';
@@ -25,21 +31,15 @@ import Rules from '../../pages/rules/Rules';
 import SignIn from '../../pages/sign-in/sign-in';
 import SignUp from '../../pages/sign-up/sign-up';
 import AdminApplications from '../../pages/tournament/admin-applications/admin-applications';
+import PatrolsPage from '../../pages/tournament/patrols/PatrolsPage';
 import PublicApplication from '../../pages/tournament/public-application/public-application';
 import TournamentCreate from '../../pages/tournament/tournament-create/tournament-create';
 import TournamentDetail from '../../pages/tournament/tournament-detail/tournament-detail';
 import TournamentEdit from '../../pages/tournament/tournament-edit/tournament-edit';
 import TournamentList from '../../pages/tournament/tournament-list/tournament-list';
 import UserApplications from '../../pages/tournament/user-applications/user-applications';
-import PatrolsPage from '../../pages/tournament/patrols/PatrolsPage';
 import Training from '../../pages/Trainings';
 import { isRtlLanguage, normalizeAppLang, toI18nLang, getDefaultAppLang } from '../../utils/i18n-lang';
-import Categories from '../../pages/categories/Categories';
-import CategoryEdit from '../../pages/categories/admin/category-edit';
-import Clubs from '../../pages/clubs/Clubs';
-import ClubEdit from '../../pages/clubs/admin/club-edit';
-import Divisions from '../../pages/divisions/Divisions';
-import DivisionEdit from '../../pages/divisions/admin/division-edit';
 
 function LangLayout() {
   const params = useParams();

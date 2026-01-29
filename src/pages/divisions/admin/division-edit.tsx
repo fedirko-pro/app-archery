@@ -10,8 +10,8 @@ import {
   Typography,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { useAuth } from '../../../contexts/auth-context';
 import apiService from '../../../services/api';
@@ -24,7 +24,7 @@ import type { DivisionDto, RuleDto } from '../../../services/types';
 const DivisionEdit: React.FC = () => {
   const { id, lang } = useParams<{ id: string; lang: string }>();
   const navigate = useNavigate();
-  const { t } = useTranslation('common');
+  const { t: _t } = useTranslation('common');
   const { user } = useAuth();
 
   const [form, setForm] = useState<DivisionDto>({

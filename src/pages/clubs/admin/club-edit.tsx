@@ -1,7 +1,7 @@
 import { Box, Button, Stack, TextField, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import LogoUploader from '../../../components/LogoUploader/LogoUploader';
 import { useAuth } from '../../../contexts/auth-context';
@@ -15,7 +15,7 @@ import type { ClubDto } from '../../../services/types';
 const ClubEdit: React.FC = () => {
   const { id, lang } = useParams<{ id: string; lang: string }>();
   const navigate = useNavigate();
-  const { t } = useTranslation('common');
+  const { t: _t } = useTranslation('common');
   const { user } = useAuth();
 
   const [form, setForm] = useState<ClubDto>({

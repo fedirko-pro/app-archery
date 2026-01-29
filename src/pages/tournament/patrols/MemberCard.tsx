@@ -1,7 +1,7 @@
-import { Box, Chip, IconButton, Menu, MenuItem, Paper } from '@mui/material';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { useEffect, useRef, useState } from 'react';
 import { draggable } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { Box, Chip, IconButton, Menu, MenuItem, Paper } from '@mui/material';
+import { useEffect, useRef, useState } from 'react';
 
 import type { Participant } from './types';
 

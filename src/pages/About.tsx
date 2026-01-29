@@ -1,7 +1,6 @@
-import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
-
 import './About.scss';
+
+import { useTranslation } from 'react-i18next';
 
 const About = () => {
   const { t } = useTranslation('common');
