@@ -1,28 +1,26 @@
-import './AvatarUploader.scss';
-
-import { Box, Button, Card, CardContent, CardHeader, Slider, Typography, CircularProgress } from '@mui/material';
 import React, { useEffect, useRef, useState } from 'react';
+import { Box, Button, Card, CardContent, CardHeader, Slider, Typography, CircularProgress } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-
 import { apiService } from '../../services/api';
+import './LogoUploader.scss';
 
-interface AvatarUploaderProps {
+interface LogoUploaderProps {
   value?: string;
   onChange: (url: string | null) => void;
   size?: number; // viewport size in px (square)
   outputSize?: number; // output canvas size (square)
-  userId?: string; // User ID for avatar upload (required for backend)
+  entityId?: string; // ID of the entity (club, etc.) for the logo
 }
 
 const MAX_SIZE_BYTES = 10 * 1024 * 1024; // 10MB (API limit)
 const ACCEPTED_TYPES = ['image/png', 'image/jpeg', 'image/jpg'];
 
-const AvatarUploader: React.FC<AvatarUploaderProps> = ({
+const LogoUploader: React.FC<LogoUploaderProps> = ({
   value,
   onChange,
   size = 240,
-  outputSize: _outputSize = 512,
-  userId,
+  outputSize = 512,
+  entityId,
 }) => {
   const { t } = useTranslation('common');
   const [imageSrc, setImageSrc] = useState<string | undefined>(value);
@@ -56,6 +54,11 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({
       const scaledW = img.naturalWidth * baseScale;
       const scaledH = img.naturalHeight * baseScale;
       setOffset({ x: (size - scaledW) / 2, y: (size - scaledH) / 2 });
+    };
+    img.onerror = (e) => {
+      console.warn('Failed to load logo image (possibly CORS issue):', imageSrc);
+      // Don't set error state, just don't show the preview
+      setImageEl(null);
     };
     img.src = imageSrc;
   }, [imageSrc, size]);
@@ -177,33 +180,27 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({
       const cropHeight = Math.round(sSize);
 
       if (isNaN(cropX) || isNaN(cropY) || isNaN(cropWidth) || isNaN(cropHeight) ||
-        cropX < 0 || cropY < 0 || cropWidth <= 0 || cropHeight <= 0) {
+          cropX < 0 || cropY < 0 || cropWidth <= 0 || cropHeight <= 0) {
         setError(t('profile.invalidCrop', 'Invalid crop parameters. Please try adjusting the image.'));
         setUploading(false);
         return;
       }
 
       // Upload to backend with crop parameters
-      if (!userId) {
-        setError(t('profile.userIdRequired', 'User ID is required for avatar upload'));
-        setUploading(false);
-        return;
-      }
-
       const result = await apiService.uploadImage(
         currentFileRef.current,
-        'avatar',
+        'logo',
         {
-          entityId: userId,
           cropX,
           cropY,
           cropWidth,
           cropHeight,
           quality: 85,
+          entityId,
         }
       );
 
-      // Backend now returns full URL, so we can use it directly
+      // Backend returns full URL, so we can use it directly
       onChange(result.url);
       setImageSrc(result.url);
     } catch (err) {
@@ -226,66 +223,77 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({
   };
 
   return (
-    <Card className="avatar-uploader">
+    <Card className="logo-uploader">
       <CardHeader
-        title={t('profile.avatar', 'Avatar')}
-        subheader={t('profile.avatarSubheader', 'Select an image, then drag to reposition (PNG, JPG up to 3MB)')}
+        title={t('clubs.clubLogo', 'Club Logo')}
+        subheader={t('clubs.logoSubheader', 'Select an image, then drag to reposition (PNG, JPG up to 10MB)')}
       />
       <CardContent>
         <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap' }}>
-          <div
-            ref={containerRef}
-            onMouseDown={handleMouseDown}
-            onMouseMove={handleMouseMove}
-            onMouseUp={handleMouseUp}
-            onMouseLeave={handleMouseUp}
-            onTouchStart={handleTouchStart}
-            onTouchMove={handleTouchMove}
-            onTouchEnd={handleTouchEnd}
-            className="avatar-uploader__viewport"
-            style={{ ['--avatar-size' as string]: `${size}px` } as React.CSSProperties}
-          >
-            {imageEl ? (
-              <img
-                src={imageSrc}
-                alt="avatar-crop"
-                draggable={false}
-                className="avatar-uploader__image"
-                style={{
-                  transform: `translate(${offset.x}px, ${offset.y}px) scale(${Math.max(size / (naturalSize?.w || 1), size / (naturalSize?.h || 1)) * zoom})`
-                }}
-              />
-            ) : (
-              <div className="avatar-uploader__placeholder">
-                {t('profile.dragToReposition', 'Select an image, then drag to reposition')}
-              </div>
+            {value && !imageEl && (
+              <Box sx={{ mb: 2, p: 2, bgcolor: 'info.light', borderRadius: 1, width: '100%' }}>
+                <Typography variant="body2" color="info.contrastText">
+                  Current logo: {value}
+                  <br />
+                  <Typography variant="caption" color="info.contrastText">
+                    (Preview unavailable - CORS restriction. Upload a new image to edit.)
+                  </Typography>
+                </Typography>
+              </Box>
             )}
-          </div>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mt: 1 }}>
-            <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-              {t('profile.zoom', 'Zoom')}
-            </Typography>
-            <Slider
-              value={zoom}
-              onChange={handleZoomChange}
-              min={1}
-              max={3}
-              step={0.01}
-              sx={{ width: size - 80 }}
-              disabled={!imageEl}
-            />
-          </Box>
+            <div
+                ref={containerRef}
+                onMouseDown={handleMouseDown}
+                onMouseMove={handleMouseMove}
+                onMouseUp={handleMouseUp}
+                onMouseLeave={handleMouseUp}
+                onTouchStart={handleTouchStart}
+                onTouchMove={handleTouchMove}
+                onTouchEnd={handleTouchEnd}
+                className="logo-uploader__viewport"
+                style={{ ['--logo-size' as any]: `${size}px` }}
+            >
+                {imageEl ? (
+                <img
+                    src={imageSrc}
+                    alt="logo-crop"
+                    draggable={false}
+                    className="logo-uploader__image"
+                    style={{
+                    transform: `translate(${offset.x}px, ${offset.y}px) scale(${Math.max(size / (naturalSize?.w || 1), size / (naturalSize?.h || 1)) * zoom})`
+                    }}
+                />
+                ) : (
+                <div className="logo-uploader__placeholder">
+                    {t('profile.dragToReposition', 'Select an image, then drag to reposition')}
+                </div>
+                )}
+            </div>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mt: 1 }}>
+                <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                {t('profile.zoom', 'Zoom')}
+                </Typography>
+                <Slider
+                value={zoom}
+                onChange={handleZoomChange as any}
+                min={1}
+                max={3}
+                step={0.01}
+                sx={{ width: size - 80 }}
+                disabled={!imageEl}
+                />
+            </Box>
 
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
             <input
-              type="file"
-              accept={ACCEPTED_TYPES.join(',')}
-              onChange={handleFileChange}
-              ref={fileInputRef}
-              className="avatar-uploader__file-input"
+                type="file"
+                accept={ACCEPTED_TYPES.join(',')}
+                onChange={handleFileChange}
+                ref={fileInputRef}
+                className="logo-uploader__file-input"
             />
             <Button variant="outlined" onClick={() => fileInputRef.current?.click()} disabled={uploading}>
-              {imageEl ? t('profile.changePhoto', 'Change Photo') : t('profile.uploadPhoto', 'Upload Photo')}
+                {imageEl ? t('profile.changePhoto', 'Change Photo') : t('profile.uploadPhoto', 'Upload Photo')}
             </Button>
             <Button
               variant="contained"
@@ -293,21 +301,19 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({
               disabled={!imageEl || uploading}
               startIcon={uploading ? <CircularProgress size={16} /> : null}
             >
-              {uploading ? t('pages.tournaments.uploading', 'Uploading...') : t('profile.cropAndSave', 'Crop and Save')}
+                {uploading ? t('pages.tournaments.uploading', 'Uploading...') : t('profile.cropAndSave', 'Crop and Save')}
             </Button>
             <Button color="error" onClick={handleRemove} disabled={!imageEl || uploading}>
-              {t('profile.removePhoto', 'Remove Photo')}
+                {t('profile.removePhoto', 'Remove Photo')}
             </Button>
             {error && (
-              <Typography variant="caption" color="error">{error}</Typography>
+                <Typography variant="caption" color="error">{error}</Typography>
             )}
-          </Box>
+            </Box>
         </Box>
-      </CardContent>
+        </CardContent>
     </Card>
   );
 };
 
-export default AvatarUploader;
-
-
+export default LogoUploader;

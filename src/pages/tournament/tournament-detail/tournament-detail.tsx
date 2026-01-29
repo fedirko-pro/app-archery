@@ -1,15 +1,19 @@
 import {
   ArrowBack,
-  CalendarToday,
-  LocationOn,
-  Send,
-  Edit,
-  PictureAsPdf,
-  Image,
-  Description,
-  AttachFile,
-  GetApp,
   Assignment,
+  AttachFile,
+  CalendarToday,
+  Description,
+  Edit,
+  EventBusy,
+  GetApp,
+  Gavel,
+  GpsFixed,
+  Image,
+  LocationOn,
+  PictureAsPdf,
+  Send,
+  Share,
 } from '@mui/icons-material';
 import {
   Box,
@@ -30,7 +34,8 @@ import {
 } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
+import { isBefore, parseISO, startOfDay } from 'date-fns';
 
 import { FileAttachment } from '../../../components/FileAttachments/FileAttachments';
 import { useAuth } from '../../../contexts/auth-context';
@@ -89,6 +94,46 @@ const TournamentDetail: React.FC = () => {
     document.body.removeChild(link);
   };
 
+  const isPastTournament = (tournament: TournamentDto): boolean => {
+    const today = startOfDay(new Date());
+    const tournamentEndDate = tournament.endDate 
+      ? parseISO(tournament.endDate)
+      : parseISO(tournament.startDate);
+    return isBefore(startOfDay(tournamentEndDate), today);
+  };
+
+  const handleShare = async () => {
+    const tournamentUrl = `${window.location.origin}/${lang}/tournaments/${tournamentId}`;
+    const shareData = {
+      title: tournament?.title || 'Tournament',
+      text: tournament?.description || `Check out this tournament: ${tournament?.title}`,
+      url: tournamentUrl,
+    };
+
+    // Check if Web Share API is supported (mainly mobile devices)
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+      } catch (err) {
+        // User cancelled or error occurred
+        if ((err as Error).name !== 'AbortError') {
+          console.error('Error sharing:', err);
+        }
+      }
+    } else {
+      // Fallback: Copy URL to clipboard
+      try {
+        await navigator.clipboard.writeText(tournamentUrl);
+        // You could show a toast notification here
+        alert(t('pages.tournaments.linkCopied', 'Link copied to clipboard!'));
+      } catch (err) {
+        console.error('Failed to copy link:', err);
+        // Fallback: Show URL in a prompt
+        prompt(t('pages.tournaments.copyLink', 'Copy this link:'), tournamentUrl);
+      }
+    }
+  };
+
   if (loading) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" minHeight="400px">
@@ -144,6 +189,15 @@ const TournamentDetail: React.FC = () => {
           <Divider sx={{ my: 3 }} />
 
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+            {tournament.ruleCode && (
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <Gavel color="action" fontSize="small" />
+                <Typography variant="body1">
+                  <strong>{t('pages.tournaments.rules', 'Rules')}:</strong> {tournament.rule?.ruleName || tournament.ruleCode}
+                </Typography>
+              </Box>
+            )}
+
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               <CalendarToday color="action" fontSize="small" />
               <Typography variant="body1">
@@ -158,11 +212,29 @@ const TournamentDetail: React.FC = () => {
               </Typography>
             </Box>
 
+            {tournament.applicationDeadline && (
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <EventBusy color="warning" fontSize="small" />
+                <Typography variant="body1" color="warning.main">
+                  <strong>{t('pages.tournaments.applicationDeadline', 'Application Deadline')}:</strong> {formatDate(tournament.applicationDeadline)}
+                </Typography>
+              </Box>
+            )}
+
             {tournament.address && (
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 <LocationOn color="action" fontSize="small" />
                 <Typography variant="body1">
                   <strong>{t('pages.tournaments.location')}:</strong> {tournament.address}
+                </Typography>
+              </Box>
+            )}
+
+            {tournament.targetCount && (
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <GpsFixed color="action" fontSize="small" />
+                <Typography variant="body1">
+                  <strong>{t('pages.tournaments.targetCount', 'Number of Targets')}:</strong> {tournament.targetCount}
                 </Typography>
               </Box>
             )}
@@ -222,14 +294,24 @@ const TournamentDetail: React.FC = () => {
 
           <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
             <Button
-              variant="contained"
+              variant="outlined"
               size="large"
-              startIcon={<Send />}
-              component={Link}
-              to={`/${lang}/apply/${tournament.id}`}
+              startIcon={<Share />}
+              onClick={handleShare}
             >
-              {t('pages.tournaments.apply', 'Apply to tournament')}
+              {t('pages.tournaments.share', 'Share')}
             </Button>
+            {!isPastTournament(tournament) && (
+              <Button
+                variant="contained"
+                size="large"
+                startIcon={<Send />}
+                component={Link}
+                to={`/${lang}/apply/${tournament.id}`}
+              >
+                {t('pages.tournaments.apply', 'Apply to tournament')}
+              </Button>
+            )}
             {user?.role === 'admin' && (
               <>
                 <Button

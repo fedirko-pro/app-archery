@@ -5,7 +5,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import type { SelectChangeEvent } from '@mui/material/Select';
 import i18n from 'i18next';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import { useAuth } from '../../contexts/auth-context';
@@ -25,6 +25,20 @@ const LanguageToggler: React.FC = () => {
       'pt',
   );
   const [language, setLanguage] = React.useState<string>(currentLang);
+
+  // Sync language state with URL params changes
+  useEffect(() => {
+    const newLang = normalizeAppLang(
+      params.lang ?? user?.appLanguage ?? user?.app_language ?? user?.language ?? 'pt',
+    );
+    setLanguage((prevLang) => {
+      // Only update if the language actually changed
+      if (newLang !== prevLang) {
+        return newLang;
+      }
+      return prevLang;
+    });
+  }, [params.lang, user]);
 
   const options: Array<{ value: string; code: string; flag: string }> = [
     { value: 'pt', code: 'PT', flag: '🇵🇹' },

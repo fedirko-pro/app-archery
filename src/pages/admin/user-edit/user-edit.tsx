@@ -52,7 +52,11 @@ const UserEdit: React.FC = () => {
         picture: foundUser.picture || '',
         role: foundUser.role || 'user',
         federationNumber: foundUser.federationNumber || '',
+        nationality: foundUser.nationality || 'Portuguesa',
+        gender: foundUser.gender || 'M',
+        clubId: foundUser.clubId || '',
         categories: foundUser.categories || [],
+        appLanguage: (foundUser as any).appLanguage || 'pt',
       });
     } catch (error) {
       setError('Failed to fetch user data');

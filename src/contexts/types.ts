@@ -14,6 +14,10 @@ export interface User {
   createdAt: string;
   updatedAt: string;
   federationNumber?: string;
+  nationality?: string;
+  gender?: string;
+  clubId?: string;
+  club?: { id: string; name: string };
   categories?: string[];
   /** Preferred app language (camelCase from API) */
   appLanguage?: AppLanguageCode;

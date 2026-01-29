@@ -67,23 +67,41 @@ export function getDefaultAppLang(): AppLanguage {
   return fromI18nLang(i18nLang);
 }
 
-/** Choose localized description by app language with sensible fallbacks. */
+/**
+ * Choose localized description by app language with sensible fallbacks.
+ * Supports both snake_case (description_en) and camelCase (descriptionEn) formats.
+ */
 export function pickLocalizedDescription(
   record: Record<string, unknown>,
   appLang: AppLanguage,
   baseKey: string = 'description'
 ): string | undefined {
   const langForKey = appLang === 'ua' ? 'uk' : appLang;
-  const langKey = `${baseKey}_${langForKey}`;
-  const direct = record[langKey];
-  if (typeof direct === 'string' && direct.trim()) return direct;
+
+  // Try camelCase format first (e.g., descriptionEn)
+  const camelCaseKey = baseKey + langForKey.charAt(0).toUpperCase() + langForKey.slice(1);
+  const camelCaseDirect = record[camelCaseKey];
+  if (typeof camelCaseDirect === 'string' && camelCaseDirect.trim()) return camelCaseDirect;
+
+  // Try snake_case format (e.g., description_en) for backward compatibility
+  const snakeCaseKey = `${baseKey}_${langForKey}`;
+  const snakeCaseDirect = record[snakeCaseKey];
+  if (typeof snakeCaseDirect === 'string' && snakeCaseDirect.trim()) return snakeCaseDirect;
 
   // fallback order: pt -> en -> it -> es -> uk -> plain description
   const fallbacks: Array<AppLanguage | 'uk'> = ['pt', 'en', 'it', 'es', 'ua', 'uk'];
   for (const fb of fallbacks) {
     const fbKey = fb === 'ua' ? 'uk' : fb;
-    const v = record[`${baseKey}_${fbKey}`];
-    if (typeof v === 'string' && v.trim()) return v;
+
+    // Try camelCase format
+    const camelFallbackKey = baseKey + fbKey.charAt(0).toUpperCase() + fbKey.slice(1);
+    const camelFallback = record[camelFallbackKey];
+    if (typeof camelFallback === 'string' && camelFallback.trim()) return camelFallback;
+
+    // Try snake_case format
+    const snakeFallbackKey = `${baseKey}_${fbKey}`;
+    const snakeFallback = record[snakeFallbackKey];
+    if (typeof snakeFallback === 'string' && snakeFallback.trim()) return snakeFallback;
   }
   const plain = record[baseKey];
   return typeof plain === 'string' && plain.trim() ? plain : undefined;

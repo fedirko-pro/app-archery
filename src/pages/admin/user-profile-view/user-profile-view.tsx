@@ -216,6 +216,7 @@ const UserProfileView: React.FC = () => {
             profileData={profileData}
             isSaving={isSaving}
             isAdminView={true}
+            userId={user?.id}
             onSave={handleSave}
             onCancel={handleEditToggle}
             onChange={handleChange}

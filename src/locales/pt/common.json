@@ -16,7 +16,22 @@
     "rules": {
       "title": "Regras",
       "openOfficialPage": "Abrir página oficial",
-      "downloadPdf": "Baixar PDF"
+      "downloadPdf": "Baixar PDF",
+      "createRule": "Criar Regra",
+      "editRule": "Editar Regra",
+      "ruleCode": "Código da Regra",
+      "ruleName": "Nome da Regra",
+      "edition": "Edição",
+      "descriptionEn": "Descrição (Inglês)",
+      "descriptionPt": "Descrição (Português)",
+      "descriptionIt": "Descrição (Italiano)",
+      "descriptionUk": "Descrição (Ucraniano)",
+      "descriptionEs": "Descrição (Espanhol)",
+      "link": "Link da Página Oficial",
+      "downloadLink": "Link para Download",
+      "deleteConfirmTitle": "Excluir Regra?",
+      "deleteConfirmMessage": "Tem certeza de que deseja excluir esta regra?",
+      "deleteWarning": "Esta regra não pode ser excluída se tiver divisões ou categorias de arco relacionadas."
     },
     "categories": {
       "title": "Categorias de arco (ordenadas A-Z)",
@@ -25,36 +40,43 @@
     "converter": { "title": "Conversor das medidas mais comuns de arco" },
     "about": {
       "title": "Sobre este aplicativo",
-      "intro": "Este aplicativo foi criado para ajudar a federação de arco e simplificar a gestão de torneios. Também é uma \"ferramenta multiuso\" para o arco moderno.",
+      "intro": "UArchery é uma aplicação web abrangente projetada para ajudar federações de tiro com arco a gerenciar torneios, participantes e competições de forma eficiente. Construída com tecnologias modernas, fornece uma solução completa para organização de torneios desde o registro até a geração de patrulhas.",
       "currentTitle": "Funcionalidades atuais:",
       "current": {
-        "tournaments": "Gestão de torneios",
-        "applications": "Gestão de inscrições",
-        "patrols": "Gestão de patrulhas",
-        "users": "Gestão de usuários",
-        "rules": "Gestão de regras",
-        "converter": "Conversor universal",
-        "aboutPage": "Página \"Sobre\""
+        "auth": "Autenticação e autorização - Autenticação baseada em JWT com Google OAuth, redefinição de senha e controle de acesso baseado em funções",
+        "profiles": "Perfis de usuário - Gerenciamento completo de perfis com upload de avatar, biografia, localização, número da federação e categorias de arco favoritas",
+        "tournaments": "Gerenciamento de torneios - Criar, editar e gerenciar torneios com banners, anexos, mapas de localização e prazos de inscrição",
+        "applications": "Inscrições em torneios - Enviar inscrições com seleção de categoria, divisão e equipamento. Fluxo de trabalho de aprovação do administrador com rastreamento de status",
+        "patrols": "Sistema de patrulhas - Geração automática de patrulhas com agrupamento inteligente por categoria de arco, divisão e gênero. Interface de gerenciamento drag-and-drop e exportação PDF",
+        "admin": "Painel administrativo - Gerenciamento de usuários, aprovações de inscrições, supervisão de torneios e administração do sistema",
+        "categories": "Gerenciamento de categorias de arco - CRUD completo para categorias de arco com referências a regras",
+        "clubs": "Gerenciamento de clubes - Gerenciar clubes de tiro com arco com logos, descrições e localizações",
+        "divisions": "Gerenciamento de divisões - Gerenciamento de grupos etários e divisões vinculadas a regras",
+        "rules": "Gerenciamento de regras - Regras oficiais de tiro com arco com descrições multilíngues e downloads PDF",
+        "converter": "Conversor de unidades - Converter entre medidas comuns de tiro com arco (polegadas/cm, libras/kg, grãos/gramas, jardas/metros)",
+        "uploads": "Sistema de upload de arquivos - Processamento de imagens para avatares e banners, gerenciamento de anexos para torneios",
+        "multilang": "Suporte multilíngue - Disponível em inglês, ucraniano, espanhol, italiano e português",
+        "pwa": "Aplicativo web progressivo - PWA instalável com capacidades offline"
       },
       "plannedTitle": "Funcionalidades planejadas:",
       "planned": {
-        "trainingLog": "Registro de treinos",
-        "profile": "Perfil dos arqueiros",
-        "shareProfile": "Possibilidade de compartilhar o perfil",
-        "localCompetition": "Competição local",
-        "globalCompetition": "Competição global",
-        "duels": "Desafios amigáveis (duelos)",
-        "news": "Notícias",
-        "calendar": "Calendário",
-        "knowledgeBase": "Base de conhecimento de arco",
+        "trainingLog": "Registro de treinos - Rastrear sessões de treinamento pessoal com estatísticas detalhadas",
+        "achievements": "Sistema de conquistas - Rastreamento e compartilhamento abrangente de conquistas",
+        "competitions": "Recursos de competição - Gerenciamento aprimorado de competições e pontuação",
+        "duels": "Desafios amigáveis - Desafiar outros arqueiros para duelos amigáveis",
+        "news": "Notícias e atualizações - Notícias de torneios e anúncios da federação",
+        "calendar": "Calendário de eventos - Visualização de calendário integrada de torneios e eventos",
+        "knowledgeBase": "Base de conhecimento - Enciclopédia e recursos abrangentes de tiro com arco",
         "more": "E muito mais..."
       },
-      "contact": "Sobre funcionalidade adicional (ou outras questões) envie um email para",
-      "copyrightPrefix": "© 2023",
+      "contact": "Para solicitações de recursos, relatórios de bugs ou perguntas, entre em contato",
+      "copyrightPrefix": "© 2023-2025",
       "copyrightSuffix": ". Todos os direitos reservados."
     },
     "tournaments": {
       "title": "Torneios",
+      "futureTournaments": "Futuros",
+      "pastTournaments": "Passados",
       "create": "Criar torneio",
       "edit": "Editar",
       "delete": "Excluir",
@@ -76,6 +98,9 @@
       "viewDetails": "Ver detalhes",
       "backToList": "Voltar aos torneios",
       "notFound": "Torneio não encontrado",
+      "share": "Compartilhar",
+      "linkCopied": "Link copiado para a área de transferência!",
+      "copyLink": "Copie este link:",
       "banner": "Banner do torneio",
       "bannerSubheader": "Selecione uma imagem e arraste para reposicionar (PNG, JPG até 3MB)",
       "dragToReposition": "Selecione uma imagem e arraste para reposicionar",
@@ -150,6 +175,74 @@
         "compoundBow": "Arco composto",
         "traditionalBow": "Arco tradicional"
       }
+    },
+    "admin": {
+      "favoriteCategories": "Categorias Favoritas"
+    },
+    "adminApplications": {
+      "title": "Gestão de inscrições em torneios",
+      "selectTournament": "Selecionar torneio",
+      "noApplications": "Nenhuma inscrição encontrada para este torneio.",
+      "fetchError": "Falha ao carregar inscrições",
+      "fetchTournamentsError": "Falha ao carregar torneios",
+      "statsTotal": "Total",
+      "statsPending": "Pendentes",
+      "statsApproved": "Aprovadas",
+      "statsRejected": "Rejeitadas",
+      "table": {
+        "avatar": "Avatar",
+        "applicant": "Inscrito",
+        "gender": "Gênero",
+        "category": "Categoria",
+        "division": "Divisão",
+        "equipment": "Equipamento",
+        "status": "Status",
+        "applied": "Inscrito em",
+        "actions": "Ações"
+      },
+      "actions": {
+        "view": "Ver",
+        "approve": "Aprovar",
+        "reject": "Rejeitar",
+        "approving": "Aprovando...",
+        "rejecting": "Rejeitando..."
+      },
+      "status": {
+        "pending": "Pendente",
+        "approved": "Aprovada",
+        "rejected": "Rejeitada",
+        "withdrawn": "Cancelada"
+      },
+      "dialog": {
+        "title": "Detalhes da inscrição - {{name}}",
+        "titleFallback": "Detalhes da inscrição",
+        "tournament": "Torneio",
+        "category": "Categoria",
+        "division": "Divisão",
+        "equipment": "Equipamento",
+        "notes": "Observações",
+        "noNotes": "Nenhuma observação fornecida",
+        "statusLabel": "Status",
+        "rejectionReason": "Motivo da rejeição",
+        "rejectionReasonPlaceholder": "Por favor, forneça um motivo para a rejeição...",
+        "cancel": "Cancelar",
+        "updateStatus": "Atualizar status"
+      },
+      "notifications": {
+        "approvedSuccess": "Inscrição de {{name}} aprovada com sucesso",
+        "rejectedSuccess": "Inscrição de {{name}} rejeitada com sucesso",
+        "updateSuccess": "Status da inscrição atualizado com sucesso",
+        "approveFailed": "Falha ao aprovar inscrição de {{name}}",
+        "rejectFailed": "Falha ao rejeitar inscrição de {{name}}",
+        "updateFailed": "Falha ao atualizar status da inscrição",
+        "approveFailedGeneric": "Falha ao aprovar inscrição",
+        "rejectFailedGeneric": "Falha ao rejeitar inscrição"
+      },
+      "tournament": {
+        "startDate": "Data de início",
+        "endDate": "Data de término",
+        "applicationDeadline": "Prazo de inscrição"
+      }
     }
   },
   "forms": { "email": "Email", "password": "Senha", "firstName": "Nome", "lastName": "Sobrenome", "currentPassword": "Senha atual", "newPassword": "Nova senha", "confirmPassword": "Confirmar nova senha", "bio": "Bio", "location": "Localização", "website": "Website", "profilePictureUrl": "URL da foto de perfil", "federationNumber": "Número da federação", "categories": "Categorias", "selectCategories": "Selecione categorias", "applicationLanguage": "Idioma do aplicativo", "role": "Função" },
@@ -216,7 +309,6 @@
     "deleteHint": "Todos os resultados deste treino serão excluídos",
     "add": "Adicionar treino"
   },
-  "competition": { "title": "Página da competição", "testTournament": "Torneio de teste 2024 (demo)", "patrolsTitle": "Lista de patrulhas" },
   "units": {
     "inch": "Polegada",
     "centimeter": "Centímetro",
@@ -249,7 +341,7 @@
       "desc": "Conversões de distância de tiro"
     }
   },
-  "common": { "or": "ou", "cancel": "Cancelar", "update": "Atualizar", "create": "Criar", "back": "Voltar" },
+  "common": { "or": "ou", "cancel": "Cancelar", "update": "Atualizar", "create": "Criar", "back": "Voltar", "save": "Salvar", "saving": "Salvando...", "delete": "Excluir", "deleting": "Excluindo..." },
   "auth": {
     "logout": "Sair",
     "signIn": "Entrar",
@@ -264,6 +356,10 @@
   "dialog": {
     "yes": "Sim",
     "no": "Não"
+  },
+  "clubs": {
+    "clubLogo": "Logotipo do Clube",
+    "logoSubheader": "Selecione uma imagem e arraste para reposicionar (PNG, JPG até 10MB)"
   }
 }
 
