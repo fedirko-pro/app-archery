@@ -2,7 +2,13 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { useState } from 'react';
 
-export default function ConverterInputs(props: any) {
+interface ConverterInputsProps {
+  labelFirst: string;
+  labelSecond: string;
+  coef: number;
+}
+
+export default function ConverterInputs(props: ConverterInputsProps) {
     const [firstValue, setFirstValue] = useState(0);
     const [secondValue, setSecondValue] = useState(0);
     const round3 = (n: number) => Math.round(n * 1000) / 1000;

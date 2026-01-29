@@ -4,18 +4,26 @@ import Box from '@mui/material/Box';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import type { SelectChangeEvent } from '@mui/material/Select';
+import i18n from 'i18next';
 import React from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import i18n from 'i18next';
-import { normalizeAppLang, toI18nLang } from '../../utils/i18n-lang';
+
 import { useAuth } from '../../contexts/auth-context';
+import type { AppLanguageCode } from '../../contexts/types';
+import { normalizeAppLang, toI18nLang } from '../../utils/i18n-lang';
 
 const LanguageToggler: React.FC = () => {
   const params = useParams();
   const navigate = useNavigate();
   const location = useLocation();
   const { user } = useAuth();
-  const currentLang = normalizeAppLang(params.lang || (user as any)?.appLanguage || (user as any)?.app_language || (user as any)?.language || 'pt');
+  const currentLang = normalizeAppLang(
+    params.lang ??
+      user?.appLanguage ??
+      user?.app_language ??
+      user?.language ??
+      'pt',
+  );
   const [language, setLanguage] = React.useState<string>(currentLang);
 
   const options: Array<{ value: string; code: string; flag: string }> = [
@@ -37,7 +45,7 @@ const LanguageToggler: React.FC = () => {
     }
     const newPath = segments.join('/') || `/${value}`;
     navigate(newPath, { replace: true });
-    await i18n.changeLanguage(toI18nLang(value as any));
+    await i18n.changeLanguage(toI18nLang(value as AppLanguageCode));
   };
 
   return (

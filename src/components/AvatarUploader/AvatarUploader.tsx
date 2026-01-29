@@ -1,8 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Box, Button, Card, CardContent, CardHeader, Slider, Typography, CircularProgress } from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { apiService } from '../../services/api';
 import './AvatarUploader.scss';
+
+import { Box, Button, Card, CardContent, CardHeader, Slider, Typography, CircularProgress } from '@mui/material';
+import React, { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
+import { apiService } from '../../services/api';
 
 interface AvatarUploaderProps {
   value?: string;
@@ -18,7 +20,7 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({
   value,
   onChange,
   size = 240,
-  outputSize = 512,
+  outputSize: _outputSize = 512,
 }) => {
   const { t } = useTranslation('common');
   const [imageSrc, setImageSrc] = useState<string | undefined>(value);
@@ -232,7 +234,7 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({
                 onTouchMove={handleTouchMove}
                 onTouchEnd={handleTouchEnd}
                 className="avatar-uploader__viewport"
-                style={{ ['--avatar-size' as any]: `${size}px` }}
+                style={{ ['--avatar-size' as string]: `${size}px` } as React.CSSProperties}
             >
                 {imageEl ? (
                 <img
@@ -256,7 +258,7 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({
                 </Typography>
                 <Slider
                 value={zoom}
-                onChange={handleZoomChange as any}
+                onChange={handleZoomChange}
                 min={1}
                 max={3}
                 step={0.01}

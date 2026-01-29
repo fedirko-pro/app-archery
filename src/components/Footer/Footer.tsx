@@ -1,7 +1,8 @@
 import './Footer.scss';
 
-import { Link, NavLink, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { Link, NavLink, useParams } from 'react-router-dom';
+
 import { normalizeAppLang } from '../../utils/i18n-lang';
 
 const Footer = () => {

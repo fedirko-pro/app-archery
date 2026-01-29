@@ -1,8 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Box, Button, Card, CardContent, CardHeader, Slider, Typography, CircularProgress } from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { apiService } from '../../services/api';
 import './BannerUploader.scss';
+
+import { Box, Button, Card, CardContent, CardHeader, Slider, Typography, CircularProgress } from '@mui/material';
+import React, { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
+import { apiService } from '../../services/api';
 
 interface BannerUploaderProps {
   value?: string;
@@ -21,8 +23,8 @@ const BannerUploader: React.FC<BannerUploaderProps> = ({
   onChange,
   width = 600,
   height = 200,
-  outputWidth = 1200,
-  outputHeight = 400,
+  outputWidth: _outputWidth = 1200,
+  outputHeight: _outputHeight = 400,
 }) => {
   const { t } = useTranslation('common');
   const [imageSrc, setImageSrc] = useState<string | undefined>(value);
@@ -239,10 +241,12 @@ const BannerUploader: React.FC<BannerUploaderProps> = ({
                 onTouchMove={handleTouchMove}
                 onTouchEnd={handleTouchEnd}
                 className="banner-uploader__viewport"
-                style={{
-                  ['--banner-width' as any]: `${width}px`,
-                  ['--banner-height' as any]: `${height}px`
-                }}
+                style={
+                  {
+                    ['--banner-width' as string]: `${width}px`,
+                    ['--banner-height' as string]: `${height}px`,
+                  } as React.CSSProperties
+                }
             >
                 {imageEl ? (
                 <img
@@ -266,7 +270,7 @@ const BannerUploader: React.FC<BannerUploaderProps> = ({
                 </Typography>
                 <Slider
                 value={zoom}
-                onChange={handleZoomChange as any}
+                onChange={handleZoomChange}
                 min={1}
                 max={3}
                 step={0.01}

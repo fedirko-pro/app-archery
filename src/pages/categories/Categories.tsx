@@ -1,16 +1,15 @@
-import { Accordion, AccordionDetails, AccordionSummary, Box, Icon, IconButton, Typography } from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { Accordion, AccordionDetails, AccordionSummary, Box, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { normalizeAppLang, pickLocalizedDescription } from '../../utils/i18n-lang';
 import { useTranslation } from 'react-i18next';
+import { useNavigate, useParams } from 'react-router-dom';
 
+import { useAuth } from '../../contexts/auth-context';
 import apiService from '../../services/api';
 import type { CategoryDto } from '../../services/types';
-import { useAuth } from '../../contexts/auth-context';
-import { SpaceBarRounded } from '@mui/icons-material';
+import { normalizeAppLang, pickLocalizedDescription } from '../../utils/i18n-lang';
 
 /**
  * Categories page renders a single-expandable MUI accordion with bow categories.
@@ -87,7 +86,7 @@ const Categories: React.FC = () => {
             </AccordionSummary>
             <AccordionDetails>
               <Box sx={{ whiteSpace: 'pre-wrap' }}>
-                {pickLocalizedDescription(category as any, appLang) || ''}
+                {pickLocalizedDescription(category as unknown as Record<string, unknown>, appLang) || ''}
               </Box>
               {(category.rule_reference || category.rule_citation) && (
                 <Typography variant="body2" sx={{ mt: 1, color: 'text.secondary' }}>

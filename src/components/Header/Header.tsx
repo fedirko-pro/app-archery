@@ -2,8 +2,8 @@ import './Header.scss';
 
 import React from 'react';
 import { NavLink, useParams } from 'react-router-dom';
-import { normalizeAppLang } from '../../utils/i18n-lang';
 
+import { normalizeAppLang } from '../../utils/i18n-lang';
 import NavMenu from '../NavMenu/NavMenu';
 import UserMenu from '../UserMenu/UserMenu';
 

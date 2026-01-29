@@ -6,11 +6,20 @@ import type {
   AuthResponse,
   ChangePasswordData,
 } from '../contexts/types';
-import type { ProfileData } from '../pages/profile/types';
-import type { ApiError, CategoryDto, RuleDto } from './types';
-import { getCurrentI18nLang } from '../utils/i18n-lang';
 import categoriesData from '../data/categories';
 import rulesData from '../data/rules';
+import type { ProfileData } from '../pages/profile/types';
+import { getCurrentI18nLang } from '../utils/i18n-lang';
+import type {
+  ApiError,
+  CategoryDto,
+  RuleDto,
+  TournamentDto,
+  PatrolDto,
+  TournamentApplicationDto,
+  ApplicationStatsDto,
+  CreateTournamentApplicationDto,
+} from './types';
 
 interface RequestOptions extends RequestInit {
   headers?: Record<string, string>;
@@ -173,7 +182,10 @@ class ApiService {
     return await this.request<User>(`/users/admin/${userId}`);
   }
 
-  async adminUpdateUser(userId: string, userData: any): Promise<User> {
+  async adminUpdateUser(
+    userId: string,
+    userData: Partial<User>,
+  ): Promise<User> {
     return await this.request<User>(`/users/admin/${userId}`, {
       method: 'PATCH',
       body: JSON.stringify(userData),
@@ -189,23 +201,28 @@ class ApiService {
     );
   }
 
-  async getAllTournaments(): Promise<any[]> {
-    return await this.request<any[]>('/tournaments');
+  async getAllTournaments(): Promise<TournamentDto[]> {
+    return await this.request<TournamentDto[]>('/tournaments');
   }
 
-  async getTournament(id: string): Promise<any> {
-    return await this.request<any>(`/tournaments/${id}`);
+  async getTournament(id: string): Promise<TournamentDto> {
+    return await this.request<TournamentDto>(`/tournaments/${id}`);
   }
 
-  async createTournament(tournamentData: any): Promise<any> {
-    return await this.request<any>('/tournaments', {
+  async createTournament(
+    tournamentData: Partial<TournamentDto>,
+  ): Promise<TournamentDto> {
+    return await this.request<TournamentDto>('/tournaments', {
       method: 'POST',
       body: JSON.stringify(tournamentData),
     });
   }
 
-  async updateTournament(id: string, tournamentData: any): Promise<any> {
-    return await this.request<any>(`/tournaments/${id}`, {
+  async updateTournament(
+    id: string,
+    tournamentData: Partial<TournamentDto>,
+  ): Promise<TournamentDto> {
+    return await this.request<TournamentDto>(`/tournaments/${id}`, {
       method: 'PUT',
       body: JSON.stringify(tournamentData),
     });
@@ -217,27 +234,34 @@ class ApiService {
     });
   }
 
-  async getAllPatrols(): Promise<any[]> {
-    return await this.request<any[]>('/patrols');
+  async getAllPatrols(): Promise<PatrolDto[]> {
+    return await this.request<PatrolDto[]>('/patrols');
   }
 
-  async getPatrolsByTournament(tournamentId: string): Promise<any[]> {
-    return await this.request<any[]>(`/patrols/tournament/${tournamentId}`);
+  async getPatrolsByTournament(tournamentId: string): Promise<PatrolDto[]> {
+    return await this.request<PatrolDto[]>(
+      `/patrols/tournament/${tournamentId}`,
+    );
   }
 
-  async getPatrol(id: string): Promise<any> {
-    return await this.request<any>(`/patrols/${id}`);
+  async getPatrol(id: string): Promise<PatrolDto> {
+    return await this.request<PatrolDto>(`/patrols/${id}`);
   }
 
-  async createPatrol(patrolData: any): Promise<any> {
-    return await this.request<any>('/patrols', {
+  async createPatrol(
+    patrolData: Partial<PatrolDto>,
+  ): Promise<PatrolDto> {
+    return await this.request<PatrolDto>('/patrols', {
       method: 'POST',
       body: JSON.stringify(patrolData),
     });
   }
 
-  async updatePatrol(id: string, patrolData: any): Promise<any> {
-    return await this.request<any>(`/patrols/${id}`, {
+  async updatePatrol(
+    id: string,
+    patrolData: Partial<PatrolDto>,
+  ): Promise<PatrolDto> {
+    return await this.request<PatrolDto>(`/patrols/${id}`, {
       method: 'PUT',
       body: JSON.stringify(patrolData),
     });
@@ -253,8 +277,8 @@ class ApiService {
     patrolId: string,
     userId: string,
     role: string,
-  ): Promise<any> {
-    return await this.request<any>(`/patrols/${patrolId}/members`, {
+  ): Promise<PatrolDto> {
+    return await this.request<PatrolDto>(`/patrols/${patrolId}/members`, {
       method: 'POST',
       body: JSON.stringify({ userId, role }),
     });
@@ -266,33 +290,36 @@ class ApiService {
     });
   }
 
-  async createTournamentApplication(applicationData: {
-    tournamentId: string;
-    category?: string;
-    division?: string;
-    equipment?: string;
-    notes?: string;
-  }): Promise<any> {
-    return await this.request<any>('/tournament-applications', {
-      method: 'POST',
-      body: JSON.stringify(applicationData),
-    });
+  async createTournamentApplication(
+    applicationData: CreateTournamentApplicationDto,
+  ): Promise<TournamentApplicationDto> {
+    return await this.request<TournamentApplicationDto>(
+      '/tournament-applications',
+      {
+        method: 'POST',
+        body: JSON.stringify(applicationData),
+      },
+    );
   }
 
-  async getMyApplications(): Promise<any[]> {
-    return await this.request<any[]>(
+  async getMyApplications(): Promise<TournamentApplicationDto[]> {
+    return await this.request<TournamentApplicationDto[]>(
       '/tournament-applications/my-applications',
     );
   }
 
-  async getTournamentApplications(tournamentId: string): Promise<any[]> {
-    return await this.request<any[]>(
+  async getTournamentApplications(
+    tournamentId: string,
+  ): Promise<TournamentApplicationDto[]> {
+    return await this.request<TournamentApplicationDto[]>(
       `/tournament-applications/tournament/${tournamentId}`,
     );
   }
 
-  async getTournamentApplicationStats(tournamentId: string): Promise<any> {
-    return await this.request<any>(
+  async getTournamentApplicationStats(
+    tournamentId: string,
+  ): Promise<ApplicationStatsDto> {
+    return await this.request<ApplicationStatsDto>(
       `/tournament-applications/tournament/${tournamentId}/stats`,
     );
   }
@@ -301,8 +328,8 @@ class ApiService {
     applicationId: string,
     status: string,
     rejectionReason?: string,
-  ): Promise<any> {
-    return await this.request<any>(
+  ): Promise<TournamentApplicationDto> {
+    return await this.request<TournamentApplicationDto>(
       `/tournament-applications/${applicationId}/status`,
       {
         method: 'PUT',
@@ -311,8 +338,10 @@ class ApiService {
     );
   }
 
-  async withdrawApplication(applicationId: string): Promise<any> {
-    return await this.request<any>(
+  async withdrawApplication(
+    applicationId: string,
+  ): Promise<TournamentApplicationDto> {
+    return await this.request<TournamentApplicationDto>(
       `/tournament-applications/${applicationId}`,
       {
         method: 'DELETE',

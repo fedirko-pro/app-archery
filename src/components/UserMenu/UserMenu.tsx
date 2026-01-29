@@ -4,9 +4,9 @@ import Avatar from '@mui/material/Avatar';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
-import { normalizeAppLang } from '../../utils/i18n-lang';
 
 import { useAuth } from '../../contexts/auth-context';
+import { normalizeAppLang } from '../../utils/i18n-lang';
 import LanguageToggler from '../LanguageToggler/LanguageToggler';
 import Menu from '../Menu/Menu';
 import type { MenuSection } from '../Menu/types';
@@ -21,17 +21,8 @@ const UserMenu: React.FC = () => {
 
   const { user, isAuthenticated, logout, loading } = useAuth();
 
-  // Debug logging - remove after testing
-  React.useEffect(() => {
-    console.log('UserMenu - user updated:', {
-      isAuthenticated,
-      hasPicture: !!user?.picture,
-      picture: user?.picture
-    });
-  }, [user, isAuthenticated]);
-
   if (loading) {
-    return null; // або показати loading spinner
+    return null;
   }
 
   const menuClick = (): void => {
@@ -100,7 +91,9 @@ const UserMenu: React.FC = () => {
         alt={user?.firstName || 'User'}
         imgProps={{
           onError: (e) => {
-            console.error('Avatar image failed to load:', user?.picture);
+            if (import.meta.env.DEV) {
+              console.error('Avatar image failed to load:', user?.picture);
+            }
             e.currentTarget.style.display = 'none';
           }
         }}

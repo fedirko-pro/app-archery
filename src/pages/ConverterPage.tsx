@@ -1,5 +1,6 @@
-import Converter from "../components/Converter/Converter";
 import { useTranslation } from 'react-i18next';
+
+import Converter from "../components/Converter/Converter";
 
 const ConverterPage = () => {
   const { t } = useTranslation('common');

@@ -8,11 +8,12 @@ import {
   CircularProgress,
 } from '@mui/material';
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useParams, useNavigate } from 'react-router-dom';
 
 import { useAuth } from '../../../contexts/auth-context';
 import apiService from '../../../services/api';
+import type { TournamentDto } from '../../../services/types';
 import TournamentApplicationForm from '../tournament-application-form/tournament-application-form';
 
 const PublicApplication: React.FC = () => {
@@ -22,7 +23,7 @@ const PublicApplication: React.FC = () => {
 
   const { user, loading: authLoading } = useAuth();
 
-  const [tournament, setTournament] = useState<any>(null);
+  const [tournament, setTournament] = useState<TournamentDto | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 

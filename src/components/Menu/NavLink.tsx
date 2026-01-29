@@ -1,7 +1,7 @@
 import React from 'react';
 import { useLocation, useMatch, useNavigate } from 'react-router-dom';
-import { fromI18nLang, getCurrentI18nLang, normalizeAppLang } from '../../utils/i18n-lang';
 
+import { fromI18nLang, getCurrentI18nLang, normalizeAppLang } from '../../utils/i18n-lang';
 import type { NavLinkProps } from './types';
 
 const NavLink: React.FC<NavLinkProps> = ({ to, children, clickHandle, onClick, className }) => {

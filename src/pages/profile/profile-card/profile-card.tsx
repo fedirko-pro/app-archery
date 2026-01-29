@@ -1,15 +1,16 @@
 import { Avatar, Box, Button, Chip, Stack } from '@mui/material';
-import userIcon from '../../../img/icons/user.svg';
 import React from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useLocation, useNavigate } from 'react-router-dom';
 
-import type { ProfileData } from '../types';
+import type { User } from '../../../contexts/types';
+import userIcon from '../../../img/icons/user.svg';
 import { fromI18nLang, getCurrentI18nLang, normalizeAppLang } from '../../../utils/i18n-lang';
+import type { ProfileData } from '../types';
 
 interface ProfileCardProps {
   profileData: ProfileData;
-  user: any;
+  user: User;
   isEditing: boolean;
   isAdminView?: boolean;
   onEditToggle?: () => void;

@@ -1,6 +1,6 @@
 import { Button, Container, Typography } from '@mui/material';
-import { useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useParams, useNavigate } from 'react-router-dom';
 
 import { normalizeAppLang } from '../utils/i18n-lang';
 

@@ -10,35 +10,23 @@ import {
   CircularProgress,
 } from '@mui/material';
 import React, { useState, useEffect, useCallback } from 'react';
-import { Link, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { Link, useParams } from 'react-router-dom';
 
 import { useAuth } from '../../../contexts/auth-context';
-import apiService from '../../../services/api';
-import { formatDate } from '../../../utils/date-utils';
-import { FileAttachment } from '../../../components/FileAttachments/FileAttachments';
 import defaultBanner from '../../../img/default_turnament_bg.png';
-
-interface Tournament {
-  id: string;
-  title: string;
-  description?: string;
-  startDate: string;
-  endDate: string;
-  address?: string;
-  allowMultipleApplications?: boolean;
-  banner?: string;
-  attachments?: FileAttachment[];
-  createdBy: any;
-  createdAt: string;
-}
+import apiService from '../../../services/api';
+import type { TournamentDto, TournamentApplicationDto } from '../../../services/types';
+import { formatDate } from '../../../utils/date-utils';
 
 const TournamentList: React.FC = () => {
   const { user } = useAuth();
   const { lang } = useParams();
   const { t } = useTranslation('common');
-  const [tournaments, setTournaments] = useState<Tournament[]>([]);
-  const [userApplications, setUserApplications] = useState<any[]>([]);
+  const [tournaments, setTournaments] = useState<TournamentDto[]>([]);
+  const [userApplications, setUserApplications] = useState<
+    TournamentApplicationDto[]
+  >([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -72,7 +60,9 @@ const TournamentList: React.FC = () => {
   }, [user, fetchTournaments, fetchUserApplications]);
 
   const hasApplicationForTournament = (tournamentId: string) => {
-    return userApplications.some((app) => app.tournament.id === tournamentId);
+    return userApplications.some(
+      (app: TournamentApplicationDto) => app.tournament.id === tournamentId,
+    );
   };
 
   const getApplicationCountForTournament = (tournamentId: string) => {
@@ -85,15 +75,11 @@ const TournamentList: React.FC = () => {
       try {
         await apiService.deleteTournament(id);
         fetchTournaments();
-      } catch (error: any) {
+      } catch (error: unknown) {
         setError(t('pages.tournaments.deleteError'));
-        if (error?.response?.data?.message) {
-          console.error(
-            'Error deleting tournament:',
-            error.response.data.message,
-          );
-        } else {
-          console.error('Error deleting tournament:', error);
+        const err = error instanceof Error ? error : new Error(String(error));
+        if (import.meta.env.DEV) {
+          console.error('Error deleting tournament:', err.message);
         }
       }
     }

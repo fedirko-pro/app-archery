@@ -199,7 +199,13 @@
     "alreadyAccount": "¿Ya tienes una cuenta?",
     "signUpWithGoogle": "Registrarse con Google",
     "signingUp": "Registrándose...",
-    "backToSignIn": "Volver al inicio de sesión"
+    "backToSignIn": "Volver al inicio de sesión",
+    "validationEmail": "Por favor, introduce una dirección de correo válida.",
+    "validationPasswordMin": "La contraseña debe tener al menos 6 caracteres."
+  },
+  "dialog": {
+    "yes": "Sí",
+    "no": "No"
   },
   "trainings": {
     "title": "Mis entrenamientos",

@@ -14,33 +14,19 @@ import {
   DialogActions,
 } from '@mui/material';
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useLocation } from 'react-router-dom';
 
 import apiService from '../../../services/api';
+import type { TournamentApplicationDto } from '../../../services/types';
 import { formatDate } from '../../../utils/date-utils';
-
-interface TournamentApplication {
-  id: string;
-  tournament: {
-    id: string;
-    title: string;
-    startDate: string;
-    endDate: string;
-  };
-  status: 'pending' | 'approved' | 'rejected' | 'withdrawn';
-  category?: string;
-  division?: string;
-  equipment?: string;
-  notes?: string;
-  rejectionReason?: string;
-  createdAt: string;
-}
 
 const UserApplications: React.FC = () => {
   const location = useLocation();
   const { t } = useTranslation('common');
-  const [applications, setApplications] = useState<TournamentApplication[]>([]);
+  const [applications, setApplications] = useState<
+    TournamentApplicationDto[]
+  >([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(
@@ -81,7 +67,9 @@ const UserApplications: React.FC = () => {
     }
   };
 
-  const getStatusColor = (status: string) => {
+  const getStatusColor = (
+    status: string,
+  ): 'success' | 'error' | 'default' | 'warning' => {
     switch (status) {
       case 'approved':
         return 'success';
@@ -177,7 +165,7 @@ const UserApplications: React.FC = () => {
                     </Typography>
                     <Chip
                       label={getStatusLabel(application.status)}
-                      color={getStatusColor(application.status) as any}
+                      color={getStatusColor(application.status)}
                       size="small"
                     />
                   </Box>

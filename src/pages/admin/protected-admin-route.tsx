@@ -1,8 +1,9 @@
-import { Box, CircularProgress } from '@mui/material';
 import React from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 
+import RouteLoadingSpinner from '../../components/RouteLoadingSpinner';
 import { useAuth } from '../../contexts/auth-context';
+import { getDefaultAppLang } from '../../utils/i18n-lang';
 
 interface ProtectedAdminRouteProps {
   children: React.ReactNode;
@@ -12,26 +13,20 @@ const ProtectedAdminRoute: React.FC<ProtectedAdminRouteProps> = ({
   children,
 }) => {
   const { user, loading } = useAuth();
+  const { lang } = useParams();
+  const defaultLang = getDefaultAppLang();
+  const currentLang = lang || defaultLang;
 
   if (loading) {
-    return (
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        minHeight="50vh"
-      >
-        <CircularProgress />
-      </Box>
-    );
+    return <RouteLoadingSpinner />;
   }
 
   if (!user) {
-    return <Navigate to="/signin" replace />;
+    return <Navigate to={`/${currentLang}/signin`} replace />;
   }
 
   if (user.role !== 'admin') {
-    return <Navigate to="/" replace />;
+    return <Navigate to={`/${currentLang}/tournaments`} replace />;
   }
 
   return <>{children}</>;

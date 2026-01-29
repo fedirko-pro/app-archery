@@ -236,7 +236,13 @@
     "forgotPassword": "Hai dimenticato la password?",
     "noAccount": "Non hai un account?",
     "signingIn": "Accesso in corso...",
-    "signInWithGoogle": "Accedi con Google"
+    "signInWithGoogle": "Accedi con Google",
+    "validationEmail": "Inserisci un indirizzo email valido.",
+    "validationPasswordMin": "La password deve contenere almeno 6 caratteri."
+  },
+  "dialog": {
+    "yes": "Sì",
+    "no": "No"
   }
 }
 

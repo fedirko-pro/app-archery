@@ -1,3 +1,5 @@
+export type AppLanguageCode = 'pt' | 'en' | 'it' | 'ua' | 'es';
+
 export interface User {
   id: string;
   firstName: string;
@@ -13,7 +15,12 @@ export interface User {
   updatedAt: string;
   federationNumber?: string;
   categories?: string[];
-  appLanguage?: 'pt' | 'en' | 'it' | 'ua' | 'es';
+  /** Preferred app language (camelCase from API) */
+  appLanguage?: AppLanguageCode;
+  /** Backend may return snake_case */
+  app_language?: AppLanguageCode;
+  /** Alternative backend field */
+  language?: AppLanguageCode;
 }
 
 export interface LoginCredentials {

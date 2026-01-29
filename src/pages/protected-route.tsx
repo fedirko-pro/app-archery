@@ -1,8 +1,9 @@
-import { Box, CircularProgress } from '@mui/material';
 import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 
+import RouteLoadingSpinner from '../components/RouteLoadingSpinner';
 import { useAuth } from '../contexts/auth-context';
+import { getDefaultAppLang } from '../utils/i18n-lang';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -13,16 +14,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   const location = useLocation();
 
   if (loading) {
-    return (
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        minHeight="50vh"
-      >
-        <CircularProgress />
-      </Box>
-    );
+    return <RouteLoadingSpinner />;
   }
 
   if (!isAuthenticated) {
@@ -30,9 +22,8 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
     const returnUrl = location.pathname + location.search;
     sessionStorage.setItem('returnUrl', returnUrl);
 
-    // Extract language from path to maintain it in signin redirect
     const pathSegments = location.pathname.split('/').filter(Boolean);
-    const lang = pathSegments[0] || 'pt';
+    const lang = pathSegments[0] || getDefaultAppLang();
 
     return <Navigate to={`/${lang}/signin`} replace />;
   }

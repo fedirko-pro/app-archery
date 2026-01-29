@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { ArrowBack, Save } from '@mui/icons-material';
 import {
   Box,
   Typography,
@@ -11,12 +10,13 @@ import {
   Checkbox,
   Alert,
 } from '@mui/material';
-import { ArrowBack, Save } from '@mui/icons-material';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate, useParams } from 'react-router-dom';
 
-import apiService from '../../../services/api';
 import BannerUploader from '../../../components/BannerUploader/BannerUploader';
 import FileAttachments, { FileAttachment } from '../../../components/FileAttachments/FileAttachments';
+import apiService from '../../../services/api';
 
 const TournamentCreate: React.FC = () => {
   const navigate = useNavigate();

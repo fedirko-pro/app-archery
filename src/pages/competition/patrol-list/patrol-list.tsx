@@ -10,6 +10,14 @@ import { useTranslation } from 'react-i18next';
 
 import UserCard from '../user-card/user-card';
 
+interface PatrolUser {
+  id: number;
+  picture?: string;
+  firstName: string;
+  lastName: string;
+  role: string;
+}
+
 export default function PatrolList() {
   const { t } = useTranslation('common');
   const [expanded, setExpanded] = useState<string | false>('false');
@@ -19,8 +27,8 @@ export default function PatrolList() {
       setExpanded(isExpanded ? panel : 'false');
     };
 
-  const getLeader = (users: any[]) => {
-    return users.find((user: any) => user.role === 'leader');
+  const getLeader = (users: PatrolUser[]) => {
+    return users.find((u) => u.role === 'leader');
   };
 
   const patrols = [
@@ -286,7 +294,9 @@ export default function PatrolList() {
               >
                 #{patrol.id}
               </Box>
-              <UserCard user={getLeader(patrol.users)} />
+              {getLeader(patrol.users) && (
+                <UserCard user={getLeader(patrol.users)!} />
+              )}
             </AccordionSummary>
             <AccordionDetails>
               {patrol.users.map((user) => (

@@ -12,8 +12,9 @@ import {
   Typography,
 } from '@mui/material';
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useNavigate, useParams } from 'react-router-dom';
+
 import { useAuth } from '../../contexts/auth-context';
 import apiService from '../../services/api';
 import ProfileEditForm from './profile-edit-form/profile-edit-form';
@@ -72,7 +73,8 @@ const ProfileEditPage: React.FC = () => {
         picture: user.picture || '',
         federationNumber: user.federationNumber || '',
         categories: Array.isArray(user.categories) ? user.categories : [],
-        appLanguage: (user as any).appLanguage || (user as any).app_language || (user as any).language || 'pt',
+        appLanguage:
+          user.appLanguage ?? user.app_language ?? user.language ?? 'pt',
       });
     }
   }, [user]);
@@ -106,8 +108,9 @@ const ProfileEditPage: React.FC = () => {
       const updatedUser = await apiService.updateProfile(profileData);
       updateUser(updatedUser);
       navigate(`/${lang}/profile`);
-    } catch (err: any) {
-      const errorMessage = err?.message || 'Failed to update profile. Please try again.';
+    } catch (err: unknown) {
+      const errorMessage =
+        err instanceof Error ? err.message : 'Failed to update profile. Please try again.';
       setError(errorMessage);
       console.error('Profile update error:', err);
     } finally {

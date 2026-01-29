@@ -1,5 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import {
+  ArrowBack,
+  CalendarToday,
+  LocationOn,
+  Send,
+  Edit,
+  PictureAsPdf,
+  Image,
+  Description,
+  AttachFile,
+  GetApp,
+  Assignment,
+} from '@mui/icons-material';
 import {
   Box,
   Typography,
@@ -17,47 +28,23 @@ import {
   Chip,
   Paper,
 } from '@mui/material';
-import {
-  ArrowBack,
-  CalendarToday,
-  LocationOn,
-  Send,
-  Edit,
-  PictureAsPdf,
-  Image,
-  Description,
-  AttachFile,
-  GetApp,
-  Assignment,
-} from '@mui/icons-material';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 
-import { useAuth } from '../../../contexts/auth-context';
-import apiService from '../../../services/api';
-import { formatDate } from '../../../utils/date-utils';
-import defaultBanner from '../../../img/default_turnament_bg.png';
 import { FileAttachment } from '../../../components/FileAttachments/FileAttachments';
-
-interface Tournament {
-  id: string;
-  title: string;
-  description?: string;
-  startDate: string;
-  endDate: string;
-  address?: string;
-  allowMultipleApplications?: boolean;
-  banner?: string;
-  attachments?: FileAttachment[];
-  createdBy: any;
-  createdAt: string;
-}
+import { useAuth } from '../../../contexts/auth-context';
+import defaultBanner from '../../../img/default_turnament_bg.png';
+import apiService from '../../../services/api';
+import type { TournamentDto } from '../../../services/types';
+import { formatDate } from '../../../utils/date-utils';
 
 const TournamentDetail: React.FC = () => {
   const { tournamentId, lang } = useParams<{ tournamentId: string; lang: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();
   const { t } = useTranslation('common');
-  const [tournament, setTournament] = useState<Tournament | null>(null);
+  const [tournament, setTournament] = useState<TournamentDto | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 

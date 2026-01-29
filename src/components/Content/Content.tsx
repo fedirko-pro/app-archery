@@ -1,16 +1,17 @@
 import './Content.scss';
 
-import { Navigate, Outlet, Route, Routes, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
-import i18n from '../../i18n';
-import { isRtlLanguage, normalizeAppLang, toI18nLang, getDefaultAppLang } from '../../utils/i18n-lang';
+import { Navigate, Outlet, Route, Routes, useParams } from 'react-router-dom';
 
+import i18n from '../../i18n';
 import About from '../../pages/About';
 import Achievements from '../../pages/achievements/achievements';
 import AdminPanel from '../../pages/admin/admin-panel';
 import ProtectedAdminRoute from '../../pages/admin/protected-admin-route';
 import UserEdit from '../../pages/admin/user-edit/user-edit';
 import UserProfileView from '../../pages/admin/user-profile-view/user-profile-view';
+import CategoryEdit from '../../pages/categories/admin/category-edit';
+import Categories from '../../pages/categories/Categories';
 import Competition from '../../pages/competition/competition';
 import CompetitionsList from '../../pages/competition/competitions-list/competitions-list';
 import PatrolList from '../../pages/competition/patrol-list/patrol-list';
@@ -20,24 +21,23 @@ import Encyclopedia from '../../pages/Encyclopedia';
 // TODO: Settings temporarily disabled - functionality moved to Profile
 // import Settings from '../Settings/Settings.tsx';
 import GoogleCallback from '../../pages/google-callback/google-callback';
+import NotFound from '../../pages/NotFound';
 import Profile from '../../pages/profile/profile';
 import ProfileEditPage from '../../pages/profile/profile-edit-page';
 import ProtectedRoute from '../../pages/protected-route';
 import ResetPassword from '../../pages/reset-password/reset-password';
+import Rules from '../../pages/rules/Rules';
 import SignIn from '../../pages/sign-in/sign-in';
 import SignUp from '../../pages/sign-up/sign-up';
 import AdminApplications from '../../pages/tournament/admin-applications/admin-applications';
 import PublicApplication from '../../pages/tournament/public-application/public-application';
-import TournamentList from '../../pages/tournament/tournament-list/tournament-list';
-import TournamentDetail from '../../pages/tournament/tournament-detail/tournament-detail';
 import TournamentCreate from '../../pages/tournament/tournament-create/tournament-create';
+import TournamentDetail from '../../pages/tournament/tournament-detail/tournament-detail';
 import TournamentEdit from '../../pages/tournament/tournament-edit/tournament-edit';
+import TournamentList from '../../pages/tournament/tournament-list/tournament-list';
 import UserApplications from '../../pages/tournament/user-applications/user-applications';
 import Training from '../../pages/Trainings';
-import Categories from '../../pages/categories/Categories';
-import CategoryEdit from '../../pages/categories/admin/category-edit';
-import Rules from '../../pages/rules/Rules';
-import NotFound from '../../pages/NotFound';
+import { isRtlLanguage, normalizeAppLang, toI18nLang, getDefaultAppLang } from '../../utils/i18n-lang';
 
 function LangLayout() {
   const params = useParams();

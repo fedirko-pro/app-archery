@@ -6,8 +6,8 @@ import { useTranslation } from 'react-i18next';
 
 import { useAuth } from '../../contexts/auth-context';
 import type { User } from '../../contexts/types';
-import ProfileCard from './profile-card/profile-card';
 import { getCurrentI18nLang } from '../../utils/i18n-lang';
+import ProfileCard from './profile-card/profile-card';
 import type { ProfileData } from './types';
 
 interface ProfileProps {

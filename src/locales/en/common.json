@@ -262,7 +262,13 @@
     "alreadyAccount": "Already have an account?",
     "signUpWithGoogle": "Sign up with Google",
     "signingUp": "Signing up...",
-    "backToSignIn": "Back to Sign In"
+    "backToSignIn": "Back to Sign In",
+    "validationEmail": "Please enter a valid email address.",
+    "validationPasswordMin": "Password must be at least 6 characters long."
+  },
+  "dialog": {
+    "yes": "Yes",
+    "no": "No"
   }
 }
 

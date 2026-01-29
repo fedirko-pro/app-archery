@@ -10,6 +10,7 @@ import React, {
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import apiService from '../services/api';
+import { fromI18nLang, getCurrentI18nLang, normalizeAppLang } from '../utils/i18n-lang';
 import type {
   User,
   RegisterData,
@@ -17,7 +18,6 @@ import type {
   AuthContextType,
   ChangePasswordData,
 } from './types';
-import { fromI18nLang, getCurrentI18nLang, normalizeAppLang } from '../utils/i18n-lang';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -180,7 +180,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     } finally {
       setLoading(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentLang, navigate]);
 
   const changePassword = async (
@@ -244,7 +243,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     updateUser,
     handleGoogleAuth,
     clearError,
-    isAuthenticated: apiService.isAuthenticated(),
+    isAuthenticated: !!user,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

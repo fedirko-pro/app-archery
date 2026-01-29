@@ -11,8 +11,8 @@ import { styled } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
-import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useParams } from 'react-router-dom';
 
 import { GoogleIcon } from '../../components/custom-icons';
 import env from '../../config/env';

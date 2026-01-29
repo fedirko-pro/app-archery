@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { ArrowBack, Save } from '@mui/icons-material';
 import {
   Box,
   Typography,
@@ -12,26 +11,14 @@ import {
   Alert,
   CircularProgress,
 } from '@mui/material';
-import { ArrowBack, Save } from '@mui/icons-material';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate, useParams } from 'react-router-dom';
 
-import apiService from '../../../services/api';
 import BannerUploader from '../../../components/BannerUploader/BannerUploader';
 import FileAttachments, { FileAttachment } from '../../../components/FileAttachments/FileAttachments';
-
-interface Tournament {
-  id: string;
-  title: string;
-  description?: string;
-  startDate: string;
-  endDate: string;
-  address?: string;
-  allowMultipleApplications?: boolean;
-  banner?: string;
-  attachments?: FileAttachment[];
-  createdBy: any;
-  createdAt: string;
-}
+import apiService from '../../../services/api';
+import type { TournamentDto } from '../../../services/types';
 
 const TournamentEdit: React.FC = () => {
   const navigate = useNavigate();
@@ -40,7 +27,7 @@ const TournamentEdit: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
-  const [tournament, setTournament] = useState<Tournament | null>(null);
+  const [tournament, setTournament] = useState<TournamentDto | null>(null);
 
   const [formData, setFormData] = useState({
     title: '',

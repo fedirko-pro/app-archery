@@ -4,10 +4,13 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import { useTranslation } from 'react-i18next';
 
 import type { AlertDialogProps } from './types';
 
 export default function AlertDialog(props: AlertDialogProps) {
+  const { t } = useTranslation('common');
+
   return (
     <Dialog
       disableScrollLock
@@ -23,9 +26,9 @@ export default function AlertDialog(props: AlertDialogProps) {
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={props.handleClose}>No</Button>
+        <Button onClick={props.handleClose}>{t('dialog.no', 'No')}</Button>
         <Button onClick={props.handleConfirm} autoFocus>
-          Yes
+          {t('dialog.yes', 'Yes')}
         </Button>
       </DialogActions>
     </Dialog>

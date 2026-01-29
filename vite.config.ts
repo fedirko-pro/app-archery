@@ -1,13 +1,12 @@
-// @ts-nocheck
-import { defineConfig, loadEnv } from 'vite';
 import path from 'node:path';
+import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 
-export default defineConfig(({ mode }) => {
-  // @ts-ignore
+export default defineConfig(({ mode }: { mode: string }) => {
   const env = loadEnv(mode, process.cwd(), '');
   const apiBase = env.VITE_API_BASE_URL || 'http://localhost:3000';
+  const projectRoot = path.resolve(__dirname);
   let apiOrigin = apiBase;
   try {
     apiOrigin = new URL(apiBase).origin;
@@ -15,6 +14,11 @@ export default defineConfig(({ mode }) => {
     // keep as-is if not a valid URL; env validation should catch this in app
   }
   return {
+    resolve: {
+      alias: {
+        '@': path.resolve(projectRoot, 'src'),
+      },
+    },
     css: {
       preprocessorOptions: {
         scss: {
@@ -116,6 +120,11 @@ export default defineConfig(({ mode }) => {
     server: {
       port: Number(env.VITE_PORT) || 3001,
       host: true,
+    },
+    test: {
+      environment: 'jsdom',
+      globals: true,
+      include: ['src/**/*.{test,spec}.{ts,tsx}'],
     },
   };
 });

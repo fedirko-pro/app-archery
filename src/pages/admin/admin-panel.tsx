@@ -4,13 +4,14 @@ import { Box, Typography, Alert } from '@mui/material';
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
+import type { User } from '../../contexts/types';
 import UsersList from './users-list/users-list';
 
 const AdminPanel: React.FC = () => {
   const navigate = useNavigate();
   const { lang } = useParams();
 
-  const handleEditUser = (user: any) => {
+  const handleEditUser = (user: User) => {
     navigate(`/${lang}/admin/users/${user.id}/edit`);
   };
 

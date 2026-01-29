@@ -1,4 +1,5 @@
 import './competition.scss';
+
 import { useTranslation } from 'react-i18next';
 
 export default function Competition() {

@@ -17,8 +17,10 @@ export default function CompetitionsList() {
       setExpanded(isExpanded ? panel : 'false');
     };
 
-  const getLeader = (users: any[]) => {
-    return users.find((user: any) => user.role === 'leader');
+  const getLeader = (
+    users: Array<{ id: number; firstName: string; lastName: string; role: string }>,
+  ) => {
+    return users.find((u) => u.role === 'leader');
   };
 
   const patrols = [
@@ -284,7 +286,9 @@ export default function CompetitionsList() {
               >
                 #{patrol.id}
               </Box>
-              <UserCard user={getLeader(patrol.users)} />
+              {getLeader(patrol.users) && (
+                <UserCard user={getLeader(patrol.users)!} />
+              )}
             </AccordionSummary>
             <AccordionDetails>
               {patrol.users.map((user) => (

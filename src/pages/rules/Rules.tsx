@@ -1,12 +1,12 @@
-import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Link as MuiLink, Typography } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Link as MuiLink, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useParams } from 'react-router-dom';
-import { normalizeAppLang, pickLocalizedDescription } from '../../utils/i18n-lang';
 
 import apiService from '../../services/api';
 import type { RuleDto } from '../../services/types';
+import { normalizeAppLang, pickLocalizedDescription } from '../../utils/i18n-lang';
 
 /**
  * Rules page shows a list of rule documents with description and links.
@@ -82,7 +82,7 @@ const Rules: React.FC = () => {
                   {rule.edition}
                 </Typography>
               )}
-              <Box sx={{ whiteSpace: 'pre-wrap' }}>{pickLocalizedDescription(rule as any, appLang) || ''}</Box>
+              <Box sx={{ whiteSpace: 'pre-wrap' }}>{pickLocalizedDescription(rule as unknown as Record<string, unknown>, appLang) || ''}</Box>
               <Box sx={{ mt: 1, display: 'flex', gap: 2, alignItems: 'center', flexWrap: 'wrap' }}>
                 {rule.link && (
                   <MuiLink href={rule.link} target="_blank" rel="noopener noreferrer">

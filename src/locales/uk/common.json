@@ -237,7 +237,13 @@
     "forgotPassword": "Забули пароль?",
     "noAccount": "Немає акаунта?",
     "signingIn": "Вхід...",
-    "signInWithGoogle": "Увійти через Google"
+    "signInWithGoogle": "Увійти через Google",
+    "validationEmail": "Будь ласка, введіть дійсну адресу електронної пошти.",
+    "validationPasswordMin": "Пароль повинен містити щонайменше 6 символів."
+  },
+  "dialog": {
+    "yes": "Так",
+    "no": "Ні"
   }
 }
 

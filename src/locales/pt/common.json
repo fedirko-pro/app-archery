@@ -257,7 +257,13 @@
     "forgotPassword": "Esqueceu sua senha?",
     "noAccount": "Não tem uma conta?",
     "signingIn": "Entrando...",
-    "signInWithGoogle": "Entrar com Google"
+    "signInWithGoogle": "Entrar com Google",
+    "validationEmail": "Por favor, insira um endereço de e-mail válido.",
+    "validationPasswordMin": "A senha deve ter pelo menos 6 caracteres."
+  },
+  "dialog": {
+    "yes": "Sim",
+    "no": "Não"
   }
 }
 

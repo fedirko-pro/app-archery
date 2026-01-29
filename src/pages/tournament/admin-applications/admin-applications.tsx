@@ -29,52 +29,28 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 import apiService from '../../../services/api';
+import type {
+  TournamentDto,
+  TournamentApplicationDto,
+  ApplicationStatsDto,
+} from '../../../services/types';
 import { formatDate, getApplicationDeadline } from '../../../utils/date-utils';
-
-interface TournamentApplication {
-  id: string;
-  tournament: {
-    id: string;
-    title: string;
-    startDate: string;
-    endDate: string;
-    applicationDeadline?: string;
-  };
-  applicant: {
-    id: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-  };
-  status: 'pending' | 'approved' | 'rejected' | 'withdrawn';
-  category?: string;
-  division?: string;
-  equipment?: string;
-  notes?: string;
-  rejectionReason?: string;
-  createdAt: string;
-}
-
-interface ApplicationStats {
-  total: number;
-  pending: number;
-  approved: number;
-  rejected: number;
-  withdrawn: number;
-}
 
 const AdminApplications: React.FC = () => {
   const { tournamentId } = useParams<{ tournamentId?: string }>();
-  const [applications, setApplications] = useState<TournamentApplication[]>([]);
-  const [stats, setStats] = useState<ApplicationStats | null>(null);
+  const [applications, setApplications] = useState<
+    TournamentApplicationDto[]
+  >([]);
+  const [stats, setStats] = useState<ApplicationStatsDto | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedTournament, setSelectedTournament] = useState<string>('');
-  const [tournaments, setTournaments] = useState<any[]>([]);
-  const [currentTournament, setCurrentTournament] = useState<any>(null);
+  const [tournaments, setTournaments] = useState<TournamentDto[]>([]);
+  const [currentTournament, setCurrentTournament] =
+    useState<TournamentDto | null>(null);
   const [statusDialog, setStatusDialog] = useState<{
     open: boolean;
-    application: TournamentApplication | null;
+    application: TournamentApplicationDto | null;
     newStatus: string;
     rejectionReason: string;
   }>({ open: false, application: null, newStatus: '', rejectionReason: '' });
@@ -97,8 +73,8 @@ const AdminApplications: React.FC = () => {
       // If tournamentId is provided in URL, use it, otherwise use first tournament
       if (tournamentId) {
         setSelectedTournament(tournamentId);
-        const tournament = data.find((t: any) => t.id === tournamentId);
-        setCurrentTournament(tournament);
+        const tournament = data.find((t: TournamentDto) => t.id === tournamentId);
+        setCurrentTournament(tournament ?? null);
       } else if (data.length > 0) {
         setSelectedTournament(data[0].id);
         setCurrentTournament(data[0]);
@@ -159,7 +135,9 @@ const AdminApplications: React.FC = () => {
     }
   };
 
-  const getStatusColor = (status: string) => {
+  const getStatusColor = (
+    status: string,
+  ): 'success' | 'error' | 'default' | 'warning' => {
     switch (status) {
       case 'approved':
         return 'success';
@@ -267,7 +245,7 @@ const AdminApplications: React.FC = () => {
               const tournamentId = e.target.value;
               setSelectedTournament(tournamentId);
               const tournament = tournaments.find((t) => t.id === tournamentId);
-              setCurrentTournament(tournament);
+              setCurrentTournament(tournament ?? null);
             }}
           >
             {tournaments.map((tournament) => (
@@ -347,11 +325,11 @@ const AdminApplications: React.FC = () => {
                 <TableRow key={application.id}>
                   <TableCell>
                     <Typography variant="body2">
-                      {application.applicant.firstName}{' '}
-                      {application.applicant.lastName}
+                      {application.applicant?.firstName}{' '}
+                      {application.applicant?.lastName}
                     </Typography>
                     <Typography variant="caption" color="text.secondary">
-                      {application.applicant.email}
+                      {application.applicant?.email}
                     </Typography>
                   </TableCell>
                   <TableCell>{application.category || '-'}</TableCell>
@@ -360,7 +338,7 @@ const AdminApplications: React.FC = () => {
                   <TableCell>
                     <Chip
                       label={getStatusLabel(application.status)}
-                      color={getStatusColor(application.status) as any}
+                      color={getStatusColor(application.status)}
                       size="small"
                     />
                   </TableCell>
@@ -439,7 +417,7 @@ const AdminApplications: React.FC = () => {
       >
         <DialogTitle>
           {statusDialog.application
-            ? `Application Details - ${statusDialog.application.applicant.firstName} ${statusDialog.application.applicant.lastName}`
+            ? `Application Details - ${statusDialog.application.applicant?.firstName ?? ''} ${statusDialog.application.applicant?.lastName ?? ''}`
             : 'Application Details'}
         </DialogTitle>
         <DialogContent>

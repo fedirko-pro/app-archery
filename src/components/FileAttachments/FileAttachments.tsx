@@ -1,4 +1,6 @@
-import React, { useRef, useState } from 'react';
+import './FileAttachments.scss';
+
+import { Delete, AttachFile, PictureAsPdf, Description, Image } from '@mui/icons-material';
 import {
   Box,
   Button,
@@ -14,10 +16,10 @@ import {
   Chip,
   CircularProgress,
 } from '@mui/material';
-import { Delete, AttachFile, PictureAsPdf, Description, Image } from '@mui/icons-material';
+import React, { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+
 import { apiService } from '../../services/api';
-import './FileAttachments.scss';
 
 export interface FileAttachment {
   id: string;
@@ -31,7 +33,7 @@ export interface FileAttachment {
 interface FileAttachmentsProps {
   value: FileAttachment[];
   onChange: (files: FileAttachment[]) => void;
-  tournamentId: string;
+  tournamentId?: string;
   maxFiles?: number;
   maxSizeBytes?: number;
 }
@@ -74,6 +76,10 @@ const FileAttachments: React.FC<FileAttachmentsProps> = ({
   };
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!tournamentId) {
+      setError('Tournament must be saved before adding attachments.');
+      return;
+    }
     const files = Array.from(e.target.files || []);
 
     if (value.length + files.length > maxFiles) {
@@ -149,6 +155,7 @@ const FileAttachments: React.FC<FileAttachmentsProps> = ({
   };
 
   const handleRemove = async (id: string, filename: string) => {
+    if (!tournamentId) return;
     setError(null);
 
     try {

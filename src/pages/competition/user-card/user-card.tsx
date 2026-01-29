@@ -2,8 +2,19 @@ import './user-card.scss';
 
 import Avatar from '@mui/material/Avatar';
 
-export default function UserCard(props: any) {
-  const user = props.user;
+interface UserCardUser {
+  picture?: string;
+  firstName: string;
+  lastName: string;
+  role: string;
+}
+
+interface UserCardProps {
+  user: UserCardUser;
+}
+
+export default function UserCard(props: UserCardProps) {
+  const { user } = props;
 
   return (
     <div className="user_card">

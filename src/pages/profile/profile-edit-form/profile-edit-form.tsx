@@ -1,13 +1,13 @@
 import { TextField, Button, Box, CircularProgress } from '@mui/material';
-import MenuItem from '@mui/material/MenuItem';
 import Autocomplete from '@mui/material/Autocomplete';
 import Chip from '@mui/material/Chip';
+import MenuItem from '@mui/material/MenuItem';
 import React, { useEffect, useState } from 'react';
-import apiService from '../../../services/api';
 import { useTranslation } from 'react-i18next';
 
-import type { ProfileData } from '../types';
 import AvatarUploader from '../../../components/AvatarUploader';
+import apiService from '../../../services/api';
+import type { ProfileData } from '../types';
 
 interface ProfileEditFormProps {
   profileData: ProfileData;

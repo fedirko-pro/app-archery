@@ -1,16 +1,16 @@
 import { ArrowBack } from '@mui/icons-material';
 import { Box, Button, Alert, CircularProgress } from '@mui/material';
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useParams, useNavigate } from 'react-router-dom';
 
 import type { User } from '../../../contexts/types';
 import apiService from '../../../services/api';
+import { getCurrentI18nLang } from '../../../utils/i18n-lang';
 import ProfileCard from '../../profile/profile-card/profile-card';
 import ProfileEditForm from '../../profile/profile-edit-form/profile-edit-form';
 import type { ProfileData } from '../../profile/types';
 import AdminActions from '../admin-actions/admin-actions';
-import { useTranslation } from 'react-i18next';
-import { getCurrentI18nLang } from '../../../utils/i18n-lang';
 
 const UserProfileView: React.FC = () => {
   const { userId, lang } = useParams<{ userId: string; lang: string }>();
@@ -59,7 +59,7 @@ const UserProfileView: React.FC = () => {
         bio: foundUser.bio || '',
         location: foundUser.location || '',
         picture: foundUser.picture || '',
-        categories: Array.isArray((foundUser as any).categories) ? (foundUser as any).categories : [],
+        categories: Array.isArray(foundUser.categories) ? foundUser.categories : [],
       });
     } catch (error) {
       setError('Failed to fetch user data');
@@ -78,7 +78,7 @@ const UserProfileView: React.FC = () => {
         bio: user?.bio || '',
         location: user?.location || '',
         picture: user?.picture || '',
-        categories: Array.isArray((user as any)?.categories) ? (user as any).categories : [],
+        categories: Array.isArray(user?.categories) ? user.categories : [],
       });
     }
     setIsEditing(!isEditing);

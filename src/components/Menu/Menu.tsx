@@ -4,8 +4,8 @@ import classNames from 'classnames';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
-import { normalizeAppLang } from '../../utils/i18n-lang';
 
+import { normalizeAppLang } from '../../utils/i18n-lang';
 import NavLink from './NavLink';
 import type { MenuProps } from './types';
 

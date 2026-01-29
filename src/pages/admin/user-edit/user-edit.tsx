@@ -6,9 +6,9 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 import type { User } from '../../../contexts/types';
-import type { ProfileData } from '../../profile/types';
 import apiService from '../../../services/api';
 import ProfileEditForm from '../../profile/profile-edit-form/profile-edit-form';
+import type { ProfileData } from '../../profile/types';
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 

@@ -1,12 +1,11 @@
 import { Box, CircularProgress, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 
 import { useAuth } from '../../contexts/auth-context';
 
 const GoogleCallback = () => {
   const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
   const { handleGoogleAuth } = useAuth();
   const [error, setError] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -42,7 +41,6 @@ const GoogleCallback = () => {
     };
 
     handleGoogleCallback();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (error) {

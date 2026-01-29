@@ -11,8 +11,8 @@ import { styled } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
-import { useLocation, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useLocation, useParams } from 'react-router-dom';
 
 import { GoogleIcon } from '../../components/custom-icons';
 import env from '../../config/env';
@@ -90,7 +90,7 @@ const SignIn: React.FC = () => {
 
     if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
       setEmailError(true);
-      setEmailErrorMessage('Please enter a valid email address.');
+      setEmailErrorMessage(t('auth.validationEmail', 'Please enter a valid email address.'));
       isValid = false;
     } else {
       setEmailError(false);
@@ -99,7 +99,7 @@ const SignIn: React.FC = () => {
 
     if (!password.value || password.value.length < 6) {
       setPasswordError(true);
-      setPasswordErrorMessage('Password must be at least 6 characters long.');
+      setPasswordErrorMessage(t('auth.validationPasswordMin', 'Password must be at least 6 characters long.'));
       isValid = false;
     } else {
       setPasswordError(false);
@@ -217,7 +217,6 @@ const SignIn: React.FC = () => {
               type="password"
               id="password"
               autoComplete="current-password"
-              autoFocus
               required
               fullWidth
               variant="outlined"

@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
 import i18n from 'i18next';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 type MissingKey = {
   ns: string;
@@ -105,7 +105,7 @@ export default function I18nDevOverlay() {
 
   if (import.meta.env.PROD) return null;
 
-  const copySnippet = async (ns: string, key: string) => {
+  const copySnippet = async (_ns: string, key: string) => {
     const snippet = `"${key}": "TODO"`;
     try {
       await navigator.clipboard.writeText(snippet);

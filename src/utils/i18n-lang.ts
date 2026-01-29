@@ -37,7 +37,11 @@ export function toI18nLang(appLang: AppLanguage): string {
 
 export function fromI18nLang(i18nLang: string): AppLanguage {
   const lower = i18nLang.toLowerCase();
-  return I18N_TO_APP_MAP[lower] || 'pt';
+  return (
+    I18N_TO_APP_MAP[lower] ||
+    I18N_TO_APP_MAP[lower.split('-')[0]] ||
+    'pt'
+  );
 }
 
 export function isRtlLanguage(_appLang: AppLanguage): boolean {
@@ -65,7 +69,7 @@ export function getDefaultAppLang(): AppLanguage {
 
 /** Choose localized description by app language with sensible fallbacks. */
 export function pickLocalizedDescription(
-  record: { [k: string]: any },
+  record: Record<string, unknown>,
   appLang: AppLanguage,
   baseKey: string = 'description'
 ): string | undefined {
