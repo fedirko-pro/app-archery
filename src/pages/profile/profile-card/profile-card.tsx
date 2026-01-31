@@ -1,4 +1,17 @@
-import { Avatar, Box, Button, Chip, Stack } from '@mui/material';
+import {
+  Avatar,
+  Box,
+  Button,
+  Chip,
+  Paper,
+  Stack,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
+  Typography,
+} from '@mui/material';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -18,19 +31,56 @@ interface ProfileCardProps {
   getJoinDate: () => string;
 }
 
+const TableInfoRow: React.FC<{
+  label: string;
+  value: React.ReactNode;
+}> = ({ label, value }) => (
+  <TableRow>
+    <TableCell
+      component="th"
+      scope="row"
+      sx={{
+        width: '40%',
+        color: 'text.secondary',
+        fontWeight: 500,
+        borderBottom: '1px solid',
+        borderColor: 'divider',
+        py: 1.5,
+      }}
+    >
+      {label}
+    </TableCell>
+    <TableCell sx={{ borderBottom: '1px solid', borderColor: 'divider', py: 1.5 }}>
+      {value != null && value !== '' ? value : '—'}
+    </TableCell>
+  </TableRow>
+);
+
 const ProfileCard: React.FC<ProfileCardProps> = ({
   profileData,
   user,
   isEditing,
   isAdminView = false,
   getFullName,
-  getJoinDate,
+  getJoinDate: _getJoinDate,
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const inferredLang = fromI18nLang(getCurrentI18nLang());
   const currentLang = normalizeAppLang(location.pathname.split('/')[1] || inferredLang);
   const { t } = useTranslation('common');
+
+  const clubName = user.club?.name;
+  const federationNumber = profileData.federationNumber || user.federationNumber;
+  const nationality = profileData.nationality || user.nationality;
+  const gender = profileData.gender || user.gender;
+  const authProviderLabel =
+    user.authProvider === 'google'
+      ? t('profile.signedInWithGoogle', 'Signed in with Google')
+      : user.authProvider === 'facebook'
+        ? t('profile.signedInWithFacebook', 'Signed in with Facebook')
+        : t('profile.signedInWithEmail', 'Signed in with email');
+  const roleLabel = user.role === 'admin' ? t('role.admin') : t('role.user');
 
   return (
     <div className="profile-container">
@@ -46,46 +96,107 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
           <div className="profile-name">
             <div className="title">{getFullName()}</div>
             <div className="subtitle">{profileData.email || user.email}</div>
+            <Chip
+              label={roleLabel}
+              size="small"
+              color={user.role === 'admin' ? 'secondary' : 'default'}
+              sx={{ mt: 0.5 }}
+            />
           </div>
         </Box>
         {!isEditing ? (
-          <div className="profile-details">
-            {Array.isArray(profileData.categories) && profileData.categories.length > 0 && (
-              <div>
-                <div className="label">{t('profile.bowCategories', 'Bow Categories')}</div>
-                <Stack direction="row" spacing={1} sx={{ mt: 1, flexWrap: 'wrap' }}>
-                  {profileData.categories.map((cat) => (
-                    <Chip key={cat} className="bow-category" label={cat} sx={{ mr: 1, mb: 1 }} />
-                  ))}
-                </Stack>
-              </div>
-            )}
-            {profileData.bio && (
-              <div className="profile-bio">
-                <div className="label">{t('profile.aboutMe', 'About Me')}</div>
-                {profileData.bio}
-              </div>
-            )}
-            {profileData.location && (
-              <div className="profile-location">
-                <div className="label">{t('profile.location', 'Location')}</div>
-                📍 {profileData.location}
-              </div>
-            )}
-            <div color="text.secondary">
-              {getJoinDate()}
-            </div>
+          <Paper variant="outlined" sx={{ mt: 2, width: '100%', overflow: 'hidden' }}>
+            <Typography
+              variant="subtitle1"
+              sx={{ px: 2, pt: 2, pb: 1 }}
+              color="text.secondary"
+              fontWeight={600}
+            >
+              {t('profile.accountInfo', 'Account')}
+            </Typography>
+            <TableContainer>
+              <Table size="small">
+                <TableBody>
+                  <TableInfoRow
+                    label={t('profile.signInMethod', 'Sign-in method')}
+                    value={authProviderLabel}
+                  />
+                  <TableInfoRow
+                    label={t('profile.joined', 'Joined')}
+                    value={
+                      user.createdAt
+                        ? new Date(user.createdAt).toLocaleDateString(getCurrentI18nLang(), {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric',
+                          })
+                        : null
+                    }
+                  />
+                </TableBody>
+              </Table>
+            </TableContainer>
+
+            <Typography
+              variant="subtitle1"
+              sx={{ px: 2, pt: 2, pb: 1 }}
+              color="text.secondary"
+              fontWeight={600}
+            >
+              {t('profile.personalInfo', 'Personal information')}
+            </Typography>
+            <TableContainer>
+              <Table size="small">
+                <TableBody>
+                  <TableInfoRow
+                    label={t('profile.federationNumber', 'Federation number')}
+                    value={federationNumber}
+                  />
+                  <TableInfoRow label={t('profile.nationality', 'Nationality')} value={nationality} />
+                  <TableInfoRow label={t('profile.gender', 'Gender')} value={gender} />
+                  <TableInfoRow label={t('profile.club', 'Club')} value={clubName} />
+                  <TableInfoRow
+                    label={t('profile.location', 'Location')}
+                    value={
+                      (profileData.location || user.location) && (
+                        <>
+                          📍 {profileData.location || user.location}
+                        </>
+                      )
+                    }
+                  />
+                  <TableInfoRow
+                    label={t('profile.bowCategories', 'Favorite categories')}
+                    value={
+                      Array.isArray(profileData.categories) && profileData.categories.length > 0 ? (
+                        <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+                          {profileData.categories.map((cat) => (
+                            <Chip key={cat} label={cat} size="small" />
+                          ))}
+                        </Stack>
+                      ) : null
+                    }
+                  />
+                  <TableInfoRow
+                    label={t('profile.aboutMe', 'About Me')}
+                    value={(profileData.bio || user.bio) as string}
+                  />
+                </TableBody>
+              </Table>
+            </TableContainer>
+
             {!isAdminView && (
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => navigate(`/${currentLang}/profile/edit`)}
-                sx={{ mt: 2 }}
-              >
+              <Box sx={{ p: 2 }}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => navigate(`/${currentLang}/profile/edit`)}
+                >
                 {t('profile.editProfile')}
               </Button>
+              </Box>
             )}
-          </div>
+          </Paper>
         ) : null}
       </Box>
     </div>

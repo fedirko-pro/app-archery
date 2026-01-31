@@ -1,6 +1,6 @@
 import './achievements.scss';
 
-import { EmojiEvents, MilitaryTech, Star, WorkspacePremium } from '@mui/icons-material';
+import { EmojiEvents, MilitaryTech, Share, Star, WorkspacePremium } from '@mui/icons-material';
 import {
   Avatar,
   Box,
@@ -8,6 +8,7 @@ import {
   CardContent,
   Chip,
   Container,
+  IconButton,
   LinearProgress,
   Typography,
 } from '@mui/material';
@@ -132,10 +133,25 @@ const getRarityLabel = (rarity: Achievement['rarity'], t: (key: string) => strin
   }
 };
 
+const RARITY_ORDER: Record<Achievement['rarity'], number> = {
+  legendary: 4,
+  epic: 3,
+  rare: 2,
+  common: 1,
+};
+
+const sortedAchievements = [...achievements].sort(
+  (a, b) => RARITY_ORDER[b.rarity] - RARITY_ORDER[a.rarity],
+);
+
 const Achievements = () => {
   const { t } = useTranslation('common');
 
   const earnedCount = achievements.filter((a) => a.earned).length;
+
+  const handleShare = (_achievementId: string) => {
+    // TODO: share achievement functionality
+  };
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
@@ -165,7 +181,7 @@ const Achievements = () => {
           gap: 3,
         }}
       >
-        {achievements.map((achievement) => (
+        {sortedAchievements.map((achievement) => (
           <Card
             key={achievement.id}
             sx={{
@@ -268,6 +284,15 @@ const Achievements = () => {
                   />
                 </Box>
               )}
+              <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 1 }}>
+                <IconButton
+                  onClick={() => handleShare(achievement.id)}
+                  size="small"
+                  aria-label={t('achievements.share')}
+                >
+                  <Share fontSize="small" />
+                </IconButton>
+              </Box>
             </CardContent>
           </Card>
         ))}

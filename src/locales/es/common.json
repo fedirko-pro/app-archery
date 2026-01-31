@@ -20,6 +20,7 @@
     "earnedOn": "Obtenido el {{date}}",
     "progressLabel": "Progreso",
     "demoNotice": "Esta es una página de demostración. Los logros se vincularán a sus resultados reales de competición en el futuro.",
+    "share": "Compartir",
     "rarity": {
       "common": "Común",
       "rare": "Raro",
@@ -268,7 +269,7 @@
       }
     }
   },
-  "forms": { "email": "Email", "password": "Contraseña", "firstName": "Nombre", "lastName": "Apellido", "currentPassword": "Contraseña actual", "newPassword": "Nueva contraseña", "confirmPassword": "Confirmar nueva contraseña", "bio": "Bio", "location": "Ubicación", "website": "Sitio web", "profilePictureUrl": "URL de la foto de perfil", "federationNumber": "Número de federación", "categories": "Categorías", "selectCategories": "Selecciona categorías", "applicationLanguage": "Idioma de la aplicación", "role": "Rol" },
+  "forms": { "email": "Email", "password": "Contraseña", "firstName": "Nombre", "lastName": "Apellido", "currentPassword": "Contraseña actual", "newPassword": "Nueva contraseña", "confirmPassword": "Confirmar nueva contraseña", "bio": "Bio", "location": "Ubicación", "website": "Sitio web", "profilePictureUrl": "URL de la foto de perfil", "federationNumber": "Número de federación", "categories": "Categorías favoritas", "selectCategories": "Selecciona categorías favoritas", "applicationLanguage": "Idioma de la aplicación", "role": "Rol" },
   "reset": {
     "invalidLink": "Enlace de restablecimiento inválido. Solicita un nuevo restablecimiento de contraseña.",
     "minLength": "La contraseña debe tener al menos 8 caracteres",
@@ -287,7 +288,17 @@
   "profile": {
     "joined": "Se unió",
     "recentlyJoined": "Se unió recientemente",
-    "bowCategories": "Categorías de arco",
+    "accountInfo": "Cuenta",
+    "signInMethod": "Método de inicio de sesión",
+    "signedInWithGoogle": "Inició sesión con Google",
+    "signedInWithFacebook": "Inició sesión con Facebook",
+    "signedInWithEmail": "Inició sesión con email",
+    "personalInfo": "Información personal",
+    "federationNumber": "Número de federación",
+    "nationality": "Nacionalidad",
+    "gender": "Género",
+    "club": "Club",
+    "bowCategories": "Categorías favoritas",
     "aboutMe": "Sobre mí",
     "location": "Ubicación",
     "editProfile": "Editar perfil",
@@ -312,6 +323,7 @@
     "uploadPhoto": "Subir foto",
     "changePhoto": "Cambiar foto",
     "cropAndSave": "Recortar y guardar",
+    "avatarSaved": "Avatar guardado correctamente",
     "removePhoto": "Eliminar foto",
     "unsupportedType": "Tipo de archivo no compatible. Permitidos: PNG, JPG, JPEG",
     "imageTooLarge": "La imagen es demasiado grande (máx. 3MB).",

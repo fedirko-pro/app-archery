@@ -21,6 +21,7 @@
     "earnedOn": "Ottenuto il {{date}}",
     "progressLabel": "Progresso",
     "demoNotice": "Questa è una pagina dimostrativa. I traguardi saranno collegati ai tuoi risultati reali delle competizioni in futuro.",
+    "share": "Condividi",
     "rarity": {
       "common": "Comune",
       "rare": "Raro",
@@ -269,7 +270,7 @@
       }
     }
   },
-  "forms": { "email": "Email", "password": "Password", "firstName": "Nome", "lastName": "Cognome", "currentPassword": "Password attuale", "newPassword": "Nuova password", "confirmPassword": "Conferma nuova password", "bio": "Bio", "location": "Località", "website": "Sito web", "profilePictureUrl": "URL immagine profilo", "federationNumber": "Numero di federazione", "categories": "Categorie", "selectCategories": "Seleziona categorie", "applicationLanguage": "Lingua dell'applicazione", "role": "Ruolo" },
+  "forms": { "email": "Email", "password": "Password", "firstName": "Nome", "lastName": "Cognome", "currentPassword": "Password attuale", "newPassword": "Nuova password", "confirmPassword": "Conferma nuova password", "bio": "Bio", "location": "Località", "website": "Sito web", "profilePictureUrl": "URL immagine profilo", "federationNumber": "Numero di federazione", "categories": "Categorie preferite", "selectCategories": "Seleziona categorie preferite", "applicationLanguage": "Lingua dell'applicazione", "role": "Ruolo" },
   "reset": {
     "invalidLink": "Link di reimpostazione non valido. Richiedi una nuova reimpostazione della password.",
     "minLength": "La password deve contenere almeno 8 caratteri",
@@ -288,7 +289,17 @@
   "profile": {
     "joined": "Iscritto",
     "recentlyJoined": "Iscritto di recente",
-    "bowCategories": "Categorie dell'arco",
+    "accountInfo": "Account",
+    "signInMethod": "Metodo di accesso",
+    "signedInWithGoogle": "Accedi con Google",
+    "signedInWithFacebook": "Accedi con Facebook",
+    "signedInWithEmail": "Accedi con email",
+    "personalInfo": "Informazioni personali",
+    "federationNumber": "Numero di federazione",
+    "nationality": "Nazionalità",
+    "gender": "Genere",
+    "club": "Club",
+    "bowCategories": "Categorie preferite",
     "aboutMe": "Su di me",
     "location": "Località",
     "editProfile": "Modifica profilo",
@@ -313,6 +324,7 @@
     "uploadPhoto": "Carica foto",
     "changePhoto": "Cambia foto",
     "cropAndSave": "Ritaglia e salva",
+    "avatarSaved": "Avatar salvato con successo",
     "removePhoto": "Rimuovi foto",
     "unsupportedType": "Tipo di file non supportato. Consentiti: PNG, JPG, JPEG",
     "imageTooLarge": "Immagine troppo grande (max 3MB).",

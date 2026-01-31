@@ -21,6 +21,7 @@
     "earnedOn": "Conquistado em {{date}}",
     "progressLabel": "Progresso",
     "demoNotice": "Esta é uma página de demonstração. As conquistas serão vinculadas aos seus resultados reais de competição no futuro.",
+    "share": "Compartilhar",
     "rarity": {
       "common": "Comum",
       "rare": "Raro",
@@ -290,7 +291,7 @@
       }
     }
   },
-  "forms": { "email": "Email", "password": "Senha", "firstName": "Nome", "lastName": "Sobrenome", "currentPassword": "Senha atual", "newPassword": "Nova senha", "confirmPassword": "Confirmar nova senha", "bio": "Bio", "location": "Localização", "website": "Website", "profilePictureUrl": "URL da foto de perfil", "federationNumber": "Número da federação", "categories": "Categorias", "selectCategories": "Selecione categorias", "applicationLanguage": "Idioma do aplicativo", "role": "Função" },
+  "forms": { "email": "Email", "password": "Senha", "firstName": "Nome", "lastName": "Sobrenome", "currentPassword": "Senha atual", "newPassword": "Nova senha", "confirmPassword": "Confirmar nova senha", "bio": "Bio", "location": "Localização", "website": "Website", "profilePictureUrl": "URL da foto de perfil", "federationNumber": "Número da federação", "categories": "Categorias favoritas", "selectCategories": "Selecione categorias favoritas", "applicationLanguage": "Idioma do aplicativo", "role": "Função" },
   "reset": {
     "invalidLink": "Link de redefinição inválido. Solicite uma nova redefinição de senha.",
     "minLength": "A senha deve ter pelo menos 8 caracteres",
@@ -309,7 +310,17 @@
   "profile": {
     "joined": "Entrou",
     "recentlyJoined": "Entrou recentemente",
-    "bowCategories": "Categorias de arco",
+    "accountInfo": "Conta",
+    "signInMethod": "Método de login",
+    "signedInWithGoogle": "Entrou com Google",
+    "signedInWithFacebook": "Entrou com Facebook",
+    "signedInWithEmail": "Entrou com email",
+    "personalInfo": "Informações pessoais",
+    "federationNumber": "Número da federação",
+    "nationality": "Nacionalidade",
+    "gender": "Gênero",
+    "club": "Clube",
+    "bowCategories": "Categorias favoritas",
     "aboutMe": "Sobre mim",
     "location": "Localização",
     "editProfile": "Editar perfil",
@@ -334,6 +345,7 @@
     "uploadPhoto": "Enviar foto",
     "changePhoto": "Alterar foto",
     "cropAndSave": "Cortar e salvar",
+    "avatarSaved": "Avatar salvo com sucesso",
     "removePhoto": "Remover foto",
     "unsupportedType": "Tipo de arquivo não suportado. Permitidos: PNG, JPG, JPEG",
     "imageTooLarge": "Imagem muito grande (máx. 3MB).",

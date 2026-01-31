@@ -21,6 +21,7 @@
     "earnedOn": "Отримано {{date}}",
     "progressLabel": "Прогрес",
     "demoNotice": "Це демо-сторінка. Досягнення будуть пов'язані з вашими реальними результатами змагань у майбутньому.",
+    "share": "Поділитися",
     "rarity": {
       "common": "Звичайне",
       "rare": "Рідкісне",
@@ -290,7 +291,7 @@
       }
     }
   },
-  "forms": { "email": "Email", "password": "Пароль", "firstName": "Ім'я", "lastName": "Прізвище", "currentPassword": "Поточний пароль", "newPassword": "Новий пароль", "confirmPassword": "Підтвердіть новий пароль", "bio": "Біографія", "location": "Місцезнаходження", "website": "Вебсайт", "profilePictureUrl": "URL фото профілю", "federationNumber": "Номер федерації", "categories": "Категорії", "selectCategories": "Оберіть категорії", "applicationLanguage": "Мова застосунку", "role": "Роль" },
+  "forms": { "email": "Email", "password": "Пароль", "firstName": "Ім'я", "lastName": "Прізвище", "currentPassword": "Поточний пароль", "newPassword": "Новий пароль", "confirmPassword": "Підтвердіть новий пароль", "bio": "Біографія", "location": "Місцезнаходження", "website": "Вебсайт", "profilePictureUrl": "URL фото профілю", "federationNumber": "Номер федерації", "categories": "Улюблені категорії", "selectCategories": "Оберіть улюблені категорії", "applicationLanguage": "Мова застосунку", "role": "Роль" },
   "reset": {
     "invalidLink": "Недійсне посилання для скидання. Будь ласка, попросіть нове скидання пароля.",
     "minLength": "Пароль має містити щонайменше 8 символів",
@@ -316,7 +317,17 @@
     "changePasswordSuccess": "Пароль успішно змінено!",
     "settingPassword": "Встановлення пароля...",
     "changingPassword": "Зміна пароля...",
-    "bowCategories": "Категорії лука",
+    "accountInfo": "Обліковий запис",
+    "signInMethod": "Спосіб входу",
+    "signedInWithGoogle": "Увійшли через Google",
+    "signedInWithFacebook": "Увійшли через Facebook",
+    "signedInWithEmail": "Увійшли за email",
+    "personalInfo": "Особиста інформація",
+    "federationNumber": "Номер федерації",
+    "nationality": "Національність",
+    "gender": "Стать",
+    "club": "Клуб",
+    "bowCategories": "Улюблені категорії",
     "aboutMe": "Про мене",
     "location": "Локація",
     "editProfile": "Редагувати профіль",
@@ -335,6 +346,7 @@
     "uploadPhoto": "Завантажити фото",
     "changePhoto": "Змінити фото",
     "cropAndSave": "Обрізати та зберегти",
+    "avatarSaved": "Аватар успішно збережено",
     "removePhoto": "Видалити фото",
     "unsupportedType": "Непідтримуваний тип файлу. Дозволено: PNG, JPG, JPEG",
     "imageTooLarge": "Занадто велике зображення (макс. 3MB).",

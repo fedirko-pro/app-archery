@@ -21,6 +21,7 @@
     "earnedOn": "Earned on {{date}}",
     "progressLabel": "Progress",
     "demoNotice": "This is a demo page. Achievements will be linked to your real competition results in the future.",
+    "share": "Share",
     "rarity": {
       "common": "Common",
       "rare": "Rare",
@@ -352,7 +353,7 @@
     }
   },
   "common": { "or": "or", "cancel": "Cancel", "update": "Update", "create": "Create", "back": "Back", "download": "Download", "backToList": "Back to list", "save": "Save", "saving": "Saving...", "delete": "Delete", "deleting": "Deleting..." },
-  "forms": { "email": "Email", "password": "Password", "firstName": "First name", "lastName": "Last name", "currentPassword": "Current Password", "newPassword": "New Password", "confirmPassword": "Confirm New Password", "bio": "Bio", "location": "Location", "website": "Website", "profilePictureUrl": "Profile Picture URL", "federationNumber": "Federation Number", "categories": "Categories", "selectCategories": "Select categories", "applicationLanguage": "Application language", "role": "Role" },
+  "forms": { "email": "Email", "password": "Password", "firstName": "First name", "lastName": "Last name", "currentPassword": "Current Password", "newPassword": "New Password", "confirmPassword": "Confirm New Password", "bio": "Bio", "location": "Location", "website": "Website", "profilePictureUrl": "Profile Picture URL", "federationNumber": "Federation Number", "categories": "Favorite categories", "selectCategories": "Select favorite categories", "applicationLanguage": "Application language", "role": "Role" },
   "reset": {
     "invalidLink": "Invalid reset link. Please request a new password reset.",
     "minLength": "Password must be at least 8 characters long",
@@ -371,7 +372,17 @@
   "profile": {
     "joined": "Joined",
     "recentlyJoined": "Recently joined",
-    "bowCategories": "Bow Categories",
+    "accountInfo": "Account",
+    "signInMethod": "Sign-in method",
+    "signedInWithGoogle": "Signed in with Google",
+    "signedInWithFacebook": "Signed in with Facebook",
+    "signedInWithEmail": "Signed in with email",
+    "personalInfo": "Personal information",
+    "federationNumber": "Federation number",
+    "nationality": "Nationality",
+    "gender": "Gender",
+    "club": "Club",
+    "bowCategories": "Favorite categories",
     "aboutMe": "About Me",
     "location": "Location",
     "editProfile": "Edit Profile",
@@ -396,6 +407,7 @@
     "uploadPhoto": "Upload Photo",
     "changePhoto": "Change Photo",
     "cropAndSave": "Crop and Save",
+    "avatarSaved": "Avatar saved successfully",
     "removePhoto": "Remove Photo",
     "unsupportedType": "Unsupported file type. Allowed: PNG, JPG, JPEG",
     "imageTooLarge": "Image is too large (max 3MB).",
