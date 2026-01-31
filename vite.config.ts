@@ -83,6 +83,24 @@ export default defineConfig(({ mode }: { mode: string }) => {
           cleanupOutdatedCaches: true,
           clientsClaim: true,
           runtimeCaching: [
+            // Cache public GET API (tournaments, rules, clubs, divisions, bow-categories) for offline
+            {
+              urlPattern: ({ url, request }) => {
+                if (request?.method !== 'GET') return false;
+                const path = url.pathname;
+                const withApi = /^\/(?:api\/)?(tournaments|rules|clubs|divisions|bow-categories)(?:\/.*)?$/.test(path);
+                const withoutApi =
+                  url.origin === apiOrigin &&
+                  /^\/(tournaments|rules|clubs|divisions|bow-categories)(?:\/.*)?$/.test(path);
+                return withApi || withoutApi;
+              },
+              handler: 'NetworkFirst',
+              options: {
+                cacheName: 'api-offline-cache',
+                networkTimeoutSeconds: 10,
+                expiration: { maxEntries: 128, maxAgeSeconds: 7 * 24 * 60 * 60 },
+              },
+            },
             // Do not cache API requests at all (avoid caching private/auth responses)
             {
               urlPattern: ({ url }) => url.origin === apiOrigin,
@@ -130,6 +148,18 @@ export default defineConfig(({ mode }: { mode: string }) => {
       port: Number(env.VITE_PORT) || 3001,
       host: true,
       // Proxy API to backend in dev to avoid CORS (frontend and backend on different ports)
+      proxy: {
+        '/api': {
+          target: proxyTarget,
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/api/, ''),
+        },
+      },
+    },
+    preview: {
+      port: Number(env.VITE_PREVIEW_PORT) || 4173,
+      host: true,
+      // Same proxy for local PWA testing (pnpm run build && pnpm run start)
       proxy: {
         '/api': {
           target: proxyTarget,

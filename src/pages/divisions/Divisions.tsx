@@ -16,6 +16,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { useAuth } from '../../contexts/auth-context';
+import { useNotification } from '../../contexts/error-feedback-context';
 import apiService from '../../services/api';
 import type { DivisionDto } from '../../services/types';
 
@@ -29,8 +30,9 @@ const Divisions: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const { lang } = useParams();
-  const { t: _t } = useTranslation('common');
+  const { t } = useTranslation('common');
   const { user } = useAuth();
+  const { showSuccess, showError } = useNotification();
 
   const isAdmin = user?.role === 'admin';
 
@@ -50,16 +52,17 @@ const Divisions: React.FC = () => {
   }, []);
 
   const handleDelete = async (divisionId: string) => {
-    if (!confirm('Are you sure you want to delete this division?')) {
+    if (!window.confirm(t('pages.divisions.deleteConfirm', 'Are you sure you want to delete this division?'))) {
       return;
     }
 
     try {
       await apiService.deleteDivision(divisionId);
       setDivisions(divisions.filter((d) => d.id !== divisionId));
+      showSuccess(t('pages.divisions.deleteSuccess', 'Division deleted successfully'));
     } catch (error) {
       console.error('Failed to delete division:', error);
-      alert('Failed to delete division. This is a stub for now.');
+      showError(error instanceof Error ? error.message : t('pages.divisions.deleteError', 'Failed to delete division'));
     }
   };
 

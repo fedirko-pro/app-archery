@@ -1,17 +1,18 @@
 import { Delete } from '@mui/icons-material';
 import {
+  Alert,
   Box,
-  Typography,
+  Button,
   Card,
   CardContent,
   Chip,
-  Button,
-  Alert,
   CircularProgress,
   Dialog,
-  DialogTitle,
-  DialogContent,
   DialogActions,
+  DialogContent,
+  DialogTitle,
+  Snackbar,
+  Typography,
 } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -122,15 +123,20 @@ const UserApplications: React.FC = () => {
         </Alert>
       )}
 
-      {successMessage && (
+      <Snackbar
+        open={!!successMessage}
+        autoHideDuration={6000}
+        onClose={() => setSuccessMessage(null)}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
         <Alert
           severity="success"
-          sx={{ mb: 2 }}
           onClose={() => setSuccessMessage(null)}
+          sx={{ width: '100%' }}
         >
           {successMessage}
         </Alert>
-      )}
+      </Snackbar>
 
       {applications.length === 0 ? (
         <Card>
@@ -180,13 +186,16 @@ const UserApplications: React.FC = () => {
                     {formatDate(application.tournament.endDate)}
                   </Typography>
 
-                  {application.category && (
+                  {(application.category || application.bowCategory) && (
                     <Typography
                       variant="body2"
                       color="text.secondary"
                       gutterBottom
                     >
-                      <strong>{t('pages.applications.category')}:</strong> {application.category}
+                      <strong>{t('pages.applications.category')}:</strong>{' '}
+                      {application.bowCategory && typeof application.bowCategory === 'object'
+                        ? application.bowCategory.name
+                        : application.category}
                     </Typography>
                   )}
 
@@ -197,9 +206,9 @@ const UserApplications: React.FC = () => {
                       gutterBottom
                     >
                       <strong>{t('pages.applications.division')}:</strong>{' '}
-                      {typeof application.division === 'object' && application.division !== null && 'name' in application.division
-                        ? (application.division as { name: string }).name
-                        : String(application.division)}
+                      {typeof application.division === 'object'
+                        ? application.division.name
+                        : application.division}
                     </Typography>
                   )}
 

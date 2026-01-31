@@ -1,0 +1,58 @@
+@use '../../sass/helpers/variables' as *;
+
+.install-prompt {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding: 10px 16px;
+  background: linear-gradient(135deg, $blue 0%, #004a9e 100%);
+  color: $white;
+  font-size: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+
+  &__text {
+    flex: 1;
+    margin: 0;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  &__btn {
+    padding: 6px 14px;
+    border: none;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.1s;
+
+    &:hover {
+      opacity: 0.95;
+    }
+
+    &:active {
+      transform: scale(0.98);
+    }
+
+    &--install {
+      background: $yellow;
+      color: $black;
+    }
+
+    &--dismiss {
+      background: rgba(255, 255, 255, 0.2);
+      color: $white;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.3);
+      }
+    }
+  }
+}

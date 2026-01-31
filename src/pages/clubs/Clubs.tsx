@@ -14,6 +14,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { useAuth } from '../../contexts/auth-context';
+import { useNotification } from '../../contexts/error-feedback-context';
 import apiService from '../../services/api';
 import type { ClubDto } from '../../services/types';
 
@@ -26,8 +27,9 @@ const Clubs: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const { lang } = useParams();
-  const { t: _t } = useTranslation('common');
+  const { t } = useTranslation('common');
   const { user } = useAuth();
+  const { showSuccess, showError } = useNotification();
 
   const isAdmin = user?.role === 'admin';
 
@@ -48,16 +50,17 @@ const Clubs: React.FC = () => {
   }, []);
 
   const handleDelete = async (clubId: string) => {
-    if (!confirm('Are you sure you want to delete this club?')) {
+    if (!window.confirm(t('pages.clubs.deleteConfirm', 'Are you sure you want to delete this club?'))) {
       return;
     }
 
     try {
       await apiService.deleteClub(clubId);
       setClubs(clubs.filter((c) => c.id !== clubId));
+      showSuccess(t('pages.clubs.deleteSuccess', 'Club deleted successfully'));
     } catch (error) {
       console.error('Failed to delete club:', error);
-      alert('Failed to delete club. This is a stub for now.');
+      showError(error instanceof Error ? error.message : t('pages.clubs.deleteError', 'Failed to delete club'));
     }
   };
 

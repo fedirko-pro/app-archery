@@ -25,7 +25,7 @@ A comprehensive web application for managing archery competitions, tournaments, 
   - Comprehensive user profiles
   - Profile editing capabilities
   - Password change functionality
-  - User achievements (planned)
+  - User achievements (demo page with 7 archery achievements)
 
 - **Admin Panel**
   - User management
@@ -59,29 +59,25 @@ A comprehensive web application for managing archery competitions, tournaments, 
 ## 📁 Project Structure
 
 ```
-├── client/                   # Frontend React application
+├── app-archery/             # Frontend React application (this repo)
 │   ├── src/
-│   │   ├── components/      # React components
-│   │   │   ├── header/      # Navigation components
-│   │   │   ├── admin/       # Admin panel components
-│   │   │   ├── profile/     # User profile components
-│   │   │   ├── tournament/  # Tournament components
-│   │   │   └── ...
-│   │   ├── pages/          # Page components
-│   │   ├── contexts/       # React contexts
+│   │   ├── components/     # React components (header, nav, footer, etc.)
+│   │   ├── pages/          # Page components (tournaments, profile, achievements, etc.)
+│   │   ├── contexts/       # React contexts (auth, notifications)
 │   │   ├── services/       # API services
+│   │   ├── locales/        # i18n translations (en, uk, pt, es, it)
 │   │   ├── utils/          # Utility functions
-│   │   └── sass/          # Styles
-│   ├── public/            # Static assets
+│   │   └── sass/           # Styles
+│   ├── public/             # Static assets, PWA manifest
 │   └── package.json
 │
-└── server/                 # Backend NestJS application
+└── archery-app-backend/    # Backend NestJS application (separate repo)
     ├── src/
-    │   ├── auth/          # Authentication module
-    │   ├── user/          # User management
-    │   ├── tournament/    # Tournament management
-    │   ├── email/         # Email functionality
-    │   ├── migrations/    # Database migrations
+    │   ├── auth/           # Authentication module (JWT, Google OAuth)
+    │   ├── user/           # User management
+    │   ├── tournament/     # Tournament management
+    │   ├── email/          # Email functionality
+    │   ├── migrations/     # Database migrations
     │   └── ...
     ├── mikro-orm.config.ts # Database configuration
     └── package.json
@@ -282,7 +278,8 @@ For support and questions, please contact the development team or create an issu
 
 ## 🔄 Version History
 
-- **v0.1.1** - Current version with PWA support and tournament management
+- **v0.1.2** - Achievements demo page, About app page rename, scoring card demo improvements
+- **v0.1.1** - PWA support, tournament management, offline capabilities
 - **v0.0.1** - Initial release with basic competition management
 
 ---

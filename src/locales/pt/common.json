@@ -1,16 +1,60 @@
 {
-  "footer": { "about": "Sobre" },
+  "footer": { "about": "Sobre o app" },
   "auth": { "logout": "Sair", "signIn": "Entrar", "signUp": "Registrar" },
   "menu": { "admin": "Admin", "myProfile": "Meu perfil ({{name}})" },
   "nav": {
     "tournaments": "Torneios",
     "myApplications": "Minhas inscrições",
+    "myAchievements": "Minhas conquistas (Demo)",
     "converter": "Conversor",
     "categories": "Categorias",
     "rules": "Regras",
-    "about": "Sobre",
+    "about": "Sobre o app",
     "users": "Usuários",
-    "userApplications": "Inscrições de usuários"
+    "userApplications": "Inscrições de usuários",
+    "scoringDemo": "Cartão de Pontuação (Demo)"
+  },
+  "achievements": {
+    "title": "Minhas Conquistas",
+    "subtitle": "Acompanhe sua jornada no tiro com arco e desbloqueie novas conquistas",
+    "progress": "{{earned}} de {{total}} conquistas desbloqueadas",
+    "earnedOn": "Conquistado em {{date}}",
+    "progressLabel": "Progresso",
+    "demoNotice": "Esta é uma página de demonstração. As conquistas serão vinculadas aos seus resultados reais de competição no futuro.",
+    "rarity": {
+      "common": "Comum",
+      "rare": "Raro",
+      "epic": "Épico",
+      "legendary": "Lendário"
+    },
+    "firstBullseye": {
+      "title": "Primeiro Alvo Perfeito",
+      "description": "Marque seu primeiro tiro perfeito de 10 pontos em competição"
+    },
+    "perfectRound": {
+      "title": "Rodada Perfeita",
+      "description": "Alcance uma pontuação perfeita em uma única rodada (todos 10)"
+    },
+    "tournamentWinner": {
+      "title": "Campeão do Torneio",
+      "description": "Ganhe o primeiro lugar em um torneio oficial"
+    },
+    "consistentArcher": {
+      "title": "Arqueiro Consistente",
+      "description": "Complete 10 torneios sem errar nenhum alvo"
+    },
+    "longDistance": {
+      "title": "Mestre de Longa Distância",
+      "description": "Marque 8+ em todas as flechas na distância máxima (60m+)"
+    },
+    "teamSpirit": {
+      "title": "Espírito de Equipe",
+      "description": "Participe de 5 competições em equipe"
+    },
+    "precisionMaster": {
+      "title": "Mestre da Precisão",
+      "description": "Mantenha precisão de 95%+ em 100 flechas consecutivas"
+    }
   },
   "pages": {
     "rules": {
@@ -61,7 +105,7 @@
       "plannedTitle": "Funcionalidades planejadas:",
       "planned": {
         "trainingLog": "Registro de treinos - Rastrear sessões de treinamento pessoal com estatísticas detalhadas",
-        "achievements": "Sistema de conquistas - Rastreamento e compartilhamento abrangente de conquistas",
+        "achievements": "Sistema de conquistas - Página demo disponível, rastreamento completo em breve",
         "competitions": "Recursos de competição - Gerenciamento aprimorado de competições e pontuação",
         "duels": "Desafios amigáveis - Desafiar outros arqueiros para duelos amigáveis",
         "news": "Notícias e atualizações - Notícias de torneios e anúncios da federação",
@@ -150,7 +194,8 @@
       "notFound": "Torneio não encontrado",
       "applyFor": "Inscrever-se em {{title}}",
       "signInPrompt": "Para enviar sua inscrição para este torneio, você precisa criar uma conta ou entrar na sua conta existente.",
-      "redirectInfo": "Após o cadastro ou login, você será redirecionado de volta para este formulário."
+      "redirectInfo": "Após o cadastro ou login, você será redirecionado de volta para este formulário.",
+      "applicationSubmitted": "Inscrição enviada com sucesso!"
     },
     "applicationForm": {
       "title": "Enviar inscrição para {{title}}",
@@ -364,6 +409,14 @@
   "clubs": {
     "clubLogo": "Logotipo do Clube",
     "logoSubheader": "Selecione uma imagem e arraste para reposicionar (PNG, JPG até 10MB)"
+  },
+  "pwa": {
+    "workingOffline": "Trabalhando offline",
+    "installPrompt": "Instale o UArchery como aplicativo para melhor experiência e uso offline.",
+    "install": "Instalar",
+    "installing": "Instalando…",
+    "dismiss": "Agora não",
+    "installAria": "Aviso para instalar o aplicativo"
   }
 }
 

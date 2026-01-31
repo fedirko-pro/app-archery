@@ -2,16 +2,21 @@ import './user-page.scss';
 
 import { LockOpen } from '@mui/icons-material';
 import {
- FormControl,
- MenuItem,
- Paper,
- Select,
- Table,
- TableBody,
- TableCell,
- TableContainer,
- TableHead,
- TableRow,
+  Avatar,
+  Card,
+  CardContent,
+  Chip,
+  FormControl,
+  MenuItem,
+  Paper,
+  Select,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
 } from '@mui/material';
 import Box from '@mui/material/Box';
 import type { SelectChangeEvent } from '@mui/material/Select';
@@ -203,6 +208,19 @@ export default function UserPage() {
  ]);
  const [submitted, setSubmitted] = useState(false);
 
+ // Demo user data
+ const demoUser = {
+   firstName: 'Robert',
+   lastName: 'Hood',
+   avatar: 'https://i.pravatar.cc/150?img=12',
+   division: 'Adult Male',
+   gender: 'Male',
+   category: 'HLB',
+   patrolNumber: 13,
+   tournament: 'Test tournament 2024 (demo)',
+   date: '19.05.2024',
+ };
+
 
  const handleArrowChange = (rowId: number, arrowId: number, value: number) => {
    setRows((prev) =>
@@ -224,39 +242,47 @@ export default function UserPage() {
  return (
    <section>
      <div className="container user_page">
-       <TableContainer component={Paper}>
-         <Table>
-           <TableBody>
-             <TableRow>
-               <TableCell colSpan={2}>
-                 <h2>
-                   Robert Hood
-                   <span className="locked">
-                     <LockOpen />
-                   </span>
-                 </h2>
-               </TableCell>
-             </TableRow>
-             <TableRow>
-               <TableCell colSpan={2}>
-                 <h3>Test tournament 2024 (demo)</h3>
-               </TableCell>
-             </TableRow>
-             <TableRow>
-               <TableCell align="right">Patrol №</TableCell>
-               <TableCell align="right">13</TableCell>
-             </TableRow>
-             <TableRow>
-               <TableCell align="right">category</TableCell>
-               <TableCell align="right">HLB</TableCell>
-             </TableRow>
-             <TableRow>
-               <TableCell align="right">date</TableCell>
-               <TableCell align="right">19.05.2024</TableCell>
-             </TableRow>
-           </TableBody>
-         </Table>
-       </TableContainer>
+       <Card sx={{ mb: 3 }}>
+         <CardContent>
+           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
+             <Avatar
+               src={demoUser.avatar}
+               alt={`${demoUser.firstName} ${demoUser.lastName}`}
+               sx={{ width: 80, height: 80 }}
+             />
+             <Box sx={{ flex: 1 }}>
+               <Typography variant="h4" component="h1" gutterBottom>
+                 {demoUser.firstName} {demoUser.lastName}
+                 <LockOpen sx={{ ml: 1, verticalAlign: 'middle', color: 'success.main' }} />
+               </Typography>
+               <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+                 <Chip label={`Division: ${demoUser.division}`} color="primary" variant="outlined" />
+                 <Chip label={`Gender: ${demoUser.gender}`} color="secondary" variant="outlined" />
+                 <Chip label={`Category: ${demoUser.category}`} variant="outlined" />
+               </Box>
+             </Box>
+           </Box>
+
+           <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
+             {demoUser.tournament}
+           </Typography>
+
+           <Box sx={{ display: 'flex', gap: 3, mt: 2 }}>
+             <Box>
+               <Typography variant="body2" color="text.secondary">
+                 Patrol №
+               </Typography>
+               <Typography variant="h6">{demoUser.patrolNumber}</Typography>
+             </Box>
+             <Box>
+               <Typography variant="body2" color="text.secondary">
+                 Date
+               </Typography>
+               <Typography variant="h6">{demoUser.date}</Typography>
+             </Box>
+           </Box>
+         </CardContent>
+       </Card>
      </div>
      <div className="container">
        <TableContainer component={Paper}>

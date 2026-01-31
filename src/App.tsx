@@ -10,6 +10,8 @@ import EnvError from './components/env-error/env-error';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import Footer from './components/Footer/Footer';
 import Header from './components/Header/Header';
+import InstallPrompt from './components/InstallPrompt';
+import OfflineBanner from './components/OfflineBanner';
 import { AuthProvider } from './contexts/auth-context';
 import { ErrorFeedbackProvider } from './contexts/error-feedback-context';
 
@@ -20,6 +22,8 @@ const App: React.FC = () => {
         <ErrorFeedbackProvider>
           <AuthProvider>
             <EnvError />
+            <OfflineBanner />
+            <InstallPrompt />
             <Header />
             <Content />
             {!import.meta.env.PROD && <I18nDevOverlay />}

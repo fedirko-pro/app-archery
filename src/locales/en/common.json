@@ -1,16 +1,60 @@
 {
-  "footer": { "about": "About" },
+  "footer": { "about": "About app" },
   
   "menu": { "admin": "Admin", "myProfile": "My profile ({{name}})" },
   "nav": {
     "tournaments": "Tournaments",
     "myApplications": "My applications",
+    "myAchievements": "My achievements (Demo)",
     "converter": "Converter",
     "categories": "Categories",
     "rules": "Rules",
-    "about": "About",
+    "about": "About app",
     "users": "Users",
-    "userApplications": "User applications"
+    "userApplications": "User applications",
+    "scoringDemo": "Scoring Card (Demo)"
+  },
+  "achievements": {
+    "title": "My Achievements",
+    "subtitle": "Track your archery journey and unlock new achievements",
+    "progress": "{{earned}} of {{total}} achievements unlocked",
+    "earnedOn": "Earned on {{date}}",
+    "progressLabel": "Progress",
+    "demoNotice": "This is a demo page. Achievements will be linked to your real competition results in the future.",
+    "rarity": {
+      "common": "Common",
+      "rare": "Rare",
+      "epic": "Epic",
+      "legendary": "Legendary"
+    },
+    "firstBullseye": {
+      "title": "First Bullseye",
+      "description": "Score your first perfect 10-point shot in competition"
+    },
+    "perfectRound": {
+      "title": "Perfect Round",
+      "description": "Achieve a perfect score in a single round (all 10s)"
+    },
+    "tournamentWinner": {
+      "title": "Tournament Champion",
+      "description": "Win first place in an official tournament"
+    },
+    "consistentArcher": {
+      "title": "Consistent Archer",
+      "description": "Complete 10 tournaments without missing any targets"
+    },
+    "longDistance": {
+      "title": "Long Range Master",
+      "description": "Score 8+ on all arrows at maximum distance (60m+)"
+    },
+    "teamSpirit": {
+      "title": "Team Spirit",
+      "description": "Participate in 5 team competitions"
+    },
+    "precisionMaster": {
+      "title": "Precision Master",
+      "description": "Maintain 95%+ accuracy over 100 consecutive arrows"
+    }
   },
   "pages": {
     "rules": {
@@ -36,7 +80,27 @@
     },
     "categories": {
       "title": "Bow categories (sorted A-Z)",
-      "ruleReference": "Rule reference"
+      "ruleReference": "Rule reference",
+      "confirmDelete": "Are you sure you want to delete this category?",
+      "deleteSuccess": "Category deleted successfully",
+      "deleteError": "Failed to delete category"
+    },
+    "divisions": {
+      "deleteConfirm": "Are you sure you want to delete this division?",
+      "deleteSuccess": "Division deleted successfully",
+      "deleteError": "Failed to delete division",
+      "nameRequired": "Division name is required",
+      "ruleRequired": "Please select a rule",
+      "saveSuccess": "Division saved successfully",
+      "saveError": "Failed to save division"
+    },
+    "clubs": {
+      "deleteConfirm": "Are you sure you want to delete this club?",
+      "deleteSuccess": "Club deleted successfully",
+      "deleteError": "Failed to delete club",
+      "nameRequired": "Club name is required",
+      "saveSuccess": "Club saved successfully",
+      "saveError": "Failed to save club. Please try again."
     },
     "converter": { "title": "Converter of most common archery measures" },
     "about": {
@@ -62,7 +126,7 @@
       "plannedTitle": "Planned Features:",
       "planned": {
         "trainingLog": "Training Log - Track personal training sessions with detailed statistics",
-        "achievements": "Achievements System - Comprehensive achievement tracking and sharing",
+        "achievements": "Achievements System - Demo page available, full tracking coming soon",
         "competitions": "Competition Features - Enhanced competition management and scoring",
         "duels": "Friendly Challenges - Challenge other archers to friendly duels",
         "news": "News & Updates - Tournament news and federation announcements",
@@ -89,6 +153,7 @@
       "share": "Share",
       "linkCopied": "Link copied to clipboard!",
       "copyLink": "Copy this link:",
+      "copyFailed": "Failed to copy link to clipboard",
       "start": "Start",
       "end": "End",
       "location": "Location",
@@ -151,7 +216,8 @@
       "notFound": "Tournament not found",
       "applyFor": "Apply for {{title}}",
       "signInPrompt": "To submit your application for this tournament, you need to create an account or sign in to your existing account.",
-      "redirectInfo": "After registration or sign in, you'll be redirected back to this application form."
+      "redirectInfo": "After registration or sign in, you'll be redirected back to this application form.",
+      "applicationSubmitted": "Application submitted successfully!"
     },
     "applicationForm": {
       "title": "Submit Application for {{title}}",
@@ -371,6 +437,14 @@
   "clubs": {
     "clubLogo": "Club Logo",
     "logoSubheader": "Select an image, then drag to reposition (PNG, JPG up to 10MB)"
+  },
+  "pwa": {
+    "workingOffline": "Working offline",
+    "installPrompt": "Install UArchery as an app for a better experience and offline use.",
+    "install": "Install",
+    "installing": "Installing…",
+    "dismiss": "Not now",
+    "installAria": "Install app prompt"
   }
 }
 

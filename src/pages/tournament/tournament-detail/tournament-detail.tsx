@@ -39,6 +39,7 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 
 import { FileAttachment } from '../../../components/FileAttachments/FileAttachments';
 import { useAuth } from '../../../contexts/auth-context';
+import { useNotification } from '../../../contexts/error-feedback-context';
 import defaultBanner from '../../../img/default_turnament_bg.png';
 import apiService from '../../../services/api';
 import type { TournamentDto } from '../../../services/types';
@@ -49,6 +50,7 @@ const TournamentDetail: React.FC = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { t } = useTranslation('common');
+  const { showSuccess, showError } = useNotification();
   const [tournament, setTournament] = useState<TournamentDto | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -124,12 +126,10 @@ const TournamentDetail: React.FC = () => {
       // Fallback: Copy URL to clipboard
       try {
         await navigator.clipboard.writeText(tournamentUrl);
-        // You could show a toast notification here
-        alert(t('pages.tournaments.linkCopied', 'Link copied to clipboard!'));
+        showSuccess(t('pages.tournaments.linkCopied', 'Link copied to clipboard!'));
       } catch (err) {
         console.error('Failed to copy link:', err);
-        // Fallback: Show URL in a prompt
-        prompt(t('pages.tournaments.copyLink', 'Copy this link:'), tournamentUrl);
+        showError(t('pages.tournaments.copyFailed', 'Failed to copy link to clipboard'));
       }
     }
   };

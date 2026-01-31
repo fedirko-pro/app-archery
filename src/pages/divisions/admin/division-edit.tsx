@@ -14,6 +14,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { useAuth } from '../../../contexts/auth-context';
+import { useNotification } from '../../../contexts/error-feedback-context';
 import apiService from '../../../services/api';
 import type { DivisionDto, RuleDto } from '../../../services/types';
 
@@ -24,8 +25,9 @@ import type { DivisionDto, RuleDto } from '../../../services/types';
 const DivisionEdit: React.FC = () => {
   const { id, lang } = useParams<{ id: string; lang: string }>();
   const navigate = useNavigate();
-  const { t: _t } = useTranslation('common');
+  const { t } = useTranslation('common');
   const { user } = useAuth();
+  const { showWarning, showError, showSuccess } = useNotification();
 
   const [form, setForm] = useState<DivisionDto>({
     id: id === 'create' ? undefined : id,
@@ -72,22 +74,23 @@ const DivisionEdit: React.FC = () => {
 
   const handleSave = async () => {
     if (!form.name.trim()) {
-      alert('Division name is required');
+      showWarning(t('pages.divisions.nameRequired', 'Division name is required'));
       return;
     }
 
     if (!form.rule_code) {
-      alert('Please select a rule');
+      showWarning(t('pages.divisions.ruleRequired', 'Please select a rule'));
       return;
     }
 
     try {
       setLoading(true);
       await apiService.upsertDivision(form);
+      showSuccess(t('pages.divisions.saveSuccess', 'Division saved successfully'));
       navigate(`/${lang}/divisions`);
     } catch (error) {
       console.error('Failed to save division:', error);
-      alert('Failed to save division. This is a stub for now.');
+      showError(error instanceof Error ? error.message : t('pages.divisions.saveError', 'Failed to save division'));
     } finally {
       setLoading(false);
     }

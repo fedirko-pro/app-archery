@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { useAuth } from '../../contexts/auth-context';
+import { useNotification } from '../../contexts/error-feedback-context';
 import apiService from '../../services/api';
 import type { BowCategory } from '../../services/types';
 import { normalizeAppLang, pickLocalizedDescription } from '../../utils/i18n-lang';
@@ -25,6 +26,7 @@ const Categories: React.FC = () => {
   const appLang = normalizeAppLang(lang);
   const { t } = useTranslation('common');
   const { user } = useAuth();
+  const { showSuccess, showError } = useNotification();
 
   // Load categories once on mount
   useEffect(() => {
@@ -55,15 +57,15 @@ const Categories: React.FC = () => {
     }
     try {
       await apiService.deleteBowCategory(categoryId);
-      // Reload categories
       const data = await apiService.getBowCategories();
-      const sortedCategories = data.sort((a, b) => 
-        (a.code || '').localeCompare(b.code || '')
+      const sortedCategories = data.sort((a, b) =>
+        (a.code || '').localeCompare(b.code || ''),
       );
       setCategories(sortedCategories);
+      showSuccess(t('pages.categories.deleteSuccess', 'Category deleted successfully'));
     } catch (error) {
       console.error('Failed to delete category:', error);
-      alert(error instanceof Error ? error.message : 'Failed to delete category');
+      showError(error instanceof Error ? error.message : t('pages.categories.deleteError', 'Failed to delete category'));
     }
   };
 

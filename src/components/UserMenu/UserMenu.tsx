@@ -49,11 +49,14 @@ const UserMenu: React.FC = () => {
       link: '/profile',
       label: t('menu.myProfile', { name: (user?.firstName || '') + ' ' + (user?.lastName || '') }),
     },
-    // TODO: Implement My achievements
-    // {
-    //   link: '/achievements',
-    //   label: 'My achievements',
-    // },
+    {
+      link: '/applications',
+      label: t('nav.myApplications'),
+    },
+    {
+      link: '/achievements',
+      label: t('nav.myAchievements'),
+    },
     // TODO: Settings temporarily disabled - functionality moved to Profile
     // {
     //   link: '/settings',

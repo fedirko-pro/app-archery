@@ -12,13 +12,15 @@ import { useTranslation } from 'react-i18next';
 import { useParams, useNavigate } from 'react-router-dom';
 
 import { useAuth } from '../../../contexts/auth-context';
+import { getDefaultAppLang, normalizeAppLang } from '../../../utils/i18n-lang';
 import apiService from '../../../services/api';
 import type { TournamentDto } from '../../../services/types';
 import TournamentApplicationForm from '../tournament-application-form/tournament-application-form';
 
 const PublicApplication: React.FC = () => {
-  const { tournamentId } = useParams<{ tournamentId: string }>();
+  const { tournamentId, lang } = useParams<{ tournamentId: string; lang?: string }>();
   const navigate = useNavigate();
+  const appLang = normalizeAppLang(lang || getDefaultAppLang());
   const { t } = useTranslation('common');
 
   const { user, loading: authLoading } = useAuth();
@@ -69,8 +71,8 @@ const PublicApplication: React.FC = () => {
 
   const handleApplicationSuccess = () => {
     sessionStorage.removeItem('pendingApplication');
-    navigate('/applications', {
-      state: { message: 'Application submitted successfully!' },
+    navigate(`/${appLang}/applications`, {
+      state: { message: t('pages.publicApplication.applicationSubmitted') },
     });
   };
 
@@ -156,7 +158,7 @@ const PublicApplication: React.FC = () => {
         tournamentTitle={tournament.title}
         tournamentRuleCode={tournament.ruleCode}
         onSuccess={handleApplicationSuccess}
-        onCancel={() => navigate('/tournaments')}
+        onCancel={() => navigate(`/${appLang}/tournaments`)}
       />
     </Box>
   );

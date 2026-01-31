@@ -1,16 +1,60 @@
 {
-  "footer": { "about": "Informazioni" },
+  "footer": { "about": "Informazioni sull'app" },
   
   "menu": { "admin": "Admin", "myProfile": "Il mio profilo ({{name}})" },
   "nav": {
     "tournaments": "Tornei",
     "myApplications": "Le mie domande",
+    "myAchievements": "I miei traguardi (Demo)",
     "converter": "Convertitore",
     "categories": "Categorie",
     "rules": "Regole",
-    "about": "Informazioni",
+    "about": "Informazioni sull'app",
     "users": "Utenti",
-    "userApplications": "Domande degli utenti"
+    "userApplications": "Domande degli utenti",
+    "scoringDemo": "Scheda Punteggio (Demo)"
+  },
+  "achievements": {
+    "title": "I Miei Traguardi",
+    "subtitle": "Segui il tuo percorso nel tiro con l'arco e sblocca nuovi traguardi",
+    "progress": "{{earned}} di {{total}} traguardi sbloccati",
+    "earnedOn": "Ottenuto il {{date}}",
+    "progressLabel": "Progresso",
+    "demoNotice": "Questa è una pagina dimostrativa. I traguardi saranno collegati ai tuoi risultati reali delle competizioni in futuro.",
+    "rarity": {
+      "common": "Comune",
+      "rare": "Raro",
+      "epic": "Epico",
+      "legendary": "Leggendario"
+    },
+    "firstBullseye": {
+      "title": "Primo Centro",
+      "description": "Ottieni il tuo primo tiro perfetto da 10 punti in competizione"
+    },
+    "perfectRound": {
+      "title": "Round Perfetto",
+      "description": "Raggiungi un punteggio perfetto in un singolo round (tutti 10)"
+    },
+    "tournamentWinner": {
+      "title": "Campione del Torneo",
+      "description": "Vinci il primo posto in un torneo ufficiale"
+    },
+    "consistentArcher": {
+      "title": "Arciere Costante",
+      "description": "Completa 10 tornei senza mancare nessun bersaglio"
+    },
+    "longDistance": {
+      "title": "Maestro della Lunga Distanza",
+      "description": "Segna 8+ su tutte le frecce alla distanza massima (60m+)"
+    },
+    "teamSpirit": {
+      "title": "Spirito di Squadra",
+      "description": "Partecipa a 5 competizioni a squadre"
+    },
+    "precisionMaster": {
+      "title": "Maestro della Precisione",
+      "description": "Mantieni una precisione del 95%+ per 100 frecce consecutive"
+    }
   },
   "pages": {
     "rules": {
@@ -61,7 +105,7 @@
       "plannedTitle": "Funzionalità pianificate:",
       "planned": {
         "trainingLog": "Registro allenamenti - Tracciare sessioni di allenamento personali con statistiche dettagliate",
-        "achievements": "Sistema risultati - Tracciamento e condivisione completa dei risultati",
+        "achievements": "Sistema risultati - Pagina demo disponibile, tracciamento completo in arrivo",
         "competitions": "Funzioni competizione - Gestione migliorata delle competizioni e punteggio",
         "duels": "Sfide amichevoli - Sfidare altri arcieri a duelli amichevoli",
         "news": "Notizie e aggiornamenti - Notizie sui tornei e annunci della federazione",
@@ -129,6 +173,7 @@
       "copyLink": "Copia questo link:",
       "applyFor": "Iscriviti a {{title}}",
       "signInPrompt": "Per inviare la domanda a questo torneo, crea un account o accedi al tuo account esistente.",
+      "applicationSubmitted": "Domanda inviata con successo!",
       "redirectInfo": "Dopo la registrazione o l'accesso, verrai reindirizzato a questo modulo."
     },
     "applicationForm": {
@@ -343,6 +388,14 @@
   "clubs": {
     "clubLogo": "Logo del Club",
     "logoSubheader": "Seleziona un'immagine, quindi trascina per riposizionare (PNG, JPG fino a 10MB)"
+  },
+  "pwa": {
+    "workingOffline": "Funzionamento offline",
+    "installPrompt": "Installa UArchery come app per una migliore esperienza e uso offline.",
+    "install": "Installa",
+    "installing": "Installazione…",
+    "dismiss": "Non ora",
+    "installAria": "Avviso per installare l'app"
   }
 }
 

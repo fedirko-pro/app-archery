@@ -89,7 +89,14 @@ function Content() {
               </ProtectedRoute>
             }
           />
-          <Route path="achievements" element={<Achievements />} />
+          <Route
+            path="achievements"
+            element={
+              <ProtectedRoute>
+                <Achievements />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="admin/users"
             element={

@@ -27,14 +27,13 @@ function NavMenu() {
 
   const regularMenuItems = [
     { link: '/tournaments', label: t('nav.tournaments') },
-    ...(user ? [{ link: '/applications', label: t('nav.myApplications') }] : []),
-    { link: '/converter', label: t('nav.converter') },
-    { link: '/competition/user', label: 'User card (demo)' },
     { link: '/categories', label: t('nav.categories') },
     { link: '/clubs', label: t('nav.clubs', 'Clubs') },
     { link: '/divisions', label: t('nav.divisions', 'Divisions') },
     { link: '/rules', label: t('nav.rules') },
+    { link: '/converter', label: t('nav.converter') },
     { link: '/about', label: t('nav.about') },
+    { link: '/competition/user', label: t('nav.scoringDemo', 'Scoring Card (Demo)') },
   ];
 
   const adminMenuItems = [

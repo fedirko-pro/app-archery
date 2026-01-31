@@ -5,6 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import LogoUploader from '../../../components/LogoUploader/LogoUploader';
 import { useAuth } from '../../../contexts/auth-context';
+import { useNotification } from '../../../contexts/error-feedback-context';
 import apiService from '../../../services/api';
 import type { ClubDto } from '../../../services/types';
 
@@ -15,8 +16,9 @@ import type { ClubDto } from '../../../services/types';
 const ClubEdit: React.FC = () => {
   const { id, lang } = useParams<{ id: string; lang: string }>();
   const navigate = useNavigate();
-  const { t: _t } = useTranslation('common');
+  const { t } = useTranslation('common');
   const { user } = useAuth();
+  const { showWarning, showError, showSuccess } = useNotification();
 
   const [form, setForm] = useState<ClubDto>({
     id: id === 'create' ? undefined : id,
@@ -53,17 +55,18 @@ const ClubEdit: React.FC = () => {
 
   const handleSave = async () => {
     if (!form.name.trim()) {
-      alert('Club name is required');
+      showWarning(t('pages.clubs.nameRequired', 'Club name is required'));
       return;
     }
 
     try {
       setLoading(true);
       await apiService.upsertClub(form);
+      showSuccess(t('pages.clubs.saveSuccess', 'Club saved successfully'));
       navigate(`/${lang}/clubs`);
     } catch (error) {
       console.error('Failed to save club:', error);
-      alert('Failed to save club. Please try again.');
+      showError(error instanceof Error ? error.message : t('pages.clubs.saveError', 'Failed to save club. Please try again.'));
     } finally {
       setLoading(false);
     }
