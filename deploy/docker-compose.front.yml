@@ -1,0 +1,29 @@
+# Docker Compose for VPS production - Frontend
+# Place this file in /srv/archery-front/docker-compose.yml
+# Clone the repository to /srv/archery-front/src/
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL}
+        VITE_GOOGLE_AUTH_URL: ${VITE_GOOGLE_AUTH_URL}
+    container_name: archery_frontend
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8080:80"
+    networks:
+      - archery_network
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+networks:
+  archery_network:
+    external: true
+    name: archery-api_archery_network

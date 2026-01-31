@@ -1,0 +1,29 @@
+node_modules
+dist
+.git
+.gitignore
+.env
+.env.*
+!.env.example
+*.log
+npm-debug.log*
+.DS_Store
+coverage
+.nyc_output
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# Temporary and documentation files
+CODE_REVIEW*.md
+FRONTEND_*.md
+RECOMMENDATIONS.md
+claude.md
+
+# Test files
+*.test.ts
+*.test.tsx
+*.spec.ts
+*.spec.tsx
