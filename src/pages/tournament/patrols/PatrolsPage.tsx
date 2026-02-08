@@ -1,3 +1,4 @@
+import AssignmentIcon from '@mui/icons-material/Assignment';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import SaveIcon from '@mui/icons-material/Save';
@@ -283,28 +284,152 @@ const PatrolsPage: React.FC = () => {
     setIsDirty(true);
   };
 
-  const handleExportPDF = async () => {
+  const handleGeneratePatrolsList = async () => {
     if (!tournamentId) return;
 
     try {
-      // Construct the full URL to the PDF endpoint based on backend structure
       const url = `${env.API_BASE_URL}/patrols/tournaments/${tournamentId}/pdf`;
-
-      // Open in a new tab
       window.open(url, '_blank');
-
       setSnackbar({
         open: true,
-        message: 'Opening PDF export...',
+        message: 'Opening patrols list PDF...',
         severity: 'success',
       });
     } catch (error) {
-      console.error('Failed to export PDF:', error);
+      console.error('Failed to generate patrols list:', error);
       setSnackbar({
         open: true,
-        message: 'Failed to export PDF. Please try again.',
+        message: 'Failed to generate patrols list. Please try again.',
         severity: 'error',
       });
+    }
+  };
+
+  const handleGenerateScoreCards = async () => {
+    if (!tournamentId) return;
+
+    try {
+      const url = `${env.API_BASE_URL}/patrols/tournaments/${tournamentId}/score-cards-pdf`;
+      window.open(url, '_blank');
+      setSnackbar({
+        open: true,
+        message: 'Opening score cards PDF...',
+        severity: 'success',
+      });
+    } catch (error) {
+      console.error('Failed to generate score cards:', error);
+      setSnackbar({
+        open: true,
+        message: 'Failed to generate score cards. Please try again.',
+        severity: 'error',
+      });
+    }
+  };
+
+  /** Transform backend patrol list to component format (shared helper shape) */
+  const transformBackendPatrols = (
+    backendPatrols: Array<{
+      id: string;
+      name?: string;
+      members?: Array<{ user?: { id: string; firstName?: string; lastName?: string; email?: string; club?: { name: string }; division?: string; bowCategory?: string; gender?: string }; role: string }>;
+    }>,
+  ) => {
+    const participantsMap = new Map<string, Participant>();
+    const transformedPatrols: Patrol[] = [];
+
+    for (const bp of backendPatrols) {
+      const memberIds: string[] = [];
+      const judgeIds: string[] = [];
+      let leaderId: string | null = null;
+
+      if (bp.members && Array.isArray(bp.members)) {
+        for (const member of bp.members) {
+          const user = member.user;
+          if (!user) continue;
+
+          participantsMap.set(user.id, {
+            id: user.id,
+            name:
+              `${user.firstName || ''} ${user.lastName || ''}`.trim() ||
+              user.email ||
+              'Unknown',
+            club: user.club?.name || 'No Club',
+            division: user.division || 'Unknown',
+            bowCategory: user.bowCategory || 'Unknown',
+            gender: user.gender || 'Other',
+          });
+
+          memberIds.push(user.id);
+
+          if (member.role === 'leader') {
+            leaderId = user.id;
+          } else if (member.role === 'judge') {
+            judgeIds.push(user.id);
+          }
+        }
+      }
+
+      const targetMatch = bp.name?.match(/\d+/);
+      const targetNumber = targetMatch
+        ? parseInt(targetMatch[0], 10)
+        : transformedPatrols.length + 1;
+
+      transformedPatrols.push({
+        id: bp.id,
+        targetNumber,
+        members: memberIds,
+        leaderId,
+        judgeIds,
+      });
+    }
+
+    return { participantsMap, transformedPatrols };
+  };
+
+  const handleDeleteAndRedistribute = async (patrolId: string) => {
+    if (
+      !confirm('Видалити патруль і перерозпреділити людей?')
+    ) {
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const backendPatrols = await apiService.deletePatrolAndRedistribute(patrolId);
+      const { participantsMap, transformedPatrols } =
+        transformBackendPatrols(backendPatrols);
+
+      setPatrols(transformedPatrols);
+      setParticipants(participantsMap);
+      setIsDirty(false);
+
+      const totalParticipants = participantsMap.size;
+      const averagePatrolSize =
+        transformedPatrols.length > 0
+          ? totalParticipants / transformedPatrols.length
+          : 0;
+      setStats({
+        totalParticipants,
+        averagePatrolSize,
+        clubDiversityScore: 0,
+        homogeneityScores: { category: 0, division: 0, gender: 0 },
+      });
+
+      setSnackbar({
+        open: true,
+        message: 'Патруль видалено, учасників перерозподілено.',
+        severity: 'success',
+      });
+    } catch (error: any) {
+      console.error('Failed to delete and redistribute:', error);
+      setSnackbar({
+        open: true,
+        message:
+          error.message || 'Не вдалося видалити патруль і перерозподілити.',
+        severity: 'error',
+      });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -443,9 +568,16 @@ const PatrolsPage: React.FC = () => {
           <Button
             variant="outlined"
             startIcon={<PictureAsPdfIcon />}
-            onClick={handleExportPDF}
+            onClick={handleGeneratePatrolsList}
           >
-            Export PDF
+            Generate patrols list
+          </Button>
+          <Button
+            variant="outlined"
+            startIcon={<AssignmentIcon />}
+            onClick={handleGenerateScoreCards}
+          >
+            Generate score cards
           </Button>
           <Button
             variant="outlined"
@@ -471,6 +603,7 @@ const PatrolsPage: React.FC = () => {
                 warnings={warnings.filter((w) => w.patrolId === patrol.id)}
                 onMemberDrop={handleMemberDrop}
                 onRoleChange={handleRoleChange}
+                onDeleteAndRedistribute={handleDeleteAndRedistribute}
               />
             </Grid>
           ))}

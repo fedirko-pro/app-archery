@@ -4,6 +4,7 @@ import { Box, Button, Card, CardContent, CardHeader, Slider, Typography, Circula
 import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { useNotification } from '../../contexts/error-feedback-context';
 import { apiService } from '../../services/api';
 
 interface LogoUploaderProps {
@@ -25,6 +26,7 @@ const LogoUploader: React.FC<LogoUploaderProps> = ({
   entityId,
 }) => {
   const { t } = useTranslation('common');
+  const { showSuccess } = useNotification();
   const [imageSrc, setImageSrc] = useState<string | undefined>(value);
   const [imageEl, setImageEl] = useState<HTMLImageElement | null>(null);
   const [naturalSize, setNaturalSize] = useState<{ w: number; h: number } | null>(null);
@@ -205,6 +207,7 @@ const LogoUploader: React.FC<LogoUploaderProps> = ({
       // Backend returns full URL, so we can use it directly
       onChange(result.url);
       setImageSrc(result.url);
+      showSuccess(t('clubs.logoSaved', 'Club logo saved successfully'));
     } catch (err) {
       setError(t('pages.tournaments.uploadFailed', 'Upload failed. Please try again.'));
       console.error('Upload failed:', err);

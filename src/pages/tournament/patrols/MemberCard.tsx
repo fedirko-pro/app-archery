@@ -1,5 +1,7 @@
 import { draggable } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
+import BalanceIcon from '@mui/icons-material/Balance';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
 import { Box, Chip, IconButton, Menu, MenuItem, Paper } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
 
@@ -92,10 +94,10 @@ const MemberCard: React.FC<MemberCardProps> = ({
             {participant.name}
           </Box>
           {isLeader && (
-            <Chip label="Leader" size="small" color="primary" sx={{ height: 20, fontSize: '0.7rem' }} />
+            <Chip icon={<WorkspacePremiumIcon sx={{ fontSize: 16 }} />} label="Leader" size="small" color="primary" sx={{ height: 24, fontSize: '0.75rem', '& .MuiChip-icon': { ml: 0.5 } }} />
           )}
           {isJudge && (
-            <Chip label="Judge" size="small" color="secondary" sx={{ height: 20, fontSize: '0.7rem' }} />
+            <Chip icon={<BalanceIcon sx={{ fontSize: 16 }} />} label="Judge" size="small" color="secondary" sx={{ height: 24, fontSize: '0.75rem', '& .MuiChip-icon': { ml: 0.5 } }} />
           )}
         </Box>
         <Box sx={{ fontSize: '0.8rem', color: 'text.secondary' }}>

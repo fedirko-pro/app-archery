@@ -313,6 +313,16 @@ class ApiService {
     });
   }
 
+  /**
+   * Delete patrol and redistribute participants into fewer patrols
+   */
+  async deletePatrolAndRedistribute(patrolId: string): Promise<PatrolDto[]> {
+    return await this.request<PatrolDto[]>(
+      `/patrols/${patrolId}/delete-and-redistribute`,
+      { method: 'POST' },
+    );
+  }
+
   async addPatrolMember(
     patrolId: string,
     userId: string,

@@ -27,10 +27,10 @@ function NavMenu() {
 
   const regularMenuItems = [
     { link: '/tournaments', label: t('nav.tournaments') },
-    { link: '/categories', label: t('nav.categories') },
     { link: '/clubs', label: t('nav.clubs', 'Clubs') },
-    { link: '/divisions', label: t('nav.divisions', 'Divisions') },
     { link: '/rules', label: t('nav.rules') },
+    { link: '/divisions', label: t('nav.divisions', 'Divisions') },
+    { link: '/categories', label: t('nav.categories') },
     { link: '/converter', label: t('nav.converter') },
     { link: '/about', label: t('nav.about') },
     { link: '/competition/user', label: t('nav.scoringDemo', 'Scoring Card (Demo)') },

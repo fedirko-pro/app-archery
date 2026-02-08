@@ -19,6 +19,7 @@ import {
 import React, { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { useNotification } from '../../contexts/error-feedback-context';
 import { apiService } from '../../services/api';
 
 export interface FileAttachment {
@@ -58,6 +59,7 @@ const FileAttachments: React.FC<FileAttachmentsProps> = ({
   maxSizeBytes = MAX_SIZE_BYTES,
 }) => {
   const { t } = useTranslation('common');
+  const { showSuccess } = useNotification();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
@@ -144,6 +146,12 @@ const FileAttachments: React.FC<FileAttachmentsProps> = ({
 
     if (uploadedFiles.length > 0) {
       onChange([...value, ...uploadedFiles]);
+      showSuccess(
+        t('pages.tournaments.attachmentsSaved', {
+          count: uploadedFiles.length,
+          defaultValue: '{{count}} file(s) uploaded successfully',
+        })
+      );
     }
 
     setUploading(false);

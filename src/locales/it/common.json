@@ -140,6 +140,8 @@
       "updateError": "Impossibile aggiornare il torneo",
       "editDialogTitle": "Modifica torneo",
       "createDialogTitle": "Crea torneo",
+      "bannerSaved": "Banner salvato con successo",
+      "attachmentsSaved": "{{count}} file caricato/i con successo",
       "form": {
         "title": "Titolo",
         "description": "Descrizione",
@@ -399,7 +401,8 @@
   },
   "clubs": {
     "clubLogo": "Logo del Club",
-    "logoSubheader": "Seleziona un'immagine, quindi trascina per riposizionare (PNG, JPG fino a 10MB)"
+    "logoSubheader": "Seleziona un'immagine, quindi trascina per riposizionare (PNG, JPG fino a 10MB)",
+    "logoSaved": "Logo del club salvato con successo"
   },
   "pwa": {
     "workingOffline": "Funzionamento offline",

@@ -160,6 +160,8 @@
       "updateError": "Не вдалося оновити турнір",
       "editDialogTitle": "Редагувати турнір",
       "createDialogTitle": "Створити турнір",
+      "bannerSaved": "Банер збережено",
+      "attachmentsSaved": "{{count}} файл(ів) завантажено",
       "form": {
         "title": "Назва",
         "description": "Опис",
@@ -421,7 +423,8 @@
   },
   "clubs": {
     "clubLogo": "Логотип клубу",
-    "logoSubheader": "Виберіть зображення, потім перетягніть для позиціонування (PNG, JPG до 10МБ)"
+    "logoSubheader": "Виберіть зображення, потім перетягніть для позиціонування (PNG, JPG до 10МБ)",
+    "logoSaved": "Логотип клубу збережено"
   },
   "pwa": {
     "workingOffline": "Працює офлайн",

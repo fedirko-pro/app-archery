@@ -139,6 +139,8 @@
       "updateError": "No se pudo actualizar el torneo",
       "editDialogTitle": "Editar torneo",
       "createDialogTitle": "Crear torneo",
+      "bannerSaved": "Banner guardado correctamente",
+      "attachmentsSaved": "{{count}} archivo(s) subido(s) correctamente",
       "form": {
         "title": "Título",
         "description": "Descripción",
@@ -386,6 +388,7 @@
   },
   "clubs": {
     "clubLogo": "Logo del Club",
+    "logoSaved": "Logo del club guardado correctamente",
     "logoSubheader": "Selecciona una imagen y luego arrastra para reposicionar (PNG, JPG hasta 10MB)"
   },
   "pwa": {

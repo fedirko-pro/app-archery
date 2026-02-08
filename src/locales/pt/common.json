@@ -140,6 +140,8 @@
       "updateError": "Falha ao atualizar torneio",
       "editDialogTitle": "Editar torneio",
       "createDialogTitle": "Criar torneio",
+      "bannerSaved": "Banner salvo com sucesso",
+      "attachmentsSaved": "{{count}} arquivo(s) enviado(s) com sucesso",
       "viewDetails": "Ver detalhes",
       "backToList": "Voltar aos torneios",
       "notFound": "Torneio não encontrado",
@@ -420,7 +422,8 @@
   },
   "clubs": {
     "clubLogo": "Logotipo do Clube",
-    "logoSubheader": "Selecione uma imagem e arraste para reposicionar (PNG, JPG até 10MB)"
+    "logoSubheader": "Selecione uma imagem e arraste para reposicionar (PNG, JPG até 10MB)",
+    "logoSaved": "Logotipo do clube salvo com sucesso"
   },
   "pwa": {
     "workingOffline": "Trabalhando offline",

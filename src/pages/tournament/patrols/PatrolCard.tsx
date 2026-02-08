@@ -1,5 +1,17 @@
 import { dropTargetForElements } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
-import { Alert, Box, Card, CardContent, Chip, Typography } from '@mui/material';
+import BalanceIcon from '@mui/icons-material/Balance';
+import DeleteIcon from '@mui/icons-material/Delete';
+import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
+import {
+  Alert,
+  Box,
+  Card,
+  CardContent,
+  Chip,
+  IconButton,
+  Tooltip,
+  Typography,
+} from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
 
 import MemberCard from './MemberCard';
@@ -15,6 +27,7 @@ interface PatrolCardProps {
     targetPatrolId: string,
   ) => void;
   onRoleChange: (patrolId: string, memberId: string, role: string) => void;
+  onDeleteAndRedistribute?: (patrolId: string) => void;
 }
 
 const PatrolCard: React.FC<PatrolCardProps> = ({
@@ -23,6 +36,7 @@ const PatrolCard: React.FC<PatrolCardProps> = ({
   warnings,
   onMemberDrop,
   onRoleChange,
+  onDeleteAndRedistribute,
 }) => {
   const dropZoneRef = useRef<HTMLDivElement>(null);
   const [isOver, setIsOver] = useState(false);
@@ -88,32 +102,40 @@ const PatrolCard: React.FC<PatrolCardProps> = ({
           <Typography variant="h6" component="div">
             PATROL {patrol.targetNumber}
           </Typography>
-          <Chip
-            label={`${patrol.members.length} members`}
-            size="small"
-            variant="outlined"
-          />
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+            <Chip
+              label={`${patrol.members.length} members`}
+              size="small"
+              variant="outlined"
+            />
+            {onDeleteAndRedistribute && (
+              <Tooltip title="Видалити">
+                <IconButton
+                  size="small"
+                  color="error"
+                  aria-label="Видалити патруль і перерозпреділити людей"
+                  onClick={() => onDeleteAndRedistribute(patrol.id)}
+                >
+                  <DeleteIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
+            )}
+          </Box>
         </Box>
 
         <Box sx={{ mb: 1.5, fontSize: '0.9rem' }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5 }}>
-            <Typography
-              variant="body2"
-              component="span"
-              sx={{ fontWeight: 600, mr: 1 }}
-            >
+          <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5, gap: 0.5 }}>
+            <WorkspacePremiumIcon sx={{ fontSize: 20, color: 'primary.main' }} />
+            <Typography variant="body2" component="span" sx={{ fontWeight: 600 }}>
               Leader:
             </Typography>
             <Typography variant="body2" component="span">
               {leader?.name || 'Not assigned'}
             </Typography>
           </Box>
-          <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
-            <Typography
-              variant="body2"
-              component="span"
-              sx={{ fontWeight: 600, mr: 1 }}
-            >
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+            <BalanceIcon sx={{ fontSize: 20, color: 'secondary.main' }} />
+            <Typography variant="body2" component="span" sx={{ fontWeight: 600 }}>
               Judges:
             </Typography>
             <Typography variant="body2" component="span">

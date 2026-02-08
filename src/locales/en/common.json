@@ -170,6 +170,8 @@
       "createDialogTitle": "Create Tournament",
       "banner": "Tournament Banner",
       "bannerSubheader": "Select an image, then drag to reposition (PNG, JPG up to 3MB)",
+      "bannerSaved": "Banner saved successfully",
+      "attachmentsSaved": "{{count}} file(s) uploaded successfully",
       "dragToReposition": "Select an image, then drag to reposition",
       "attachments": "Additional Attachments",
       "attachmentsSubheader": "Upload custom rules, images, or documents (PNG, JPG, PDF, DOC, DOCX up to {{maxSize}} each, max {{maxFiles}} files)",
@@ -448,7 +450,8 @@
   },
   "clubs": {
     "clubLogo": "Club Logo",
-    "logoSubheader": "Select an image, then drag to reposition (PNG, JPG up to 10MB)"
+    "logoSubheader": "Select an image, then drag to reposition (PNG, JPG up to 10MB)",
+    "logoSaved": "Club logo saved successfully"
   },
   "pwa": {
     "workingOffline": "Working offline",
