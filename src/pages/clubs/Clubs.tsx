@@ -149,6 +149,16 @@ const Clubs: React.FC = () => {
               <CardContent sx={{ flexGrow: 1 }}>
                 <Typography variant="h6" gutterBottom>
                   {club.name}
+                  {club.shortCode && (
+                    <Typography
+                      component="span"
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{ ml: 1, fontWeight: 500 }}
+                    >
+                      ({club.shortCode})
+                    </Typography>
+                  )}
                 </Typography>
                 {club.location && (
                   <Typography

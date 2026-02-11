@@ -236,6 +236,8 @@ export type UpdateRuleDto = Partial<CreateRuleDto>;
 export interface ClubDto {
   id?: string;
   name: string;
+  /** Short code for score cards etc., e.g. "KSP" for "Kyiv Sport Club" */
+  shortCode?: string;
   description?: string;
   location?: string;
   clubLogo?: string; // URL to club logo

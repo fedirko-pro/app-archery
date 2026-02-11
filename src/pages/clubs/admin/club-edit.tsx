@@ -23,6 +23,7 @@ const ClubEdit: React.FC = () => {
   const [form, setForm] = useState<ClubDto>({
     id: id === 'create' ? undefined : id,
     name: '',
+    shortCode: '',
     description: '',
     location: '',
     clubLogo: '',
@@ -91,6 +92,15 @@ const ClubEdit: React.FC = () => {
               onChange={(e) => setForm({ ...form, name: e.target.value })}
               required
               fullWidth
+            />
+
+            <TextField
+              label="Short code"
+              value={form.shortCode || ''}
+              onChange={(e) => setForm({ ...form, shortCode: e.target.value })}
+              placeholder="e.g. KSP for Kyiv Sport Club"
+              fullWidth
+              helperText="Used on score cards and lists (e.g. 3–5 letters)"
             />
 
             <TextField
