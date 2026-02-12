@@ -51,7 +51,18 @@
     "sending": "Sending...",
     "deleteUser": "Delete User",
     "deleteUserConfirm": "Are you sure you want to delete this user? This cannot be undone.",
-    "deleteUserError": "Failed to delete user"
+    "deleteUserError": "Failed to delete user",
+    "applyUser": {
+      "title": "Apply User to Tournament",
+      "tournament": "Tournament",
+      "selectUser": "Select User",
+      "selectUserRequired": "Please select a user",
+      "divisionRequired": "Please select a division",
+      "categoryRequired": "Please select a bow category",
+      "submit": "Submit Application",
+      "submitting": "Submitting...",
+      "submitError": "Failed to submit application"
+    }
   },
   "achievements": {
     "title": "My Achievements",
@@ -194,6 +205,9 @@
       "linkCopied": "Link copied to clipboard!",
       "copyLink": "Copy this link:",
       "copyFailed": "Failed to copy link to clipboard",
+      "targetCount": "Number of Targets",
+      "checkApplications": "Check Applications",
+      "applyOtherUser": "Apply Other User",
       "start": "Start",
       "end": "End",
       "location": "Location",
@@ -456,7 +470,8 @@
     "dragToReposition": "Select an image, then drag to reposition",
     "zoom": "Zoom",
     "avatarSubheader": "Select an image, then drag to reposition (PNG, JPG up to 3MB)",
-    "userIdRequired": "User ID is required for avatar upload"
+    "userIdRequired": "User ID is required for avatar upload",
+    "profileSaved": "Profile saved successfully!"
   },
   "role": { "user": "User", "admin": "Admin" },
   "notFound": {

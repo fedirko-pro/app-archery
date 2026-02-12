@@ -41,7 +41,9 @@
     "permApplyOtherUsers": "Iscrivere altri utenti ai tornei",
     "permPatrolsPdf": "Gestisci pattuglie e genera PDF",
     "permReferenceData": "Gestisci categorie, club, divisioni, regole",
-    "permAccessControl": "Controllo accessi (cambia ruoli)"
+    "permAccessControl": "Controllo accessi (cambia ruoli)",
+    "descriptionEdit": "Gestisci i permessi per ruolo. Solo l'Admin generale può modificare. Gli altri admin possono solo visualizzare.",
+    "descriptionView": "Visualizza i permessi per ruolo. Solo l'Admin generale può modificare."
   },
   "admin": {
     "editProfile": "Modifica profilo",
@@ -49,7 +51,18 @@
     "sending": "Invio in corso...",
     "deleteUser": "Elimina utente",
     "deleteUserConfirm": "Sei sicuro di voler eliminare questo utente? Questa azione non può essere annullata.",
-    "deleteUserError": "Impossibile eliminare l'utente"
+    "deleteUserError": "Impossibile eliminare l'utente",
+    "applyUser": {
+      "title": "Iscrivi utente al torneo",
+      "tournament": "Torneo",
+      "selectUser": "Seleziona utente",
+      "selectUserRequired": "Seleziona un utente",
+      "divisionRequired": "Seleziona una divisione",
+      "categoryRequired": "Seleziona una categoria di arco",
+      "submit": "Invia domanda",
+      "submitting": "Invio in corso...",
+      "submitError": "Impossibile inviare la domanda"
+    }
   },
   "achievements": {
     "title": "I Miei Traguardi",
@@ -99,6 +112,7 @@
       "title": "Regole",
       "openOfficialPage": "Apri pagina ufficiale",
       "downloadPdf": "Scarica PDF",
+      "downloadFailed": "Impossibile caricare il PDF. Il file potrebbe non essere disponibile.",
       "createRule": "Crea Regola",
       "editRule": "Modifica Regola",
       "ruleCode": "Codice Regola",
@@ -164,6 +178,16 @@
       "delete": "Elimina",
       "apply": "Iscriviti",
       "viewApplications": "Vedi domande",
+      "viewDetails": "Dettagli",
+      "backToList": "Torna ai tornei",
+      "notFound": "Torneo non trovato",
+      "share": "Condividi",
+      "linkCopied": "Link copiato negli appunti!",
+      "copyLink": "Copia questo link:",
+      "copyFailed": "Impossibile copiare il link negli appunti",
+      "targetCount": "Numero di bersagli",
+      "checkApplications": "Controlla domande",
+      "applyOtherUser": "Iscrivi altro utente",
       "start": "Inizio",
       "end": "Fine",
       "location": "Luogo",
@@ -370,7 +394,9 @@
     "imageTooLarge": "Immagine troppo grande (max 3MB).",
     "dragToReposition": "Seleziona un'immagine e trascina per riposizionare",
     "zoom": "Zoom",
-    "avatarSubheader": "Seleziona un'immagine, quindi trascinala per riposizionarla (PNG, JPG fino a 3MB)"
+    "avatarSubheader": "Seleziona un'immagine, quindi trascinala per riposizionarla (PNG, JPG fino a 3MB)",
+    "userIdRequired": "L'ID utente è richiesto per il caricamento dell'avatar",
+    "profileSaved": "Profilo salvato con successo!"
   },
   "role": { "user": "Utente", "admin": "Admin" },
   "notFound": {
@@ -417,7 +443,7 @@
       "desc": "Conversioni di distanza del campo"
     }
   },
-  "common": { "or": "oppure", "cancel": "Annulla", "update": "Aggiorna", "create": "Crea", "back": "Indietro", "save": "Salva", "saving": "Salvataggio...", "delete": "Elimina", "deleting": "Eliminazione..." },
+  "common": { "or": "oppure", "cancel": "Annulla", "update": "Aggiorna", "create": "Crea", "back": "Indietro", "download": "Scarica", "backToList": "Torna all'elenco", "save": "Salva", "saving": "Salvataggio...", "delete": "Elimina", "deleting": "Eliminazione..." },
   "auth": {
     "logout": "Esci",
     "signIn": "Accedi",

@@ -41,7 +41,9 @@
     "permApplyOtherUsers": "Inscrever outros usuários em torneios",
     "permPatrolsPdf": "Gerenciar patrulhas e gerar PDFs",
     "permReferenceData": "Gerenciar categorias, clubes, divisões, regras",
-    "permAccessControl": "Controle de acesso (alterar funções)"
+    "permAccessControl": "Controle de acesso (alterar funções)",
+    "descriptionEdit": "Gerencie permissões por função. Apenas o Administrador geral pode editar. Outros administradores podem apenas visualizar.",
+    "descriptionView": "Visualizar permissões por função. Apenas o Administrador geral pode editar."
   },
   "admin": {
     "editProfile": "Editar Perfil",
@@ -49,7 +51,18 @@
     "sending": "Enviando...",
     "deleteUser": "Excluir Usuário",
     "deleteUserConfirm": "Tem certeza que deseja excluir este usuário? Esta ação não pode ser desfeita.",
-    "deleteUserError": "Falha ao excluir usuário"
+    "deleteUserError": "Falha ao excluir usuário",
+    "applyUser": {
+      "title": "Inscrever usuário no torneio",
+      "tournament": "Torneio",
+      "selectUser": "Selecionar usuário",
+      "selectUserRequired": "Por favor selecione um usuário",
+      "divisionRequired": "Por favor selecione uma divisão",
+      "categoryRequired": "Por favor selecione uma categoria de arco",
+      "submit": "Enviar inscrição",
+      "submitting": "Enviando...",
+      "submitError": "Falha ao enviar inscrição"
+    }
   },
   "achievements": {
     "title": "Minhas Conquistas",
@@ -99,6 +112,7 @@
       "title": "Regras",
       "openOfficialPage": "Abrir página oficial",
       "downloadPdf": "Baixar PDF",
+      "downloadFailed": "Não foi possível carregar o PDF. O arquivo pode não estar disponível.",
       "createRule": "Criar Regra",
       "editRule": "Editar Regra",
       "ruleCode": "Código da Regra",
@@ -185,6 +199,10 @@
       "share": "Compartilhar",
       "linkCopied": "Link copiado para a área de transferência!",
       "copyLink": "Copie este link:",
+      "copyFailed": "Falha ao copiar link para a área de transferência",
+      "targetCount": "Número de alvos",
+      "checkApplications": "Verificar inscrições",
+      "applyOtherUser": "Inscrever outro usuário",
       "banner": "Banner do torneio",
       "bannerSubheader": "Selecione uma imagem e arraste para reposicionar (PNG, JPG até 3MB)",
       "dragToReposition": "Selecione uma imagem e arraste para reposicionar",
@@ -391,7 +409,9 @@
     "imageTooLarge": "Imagem muito grande (máx. 3MB).",
     "dragToReposition": "Selecione uma imagem e arraste para reposicionar",
     "zoom": "Zoom",
-    "avatarSubheader": "Selecione uma imagem e arraste para reposicionar (PNG, JPG até 3MB)"
+    "avatarSubheader": "Selecione uma imagem e arraste para reposicionar (PNG, JPG até 3MB)",
+    "userIdRequired": "ID do usuário é necessário para enviar avatar",
+    "profileSaved": "Perfil salvo com sucesso!"
   },
   "role": { "user": "Usuário", "admin": "Admin" },
   "notFound": {
@@ -438,7 +458,7 @@
       "desc": "Conversões de distância de tiro"
     }
   },
-  "common": { "or": "ou", "cancel": "Cancelar", "update": "Atualizar", "create": "Criar", "back": "Voltar", "save": "Salvar", "saving": "Salvando...", "delete": "Excluir", "deleting": "Excluindo..." },
+  "common": { "or": "ou", "cancel": "Cancelar", "update": "Atualizar", "create": "Criar", "back": "Voltar", "download": "Baixar", "backToList": "Voltar à lista", "save": "Salvar", "saving": "Salvando...", "delete": "Excluir", "deleting": "Excluindo..." },
   "auth": {
     "logout": "Sair",
     "signIn": "Entrar",
