@@ -1,3 +1,4 @@
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import RefreshIcon from '@mui/icons-material/Refresh';
@@ -12,10 +13,11 @@ import {
   Typography,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 import env from '../../../config/env';
 import apiService from '../../../services/api';
+import { formatDate } from '../../../utils/date-utils';
 import PatrolCard from './PatrolCard';
 import StatsPanel from './StatsPanel';
 import type { Participant, Patrol, PatrolStats, Warning } from './types';
@@ -27,7 +29,10 @@ import { recalculateWarnings } from './warnings';
  * Allows drag-and-drop of participants between patrols.
  */
 const PatrolsPage: React.FC = () => {
-  const { tournamentId } = useParams<{ tournamentId: string }>();
+  const { tournamentId, lang } = useParams<{
+    tournamentId: string;
+    lang?: string;
+  }>();
 
   const [patrols, setPatrols] = useState<Patrol[]>([]);
   const [participants, setParticipants] = useState<Map<string, Participant>>(
@@ -38,6 +43,12 @@ const PatrolsPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [stats, setStats] = useState<PatrolStats | null>(null);
+  const [tournamentInfo, setTournamentInfo] = useState<{
+    title: string;
+    address?: string;
+    startDate?: string;
+    endDate?: string;
+  } | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [snackbar, setSnackbar] = useState<{
     open: boolean;
@@ -67,7 +78,17 @@ const PatrolsPage: React.FC = () => {
       
       // Transform backend data to component format
       const { patrols: backendPatrols, stats: backendStats, isNewlyGenerated } = response;
-      
+
+      if (tournamentId) {
+        const tournament = await apiService.getTournament(tournamentId);
+        setTournamentInfo({
+          title: tournament.title,
+          address: tournament.address,
+          startDate: tournament.startDate,
+          endDate: tournament.endDate,
+        });
+      }
+
       // Build participants map from patrol members
       const participantsMap = new Map<string, Participant>();
       const transformedPatrols: Patrol[] = [];
@@ -446,10 +467,10 @@ const PatrolsPage: React.FC = () => {
     try {
       // Delete existing and generate new patrols
       const response = await apiService.regeneratePatrols(tournamentId!);
-      
+
       // Transform backend data to component format (same as loadPatrols)
       const { patrols: backendPatrols, stats: backendStats } = response;
-      
+
       const participantsMap = new Map<string, Participant>();
       const transformedPatrols: Patrol[] = [];
       
@@ -542,6 +563,21 @@ const PatrolsPage: React.FC = () => {
     );
   }
 
+  let locationAndDate: string | false = false;
+  if (tournamentInfo && (tournamentInfo.address || tournamentInfo.startDate)) {
+    let dateStr: string | null = null;
+    if (tournamentInfo.startDate) {
+      dateStr =
+        tournamentInfo.endDate &&
+        tournamentInfo.endDate !== tournamentInfo.startDate
+          ? `${formatDate(tournamentInfo.startDate)} – ${formatDate(tournamentInfo.endDate)}`
+          : formatDate(tournamentInfo.startDate);
+    }
+    locationAndDate = [tournamentInfo.address, dateStr]
+      .filter(Boolean)
+      .join(' · ');
+  }
+
   return (
     <Box sx={{ p: 3 }}>
       <Box
@@ -554,7 +590,39 @@ const PatrolsPage: React.FC = () => {
           gap: 2,
         }}
       >
-        <Typography variant="h4">Patrol Management</Typography>
+        <Box>
+          <Typography variant="h4">Patrol Management</Typography>
+          {tournamentInfo && (
+            <>
+              <Typography
+                variant="h5"
+                component={Link}
+                to={lang ? `/${lang}/tournaments/${tournamentId}` : `../`}
+                sx={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 0.5,
+                  textDecoration: 'none',
+                  color: 'text.secondary',
+                  '&:hover': { textDecoration: 'underline', color: 'text.secondary' },
+                }}
+              >
+                <ArrowBackIcon sx={{ fontSize: 'inherit' }} />
+                {tournamentInfo.title}
+              </Typography>
+              {locationAndDate && (
+                <Typography
+                  variant="h6"
+                  color="text.secondary"
+                  component="p"
+                  sx={{ fontWeight: 400, mt: 0.5 }}
+                >
+                  {locationAndDate}
+                </Typography>
+              )}
+            </>
+          )}
+        </Box>
         <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
           <Button
             variant="contained"
