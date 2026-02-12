@@ -5,9 +5,9 @@ import { ADMIN_CAPABLE_ROLES } from '../../config/roles';
 
 export { ROLES_CAN_ACCESS_CONTROL } from '../../config/roles';
 import RouteLoadingSpinner from '../../components/RouteLoadingSpinner';
+import type { Role } from '../../config/roles';
 import { useAuth } from '../../contexts/auth-context';
 import { getDefaultAppLang } from '../../utils/i18n-lang';
-import type { Role } from '../../config/roles';
 
 interface ProtectedAdminRouteProps {
   children: React.ReactNode;

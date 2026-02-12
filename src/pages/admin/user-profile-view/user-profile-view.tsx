@@ -5,8 +5,9 @@ import { useTranslation } from 'react-i18next';
 import { useParams, useNavigate } from 'react-router-dom';
 
 import { canDeleteUser } from '../../../config/roles';
-import type { User } from '../../../contexts/types';
 import { useAuth } from '../../../contexts/auth-context';
+import { useNotification } from '../../../contexts/error-feedback-context';
+import type { User } from '../../../contexts/types';
 import apiService from '../../../services/api';
 import { getCurrentI18nLang } from '../../../utils/i18n-lang';
 import ProfileCard from '../../profile/profile-card/profile-card';
@@ -24,6 +25,7 @@ const UserProfileView: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { t } = useTranslation('common');
+  const { showSuccess } = useNotification();
 
   const [profileData, setProfileData] = useState<ProfileData>({
     firstName: '',
@@ -109,9 +111,10 @@ const UserProfileView: React.FC = () => {
       );
       setUser(updatedUser);
       setIsEditing(false);
-    } catch (error) {
+      showSuccess(t('profile.profileSaved', 'Profile saved successfully!'));
+    } catch (err) {
       setError('Failed to update user. Please try again.');
-      console.error('Error updating user:', error);
+      console.error('Error updating user:', err);
     } finally {
       setIsSaving(false);
     }

@@ -63,6 +63,10 @@ export function canManageApplicationsAndPdfs(role: string): boolean {
   return ROLES_CAN_DELETE_AND_MANAGE_APPS.includes(role as Role);
 }
 
+export function canApplyOtherUsers(role: string): boolean {
+  return ADMIN_CAPABLE_ROLES.includes(role as Role);
+}
+
 export function canManageReferenceData(role: string): boolean {
   return ROLES_CAN_MANAGE_REFERENCE_DATA.includes(role as Role);
 }

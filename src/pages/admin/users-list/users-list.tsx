@@ -1,4 +1,4 @@
-import { Edit, Email, Visibility, ArrowUpward, ArrowDownward } from '@mui/icons-material';
+import { Edit, Email, Visibility, ArrowUpward, ArrowDownward, PersonAdd } from '@mui/icons-material';
 import {
   Box,
   Table,
@@ -15,10 +15,12 @@ import {
   Tooltip,
   Avatar,
   Chip,
+  Button,
 } from '@mui/material';
 import React, { useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import CreateUserDialog from '../../../components/dialogs/create-user-dialog';
 import { ROLE_LABEL_KEYS } from '../../../config/roles';
 import type { User } from '../../../contexts/types';
 import apiService from '../../../services/api';
@@ -41,6 +43,7 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
     field: string | null;
     direction: 'asc' | 'desc';
   }>({ field: null, direction: 'asc' });
+  const [createDialogOpen, setCreateDialogOpen] = useState(false);
 
   useEffect(() => {
     fetchUsers();
@@ -82,6 +85,26 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
 
   const handleViewProfile = (userId: string) => {
     onViewProfile(userId);
+  };
+
+  const handleCreateUser = async (userData: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    comment?: string;
+  }) => {
+    try {
+      setError(null);
+      await apiService.adminCreateUser(userData);
+      setSuccess(`User ${userData.firstName} ${userData.lastName} created successfully. They will receive an invitation email.`);
+      setTimeout(() => setSuccess(null), 5000);
+      setCreateDialogOpen(false);
+      // Refresh the users list
+      fetchUsers();
+    } catch (err: any) {
+      setError(err.message || 'Failed to create user');
+      throw err; // Re-throw to let dialog know about the error
+    }
   };
 
   const handleSort = (field: string) => {
@@ -145,9 +168,18 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
 
   return (
     <Box>
-      <Typography variant="h4" gutterBottom>
-        Users Management
-      </Typography>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+        <Typography variant="h4">
+          Users Management
+        </Typography>
+        <Button
+          variant="contained"
+          startIcon={<PersonAdd />}
+          onClick={() => setCreateDialogOpen(true)}
+        >
+          Create User
+        </Button>
+      </Box>
 
       {error && (
         <Alert severity="error" sx={{ mb: 2 }} onClose={() => setError(null)}>
@@ -373,6 +405,12 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
           </TableBody>
         </Table>
       </TableContainer>
+
+      <CreateUserDialog
+        open={createDialogOpen}
+        onClose={() => setCreateDialogOpen(false)}
+        onSubmit={handleCreateUser}
+      />
     </Box>
   );
 };

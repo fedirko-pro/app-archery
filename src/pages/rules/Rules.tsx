@@ -23,8 +23,8 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useParams } from 'react-router-dom';
 
-import { useAuth } from '../../contexts/auth-context';
 import { env } from '../../config/env';
+import { useAuth } from '../../contexts/auth-context';
 import apiService from '../../services/api';
 import type { CreateRuleDto, RuleDto, UpdateRuleDto } from '../../services/types';
 import { normalizeAppLang, pickLocalizedDescription } from '../../utils/i18n-lang';

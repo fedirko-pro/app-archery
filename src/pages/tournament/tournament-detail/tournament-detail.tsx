@@ -11,6 +11,7 @@ import {
   GpsFixed,
   Image,
   LocationOn,
+  PersonAdd,
   PictureAsPdf,
   Send,
   Share,
@@ -37,8 +38,9 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 
+import AdminApplyUserDialog from '../../../components/dialogs/admin-apply-user-dialog';
 import { FileAttachment } from '../../../components/FileAttachments/FileAttachments';
-import { canEditTournament } from '../../../config/roles';
+import { canApplyOtherUsers, canEditTournament } from '../../../config/roles';
 import { useAuth } from '../../../contexts/auth-context';
 import { useNotification } from '../../../contexts/error-feedback-context';
 import defaultBanner from '../../../img/default_turnament_bg.png';
@@ -55,6 +57,7 @@ const TournamentDetail: React.FC = () => {
   const [tournament, setTournament] = useState<TournamentDto | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [applyUserDialogOpen, setApplyUserDialogOpen] = useState(false);
 
   useEffect(() => {
     const fetchTournament = async () => {
@@ -340,9 +343,40 @@ const TournamentDetail: React.FC = () => {
                   </Button>
                 </>
               )}
+            {user &&
+              canApplyOtherUsers(user.role) &&
+              !isPastTournament(tournament) && (
+                <Button
+                  variant="outlined"
+                  size="large"
+                  startIcon={<PersonAdd />}
+                  onClick={() => setApplyUserDialogOpen(true)}
+                >
+                  {t('pages.tournaments.applyOtherUser', 'Apply Other User')}
+                </Button>
+              )}
           </Box>
         </CardContent>
       </Card>
+
+      {/* Admin Apply User Dialog */}
+      {tournament && (
+        <AdminApplyUserDialog
+          open={applyUserDialogOpen}
+          tournamentId={tournament.id}
+          tournamentTitle={tournament.title}
+          tournamentRuleCode={tournament.ruleCode}
+          onClose={() => setApplyUserDialogOpen(false)}
+          onSuccess={() => {
+            showSuccess(
+              t(
+                'pages.tournaments.applicationSubmitted',
+                'Application submitted successfully!',
+              ),
+            );
+          }}
+        />
+      )}
     </Box>
   );
 };

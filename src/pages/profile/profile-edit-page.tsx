@@ -1,6 +1,8 @@
 import { Visibility, VisibilityOff, Security, Lock } from '@mui/icons-material';
-import { Box, CircularProgress, Alert } from '@mui/material';
 import {
+  Box,
+  CircularProgress,
+  Alert,
   TextField,
   Button,
   Card,
@@ -16,6 +18,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { useAuth } from '../../contexts/auth-context';
+import { useNotification } from '../../contexts/error-feedback-context';
 import apiService from '../../services/api';
 import { getAppLanguageFromUser } from '../../utils/i18n-lang';
 import ProfileEditForm from './profile-edit-form/profile-edit-form';
@@ -34,6 +37,7 @@ const ProfileEditPage: React.FC = () => {
   const [profileData, setProfileData] = useState<ProfileData | null>(null);
   const { lang } = useParams();
   const { t } = useTranslation('common');
+  const { showSuccess } = useNotification();
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -110,6 +114,7 @@ const ProfileEditPage: React.FC = () => {
     try {
       const updatedUser = await apiService.updateProfile(profileData);
       updateUser(updatedUser);
+      showSuccess(t('profile.profileSaved', 'Profile saved successfully!'));
       navigate(`/${lang}/profile`);
     } catch (err: unknown) {
       const errorMessage =
@@ -427,6 +432,7 @@ const ProfileEditPage: React.FC = () => {
           </CardContent>
         </Card>
       </div>
+
     </section>
   );
 };

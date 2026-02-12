@@ -38,6 +38,7 @@
     "permDeleteUser": "Видаляти користувачів",
     "permViewApplications": "Переглядати заявки на турніри",
     "permEditApplications": "Редагувати / затверджувати / відхиляти заявки",
+    "permApplyOtherUsers": "Реєструвати інших користувачів на турніри",
     "permPatrolsPdf": "Керувати патрулями та генерувати PDF",
     "permReferenceData": "Керувати категоріями, клубами, дивізіонами, правилами",
     "permAccessControl": "Контроль доступу (змінювати ролі)"

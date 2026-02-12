@@ -3,6 +3,11 @@ import './Content.scss';
 import { useEffect } from 'react';
 import { Navigate, Outlet, Route, Routes, useParams } from 'react-router-dom';
 
+import {
+  ADMIN_CAPABLE_ROLES,
+  ROLES_CAN_DELETE_AND_MANAGE_APPS,
+  ROLES_CAN_MANAGE_REFERENCE_DATA,
+} from '../../config/roles';
 import i18n from '../../i18n';
 import About from '../../pages/About';
 import Achievements from '../../pages/achievements/achievements';
@@ -40,11 +45,6 @@ import TournamentEdit from '../../pages/tournament/tournament-edit/tournament-ed
 import TournamentList from '../../pages/tournament/tournament-list/tournament-list';
 import UserApplications from '../../pages/tournament/user-applications/user-applications';
 import Training from '../../pages/Trainings';
-import {
-  ADMIN_CAPABLE_ROLES,
-  ROLES_CAN_DELETE_AND_MANAGE_APPS,
-  ROLES_CAN_MANAGE_REFERENCE_DATA,
-} from '../../config/roles';
 import { isRtlLanguage, normalizeAppLang, toI18nLang, getDefaultAppLang } from '../../utils/i18n-lang';
 
 function LangLayout() {

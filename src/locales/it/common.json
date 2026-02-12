@@ -38,6 +38,7 @@
     "permDeleteUser": "Elimina utenti",
     "permViewApplications": "Visualizza domande di partecipazione",
     "permEditApplications": "Modifica / Approva / Rifiuta domande",
+    "permApplyOtherUsers": "Iscrivere altri utenti ai tornei",
     "permPatrolsPdf": "Gestisci pattuglie e genera PDF",
     "permReferenceData": "Gestisci categorie, club, divisioni, regole",
     "permAccessControl": "Controllo accessi (cambia ruoli)"

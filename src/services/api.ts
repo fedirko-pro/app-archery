@@ -241,6 +241,22 @@ class ApiService {
     );
   }
 
+  /**
+   * Create a new user as administrator.
+   * The user is created without a password and must set one via password reset.
+   */
+  async adminCreateUser(userData: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    comment?: string;
+  }): Promise<User> {
+    return await this.request<User>('/users/admin/create', {
+      method: 'POST',
+      body: JSON.stringify(userData),
+    });
+  }
+
   /** Role-permissions matrix: each row has permissionKey and roles that have it. */
   async getRolePermissions(): Promise<
     Array<{ permissionKey: string; roles: string[] }>
@@ -441,6 +457,25 @@ class ApiService {
       {
         method: 'POST',
         body: JSON.stringify(applicationData),
+      },
+    );
+  }
+
+  /**
+   * Create a tournament application on behalf of another user (admin only).
+   */
+  async adminCreateTournamentApplication(data: {
+    tournamentId: string;
+    userId: string;
+    category?: string;
+    division?: string;
+    notes?: string;
+  }): Promise<TournamentApplicationDto> {
+    return await this.request<TournamentApplicationDto>(
+      '/tournament-applications/admin',
+      {
+        method: 'POST',
+        body: JSON.stringify(data),
       },
     );
   }

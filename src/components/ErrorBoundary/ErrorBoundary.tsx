@@ -1,5 +1,6 @@
 import { Box, Button, Typography } from '@mui/material';
 import { Component, type ErrorInfo, type ReactNode } from 'react';
+
 import i18n from '../../i18n';
 
 interface ErrorBoundaryProps {

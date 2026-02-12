@@ -6,8 +6,9 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 import { canChangeRole } from '../../../config/roles';
-import type { User } from '../../../contexts/types';
 import { useAuth } from '../../../contexts/auth-context';
+import { useNotification } from '../../../contexts/error-feedback-context';
+import type { User } from '../../../contexts/types';
 import apiService from '../../../services/api';
 import { getAppLanguageFromUser } from '../../../utils/i18n-lang';
 import ProfileEditForm from '../../profile/profile-edit-form/profile-edit-form';
@@ -19,6 +20,7 @@ const UserEdit: React.FC = () => {
   const { userId, lang } = useParams<{ userId: string; lang: string }>();
   const navigate = useNavigate();
   const { user: currentUser } = useAuth();
+  const { showSuccess } = useNotification();
   const [user, setUser] = useState<User | null>(null);
   const [formData, setFormData] = useState<ProfileData>({
     firstName: '',
@@ -35,7 +37,6 @@ const UserEdit: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
 
   const fetchUser = useCallback(async () => {
     if (!userId) return;
@@ -127,11 +128,10 @@ const UserEdit: React.FC = () => {
 
     setSaving(true);
     setError(null);
-    setSuccess(null);
 
     try {
       const updatedUser = await apiService.adminUpdateUser(user.id, formData);
-      setSuccess('User updated successfully!');
+      showSuccess('User updated successfully!');
       setUser(updatedUser);
 
       // Navigate after showing success message
@@ -204,15 +204,6 @@ const UserEdit: React.FC = () => {
         {error && (
           <Alert severity="error" sx={{ mb: 2 }} onClose={() => setError(null)}>
             {error}
-          </Alert>
-        )}
-        {success && (
-          <Alert
-            severity="success"
-            sx={{ mb: 2 }}
-            onClose={() => setSuccess(null)}
-          >
-            {success}
           </Alert>
         )}
         <ProfileEditForm
