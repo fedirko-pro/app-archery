@@ -5,7 +5,9 @@ import { Box, Button, Alert, CircularProgress } from '@mui/material';
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
+import { canChangeRole } from '../../../config/roles';
 import type { User } from '../../../contexts/types';
+import { useAuth } from '../../../contexts/auth-context';
 import apiService from '../../../services/api';
 import { getAppLanguageFromUser } from '../../../utils/i18n-lang';
 import ProfileEditForm from '../../profile/profile-edit-form/profile-edit-form';
@@ -16,6 +18,7 @@ const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const UserEdit: React.FC = () => {
   const { userId, lang } = useParams<{ userId: string; lang: string }>();
   const navigate = useNavigate();
+  const { user: currentUser } = useAuth();
   const [user, setUser] = useState<User | null>(null);
   const [formData, setFormData] = useState<ProfileData>({
     firstName: '',
@@ -216,6 +219,7 @@ const UserEdit: React.FC = () => {
           profileData={formData}
           isSaving={saving}
           isAdminView={true}
+          canChangeRole={canChangeRole(currentUser?.role ?? '')}
           onChange={handleChange}
           onCategoriesChange={handleCategoriesChange}
           onPictureChange={handlePictureChange}

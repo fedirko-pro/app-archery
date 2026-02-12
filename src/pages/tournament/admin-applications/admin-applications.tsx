@@ -31,6 +31,8 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 
+import { canManageApplicationsAndPdfs } from '../../../config/roles';
+import { useAuth } from '../../../contexts/auth-context';
 import userIcon from '../../../img/icons/user.svg';
 import apiService from '../../../services/api';
 import type {
@@ -44,7 +46,9 @@ import { formatDate, getApplicationDeadline } from '../../../utils/date-utils';
 const AdminApplications: React.FC = () => {
   const { t } = useTranslation('common');
   const navigate = useNavigate();
+  const { user } = useAuth();
   const { tournamentId, lang } = useParams<{ tournamentId?: string; lang?: string }>();
+  const canEditApplications = canManageApplicationsAndPdfs(user?.role ?? '');
   const [applications, setApplications] = useState<
     TournamentApplicationDto[]
   >([]);
@@ -352,7 +356,7 @@ const AdminApplications: React.FC = () => {
         <Typography variant="h4">
           {t('pages.adminApplications.title')}
         </Typography>
-        {selectedTournament && (
+        {selectedTournament && canEditApplications && (
           <Button
             variant="contained"
             startIcon={<Groups />}
@@ -360,7 +364,7 @@ const AdminApplications: React.FC = () => {
               navigate(`/${lang}/tournaments/${selectedTournament}/patrols`)
             }
           >
-            Manage Patrols
+            {t('pages.adminApplications.managePatrols', 'Manage Patrols')}
           </Button>
         )}
       </Box>
@@ -680,7 +684,7 @@ const AdminApplications: React.FC = () => {
                       >
                         {t('pages.adminApplications.actions.view')}
                       </Button>
-                      {application.status === 'pending' && (
+                      {canEditApplications && application.status === 'pending' && (
                         <>
                           <Button
                             size="small"
@@ -773,43 +777,47 @@ const AdminApplications: React.FC = () => {
                     {statusDialog.application.notes || t('pages.adminApplications.dialog.noNotes')}
                   </Typography>
                 </Box>
-                <Box>
-                  <FormControl fullWidth>
-                    <InputLabel>{t('pages.adminApplications.dialog.statusLabel')}</InputLabel>
-                    <Select
-                      value={statusDialog.newStatus}
-                      label={t('pages.adminApplications.dialog.statusLabel')}
-                      onChange={(e) =>
-                        setStatusDialog((prev) => ({
-                          ...prev,
-                          newStatus: e.target.value,
-                        }))
-                      }
-                    >
-                      <MenuItem value="pending">{t('pages.adminApplications.status.pending')}</MenuItem>
-                      <MenuItem value="approved">{t('pages.adminApplications.status.approved')}</MenuItem>
-                      <MenuItem value="rejected">{t('pages.adminApplications.status.rejected')}</MenuItem>
-                      <MenuItem value="withdrawn">{t('pages.adminApplications.status.withdrawn')}</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Box>
-                {statusDialog.newStatus === 'rejected' && (
-                  <Box>
-                    <TextField
-                      fullWidth
-                      label={t('pages.adminApplications.dialog.rejectionReason')}
-                      multiline
-                      rows={3}
-                      value={statusDialog.rejectionReason}
-                      onChange={(e) =>
-                        setStatusDialog((prev) => ({
-                          ...prev,
-                          rejectionReason: e.target.value,
-                        }))
-                      }
-                      placeholder={t('pages.adminApplications.dialog.rejectionReasonPlaceholder')}
-                    />
-                  </Box>
+                {canEditApplications && (
+                  <>
+                    <Box>
+                      <FormControl fullWidth>
+                        <InputLabel>{t('pages.adminApplications.dialog.statusLabel')}</InputLabel>
+                        <Select
+                          value={statusDialog.newStatus}
+                          label={t('pages.adminApplications.dialog.statusLabel')}
+                          onChange={(e) =>
+                            setStatusDialog((prev) => ({
+                              ...prev,
+                              newStatus: e.target.value,
+                            }))
+                          }
+                        >
+                          <MenuItem value="pending">{t('pages.adminApplications.status.pending')}</MenuItem>
+                          <MenuItem value="approved">{t('pages.adminApplications.status.approved')}</MenuItem>
+                          <MenuItem value="rejected">{t('pages.adminApplications.status.rejected')}</MenuItem>
+                          <MenuItem value="withdrawn">{t('pages.adminApplications.status.withdrawn')}</MenuItem>
+                        </Select>
+                      </FormControl>
+                    </Box>
+                    {statusDialog.newStatus === 'rejected' && (
+                      <Box>
+                        <TextField
+                          fullWidth
+                          label={t('pages.adminApplications.dialog.rejectionReason')}
+                          multiline
+                          rows={3}
+                          value={statusDialog.rejectionReason}
+                          onChange={(e) =>
+                            setStatusDialog((prev) => ({
+                              ...prev,
+                              rejectionReason: e.target.value,
+                            }))
+                          }
+                          placeholder={t('pages.adminApplications.dialog.rejectionReasonPlaceholder')}
+                        />
+                      </Box>
+                    )}
+                  </>
                 )}
               </Box>
             </Box>
@@ -828,9 +836,11 @@ const AdminApplications: React.FC = () => {
           >
             {t('pages.adminApplications.dialog.cancel')}
           </Button>
-          <Button onClick={handleStatusUpdate} variant="contained">
-            {t('pages.adminApplications.dialog.updateStatus')}
-          </Button>
+          {canEditApplications && (
+            <Button onClick={handleStatusUpdate} variant="contained">
+              {t('pages.adminApplications.dialog.updateStatus')}
+            </Button>
+          )}
         </DialogActions>
       </Dialog>
 

@@ -38,6 +38,7 @@ import { useTranslation } from 'react-i18next';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 
 import { FileAttachment } from '../../../components/FileAttachments/FileAttachments';
+import { canEditTournament } from '../../../config/roles';
 import { useAuth } from '../../../contexts/auth-context';
 import { useNotification } from '../../../contexts/error-feedback-context';
 import defaultBanner from '../../../img/default_turnament_bg.png';
@@ -312,28 +313,33 @@ const TournamentDetail: React.FC = () => {
                 {t('pages.tournaments.apply', 'Apply to tournament')}
               </Button>
             )}
-            {user?.role === 'admin' && (
-              <>
-                <Button
-                  variant="outlined"
-                  size="large"
-                  startIcon={<Edit />}
-                  component={Link}
-                  to={`/${lang}/tournaments/${tournament.id}/edit`}
-                >
-                  {t('pages.tournaments.edit', 'Edit')}
-                </Button>
-                <Button
-                  variant="outlined"
-                  size="large"
-                  startIcon={<Assignment />}
-                  component={Link}
-                  to={`/${lang}/admin/applications/${tournament.id}`}
-                >
-                  {t('pages.tournaments.checkApplications', 'Check Applications')}
-                </Button>
-              </>
-            )}
+            {user &&
+              canEditTournament(
+                user.role,
+                tournament.createdBy?.id ?? '',
+                user.id,
+              ) && (
+                <>
+                  <Button
+                    variant="outlined"
+                    size="large"
+                    startIcon={<Edit />}
+                    component={Link}
+                    to={`/${lang}/tournaments/${tournament.id}/edit`}
+                  >
+                    {t('pages.tournaments.edit', 'Edit')}
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    size="large"
+                    startIcon={<Assignment />}
+                    component={Link}
+                    to={`/${lang}/admin/applications/${tournament.id}`}
+                  >
+                    {t('pages.tournaments.checkApplications', 'Check Applications')}
+                  </Button>
+                </>
+              )}
           </Box>
         </CardContent>
       </Card>

@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import LogoUploader from '../../../components/LogoUploader/LogoUploader';
+import { canManageReferenceData } from '../../../config/roles';
 import { useAuth } from '../../../contexts/auth-context';
 import { useNotification } from '../../../contexts/error-feedback-context';
 import apiService from '../../../services/api';
@@ -30,7 +31,7 @@ const ClubEdit: React.FC = () => {
   });
   const [loading, setLoading] = useState<boolean>(false);
 
-  const isAdmin = user?.role === 'admin';
+  const isAdmin = user && canManageReferenceData(user.role);
 
   useEffect(() => {
     if (!isAdmin) {

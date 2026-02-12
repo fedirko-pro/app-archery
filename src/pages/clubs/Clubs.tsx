@@ -13,6 +13,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 
+import { canManageReferenceData } from '../../config/roles';
 import { useAuth } from '../../contexts/auth-context';
 import { useNotification } from '../../contexts/error-feedback-context';
 import apiService from '../../services/api';
@@ -31,7 +32,7 @@ const Clubs: React.FC = () => {
   const { user } = useAuth();
   const { showSuccess, showError } = useNotification();
 
-  const isAdmin = user?.role === 'admin';
+  const isAdmin = user && canManageReferenceData(user.role);
 
   useEffect(() => {
     const load = async () => {

@@ -241,6 +241,32 @@ class ApiService {
     );
   }
 
+  /** Role-permissions matrix: each row has permissionKey and roles that have it. */
+  async getRolePermissions(): Promise<
+    Array<{ permissionKey: string; roles: string[] }>
+  > {
+    return await this.request<Array<{ permissionKey: string; roles: string[] }>>(
+      '/auth/admin/role-permissions',
+    );
+  }
+
+  async updateRolePermission(body: {
+    role: string;
+    permissionKey: string;
+    enabled: boolean;
+  }): Promise<void> {
+    return await this.request<void>('/auth/admin/role-permissions', {
+      method: 'PATCH',
+      body: JSON.stringify(body),
+    });
+  }
+
+  async deleteUser(userId: string): Promise<void> {
+    return await this.request<void>(`/users/${userId}`, {
+      method: 'DELETE',
+    });
+  }
+
   async getAllTournaments(): Promise<TournamentDto[]> {
     return await this.request<TournamentDto[]>('/tournaments');
   }

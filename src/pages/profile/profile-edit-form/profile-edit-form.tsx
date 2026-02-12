@@ -14,6 +14,8 @@ interface ProfileEditFormProps {
   profileData: ProfileData;
   isSaving: boolean;
   isAdminView?: boolean;
+  /** When true, show role dropdown (General Admin only). Omit or false to hide. */
+  canChangeRole?: boolean;
   userId?: string;
   onSave: () => void;
   onCancel: () => void;
@@ -26,6 +28,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
   profileData,
   isSaving,
   isAdminView,
+  canChangeRole = false,
   userId,
   onSave,
   onCancel,
@@ -274,7 +277,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
           filterSelectedOptions
         />
 
-        {isAdminView && (
+        {isAdminView && canChangeRole && (
           <TextField
             select
             label={t('forms.role', 'Role')}
@@ -285,8 +288,10 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
             margin="normal"
             helperText={t('profile.changeUserRole', "Change the user's role")}
           >
-            <MenuItem value="user">{t('role.user', 'User')}</MenuItem>
-            <MenuItem value="admin">{t('role.admin', 'Admin')}</MenuItem>
+            <MenuItem value="user">{t('accessControl.roleUser', 'User')}</MenuItem>
+            <MenuItem value="club_admin">{t('accessControl.roleClubAdmin', 'Club Admin')}</MenuItem>
+            <MenuItem value="federation_admin">{t('accessControl.roleFederationAdmin', 'Federation Admin')}</MenuItem>
+            <MenuItem value="general_admin">{t('accessControl.roleGeneralAdmin', 'General Admin')}</MenuItem>
           </TextField>
         )}
       </Box>

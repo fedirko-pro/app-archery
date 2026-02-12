@@ -19,6 +19,7 @@ import {
 import React, { useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { ROLE_LABEL_KEYS } from '../../../config/roles';
 import type { User } from '../../../contexts/types';
 import apiService from '../../../services/api';
 
@@ -115,9 +116,9 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
           aValue = (a.club?.name || '').toLowerCase();
           bValue = (b.club?.name || '').toLowerCase();
           break;
-        case 'categories':
-          aValue = (a.categories || []).join(',').toLowerCase();
-          bValue = (b.categories || []).join(',').toLowerCase();
+        case 'role':
+          aValue = (a.role || '').toLowerCase();
+          bValue = (b.role || '').toLowerCase();
           break;
         default:
           return 0;
@@ -257,7 +258,7 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
                 </Box>
               </TableCell>
               <TableCell
-                onClick={() => handleSort('categories')}
+                onClick={() => handleSort('role')}
                 sx={{
                   cursor: 'pointer',
                   userSelect: 'none',
@@ -266,9 +267,9 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
               >
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                   <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
-                    {t('pages.admin.favoriteCategories', 'Favorite Categories')}
+                    {t('accessControl.role', 'Role')}
                   </Typography>
-                  {sortConfig.field === 'categories' &&
+                  {sortConfig.field === 'role' &&
                     (sortConfig.direction === 'asc' ? (
                       <ArrowUpward fontSize="small" />
                     ) : (
@@ -298,9 +299,6 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
                       ? `${user.firstName} ${user.lastName}`
                       : 'Not set'}
                   </Typography>
-                  {user.role === 'admin' && (
-                    <Chip label="Admin" size="small" color="primary" sx={{ ml: 1, height: 18, fontSize: '0.7rem' }} />
-                  )}
                 </TableCell>
                 <TableCell>
                   <Typography variant="body2" color="text.secondary">
@@ -326,21 +324,13 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  {user.categories && user.categories.length > 0 ? (
-                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, maxWidth: 200 }}>
-                      {user.categories.map((category) => (
-                        <Chip
-                          key={category}
-                          label={category}
-                          size="small"
-                          variant="outlined"
-                          sx={{ height: 20, fontSize: '0.7rem' }}
-                        />
-                      ))}
-                    </Box>
-                  ) : (
-                    <Typography variant="body2" color="text.disabled">-</Typography>
-                  )}
+                  <Chip
+                    label={t(ROLE_LABEL_KEYS[user.role] ?? 'accessControl.roleUser', user.role)}
+                    size="small"
+                    variant="outlined"
+                    color={user.role === 'general_admin' ? 'primary' : 'default'}
+                    sx={{ fontSize: '0.75rem' }}
+                  />
                 </TableCell>
                 <TableCell align="center">
                   <Box

@@ -4,7 +4,9 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams, useNavigate } from 'react-router-dom';
 
+import { canDeleteUser } from '../../../config/roles';
 import type { User } from '../../../contexts/types';
+import { useAuth } from '../../../contexts/auth-context';
 import apiService from '../../../services/api';
 import { getCurrentI18nLang } from '../../../utils/i18n-lang';
 import ProfileCard from '../../profile/profile-card/profile-card';
@@ -15,6 +17,7 @@ import AdminActions from '../admin-actions/admin-actions';
 const UserProfileView: React.FC = () => {
   const { userId, lang } = useParams<{ userId: string; lang: string }>();
   const navigate = useNavigate();
+  const { user: currentUser } = useAuth();
   const [user, setUser] = useState<User | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -129,6 +132,17 @@ const UserProfileView: React.FC = () => {
     navigate(`/${lang}/admin/users`);
   };
 
+  const handleDeleteUser = () => {
+    if (!user || !window.confirm(t('admin.deleteUserConfirm', 'Are you sure you want to delete this user? This cannot be undone.'))) return;
+    apiService
+      .deleteUser(user.id)
+      .then(() => navigate(`/${lang}/admin/users`))
+      .catch((err) => {
+        setError(t('admin.deleteUserError', 'Failed to delete user'));
+        console.error('Error deleting user:', err);
+      });
+  };
+
   const getFullName = () => {
     const firstName = profileData.firstName || user?.firstName || '';
     const lastName = profileData.lastName || user?.lastName || '';
@@ -209,6 +223,7 @@ const UserProfileView: React.FC = () => {
               userId={user.id}
               userEmail={user.email}
               onEditUser={handleEditUser}
+              onDeleteUser={canDeleteUser(currentUser?.role ?? '') ? handleDeleteUser : undefined}
             />
           </>
         ) : (

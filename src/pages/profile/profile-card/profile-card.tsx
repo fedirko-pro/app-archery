@@ -16,6 +16,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
 
+import { ROLE_LABEL_KEYS } from '../../../config/roles';
 import type { User } from '../../../contexts/types';
 import userIcon from '../../../img/icons/user.svg';
 import { fromI18nLang, getCurrentI18nLang, normalizeAppLang } from '../../../utils/i18n-lang';
@@ -80,7 +81,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
       : user.authProvider === 'facebook'
         ? t('profile.signedInWithFacebook', 'Signed in with Facebook')
         : t('profile.signedInWithEmail', 'Signed in with email');
-  const roleLabel = user.role === 'admin' ? t('role.admin') : t('role.user');
+  const roleLabel = t(ROLE_LABEL_KEYS[user.role] ?? 'accessControl.roleUser', user.role);
 
   return (
     <div className="profile-container">
@@ -99,7 +100,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
             <Chip
               label={roleLabel}
               size="small"
-              color={user.role === 'admin' ? 'secondary' : 'default'}
+              color={user.role === 'general_admin' ? 'primary' : 'default'}
               sx={{ mt: 0.5 }}
             />
           </div>
@@ -117,6 +118,12 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
             <TableContainer>
               <Table size="small">
                 <TableBody>
+                  {isAdminView && (
+                    <TableInfoRow
+                      label={t('accessControl.role', 'Role')}
+                      value={roleLabel}
+                    />
+                  )}
                   <TableInfoRow
                     label={t('profile.signInMethod', 'Sign-in method')}
                     value={authProviderLabel}
