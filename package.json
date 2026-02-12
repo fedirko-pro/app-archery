@@ -85,6 +85,7 @@
   },
   "pnpm": {
     "overrides": {
+      "@isaacs/brace-expansion": ">=5.0.1",
       "magic-string": "^0.30.10",
       "esbuild": ">=0.25.0"
     }
