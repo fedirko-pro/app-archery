@@ -12,9 +12,9 @@ import { useTranslation } from 'react-i18next';
 import { useParams, useNavigate } from 'react-router-dom';
 
 import { useAuth } from '../../../contexts/auth-context';
-import { getDefaultAppLang, normalizeAppLang } from '../../../utils/i18n-lang';
 import apiService from '../../../services/api';
 import type { TournamentDto } from '../../../services/types';
+import { getDefaultAppLang, normalizeAppLang } from '../../../utils/i18n-lang';
 import TournamentApplicationForm from '../tournament-application-form/tournament-application-form';
 
 const PublicApplication: React.FC = () => {

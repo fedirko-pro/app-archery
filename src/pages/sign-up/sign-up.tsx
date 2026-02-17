@@ -144,15 +144,15 @@ export default function SignUp() {
   };
 
   const handleGoogleSignUp = () => {
-    // Перевіряємо чи є pending application в sessionStorage
+    // Check if there is a pending application in sessionStorage
     const pendingData = sessionStorage.getItem('pendingApplication');
 
-    // Зберігаємо pending application в sessionStorage перед переходом на Google OAuth
+    // Pending application is kept in sessionStorage before redirecting to Google OAuth
     if (pendingData) {
       // Pending application already in sessionStorage
     }
 
-    // Просто переходимо на Google OAuth без query параметрів
+    // Redirect to Google OAuth without query params
     window.location.href = env.GOOGLE_AUTH_URL;
   };
 

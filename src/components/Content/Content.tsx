@@ -3,9 +3,15 @@ import './Content.scss';
 import { useEffect } from 'react';
 import { Navigate, Outlet, Route, Routes, useParams } from 'react-router-dom';
 
+import {
+  ADMIN_CAPABLE_ROLES,
+  ROLES_CAN_DELETE_AND_MANAGE_APPS,
+  ROLES_CAN_MANAGE_REFERENCE_DATA,
+} from '../../config/roles';
 import i18n from '../../i18n';
 import About from '../../pages/About';
 import Achievements from '../../pages/achievements/achievements';
+import AccessControl from '../../pages/admin/access-control/access-control';
 import AdminPanel from '../../pages/admin/admin-panel';
 import ProtectedAdminRoute from '../../pages/admin/protected-admin-route';
 import UserEdit from '../../pages/admin/user-edit/user-edit';
@@ -121,6 +127,14 @@ function Content() {
               </ProtectedAdminRoute>
             }
           />
+          <Route
+            path="admin/access-control"
+            element={
+              <ProtectedAdminRoute allowedRoles={ADMIN_CAPABLE_ROLES}>
+                <AccessControl />
+              </ProtectedAdminRoute>
+            }
+          />
           {/* TODO: Settings route temporarily disabled - functionality moved to Profile */}
           {/* <Route path="settings" element={<Settings />} /> */}
           <Route path="converter" element={<ConverterPage />} />
@@ -146,7 +160,7 @@ function Content() {
               </ProtectedAdminRoute>
             } />
             <Route path=":tournamentId/patrols" element={
-              <ProtectedAdminRoute>
+              <ProtectedAdminRoute allowedRoles={ROLES_CAN_DELETE_AND_MANAGE_APPS}>
                 <PatrolsPage />
               </ProtectedAdminRoute>
             } />
@@ -172,7 +186,7 @@ function Content() {
           <Route
             path="admin/categories/create"
             element={
-              <ProtectedAdminRoute>
+              <ProtectedAdminRoute allowedRoles={ROLES_CAN_MANAGE_REFERENCE_DATA}>
                 <CategoryEdit />
               </ProtectedAdminRoute>
             }
@@ -180,7 +194,7 @@ function Content() {
           <Route
             path="admin/categories/:id/edit"
             element={
-              <ProtectedAdminRoute>
+              <ProtectedAdminRoute allowedRoles={ROLES_CAN_MANAGE_REFERENCE_DATA}>
                 <CategoryEdit />
               </ProtectedAdminRoute>
             }
@@ -188,7 +202,7 @@ function Content() {
           <Route
             path="admin/clubs/:id/edit"
             element={
-              <ProtectedAdminRoute>
+              <ProtectedAdminRoute allowedRoles={ROLES_CAN_MANAGE_REFERENCE_DATA}>
                 <ClubEdit />
               </ProtectedAdminRoute>
             }
@@ -196,7 +210,7 @@ function Content() {
           <Route
             path="admin/clubs/create"
             element={
-              <ProtectedAdminRoute>
+              <ProtectedAdminRoute allowedRoles={ROLES_CAN_MANAGE_REFERENCE_DATA}>
                 <ClubEdit />
               </ProtectedAdminRoute>
             }
@@ -204,7 +218,7 @@ function Content() {
           <Route
             path="admin/divisions/:id/edit"
             element={
-              <ProtectedAdminRoute>
+              <ProtectedAdminRoute allowedRoles={ROLES_CAN_MANAGE_REFERENCE_DATA}>
                 <DivisionEdit />
               </ProtectedAdminRoute>
             }
@@ -212,7 +226,7 @@ function Content() {
           <Route
             path="admin/divisions/create"
             element={
-              <ProtectedAdminRoute>
+              <ProtectedAdminRoute allowedRoles={ROLES_CAN_MANAGE_REFERENCE_DATA}>
                 <DivisionEdit />
               </ProtectedAdminRoute>
             }

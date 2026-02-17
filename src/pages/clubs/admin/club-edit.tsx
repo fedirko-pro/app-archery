@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import LogoUploader from '../../../components/LogoUploader/LogoUploader';
+import { canManageReferenceData } from '../../../config/roles';
 import { useAuth } from '../../../contexts/auth-context';
 import { useNotification } from '../../../contexts/error-feedback-context';
 import apiService from '../../../services/api';
@@ -23,13 +24,14 @@ const ClubEdit: React.FC = () => {
   const [form, setForm] = useState<ClubDto>({
     id: id === 'create' ? undefined : id,
     name: '',
+    shortCode: '',
     description: '',
     location: '',
     clubLogo: '',
   });
   const [loading, setLoading] = useState<boolean>(false);
 
-  const isAdmin = user?.role === 'admin';
+  const isAdmin = user && canManageReferenceData(user.role);
 
   useEffect(() => {
     if (!isAdmin) {
@@ -91,6 +93,15 @@ const ClubEdit: React.FC = () => {
               onChange={(e) => setForm({ ...form, name: e.target.value })}
               required
               fullWidth
+            />
+
+            <TextField
+              label="Short code"
+              value={form.shortCode || ''}
+              onChange={(e) => setForm({ ...form, shortCode: e.target.value })}
+              placeholder="e.g. KSP for Kyiv Sport Club"
+              fullWidth
+              helperText="Used on score cards and lists (e.g. 3–5 letters)"
             />
 
             <TextField

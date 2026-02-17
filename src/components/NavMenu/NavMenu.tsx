@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { canAccessAdminSection } from '../../config/roles';
 import { useAuth } from '../../contexts/auth-context';
 import Menu from '../Menu/Menu';
 
@@ -39,6 +40,7 @@ function NavMenu() {
   const adminMenuItems = [
     { link: '/admin/users', label: t('nav.users') },
     { link: '/admin/applications', label: t('nav.userApplications') },
+    { link: '/admin/access-control', label: t('nav.accessControl', 'Access Control') },
   ];
 
   const sections = [
@@ -48,7 +50,7 @@ function NavMenu() {
     },
   ];
 
-  if (user?.role === 'admin') {
+  if (user && canAccessAdminSection(user.role)) {
     sections.push({
       items: adminMenuItems,
       isAdmin: true,

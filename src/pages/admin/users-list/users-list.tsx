@@ -1,4 +1,4 @@
-import { Edit, Email, Visibility, ArrowUpward, ArrowDownward } from '@mui/icons-material';
+import { Edit, Email, Visibility, ArrowUpward, ArrowDownward, PersonAdd } from '@mui/icons-material';
 import {
   Box,
   Table,
@@ -15,10 +15,13 @@ import {
   Tooltip,
   Avatar,
   Chip,
+  Button,
 } from '@mui/material';
 import React, { useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import CreateUserDialog from '../../../components/dialogs/create-user-dialog';
+import { ROLE_LABEL_KEYS } from '../../../config/roles';
 import type { User } from '../../../contexts/types';
 import apiService from '../../../services/api';
 
@@ -40,6 +43,7 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
     field: string | null;
     direction: 'asc' | 'desc';
   }>({ field: null, direction: 'asc' });
+  const [createDialogOpen, setCreateDialogOpen] = useState(false);
 
   useEffect(() => {
     fetchUsers();
@@ -83,6 +87,26 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
     onViewProfile(userId);
   };
 
+  const handleCreateUser = async (userData: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    comment?: string;
+  }) => {
+    try {
+      setError(null);
+      await apiService.adminCreateUser(userData);
+      setSuccess(`User ${userData.firstName} ${userData.lastName} created successfully. They will receive an invitation email.`);
+      setTimeout(() => setSuccess(null), 5000);
+      setCreateDialogOpen(false);
+      // Refresh the users list
+      fetchUsers();
+    } catch (err: any) {
+      setError(err.message || 'Failed to create user');
+      throw err; // Re-throw to let dialog know about the error
+    }
+  };
+
   const handleSort = (field: string) => {
     setSortConfig((prev) => ({
       field,
@@ -115,9 +139,9 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
           aValue = (a.club?.name || '').toLowerCase();
           bValue = (b.club?.name || '').toLowerCase();
           break;
-        case 'categories':
-          aValue = (a.categories || []).join(',').toLowerCase();
-          bValue = (b.categories || []).join(',').toLowerCase();
+        case 'role':
+          aValue = (a.role || '').toLowerCase();
+          bValue = (b.role || '').toLowerCase();
           break;
         default:
           return 0;
@@ -144,9 +168,18 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
 
   return (
     <Box>
-      <Typography variant="h4" gutterBottom>
-        Users Management
-      </Typography>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+        <Typography variant="h4">
+          Users Management
+        </Typography>
+        <Button
+          variant="contained"
+          startIcon={<PersonAdd />}
+          onClick={() => setCreateDialogOpen(true)}
+        >
+          Create User
+        </Button>
+      </Box>
 
       {error && (
         <Alert severity="error" sx={{ mb: 2 }} onClose={() => setError(null)}>
@@ -257,7 +290,7 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
                 </Box>
               </TableCell>
               <TableCell
-                onClick={() => handleSort('categories')}
+                onClick={() => handleSort('role')}
                 sx={{
                   cursor: 'pointer',
                   userSelect: 'none',
@@ -266,9 +299,9 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
               >
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                   <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
-                    {t('pages.admin.favoriteCategories', 'Favorite Categories')}
+                    {t('accessControl.role', 'Role')}
                   </Typography>
-                  {sortConfig.field === 'categories' &&
+                  {sortConfig.field === 'role' &&
                     (sortConfig.direction === 'asc' ? (
                       <ArrowUpward fontSize="small" />
                     ) : (
@@ -298,9 +331,6 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
                       ? `${user.firstName} ${user.lastName}`
                       : 'Not set'}
                   </Typography>
-                  {user.role === 'admin' && (
-                    <Chip label="Admin" size="small" color="primary" sx={{ ml: 1, height: 18, fontSize: '0.7rem' }} />
-                  )}
                 </TableCell>
                 <TableCell>
                   <Typography variant="body2" color="text.secondary">
@@ -326,21 +356,13 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  {user.categories && user.categories.length > 0 ? (
-                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, maxWidth: 200 }}>
-                      {user.categories.map((category) => (
-                        <Chip
-                          key={category}
-                          label={category}
-                          size="small"
-                          variant="outlined"
-                          sx={{ height: 20, fontSize: '0.7rem' }}
-                        />
-                      ))}
-                    </Box>
-                  ) : (
-                    <Typography variant="body2" color="text.disabled">-</Typography>
-                  )}
+                  <Chip
+                    label={t(ROLE_LABEL_KEYS[user.role] ?? 'accessControl.roleUser', user.role)}
+                    size="small"
+                    variant="outlined"
+                    color={user.role === 'general_admin' ? 'primary' : 'default'}
+                    sx={{ fontSize: '0.75rem' }}
+                  />
                 </TableCell>
                 <TableCell align="center">
                   <Box
@@ -383,6 +405,12 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
           </TableBody>
         </Table>
       </TableContainer>
+
+      <CreateUserDialog
+        open={createDialogOpen}
+        onClose={() => setCreateDialogOpen(false)}
+        onSubmit={handleCreateUser}
+      />
     </Box>
   );
 };

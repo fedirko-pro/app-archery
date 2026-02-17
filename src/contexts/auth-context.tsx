@@ -121,7 +121,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
       const response = await apiService.register(userData);
 
-      // Після успішної реєстрації автоматично логінимо користувача
+      // After successful registration, log the user in automatically
       await apiService.login(userData.email, userData.password);
       const userProfile = await apiService.getProfile();
 
@@ -164,7 +164,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const userData = await apiService.getProfile();
       setUser(userData);
 
-      // Запобігаємо повторній обробці
+      // Prevent processing twice
       if (pendingApplicationProcessedRef.current) {
         return;
       }

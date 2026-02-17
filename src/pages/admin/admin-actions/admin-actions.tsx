@@ -1,6 +1,7 @@
-import { Edit, Email } from '@mui/icons-material';
+import { Edit, Email, Delete } from '@mui/icons-material';
 import { Box, Button, Alert } from '@mui/material';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import apiService from '../../../services/api';
 
@@ -8,13 +9,17 @@ interface AdminActionsProps {
   userId: string;
   userEmail: string;
   onEditUser: () => void;
+  /** When provided, show Delete user button (Federation Admin, General Admin). */
+  onDeleteUser?: () => void;
 }
 
 const AdminActions: React.FC<AdminActionsProps> = ({
   userId,
   userEmail,
   onEditUser,
+  onDeleteUser,
 }) => {
+  const { t } = useTranslation('common');
   const [resettingPassword, setResettingPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
@@ -54,14 +59,14 @@ const AdminActions: React.FC<AdminActionsProps> = ({
         </Alert>
       )}
 
-      <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center' }}>
+      <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center', flexWrap: 'wrap' }}>
         <Button
           variant="contained"
           color="primary"
           startIcon={<Edit />}
           onClick={onEditUser}
         >
-          Edit Profile
+          {t('admin.editProfile', 'Edit Profile')}
         </Button>
 
         <Button
@@ -71,8 +76,19 @@ const AdminActions: React.FC<AdminActionsProps> = ({
           onClick={handleResetPassword}
           disabled={resettingPassword}
         >
-          {resettingPassword ? 'Sending...' : 'Reset Password'}
+          {resettingPassword ? t('admin.sending', 'Sending...') : t('admin.resetPassword', 'Reset Password')}
         </Button>
+
+        {onDeleteUser && (
+          <Button
+            variant="outlined"
+            color="error"
+            startIcon={<Delete />}
+            onClick={onDeleteUser}
+          >
+            {t('admin.deleteUser', 'Delete User')}
+          </Button>
+        )}
       </Box>
     </Box>
   );

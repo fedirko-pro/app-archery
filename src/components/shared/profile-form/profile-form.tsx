@@ -158,7 +158,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
     </Box>
   );
 
-  // Якщо це адмінський вигляд, показуємо в Card з заголовком
+  // If admin view, show in a Card with header
   if (isAdminView) {
     return (
       <Card>
@@ -189,7 +189,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
     );
   }
 
-  // Для звичайного користувача показуємо просту форму
+  // For regular user, show simple form
   return (
     <div className="profile-edit">
       {title && (

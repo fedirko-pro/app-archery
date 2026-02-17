@@ -16,6 +16,11 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useParams } from 'react-router-dom';
 
+import {
+  canCreateTournament,
+  canEditTournament,
+  canDeleteTournament,
+} from '../../../config/roles';
 import { useAuth } from '../../../contexts/auth-context';
 import defaultBanner from '../../../img/default_turnament_bg.png';
 import apiService from '../../../services/api';
@@ -131,7 +136,7 @@ const TournamentList: React.FC = () => {
         }}
       >
         <Typography variant="h4">{t('pages.tournaments.title')}</Typography>
-        {user?.role === 'admin' && (
+        {user && canCreateTournament(user.role) && (
           <Button
             variant="contained"
             startIcon={<Add />}
@@ -258,28 +263,42 @@ const TournamentList: React.FC = () => {
                         {t('pages.tournaments.apply')}
                       </Button>
                     )}
-                  {user?.role === 'admin' && (
-                    <>
-                      <Button
-                        size="small"
-                        variant="outlined"
-                        startIcon={<Edit />}
-                        component={Link}
-                        to={`/${lang}/tournaments/${tournament.id}/edit`}
-                      >
-                        {t('pages.tournaments.edit')}
-                      </Button>
-                      <Button
-                        size="small"
-                        variant="outlined"
-                        color="error"
-                        startIcon={<Delete />}
-                        onClick={() => handleDeleteTournament(tournament.id)}
-                      >
-                        {t('pages.tournaments.delete')}
-                      </Button>
-                    </>
-                  )}
+                  {user &&
+                    (canEditTournament(
+                      user.role,
+                      tournament.createdBy?.id ?? '',
+                      user.id,
+                    ) ||
+                      canDeleteTournament(user.role)) && (
+                      <>
+                        {canEditTournament(
+                          user.role,
+                          tournament.createdBy?.id ?? '',
+                          user.id,
+                        ) && (
+                          <Button
+                            size="small"
+                            variant="outlined"
+                            startIcon={<Edit />}
+                            component={Link}
+                            to={`/${lang}/tournaments/${tournament.id}/edit`}
+                          >
+                            {t('pages.tournaments.edit')}
+                          </Button>
+                        )}
+                        {canDeleteTournament(user.role) && (
+                          <Button
+                            size="small"
+                            variant="outlined"
+                            color="error"
+                            startIcon={<Delete />}
+                            onClick={() => handleDeleteTournament(tournament.id)}
+                          >
+                            {t('pages.tournaments.delete')}
+                          </Button>
+                        )}
+                      </>
+                    )}
                 </Box>
               </CardContent>
             </Card>

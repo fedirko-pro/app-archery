@@ -1,7 +1,5 @@
 import { dropTargetForElements } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
-import BalanceIcon from '@mui/icons-material/Balance';
 import DeleteIcon from '@mui/icons-material/Delete';
-import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
 import {
   Alert,
   Box,
@@ -67,11 +65,6 @@ const PatrolCard: React.FC<PatrolCardProps> = ({
     });
   }, [patrol.id, onMemberDrop]);
 
-  const leader = patrol.leaderId ? participants.get(patrol.leaderId) : null;
-  const judges = patrol.judgeIds
-    .map((id) => participants.get(id))
-    .filter(Boolean) as Participant[];
-
   const errorWarnings = warnings.filter((w) => w.severity === 'error');
   const otherWarnings = warnings.filter((w) => w.severity !== 'error');
 
@@ -120,29 +113,6 @@ const PatrolCard: React.FC<PatrolCardProps> = ({
                 </IconButton>
               </Tooltip>
             )}
-          </Box>
-        </Box>
-
-        <Box sx={{ mb: 1.5, fontSize: '0.9rem' }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5, gap: 0.5 }}>
-            <WorkspacePremiumIcon sx={{ fontSize: 20, color: 'primary.main' }} />
-            <Typography variant="body2" component="span" sx={{ fontWeight: 600 }}>
-              Leader:
-            </Typography>
-            <Typography variant="body2" component="span">
-              {leader?.name || 'Not assigned'}
-            </Typography>
-          </Box>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-            <BalanceIcon sx={{ fontSize: 20, color: 'secondary.main' }} />
-            <Typography variant="body2" component="span" sx={{ fontWeight: 600 }}>
-              Judges:
-            </Typography>
-            <Typography variant="body2" component="span">
-              {judges.length > 0
-                ? judges.map((j) => `${j.name} (${j.club})`).join(', ')
-                : 'Not assigned'}
-            </Typography>
           </Box>
         </Box>
 
