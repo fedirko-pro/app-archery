@@ -15,9 +15,9 @@
 
 ```
 /srv/archery-front/
-├── docker-compose.yml    # Копія з deploy/docker-compose.front.yml
-├── .env                  # Build-time змінні
-└── src/                  # Цей git репозиторій
+├── docker-compose.yml  # Копія з deploy/docker-compose.front.yml
+├── .env                # Build-time змінні
+└── src/                # Цей git репозиторій
 ```
 
 ### 2. Деплой
@@ -92,3 +92,4 @@ docker compose up -d --build
 | `VITE_GOOGLE_AUTH_URL` | URL для Google OAuth | `https://api.yourdomain.com/auth/google` |
 
 ⚠️ Всі Vite змінні повинні мати префікс `VITE_`
+
