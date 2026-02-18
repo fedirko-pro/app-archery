@@ -3,6 +3,7 @@
   "menu": { "admin": "Admin", "myProfile": "Mi perfil ({{name}})" },
   "nav": {
     "tournaments": "Torneos",
+    "clubs": "Clubes",
     "myApplications": "Mis solicitudes",
     "myAchievements": "Mis logros (Demo)",
     "converter": "Conversor",
@@ -165,6 +166,9 @@
         "more": "Y mucho más..."
       },
       "contact": "Para solicitudes de funciones, informes de errores o preguntas, por favor contacte",
+      "authorsTitle": "Autores",
+      "authorMariia": "Mariia Fedirko",
+      "authorSerhii": "Serhii Fedirko",
       "copyrightPrefix": "© 2023-2025",
       "copyrightSuffix": ". Todos los derechos reservados."
     },

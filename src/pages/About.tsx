@@ -47,8 +47,23 @@ const About = () => {
         <hr />
         <p className="contact-info">
           {t('pages.about.contact')}{' '}
-          <a href="mailto:serhii.fedirko@gmail.com">serhii.fedirko@gmail.com</a>
+          <a href="mailto:contact@fedirko.pro">contact@fedirko.pro</a>
         </p>
+        <div className="authors-section">
+          <h3>{t('pages.about.authorsTitle')}</h3>
+          <ul className="authors-list">
+            <li>
+              <a href="https://www.linkedin.com/in/maryfedirko/" target="_blank" rel="noopener noreferrer">
+                {t('pages.about.authorMariia')}
+              </a>
+            </li>
+            <li>
+              <a href="https://www.linkedin.com/in/serhiifedirko/" target="_blank" rel="noopener noreferrer">
+                {t('pages.about.authorSerhii')}
+              </a>
+            </li>
+          </ul>
+        </div>
         <hr />
         <p className="copyright">
           {t('pages.about.copyrightPrefix')}{' '}

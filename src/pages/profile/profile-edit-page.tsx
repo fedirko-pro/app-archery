@@ -286,6 +286,16 @@ const ProfileEditPage: React.FC = () => {
               if (!prev) return prev;
               return { ...prev, picture: dataUrl || '' };
             });
+            // After avatar upload (new URL), update UI and persist to backend so it survives reload
+            if (dataUrl && user && (dataUrl.startsWith('http') || dataUrl.startsWith('/'))) {
+              updateUser({ ...user, picture: dataUrl });
+              apiService.updateProfile({ picture: dataUrl }).then((updated) => {
+                updateUser(updated);
+              }).catch((err) => {
+                console.error('Failed to persist avatar URL:', err);
+                setError(err instanceof Error ? err.message : t('profile.avatarSaveFailed', 'Failed to save avatar'));
+              });
+            }
           }}
           onSave={handleSave}
           onCancel={handleCancel}

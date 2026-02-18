@@ -4,6 +4,7 @@
   "menu": { "admin": "Адмін", "myProfile": "Мій профіль ({{name}})" },
   "nav": {
     "tournaments": "Турніри",
+    "clubs": "Клуби",
     "myApplications": "Мої заявки",
     "myAchievements": "Мої досягнення (Демо)",
     "converter": "Конвертер",
@@ -186,6 +187,9 @@
         "more": "Та багато іншого..."
       },
       "contact": "Щодо запитів на функції, звітів про помилки або питань, будь ласка, зв'яжіться",
+      "authorsTitle": "Автори",
+      "authorMariia": "Марія Федірко",
+      "authorSerhii": "Сергій Федірко",
       "copyrightPrefix": "© 2023-2025",
       "copyrightSuffix": ". Всі права захищені."
     },
@@ -411,6 +415,7 @@
     "changePhoto": "Змінити фото",
     "cropAndSave": "Обрізати та зберегти",
     "avatarSaved": "Аватар успішно збережено",
+    "avatarSaveFailed": "Не вдалося зберегти аватар",
     "removePhoto": "Видалити фото",
     "unsupportedType": "Непідтримуваний тип файлу. Дозволено: PNG, JPG, JPEG",
     "imageTooLarge": "Занадто велике зображення (макс. 3MB).",

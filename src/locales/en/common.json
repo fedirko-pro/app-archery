@@ -4,6 +4,7 @@
   "menu": { "admin": "Admin", "myProfile": "My profile ({{name}})" },
   "nav": {
     "tournaments": "Tournaments",
+    "clubs": "Clubs",
     "myApplications": "My applications",
     "myAchievements": "My achievements (Demo)",
     "converter": "Converter",
@@ -186,6 +187,9 @@
         "more": "And much more..."
       },
       "contact": "For feature requests, bug reports, or questions, please contact",
+      "authorsTitle": "Authors",
+      "authorMariia": "Mariia Fedirko",
+      "authorSerhii": "Serhii Fedirko",
       "copyrightPrefix": "© 2023-2025",
       "copyrightSuffix": ". All rights reserved."
     },
@@ -464,6 +468,7 @@
     "changePhoto": "Change Photo",
     "cropAndSave": "Crop and Save",
     "avatarSaved": "Avatar saved successfully",
+    "avatarSaveFailed": "Failed to save avatar",
     "removePhoto": "Remove Photo",
     "unsupportedType": "Unsupported file type. Allowed: PNG, JPG, JPEG",
     "imageTooLarge": "Image is too large (max 3MB).",

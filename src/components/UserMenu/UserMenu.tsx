@@ -90,7 +90,13 @@ const UserMenu: React.FC = () => {
           marginRight: '16px',
           cursor: 'pointer',
         }}
-        src={user?.picture || undefined}
+        src={
+          user?.picture
+            ? user.picture.startsWith('data:')
+              ? user.picture
+              : `${user.picture}${user.picture.includes('?') ? '&' : '?'}t=${user.updatedAt || ''}`
+            : undefined
+        }
         alt={user?.firstName || 'User'}
         imgProps={{
           onError: (e) => {

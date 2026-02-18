@@ -74,5 +74,39 @@
       }
     }
   }
+
+  .authors-section {
+    margin: 2rem 0;
+    text-align: center;
+    color: var(--text-secondary, #666);
+
+    h3 {
+      margin-bottom: 0.75rem;
+      color: inherit;
+      font-size: 1rem;
+      font-weight: bold;
+    }
+
+    .authors-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+
+      li {
+        margin: 0.5rem 0;
+      }
+
+      a {
+        color: var(--primary-color, #1976d2);
+        text-decoration: none;
+        transition: opacity 0.2s;
+
+        &:hover {
+          text-decoration: underline;
+          opacity: 0.8;
+        }
+      }
+    }
+  }
 }
 

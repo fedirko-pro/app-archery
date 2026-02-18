@@ -91,7 +91,12 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
           <Avatar
             className="profile-avatar"
             alt={getFullName()}
-            src={profileData.picture || user.picture || userIcon}
+            src={(() => {
+              const pic = profileData.picture || user.picture;
+              if (!pic || pic === userIcon || pic.startsWith('data:')) return pic || userIcon;
+              const sep = pic.includes('?') ? '&' : '?';
+              return `${pic}${sep}t=${user.updatedAt || ''}`;
+            })()}
             sx={{ width: 120, height: 120 }}
           />
           <div className="profile-name">
