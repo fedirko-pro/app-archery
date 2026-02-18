@@ -83,29 +83,40 @@ export default defineConfig(({ mode }: { mode: string }) => {
           cleanupOutdatedCaches: true,
           clientsClaim: true,
           runtimeCaching: [
-            // Cache public GET API (tournaments, rules, clubs, divisions, bow-categories) for offline
+            // 1. Cache public GET API for offline (must be first so it wins over NetworkOnly)
             {
               urlPattern: ({ url, request }) => {
                 if (request?.method !== 'GET') return false;
                 const path = url.pathname;
-                const withApi = /^\/(?:api\/)?(tournaments|rules|clubs|divisions|bow-categories)(?:\/.*)?$/.test(path);
-                const withoutApi =
-                  url.origin === apiOrigin &&
-                  /^\/(tournaments|rules|clubs|divisions|bow-categories)(?:\/.*)?$/.test(path);
-                return withApi || withoutApi;
+                const publicPath =
+                  /^\/(?:api\/)?(tournaments|rules|clubs|divisions|bow-categories)(?:\/.*)?$/.test(path) ||
+                  (url.origin === apiOrigin &&
+                    /^\/(tournaments|rules|clubs|divisions|bow-categories)(?:\/.*)?$/.test(path));
+                return publicPath;
               },
               handler: 'NetworkFirst',
               options: {
                 cacheName: 'api-offline-cache',
-                networkTimeoutSeconds: 10,
+                networkTimeoutSeconds: 8,
                 expiration: { maxEntries: 128, maxAgeSeconds: 7 * 24 * 60 * 60 },
+                cacheableResponse: { statuses: [0, 200] },
               },
             },
-            // Do not cache API requests at all (avoid caching private/auth responses)
+            // 2. Private API (auth, users, applications, etc.) – do not cache
             {
-              urlPattern: ({ url }) => url.origin === apiOrigin,
+              urlPattern: ({ url, request }) => {
+                if (url.origin !== apiOrigin) return false;
+                const path = url.pathname;
+                return (
+                  /^\/(?:api\/)?auth\//.test(path) ||
+                  /^\/(?:api\/)?users\//.test(path) ||
+                  /^\/(?:api\/)?tournament-applications\//.test(path) ||
+                  /^\/(?:api\/)?patrols\//.test(path) ||
+                  /^\/(?:api\/)?upload\//.test(path)
+                );
+              },
               handler: 'NetworkOnly',
-              options: { cacheName: 'api-network-only' },
+              options: { cacheName: 'api-private-network-only' },
             },
             // PDF files: network only, never serve index.html
             {

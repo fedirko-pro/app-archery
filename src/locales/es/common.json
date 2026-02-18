@@ -457,6 +457,7 @@
   },
   "pwa": {
     "workingOffline": "Trabajando sin conexión",
+    "showingCachedData": "Mostrando últimos datos guardados",
     "installPrompt": "Instala UArchery como aplicación para mejor experiencia y uso sin conexión.",
     "install": "Instalar",
     "installing": "Instalando…",

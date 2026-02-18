@@ -470,6 +470,7 @@
   },
   "pwa": {
     "workingOffline": "Funzionamento offline",
+    "showingCachedData": "Mostrando ultimi dati salvati",
     "installPrompt": "Installa UArchery come app per una migliore esperienza e uso offline.",
     "install": "Installa",
     "installing": "Installazione…",

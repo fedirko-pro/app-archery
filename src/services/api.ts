@@ -8,6 +8,13 @@ import type {
 } from '../contexts/types';
 import categoriesData from '../data/categories';
 import type { ProfileData } from '../pages/profile/types';
+import {
+  getOfflineCache,
+  setOfflineCache,
+  setLastServedFromCache,
+  isNetworkError,
+  type OfflineCacheKey,
+} from '../utils/offline-cache';
 import { getCurrentI18nLang } from '../utils/i18n-lang';
 import type {
   ApiError,
@@ -116,6 +123,31 @@ class ApiService {
    */
   private async get<T>(endpoint: string): Promise<T> {
     return this.request<T>(endpoint, { method: 'GET' });
+  }
+
+  /**
+   * GET with offline fallback: on network failure, return last saved data if available.
+   * Used for public list endpoints (tournaments, divisions, rules, clubs, bow-categories).
+   */
+  private async getWithOfflineFallback<T>(
+    cacheKey: OfflineCacheKey,
+    endpoint: string,
+  ): Promise<T> {
+    try {
+      const data = await this.get<T>(endpoint);
+      setOfflineCache(cacheKey, data);
+      setLastServedFromCache(false);
+      return data;
+    } catch (error) {
+      if (isNetworkError(error)) {
+        const cached = getOfflineCache<T>(cacheKey);
+        if (cached != null) {
+          setLastServedFromCache(true);
+          return cached;
+        }
+      }
+      throw error;
+    }
   }
 
   /**
@@ -284,7 +316,7 @@ class ApiService {
   }
 
   async getAllTournaments(): Promise<TournamentDto[]> {
-    return await this.request<TournamentDto[]>('/tournaments');
+    return this.getWithOfflineFallback<TournamentDto[]>('tournaments', '/tournaments');
   }
 
   async getTournament(id: string): Promise<TournamentDto> {
@@ -549,8 +581,21 @@ class ApiService {
    * @param ruleId Optional filter by rule ID
    */
   async getBowCategories(ruleId?: string): Promise<BowCategory[]> {
-    const endpoint = ruleId ? `/bow-categories?ruleId=${ruleId}` : '/bow-categories';
-    return this.get<BowCategory[]>(endpoint);
+    if (!ruleId) {
+      return this.getWithOfflineFallback<BowCategory[]>('bow-categories', '/bow-categories');
+    }
+    try {
+      return await this.get<BowCategory[]>(`/bow-categories?ruleId=${ruleId}`);
+    } catch (error) {
+      if (isNetworkError(error)) {
+        const cached = getOfflineCache<BowCategory[]>('bow-categories');
+        if (Array.isArray(cached) && cached.length > 0) {
+          setLastServedFromCache(true);
+          return cached;
+        }
+      }
+      throw error;
+    }
   }
 
   /**
@@ -670,7 +715,7 @@ class ApiService {
    * Fetch all rules from the backend.
    */
   async getRules(): Promise<RuleDto[]> {
-    return this.get<RuleDto[]>('/rules');
+    return this.getWithOfflineFallback<RuleDto[]>('rules', '/rules');
   }
 
   /**
@@ -723,7 +768,7 @@ class ApiService {
    * Fetch all clubs from the backend.
    */
   async getClubs(): Promise<ClubDto[]> {
-    return this.get<ClubDto[]>('/clubs');
+    return this.getWithOfflineFallback<ClubDto[]>('clubs', '/clubs');
   }
 
   /**
@@ -763,37 +808,51 @@ class ApiService {
   }
 
   /**
+   * Transform raw backend divisions to DivisionDto[].
+   */
+  private static mapDivisionsFromBackend(divisions: any[]): DivisionDto[] {
+    if (!Array.isArray(divisions) || divisions.length === 0) return [];
+    const transformed = divisions
+      .filter((div: any) => div && div.id && div.name)
+      .map((div: any) => ({
+        id: div.id,
+        name: div.name,
+        description: div.description || undefined,
+        rule_id: div.rule?.id,
+        rule_code: div.rule?.ruleCode,
+        created_at: div.createdAt,
+        updated_at: div.updatedAt,
+      }));
+    return Array.from(new Map(transformed.map((d) => [d.id, d])).values());
+  }
+
+  /**
    * Fetch divisions from the backend API.
    */
   async getDivisions(ruleId?: string): Promise<DivisionDto[]> {
     try {
-      const url = ruleId ? `/divisions?ruleId=${ruleId}` : '/divisions';
-      const divisions = await this.get<any[]>(url);
-
-      // Backend returned empty or invalid - return empty (do NOT use fallback:
-      // fallback IDs don't exist in backend and cause "Division not found" on submit)
-      if (!Array.isArray(divisions) || divisions.length === 0) {
-        return [];
+      let raw: any[];
+      if (!ruleId) {
+        raw = await this.getWithOfflineFallback<any[]>('divisions', '/divisions');
+      } else {
+        try {
+          raw = await this.get<any[]>(`/divisions?ruleId=${ruleId}`);
+        } catch (error) {
+          if (isNetworkError(error)) {
+            const cached = getOfflineCache<any[]>('divisions');
+            raw = Array.isArray(cached) ? cached : [];
+            if (raw.length > 0) setLastServedFromCache(true);
+          } else throw error;
+        }
       }
-
-      // Transform backend response to DivisionDto format
-      // Backend returns divisions with populated rule object
-      const transformed = divisions
-        .filter((div: any) => div && div.id && div.name) // Filter out invalid entries
-        .map((div: any) => ({
-          id: div.id,
-          name: div.name,
-          description: div.description || undefined,
-          rule_id: div.rule?.id,
-          rule_code: div.rule?.ruleCode, // Extract ruleCode from rule object
-          created_at: div.createdAt,
-          updated_at: div.updatedAt,
-        }));
-
-      // Remove duplicates by id
-      return Array.from(new Map(transformed.map((d) => [d.id, d])).values());
+      return ApiService.mapDivisionsFromBackend(raw);
     } catch (error) {
       console.error('Failed to fetch divisions from backend:', error);
+      const cached = getOfflineCache<any[]>('divisions');
+      if (Array.isArray(cached)) {
+        setLastServedFromCache(true);
+        return ApiService.mapDivisionsFromBackend(cached);
+      }
       return [];
     }
   }
