@@ -8,6 +8,7 @@ import type {
 } from '../contexts/types';
 import categoriesData from '../data/categories';
 import type { ProfileData } from '../pages/profile/types';
+import { getCurrentI18nLang } from '../utils/i18n-lang';
 import {
   getOfflineCache,
   setOfflineCache,
@@ -15,7 +16,6 @@ import {
   isNetworkError,
   type OfflineCacheKey,
 } from '../utils/offline-cache';
-import { getCurrentI18nLang } from '../utils/i18n-lang';
 import type {
   ApiError,
   BowCategory,
@@ -64,10 +64,7 @@ class ApiService {
   /**
    * Perform an authenticated JSON request to the backend API.
    */
-  private async request<T>(
-    endpoint: string,
-    options: RequestOptions = {},
-  ): Promise<T> {
+  private async request<T>(endpoint: string, options: RequestOptions = {}): Promise<T> {
     const url = `${this.baseURL}${endpoint}`;
     const token = this.getToken();
 
@@ -86,9 +83,7 @@ class ApiService {
 
       if (!response.ok) {
         const errorData = (await response.json().catch(() => ({}))) as ApiError;
-        throw new Error(
-          errorData.message || `HTTP error! status: ${response.status}`,
-        );
+        throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
       }
 
       const status = response.status;
@@ -109,9 +104,7 @@ class ApiService {
       return JSON.parse(text) as T;
     } catch (error) {
       if (error instanceof TypeError && error.message.includes('Load failed')) {
-        throw new Error(
-          'Backend server is not available. Please check if the server is running.',
-        );
+        throw new Error('Backend server is not available. Please check if the server is running.');
       }
 
       throw error;
@@ -129,10 +122,7 @@ class ApiService {
    * GET with offline fallback: on network failure, return last saved data if available.
    * Used for public list endpoints (tournaments, divisions, rules, clubs, bow-categories).
    */
-  private async getWithOfflineFallback<T>(
-    cacheKey: OfflineCacheKey,
-    endpoint: string,
-  ): Promise<T> {
+  private async getWithOfflineFallback<T>(cacheKey: OfflineCacheKey, endpoint: string): Promise<T> {
     try {
       const data = await this.get<T>(endpoint);
       setOfflineCache(cacheKey, data);
@@ -218,10 +208,7 @@ class ApiService {
     });
   }
 
-  async setPassword(
-    password: string,
-    confirmPassword: string,
-  ): Promise<{ message: string }> {
+  async setPassword(password: string, confirmPassword: string): Promise<{ message: string }> {
     return await this.request<{ message: string }>('/auth/set-password', {
       method: 'POST',
       body: JSON.stringify({ password, confirmPassword }),
@@ -232,7 +219,7 @@ class ApiService {
     return await this.request<User>('/users/profile');
   }
 
-  async updateProfile(profileData: ProfileData): Promise<User> {
+  async updateProfile(profileData: Partial<ProfileData>): Promise<User> {
     return await this.request<User>('/users/profile', {
       method: 'PATCH',
       body: JSON.stringify(profileData),
@@ -254,10 +241,7 @@ class ApiService {
     return await this.request<User>(`/users/admin/${userId}`);
   }
 
-  async adminUpdateUser(
-    userId: string,
-    userData: Partial<User>,
-  ): Promise<User> {
+  async adminUpdateUser(userId: string, userData: Partial<User>): Promise<User> {
     return await this.request<User>(`/users/admin/${userId}`, {
       method: 'PATCH',
       body: JSON.stringify(userData),
@@ -265,12 +249,9 @@ class ApiService {
   }
 
   async adminResetUserPassword(userId: string): Promise<{ message: string }> {
-    return await this.request<{ message: string }>(
-      `/auth/admin/reset-password/${userId}`,
-      {
-        method: 'POST',
-      },
-    );
+    return await this.request<{ message: string }>(`/auth/admin/reset-password/${userId}`, {
+      method: 'POST',
+    });
   }
 
   /**
@@ -290,9 +271,7 @@ class ApiService {
   }
 
   /** Role-permissions matrix: each row has permissionKey and roles that have it. */
-  async getRolePermissions(): Promise<
-    Array<{ permissionKey: string; roles: string[] }>
-  > {
+  async getRolePermissions(): Promise<Array<{ permissionKey: string; roles: string[] }>> {
     return await this.request<Array<{ permissionKey: string; roles: string[] }>>(
       '/auth/admin/role-permissions',
     );
@@ -323,9 +302,7 @@ class ApiService {
     return await this.request<TournamentDto>(`/tournaments/${id}`);
   }
 
-  async createTournament(
-    tournamentData: Partial<TournamentDto>,
-  ): Promise<TournamentDto> {
+  async createTournament(tournamentData: Partial<TournamentDto>): Promise<TournamentDto> {
     return await this.request<TournamentDto>('/tournaments', {
       method: 'POST',
       body: JSON.stringify(tournamentData),
@@ -353,28 +330,21 @@ class ApiService {
   }
 
   async getPatrolsByTournament(tournamentId: string): Promise<PatrolDto[]> {
-    return await this.request<PatrolDto[]>(
-      `/patrols/tournament/${tournamentId}`,
-    );
+    return await this.request<PatrolDto[]>(`/patrols/tournament/${tournamentId}`);
   }
 
   async getPatrol(id: string): Promise<PatrolDto> {
     return await this.request<PatrolDto>(`/patrols/${id}`);
   }
 
-  async createPatrol(
-    patrolData: Partial<PatrolDto>,
-  ): Promise<PatrolDto> {
+  async createPatrol(patrolData: Partial<PatrolDto>): Promise<PatrolDto> {
     return await this.request<PatrolDto>('/patrols', {
       method: 'POST',
       body: JSON.stringify(patrolData),
     });
   }
 
-  async updatePatrol(
-    id: string,
-    patrolData: Partial<PatrolDto>,
-  ): Promise<PatrolDto> {
+  async updatePatrol(id: string, patrolData: Partial<PatrolDto>): Promise<PatrolDto> {
     return await this.request<PatrolDto>(`/patrols/${id}`, {
       method: 'PUT',
       body: JSON.stringify(patrolData),
@@ -391,17 +361,12 @@ class ApiService {
    * Delete patrol and redistribute participants into fewer patrols
    */
   async deletePatrolAndRedistribute(patrolId: string): Promise<PatrolDto[]> {
-    return await this.request<PatrolDto[]>(
-      `/patrols/${patrolId}/delete-and-redistribute`,
-      { method: 'POST' },
-    );
+    return await this.request<PatrolDto[]>(`/patrols/${patrolId}/delete-and-redistribute`, {
+      method: 'POST',
+    });
   }
 
-  async addPatrolMember(
-    patrolId: string,
-    userId: string,
-    role: string,
-  ): Promise<PatrolDto> {
+  async addPatrolMember(patrolId: string, userId: string, role: string): Promise<PatrolDto> {
     return await this.request<PatrolDto>(`/patrols/${patrolId}/members`, {
       method: 'POST',
       body: JSON.stringify({ userId, role }),
@@ -484,13 +449,10 @@ class ApiService {
   async createTournamentApplication(
     applicationData: CreateTournamentApplicationDto,
   ): Promise<TournamentApplicationDto> {
-    return await this.request<TournamentApplicationDto>(
-      '/tournament-applications',
-      {
-        method: 'POST',
-        body: JSON.stringify(applicationData),
-      },
-    );
+    return await this.request<TournamentApplicationDto>('/tournament-applications', {
+      method: 'POST',
+      body: JSON.stringify(applicationData),
+    });
   }
 
   /**
@@ -503,13 +465,10 @@ class ApiService {
     division?: string;
     notes?: string;
   }): Promise<TournamentApplicationDto> {
-    return await this.request<TournamentApplicationDto>(
-      '/tournament-applications/admin',
-      {
-        method: 'POST',
-        body: JSON.stringify(data),
-      },
-    );
+    return await this.request<TournamentApplicationDto>('/tournament-applications/admin', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
   }
 
   async getMyApplications(): Promise<TournamentApplicationDto[]> {
@@ -518,17 +477,13 @@ class ApiService {
     );
   }
 
-  async getTournamentApplications(
-    tournamentId: string,
-  ): Promise<TournamentApplicationDto[]> {
+  async getTournamentApplications(tournamentId: string): Promise<TournamentApplicationDto[]> {
     return await this.request<TournamentApplicationDto[]>(
       `/tournament-applications/tournament/${tournamentId}`,
     );
   }
 
-  async getTournamentApplicationStats(
-    tournamentId: string,
-  ): Promise<ApplicationStatsDto> {
+  async getTournamentApplicationStats(tournamentId: string): Promise<ApplicationStatsDto> {
     return await this.request<ApplicationStatsDto>(
       `/tournament-applications/tournament/${tournamentId}/stats`,
     );
@@ -548,9 +503,7 @@ class ApiService {
     );
   }
 
-  async withdrawApplication(
-    applicationId: string,
-  ): Promise<TournamentApplicationDto> {
+  async withdrawApplication(applicationId: string): Promise<TournamentApplicationDto> {
     return await this.request<TournamentApplicationDto>(
       `/tournament-applications/${applicationId}`,
       {
@@ -560,12 +513,9 @@ class ApiService {
   }
 
   async deleteApplication(applicationId: string): Promise<void> {
-    return await this.request<void>(
-      `/tournament-applications/${applicationId}/admin`,
-      {
-        method: 'DELETE',
-      },
-    );
+    return await this.request<void>(`/tournament-applications/${applicationId}/admin`, {
+      method: 'DELETE',
+    });
   }
 
   isAuthenticated(): boolean {
@@ -943,18 +893,13 @@ class ApiService {
     formData.append('type', type);
 
     if (options) {
-      if (options.cropX !== undefined)
-        formData.append('cropX', String(options.cropX));
-      if (options.cropY !== undefined)
-        formData.append('cropY', String(options.cropY));
-      if (options.cropWidth !== undefined)
-        formData.append('cropWidth', String(options.cropWidth));
+      if (options.cropX !== undefined) formData.append('cropX', String(options.cropX));
+      if (options.cropY !== undefined) formData.append('cropY', String(options.cropY));
+      if (options.cropWidth !== undefined) formData.append('cropWidth', String(options.cropWidth));
       if (options.cropHeight !== undefined)
         formData.append('cropHeight', String(options.cropHeight));
-      if (options.quality !== undefined)
-        formData.append('quality', String(options.quality));
-      if (options.entityId !== undefined)
-        formData.append('entityId', options.entityId);
+      if (options.quality !== undefined) formData.append('quality', String(options.quality));
+      if (options.entityId !== undefined) formData.append('entityId', options.entityId);
     }
 
     const url = `${this.baseURL}/upload/image`;
@@ -971,9 +916,7 @@ class ApiService {
 
     if (!response.ok) {
       const errorData = (await response.json().catch(() => ({}))) as ApiError;
-      throw new Error(
-        errorData.message || `HTTP error! status: ${response.status}`,
-      );
+      throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
     }
 
     return response.json();
@@ -1012,9 +955,7 @@ class ApiService {
 
     if (!response.ok) {
       const errorData = (await response.json().catch(() => ({}))) as ApiError;
-      throw new Error(
-        errorData.message || `HTTP error! status: ${response.status}`,
-      );
+      throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
     }
 
     return response.json();
@@ -1023,16 +964,10 @@ class ApiService {
   /**
    * Delete an attachment file from a tournament.
    */
-  async deleteAttachment(
-    tournamentId: string,
-    filename: string,
-  ): Promise<void> {
-    return await this.request<void>(
-      `/upload/attachment/${tournamentId}/${filename}`,
-      {
-        method: 'DELETE',
-      },
-    );
+  async deleteAttachment(tournamentId: string, filename: string): Promise<void> {
+    return await this.request<void>(`/upload/attachment/${tournamentId}/${filename}`, {
+      method: 'DELETE',
+    });
   }
 }
 
