@@ -1,4 +1,4 @@
-import { Visibility, VisibilityOff, Lock } from '@mui/icons-material';
+import { Visibility, VisibilityOff, Lock, Close } from '@mui/icons-material';
 import {
   Box,
   Button,
@@ -139,6 +139,11 @@ const ResetPassword: React.FC = () => {
           title={t('reset.title')}
           subheader={t('reset.subtitle')}
           avatar={<Lock color="primary" />}
+          action={
+            <IconButton onClick={() => navigate(`/${lang}/signin`)} aria-label="close">
+              <Close />
+            </IconButton>
+          }
         />
         <CardContent>
           {error && (
@@ -152,7 +157,11 @@ const ResetPassword: React.FC = () => {
           )}
 
           {success && (
-            <Alert severity="success" sx={{ mb: 2 }}>
+            <Alert
+              severity="success"
+              sx={{ mb: 2 }}
+              onClose={() => navigate(`/${lang}/signin`)}
+            >
               {success}
             </Alert>
           )}

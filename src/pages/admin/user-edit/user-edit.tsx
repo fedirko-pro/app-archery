@@ -1,6 +1,6 @@
 import '../../profile/profile.scss';
 
-import { ArrowBack } from '@mui/icons-material';
+import { ArrowBack, LockReset } from '@mui/icons-material';
 import { Box, Button, Alert, CircularProgress } from '@mui/material';
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -36,6 +36,7 @@ const UserEdit: React.FC = () => {
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [resettingPassword, setResettingPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const fetchUser = useCallback(async () => {
@@ -154,6 +155,20 @@ const UserEdit: React.FC = () => {
     navigate(`/${lang}/admin/users`);
   };
 
+  const handleResetPassword = async () => {
+    if (!user) return;
+    try {
+      setResettingPassword(true);
+      setError(null);
+      await apiService.adminResetUserPassword(user.id);
+      showSuccess(`Password reset email sent to ${user.email}`);
+    } catch {
+      setError('Failed to send password reset email');
+    } finally {
+      setResettingPassword(false);
+    }
+  };
+
   if (loading) {
     return (
       <Box
@@ -192,13 +207,22 @@ const UserEdit: React.FC = () => {
   return (
     <section>
       <div className="container">
-        <Box sx={{ mb: 2 }}>
+        <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Button
             startIcon={<ArrowBack />}
             onClick={handleBack}
             sx={{ minWidth: 0 }}
           >
             Back to Admin Panel
+          </Button>
+          <Button
+            variant="outlined"
+            color="warning"
+            startIcon={resettingPassword ? <CircularProgress size={16} /> : <LockReset />}
+            onClick={handleResetPassword}
+            disabled={resettingPassword}
+          >
+            Reset Password
           </Button>
         </Box>
         {error && (

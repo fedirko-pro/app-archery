@@ -1,3 +1,4 @@
+import CloseIcon from '@mui/icons-material/Close';
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -6,6 +7,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import IconButton from '@mui/material/IconButton';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import React, { useState } from 'react';
 
@@ -70,7 +72,17 @@ export default function ForgotPassword({
       maxWidth="sm"
       fullWidth
     >
-      <DialogTitle>Reset password</DialogTitle>
+      <DialogTitle sx={{ pr: 6 }}>
+        Reset password
+        <IconButton
+          aria-label="close"
+          onClick={handleCloseDialog}
+          disabled={isSubmitting}
+          sx={{ position: 'absolute', right: 8, top: 8 }}
+        >
+          <CloseIcon />
+        </IconButton>
+      </DialogTitle>
       <DialogContent
         sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '100%' }}
       >
