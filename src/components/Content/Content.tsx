@@ -1,7 +1,7 @@
 import './Content.scss';
 
 import { useEffect } from 'react';
-import { Navigate, Outlet, Route, Routes, useParams } from 'react-router-dom';
+import { Navigate, Outlet, Route, Routes, useLocation, useParams } from 'react-router-dom';
 
 import {
   ADMIN_CAPABLE_ROLES,
@@ -47,6 +47,12 @@ import UserApplications from '../../pages/tournament/user-applications/user-appl
 import Training from '../../pages/Trainings';
 import { isRtlLanguage, normalizeAppLang, toI18nLang, getDefaultAppLang } from '../../utils/i18n-lang';
 
+function LangRedirect({ path }: { path: string }) {
+  const location = useLocation();
+  const defaultLang = getDefaultAppLang();
+  return <Navigate to={`/${defaultLang}/${path}${location.search}`} replace />;
+}
+
 function LangLayout() {
   const params = useParams();
   const appLang = normalizeAppLang(params.lang);
@@ -73,6 +79,7 @@ function Content() {
         {/* Language-agnostic auth routes to avoid 404s from backend redirects */}
         <Route path="/auth/google/callback" element={<GoogleCallback />} />
         <Route path="/signin" element={<Navigate to={`/${defaultLang}/signin`} replace />} />
+        <Route path="/reset-password" element={<LangRedirect path="reset-password" />} />
         <Route path=":lang" element={<LangLayout />}>
           <Route index element={<Navigate to="tournaments" replace />} />
           <Route path="signin" element={<SignIn />} />

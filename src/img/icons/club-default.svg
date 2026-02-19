@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- White -->
+  <circle cx="50" cy="50" r="49" fill="#ffffff" stroke="#cccccc" stroke-width="1"/>
+  <!-- Black -->
+  <circle cx="50" cy="50" r="39" fill="#1a1a1a"/>
+  <!-- Blue -->
+  <circle cx="50" cy="50" r="29" fill="#4a90d9"/>
+  <!-- Red -->
+  <circle cx="50" cy="50" r="19" fill="#d92b2b"/>
+  <!-- Gold outer -->
+  <circle cx="50" cy="50" r="9" fill="#f5c400"/>
+  <!-- Gold inner (X ring) -->
+  <circle cx="50" cy="50" r="4.5" fill="#f5c400" stroke="#d4a800" stroke-width="0.8"/>
+</svg>

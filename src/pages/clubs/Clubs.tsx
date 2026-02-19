@@ -16,6 +16,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { canManageReferenceData } from '../../config/roles';
 import { useAuth } from '../../contexts/auth-context';
 import { useNotification } from '../../contexts/error-feedback-context';
+import defaultClubLogo from '../../img/icons/club-default.svg';
 import apiService from '../../services/api';
 import type { ClubDto } from '../../services/types';
 
@@ -125,27 +126,20 @@ const Clubs: React.FC = () => {
                   p: 2,
                 }}
               >
-                {club.clubLogo ? (
-                  <CardMedia
-                    component="img"
-                    image={club.clubLogo}
-                    alt={club.name}
-                    sx={{
-                      maxWidth: '100%',
-                      maxHeight: '100%',
-                      objectFit: 'contain',
-                    }}
-                    crossOrigin="anonymous"
-                    onError={(e) => {
-                      console.warn('Failed to load club logo (possibly CORS):', club.clubLogo);
-                      (e.target as HTMLImageElement).style.display = 'none';
-                    }}
-                  />
-                ) : (
-                  <Typography variant="h6" color="text.secondary">
-                    {club.name.charAt(0)}
-                  </Typography>
-                )}
+                <CardMedia
+                  component="img"
+                  image={club.clubLogo || defaultClubLogo}
+                  alt={club.name}
+                  sx={{
+                    maxWidth: '100%',
+                    maxHeight: '100%',
+                    objectFit: 'contain',
+                  }}
+                  crossOrigin="anonymous"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = defaultClubLogo;
+                  }}
+                />
               </Box>
               <CardContent sx={{ flexGrow: 1 }}>
                 <Typography variant="h6" gutterBottom>
