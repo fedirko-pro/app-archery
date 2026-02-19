@@ -64,12 +64,6 @@ const About = () => {
             </li>
           </ul>
         </div>
-        <hr />
-        <p className="copyright">
-          {t('pages.about.copyrightPrefix')}{' '}
-          <a href="https://fedirko.pro" target="_blank" rel="noopener noreferrer">FEDIRKO.PRO</a>
-          {t('pages.about.copyrightSuffix')}
-        </p>
       </div>
     </section>
   );
