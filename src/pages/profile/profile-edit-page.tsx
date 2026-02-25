@@ -25,14 +25,7 @@ import ProfileEditForm from './profile-edit-form/profile-edit-form';
 import type { ProfileData } from './types';
 
 const ProfileEditPage: React.FC = () => {
-  const {
-    user,
-    updateUser,
-    changePassword,
-    setPassword,
-    error: authError,
-    clearError,
-  } = useAuth();
+  const { user, updateUser, changePassword, setPassword, error: authError, clearError } = useAuth();
   const navigate = useNavigate();
   const [profileData, setProfileData] = useState<ProfileData | null>(null);
   const { lang } = useParams();
@@ -82,6 +75,7 @@ const ProfileEditPage: React.FC = () => {
         clubId: user.clubId || '',
         categories: Array.isArray(user.categories) ? user.categories : [],
         appLanguage: getAppLanguageFromUser(user),
+        syncTrainingsAndEquipment: user.syncTrainingsAndEquipment ?? false,
       });
     }
   }, [user]);
@@ -132,8 +126,7 @@ const ProfileEditPage: React.FC = () => {
 
   // Password logic
   const handlePasswordChange =
-    (field: keyof typeof passwordForm) =>
-    (e: React.ChangeEvent<HTMLInputElement>) => {
+    (field: keyof typeof passwordForm) => (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value;
       setPasswordForm((prev) => ({ ...prev, [field]: value }));
       setPasswordValidation((prev) => ({
@@ -167,12 +160,9 @@ const ProfileEditPage: React.FC = () => {
       isValid = false;
     } else if (passwordForm.newPassword.length < 8) {
       validation.newPasswordError = true;
-      validation.newPasswordMessage =
-        'Password must be at least 8 characters long';
+      validation.newPasswordMessage = 'Password must be at least 8 characters long';
       isValid = false;
-    } else if (
-      !/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(passwordForm.newPassword)
-    ) {
+    } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(passwordForm.newPassword)) {
       validation.newPasswordError = true;
       validation.newPasswordMessage =
         'Password must contain at least one uppercase letter, one lowercase letter, and one number';
@@ -194,8 +184,7 @@ const ProfileEditPage: React.FC = () => {
       passwordForm.currentPassword === passwordForm.newPassword
     ) {
       validation.newPasswordError = true;
-      validation.newPasswordMessage =
-        'New password must be different from current password';
+      validation.newPasswordMessage = 'New password must be different from current password';
       isValid = false;
     }
     setPasswordValidation(validation);
@@ -209,10 +198,7 @@ const ProfileEditPage: React.FC = () => {
     clearError();
     try {
       if (shouldShowSetPassword) {
-        await setPassword(
-          passwordForm.newPassword,
-          passwordForm.confirmPassword,
-        );
+        await setPassword(passwordForm.newPassword, passwordForm.confirmPassword);
       } else {
         await changePassword(passwordForm);
       }
@@ -234,9 +220,7 @@ const ProfileEditPage: React.FC = () => {
     setShowPasswords((prev) => ({ ...prev, [field]: !prev[field] }));
   };
 
-  const getPasswordStrength = (
-    password: string,
-  ): { strength: string; color: string } => {
+  const getPasswordStrength = (password: string): { strength: string; color: string } => {
     if (!password) return { strength: '', color: '' };
     const hasLower = /[a-z]/.test(password);
     const hasUpper = /[A-Z]/.test(password);
@@ -256,12 +240,7 @@ const ProfileEditPage: React.FC = () => {
 
   if (!profileData) {
     return (
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        minHeight="50vh"
-      >
+      <Box display="flex" justifyContent="center" alignItems="center" minHeight="50vh">
         <CircularProgress />
       </Box>
     );
@@ -281,6 +260,12 @@ const ProfileEditPage: React.FC = () => {
           userId={user?.id}
           onChange={handleChange}
           onCategoriesChange={handleCategoriesChange}
+          onSyncToggleChange={(value) => {
+            setProfileData((prev) => {
+              if (!prev) return prev;
+              return { ...prev, syncTrainingsAndEquipment: value };
+            });
+          }}
           onPictureChange={(dataUrl) => {
             setProfileData((prev) => {
               if (!prev) return prev;
@@ -289,12 +274,19 @@ const ProfileEditPage: React.FC = () => {
             // After avatar upload (new URL), update UI and persist to backend so it survives reload
             if (dataUrl && user && (dataUrl.startsWith('http') || dataUrl.startsWith('/'))) {
               updateUser({ ...user, picture: dataUrl });
-              apiService.updateProfile({ picture: dataUrl }).then((updated) => {
-                updateUser(updated);
-              }).catch((err) => {
-                console.error('Failed to persist avatar URL:', err);
-                setError(err instanceof Error ? err.message : t('profile.avatarSaveFailed', 'Failed to save avatar'));
-              });
+              apiService
+                .updateProfile({ picture: dataUrl })
+                .then((updated) => {
+                  updateUser(updated);
+                })
+                .catch((err) => {
+                  console.error('Failed to persist avatar URL:', err);
+                  setError(
+                    err instanceof Error
+                      ? err.message
+                      : t('profile.avatarSaveFailed', 'Failed to save avatar'),
+                  );
+                });
             }
           }}
           onSave={handleSave}
@@ -318,11 +310,7 @@ const ProfileEditPage: React.FC = () => {
               </Alert>
             )}
             {passwordSuccess && (
-              <Alert
-                severity="success"
-                sx={{ mb: 2 }}
-                onClose={() => setPasswordSuccess(false)}
-              >
+              <Alert severity="success" sx={{ mb: 2 }} onClose={() => setPasswordSuccess(false)}>
                 {shouldShowSetPassword
                   ? t('profile.setPasswordSuccess')
                   : t('profile.changePasswordSuccess')}
@@ -347,15 +335,8 @@ const ProfileEditPage: React.FC = () => {
                     ),
                     endAdornment: (
                       <InputAdornment position="end">
-                        <IconButton
-                          onClick={() => togglePasswordVisibility('current')}
-                          edge="end"
-                        >
-                          {showPasswords.current ? (
-                            <VisibilityOff />
-                          ) : (
-                            <Visibility />
-                          )}
+                        <IconButton onClick={() => togglePasswordVisibility('current')} edge="end">
+                          {showPasswords.current ? <VisibilityOff /> : <Visibility />}
                         </IconButton>
                       </InputAdornment>
                     ),
@@ -374,10 +355,7 @@ const ProfileEditPage: React.FC = () => {
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
-                      <IconButton
-                        onClick={() => togglePasswordVisibility('new')}
-                        edge="end"
-                      >
+                      <IconButton onClick={() => togglePasswordVisibility('new')} edge="end">
                         {showPasswords.new ? <VisibilityOff /> : <Visibility />}
                       </IconButton>
                     </InputAdornment>
@@ -404,15 +382,8 @@ const ProfileEditPage: React.FC = () => {
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
-                      <IconButton
-                        onClick={() => togglePasswordVisibility('confirm')}
-                        edge="end"
-                      >
-                        {showPasswords.confirm ? (
-                          <VisibilityOff />
-                        ) : (
-                          <Visibility />
-                        )}
+                      <IconButton onClick={() => togglePasswordVisibility('confirm')} edge="end">
+                        {showPasswords.confirm ? <VisibilityOff /> : <Visibility />}
                       </IconButton>
                     </InputAdornment>
                   ),
@@ -424,9 +395,7 @@ const ProfileEditPage: React.FC = () => {
                   variant="contained"
                   color="primary"
                   disabled={isChangingPassword}
-                  startIcon={
-                    isChangingPassword ? <CircularProgress size={20} /> : null
-                  }
+                  startIcon={isChangingPassword ? <CircularProgress size={20} /> : null}
                   fullWidth
                 >
                   {isChangingPassword
@@ -442,7 +411,6 @@ const ProfileEditPage: React.FC = () => {
           </CardContent>
         </Card>
       </div>
-
     </section>
   );
 };

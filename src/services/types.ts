@@ -6,6 +6,61 @@ export interface ApiError {
   status?: number;
 }
 
+export interface CustomFieldDto {
+  key: string;
+  value: string;
+}
+
+export interface EquipmentSetDto {
+  id: string;
+  name: string;
+  bowType?: string;
+  manufacturer?: string;
+  model?: string;
+  drawWeight?: string;
+  arrowLength?: string;
+  arrowSpine?: string;
+  arrowWeight?: string;
+  arrowMaterial?: string;
+  customFields?: CustomFieldDto[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateEquipmentSetDto {
+  name: string;
+  bowType?: string;
+  manufacturer?: string;
+  model?: string;
+  drawWeight?: string;
+  arrowLength?: string;
+  arrowSpine?: string;
+  arrowWeight?: string;
+  arrowMaterial?: string;
+  customFields?: CustomFieldDto[];
+}
+
+export interface TrainingSessionDto {
+  id: string;
+  date: string;
+  shotsCount?: number;
+  distance?: string;
+  targetType?: string;
+  equipmentSetId?: string;
+  customFields?: CustomFieldDto[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateTrainingSessionDto {
+  date: string;
+  shotsCount?: number;
+  distance?: string;
+  targetType?: string;
+  equipmentSetId?: string;
+  customFields?: CustomFieldDto[];
+}
+
 /** User stub returned in tournament/patrol createdBy and similar. */
 export interface CreatedBy {
   id: string;

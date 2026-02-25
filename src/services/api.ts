@@ -32,6 +32,10 @@ import type {
   CreateTournamentApplicationDto,
   UpdateBowCategoryDto,
   UpdateRuleDto,
+  EquipmentSetDto,
+  CreateEquipmentSetDto,
+  TrainingSessionDto,
+  CreateTrainingSessionDto,
 } from './types';
 
 interface RequestOptions extends RequestInit {
@@ -967,6 +971,76 @@ class ApiService {
   async deleteAttachment(tournamentId: string, filename: string): Promise<void> {
     return await this.request<void>(`/upload/attachment/${tournamentId}/${filename}`, {
       method: 'DELETE',
+    });
+  }
+
+  // Equipment Sets
+
+  async getEquipmentSets(): Promise<EquipmentSetDto[]> {
+    return this.request<EquipmentSetDto[]>('/equipment-sets');
+  }
+
+  async createEquipmentSet(dto: CreateEquipmentSetDto): Promise<EquipmentSetDto> {
+    return this.request<EquipmentSetDto>('/equipment-sets', {
+      method: 'POST',
+      body: JSON.stringify(dto),
+    });
+  }
+
+  async updateEquipmentSet(
+    id: string,
+    dto: Partial<CreateEquipmentSetDto>,
+  ): Promise<EquipmentSetDto> {
+    return this.request<EquipmentSetDto>(`/equipment-sets/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(dto),
+    });
+  }
+
+  async deleteEquipmentSet(id: string): Promise<void> {
+    return this.request<void>(`/equipment-sets/${id}`, { method: 'DELETE' });
+  }
+
+  async bulkSyncEquipmentSets(sets: CreateEquipmentSetDto[]): Promise<EquipmentSetDto[]> {
+    return this.request<EquipmentSetDto[]>('/equipment-sets/bulk-sync', {
+      method: 'POST',
+      body: JSON.stringify(sets),
+    });
+  }
+
+  // Training Sessions
+
+  async getTrainingSessions(): Promise<TrainingSessionDto[]> {
+    return this.request<TrainingSessionDto[]>('/trainings');
+  }
+
+  async createTrainingSession(dto: CreateTrainingSessionDto): Promise<TrainingSessionDto> {
+    return this.request<TrainingSessionDto>('/trainings', {
+      method: 'POST',
+      body: JSON.stringify(dto),
+    });
+  }
+
+  async updateTrainingSession(
+    id: string,
+    dto: Partial<CreateTrainingSessionDto>,
+  ): Promise<TrainingSessionDto> {
+    return this.request<TrainingSessionDto>(`/trainings/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(dto),
+    });
+  }
+
+  async deleteTrainingSession(id: string): Promise<void> {
+    return this.request<void>(`/trainings/${id}`, { method: 'DELETE' });
+  }
+
+  async bulkSyncTrainingSessions(
+    sessions: CreateTrainingSessionDto[],
+  ): Promise<TrainingSessionDto[]> {
+    return this.request<TrainingSessionDto[]>('/trainings/bulk-sync', {
+      method: 'POST',
+      body: JSON.stringify(sessions),
     });
   }
 }

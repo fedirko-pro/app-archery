@@ -6,6 +6,8 @@
     "clubs": "Clubes",
     "myApplications": "Mis solicitudes",
     "myAchievements": "Mis logros (Demo)",
+    "myTrainings": "Mis Entrenamientos",
+    "myEquipment": "Mi Equipamiento",
     "converter": "Conversor",
     "categories": "Categorías",
     "rules": "Reglas",
@@ -337,7 +339,24 @@
       }
     }
   },
-  "forms": { "email": "Email", "password": "Contraseña", "firstName": "Nombre", "lastName": "Apellido", "currentPassword": "Contraseña actual", "newPassword": "Nueva contraseña", "confirmPassword": "Confirmar nueva contraseña", "bio": "Bio", "location": "Ubicación", "website": "Sitio web", "profilePictureUrl": "URL de la foto de perfil", "federationNumber": "Número de federación", "categories": "Categorías favoritas", "selectCategories": "Selecciona categorías favoritas", "applicationLanguage": "Idioma de la aplicación", "role": "Rol" },
+  "forms": {
+    "email": "Email",
+    "password": "Contraseña",
+    "firstName": "Nombre",
+    "lastName": "Apellido",
+    "currentPassword": "Contraseña actual",
+    "newPassword": "Nueva contraseña",
+    "confirmPassword": "Confirmar nueva contraseña",
+    "bio": "Bio",
+    "location": "Ubicación",
+    "website": "Sitio web",
+    "profilePictureUrl": "URL de la foto de perfil",
+    "federationNumber": "Número de federación",
+    "categories": "Categorías favoritas",
+    "selectCategories": "Selecciona categorías favoritas",
+    "applicationLanguage": "Idioma de la aplicación",
+    "role": "Rol"
+  },
   "reset": {
     "invalidLink": "Enlace de restablecimiento inválido. Solicita un nuevo restablecimiento de contraseña.",
     "minLength": "La contraseña debe tener al menos 8 caracteres",
@@ -407,7 +426,19 @@
     "subtitle": "La página que buscas puede haber sido eliminada o no estar disponible temporalmente.",
     "goHome": "Ir al inicio"
   },
-  "common": { "or": "o", "cancel": "Cancelar", "update": "Actualizar", "create": "Crear", "back": "Atrás", "download": "Descargar", "backToList": "Volver al listado", "save": "Guardar", "saving": "Guardando...", "delete": "Eliminar", "deleting": "Eliminando..." },
+  "common": {
+    "or": "o",
+    "cancel": "Cancelar",
+    "update": "Actualizar",
+    "create": "Crear",
+    "back": "Atrás",
+    "download": "Descargar",
+    "backToList": "Volver al listado",
+    "save": "Guardar",
+    "saving": "Guardando...",
+    "delete": "Eliminar",
+    "deleting": "Eliminando..."
+  },
   "auth": {
     "logout": "Cerrar sesión",
     "signIn": "Iniciar sesión",
@@ -449,10 +480,26 @@
     "meter": "Metro"
   },
   "converter": {
-    "inchCm": { "short": "Pulgada - cm", "long": "Pulgada - Centímetro", "desc": "Usado para medir longitud de arco y flecha, etc." },
-    "poundKg": { "short": "Libra - kg", "long": "Libra - Kilogramo", "desc": "Usado para medir la potencia del arco" },
-    "grainG": { "short": "Grain - g", "long": "Grain - Gramo", "desc": "Usado para medir el peso de la flecha/punta, etc." },
-    "yardM": { "short": "Yarda - m", "long": "Yarda - Metro", "desc": "Conversiones de distancia de tiro" }
+    "inchCm": {
+      "short": "Pulgada - cm",
+      "long": "Pulgada - Centímetro",
+      "desc": "Usado para medir longitud de arco y flecha, etc."
+    },
+    "poundKg": {
+      "short": "Libra - kg",
+      "long": "Libra - Kilogramo",
+      "desc": "Usado para medir la potencia del arco"
+    },
+    "grainG": {
+      "short": "Grain - g",
+      "long": "Grain - Gramo",
+      "desc": "Usado para medir el peso de la flecha/punta, etc."
+    },
+    "yardM": {
+      "short": "Yarda - m",
+      "long": "Yarda - Metro",
+      "desc": "Conversiones de distancia de tiro"
+    }
   },
   "clubs": {
     "clubLogo": "Logo del Club",
@@ -469,5 +516,3 @@
     "installAria": "Aviso para instalar la aplicación"
   }
 }
-
-

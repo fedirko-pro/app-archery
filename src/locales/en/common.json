@@ -1,12 +1,14 @@
 {
   "footer": { "about": "About app" },
-  
+
   "menu": { "admin": "Admin", "myProfile": "My profile ({{name}})" },
   "nav": {
     "tournaments": "Tournaments",
     "clubs": "Clubs",
     "myApplications": "My applications",
     "myAchievements": "My achievements (Demo)",
+    "myTrainings": "My Trainings",
+    "myEquipment": "My Equipment",
     "converter": "Converter",
     "categories": "Categories",
     "rules": "Rules",
@@ -374,11 +376,67 @@
     }
   },
   "trainings": {
-    "title": "My trainings",
+    "title": "My Trainings",
     "info": "Chapter \"My trainings\" allows to create any amount of personal trainings, select target, distance, arrows count, etc.\nFor every training detailed statistic is available. User can share his stats.\nIMPORTANT: information from training is not sending anywhere and is stored only on your device (at least now)",
     "deleteQ": "Delete training?",
     "deleteHint": "All results for this training will be deleted",
-    "add": "Add training"
+    "add": "Add training",
+    "empty": "No training sessions yet. Add your first one!",
+    "session": "Training session",
+    "date": "Date",
+    "shotsCount": "Number of shots",
+    "distance": "Distance",
+    "targetType": "Target type",
+    "equipmentSet": "Equipment set",
+    "noEquipment": "No equipment selected",
+    "customFields": "Additional fields",
+    "addCustomField": "Add field",
+    "fieldKey": "Field name",
+    "fieldValue": "Value",
+    "deleteConfirm": "Are you sure you want to delete this training session?",
+    "saveError": "Failed to save training session",
+    "deleteError": "Failed to delete training session",
+    "syncing": "Synchronizing...",
+    "syncSuccess": "Data synchronized successfully",
+    "syncError": "Synchronization failed"
+  },
+  "equipment": {
+    "title": "My Equipment",
+    "empty": "No equipment sets yet. Add your first bow/crossbow set!",
+    "addSet": "Add set",
+    "editSet": "Edit set",
+    "setName": "Set name",
+    "bowType": "Type",
+    "bow": "Bow",
+    "crossbow": "Crossbow",
+    "manufacturer": "Manufacturer",
+    "model": "Model",
+    "drawWeight": "Draw weight",
+    "arrowGroup": "Arrow",
+    "arrowLength": "Arrow length",
+    "arrowSpine": "Spine",
+    "arrowWeight": "Arrow weight",
+    "arrowMaterial": "Arrow material",
+    "length": "Length",
+    "weight": "Weight",
+    "material": "Material",
+    "customFields": "Additional fields",
+    "addCustomField": "Add field",
+    "fieldKey": "Field name",
+    "fieldValue": "Value",
+    "deleteConfirm": "Are you sure you want to delete this equipment set?",
+    "saveError": "Failed to save equipment set",
+    "deleteError": "Failed to delete equipment set",
+    "nameRequired": "Set name is required"
+  },
+  "localData": {
+    "localStorageBadge": "Local data on device",
+    "syncButton": "Synchronize",
+    "syncDialogTitle": "Data storage",
+    "syncDialogText": "Your data is stored securely ONLY on this device. To save and synchronize across devices, you need to log in.",
+    "syncDialogAction": "Sign in to sync",
+    "syncToggleLabel": "Sync trainings and equipment",
+    "syncToggleDescription": "When enabled, your training sessions and equipment sets are automatically synchronized with your account when online."
   },
   "units": {
     "inch": "Inch",
@@ -412,8 +470,37 @@
       "desc": "Range distance conversions"
     }
   },
-  "common": { "or": "or", "cancel": "Cancel", "update": "Update", "create": "Create", "back": "Back", "download": "Download", "backToList": "Back to list", "save": "Save", "saving": "Saving...", "delete": "Delete", "deleting": "Deleting..." },
-  "forms": { "email": "Email", "password": "Password", "firstName": "First name", "lastName": "Last name", "currentPassword": "Current Password", "newPassword": "New Password", "confirmPassword": "Confirm New Password", "bio": "Bio", "location": "Location", "website": "Website", "profilePictureUrl": "Profile Picture URL", "federationNumber": "Federation Number", "categories": "Favorite categories", "selectCategories": "Select favorite categories", "applicationLanguage": "Application language", "role": "Role" },
+  "common": {
+    "or": "or",
+    "cancel": "Cancel",
+    "update": "Update",
+    "create": "Create",
+    "back": "Back",
+    "download": "Download",
+    "backToList": "Back to list",
+    "save": "Save",
+    "saving": "Saving...",
+    "delete": "Delete",
+    "deleting": "Deleting..."
+  },
+  "forms": {
+    "email": "Email",
+    "password": "Password",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm New Password",
+    "bio": "Bio",
+    "location": "Location",
+    "website": "Website",
+    "profilePictureUrl": "Profile Picture URL",
+    "federationNumber": "Federation Number",
+    "categories": "Favorite categories",
+    "selectCategories": "Select favorite categories",
+    "applicationLanguage": "Application language",
+    "role": "Role"
+  },
   "reset": {
     "invalidLink": "Invalid reset link. Please request a new password reset.",
     "minLength": "Password must be at least 8 characters long",
@@ -484,7 +571,7 @@
     "subtitle": "The page you are looking for might have been removed or is temporarily unavailable.",
     "goHome": "Go to Home"
   },
-  
+
   "auth": {
     "logout": "Log out",
     "signIn": "Sign In",
@@ -523,5 +610,3 @@
     "installAria": "Install app prompt"
   }
 }
-
-

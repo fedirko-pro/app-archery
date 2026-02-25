@@ -28,6 +28,8 @@ import Encyclopedia from '../../pages/Encyclopedia';
 // TODO: Settings temporarily disabled - functionality moved to Profile
 // import Settings from '../Settings/Settings.tsx';
 import GoogleCallback from '../../pages/google-callback/google-callback';
+import MyEquipmentPage from '../../pages/MyEquipment';
+import MyTrainingsPage from '../../pages/MyTrainings';
 import NotFound from '../../pages/NotFound';
 import Profile from '../../pages/profile/profile';
 import ProfileEditPage from '../../pages/profile/profile-edit-page';
@@ -45,7 +47,12 @@ import TournamentEdit from '../../pages/tournament/tournament-edit/tournament-ed
 import TournamentList from '../../pages/tournament/tournament-list/tournament-list';
 import UserApplications from '../../pages/tournament/user-applications/user-applications';
 import Training from '../../pages/Trainings';
-import { isRtlLanguage, normalizeAppLang, toI18nLang, getDefaultAppLang } from '../../utils/i18n-lang';
+import {
+  isRtlLanguage,
+  normalizeAppLang,
+  toI18nLang,
+  getDefaultAppLang,
+} from '../../utils/i18n-lang';
 
 function LangRedirect({ path }: { path: string }) {
   const location = useLocation();
@@ -152,25 +159,36 @@ function Content() {
           <Route path="divisions" element={<Divisions />} />
           <Route path="rules" element={<Rules />} />
           <Route path="encyclopedia" element={<Encyclopedia />} />
-          <Route path="trainings" element={<Training />} />
+          <Route path="trainings" element={<MyTrainingsPage />} />
+          <Route path="equipment" element={<MyEquipmentPage />} />
+          <Route path="trainings-legacy" element={<Training />} />
           <Route path="tournaments">
             <Route index element={<TournamentList />} />
-            <Route path="create" element={
-              <ProtectedAdminRoute>
-                <TournamentCreate />
-              </ProtectedAdminRoute>
-            } />
+            <Route
+              path="create"
+              element={
+                <ProtectedAdminRoute>
+                  <TournamentCreate />
+                </ProtectedAdminRoute>
+              }
+            />
             <Route path=":tournamentId" element={<TournamentDetail />} />
-            <Route path=":tournamentId/edit" element={
-              <ProtectedAdminRoute>
-                <TournamentEdit />
-              </ProtectedAdminRoute>
-            } />
-            <Route path=":tournamentId/patrols" element={
-              <ProtectedAdminRoute allowedRoles={ROLES_CAN_DELETE_AND_MANAGE_APPS}>
-                <PatrolsPage />
-              </ProtectedAdminRoute>
-            } />
+            <Route
+              path=":tournamentId/edit"
+              element={
+                <ProtectedAdminRoute>
+                  <TournamentEdit />
+                </ProtectedAdminRoute>
+              }
+            />
+            <Route
+              path=":tournamentId/patrols"
+              element={
+                <ProtectedAdminRoute allowedRoles={ROLES_CAN_DELETE_AND_MANAGE_APPS}>
+                  <PatrolsPage />
+                </ProtectedAdminRoute>
+              }
+            />
           </Route>
           <Route path="apply/:tournamentId" element={<PublicApplication />} />
           <Route path="applications" element={<UserApplications />} />

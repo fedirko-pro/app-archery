@@ -1,12 +1,14 @@
 {
   "footer": { "about": "Informazioni sull'app" },
-  
+
   "menu": { "admin": "Admin", "myProfile": "Il mio profilo ({{name}})" },
   "nav": {
     "tournaments": "Tornei",
     "clubs": "Club",
     "myApplications": "Le mie domande",
     "myAchievements": "I miei traguardi (Demo)",
+    "myTrainings": "I miei allenamenti",
+    "myEquipment": "Il mio equipaggiamento",
     "converter": "Convertitore",
     "categories": "Categorie",
     "rules": "Regole",
@@ -338,7 +340,24 @@
       }
     }
   },
-  "forms": { "email": "Email", "password": "Password", "firstName": "Nome", "lastName": "Cognome", "currentPassword": "Password attuale", "newPassword": "Nuova password", "confirmPassword": "Conferma nuova password", "bio": "Bio", "location": "Località", "website": "Sito web", "profilePictureUrl": "URL immagine profilo", "federationNumber": "Numero di federazione", "categories": "Categorie preferite", "selectCategories": "Seleziona categorie preferite", "applicationLanguage": "Lingua dell'applicazione", "role": "Ruolo" },
+  "forms": {
+    "email": "Email",
+    "password": "Password",
+    "firstName": "Nome",
+    "lastName": "Cognome",
+    "currentPassword": "Password attuale",
+    "newPassword": "Nuova password",
+    "confirmPassword": "Conferma nuova password",
+    "bio": "Bio",
+    "location": "Località",
+    "website": "Sito web",
+    "profilePictureUrl": "URL immagine profilo",
+    "federationNumber": "Numero di federazione",
+    "categories": "Categorie preferite",
+    "selectCategories": "Seleziona categorie preferite",
+    "applicationLanguage": "Lingua dell'applicazione",
+    "role": "Ruolo"
+  },
   "reset": {
     "invalidLink": "Link di reimpostazione non valido. Richiedi una nuova reimpostazione della password.",
     "minLength": "La password deve contenere almeno 8 caratteri",
@@ -447,7 +466,19 @@
       "desc": "Conversioni di distanza del campo"
     }
   },
-  "common": { "or": "oppure", "cancel": "Annulla", "update": "Aggiorna", "create": "Crea", "back": "Indietro", "download": "Scarica", "backToList": "Torna all'elenco", "save": "Salva", "saving": "Salvataggio...", "delete": "Elimina", "deleting": "Eliminazione..." },
+  "common": {
+    "or": "oppure",
+    "cancel": "Annulla",
+    "update": "Aggiorna",
+    "create": "Crea",
+    "back": "Indietro",
+    "download": "Scarica",
+    "backToList": "Torna all'elenco",
+    "save": "Salva",
+    "saving": "Salvataggio...",
+    "delete": "Elimina",
+    "deleting": "Eliminazione..."
+  },
   "auth": {
     "logout": "Esci",
     "signIn": "Accedi",
@@ -482,5 +513,3 @@
     "installAria": "Avviso per installare l'app"
   }
 }
-
-

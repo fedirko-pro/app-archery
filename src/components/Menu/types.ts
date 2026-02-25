@@ -8,6 +8,8 @@ export interface MenuSection {
   title?: string;
   items: MenuItem[];
   isAdmin?: boolean;
+  /** Render a horizontal separator before this section */
+  divider?: boolean;
 }
 
 export interface MenuProps {

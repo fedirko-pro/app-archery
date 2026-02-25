@@ -50,6 +50,14 @@ const UserMenu: React.FC = () => {
       label: t('menu.myProfile', { name: (user?.firstName || '') + ' ' + (user?.lastName || '') }),
     },
     {
+      link: '/trainings',
+      label: t('nav.myTrainings'),
+    },
+    {
+      link: '/equipment',
+      label: t('nav.myEquipment'),
+    },
+    {
       link: '/applications',
       label: t('nav.myApplications'),
     },
@@ -57,30 +65,27 @@ const UserMenu: React.FC = () => {
       link: '/achievements',
       label: t('nav.myAchievements'),
     },
-    // TODO: Settings temporarily disabled - functionality moved to Profile
-    // {
-    //   link: '/settings',
-    //   label: 'Settings',
-    // },
   ];
 
-  const unauthenticatedMenuItems = [
+  const unauthenticatedSections: MenuSection[] = [
     {
-      link: '/signin',
-      label: t('auth.signIn'),
+      items: [
+        { link: '/trainings', label: t('nav.myTrainings') },
+        { link: '/equipment', label: t('nav.myEquipment') },
+      ],
     },
     {
-      link: '/signup',
-      label: t('auth.signUp'),
+      divider: true,
+      items: [
+        { link: '/signin', label: t('auth.signIn') },
+        { link: '/signup', label: t('auth.signUp') },
+      ],
     },
   ];
 
-  const sections: MenuSection[] = [
-    {
-      items: isAuthenticated ? authenticatedMenuItems : unauthenticatedMenuItems,
-      isAdmin: false,
-    },
-  ];
+  const sections: MenuSection[] = isAuthenticated
+    ? [{ items: authenticatedMenuItems }]
+    : unauthenticatedSections;
 
   return (
     <>
@@ -104,7 +109,7 @@ const UserMenu: React.FC = () => {
               console.error('Avatar image failed to load:', user?.picture);
             }
             e.currentTarget.style.display = 'none';
-          }
+          },
         }}
       >
         {!user?.picture && user?.firstName ? user.firstName[0].toUpperCase() : null}

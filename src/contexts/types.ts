@@ -25,6 +25,7 @@ export interface User {
   app_language?: AppLanguageCode;
   /** Alternative backend field */
   language?: AppLanguageCode;
+  syncTrainingsAndEquipment?: boolean;
 }
 
 export interface LoginCredentials {

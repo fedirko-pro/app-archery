@@ -14,6 +14,7 @@ import InstallPrompt from './components/InstallPrompt';
 import OfflineBanner from './components/OfflineBanner';
 import { AuthProvider } from './contexts/auth-context';
 import { ErrorFeedbackProvider } from './contexts/error-feedback-context';
+import { LocalDataProvider } from './contexts/local-data-context';
 
 const App: React.FC = () => {
   return (
@@ -21,13 +22,15 @@ const App: React.FC = () => {
       <Router>
         <ErrorFeedbackProvider>
           <AuthProvider>
-            <EnvError />
-            <OfflineBanner />
-            <InstallPrompt />
-            <Header />
-            <Content />
-            {!import.meta.env.PROD && <I18nDevOverlay />}
-            <Footer />
+            <LocalDataProvider>
+              <EnvError />
+              <OfflineBanner />
+              <InstallPrompt />
+              <Header />
+              <Content />
+              {!import.meta.env.PROD && <I18nDevOverlay />}
+              <Footer />
+            </LocalDataProvider>
           </AuthProvider>
         </ErrorFeedbackProvider>
       </Router>

@@ -1,4 +1,13 @@
-import { TextField, Button, Box, CircularProgress } from '@mui/material';
+import {
+  TextField,
+  Button,
+  Box,
+  CircularProgress,
+  FormControlLabel,
+  Switch,
+  Typography,
+  Divider,
+} from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
 import Chip from '@mui/material/Chip';
 import MenuItem from '@mui/material/MenuItem';
@@ -21,6 +30,7 @@ interface ProfileEditFormProps {
   onCancel: () => void;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onCategoriesChange: (categories: string[]) => void;
+  onSyncToggleChange?: (value: boolean) => void;
   onPictureChange?: (dataUrl: string | null) => void;
 }
 
@@ -34,6 +44,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
   onCancel,
   onChange,
   onCategoriesChange,
+  onSyncToggleChange,
   onPictureChange,
 }) => {
   const { t } = useTranslation('common');
@@ -50,7 +61,9 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
         const codes = (data || [])
           .map((c) => c.code)
           .filter((code): code is string => Boolean(code));
-        const uniqueCodes = Array.from(new Set(codes.map((c) => c.toUpperCase()))).sort((a, b) => a.localeCompare(b));
+        const uniqueCodes = Array.from(new Set(codes.map((c) => c.toUpperCase()))).sort((a, b) =>
+          a.localeCompare(b),
+        );
         setCategoryOptions(uniqueCodes);
       } catch (e) {
         console.error('Failed to load categories:', e);
@@ -74,7 +87,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
     loadCategories();
     loadClubs();
   }, []);
-  
+
   return (
     <div className="profile-edit">
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
@@ -124,7 +137,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
           margin="normal"
           placeholder={t('profile.bioPlaceholder', 'Tell us about yourself...')}
         />
-      
+
         <TextField
           label={t('forms.location', 'Location')}
           name="location"
@@ -256,14 +269,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
           renderTags={(value: string[], getTagProps) =>
             value.map((option: string, index: number) => {
               const { key, ...otherProps } = getTagProps({ index });
-              return (
-                <Chip
-                  key={key}
-                  variant="outlined"
-                  label={option}
-                  {...otherProps}
-                />
-              );
+              return <Chip key={key} variant="outlined" label={option} {...otherProps} />;
             })
           }
           renderInput={(params) => (
@@ -276,6 +282,26 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
           )}
           filterSelectedOptions
         />
+
+        {!isAdminView && (
+          <>
+            <Divider sx={{ my: 1 }} />
+            <Box>
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={profileData.syncTrainingsAndEquipment ?? false}
+                    onChange={(e) => onSyncToggleChange?.(e.target.checked)}
+                  />
+                }
+                label={t('localData.syncToggleLabel')}
+              />
+              <Typography variant="caption" color="text.secondary" display="block">
+                {t('localData.syncToggleDescription')}
+              </Typography>
+            </Box>
+          </>
+        )}
 
         {isAdminView && canChangeRole && (
           <TextField
@@ -290,19 +316,18 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
           >
             <MenuItem value="user">{t('accessControl.roleUser', 'User')}</MenuItem>
             <MenuItem value="club_admin">{t('accessControl.roleClubAdmin', 'Club Admin')}</MenuItem>
-            <MenuItem value="federation_admin">{t('accessControl.roleFederationAdmin', 'Federation Admin')}</MenuItem>
-            <MenuItem value="general_admin">{t('accessControl.roleGeneralAdmin', 'General Admin')}</MenuItem>
+            <MenuItem value="federation_admin">
+              {t('accessControl.roleFederationAdmin', 'Federation Admin')}
+            </MenuItem>
+            <MenuItem value="general_admin">
+              {t('accessControl.roleGeneralAdmin', 'General Admin')}
+            </MenuItem>
           </TextField>
         )}
       </Box>
 
       <Box sx={{ mt: 2, display: 'flex', gap: 2, justifyContent: 'right' }}>
-        <Button
-          variant="outlined"
-          color="secondary"
-          onClick={onCancel}
-          disabled={isSaving}
-        >
+        <Button variant="outlined" color="secondary" onClick={onCancel} disabled={isSaving}>
           {t('common.cancel')}
         </Button>
 

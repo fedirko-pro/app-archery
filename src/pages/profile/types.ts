@@ -12,6 +12,7 @@ export interface ProfileData {
   categories?: string[];
   role?: string;
   appLanguage?: 'pt' | 'en' | 'it' | 'ua' | 'es';
+  syncTrainingsAndEquipment?: boolean;
 }
 
 export interface PasswordChangeForm {

@@ -45,6 +45,18 @@ export const Menu: React.FC<MenuProps> = ({
         <ul className="menu_list" style={{ pointerEvents: 'auto' }}>
           {sections.map((section, sectionIndex) => (
             <React.Fragment key={sectionIndex}>
+              {section.divider && !section.isAdmin && (
+                <li className="menu_separator" style={{ pointerEvents: 'auto' }}>
+                  <hr
+                    style={{
+                      border: 'none',
+                      height: '1px',
+                      backgroundColor: '#333',
+                      margin: '8px 32px',
+                    }}
+                  />
+                </li>
+              )}
               {section.isAdmin && (
                 <>
                   <li className="menu_separator" style={{ pointerEvents: 'auto' }}>
@@ -104,17 +116,29 @@ export const Menu: React.FC<MenuProps> = ({
             </React.Fragment>
           ))}
           {onLogout && (
-            <li style={{ pointerEvents: 'auto' }}>
-              <button
-                onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  onLogout();
-                }}
-              >
-                {t('auth.logout')}
-              </button>
-            </li>
+            <>
+              <li className="menu_separator" style={{ pointerEvents: 'auto' }}>
+                <hr
+                  style={{
+                    border: 'none',
+                    height: '1px',
+                    backgroundColor: '#333',
+                    margin: '8px 32px',
+                  }}
+                />
+              </li>
+              <li style={{ pointerEvents: 'auto' }}>
+                <button
+                  onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    onLogout();
+                  }}
+                >
+                  {t('auth.logout')}
+                </button>
+              </li>
+            </>
           )}
         </ul>
         {footer && <div className="menu_footer">{footer}</div>}

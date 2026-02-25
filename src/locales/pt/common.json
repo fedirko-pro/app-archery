@@ -7,6 +7,8 @@
     "clubs": "Clubes",
     "myApplications": "Minhas inscrições",
     "myAchievements": "Minhas conquistas (Demo)",
+    "myTrainings": "Meus Treinos",
+    "myEquipment": "Meu Equipamento",
     "converter": "Conversor",
     "categories": "Categorias",
     "rules": "Regras",
@@ -353,7 +355,24 @@
       }
     }
   },
-  "forms": { "email": "Email", "password": "Senha", "firstName": "Nome", "lastName": "Sobrenome", "currentPassword": "Senha atual", "newPassword": "Nova senha", "confirmPassword": "Confirmar nova senha", "bio": "Bio", "location": "Localização", "website": "Website", "profilePictureUrl": "URL da foto de perfil", "federationNumber": "Número da federação", "categories": "Categorias favoritas", "selectCategories": "Selecione categorias favoritas", "applicationLanguage": "Idioma do aplicativo", "role": "Função" },
+  "forms": {
+    "email": "Email",
+    "password": "Senha",
+    "firstName": "Nome",
+    "lastName": "Sobrenome",
+    "currentPassword": "Senha atual",
+    "newPassword": "Nova senha",
+    "confirmPassword": "Confirmar nova senha",
+    "bio": "Bio",
+    "location": "Localização",
+    "website": "Website",
+    "profilePictureUrl": "URL da foto de perfil",
+    "federationNumber": "Número da federação",
+    "categories": "Categorias favoritas",
+    "selectCategories": "Selecione categorias favoritas",
+    "applicationLanguage": "Idioma do aplicativo",
+    "role": "Função"
+  },
   "reset": {
     "invalidLink": "Link de redefinição inválido. Solicite uma nova redefinição de senha.",
     "minLength": "A senha deve ter pelo menos 8 caracteres",
@@ -462,7 +481,19 @@
       "desc": "Conversões de distância de tiro"
     }
   },
-  "common": { "or": "ou", "cancel": "Cancelar", "update": "Atualizar", "create": "Criar", "back": "Voltar", "download": "Baixar", "backToList": "Voltar à lista", "save": "Salvar", "saving": "Salvando...", "delete": "Excluir", "deleting": "Excluindo..." },
+  "common": {
+    "or": "ou",
+    "cancel": "Cancelar",
+    "update": "Atualizar",
+    "create": "Criar",
+    "back": "Voltar",
+    "download": "Baixar",
+    "backToList": "Voltar à lista",
+    "save": "Salvar",
+    "saving": "Salvando...",
+    "delete": "Excluir",
+    "deleting": "Excluindo..."
+  },
   "auth": {
     "logout": "Sair",
     "signIn": "Entrar",
@@ -497,5 +528,3 @@
     "installAria": "Aviso para instalar o aplicativo"
   }
 }
-
-
