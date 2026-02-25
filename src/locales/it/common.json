@@ -9,6 +9,7 @@
     "myAchievements": "I miei traguardi (Demo)",
     "myTrainings": "I miei allenamenti",
     "myEquipment": "Il mio equipaggiamento",
+    "myStatistics": "Le mie statistiche",
     "converter": "Convertitore",
     "categories": "Categorie",
     "rules": "Regole",
@@ -139,7 +140,7 @@
     "converter": { "title": "Convertitore delle misure di tiro con l'arco più comuni" },
     "about": {
       "title": "Informazioni su questa app",
-      "intro": "UArchery è un'applicazione web completa progettata per aiutare le federazioni di tiro con l'arco a gestire tornei, partecipanti e competizioni in modo efficiente. Costruita con tecnologie moderne, fornisce una soluzione completa per l'organizzazione di tornei dalla registrazione alla generazione di pattuglie.",
+      "intro": "UArchery è un'applicazione web completa per federazioni di tiro con l'arco, club e arcieri individuali. Gestisci tornei e partecipanti, registra le sessioni di allenamento, analizza le statistiche di tiro e archivia le attrezzature — tutto in un unico posto, con supporto offline.",
       "currentTitle": "Funzionalità attuali:",
       "current": {
         "auth": "Autenticazione e autorizzazione - Autenticazione basata su JWT con Google OAuth, reset password e controllo accessi basato su ruoli",
@@ -155,11 +156,13 @@
         "converter": "Convertitore unità - Convertire tra misure comuni di tiro con l'arco (pollici/cm, libbre/kg, grani/grammi, iarde/metri)",
         "uploads": "Sistema caricamento file - Elaborazione immagini per avatar e banner, gestione allegati per tornei",
         "multilang": "Supporto multilingua - Disponibile in inglese, ucraino, spagnolo, italiano e portoghese",
-        "pwa": "Applicazione web progressiva - PWA installabile con funzionalità offline"
+        "pwa": "Applicazione web progressiva - PWA installabile con funzionalità offline",
+        "trainingLog": "Registro allenamenti - Registra e gestisci sessioni di allenamento con data, distanza, tipo di bersaglio e numero di frecce. Funziona offline con sincronizzazione automatica",
+        "equipment": "Gestione attrezzatura - Archivia e gestisci set di attrezzatura con specifiche dettagliate (peso di trazione, spine delle frecce, lunghezza, materiale e altro)",
+        "statistics": "Le mie statistiche - Dashboard personale con frecce sparate per periodo, distanza percorsa, serie di allenamenti, abitudini, storico tornei e grafici mensili"
       },
       "plannedTitle": "Funzionalità pianificate:",
       "planned": {
-        "trainingLog": "Registro allenamenti - Tracciare sessioni di allenamento personali con statistiche dettagliate",
         "achievements": "Sistema risultati - Pagina demo disponibile, tracciamento completo in arrivo",
         "competitions": "Funzioni competizione - Gestione migliorata delle competizioni e punteggio",
         "duels": "Sfide amichevoli - Sfidare altri arcieri a duelli amichevoli",
@@ -511,5 +514,41 @@
     "installing": "Installazione…",
     "dismiss": "Non ora",
     "installAria": "Avviso per installare l'app"
+  },
+  "statistics": {
+    "title": "Le mie statistiche",
+    "signInBanner": {
+      "title": "Accedi per vedere le tue statistiche complete",
+      "subtitle": "Tieni traccia delle frecce sparate, delle sessioni di allenamento e dell'attività nei tornei",
+      "signIn": "Accedi",
+      "createAccount": "Crea account"
+    },
+    "sections": {
+      "activity": "Attività",
+      "arrows": "Frecce Sparate",
+      "distance": "Distanza Percorsa",
+      "habits": "Abitudini di Allenamento",
+      "tournaments": "Tornei"
+    },
+    "memberSince": "Membro dal",
+    "totalSessions": "Sessioni totali",
+    "currentStreak": "Serie attuale",
+    "weeks": "settimane di fila",
+    "thisWeek": "Questa settimana",
+    "thisMonth": "Questo mese",
+    "thisYear": "Quest'anno",
+    "total": "Totale",
+    "meters": "metri",
+    "avgShotsPerSession": "Media frecce / sessione",
+    "topDistance": "Distanza più allenata",
+    "topTargetType": "Bersaglio più usato",
+    "applied": "Inviate",
+    "approved": "Approvate",
+    "rejected": "Rifiutate",
+    "shotsByMonth": "Frecce per mese",
+    "sessionsByMonth": "Sessioni per mese",
+    "arrows": "frecce",
+    "sessions": "sessioni",
+    "loadError": "Impossibile caricare le statistiche"
   }
 }

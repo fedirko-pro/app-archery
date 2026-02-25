@@ -61,6 +61,46 @@ export interface CreateTrainingSessionDto {
   customFields?: CustomFieldDto[];
 }
 
+export interface ShotPeriodStats {
+  total: number;
+  thisWeek: number;
+  thisMonth: number;
+  thisYear: number;
+}
+
+export interface MetersPeriodStats {
+  total: number;
+  thisMonth: number;
+  thisYear: number;
+}
+
+export interface ApplicationStatsForUser {
+  total: number;
+  approved: number;
+  pending: number;
+  rejected: number;
+  withdrawn: number;
+}
+
+export interface MonthlyDataPoint {
+  month: string;
+  count: number;
+}
+
+export interface TrainingStatsDto {
+  registrationDate: string;
+  totalSessions: number;
+  currentStreakWeeks: number;
+  shots: ShotPeriodStats;
+  metersTraveled: MetersPeriodStats;
+  avgShotsPerSession: number;
+  mostUsedDistance: string | null;
+  mostUsedTargetType: string | null;
+  shotsByMonth: MonthlyDataPoint[];
+  sessionsByMonth: MonthlyDataPoint[];
+  tournamentApplications: ApplicationStatsForUser;
+}
+
 /** User stub returned in tournament/patrol createdBy and similar. */
 export interface CreatedBy {
   id: string;

@@ -36,6 +36,7 @@ import type {
   CreateEquipmentSetDto,
   TrainingSessionDto,
   CreateTrainingSessionDto,
+  TrainingStatsDto,
 } from './types';
 
 interface RequestOptions extends RequestInit {
@@ -1042,6 +1043,10 @@ class ApiService {
       method: 'POST',
       body: JSON.stringify(sessions),
     });
+  }
+
+  async getTrainingStats(): Promise<TrainingStatsDto> {
+    return this.request<TrainingStatsDto>('/trainings/stats');
   }
 }
 

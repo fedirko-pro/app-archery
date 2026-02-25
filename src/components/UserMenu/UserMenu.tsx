@@ -58,6 +58,10 @@ const UserMenu: React.FC = () => {
       label: t('nav.myEquipment'),
     },
     {
+      link: '/statistics',
+      label: t('nav.myStatistics'),
+    },
+    {
       link: '/applications',
       label: t('nav.myApplications'),
     },
@@ -72,6 +76,7 @@ const UserMenu: React.FC = () => {
       items: [
         { link: '/trainings', label: t('nav.myTrainings') },
         { link: '/equipment', label: t('nav.myEquipment') },
+        { link: '/statistics', label: t('nav.myStatistics') },
       ],
     },
     {

@@ -8,6 +8,7 @@
     "myAchievements": "Mis logros (Demo)",
     "myTrainings": "Mis Entrenamientos",
     "myEquipment": "Mi Equipamiento",
+    "myStatistics": "Mis Estadísticas",
     "converter": "Conversor",
     "categories": "Categorías",
     "rules": "Reglas",
@@ -138,7 +139,7 @@
     "converter": { "title": "Conversor de las medidas más comunes en arquería" },
     "about": {
       "title": "Acerca de esta aplicación",
-      "intro": "UArchery es una aplicación web integral diseñada para ayudar a las federaciones de tiro con arco a gestionar torneos, participantes y competiciones de manera eficiente. Construida con tecnologías modernas, proporciona una solución completa para la organización de torneos desde el registro hasta la generación de patrullas.",
+      "intro": "UArchery es una aplicación web integral para federaciones de tiro con arco, clubes y arqueros individuales. Gestiona torneos y participantes, registra sesiones de entrenamiento personales, analiza tus estadísticas de tiro y almacena equipamiento — todo en un solo lugar, con soporte offline.",
       "currentTitle": "Funcionalidades actuales:",
       "current": {
         "auth": "Autenticación y autorización - Autenticación basada en JWT con Google OAuth, restablecimiento de contraseña y control de acceso basado en roles",
@@ -154,11 +155,13 @@
         "converter": "Conversor de unidades - Convertir entre medidas comunes de tiro con arco (pulgadas/cm, libras/kg, granos/gramos, yardas/metros)",
         "uploads": "Sistema de carga de archivos - Procesamiento de imágenes para avatares y banners, gestión de adjuntos para torneos",
         "multilang": "Soporte multiidioma - Disponible en inglés, ucraniano, español, italiano y portugués",
-        "pwa": "Aplicación web progresiva - PWA instalable con capacidades offline"
+        "pwa": "Aplicación web progresiva - PWA instalable con capacidades offline",
+        "trainingLog": "Registro de entrenamientos - Registra y gestiona sesiones de entrenamiento con fecha, distancia, tipo de diana y número de flechas. Funciona offline con sincronización automática",
+        "equipment": "Gestión de equipamiento - Almacena y gestiona conjuntos de equipos con especificaciones detalladas (peso de tracción, spine de la flecha, longitud, material y más)",
+        "statistics": "Mis Estadísticas - Panel personal con flechas disparadas por período, distancia recorrida, racha de entrenamientos, hábitos, historial de torneos y gráficos mensuales"
       },
       "plannedTitle": "Funcionalidades planificadas:",
       "planned": {
-        "trainingLog": "Registro de entrenamientos - Seguimiento de sesiones de entrenamiento personal con estadísticas detalladas",
         "achievements": "Sistema de logros - Página demo disponible, seguimiento completo próximamente",
         "competitions": "Funciones de competición - Gestión mejorada de competiciones y puntuación",
         "duels": "Desafíos amistosos - Desafiar a otros arqueros a duelos amistosos",
@@ -514,5 +517,41 @@
     "installing": "Instalando…",
     "dismiss": "Ahora no",
     "installAria": "Aviso para instalar la aplicación"
+  },
+  "statistics": {
+    "title": "Mis Estadísticas",
+    "signInBanner": {
+      "title": "Inicia sesión para ver tus estadísticas completas",
+      "subtitle": "Registra flechas disparadas, sesiones de entrenamiento y actividad en torneos",
+      "signIn": "Iniciar sesión",
+      "createAccount": "Crear cuenta"
+    },
+    "sections": {
+      "activity": "Actividad",
+      "arrows": "Flechas Disparadas",
+      "distance": "Distancia Recorrida",
+      "habits": "Hábitos de Entrenamiento",
+      "tournaments": "Torneos"
+    },
+    "memberSince": "Miembro desde",
+    "totalSessions": "Sesiones totales",
+    "currentStreak": "Racha actual",
+    "weeks": "semanas seguidas",
+    "thisWeek": "Esta semana",
+    "thisMonth": "Este mes",
+    "thisYear": "Este año",
+    "total": "Total",
+    "meters": "metros",
+    "avgShotsPerSession": "Media de flechas / sesión",
+    "topDistance": "Distancia más entrenada",
+    "topTargetType": "Diana más usada",
+    "applied": "Enviadas",
+    "approved": "Aprobadas",
+    "rejected": "Rechazadas",
+    "shotsByMonth": "Flechas por mes",
+    "sessionsByMonth": "Sesiones por mes",
+    "arrows": "flechas",
+    "sessions": "sesiones",
+    "loadError": "Error al cargar las estadísticas"
   }
 }

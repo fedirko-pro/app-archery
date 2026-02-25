@@ -1,6 +1,8 @@
 # UArchery - Archery Management Application
 
-A comprehensive web application for managing archery competitions, tournaments, and user profiles. Built with React (frontend) and NestJS (backend).
+A comprehensive web application for archery federations, clubs, and individual archers. Manage tournaments and participants, track personal training sessions, analyze shooting statistics, and store equipment — all in one place, with offline support.
+
+Built with React (frontend) and NestJS (backend).
 
 ## 🏹 Features
 
@@ -27,6 +29,27 @@ A comprehensive web application for managing archery competitions, tournaments, 
   - Password change functionality
   - User achievements (demo page with 7 archery achievements)
 
+- **Training Log**
+  - Record and manage personal training sessions
+  - Fields: date, distance, target type, shot count, equipment set, custom fields
+  - Local-first storage with automatic sync to server
+  - Full offline support
+
+- **Equipment Management**
+  - Store bow equipment sets with full specifications
+  - Fields: bow type, manufacturer, model, draw weight, arrow length/spine/weight/material
+  - Local-first storage with sync
+
+- **My Statistics**
+  - Personal activity dashboard
+  - Arrows fired by period: week / month / year / all time
+  - Distance traveled (to target and back)
+  - Training streak (consecutive weeks)
+  - Training habits: avg shots per session, top distance, top target type
+  - Tournament application summary
+  - Monthly bar charts for arrows and sessions
+  - Reactive — updates immediately when training data changes
+
 - **Admin Panel**
   - User management
   - Tournament oversight
@@ -34,7 +57,7 @@ A comprehensive web application for managing archery competitions, tournaments, 
   - System administration
 
 - **Utility Tools**
-  - Score converter
+  - Unit converter (inches/cm, pounds/kg, grains/grams, yards/meters)
 
 ## 🛠 Tech Stack
 
@@ -43,7 +66,9 @@ A comprehensive web application for managing archery competitions, tournaments, 
 - **TypeScript** - Type safety
 - **Vite** - Build tool and dev server
 - **React Router** - Client-side routing
-- **Material-UI** - UI component library
+- **Material-UI v7** - UI component library
+- **Recharts** - Data visualization (statistics charts)
+- **date-fns** - Date utilities
 - **Sass** - CSS preprocessing
 - **PWA** - Progressive Web App support
 
@@ -278,6 +303,7 @@ For support and questions, please contact the development team or create an issu
 
 ## 🔄 Version History
 
+- **v0.1.3** - Training log, equipment management, My Statistics page with reactive charts
 - **v0.1.2** - Achievements demo page, About app page rename, scoring card demo improvements
 - **v0.1.1** - PWA support, tournament management, offline capabilities
 - **v0.0.1** - Initial release with basic competition management

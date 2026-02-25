@@ -9,24 +9,61 @@ const About = () => {
       <div className="container">
         <h2>{t('pages.about.title')}</h2>
         <p className="about-intro">{t('pages.about.intro')}</p>
-        
+
         <div className="features-section">
           <h3>{t('pages.about.currentTitle')}</h3>
           <ul className="features-list">
-            <li><strong>🔐 {t('pages.about.current.auth')}</strong></li>
-            <li><strong>👤 {t('pages.about.current.profiles')}</strong></li>
-            <li><strong>🏹 {t('pages.about.current.tournaments')}</strong></li>
-            <li><strong>📝 {t('pages.about.current.applications')}</strong></li>
-            <li><strong>👥 {t('pages.about.current.patrols')}</strong></li>
-            <li><strong>⚙️ {t('pages.about.current.admin')}</strong></li>
-            <li><strong>🎯 {t('pages.about.current.categories')}</strong></li>
-            <li><strong>🏢 {t('pages.about.current.clubs')}</strong></li>
-            <li><strong>📊 {t('pages.about.current.divisions')}</strong></li>
-            <li><strong>📜 {t('pages.about.current.rules')}</strong></li>
-            <li><strong>🔄 {t('pages.about.current.converter')}</strong></li>
-            <li><strong>📎 {t('pages.about.current.uploads')}</strong></li>
-            <li><strong>🌍 {t('pages.about.current.multilang')}</strong></li>
-            <li><strong>📱 {t('pages.about.current.pwa')}</strong></li>
+            <li>
+              <strong>🔐 {t('pages.about.current.auth')}</strong>
+            </li>
+            <li>
+              <strong>👤 {t('pages.about.current.profiles')}</strong>
+            </li>
+            <li>
+              <strong>🏹 {t('pages.about.current.tournaments')}</strong>
+            </li>
+            <li>
+              <strong>📝 {t('pages.about.current.applications')}</strong>
+            </li>
+            <li>
+              <strong>👥 {t('pages.about.current.patrols')}</strong>
+            </li>
+            <li>
+              <strong>⚙️ {t('pages.about.current.admin')}</strong>
+            </li>
+            <li>
+              <strong>🎯 {t('pages.about.current.categories')}</strong>
+            </li>
+            <li>
+              <strong>🏢 {t('pages.about.current.clubs')}</strong>
+            </li>
+            <li>
+              <strong>📊 {t('pages.about.current.divisions')}</strong>
+            </li>
+            <li>
+              <strong>📜 {t('pages.about.current.rules')}</strong>
+            </li>
+            <li>
+              <strong>🔄 {t('pages.about.current.converter')}</strong>
+            </li>
+            <li>
+              <strong>📎 {t('pages.about.current.uploads')}</strong>
+            </li>
+            <li>
+              <strong>🌍 {t('pages.about.current.multilang')}</strong>
+            </li>
+            <li>
+              <strong>📱 {t('pages.about.current.pwa')}</strong>
+            </li>
+            <li>
+              <strong>🏋️ {t('pages.about.current.trainingLog')}</strong>
+            </li>
+            <li>
+              <strong>🎽 {t('pages.about.current.equipment')}</strong>
+            </li>
+            <li>
+              <strong>📈 {t('pages.about.current.statistics')}</strong>
+            </li>
           </ul>
         </div>
 
@@ -46,19 +83,26 @@ const About = () => {
 
         <hr />
         <p className="contact-info">
-          {t('pages.about.contact')}{' '}
-          <a href="mailto:contact@fedirko.pro">contact@fedirko.pro</a>
+          {t('pages.about.contact')} <a href="mailto:contact@fedirko.pro">contact@fedirko.pro</a>
         </p>
         <div className="authors-section">
           <h3>{t('pages.about.authorsTitle')}</h3>
           <ul className="authors-list">
             <li>
-              <a href="https://www.linkedin.com/in/maryfedirko/" target="_blank" rel="noopener noreferrer">
+              <a
+                href="https://www.linkedin.com/in/maryfedirko/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 {t('pages.about.authorMariia')}
               </a>
             </li>
             <li>
-              <a href="https://www.linkedin.com/in/serhiifedirko/" target="_blank" rel="noopener noreferrer">
+              <a
+                href="https://www.linkedin.com/in/serhiifedirko/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 {t('pages.about.authorSerhii')}
               </a>
             </li>
