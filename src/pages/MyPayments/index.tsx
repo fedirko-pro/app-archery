@@ -1,7 +1,9 @@
 import CreditCardIcon from '@mui/icons-material/CreditCard';
 import EditIcon from '@mui/icons-material/Edit';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import PaymentsIcon from '@mui/icons-material/Payments';
 import RepeatIcon from '@mui/icons-material/Repeat';
+import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -16,6 +18,7 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -182,6 +185,42 @@ const MyPaymentsPage: React.FC = () => {
             {t('common.update')}
           </Button>
         </CardActions>
+      </Card>
+
+      <Card variant="outlined" sx={{ mb: 3 }}>
+        <CardContent>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              flexWrap: 'wrap',
+              gap: 1,
+              mb: 1,
+            }}
+          >
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <WorkspacePremiumIcon sx={{ fontSize: 24, color: '#FFD700' }} />
+              <Box>
+                <Typography variant="body1" fontWeight="bold">
+                  {t('payments.premium')}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {t('payments.activatedByFederation')}
+                </Typography>
+              </Box>
+            </Box>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+              <Tooltip title={t('payments.premiumHint')} arrow placement="top">
+                <InfoOutlinedIcon
+                  sx={{ fontSize: 18, color: 'text.secondary', cursor: 'help' }}
+                  aria-label={t('payments.premiumHint')}
+                />
+              </Tooltip>
+              <Chip label={t('payments.active')} color="success" size="small" />
+            </Box>
+          </Box>
+        </CardContent>
       </Card>
 
       {/* Payment History */}
