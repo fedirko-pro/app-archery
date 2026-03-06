@@ -7,6 +7,7 @@
     "clubs": "Clubs",
     "myApplications": "My applications",
     "myAchievements": "My achievements (Demo)",
+    "myPayments": "My Payments (Demo)",
     "myTrainings": "My Trainings",
     "myEquipment": "My Equipment",
     "myStatistics": "My Statistics",
@@ -184,6 +185,7 @@
       "plannedTitle": "Planned Features:",
       "planned": {
         "achievements": "Achievements System - Demo page available, full tracking coming soon",
+        "payments": "Payments System - Demo page available, payment methods, subscriptions and tournament fee tracking coming soon",
         "competitions": "Competition Features - Enhanced competition management and scoring",
         "duels": "Friendly Challenges - Challenge other archers to friendly duels",
         "news": "News & Updates - Tournament news and federation announcements",
@@ -611,6 +613,25 @@
     "installing": "Installing…",
     "dismiss": "Not now",
     "installAria": "Install app prompt"
+  },
+  "payments": {
+    "title": "My Payments (Demo)",
+    "demoNotice": "This is a demo page. Payments will be linked to your real account in the future.",
+    "paymentMethods": "Payment Methods",
+    "subscriptions": "Subscriptions",
+    "paymentHistory": "Payment History",
+    "expires": "Expires",
+    "default": "Default",
+    "monthlyClubFee": "Monthly Club Fee",
+    "month": "month",
+    "active": "Active",
+    "startDate": "Start date",
+    "nextBillingDate": "Next billing date",
+    "date": "Date",
+    "description": "Description",
+    "amount": "Amount",
+    "status": "Status",
+    "paid": "Paid"
   },
   "statistics": {
     "title": "My Statistics",

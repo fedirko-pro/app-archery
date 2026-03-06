@@ -69,6 +69,10 @@ const UserMenu: React.FC = () => {
       link: '/achievements',
       label: t('nav.myAchievements'),
     },
+    {
+      link: '/payments',
+      label: t('nav.myPayments'),
+    },
   ];
 
   const unauthenticatedSections: MenuSection[] = [
@@ -78,6 +82,7 @@ const UserMenu: React.FC = () => {
         { link: '/equipment', label: t('nav.myEquipment') },
         { link: '/statistics', label: t('nav.myStatistics') },
         { link: '/achievements', label: t('nav.myAchievements') },
+        { link: '/payments', label: t('nav.myPayments') },
       ],
     },
     {

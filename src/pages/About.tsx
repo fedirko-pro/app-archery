@@ -70,8 +70,8 @@ const About = () => {
         <div className="features-section">
           <h3>{t('pages.about.plannedTitle')}</h3>
           <ul className="features-list">
-            <li>{t('pages.about.planned.trainingLog')}</li>
             <li>{t('pages.about.planned.achievements')}</li>
+            <li>{t('pages.about.planned.payments')}</li>
             <li>{t('pages.about.planned.competitions')}</li>
             <li>{t('pages.about.planned.duels')}</li>
             <li>{t('pages.about.planned.news')}</li>

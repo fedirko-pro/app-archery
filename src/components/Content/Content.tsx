@@ -29,6 +29,7 @@ import Encyclopedia from '../../pages/Encyclopedia';
 // import Settings from '../Settings/Settings.tsx';
 import GoogleCallback from '../../pages/google-callback/google-callback';
 import MyEquipmentPage from '../../pages/MyEquipment';
+import MyPaymentsPage from '../../pages/MyPayments';
 import MyStatisticsPage from '../../pages/MyStatistics';
 import MyTrainingsPage from '../../pages/MyTrainings';
 import NotFound from '../../pages/NotFound';
@@ -156,6 +157,7 @@ function Content() {
           <Route path="trainings" element={<MyTrainingsPage />} />
           <Route path="equipment" element={<MyEquipmentPage />} />
           <Route path="statistics" element={<MyStatisticsPage />} />
+          <Route path="payments" element={<MyPaymentsPage />} />
           <Route path="trainings-legacy" element={<Training />} />
           <Route path="tournaments">
             <Route index element={<TournamentList />} />

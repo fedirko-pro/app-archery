@@ -7,6 +7,7 @@
     "clubs": "Club",
     "myApplications": "Le mie domande",
     "myAchievements": "I miei traguardi (Demo)",
+    "myPayments": "I miei Pagamenti (Demo)",
     "myTrainings": "I miei allenamenti",
     "myEquipment": "Il mio equipaggiamento",
     "myStatistics": "Le mie statistiche",
@@ -164,6 +165,7 @@
       "plannedTitle": "Funzionalità pianificate:",
       "planned": {
         "achievements": "Sistema risultati - Pagina demo disponibile, tracciamento completo in arrivo",
+        "payments": "Sistema Pagamenti - Pagina demo disponibile, metodi di pagamento, abbonamenti e tracciamento delle quote torneo in arrivo",
         "competitions": "Funzioni competizione - Gestione migliorata delle competizioni e punteggio",
         "duels": "Sfide amichevoli - Sfidare altri arcieri a duelli amichevoli",
         "news": "Notizie e aggiornamenti - Notizie sui tornei e annunci della federazione",
@@ -514,6 +516,25 @@
     "installing": "Installazione…",
     "dismiss": "Non ora",
     "installAria": "Avviso per installare l'app"
+  },
+  "payments": {
+    "title": "I miei Pagamenti (Demo)",
+    "demoNotice": "Questa è una pagina dimostrativa. I pagamenti saranno collegati al tuo account reale in futuro.",
+    "paymentMethods": "Metodi di Pagamento",
+    "subscriptions": "Abbonamenti",
+    "paymentHistory": "Cronologia Pagamenti",
+    "expires": "Scade",
+    "default": "Predefinito",
+    "monthlyClubFee": "Quota Mensile del Club",
+    "month": "mese",
+    "active": "Attivo",
+    "startDate": "Data di inizio",
+    "nextBillingDate": "Prossima fatturazione",
+    "date": "Data",
+    "description": "Descrizione",
+    "amount": "Importo",
+    "status": "Stato",
+    "paid": "Pagato"
   },
   "statistics": {
     "title": "Le mie statistiche",

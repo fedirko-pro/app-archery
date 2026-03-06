@@ -28,6 +28,7 @@ Built with React (frontend) and NestJS (backend).
   - Profile editing capabilities
   - Password change functionality
   - User achievements (demo page with 7 archery achievements)
+  - My Payments (demo page: payment methods, subscriptions, payment history)
 
 - **Training Log**
   - Record and manage personal training sessions
@@ -303,6 +304,7 @@ For support and questions, please contact the development team or create an issu
 
 ## 🔄 Version History
 
+- **v0.1.4** - My Payments demo page (payment methods, subscriptions, payment history)
 - **v0.1.3** - Training log, equipment management, My Statistics page with reactive charts
 - **v0.1.2** - Achievements demo page, About app page rename, scoring card demo improvements
 - **v0.1.1** - PWA support, tournament management, offline capabilities
