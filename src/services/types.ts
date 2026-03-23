@@ -119,6 +119,26 @@ export interface AttachmentDto {
   uploadedAt: string;
 }
 
+export interface FederationDto {
+  id: string;
+  name: string;
+  shortCode: string;
+  createdAt?: string;
+  updatedAt?: string;
+  description?: string;
+  logo?: string;
+  url?: string;
+  country?: CountryDto;
+  countryCode?: string;
+}
+
+export interface CountryDto {
+  code: string;
+  name: string;
+  flagEmoji?: string;
+  enabled: boolean;
+}
+
 export interface TournamentDto {
   id: string;
   title: string;
@@ -133,6 +153,10 @@ export interface TournamentDto {
   ruleCode?: string;
   targetCount?: number;
   rule?: { id: string; ruleCode: string; ruleName: string };
+  countryCode?: string | null;
+  federation?: FederationDto | null;
+  isOpenToOtherFederations?: boolean;
+  isOpenToOtherCountries?: boolean;
   createdBy?: CreatedBy;
   createdAt: string;
 }
@@ -336,6 +360,7 @@ export interface ClubDto {
   description?: string;
   location?: string;
   clubLogo?: string; // URL to club logo
+  federation?: FederationDto | null;
   createdAt?: string;
   updatedAt?: string;
 }

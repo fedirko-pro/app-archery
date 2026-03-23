@@ -18,7 +18,8 @@
     "react-i18next": "^16.5.4",
     "react-router-dom": "^7.13.0",
     "recharts": "^3.7.0",
-    "sass": "^1.97.3"
+    "sass": "^1.97.3",
+    "validator": "^13.15.26"
   },
   "devDependencies": {
     "@babel/core": "^7.28.6",

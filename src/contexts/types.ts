@@ -17,7 +17,18 @@ export interface User {
   nationality?: string;
   gender?: string;
   clubId?: string;
-  club?: { id: string; name: string };
+  club?: {
+    id: string;
+    name: string;
+    federation?: {
+      id: string;
+      name: string;
+      shortCode: string;
+      description?: string;
+      logo?: string;
+      url?: string;
+    } | null;
+  };
   categories?: string[];
   /** Preferred app language (camelCase from API) */
   appLanguage?: AppLanguageCode;

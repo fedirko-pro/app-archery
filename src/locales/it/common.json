@@ -276,7 +276,28 @@
       }
     },
     "admin": {
-      "favoriteCategories": "Categorie Preferite"
+      "favoriteCategories": "Categorie Preferite",
+      "federations": {
+        "title": "Federazioni",
+        "create": "Crea Federazione",
+        "edit": "Modifica Federazione",
+        "name": "Nome Federazione",
+        "shortCode": "Codice Breve",
+        "description": "Descrizione",
+        "url": "URL Sito Web",
+        "shortCodeHelp": "Usato per identificazione (es. 3–5 lettere)",
+        "urlHelp": "Sito web ufficiale della federazione (opzionale)",
+        "noLogo": "Nessun logo",
+        "validation": "Nome e Codice Breve sono richiesti",
+        "invalidUrl": "Formato URL sito web non valido",
+        "invalidLogoUrl": "Formato URL logo non valido",
+        "loadError": "Errore nel caricamento della federazione",
+        "saveError": "Errore nel salvataggio della federazione",
+        "deleteError": "Errore nell'eliminazione della federazione",
+        "deleteConfirm": "Eliminare questa federazione?",
+        "createSuccess": "Federazione creata con successo",
+        "updateSuccess": "Federazione aggiornata con successo"
+      }
     },
     "adminApplications": {
       "title": "Gestione domande di partecipazione ai tornei",

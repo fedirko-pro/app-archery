@@ -291,7 +291,28 @@
       }
     },
     "admin": {
-      "favoriteCategories": "Categorias Favoritas"
+      "favoriteCategories": "Categorias Favoritas",
+      "federations": {
+        "title": "Federações",
+        "create": "Criar Federação",
+        "edit": "Editar Federação",
+        "name": "Nome da Federação",
+        "shortCode": "Código Curto",
+        "description": "Descrição",
+        "url": "URL do Site",
+        "shortCodeHelp": "Usado para identificação (ex. 3–5 letras)",
+        "urlHelp": "Site oficial da federação (opcional)",
+        "noLogo": "Sem logo",
+        "validation": "Nome e Código Curto são obrigatórios",
+        "invalidUrl": "Formato de URL do site inválido",
+        "invalidLogoUrl": "Formato de URL do logo inválido",
+        "loadError": "Falha ao carregar federação",
+        "saveError": "Falha ao salvar federação",
+        "deleteError": "Falha ao excluir federação",
+        "deleteConfirm": "Excluir esta federação?",
+        "createSuccess": "Federação criada com sucesso",
+        "updateSuccess": "Federação atualizada com sucesso"
+      }
     },
     "adminApplications": {
       "title": "Gestão de inscrições em torneios",

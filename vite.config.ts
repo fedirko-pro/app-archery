@@ -78,6 +78,10 @@ export default defineConfig(({ mode }: { mode: string }) => {
           ]
         },
         workbox: {
+          // Workbox bundles minified SW in "production" mode (uses terser).
+          // In this environment it can fail during bundling with an early exit,
+          // so we keep the SW bundle unminified while still doing a production app build.
+          mode: 'development',
           navigateFallback: '/index.html',
           navigateFallbackDenylist: [/^\/pdf\//],
           cleanupOutdatedCaches: true,

@@ -20,9 +20,12 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import BannerUploader from '../../../components/BannerUploader/BannerUploader';
-import FileAttachments, { FileAttachment } from '../../../components/FileAttachments/FileAttachments';
+import FileAttachments, {
+  FileAttachment,
+} from '../../../components/FileAttachments/FileAttachments';
 import apiService from '../../../services/api';
-import type { RuleDto, TournamentDto } from '../../../services/types';
+import type { CountryDto, RuleDto, TournamentDto } from '../../../services/types';
+import { getInitialTournamentCountryCode } from '../../../utils/country';
 
 const TournamentEdit: React.FC = () => {
   const navigate = useNavigate();
@@ -34,6 +37,7 @@ const TournamentEdit: React.FC = () => {
   const [tournament, setTournament] = useState<TournamentDto | null>(null);
   const [rules, setRules] = useState<RuleDto[]>([]);
   const [loadingRules, setLoadingRules] = useState(true);
+  const [countries, setCountries] = useState<CountryDto[]>([]);
 
   const [formData, setFormData] = useState({
     title: '',
@@ -45,6 +49,9 @@ const TournamentEdit: React.FC = () => {
     ruleCode: '',
     targetCount: 18,
     allowMultipleApplications: true,
+    countryCode: getInitialTournamentCountryCode(),
+    isOpenToOtherFederations: false,
+    isOpenToOtherCountries: false,
     banner: '',
     attachments: [] as FileAttachment[],
   });
@@ -65,6 +72,20 @@ const TournamentEdit: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    const loadCountries = async () => {
+      try {
+        const data = await apiService.getCountries();
+        const enabledOnly = data.filter((c) => c.enabled);
+        setCountries(enabledOnly);
+      } catch (e) {
+        setCountries([{ code: 'PT', name: 'Portugal', flagEmoji: '🇵🇹', enabled: true }]);
+        if (import.meta.env.DEV) console.error(e);
+      }
+    };
+    void loadCountries();
+  }, []);
+
+  useEffect(() => {
     const fetchTournament = async () => {
       if (!tournamentId) return;
       try {
@@ -76,11 +97,16 @@ const TournamentEdit: React.FC = () => {
           description: data.description || '',
           startDate: data.startDate.split('T')[0],
           endDate: data.endDate.split('T')[0],
-          applicationDeadline: data.applicationDeadline ? data.applicationDeadline.split('T')[0] : '',
+          applicationDeadline: data.applicationDeadline
+            ? data.applicationDeadline.split('T')[0]
+            : '',
           address: data.address || '',
           ruleCode: data.ruleCode || '',
           targetCount: data.targetCount || 18,
           allowMultipleApplications: data.allowMultipleApplications ?? true,
+          countryCode: data.countryCode || getInitialTournamentCountryCode(),
+          isOpenToOtherFederations: data.isOpenToOtherFederations ?? false,
+          isOpenToOtherCountries: data.isOpenToOtherCountries ?? false,
           banner: data.banner || '',
           attachments: data.attachments || [],
         });
@@ -171,9 +197,7 @@ const TournamentEdit: React.FC = () => {
               <Select
                 value={formData.ruleCode}
                 label={t('pages.tournaments.form.rules', 'Rules')}
-                onChange={(e) =>
-                  setFormData({ ...formData, ruleCode: e.target.value })
-                }
+                onChange={(e) => setFormData({ ...formData, ruleCode: e.target.value })}
                 required
               >
                 <MenuItem value="">
@@ -232,9 +256,7 @@ const TournamentEdit: React.FC = () => {
               label={t('pages.tournaments.form.applicationDeadline')}
               type="date"
               value={formData.applicationDeadline}
-              onChange={(e) =>
-                setFormData({ ...formData, applicationDeadline: e.target.value })
-              }
+              onChange={(e) => setFormData({ ...formData, applicationDeadline: e.target.value })}
               fullWidth
               margin="normal"
               InputLabelProps={{ shrink: true }}
@@ -249,15 +271,67 @@ const TournamentEdit: React.FC = () => {
               margin="normal"
             />
 
+            <FormControl fullWidth margin="normal">
+              <InputLabel>{t('pages.tournaments.country', 'Country')}</InputLabel>
+              <Select
+                label={t('pages.tournaments.country', 'Country')}
+                value={formData.countryCode}
+                onChange={(e) => setFormData({ ...formData, countryCode: String(e.target.value) })}
+              >
+                {countries.map((c) => (
+                  <MenuItem key={c.code} value={c.code}>
+                    {(c.flagEmoji ? `${c.flagEmoji} ` : '') + c.name} ({c.code})
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={formData.isOpenToOtherFederations}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      isOpenToOtherFederations: e.target.checked,
+                    })
+                  }
+                />
+              }
+              label={t('pages.tournaments.openOtherFederations', 'Open to other federations')}
+              sx={{ mt: 1 }}
+            />
+
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={formData.isOpenToOtherCountries}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      isOpenToOtherCountries: e.target.checked,
+                    })
+                  }
+                />
+              }
+              label={t('pages.tournaments.openOtherCountries', 'Open to other countries')}
+              sx={{ mt: 0 }}
+            />
+
             <TextField
               label={t('pages.tournaments.form.targetCount', 'Number of Targets')}
               type="number"
               value={formData.targetCount}
-              onChange={(e) => setFormData({ ...formData, targetCount: parseInt(e.target.value) || 18 })}
+              onChange={(e) =>
+                setFormData({ ...formData, targetCount: parseInt(e.target.value) || 18 })
+              }
               fullWidth
               margin="normal"
               inputProps={{ min: 1, max: 100 }}
-              helperText={t('pages.tournaments.form.targetCountHelper', 'Number of targets/patrols for the tournament')}
+              helperText={t(
+                'pages.tournaments.form.targetCountHelper',
+                'Number of targets/patrols for the tournament',
+              )}
             />
 
             <FormControlLabel
@@ -309,12 +383,7 @@ const TournamentEdit: React.FC = () => {
           >
             {t('common.cancel', 'Cancel')}
           </Button>
-          <Button
-            type="submit"
-            variant="contained"
-            startIcon={<Save />}
-            disabled={submitting}
-          >
+          <Button type="submit" variant="contained" startIcon={<Save />} disabled={submitting}>
             {submitting
               ? t('pages.tournaments.updating', 'Updating...')
               : t('common.update', 'Update')}

@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { canAccessAdminSection } from '../../config/roles';
+import { canAccessAdminSection, isGeneralAdmin } from '../../config/roles';
 import { useAuth } from '../../contexts/auth-context';
 import Menu from '../Menu/Menu';
 
@@ -42,6 +42,16 @@ function NavMenu() {
     { link: '/admin/applications', label: t('nav.userApplications') },
     { link: '/admin/access-control', label: t('nav.accessControl', 'Access Control') },
   ];
+  if (user && isGeneralAdmin(user.role)) {
+    adminMenuItems.push({
+      link: '/admin/federations',
+      label: t('nav.federations', 'Federations'),
+    });
+    adminMenuItems.push({
+      link: '/admin/countries',
+      label: t('nav.countries', 'Countries'),
+    });
+  }
 
   const sections = [
     {

@@ -1,4 +1,16 @@
-import { Box, Button, Stack, TextField, Typography } from '@mui/material';
+import { ArrowBack } from '@mui/icons-material';
+import {
+  Box,
+  Button,
+  Stack,
+  TextField,
+  Typography,
+  FormControl,
+  FormHelperText,
+  InputLabel,
+  Select,
+  MenuItem,
+} from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -8,7 +20,7 @@ import { canManageReferenceData } from '../../../config/roles';
 import { useAuth } from '../../../contexts/auth-context';
 import { useNotification } from '../../../contexts/error-feedback-context';
 import apiService from '../../../services/api';
-import type { ClubDto } from '../../../services/types';
+import type { ClubDto, FederationDto } from '../../../services/types';
 
 /**
  * Admin-only club editor.
@@ -21,14 +33,21 @@ const ClubEdit: React.FC = () => {
   const { user } = useAuth();
   const { showWarning, showError, showSuccess } = useNotification();
 
-  const [form, setForm] = useState<ClubDto>({
+  type ClubForm = Omit<ClubDto, 'federation'> & {
+    federationId?: string;
+  };
+
+  const [form, setForm] = useState<ClubForm>({
     id: id === 'create' ? undefined : id,
     name: '',
     shortCode: '',
     description: '',
     location: '',
     clubLogo: '',
+    federationId: '',
   });
+
+  const [federations, setFederations] = useState<FederationDto[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
   const isAdmin = user && canManageReferenceData(user.role);
@@ -39,20 +58,42 @@ const ClubEdit: React.FC = () => {
       return;
     }
 
-    if (!id || id === 'create') return;
+    const loadFederations = async () => {
+      try {
+        const data = await apiService.getFederations();
+        setFederations(data);
+      } catch (error) {
+        console.error('Failed to load federations:', error);
+      }
+    };
 
-    const load = async () => {
+    const loadClub = async () => {
+      if (!id || id === 'create') return;
+
       setLoading(true);
       try {
         const data = await apiService.getClubById(id);
-        if (data) setForm(data);
+        if (data) {
+          setForm((prev) => ({
+            ...prev,
+            id: data.id,
+            name: data.name,
+            shortCode: data.shortCode ?? '',
+            description: data.description ?? '',
+            location: data.location ?? '',
+            clubLogo: data.clubLogo ?? '',
+            federationId: data.federation?.id ?? '',
+          }));
+        }
       } catch (error) {
         console.error('Failed to load club:', error);
       } finally {
         setLoading(false);
       }
     };
-    load();
+
+    loadFederations();
+    loadClub();
   }, [id, isAdmin, navigate, lang]);
 
   const handleSave = async () => {
@@ -63,12 +104,20 @@ const ClubEdit: React.FC = () => {
 
     try {
       setLoading(true);
-      await apiService.upsertClub(form);
+      const { federation: _federation, ...payload } = form as any;
+      await apiService.upsertClub({
+        ...payload,
+        federationId: form.federationId || undefined,
+      });
       showSuccess(t('pages.clubs.saveSuccess', 'Club saved successfully'));
       navigate(`/${lang}/clubs`);
     } catch (error) {
       console.error('Failed to save club:', error);
-      showError(error instanceof Error ? error.message : t('pages.clubs.saveError', 'Failed to save club. Please try again.'));
+      showError(
+        error instanceof Error
+          ? error.message
+          : t('pages.clubs.saveError', 'Failed to save club. Please try again.'),
+      );
     } finally {
       setLoading(false);
     }
@@ -81,6 +130,10 @@ const ClubEdit: React.FC = () => {
   return (
     <section>
       <div className="container">
+        <Button startIcon={<ArrowBack />} onClick={() => navigate(`/${lang}/clubs`)} sx={{ mb: 2 }}>
+          {t('common.back', 'Back')}
+        </Button>
+
         <Typography variant="h4" gutterBottom>
           {id === 'create' ? 'Create Club' : 'Edit Club'}
         </Typography>
@@ -112,12 +165,37 @@ const ClubEdit: React.FC = () => {
               fullWidth
             />
 
+            <FormControl fullWidth>
+              <InputLabel>
+                {t('pages.clubs.federation', 'Federation')} ({t('pages.clubs.optional', 'optional')}
+                )
+              </InputLabel>
+              <Select
+                value={form.federationId || ''}
+                label={t('pages.clubs.federation', 'Federation')}
+                onChange={(e) => setForm({ ...form, federationId: String(e.target.value) })}
+              >
+                <MenuItem value="">
+                  -- {t('pages.clubs.selectFederation', 'Select federation')} --
+                </MenuItem>
+                {federations.map((f) => (
+                  <MenuItem key={f.id} value={f.id}>
+                    {f.name}
+                  </MenuItem>
+                ))}
+              </Select>
+              <FormHelperText>
+                {t(
+                  'pages.clubs.federationOptional',
+                  'Leave blank if this club is not tied to a federation',
+                )}
+              </FormHelperText>
+            </FormControl>
+
             <TextField
               label="Description"
               value={form.description || ''}
-              onChange={(e) =>
-                setForm({ ...form, description: e.target.value })
-              }
+              onChange={(e) => setForm({ ...form, description: e.target.value })}
               multiline
               minRows={4}
               fullWidth
@@ -130,18 +208,10 @@ const ClubEdit: React.FC = () => {
             />
 
             <Stack direction="row" spacing={2}>
-              <Button
-                variant="contained"
-                onClick={handleSave}
-                disabled={loading}
-              >
+              <Button variant="contained" onClick={handleSave} disabled={loading}>
                 {loading ? 'Saving...' : 'Save'}
               </Button>
-              <Button
-                variant="outlined"
-                onClick={handleCancel}
-                disabled={loading}
-              >
+              <Button variant="outlined" onClick={handleCancel} disabled={loading}>
                 Cancel
               </Button>
             </Stack>

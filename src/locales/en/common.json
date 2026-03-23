@@ -311,7 +311,28 @@
       }
     },
     "admin": {
-      "favoriteCategories": "Favorite Categories"
+      "favoriteCategories": "Favorite Categories",
+      "federations": {
+        "title": "Federations",
+        "create": "Create Federation",
+        "edit": "Edit Federation",
+        "name": "Federation Name",
+        "shortCode": "Short Code",
+        "description": "Description",
+        "url": "Website URL",
+        "shortCodeHelp": "Used for identification (e.g. 3–5 letters)",
+        "urlHelp": "Official federation website (optional)",
+        "noLogo": "No logo",
+        "validation": "Name and Short Code are required",
+        "invalidUrl": "Invalid website URL format",
+        "invalidLogoUrl": "Invalid logo URL format",
+        "loadError": "Failed to load federation",
+        "saveError": "Failed to save federation",
+        "deleteError": "Failed to delete federation",
+        "deleteConfirm": "Delete this federation?",
+        "createSuccess": "Federation created successfully",
+        "updateSuccess": "Federation updated successfully"
+      }
     },
     "adminApplications": {
       "title": "Tournament Applications Management",

@@ -9,6 +9,7 @@ const CACHE_KEYS = [
   'divisions',
   'rules',
   'clubs',
+  'countries',
   'bow-categories',
 ] as const;
 
@@ -49,10 +50,7 @@ export function getOfflineCache<T>(key: OfflineCacheKey): T | null {
 
 export function setOfflineCache<T>(key: OfflineCacheKey, data: T): void {
   try {
-    localStorage.setItem(
-      storageKey(key),
-      JSON.stringify({ data, at: Date.now() }),
-    );
+    localStorage.setItem(storageKey(key), JSON.stringify({ data, at: Date.now() }));
   } catch {
     // quota or disabled localStorage
   }

@@ -275,7 +275,28 @@
       }
     },
     "admin": {
-      "favoriteCategories": "Categorías Favoritas"
+      "favoriteCategories": "Categorías Favoritas",
+      "federations": {
+        "title": "Federaciones",
+        "create": "Crear Federación",
+        "edit": "Editar Federación",
+        "name": "Nombre de la Federación",
+        "shortCode": "Código Corto",
+        "description": "Descripción",
+        "url": "URL del Sitio Web",
+        "shortCodeHelp": "Usado para identificación (ej. 3–5 letras)",
+        "urlHelp": "Sitio web oficial de la federación (opcional)",
+        "noLogo": "Sin logo",
+        "validation": "Nombre y Código Corto son requeridos",
+        "invalidUrl": "Formato de URL del sitio web inválido",
+        "invalidLogoUrl": "Formato de URL del logo inválido",
+        "loadError": "Error al cargar la federación",
+        "saveError": "Error al guardar la federación",
+        "deleteError": "Error al eliminar la federación",
+        "deleteConfirm": "¿Eliminar esta federación?",
+        "createSuccess": "Federación creada exitosamente",
+        "updateSuccess": "Federación actualizada exitosamente"
+      }
     },
     "adminApplications": {
       "title": "Gestión de solicitudes de torneos",

@@ -13,6 +13,9 @@ import About from '../../pages/About';
 import Achievements from '../../pages/achievements/achievements';
 import AccessControl from '../../pages/admin/access-control/access-control';
 import AdminPanel from '../../pages/admin/admin-panel';
+import AdminCountries from '../../pages/admin/countries/admin-countries';
+import AdminFederations from '../../pages/admin/federations/admin-federations';
+import FederationEdit from '../../pages/admin/federations/federation-edit';
 import ProtectedAdminRoute from '../../pages/admin/protected-admin-route';
 import UserEdit from '../../pages/admin/user-edit/user-edit';
 import UserProfileView from '../../pages/admin/user-profile-view/user-profile-view';
@@ -141,6 +144,38 @@ function Content() {
             element={
               <ProtectedAdminRoute allowedRoles={ADMIN_CAPABLE_ROLES}>
                 <AccessControl />
+              </ProtectedAdminRoute>
+            }
+          />
+          <Route
+            path="admin/federations"
+            element={
+              <ProtectedAdminRoute allowedRoles={ROLES_CAN_MANAGE_REFERENCE_DATA}>
+                <AdminFederations />
+              </ProtectedAdminRoute>
+            }
+          />
+          <Route
+            path="admin/federations/:id/edit"
+            element={
+              <ProtectedAdminRoute allowedRoles={ROLES_CAN_MANAGE_REFERENCE_DATA}>
+                <FederationEdit />
+              </ProtectedAdminRoute>
+            }
+          />
+          <Route
+            path="admin/federations/create"
+            element={
+              <ProtectedAdminRoute allowedRoles={ROLES_CAN_MANAGE_REFERENCE_DATA}>
+                <FederationEdit />
+              </ProtectedAdminRoute>
+            }
+          />
+          <Route
+            path="admin/countries"
+            element={
+              <ProtectedAdminRoute allowedRoles={ROLES_CAN_MANAGE_REFERENCE_DATA}>
+                <AdminCountries />
               </ProtectedAdminRoute>
             }
           />

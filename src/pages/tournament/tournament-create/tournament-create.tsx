@@ -19,9 +19,12 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import BannerUploader from '../../../components/BannerUploader/BannerUploader';
-import FileAttachments, { FileAttachment } from '../../../components/FileAttachments/FileAttachments';
+import FileAttachments, {
+  FileAttachment,
+} from '../../../components/FileAttachments/FileAttachments';
 import apiService from '../../../services/api';
-import type { RuleDto } from '../../../services/types';
+import type { CountryDto, RuleDto } from '../../../services/types';
+import { getInitialTournamentCountryCode } from '../../../utils/country';
 
 const TournamentCreate: React.FC = () => {
   const navigate = useNavigate();
@@ -31,6 +34,7 @@ const TournamentCreate: React.FC = () => {
   const [submitting, setSubmitting] = useState(false);
   const [rules, setRules] = useState<RuleDto[]>([]);
   const [loadingRules, setLoadingRules] = useState(true);
+  const [countries, setCountries] = useState<CountryDto[]>([]);
 
   const [formData, setFormData] = useState({
     title: '',
@@ -42,6 +46,9 @@ const TournamentCreate: React.FC = () => {
     ruleCode: '',
     targetCount: 18,
     allowMultipleApplications: true,
+    countryCode: getInitialTournamentCountryCode(),
+    isOpenToOtherFederations: false,
+    isOpenToOtherCountries: false,
     banner: '',
     attachments: [] as FileAttachment[],
   });
@@ -59,6 +66,24 @@ const TournamentCreate: React.FC = () => {
       }
     };
     loadRules();
+  }, []);
+
+  useEffect(() => {
+    const loadCountries = async () => {
+      try {
+        const data = await apiService.getCountries();
+        const enabledOnly = data.filter((c) => c.enabled);
+        setCountries(enabledOnly);
+        if (!enabledOnly.some((c) => c.code === formData.countryCode)) {
+          setFormData((prev) => ({ ...prev, countryCode: 'PT' }));
+        }
+      } catch (e) {
+        setCountries([{ code: 'PT', name: 'Portugal', flagEmoji: '🇵🇹', enabled: true }]);
+        setFormData((prev) => ({ ...prev, countryCode: 'PT' }));
+        if (import.meta.env.DEV) console.error(e);
+      }
+    };
+    void loadCountries();
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -114,9 +139,7 @@ const TournamentCreate: React.FC = () => {
               <Select
                 value={formData.ruleCode}
                 label={t('pages.tournaments.form.rules', 'Rules')}
-                onChange={(e) =>
-                  setFormData({ ...formData, ruleCode: e.target.value })
-                }
+                onChange={(e) => setFormData({ ...formData, ruleCode: e.target.value })}
                 required
               >
                 <MenuItem value="">
@@ -175,9 +198,7 @@ const TournamentCreate: React.FC = () => {
               label={t('pages.tournaments.form.applicationDeadline')}
               type="date"
               value={formData.applicationDeadline}
-              onChange={(e) =>
-                setFormData({ ...formData, applicationDeadline: e.target.value })
-              }
+              onChange={(e) => setFormData({ ...formData, applicationDeadline: e.target.value })}
               fullWidth
               margin="normal"
               InputLabelProps={{ shrink: true }}
@@ -192,15 +213,67 @@ const TournamentCreate: React.FC = () => {
               margin="normal"
             />
 
+            <FormControl fullWidth margin="normal">
+              <InputLabel>{t('pages.tournaments.country', 'Country')}</InputLabel>
+              <Select
+                label={t('pages.tournaments.country', 'Country')}
+                value={formData.countryCode}
+                onChange={(e) => setFormData({ ...formData, countryCode: String(e.target.value) })}
+              >
+                {countries.map((c) => (
+                  <MenuItem key={c.code} value={c.code}>
+                    {(c.flagEmoji ? `${c.flagEmoji} ` : '') + c.name} ({c.code})
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={formData.isOpenToOtherFederations}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      isOpenToOtherFederations: e.target.checked,
+                    })
+                  }
+                />
+              }
+              label={t('pages.tournaments.openOtherFederations', 'Open to other federations')}
+              sx={{ mt: 1 }}
+            />
+
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={formData.isOpenToOtherCountries}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      isOpenToOtherCountries: e.target.checked,
+                    })
+                  }
+                />
+              }
+              label={t('pages.tournaments.openOtherCountries', 'Open to other countries')}
+              sx={{ mt: 0 }}
+            />
+
             <TextField
               label={t('pages.tournaments.form.targetCount', 'Number of Targets')}
               type="number"
               value={formData.targetCount}
-              onChange={(e) => setFormData({ ...formData, targetCount: parseInt(e.target.value) || 18 })}
+              onChange={(e) =>
+                setFormData({ ...formData, targetCount: parseInt(e.target.value) || 18 })
+              }
               fullWidth
               margin="normal"
               inputProps={{ min: 1, max: 100 }}
-              helperText={t('pages.tournaments.form.targetCountHelper', 'Number of targets/patrols for the tournament')}
+              helperText={t(
+                'pages.tournaments.form.targetCountHelper',
+                'Number of targets/patrols for the tournament',
+              )}
             />
 
             <FormControlLabel
@@ -251,12 +324,7 @@ const TournamentCreate: React.FC = () => {
           >
             {t('common.cancel', 'Cancel')}
           </Button>
-          <Button
-            type="submit"
-            variant="contained"
-            startIcon={<Save />}
-            disabled={submitting}
-          >
+          <Button type="submit" variant="contained" startIcon={<Save />} disabled={submitting}>
             {submitting
               ? t('pages.tournaments.creating', 'Creating...')
               : t('common.create', 'Create')}

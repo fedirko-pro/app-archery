@@ -20,7 +20,9 @@ import type {
   ApiError,
   BowCategory,
   CategoryDto,
+  CountryDto,
   ClubDto,
+  FederationDto,
   CreateBowCategoryDto,
   CreateRuleDto,
   DivisionDto,
@@ -87,8 +89,7 @@ class ApiService {
       const response = await fetch(url, config);
 
       if (!response.ok) {
-        const errorData = (await response.json().catch(() => ({}))) as ApiError;
-        throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+        await this.handleApiError(response, 'perform API request');
       }
 
       const status = response.status;
@@ -114,6 +115,22 @@ class ApiService {
 
       throw error;
     }
+  }
+
+  /**
+   * Helper method for standardized API error handling.
+   */
+  private async handleApiError(response: Response, operation: string): Promise<never> {
+    let errorMessage = `Failed to ${operation}`;
+
+    try {
+      const errorData = await response.json();
+      errorMessage = errorData.message || errorMessage;
+    } catch {
+      // Use default message if JSON parsing fails
+    }
+
+    throw new Error(errorMessage);
   }
 
   /**
@@ -301,6 +318,21 @@ class ApiService {
 
   async getAllTournaments(): Promise<TournamentDto[]> {
     return this.getWithOfflineFallback<TournamentDto[]>('tournaments', '/tournaments');
+  }
+
+  async getTournaments(filters?: {
+    countryCode?: string;
+    federationId?: string;
+  }): Promise<TournamentDto[]> {
+    const params = new URLSearchParams();
+    if (filters?.countryCode) params.set('countryCode', filters.countryCode);
+    if (filters?.federationId) params.set('federationId', filters.federationId);
+    const qs = params.toString();
+    const endpoint = qs ? `/tournaments?${qs}` : '/tournaments';
+
+    // If filters are used, don't reuse the generic offline cache snapshot.
+    if (qs) return this.get<TournamentDto[]>(endpoint);
+    return this.getWithOfflineFallback<TournamentDto[]>('tournaments', endpoint);
   }
 
   async getTournament(id: string): Promise<TournamentDto> {
@@ -724,6 +756,75 @@ class ApiService {
    */
   async getClubs(): Promise<ClubDto[]> {
     return this.getWithOfflineFallback<ClubDto[]>('clubs', '/clubs');
+  }
+
+  async getCountries(): Promise<CountryDto[]> {
+    return this.getWithOfflineFallback<CountryDto[]>('countries', '/countries');
+  }
+
+  // Countries (General Admin only)
+  async createCountry(dto: {
+    code: string;
+    name: string;
+    flagEmoji?: string;
+    enabled?: boolean;
+  }): Promise<CountryDto> {
+    return await this.request<CountryDto>('/countries', {
+      method: 'POST',
+      body: JSON.stringify(dto),
+    });
+  }
+
+  async updateCountry(
+    code: string,
+    dto: Partial<{ name: string; flagEmoji?: string; enabled?: boolean }>,
+  ): Promise<CountryDto> {
+    return await this.request<CountryDto>(`/countries/${code}`, {
+      method: 'PATCH',
+      body: JSON.stringify(dto),
+    });
+  }
+
+  async deleteCountry(code: string): Promise<void> {
+    return await this.request<void>(`/countries/${code}`, { method: 'DELETE' });
+  }
+
+  // Federations (General Admin only)
+  async getFederations(): Promise<FederationDto[]> {
+    return await this.request('/federations');
+  }
+
+  async getFederationById(id: string): Promise<FederationDto> {
+    return await this.request(`/federations/${id}`);
+  }
+
+  async createFederation(dto: {
+    name: string;
+    shortCode: string;
+    countryCode: string;
+    description?: string;
+    logo?: string;
+    url?: string;
+  }) {
+    return await this.request('/federations', { method: 'POST', body: JSON.stringify(dto) });
+  }
+
+  async updateFederation(
+    id: string,
+    dto: Partial<{
+      name: string;
+      shortCode: string;
+      countryCode: string;
+      description?: string;
+      logo?: string;
+      url?: string;
+    }>,
+  ) {
+    return await this.request(`/federations/${id}`, { method: 'PATCH', body: JSON.stringify(dto) });
+  }
+
+  async deleteFederation(id: string): Promise<void> {
+    return await this.request(`/federations/${id}`, { method: 'DELETE' });
   }
 
   /**
