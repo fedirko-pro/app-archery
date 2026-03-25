@@ -3,14 +3,8 @@
  * last loaded data when offline (e.g. after closing and reopening in airplane mode).
  */
 
-const CACHE_PREFIX = 'uarchery_offline_';
-const CACHE_KEYS = [
-  'tournaments',
-  'divisions',
-  'rules',
-  'clubs',
-  'bow-categories',
-] as const;
+const CACHE_PREFIX = 'sokil_offline_';
+const CACHE_KEYS = ['tournaments', 'divisions', 'rules', 'clubs', 'bow-categories'] as const;
 
 export type OfflineCacheKey = (typeof CACHE_KEYS)[number];
 
@@ -18,7 +12,7 @@ const CACHE_MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
 
 let lastServedFromCache = false;
 
-export const OFFLINE_CACHE_USED_EVENT = 'uarchery-offline-cache-used';
+export const OFFLINE_CACHE_USED_EVENT = 'sokil-offline-cache-used';
 
 export function setLastServedFromCache(value: boolean): void {
   lastServedFromCache = value;
@@ -49,10 +43,7 @@ export function getOfflineCache<T>(key: OfflineCacheKey): T | null {
 
 export function setOfflineCache<T>(key: OfflineCacheKey, data: T): void {
   try {
-    localStorage.setItem(
-      storageKey(key),
-      JSON.stringify({ data, at: Date.now() }),
-    );
+    localStorage.setItem(storageKey(key), JSON.stringify({ data, at: Date.now() }));
   } catch {
     // quota or disabled localStorage
   }

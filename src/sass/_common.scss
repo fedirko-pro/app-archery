@@ -1,12 +1,49 @@
 @use 'helpers/variables' as *;
 @use 'helpers/mixins';
 
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/montserrat-v31-cyrillic_latin-regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/montserrat-v31-cyrillic_latin-700.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/montserrat-v31-cyrillic_latin-regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('/fonts/montserrat-v31-cyrillic_latin-700.woff2') format('woff2');
+}
+
 * {
   box-sizing: border-box;
 }
 
+html {
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+}
+
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+  font-synthesis: weight;
   cursor: default;
   position: relative;
   background: $white;
@@ -15,6 +52,13 @@ body {
   &.lock {
     overflow: hidden;
   }
+}
+
+input,
+button,
+textarea,
+select {
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
 }
 
 .hidden {

@@ -1,6 +1,7 @@
 import './sass/main.scss';
 import './i18n';
 
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 
@@ -16,24 +17,33 @@ import { AuthProvider } from './contexts/auth-context';
 import { ErrorFeedbackProvider } from './contexts/error-feedback-context';
 import { LocalDataProvider } from './contexts/local-data-context';
 
+const theme = createTheme({
+  typography: {
+    // MUI defaults to Roboto; we override to match the rest of the app.
+    fontFamily: '"Montserrat", Arial, Helvetica, sans-serif',
+  },
+});
+
 const App: React.FC = () => {
   return (
     <ErrorBoundary>
-      <Router>
-        <ErrorFeedbackProvider>
-          <AuthProvider>
-            <LocalDataProvider>
-              <EnvError />
-              <OfflineBanner />
-              <InstallPrompt />
-              <Header />
-              <Content />
-              {!import.meta.env.PROD && <I18nDevOverlay />}
-              <Footer />
-            </LocalDataProvider>
-          </AuthProvider>
-        </ErrorFeedbackProvider>
-      </Router>
+      <ThemeProvider theme={theme}>
+        <Router>
+          <ErrorFeedbackProvider>
+            <AuthProvider>
+              <LocalDataProvider>
+                <EnvError />
+                <OfflineBanner />
+                <InstallPrompt />
+                <Header />
+                <Content />
+                {!import.meta.env.PROD && <I18nDevOverlay />}
+                <Footer />
+              </LocalDataProvider>
+            </AuthProvider>
+          </ErrorFeedbackProvider>
+        </Router>
+      </ThemeProvider>
     </ErrorBoundary>
   );
 };

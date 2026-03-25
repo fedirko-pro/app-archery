@@ -161,7 +161,7 @@
     "converter": { "title": "Converter of most common archery measures" },
     "about": {
       "title": "About this App",
-      "intro": "UArchery is a comprehensive web application for archery federations, clubs, and individual archers. Manage tournaments and participants, track personal training sessions, analyze your shooting statistics, and store equipment — all in one place, with offline support.",
+      "intro": "Sokil is a comprehensive web application for archery federations, clubs, and individual archers. Manage tournaments and participants, track personal training sessions, analyze your shooting statistics, and store equipment — all in one place, with offline support.",
       "currentTitle": "Current Features:",
       "current": {
         "auth": "User Authentication & Authorization - JWT-based authentication with Google OAuth, password reset, and role-based access control",
@@ -608,7 +608,7 @@
   "pwa": {
     "workingOffline": "Working offline",
     "showingCachedData": "Showing last saved data",
-    "installPrompt": "Install UArchery as an app for a better experience and offline use.",
+    "installPrompt": "Install Sokil as an app for a better experience and offline use.",
     "install": "Install",
     "installing": "Installing…",
     "dismiss": "Not now",

@@ -1,6 +1,6 @@
 # Deployment Guide - Frontend
 
-Це фронтенд частина UArchery застосунку.
+Це фронтенд частина Sokil застосунку.
 
 ## Повна інструкція
 
@@ -86,10 +86,9 @@ docker compose up -d --build
 
 ## Змінні оточення
 
-| Змінна | Опис | Приклад |
-|--------|------|---------|
-| `VITE_API_BASE_URL` | URL бекенд API | `https://api.yourdomain.com` |
+| Змінна                 | Опис                 | Приклад                                  |
+| ---------------------- | -------------------- | ---------------------------------------- |
+| `VITE_API_BASE_URL`    | URL бекенд API       | `https://api.yourdomain.com`             |
 | `VITE_GOOGLE_AUTH_URL` | URL для Google OAuth | `https://api.yourdomain.com/auth/google` |
 
 ⚠️ Всі Vite змінні повинні мати префікс `VITE_`
-

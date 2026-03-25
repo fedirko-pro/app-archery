@@ -4,8 +4,8 @@
  */
 
 const STORAGE_KEYS = {
-  EQUIPMENT_SETS: 'uarchery_equipment_sets',
-  TRAININGS: 'uarchery_trainings',
+  EQUIPMENT_SETS: 'sokil_equipment_sets',
+  TRAININGS: 'sokil_trainings',
 } as const;
 
 export interface CustomField {

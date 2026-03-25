@@ -141,7 +141,7 @@
     "converter": { "title": "Convertitore delle misure di tiro con l'arco più comuni" },
     "about": {
       "title": "Informazioni su questa app",
-      "intro": "UArchery è un'applicazione web completa per federazioni di tiro con l'arco, club e arcieri individuali. Gestisci tornei e partecipanti, registra le sessioni di allenamento, analizza le statistiche di tiro e archivia le attrezzature — tutto in un unico posto, con supporto offline.",
+      "intro": "Sokil è un'applicazione web completa per federazioni di tiro con l'arco, club e arcieri individuali. Gestisci tornei e partecipanti, registra le sessioni di allenamento, analizza le statistiche di tiro e archivia le attrezzature — tutto in un unico posto, con supporto offline.",
       "currentTitle": "Funzionalità attuali:",
       "current": {
         "auth": "Autenticazione e autorizzazione - Autenticazione basata su JWT con Google OAuth, reset password e controllo accessi basato su ruoli",
@@ -511,7 +511,7 @@
   "pwa": {
     "workingOffline": "Funzionamento offline",
     "showingCachedData": "Mostrando ultimi dati salvati",
-    "installPrompt": "Installa UArchery come app per una migliore esperienza e uso offline.",
+    "installPrompt": "Installa Sokil come app per una migliore esperienza e uso offline.",
     "install": "Installa",
     "installing": "Installazione…",
     "dismiss": "Non ora",

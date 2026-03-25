@@ -38,8 +38,8 @@ export default defineConfig(({ mode }: { mode: string }) => {
         registerType: 'autoUpdate',
         includeAssets: ['logo192.png', 'logo512.png', 'desktop.png', 'phone.png'],
         manifest: {
-          "short_name": "UArchery",
-          "name": "UArchery APP",
+          "short_name": "Sokil",
+          "name": "Sokil APP",
           "id": "/",
           "start_url": "/",
           "display_override": ["window-controls-overlay", "minimal-ui"],

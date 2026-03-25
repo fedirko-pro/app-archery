@@ -1,4 +1,4 @@
-# UArchery - Archery Management Application
+# Sokil - Archery Management Application
 
 A comprehensive web application for archery federations, clubs, and individual archers. Manage tournaments and participants, track personal training sessions, analyze shooting statistics, and store equipment — all in one place, with offline support.
 
@@ -7,6 +7,7 @@ Built with React (frontend) and NestJS (backend).
 ## 🏹 Features
 
 ### Core Features
+
 - **User Authentication & Authorization**
   - JWT-based authentication
   - Google OAuth integration
@@ -63,6 +64,7 @@ Built with React (frontend) and NestJS (backend).
 ## 🛠 Tech Stack
 
 ### Frontend
+
 - **React 18** - UI framework
 - **TypeScript** - Type safety
 - **Vite** - Build tool and dev server
@@ -74,6 +76,7 @@ Built with React (frontend) and NestJS (backend).
 - **PWA** - Progressive Web App support
 
 ### Backend
+
 - **NestJS** - Node.js framework
 - **TypeScript** - Type safety
 - **MikroORM** - Database ORM
@@ -112,6 +115,7 @@ Built with React (frontend) and NestJS (backend).
 ## 🚀 Getting Started
 
 ### Prerequisites
+
 - Node.js (v18 or higher)
 - PostgreSQL database
 - npm, yarn, or pnpm
@@ -119,11 +123,13 @@ Built with React (frontend) and NestJS (backend).
 ### Frontend Setup
 
 1. **Navigate to the frontend directory:**
+
    ```bash
    cd app-archery
    ```
 
 2. **Install dependencies:**
+
    ```bash
    npm install
    # or
@@ -134,6 +140,7 @@ Built with React (frontend) and NestJS (backend).
 
 3. **Set up environment variables:**
    Create a `.env` file in the frontend root:
+
    ```env
    VITE_API_BASE_URL=http://localhost:3000
    VITE_GOOGLE_AUTH_URL=http://localhost:3000/auth/google
@@ -148,17 +155,20 @@ Built with React (frontend) and NestJS (backend).
 ### Backend Setup
 
 1. **Navigate to the backend directory:**
+
    ```bash
    cd archery-app-backend
    ```
 
 2. **Install dependencies:**
+
    ```bash
    npm install
    ```
 
 3. **Set up environment variables:**
    Create a `.env` file in the backend root:
+
    ```env
    DATABASE_HOST=localhost
    DATABASE_PORT=5432
@@ -175,6 +185,7 @@ Built with React (frontend) and NestJS (backend).
    ```
 
 4. **Set up the database:**
+
    ```bash
    # Run database migrations
    npm run mikro-orm migration:up
@@ -209,12 +220,14 @@ npm run mikro-orm migration:list
 ## 🧪 Testing
 
 ### Frontend Testing
+
 ```bash
 cd app-archery
 npm run test
 ```
 
 ### Backend Testing
+
 ```bash
 cd archery-app-backend
 npm run test
@@ -224,14 +237,17 @@ npm run test:e2e
 ## 🏗 Build & Deployment
 
 ### Frontend Build
+
 ```bash
 cd app-archery
 npm run build
 npm run start  # Preview production build
 ```
+
 Rule PDFs are served from the **backend** at `/pdf/rules/` (files in `archery-app-backend/pdf/rules/`). The frontend uses `API_BASE_URL/pdf/rules/<filename>`. Keep copies in `public/pdf/rules/` for reference if needed.
 
 ### Backend Build
+
 ```bash
 cd archery-app-backend
 npm run build
@@ -241,6 +257,7 @@ npm run start:prod
 ## 🔧 Available Scripts
 
 ### Frontend (app-archery)
+
 - `npm run dev` - Start development server
 - `npm run build` - Build for production
 - `npm run start` - Preview production build
@@ -248,11 +265,13 @@ npm run start:prod
 - `npm run format` - Format code with Prettier
 
 ### Code Quality
+
 - **Pre-commit hooks** - Automatic ESLint and Prettier on commit
 - **TypeScript strict mode** - Enhanced type safety
 - **ESLint configuration** - Code quality enforcement
 
 ### Backend (archery-app-backend)
+
 - `npm run start:dev` - Start development server with hot reload
 - `npm run build` - Build for production
 - `npm run start:prod` - Start production server
@@ -274,6 +293,7 @@ The backend provides RESTful API endpoints for:
 ## 🔐 Authentication
 
 The application supports multiple authentication methods:
+
 - JWT token-based authentication
 - Google OAuth 2.0
 - Password reset via email
@@ -281,6 +301,7 @@ The application supports multiple authentication methods:
 ## 📱 PWA Features
 
 The frontend is configured as a Progressive Web App with:
+
 - Offline functionality
 - Install prompts
 - App-like experience
@@ -312,4 +333,4 @@ For support and questions, please contact the development team or create an issu
 
 ---
 
-**UArchery** - Empowering archery communities with modern technology 🏹 
+**Sokil** - Empowering archery communities with modern technology 🏹
