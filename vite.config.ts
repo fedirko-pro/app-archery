@@ -36,7 +36,14 @@ export default defineConfig(({ mode }: { mode: string }) => {
       react(),
       VitePWA({
         registerType: 'autoUpdate',
-        includeAssets: ['logo192.png', 'logo512.png', 'desktop.png', 'phone.png'],
+        includeAssets: [
+          'favicon.png',
+          'favicon-48.png',
+          'logo192.png',
+          'logo512.png',
+          'desktop.png',
+          'phone.png',
+        ],
         manifest: {
           "short_name": "Sokil",
           "name": "Sokil APP",
@@ -44,8 +51,8 @@ export default defineConfig(({ mode }: { mode: string }) => {
           "start_url": "/",
           "display_override": ["window-controls-overlay", "minimal-ui"],
           "display": "standalone",
-          "background_color": "#ffffff",
-          "theme_color": "#ffffff",
+          "background_color": "#000080",
+          "theme_color": "#000080",
           "description": "An archery application for tracking and managing events. v.0.1.1",
           "orientation": "portrait-primary",
           "screenshots": [
@@ -68,12 +75,20 @@ export default defineConfig(({ mode }: { mode: string }) => {
             {
               "src": "logo192.png",
               "sizes": "192x192",
-              "type": "image/png"
+              "type": "image/png",
+              "purpose": "any"
             },
             {
               "src": "logo512.png",
               "sizes": "512x512",
-              "type": "image/png"
+              "type": "image/png",
+              "purpose": "any"
+            },
+            {
+              "src": "logo512.png",
+              "sizes": "512x512",
+              "type": "image/png",
+              "purpose": "maskable"
             }
           ]
         },
