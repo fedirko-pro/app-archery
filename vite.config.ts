@@ -13,6 +13,12 @@ export default defineConfig(({ mode }: { mode: string }) => {
   } catch {
     apiOrigin = 'http://localhost:3000';
   }
+  /** Workbox copies matchers into sw.js without closures; `apiOrigin` must appear as a literal inside the function body. */
+  const swUrlMatchFn = (body: string) =>
+    new Function(
+      'options',
+      `const url = options.url;\nconst request = options.request;\nconst apiOrigin = ${JSON.stringify(apiOrigin)};\n${body}`,
+    ) as (options: { url: URL; request: Request }) => boolean;
   const proxyTarget =
     apiBase.startsWith('http') ? apiBase : 'http://localhost:3000';
   return {
@@ -100,15 +106,13 @@ export default defineConfig(({ mode }: { mode: string }) => {
           runtimeCaching: [
             // 1. Cache public GET API for offline (must be first so it wins over NetworkOnly)
             {
-              urlPattern: ({ url, request }) => {
-                if (request?.method !== 'GET') return false;
-                const path = url.pathname;
-                const publicPath =
-                  /^\/(?:api\/)?(tournaments|rules|clubs|divisions|bow-categories)(?:\/.*)?$/.test(path) ||
-                  (url.origin === apiOrigin &&
-                    /^\/(tournaments|rules|clubs|divisions|bow-categories)(?:\/.*)?$/.test(path));
-                return publicPath;
-              },
+              urlPattern: swUrlMatchFn(`if (request.method !== 'GET') return false;
+const path = url.pathname;
+return (
+  /^\\/(?:api\\/)?(tournaments|rules|clubs|divisions|bow-categories)(?:\\/.*)?$/.test(path) ||
+  (url.origin === apiOrigin &&
+    /^\\/(tournaments|rules|clubs|divisions|bow-categories)(?:\\/.*)?$/.test(path))
+);`),
               handler: 'NetworkFirst',
               options: {
                 cacheName: 'api-offline-cache',
@@ -119,17 +123,15 @@ export default defineConfig(({ mode }: { mode: string }) => {
             },
             // 2. Private API (auth, users, applications, etc.) – do not cache
             {
-              urlPattern: ({ url, request }) => {
-                if (url.origin !== apiOrigin) return false;
-                const path = url.pathname;
-                return (
-                  /^\/(?:api\/)?auth\//.test(path) ||
-                  /^\/(?:api\/)?users\//.test(path) ||
-                  /^\/(?:api\/)?tournament-applications\//.test(path) ||
-                  /^\/(?:api\/)?patrols\//.test(path) ||
-                  /^\/(?:api\/)?upload\//.test(path)
-                );
-              },
+              urlPattern: swUrlMatchFn(`if (url.origin !== apiOrigin) return false;
+const path = url.pathname;
+return (
+  /^\\/(?:api\\/)?auth\\//.test(path) ||
+  /^\\/(?:api\\/)?users\\//.test(path) ||
+  /^\\/(?:api\\/)?tournament-applications\\//.test(path) ||
+  /^\\/(?:api\\/)?patrols\\//.test(path) ||
+  /^\\/(?:api\\/)?upload\\//.test(path)
+);`),
               handler: 'NetworkOnly',
               options: { cacheName: 'api-private-network-only' },
             },

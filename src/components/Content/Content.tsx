@@ -62,6 +62,18 @@ function LangRedirect({ path }: { path: string }) {
   return <Navigate to={`/${defaultLang}/${path}${location.search}`} replace />;
 }
 
+function LangRedirectWithParams({ pathPrefix }: { pathPrefix: string }) {
+  const params = useParams();
+  const location = useLocation();
+  const defaultLang = getDefaultAppLang();
+  const suffix = Object.entries(params)
+    .filter(([k]) => k !== 'lang')
+    .map(([, v]) => v)
+    .filter(Boolean)
+    .join('/');
+  return <Navigate to={`/${defaultLang}/${pathPrefix}/${suffix}${location.search}`} replace />;
+}
+
 function LangLayout() {
   const params = useParams();
   const appLang = normalizeAppLang(params.lang);
@@ -88,6 +100,11 @@ function Content() {
         {/* Language-agnostic auth routes to avoid 404s from backend redirects */}
         <Route path="/auth/google/callback" element={<GoogleCallback />} />
         <Route path="/signin" element={<Navigate to={`/${defaultLang}/signin`} replace />} />
+        <Route path="/signup" element={<Navigate to={`/${defaultLang}/signup`} replace />} />
+        <Route
+          path="/apply/:tournamentId"
+          element={<LangRedirectWithParams pathPrefix="apply" />}
+        />
         <Route path="/reset-password" element={<LangRedirect path="reset-password" />} />
         <Route path=":lang" element={<LangLayout />}>
           <Route index element={<Navigate to="tournaments" replace />} />

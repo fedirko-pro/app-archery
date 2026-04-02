@@ -115,6 +115,7 @@ const UserMenu: React.FC = () => {
         }
         alt={user?.firstName || 'User'}
         imgProps={{
+          referrerPolicy: 'no-referrer',
           onError: (e) => {
             if (import.meta.env.DEV) {
               console.error('Avatar image failed to load:', user?.picture);

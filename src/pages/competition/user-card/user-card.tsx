@@ -21,11 +21,10 @@ export default function UserCard(props: UserCardProps) {
       <Avatar
         src={user.picture}
         alt={`${user.firstName} ${user.lastName}`}
+        imgProps={{ referrerPolicy: 'no-referrer' }}
       ></Avatar>
       <div className="name">{`${user.firstName} ${user.lastName}`}</div>
-      {user.role !== 'member' && (
-        <div className={'role ' + user.role}>{user.role}</div>
-      )}
+      {user.role !== 'member' && <div className={'role ' + user.role}>{user.role}</div>}
     </div>
   );
 }

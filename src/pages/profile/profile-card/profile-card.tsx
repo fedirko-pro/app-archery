@@ -97,6 +97,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
               const sep = pic.includes('?') ? '&' : '?';
               return `${pic}${sep}t=${user.updatedAt || ''}`;
             })()}
+            imgProps={{ referrerPolicy: 'no-referrer' }}
             sx={{ width: 120, height: 120 }}
           />
           <div className="profile-name">
@@ -124,10 +125,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
               <Table size="small">
                 <TableBody>
                   {isAdminView && (
-                    <TableInfoRow
-                      label={t('accessControl.role', 'Role')}
-                      value={roleLabel}
-                    />
+                    <TableInfoRow label={t('accessControl.role', 'Role')} value={roleLabel} />
                   )}
                   <TableInfoRow
                     label={t('profile.signInMethod', 'Sign-in method')}
@@ -164,16 +162,17 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                     label={t('profile.federationNumber', 'Federation number')}
                     value={federationNumber}
                   />
-                  <TableInfoRow label={t('profile.nationality', 'Nationality')} value={nationality} />
+                  <TableInfoRow
+                    label={t('profile.nationality', 'Nationality')}
+                    value={nationality}
+                  />
                   <TableInfoRow label={t('profile.gender', 'Gender')} value={gender} />
                   <TableInfoRow label={t('profile.club', 'Club')} value={clubName} />
                   <TableInfoRow
                     label={t('profile.location', 'Location')}
                     value={
                       (profileData.location || user.location) && (
-                        <>
-                          📍 {profileData.location || user.location}
-                        </>
+                        <>📍 {profileData.location || user.location}</>
                       )
                     }
                   />
@@ -204,8 +203,8 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                   color="primary"
                   onClick={() => navigate(`/${currentLang}/profile/edit`)}
                 >
-                {t('profile.editProfile')}
-              </Button>
+                  {t('profile.editProfile')}
+                </Button>
               </Box>
             )}
           </Paper>

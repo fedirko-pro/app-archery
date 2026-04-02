@@ -1,12 +1,4 @@
-import {
-  Box,
-  Typography,
-  Card,
-  CardContent,
-  Button,
-  Alert,
-  CircularProgress,
-} from '@mui/material';
+import { Box, Typography, Card, CardContent, Button, Alert, CircularProgress } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -51,20 +43,20 @@ const PublicApplication: React.FC = () => {
   const handleSignUp = () => {
     const pendingData = {
       tournamentId,
-      redirectTo: `/apply/${tournamentId}`,
+      redirectTo: `/${appLang}/apply/${tournamentId}`,
     };
     sessionStorage.setItem('pendingApplication', JSON.stringify(pendingData));
-    navigate('/signup');
+    navigate(`/${appLang}/signup`);
   };
 
   const handleSignIn = () => {
     const pendingData = {
       tournamentId,
-      redirectTo: `/apply/${tournamentId}`,
+      redirectTo: `/${appLang}/apply/${tournamentId}`,
     };
     sessionStorage.setItem('pendingApplication', JSON.stringify(pendingData));
 
-    navigate('/signin', {
+    navigate(`/${appLang}/signin`, {
       state: { fromApplication: true, tournamentId, pendingData },
     });
   };
@@ -78,12 +70,7 @@ const PublicApplication: React.FC = () => {
 
   if (authLoading || loading) {
     return (
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        minHeight="400px"
-      >
+      <Box display="flex" justifyContent="center" alignItems="center" minHeight="400px">
         <CircularProgress />
       </Box>
     );
@@ -93,11 +80,7 @@ const PublicApplication: React.FC = () => {
     return (
       <Box sx={{ p: 3, maxWidth: 600, mx: 'auto' }}>
         <Alert severity="error">{error || t('pages.publicApplication.notFound')}</Alert>
-        <Button
-          variant="contained"
-          sx={{ mt: 2 }}
-          onClick={() => navigate(-1)}
-        >
+        <Button variant="contained" sx={{ mt: 2 }} onClick={() => navigate(-1)}>
           {t('common.back')}
         </Button>
       </Box>
@@ -124,20 +107,10 @@ const PublicApplication: React.FC = () => {
                 flexDirection: { xs: 'column', sm: 'row' },
               }}
             >
-              <Button
-                variant="contained"
-                size="large"
-                fullWidth
-                onClick={handleSignUp}
-              >
+              <Button variant="contained" size="large" fullWidth onClick={handleSignUp}>
                 {t('auth.signUp')}
               </Button>
-              <Button
-                variant="outlined"
-                size="large"
-                fullWidth
-                onClick={handleSignIn}
-              >
+              <Button variant="outlined" size="large" fullWidth onClick={handleSignIn}>
                 {t('auth.signIn')}
               </Button>
             </Box>
