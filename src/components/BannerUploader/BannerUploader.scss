@@ -1,3 +1,5 @@
+@use '../../sass/helpers/variables' as *;
+
 .banner-uploader {
   /* container styles can go here if needed */
 }
@@ -7,7 +9,7 @@
   height: var(--banner-height, 200px);
   border-radius: 12px;
   overflow: hidden;
-  background-color: #f0f0f0;
+  background-color: $surface;
   position: relative;
   user-select: none;
   touch-action: none;
@@ -31,7 +33,7 @@
   padding-left: 16px;
   padding-right: 16px;
   text-align: center;
-  color: #666;
+  color: $text-secondary;
 }
 
 .banner-uploader__file-input {

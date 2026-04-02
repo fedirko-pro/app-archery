@@ -7,7 +7,7 @@
   gap: 12px;
   width: 100%;
   padding: 10px 16px;
-  background: linear-gradient(135deg, $blue 0%, #004a9e 100%);
+  background: linear-gradient(135deg, $blue 0%, $blue-dark 100%);
   color: $white;
   font-size: 14px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
@@ -31,7 +31,9 @@
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
-    transition: opacity 0.2s, transform 0.1s;
+    transition:
+      opacity 0.2s,
+      transform 0.1s;
 
     &:hover {
       opacity: 0.95;

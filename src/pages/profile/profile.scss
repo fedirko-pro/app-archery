@@ -16,7 +16,7 @@
   @media (min-width: 800px) {
     background-image: url('../../img/default_bg_800.png');
   }
-  
+
   @media (min-width: 1200px) {
     background-image: url('../../img/default_bg_1200.png');
   }
@@ -52,7 +52,7 @@
       font-weight: 600;
       text-transform: uppercase;
     }
-    
+
     .subtitle {
       font-size: 16px;
       font-weight: 400;
@@ -88,6 +88,6 @@
 .admin-profile-container {
   border: none !important;
   border-radius: 0 !important;
-  background: #fff !important;
+  background: $white !important;
   box-shadow: none !important;
 }

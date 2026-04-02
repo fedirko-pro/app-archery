@@ -1,3 +1,5 @@
+@use '../../sass/helpers/variables' as *;
+
 .admin-panel {
   padding: 24px;
   max-width: 1200px;
@@ -8,19 +10,19 @@
 
     h1 {
       margin-bottom: 16px;
-      color: #333;
+      color: $text-body;
     }
   }
 
   .users-table {
-    background: white;
+    background: $white;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     overflow: hidden;
   }
 
   .user-edit-form {
-    background: white;
+    background: $white;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     padding: 24px;

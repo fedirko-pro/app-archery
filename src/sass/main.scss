@@ -8,3 +8,14 @@
 
 // Components
 @use 'components/buttons';
+
+// Expose brand tokens as CSS custom properties for CSS-only/non-MUI surfaces.
+:root {
+  --primary-color: #{$blue};
+  --primary-bright: #{$blue-bright};
+  --text-primary: #{$text-body};
+  --text-secondary: #{$text-secondary};
+  --text-disabled: #{$text-disabled};
+  --border-color: #{$border};
+  --surface-color: #{$surface};
+}

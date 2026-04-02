@@ -8,7 +8,7 @@ import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Skeleton from '@mui/material/Skeleton';
-import { useTheme } from '@mui/material/styles';
+import { alpha, useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { format, parseISO } from 'date-fns';
 import React, { useEffect, useMemo, useState } from 'react';
@@ -231,7 +231,7 @@ const ChartCard: React.FC<ChartCardProps> = ({ title, data, color, dataLabel }) 
           <Tooltip
             formatter={(value) => [fmt(Number(value ?? 0)), dataLabel]}
             labelFormatter={(label) => formatMonthTick(String(label))}
-            cursor={{ fill: 'rgba(0,0,0,0.04)' }}
+            cursor={{ fill: alpha('#000000', 0.04) }}
           />
           <Bar dataKey="count" fill={color} radius={[4, 4, 0, 0]} maxBarSize={40} />
         </BarChart>

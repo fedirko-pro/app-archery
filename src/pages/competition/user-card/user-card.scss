@@ -1,3 +1,5 @@
+@use '../../../sass/helpers/variables' as *;
+
 .user_card {
   display: flex;
   align-items: center;
@@ -12,10 +14,10 @@
   .role {
     border-radius: 8px;
     padding: 2px 8px;
-    border: 2px solid #ffcc00;
-    color: #ffcc00;
+    border: 2px solid $yellow;
+    color: $yellow;
     &.leader {
-      background: #0057b8;
+      background: $blue-bright;
     }
   }
   .equal {

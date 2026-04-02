@@ -9,14 +9,14 @@
 
   h2 {
     margin-bottom: 1.5rem;
-    color: var(--primary-color, #1976d2);
+    color: var(--primary-color);
   }
 
   .about-intro {
     font-size: 1.1rem;
     line-height: 1.6;
     margin-bottom: 2rem;
-    color: var(--text-primary, #333);
+    color: var(--text-primary);
   }
 
   .features-section {
@@ -24,7 +24,7 @@
 
     h3 {
       margin-bottom: 1rem;
-      color: var(--primary-color, #1976d2);
+      color: var(--primary-color);
       font-size: 1.3rem;
     }
 
@@ -35,16 +35,16 @@
 
       li {
         padding: 0.75rem 0;
-        border-bottom: 1px solid var(--border-color, #e0e0e0);
+        border-bottom: 1px solid var(--border-color);
         line-height: 1.6;
-        color: var(--text-primary, #333);
+        color: var(--text-primary);
 
         &:last-child {
           border-bottom: none;
         }
 
         strong {
-          color: var(--text-primary, #333);
+          color: var(--text-primary);
           font-weight: 600;
         }
       }
@@ -54,17 +54,17 @@
   hr {
     margin: 2rem 0;
     border: none;
-    border-top: 1px solid var(--border-color, #e0e0e0);
+    border-top: 1px solid var(--border-color);
   }
 
   .contact-info,
   .copyright {
     text-align: center;
-    color: var(--text-secondary, #666);
+    color: var(--text-secondary);
     margin: 1rem 0;
 
     a {
-      color: var(--primary-color, #1976d2);
+      color: var(--primary-color);
       text-decoration: none;
       transition: opacity 0.2s;
 
@@ -78,7 +78,7 @@
   .authors-section {
     margin: 2rem 0;
     text-align: center;
-    color: var(--text-secondary, #666);
+    color: var(--text-secondary);
 
     h3 {
       margin-bottom: 0.75rem;
@@ -97,7 +97,7 @@
       }
 
       a {
-        color: var(--primary-color, #1976d2);
+        color: var(--primary-color);
         text-decoration: none;
         transition: opacity 0.2s;
 
@@ -109,4 +109,3 @@
     }
   }
 }
-

@@ -200,7 +200,7 @@ const MyPaymentsPage: React.FC = () => {
             }}
           >
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-              <WorkspacePremiumIcon sx={{ fontSize: 24, color: '#FFD700' }} />
+              <WorkspacePremiumIcon sx={{ fontSize: 24, color: 'secondary.main' }} />
               <Box>
                 <Typography variant="body1" fontWeight="bold">
                   {t('payments.premium')}

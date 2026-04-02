@@ -18,6 +18,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 
 import apiService from '../../services/api';
+import { getPasswordStrength } from '../../utils/passwordStrength';
 
 const ResetPassword: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -89,28 +90,6 @@ const ResetPassword: React.FC = () => {
     }));
   };
 
-  const getPasswordStrength = (
-    password: string,
-  ): { strength: string; color: string } => {
-    if (!password) return { strength: '', color: '' };
-
-    const hasLower = /[a-z]/.test(password);
-    const hasUpper = /[A-Z]/.test(password);
-    const hasNumber = /\d/.test(password);
-    const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
-    const length = password.length;
-
-    const score =
-      [hasLower, hasUpper, hasNumber, hasSpecial].filter(Boolean).length +
-      (length >= 8 ? 1 : 0) +
-      (length >= 12 ? 1 : 0);
-
-    if (score <= 2) return { strength: 'Weak', color: '#f44336' };
-    if (score <= 4) return { strength: 'Fair', color: '#ff9800' };
-    if (score <= 6) return { strength: 'Good', color: '#2196f3' };
-    return { strength: 'Strong', color: '#4caf50' };
-  };
-
   const passwordStrength = getPasswordStrength(password);
 
   if (!token) {
@@ -118,9 +97,7 @@ const ResetPassword: React.FC = () => {
       <Container maxWidth="sm" sx={{ mt: 4 }}>
         <Card>
           <CardContent>
-            <Alert severity="error">
-              {t('reset.invalidLink')}
-            </Alert>
+            <Alert severity="error">{t('reset.invalidLink')}</Alert>
             <Box sx={{ mt: 2, textAlign: 'center' }}>
               <Button variant="contained" onClick={() => navigate(`/${lang}/signin`)}>
                 {t('auth.backToSignIn')}
@@ -147,21 +124,13 @@ const ResetPassword: React.FC = () => {
         />
         <CardContent>
           {error && (
-            <Alert
-              severity="error"
-              sx={{ mb: 2 }}
-              onClose={() => setError(null)}
-            >
+            <Alert severity="error" sx={{ mb: 2 }} onClose={() => setError(null)}>
               {error}
             </Alert>
           )}
 
           {success && (
-            <Alert
-              severity="success"
-              sx={{ mb: 2 }}
-              onClose={() => navigate(`/${lang}/signin`)}
-            >
+            <Alert severity="success" sx={{ mb: 2 }} onClose={() => navigate(`/${lang}/signin`)}>
               {success}
             </Alert>
           )}
@@ -178,15 +147,8 @@ const ResetPassword: React.FC = () => {
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
-                    <IconButton
-                      onClick={() => togglePasswordVisibility('password')}
-                      edge="end"
-                    >
-                      {showPasswords.password ? (
-                        <VisibilityOff />
-                      ) : (
-                        <Visibility />
-                      )}
+                    <IconButton onClick={() => togglePasswordVisibility('password')} edge="end">
+                      {showPasswords.password ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
                   </InputAdornment>
                 ),
@@ -214,16 +176,10 @@ const ResetPassword: React.FC = () => {
                 endAdornment: (
                   <InputAdornment position="end">
                     <IconButton
-                      onClick={() =>
-                        togglePasswordVisibility('confirmPassword')
-                      }
+                      onClick={() => togglePasswordVisibility('confirmPassword')}
                       edge="end"
                     >
-                      {showPasswords.confirmPassword ? (
-                        <VisibilityOff />
-                      ) : (
-                        <Visibility />
-                      )}
+                      {showPasswords.confirmPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
                   </InputAdornment>
                 ),

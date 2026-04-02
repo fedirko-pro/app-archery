@@ -14,6 +14,8 @@ import {
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
+import { ACHIEVEMENT_COLORS, RARITY_ICON_COLORS } from '../../theme/achievementTokens';
+
 interface Achievement {
   id: string;
   titleKey: string;
@@ -33,8 +35,7 @@ const achievements: Achievement[] = [
     titleKey: 'achievements.firstBullseye.title',
     descriptionKey: 'achievements.firstBullseye.description',
     icon: '🎯',
-    color: '#FFD700',
-    bgGradient: 'linear-gradient(135deg, #FFD700 0%, #FFA500 100%)',
+    ...ACHIEVEMENT_COLORS['first-bullseye'],
     earned: true,
     earnedDate: '2024-03-15',
     rarity: 'common',
@@ -44,8 +45,7 @@ const achievements: Achievement[] = [
     titleKey: 'achievements.perfectRound.title',
     descriptionKey: 'achievements.perfectRound.description',
     icon: '⭐',
-    color: '#9C27B0',
-    bgGradient: 'linear-gradient(135deg, #9C27B0 0%, #E040FB 100%)',
+    ...ACHIEVEMENT_COLORS['perfect-round'],
     earned: true,
     earnedDate: '2024-05-20',
     rarity: 'epic',
@@ -55,8 +55,7 @@ const achievements: Achievement[] = [
     titleKey: 'achievements.tournamentWinner.title',
     descriptionKey: 'achievements.tournamentWinner.description',
     icon: '🏆',
-    color: '#F44336',
-    bgGradient: 'linear-gradient(135deg, #F44336 0%, #FF9800 100%)',
+    ...ACHIEVEMENT_COLORS['tournament-winner'],
     earned: true,
     earnedDate: '2024-07-10',
     rarity: 'legendary',
@@ -66,8 +65,7 @@ const achievements: Achievement[] = [
     titleKey: 'achievements.consistentArcher.title',
     descriptionKey: 'achievements.consistentArcher.description',
     icon: '🏹',
-    color: '#2196F3',
-    bgGradient: 'linear-gradient(135deg, #2196F3 0%, #03A9F4 100%)',
+    ...ACHIEVEMENT_COLORS['consistent-archer'],
     earned: true,
     earnedDate: '2024-04-01',
     rarity: 'rare',
@@ -77,8 +75,7 @@ const achievements: Achievement[] = [
     titleKey: 'achievements.longDistance.title',
     descriptionKey: 'achievements.longDistance.description',
     icon: '🎖️',
-    color: '#4CAF50',
-    bgGradient: 'linear-gradient(135deg, #4CAF50 0%, #8BC34A 100%)',
+    ...ACHIEVEMENT_COLORS['long-distance'],
     earned: false,
     progress: 75,
     rarity: 'rare',
@@ -88,8 +85,7 @@ const achievements: Achievement[] = [
     titleKey: 'achievements.teamSpirit.title',
     descriptionKey: 'achievements.teamSpirit.description',
     icon: '🤝',
-    color: '#00BCD4',
-    bgGradient: 'linear-gradient(135deg, #00BCD4 0%, #26C6DA 100%)',
+    ...ACHIEVEMENT_COLORS['team-spirit'],
     earned: false,
     progress: 40,
     rarity: 'common',
@@ -99,8 +95,7 @@ const achievements: Achievement[] = [
     titleKey: 'achievements.precisionMaster.title',
     descriptionKey: 'achievements.precisionMaster.description',
     icon: '💎',
-    color: '#673AB7',
-    bgGradient: 'linear-gradient(135deg, #673AB7 0%, #9575CD 100%)',
+    ...ACHIEVEMENT_COLORS['precision-master'],
     earned: false,
     progress: 20,
     rarity: 'legendary',
@@ -110,13 +105,13 @@ const achievements: Achievement[] = [
 const getRarityIcon = (rarity: Achievement['rarity']) => {
   switch (rarity) {
     case 'legendary':
-      return <EmojiEvents sx={{ fontSize: 16, color: '#FFD700' }} />;
+      return <EmojiEvents sx={{ fontSize: 16, color: RARITY_ICON_COLORS.legendary }} />;
     case 'epic':
-      return <WorkspacePremium sx={{ fontSize: 16, color: '#9C27B0' }} />;
+      return <WorkspacePremium sx={{ fontSize: 16, color: RARITY_ICON_COLORS.epic }} />;
     case 'rare':
-      return <MilitaryTech sx={{ fontSize: 16, color: '#2196F3' }} />;
+      return <MilitaryTech sx={{ fontSize: 16, color: RARITY_ICON_COLORS.rare }} />;
     default:
-      return <Star sx={{ fontSize: 16, color: '#9E9E9E' }} />;
+      return <Star sx={{ fontSize: 16, color: RARITY_ICON_COLORS.common }} />;
   }
 };
 

@@ -16,11 +16,21 @@ import OfflineBanner from './components/OfflineBanner';
 import { AuthProvider } from './contexts/auth-context';
 import { ErrorFeedbackProvider } from './contexts/error-feedback-context';
 import { LocalDataProvider } from './contexts/local-data-context';
+import { COLORS } from './theme/colors';
 
 const theme = createTheme({
   typography: {
     // MUI defaults to Roboto; we override to match the rest of the app.
     fontFamily: '"Montserrat", Arial, Helvetica, sans-serif',
+  },
+  palette: {
+    primary: {
+      main: COLORS.primary,
+    },
+    secondary: {
+      main: COLORS.secondary,
+      contrastText: COLORS.secondaryContrastText,
+    },
   },
 });
 

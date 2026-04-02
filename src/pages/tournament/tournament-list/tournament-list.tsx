@@ -16,11 +16,7 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useParams } from 'react-router-dom';
 
-import {
-  canCreateTournament,
-  canEditTournament,
-  canDeleteTournament,
-} from '../../../config/roles';
+import { canCreateTournament, canEditTournament, canDeleteTournament } from '../../../config/roles';
 import { useAuth } from '../../../contexts/auth-context';
 import defaultBanner from '../../../img/default_turnament_bg.png';
 import apiService from '../../../services/api';
@@ -32,9 +28,7 @@ const TournamentList: React.FC = () => {
   const { lang } = useParams();
   const { t } = useTranslation('common');
   const [tournaments, setTournaments] = useState<TournamentDto[]>([]);
-  const [userApplications, setUserApplications] = useState<
-    TournamentApplicationDto[]
-  >([]);
+  const [userApplications, setUserApplications] = useState<TournamentApplicationDto[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState(0);
@@ -75,8 +69,7 @@ const TournamentList: React.FC = () => {
   };
 
   const getApplicationCountForTournament = (tournamentId: string) => {
-    return userApplications.filter((app) => app.tournament.id === tournamentId)
-      .length;
+    return userApplications.filter((app) => app.tournament.id === tournamentId).length;
   };
 
   const handleDeleteTournament = async (id: string) => {
@@ -96,7 +89,7 @@ const TournamentList: React.FC = () => {
 
   const isPastTournament = (tournament: TournamentDto): boolean => {
     const today = startOfDay(new Date());
-    const tournamentEndDate = tournament.endDate 
+    const tournamentEndDate = tournament.endDate
       ? parseISO(tournament.endDate)
       : parseISO(tournament.startDate);
     return isBefore(startOfDay(tournamentEndDate), today);
@@ -114,12 +107,7 @@ const TournamentList: React.FC = () => {
 
   if (loading) {
     return (
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        minHeight="200px"
-      >
+      <Box display="flex" justifyContent="center" alignItems="center" minHeight="200px">
         <CircularProgress />
       </Box>
     );
@@ -150,10 +138,7 @@ const TournamentList: React.FC = () => {
               padding: { xs: '8px 12px', sm: '8px 16px' },
             }}
           >
-            <Box
-              component="span"
-              sx={{ display: { xs: 'none', sm: 'inline' } }}
-            >
+            <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>
               {t('pages.tournaments.create')}
             </Box>
           </Button>
@@ -187,123 +172,123 @@ const TournamentList: React.FC = () => {
         {filteredTournaments.map((tournament) => {
           const isPast = isPastTournament(tournament);
           return (
-          <Box key={tournament.id}>
-            <Card>
-              <CardMedia
-                component="img"
-                height="140"
-                image={tournament.banner || defaultBanner}
-                alt={tournament.title}
-                sx={{ objectFit: 'cover' }}
-              />
-              <CardContent>
-                <Typography variant="h6" gutterBottom>
-                  {tournament.title}
-                </Typography>
-                {tournament.description && (
-                  <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    sx={{ mb: 2 }}
-                  >
-                    {tournament.description}
+            <Box key={tournament.id}>
+              <Card>
+                <CardMedia
+                  component="img"
+                  height="140"
+                  image={tournament.banner || defaultBanner}
+                  alt={tournament.title}
+                  sx={{ objectFit: 'cover' }}
+                />
+                <CardContent>
+                  <Typography variant="h6" gutterBottom>
+                    {tournament.title}
                   </Typography>
-                )}
-                <Typography variant="body2" sx={{ mb: 1 }}>
-                  <strong>{t('pages.tournaments.rules', 'Rules')}:</strong>{' '}
-                  {tournament.ruleCode 
-                    ? (tournament.rule?.ruleName || tournament.ruleCode)
-                    : <em style={{ color: '#999' }}>{t('pages.tournaments.noRulesAssigned', 'Not specified')}</em>
-                  }
-                </Typography>
-                <Typography variant="body2">
-                  <strong>{t('pages.tournaments.start')}:</strong> {formatDate(tournament.startDate)}
-                </Typography>
-                {tournament.applicationDeadline && (
-                  <Typography variant="body2" color="warning.main">
-                    <strong>{t('pages.tournaments.applicationDeadline', 'Application Deadline')}:</strong> {formatDate(tournament.applicationDeadline)}
+                  {tournament.description && (
+                    <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                      {tournament.description}
+                    </Typography>
+                  )}
+                  <Typography variant="body2" sx={{ mb: 1 }}>
+                    <strong>{t('pages.tournaments.rules', 'Rules')}:</strong>{' '}
+                    {tournament.ruleCode ? (
+                      tournament.rule?.ruleName || tournament.ruleCode
+                    ) : (
+                      <em style={{ color: 'var(--text-disabled)' }}>
+                        {t('pages.tournaments.noRulesAssigned', 'Not specified')}
+                      </em>
+                    )}
                   </Typography>
-                )}
-                {tournament.address && (
                   <Typography variant="body2">
-                    <strong>{t('pages.tournaments.location')}:</strong> {tournament.address}
+                    <strong>{t('pages.tournaments.start')}:</strong>{' '}
+                    {formatDate(tournament.startDate)}
                   </Typography>
-                )}
-                <Box sx={{ mt: 2, display: 'flex', gap: 1, flexWrap: 'wrap' }}>
-                  <Button
-                    size="small"
-                    variant="outlined"
-                    startIcon={<Visibility />}
-                    component={Link}
-                    to={`/${lang}/tournaments/${tournament.id}`}
-                  >
-                    {t('pages.tournaments.viewDetails', 'View Details')}
-                  </Button>
-                  {hasApplicationForTournament(tournament.id) && (
+                  {tournament.applicationDeadline && (
+                    <Typography variant="body2" color="warning.main">
+                      <strong>
+                        {t('pages.tournaments.applicationDeadline', 'Application Deadline')}:
+                      </strong>{' '}
+                      {formatDate(tournament.applicationDeadline)}
+                    </Typography>
+                  )}
+                  {tournament.address && (
+                    <Typography variant="body2">
+                      <strong>{t('pages.tournaments.location')}:</strong> {tournament.address}
+                    </Typography>
+                  )}
+                  <Box sx={{ mt: 2, display: 'flex', gap: 1, flexWrap: 'wrap' }}>
                     <Button
                       size="small"
-                      variant="contained"
-                      color="success"
+                      variant="outlined"
+                      startIcon={<Visibility />}
                       component={Link}
-                      to={`/${lang}/applications`}
+                      to={`/${lang}/tournaments/${tournament.id}`}
                     >
-                      {t('pages.tournaments.viewApplications')} (
-                      {getApplicationCountForTournament(tournament.id)})
+                      {t('pages.tournaments.viewDetails', 'View Details')}
                     </Button>
-                  )}
-                  {!isPast && (tournament.allowMultipleApplications ||
-                    !hasApplicationForTournament(tournament.id)) && (
+                    {hasApplicationForTournament(tournament.id) && (
                       <Button
                         size="small"
                         variant="contained"
-                        startIcon={<Send />}
+                        color="success"
                         component={Link}
-                        to={`/${lang}/apply/${tournament.id}`}
+                        to={`/${lang}/applications`}
                       >
-                        {t('pages.tournaments.apply')}
+                        {t('pages.tournaments.viewApplications')} (
+                        {getApplicationCountForTournament(tournament.id)})
                       </Button>
                     )}
-                  {user &&
-                    (canEditTournament(
-                      user.role,
-                      tournament.createdBy?.id ?? '',
-                      user.id,
-                    ) ||
-                      canDeleteTournament(user.role)) && (
-                      <>
-                        {canEditTournament(
-                          user.role,
-                          tournament.createdBy?.id ?? '',
-                          user.id,
-                        ) && (
-                          <Button
-                            size="small"
-                            variant="outlined"
-                            startIcon={<Edit />}
-                            component={Link}
-                            to={`/${lang}/tournaments/${tournament.id}/edit`}
-                          >
-                            {t('pages.tournaments.edit')}
-                          </Button>
-                        )}
-                        {canDeleteTournament(user.role) && (
-                          <Button
-                            size="small"
-                            variant="outlined"
-                            color="error"
-                            startIcon={<Delete />}
-                            onClick={() => handleDeleteTournament(tournament.id)}
-                          >
-                            {t('pages.tournaments.delete')}
-                          </Button>
-                        )}
-                      </>
-                    )}
-                </Box>
-              </CardContent>
-            </Card>
-          </Box>
-        );
+                    {!isPast &&
+                      (tournament.allowMultipleApplications ||
+                        !hasApplicationForTournament(tournament.id)) && (
+                        <Button
+                          size="small"
+                          variant="contained"
+                          startIcon={<Send />}
+                          component={Link}
+                          to={`/${lang}/apply/${tournament.id}`}
+                        >
+                          {t('pages.tournaments.apply')}
+                        </Button>
+                      )}
+                    {user &&
+                      (canEditTournament(user.role, tournament.createdBy?.id ?? '', user.id) ||
+                        canDeleteTournament(user.role)) && (
+                        <>
+                          {canEditTournament(
+                            user.role,
+                            tournament.createdBy?.id ?? '',
+                            user.id,
+                          ) && (
+                            <Button
+                              size="small"
+                              variant="outlined"
+                              startIcon={<Edit />}
+                              component={Link}
+                              to={`/${lang}/tournaments/${tournament.id}/edit`}
+                            >
+                              {t('pages.tournaments.edit')}
+                            </Button>
+                          )}
+                          {canDeleteTournament(user.role) && (
+                            <Button
+                              size="small"
+                              variant="outlined"
+                              color="error"
+                              startIcon={<Delete />}
+                              onClick={() => handleDeleteTournament(tournament.id)}
+                            >
+                              {t('pages.tournaments.delete')}
+                            </Button>
+                          )}
+                        </>
+                      )}
+                  </Box>
+                </CardContent>
+              </Card>
+            </Box>
+          );
         })}
       </Box>
     </Box>

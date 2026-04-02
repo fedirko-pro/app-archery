@@ -8,21 +8,20 @@
     width: 100%;
   }
   .MuiSelect-select {
-    color: #ffd700;
+    color: $yellow;
     display: flex;
     align-items: center;
     gap: 6px;
-    // padding-block: 4px;
   }
   .MuiOutlinedInput-notchedOutline {
-    border-color: #ffd700;
+    border-color: $yellow;
     border-width: 1px;
   }
   .Mui-focused .MuiOutlinedInput-notchedOutline {
-    border-color: #ffd700 !important;
+    border-color: $yellow !important;
   }
   .MuiSvgIcon-root {
-    color: #ffd700;
+    color: $yellow;
   }
 
   &__option {
@@ -31,9 +30,9 @@
     gap: 8px;
   }
   &__menuPaper {
-    border: 1px solid #ffd700;
+    border: 1px solid $yellow;
     background: rgba(0, 0, 0, 0.9);
-    color: #ffd700;
+    color: $yellow;
   }
   &__menuList {
     padding-top: 0 !important;
@@ -48,6 +47,6 @@
   }
   .MuiMenuItem-root.Mui-selected,
   .MuiMenuItem-root.Mui-selected:hover {
-    background-color: rgba(255, 215, 0, 0.5) !important;
+    background-color: rgba(255, 204, 0, 0.5) !important;
   }
 }

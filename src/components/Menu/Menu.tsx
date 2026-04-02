@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 
+import { COLORS } from '../../theme/colors';
 import { normalizeAppLang } from '../../utils/i18n-lang';
 import NavLink from './NavLink';
 import type { MenuProps } from './types';
@@ -51,7 +52,7 @@ export const Menu: React.FC<MenuProps> = ({
                     style={{
                       border: 'none',
                       height: '1px',
-                      backgroundColor: '#333',
+                      backgroundColor: COLORS.dividerOnDark,
                       margin: '8px 32px',
                     }}
                   />
@@ -64,7 +65,7 @@ export const Menu: React.FC<MenuProps> = ({
                       style={{
                         border: 'none',
                         height: '1px',
-                        backgroundColor: '#333',
+                        backgroundColor: COLORS.dividerOnDark,
                         margin: '8px 32px',
                       }}
                     />
@@ -81,7 +82,7 @@ export const Menu: React.FC<MenuProps> = ({
                         width: '100%',
                         textAlign: 'left',
                         fontSize: '20px',
-                        color: '#ffd700',
+                        color: COLORS.secondary,
                         pointerEvents: 'auto',
                         display: 'flex',
                         alignItems: 'center',
@@ -122,7 +123,7 @@ export const Menu: React.FC<MenuProps> = ({
                   style={{
                     border: 'none',
                     height: '1px',
-                    backgroundColor: '#333',
+                    backgroundColor: COLORS.dividerOnDark,
                     margin: '8px 32px',
                   }}
                 />

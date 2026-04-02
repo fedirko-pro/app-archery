@@ -21,6 +21,7 @@ import { useAuth } from '../../contexts/auth-context';
 import { useNotification } from '../../contexts/error-feedback-context';
 import apiService from '../../services/api';
 import { getAppLanguageFromUser } from '../../utils/i18n-lang';
+import { getPasswordStrength } from '../../utils/passwordStrength';
 import ProfileEditForm from './profile-edit-form/profile-edit-form';
 import type { ProfileData } from './types';
 
@@ -220,22 +221,6 @@ const ProfileEditPage: React.FC = () => {
     setShowPasswords((prev) => ({ ...prev, [field]: !prev[field] }));
   };
 
-  const getPasswordStrength = (password: string): { strength: string; color: string } => {
-    if (!password) return { strength: '', color: '' };
-    const hasLower = /[a-z]/.test(password);
-    const hasUpper = /[A-Z]/.test(password);
-    const hasNumber = /\d/.test(password);
-    const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
-    const length = password.length;
-    const score =
-      [hasLower, hasUpper, hasNumber, hasSpecial].filter(Boolean).length +
-      (length >= 8 ? 1 : 0) +
-      (length >= 12 ? 1 : 0);
-    if (score <= 2) return { strength: 'Weak', color: '#f44336' };
-    if (score <= 4) return { strength: 'Fair', color: '#ff9800' };
-    if (score <= 6) return { strength: 'Good', color: '#2196f3' };
-    return { strength: 'Strong', color: '#4caf50' };
-  };
   const passwordStrength = getPasswordStrength(passwordForm.newPassword);
 
   if (!profileData) {

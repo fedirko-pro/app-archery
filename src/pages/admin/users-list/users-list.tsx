@@ -1,4 +1,11 @@
-import { Edit, Email, Visibility, ArrowUpward, ArrowDownward, PersonAdd } from '@mui/icons-material';
+import {
+  Edit,
+  Email,
+  Visibility,
+  ArrowUpward,
+  ArrowDownward,
+  PersonAdd,
+} from '@mui/icons-material';
 import {
   Box,
   Table,
@@ -36,9 +43,7 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
-  const [resettingPassword, setResettingPassword] = useState<string | null>(
-    null,
-  );
+  const [resettingPassword, setResettingPassword] = useState<string | null>(null);
   const [sortConfig, setSortConfig] = useState<{
     field: string | null;
     direction: 'asc' | 'desc';
@@ -96,7 +101,9 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
     try {
       setError(null);
       await apiService.adminCreateUser(userData);
-      setSuccess(`User ${userData.firstName} ${userData.lastName} created successfully. They will receive an invitation email.`);
+      setSuccess(
+        `User ${userData.firstName} ${userData.lastName} created successfully. They will receive an invitation email.`,
+      );
       setTimeout(() => setSuccess(null), 5000);
       setCreateDialogOpen(false);
       // Refresh the users list
@@ -110,8 +117,7 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
   const handleSort = (field: string) => {
     setSortConfig((prev) => ({
       field,
-      direction:
-        prev.field === field && prev.direction === 'asc' ? 'desc' : 'asc',
+      direction: prev.field === field && prev.direction === 'asc' ? 'desc' : 'asc',
     }));
   };
 
@@ -155,12 +161,7 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
 
   if (loading) {
     return (
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        minHeight="200px"
-      >
+      <Box display="flex" justifyContent="center" alignItems="center" minHeight="200px">
         <CircularProgress />
       </Box>
     );
@@ -169,9 +170,7 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
   return (
     <Box>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-        <Typography variant="h4">
-          Users Management
-        </Typography>
+        <Typography variant="h4">Users Management</Typography>
         <Button
           variant="contained"
           startIcon={<PersonAdd />}
@@ -188,11 +187,7 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
       )}
 
       {success && (
-        <Alert
-          severity="success"
-          sx={{ mb: 2 }}
-          onClose={() => setSuccess(null)}
-        >
+        <Alert severity="success" sx={{ mb: 2 }} onClose={() => setSuccess(null)}>
           {success}
         </Alert>
       )}
@@ -257,7 +252,9 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
                   '&:hover': { backgroundColor: 'action.hover' },
                 }}
               >
-                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.5 }}>
+                <Box
+                  sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.5 }}
+                >
                   <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
                     Gender
                   </Typography>
@@ -321,8 +318,7 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
                     alt={`${user.firstName} ${user.lastName}`}
                     sx={{ width: 32, height: 32 }}
                   >
-                    {!user.picture &&
-                      `${user.firstName?.[0] || ''}${user.lastName?.[0] || ''}`}
+                    {!user.picture && `${user.firstName?.[0] || ''}${user.lastName?.[0] || ''}`}
                   </Avatar>
                 </TableCell>
                 <TableCell>
@@ -343,16 +339,20 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
                       label={user.gender}
                       size="small"
                       variant="outlined"
-                      color={user.gender === 'M' ? 'info' : user.gender === 'F' ? 'secondary' : 'default'}
+                      color={
+                        user.gender === 'M' ? 'info' : user.gender === 'F' ? 'secondary' : 'default'
+                      }
                       sx={{ height: 20, minWidth: 28, '& .MuiChip-label': { px: 0.5 } }}
                     />
                   ) : (
-                    <Typography variant="body2" color="text.disabled">-</Typography>
+                    <Typography variant="body2" color="text.disabled">
+                      -
+                    </Typography>
                   )}
                 </TableCell>
                 <TableCell>
                   <Typography variant="body2" noWrap sx={{ maxWidth: 150 }}>
-                    {user.club?.name || <span style={{ color: '#999' }}>-</span>}
+                    {user.club?.name || <span style={{ color: 'var(--text-disabled)' }}>-</span>}
                   </Typography>
                 </TableCell>
                 <TableCell>
@@ -365,9 +365,7 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
                   />
                 </TableCell>
                 <TableCell align="center">
-                  <Box
-                    sx={{ display: 'flex', gap: 1, justifyContent: 'center' }}
-                  >
+                  <Box sx={{ display: 'flex', gap: 1, justifyContent: 'center' }}>
                     <Tooltip title="View Profile">
                       <IconButton
                         size="small"
@@ -379,11 +377,7 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
                     </Tooltip>
 
                     <Tooltip title="Edit Profile">
-                      <IconButton
-                        size="small"
-                        onClick={() => handleEditUser(user)}
-                        color="primary"
-                      >
+                      <IconButton size="small" onClick={() => handleEditUser(user)} color="primary">
                         <Edit />
                       </IconButton>
                     </Tooltip>
