@@ -43,7 +43,7 @@
     "lint-staged": "^16.4.0",
     "prettier": "^3.8.1",
     "typescript": "^5.9.3",
-    "vite": "^7.3.1",
+    "vite": "^7.3.2",
     "vite-plugin-pwa": "^1.2.0",
     "vitest": "^2.1.9",
     "workbox-build": "^7.4.0",
