@@ -21,7 +21,7 @@
     "sass": "^1.98.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.29.0",
+    "@babel/core": "^7.29.6",
     "@babel/plugin-transform-private-property-in-object": "^7.28.6",
     "@testing-library/react": "^16.3.2",
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",
