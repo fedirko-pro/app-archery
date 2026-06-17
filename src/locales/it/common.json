@@ -574,5 +574,17 @@
     "arrows": "frecce",
     "sessions": "sessioni",
     "loadError": "Impossibile caricare le statistiche"
+  },
+  "dashboard": {
+    "title": "Home",
+    "thisWeekArrows": "Frecce di questa settimana",
+    "currentStreak": "Serie attuale",
+    "lastSession": "Ultima sessione",
+    "noSessions": "Nessuna sessione di allenamento. Registra la prima!",
+    "logTraining": "Registra allenamento",
+    "upcomingTournaments": "Prossimi tornei",
+    "viewAllApplications": "Vedi tutte le candidature",
+    "viewAllTrainings": "Vedi tutti gli allenamenti",
+    "viewStatistics": "Vedi statistiche complete"
   }
 }

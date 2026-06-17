@@ -653,5 +653,17 @@
     "arrows": "стріл",
     "sessions": "тренувань",
     "loadError": "Не вдалося завантажити статистику"
+  },
+  "dashboard": {
+    "title": "Головна",
+    "thisWeekArrows": "Стріли цього тижня",
+    "currentStreak": "Серія тренувань",
+    "lastSession": "Останнє тренування",
+    "noSessions": "Ще немає тренувань. Запишіть перше!",
+    "logTraining": "Записати тренування",
+    "upcomingTournaments": "Майбутні турніри",
+    "viewAllApplications": "Усі заявки",
+    "viewAllTrainings": "Усі тренування",
+    "viewStatistics": "Повна статистика"
   }
 }

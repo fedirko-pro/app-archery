@@ -577,5 +577,17 @@
     "arrows": "flechas",
     "sessions": "sesiones",
     "loadError": "Error al cargar las estadísticas"
+  },
+  "dashboard": {
+    "title": "Inicio",
+    "thisWeekArrows": "Flechas de esta semana",
+    "currentStreak": "Racha actual",
+    "lastSession": "Última sesión",
+    "noSessions": "Aún no hay sesiones de entrenamiento. ¡Registra la primera!",
+    "logTraining": "Registrar entrenamiento",
+    "upcomingTournaments": "Próximos torneos",
+    "viewAllApplications": "Ver todas las solicitudes",
+    "viewAllTrainings": "Ver todos los entrenamientos",
+    "viewStatistics": "Ver estadísticas completas"
   }
 }

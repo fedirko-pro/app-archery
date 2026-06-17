@@ -10,6 +10,7 @@ import React, {
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import apiService from '../services/api';
+import { getDefaultLandingPath } from '../utils/default-landing';
 import { fromI18nLang, getCurrentI18nLang, normalizeAppLang } from '../utils/i18n-lang';
 import type {
   User,
@@ -67,7 +68,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     checkAuth();
   }, []);
 
-  const handlePostAuthRedirect = () => {
+  const handlePostAuthRedirect = (authenticatedUser?: User | null) => {
     // First priority: check for a stored return URL from protected route
     const returnUrl = sessionStorage.getItem('returnUrl');
     if (returnUrl) {
@@ -85,14 +86,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       return;
     }
 
-    // Default: redirect to tournaments page
-    navigate(`/${currentLang}/tournaments`);
+    const landingUser = authenticatedUser !== undefined ? authenticatedUser : user;
+    navigate(getDefaultLandingPath(currentLang, landingUser));
   };
 
-  const login = async (
-    email: string,
-    password: string,
-  ): Promise<AuthResponse> => {
+  const login = async (email: string, password: string): Promise<AuthResponse> => {
     try {
       setError(null);
       setLoading(true);
@@ -101,12 +99,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const userData = await apiService.getProfile();
 
       setUser(userData);
-      handlePostAuthRedirect();
+      handlePostAuthRedirect(userData);
 
       return response;
     } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : 'An error occurred';
+      const errorMessage = error instanceof Error ? error.message : 'An error occurred';
       setError(errorMessage);
       throw error;
     } finally {
@@ -126,12 +123,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const userProfile = await apiService.getProfile();
 
       setUser(userProfile);
-      handlePostAuthRedirect();
+      handlePostAuthRedirect(userProfile);
 
       return response;
     } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : 'An error occurred';
+      const errorMessage = error instanceof Error ? error.message : 'An error occurred';
       setError(errorMessage);
       throw error;
     } finally {
@@ -172,7 +168,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       pendingApplicationProcessedRef.current = true;
 
       // Use the same redirect logic as normal login
-      handlePostAuthRedirect();
+      handlePostAuthRedirect(userData);
     } catch {
       apiService.logout();
       setUser(null);
@@ -182,9 +178,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   }, [currentLang, navigate]);
 
-  const changePassword = async (
-    passwordData: ChangePasswordData,
-  ): Promise<void> => {
+  const changePassword = async (passwordData: ChangePasswordData): Promise<void> => {
     try {
       setError(null);
       setLoading(true);
@@ -193,8 +187,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
       navigate(`/${currentLang}/profile`);
     } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : 'Failed to change password';
+      const errorMessage = error instanceof Error ? error.message : 'Failed to change password';
       setError(errorMessage);
       throw error;
     } finally {
@@ -202,10 +195,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
-  const setPassword = async (
-    password: string,
-    confirmPassword: string,
-  ): Promise<void> => {
+  const setPassword = async (password: string, confirmPassword: string): Promise<void> => {
     try {
       setError(null);
       setLoading(true);
@@ -218,8 +208,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
       navigate(`/${currentLang}/profile`);
     } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : 'Failed to set password';
+      const errorMessage = error instanceof Error ? error.message : 'Failed to set password';
       setError(errorMessage);
       throw error;
     } finally {

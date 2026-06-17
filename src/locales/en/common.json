@@ -671,5 +671,17 @@
     "arrows": "arrows",
     "sessions": "sessions",
     "loadError": "Failed to load statistics"
+  },
+  "dashboard": {
+    "title": "Home",
+    "thisWeekArrows": "This week's arrows",
+    "currentStreak": "Current streak",
+    "lastSession": "Last session",
+    "noSessions": "No training sessions yet. Log your first session!",
+    "logTraining": "Log training",
+    "upcomingTournaments": "Upcoming tournaments",
+    "viewAllApplications": "View all applications",
+    "viewAllTrainings": "View all trainings",
+    "viewStatistics": "View full statistics"
   }
 }

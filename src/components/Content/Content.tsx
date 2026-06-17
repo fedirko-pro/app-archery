@@ -8,6 +8,7 @@ import {
   ROLES_CAN_DELETE_AND_MANAGE_APPS,
   ROLES_CAN_MANAGE_REFERENCE_DATA,
 } from '../../config/roles';
+import { useAuth } from '../../contexts/auth-context';
 import i18n from '../../i18n';
 import About from '../../pages/About';
 import Achievements from '../../pages/achievements/achievements';
@@ -28,6 +29,7 @@ import Encyclopedia from '../../pages/Encyclopedia';
 // TODO: Settings temporarily disabled - functionality moved to Profile
 // import Settings from '../Settings/Settings.tsx';
 import GoogleCallback from '../../pages/google-callback/google-callback';
+import HomePage from '../../pages/Home';
 import MyEquipmentPage from '../../pages/MyEquipment';
 import MyPaymentsPage from '../../pages/MyPayments';
 import MyStatisticsPage from '../../pages/MyStatistics';
@@ -49,12 +51,27 @@ import TournamentEdit from '../../pages/tournament/tournament-edit/tournament-ed
 import TournamentList from '../../pages/tournament/tournament-list/tournament-list';
 import UserApplications from '../../pages/tournament/user-applications/user-applications';
 import Training from '../../pages/Trainings';
+import { getDefaultLandingPath } from '../../utils/default-landing';
 import {
   isRtlLanguage,
   normalizeAppLang,
   toI18nLang,
   getDefaultAppLang,
 } from '../../utils/i18n-lang';
+
+function DefaultLandingRedirect() {
+  const { user, loading } = useAuth();
+  const { lang } = useParams();
+  const currentLang = normalizeAppLang(lang);
+  const landingPath = getDefaultLandingPath(currentLang, user);
+  const segment = landingPath.split('/').pop() ?? 'tournaments';
+
+  if (loading) {
+    return null;
+  }
+
+  return <Navigate to={segment} replace />;
+}
 
 function LangRedirect({ path }: { path: string }) {
   const location = useLocation();
@@ -107,7 +124,7 @@ function Content() {
         />
         <Route path="/reset-password" element={<LangRedirect path="reset-password" />} />
         <Route path=":lang" element={<LangLayout />}>
-          <Route index element={<Navigate to="tournaments" replace />} />
+          <Route index element={<DefaultLandingRedirect />} />
           <Route path="signin" element={<SignIn />} />
           <Route path="signup" element={<SignUp />} />
           <Route path="auth/google/callback" element={<GoogleCallback />} />
@@ -171,6 +188,7 @@ function Content() {
           <Route path="divisions" element={<Divisions />} />
           <Route path="rules" element={<Rules />} />
           <Route path="encyclopedia" element={<Encyclopedia />} />
+          <Route path="home" element={<HomePage />} />
           <Route path="trainings" element={<MyTrainingsPage />} />
           <Route path="equipment" element={<MyEquipmentPage />} />
           <Route path="statistics" element={<MyStatisticsPage />} />
