@@ -1,16 +1,16 @@
 {
   "footer": { "about": "Sobre o app" },
   "auth": { "logout": "Sair", "signIn": "Entrar", "signUp": "Registrar" },
-  "menu": { "admin": "Admin", "myProfile": "Meu perfil ({{name}})" },
+  "menu": { "admin": "Admin", "myProfile": "Perfil ({{name}})" },
   "nav": {
     "tournaments": "Torneios",
     "clubs": "Clubes",
-    "myApplications": "Minhas inscrições",
-    "myAchievements": "Minhas conquistas (Demo)",
-    "myPayments": "Meus Pagamentos (Demo)",
-    "myTrainings": "Meus Treinos",
-    "myEquipment": "Meu Equipamento",
-    "myStatistics": "Minhas Estatísticas",
+    "myApplications": "Inscrições",
+    "myAchievements": "Conquistas (Demo)",
+    "myPayments": "Pagamentos (Demo)",
+    "myTrainings": "Treinos",
+    "myEquipment": "Equipamento",
+    "myStatistics": "Estatísticas",
     "converter": "Conversor",
     "categories": "Categorias",
     "rules": "Regras",
@@ -141,11 +141,13 @@
     "converter": { "title": "Conversor das medidas mais comuns de arco" },
     "about": {
       "title": "Sobre este aplicativo",
-      "intro": "Sokil é uma aplicação web abrangente para federações de tiro com arco, clubes e arqueiros individuais. Gerencie torneios e participantes, registre sessões de treino pessoais, analise suas estatísticas de tiro e armazene equipamentos — tudo em um só lugar, com suporte offline.",
-      "currentTitle": "Funcionalidades atuais:",
+      "intro": "Sokil ajuda arqueiros a registrar treinos, acompanhar o progresso, desbloquear conquistas e gerenciar equipamentos — com suporte offline e sincronização automática.\n\nA gamificação torna o hobby mais envolvente.\n\nSeus dados são armazenados com segurança e você escolhe o que compartilhar. Federações e clubes podem organizar torneios, gerenciar inscrições e eventos.\n\nEmpoderando comunidades de tiro com arco com tecnologia moderna.",
+      "archerTitle": "Para arqueiros",
+      "federationTitle": "Para federações e organizadores",
+      "platformTitle": "Plataforma",
       "current": {
         "auth": "Autenticação e autorização - Autenticação baseada em JWT com Google OAuth, redefinição de senha e controle de acesso baseado em funções",
-        "profiles": "Perfis de usuário - Gerenciamento completo de perfis com upload de avatar, biografia, localização, número da federação e categorias de arco favoritas",
+        "profiles": "Perfis de usuário - Perfil pessoal com avatar, biografia, localização e preferências de arco",
         "tournaments": "Gerenciamento de torneios - Criar, editar e gerenciar torneios com banners, anexos, mapas de localização e prazos de inscrição",
         "applications": "Inscrições em torneios - Enviar inscrições com seleção de categoria, divisão e equipamento. Fluxo de trabalho de aprovação do administrador com rastreamento de status",
         "patrols": "Sistema de patrulhas - Geração automática de patrulhas com agrupamento inteligente por categoria de arco, divisão e gênero. Interface de gerenciamento drag-and-drop e exportação PDF",
@@ -160,10 +162,13 @@
         "pwa": "Aplicativo web progressivo - PWA instalável com capacidades offline",
         "trainingLog": "Registro de treinos - Registre e gerencie sessões de treino com data, distância, tipo de alvo e quantidade de flechas. Funciona offline com sincronização automática",
         "equipment": "Gerenciamento de equipamentos - Armazene e gerencie conjuntos de equipamentos com especificações detalhadas (peso de tração, spine da flecha, comprimento, material e mais)",
-        "statistics": "Minhas Estatísticas - Painel de atividade pessoal com flechas disparadas por período, distância percorrida, sequência de treinos, hábitos, histórico de torneios e gráficos mensais"
+        "statistics": "Minhas Estatísticas - Painel de atividade pessoal com flechas disparadas por período, distância percorrida, sequência de treinos, hábitos, histórico de torneios e gráficos mensais",
+        "achievements": "Conquistas e Gamificação - Sistema de badges já disponível: desbloqueie marcos, mantenha a motivação e torne o tiro com arco ainda mais divertido. Compartilhe resultados e conquistas com amigos",
+        "security": "Segurança e Privacidade - Seus dados são armazenados com segurança e conexões criptografadas. Você escolhe o que compartilhar — estatísticas de treino, conquistas e visibilidade do perfil ficam sob seu controle"
       },
       "plannedTitle": "Funcionalidades planejadas:",
       "planned": {
+        "socialSharing": "Compartilhamento Social Aprimorado - Mais formas de compartilhar resultados, estatísticas e conquistas com amigos e colegas de clube",
         "achievements": "Sistema de conquistas - Página demo disponível, rastreamento completo em breve",
         "payments": "Sistema de Pagamentos - Página demo disponível, métodos de pagamento, assinaturas e rastreamento de taxas de torneios em breve",
         "competitions": "Recursos de competição - Gerenciamento aprimorado de competições e pontuação",
@@ -508,7 +513,15 @@
     "signingIn": "Entrando...",
     "signInWithGoogle": "Entrar com Google",
     "validationEmail": "Por favor, insira um endereço de e-mail válido.",
-    "validationPasswordMin": "A senha deve ter pelo menos 6 caracteres."
+    "validationPasswordMin": "A senha deve ter pelo menos 6 caracteres.",
+    "validationFirstNameRequired": "O nome é obrigatório.",
+    "validationLastNameRequired": "O sobrenome é obrigatório.",
+    "alreadyAccount": "Já tem uma conta?",
+    "signUpWithGoogle": "Registrar com Google",
+    "signingUp": "Registrando...",
+    "backToSignIn": "Voltar ao login",
+    "signInSubtitle": "Acompanhe treinos, ganhe conquistas e sincronize com segurança. Você escolhe o que compartilhar.",
+    "signUpSubtitle": "Junte-se à comunidade — registre treinos, desbloqueie badges e compartilhe seu progresso com amigos nos seus termos."
   },
   "dialog": {
     "yes": "Sim",

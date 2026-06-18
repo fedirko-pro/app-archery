@@ -11,7 +11,25 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import { useAuth } from '../../contexts/auth-context';
 import type { AppLanguageCode } from '../../contexts/types';
-import { fromI18nLang, getAppLanguageFromUser, normalizeAppLang, toI18nLang } from '../../utils/i18n-lang';
+import flagEn from '../../img/flags/en.svg';
+import flagEs from '../../img/flags/es.svg';
+import flagIt from '../../img/flags/it.svg';
+import flagPt from '../../img/flags/pt.svg';
+import flagUa from '../../img/flags/ua.svg';
+import {
+  fromI18nLang,
+  getAppLanguageFromUser,
+  normalizeAppLang,
+  toI18nLang,
+} from '../../utils/i18n-lang';
+
+const options: Array<{ value: string; code: string; flagSrc: string }> = [
+  { value: 'pt', code: 'PT', flagSrc: flagPt },
+  { value: 'en', code: 'EN', flagSrc: flagEn },
+  { value: 'it', code: 'IT', flagSrc: flagIt },
+  { value: 'es', code: 'ES', flagSrc: flagEs },
+  { value: 'ua', code: 'UA', flagSrc: flagUa },
+];
 
 const LanguageToggler: React.FC = () => {
   const params = useParams();
@@ -26,14 +44,6 @@ const LanguageToggler: React.FC = () => {
       (i18nInstance.language ? fromI18nLang(i18nInstance.language) : undefined) ??
       getAppLanguageFromUser(user),
   );
-
-  const options: Array<{ value: string; code: string; flag: string }> = [
-    { value: 'pt', code: 'PT', flag: '🇵🇹' },
-    { value: 'en', code: 'EN', flag: '🇬🇧' },
-    { value: 'it', code: 'IT', flag: '🇮🇹' },
-    { value: 'es', code: 'ES', flag: '🇪🇸' },
-    { value: 'ua', code: 'UA', flag: '🇺🇦' },
-  ];
 
   const handleChange = async (event: SelectChangeEvent<string>) => {
     const value = event.target.value as string;
@@ -56,6 +66,16 @@ const LanguageToggler: React.FC = () => {
         size="small"
         aria-label="language"
         className="language_select__control"
+        renderValue={(value) => {
+          const opt = options.find((o) => o.value === value);
+          if (!opt) return value;
+          return (
+            <>
+              <img src={opt.flagSrc} alt="" className="language_select__flag" aria-hidden />
+              <span className="language_select__code">{opt.code}</span>
+            </>
+          );
+        }}
         MenuProps={{
           PaperProps: { className: 'language_select__menuPaper' },
           MenuListProps: { className: 'language_select__menuList' },
@@ -63,7 +83,7 @@ const LanguageToggler: React.FC = () => {
       >
         {options.map((opt) => (
           <MenuItem key={opt.value} value={opt.value} className="language_select__option">
-            <span aria-hidden className="language_select__flag">{opt.flag}</span>
+            <img src={opt.flagSrc} alt="" className="language_select__flag" aria-hidden />
             <span className="language_select__code">{opt.code}</span>
           </MenuItem>
         ))}

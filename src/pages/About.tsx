@@ -11,14 +11,29 @@ const About = () => {
         <p className="about-intro">{t('pages.about.intro')}</p>
 
         <div className="features-section">
-          <h3>{t('pages.about.currentTitle')}</h3>
+          <h3>{t('pages.about.archerTitle')}</h3>
           <ul className="features-list">
             <li>
-              <strong>🔐 {t('pages.about.current.auth')}</strong>
+              <strong>🏋️ {t('pages.about.current.trainingLog')}</strong>
+            </li>
+            <li>
+              <strong>🎽 {t('pages.about.current.equipment')}</strong>
+            </li>
+            <li>
+              <strong>📈 {t('pages.about.current.statistics')}</strong>
+            </li>
+            <li>
+              <strong>🏆 {t('pages.about.current.achievements')}</strong>
             </li>
             <li>
               <strong>👤 {t('pages.about.current.profiles')}</strong>
             </li>
+          </ul>
+        </div>
+
+        <div className="features-section">
+          <h3>{t('pages.about.federationTitle')}</h3>
+          <ul className="features-list">
             <li>
               <strong>🏹 {t('pages.about.current.tournaments')}</strong>
             </li>
@@ -43,26 +58,29 @@ const About = () => {
             <li>
               <strong>📜 {t('pages.about.current.rules')}</strong>
             </li>
+          </ul>
+        </div>
+
+        <div className="features-section">
+          <h3>{t('pages.about.platformTitle')}</h3>
+          <ul className="features-list">
             <li>
-              <strong>🔄 {t('pages.about.current.converter')}</strong>
+              <strong>🔐 {t('pages.about.current.auth')}</strong>
             </li>
             <li>
-              <strong>📎 {t('pages.about.current.uploads')}</strong>
-            </li>
-            <li>
-              <strong>🌍 {t('pages.about.current.multilang')}</strong>
+              <strong>🛡️ {t('pages.about.current.security')}</strong>
             </li>
             <li>
               <strong>📱 {t('pages.about.current.pwa')}</strong>
             </li>
             <li>
-              <strong>🏋️ {t('pages.about.current.trainingLog')}</strong>
+              <strong>🌍 {t('pages.about.current.multilang')}</strong>
             </li>
             <li>
-              <strong>🎽 {t('pages.about.current.equipment')}</strong>
+              <strong>🔄 {t('pages.about.current.converter')}</strong>
             </li>
             <li>
-              <strong>📈 {t('pages.about.current.statistics')}</strong>
+              <strong>📎 {t('pages.about.current.uploads')}</strong>
             </li>
           </ul>
         </div>
@@ -70,13 +88,13 @@ const About = () => {
         <div className="features-section">
           <h3>{t('pages.about.plannedTitle')}</h3>
           <ul className="features-list">
-            <li>{t('pages.about.planned.achievements')}</li>
+            <li>{t('pages.about.planned.socialSharing')}</li>
+            <li>{t('pages.about.planned.duels')}</li>
+            <li>{t('pages.about.planned.knowledgeBase')}</li>
             <li>{t('pages.about.planned.payments')}</li>
             <li>{t('pages.about.planned.competitions')}</li>
-            <li>{t('pages.about.planned.duels')}</li>
             <li>{t('pages.about.planned.news')}</li>
             <li>{t('pages.about.planned.calendar')}</li>
-            <li>{t('pages.about.planned.knowledgeBase')}</li>
             <li>{t('pages.about.planned.more')}</li>
           </ul>
         </div>

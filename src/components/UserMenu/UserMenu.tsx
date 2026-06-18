@@ -45,44 +45,25 @@ const UserMenu: React.FC = () => {
   // const handleLanguageChange = (_lang: string) => setLanguage(_lang);
 
   const authenticatedMenuItems = [
+    { link: '/home', label: t('dashboard.title') },
+    { link: '/trainings', label: t('nav.myTrainings') },
+    { link: '/statistics', label: t('nav.myStatistics') },
+    { link: '/achievements', label: t('nav.myAchievements') },
+    { link: '/equipment', label: t('nav.myEquipment') },
     {
       link: '/profile',
       label: t('menu.myProfile', { name: (user?.firstName || '') + ' ' + (user?.lastName || '') }),
-    },
-    {
-      link: '/trainings',
-      label: t('nav.myTrainings'),
-    },
-    {
-      link: '/equipment',
-      label: t('nav.myEquipment'),
-    },
-    {
-      link: '/statistics',
-      label: t('nav.myStatistics'),
-    },
-    {
-      link: '/applications',
-      label: t('nav.myApplications'),
-    },
-    {
-      link: '/achievements',
-      label: t('nav.myAchievements'),
-    },
-    {
-      link: '/payments',
-      label: t('nav.myPayments'),
     },
   ];
 
   const unauthenticatedSections: MenuSection[] = [
     {
       items: [
+        { link: '/home', label: t('dashboard.title') },
         { link: '/trainings', label: t('nav.myTrainings') },
-        { link: '/equipment', label: t('nav.myEquipment') },
         { link: '/statistics', label: t('nav.myStatistics') },
         { link: '/achievements', label: t('nav.myAchievements') },
-        { link: '/payments', label: t('nav.myPayments') },
+        { link: '/equipment', label: t('nav.myEquipment') },
       ],
     },
     {

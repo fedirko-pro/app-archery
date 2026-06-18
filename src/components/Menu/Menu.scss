@@ -38,8 +38,10 @@
 
     .menu_list {
       flex-direction: column;
-      height: 100%;
-      overflow: scroll;
+      flex: 1;
+      min-height: 0;
+      overflow-x: hidden;
+      overflow-y: auto;
 
       .menu_separator {
         margin: 8px 0;

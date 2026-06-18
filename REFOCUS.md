@@ -72,57 +72,6 @@ Federation features remain, but move to a secondary **“Events & Admin”** zon
 
 *Low build, high impact. Do first.*
 
-#### A1. Archer Dashboard as default home
-
-- [ ] Add route: `/home` or `/dashboard`
-- [ ] Dashboard widgets:
-  - This week’s arrows
-  - Current streak
-  - Last session summary
-  - Quick “Log training” CTA
-  - Upcoming tournaments (if user has applications)
-  - Sync status indicator
-- [ ] Change default redirect from `/tournaments` → dashboard for regular users
-- [ ] Admins: optional redirect to tournaments or role-based home
-
-**Files likely touched:** `Content.tsx`, `auth-context.tsx`, new dashboard page, nav links, i18n.
-
-#### A2. Restructure navigation
-
-**Primary (always visible):**
-
-| Item | Route |
-|------|-------|
-| Home / Dashboard | `/home` |
-| My Trainings | `/trainings` |
-| My Statistics | `/statistics` |
-| My Equipment | `/equipment` |
-| Profile | `/profile` |
-
-**Secondary (“More” or collapsible section):**
-
-| Item | Route |
-|------|-------|
-| Tournaments | `/tournaments` |
-| My Applications | `/applications` |
-| Clubs | `/clubs` |
-| Rules / Divisions / Categories | reference routes |
-| Converter | `/converter` |
-| About | `/about` |
-| Scoring | when real, not demo |
-
-- [ ] Update `NavMenu.tsx` — primary archer items
-- [ ] Update `UserMenu.tsx` — reduce duplication with main nav
-- [ ] Role-aware: hide organizer items for regular users
-
-#### A3. Rewrite positioning copy
-
-- [ ] README — lead with training, progress, equipment; tournaments second
-- [ ] About page intro — archer-first wording
-- [ ] About feature list — reorder: personal tools first, federation/admin under “For organizers & federations”
-- [ ] Sign-in / sign-up copy — reflect archer value prop
-- [ ] i18n: update `pages.about.*` in all locales (en, uk, pt, es, it)
-
 #### A4. Role-aware experience
 
 - [ ] Regular user: no patrols, admin, reference CRUD in nav

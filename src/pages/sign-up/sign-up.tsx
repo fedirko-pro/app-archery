@@ -44,12 +44,10 @@ const SignUpContainer = styled(Stack)(({ theme }) => ({
   [theme.breakpoints.up('sm')]: {
     padding: theme.spacing(4),
   },
-  backgroundImage:
-    'radial-gradient(ellipse at 50% 50%, hsl(210, 100%, 97%), hsl(0, 0%, 100%))',
+  backgroundImage: 'radial-gradient(ellipse at 50% 50%, hsl(210, 100%, 97%), hsl(0, 0%, 100%))',
   backgroundRepeat: 'no-repeat',
   ...theme.applyStyles('dark', {
-    backgroundImage:
-      'radial-gradient(at 50% 50%, hsla(210, 100%, 16%, 0.5), hsl(220, 30%, 5%))',
+    backgroundImage: 'radial-gradient(at 50% 50%, hsla(210, 100%, 16%, 0.5), hsl(220, 30%, 5%))',
   }),
 }));
 
@@ -78,7 +76,7 @@ export default function SignUp() {
 
     if (!email?.value || !/\S+@\S+\.\S+/.test(email.value)) {
       setEmailError(true);
-      setEmailErrorMessage('Please enter a valid email address.');
+      setEmailErrorMessage(t('auth.validationEmail', 'Please enter a valid email address.'));
       isValid = false;
     } else {
       setEmailError(false);
@@ -87,7 +85,9 @@ export default function SignUp() {
 
     if (!password?.value || password.value.length < 6) {
       setPasswordError(true);
-      setPasswordErrorMessage('Password must be at least 6 characters long.');
+      setPasswordErrorMessage(
+        t('auth.validationPasswordMin', 'Password must be at least 6 characters long.'),
+      );
       isValid = false;
     } else {
       setPasswordError(false);
@@ -96,7 +96,7 @@ export default function SignUp() {
 
     if (!firstName?.value || firstName.value.length < 1) {
       setNameError(true);
-      setNameErrorMessage('First name is required.');
+      setNameErrorMessage(t('auth.validationFirstNameRequired', 'First name is required.'));
       isValid = false;
     } else {
       setNameError(false);
@@ -105,7 +105,7 @@ export default function SignUp() {
 
     if (!lastName?.value || lastName.value.length < 1) {
       setLastNameError(true);
-      setLastNameErrorMessage('Last name is required.');
+      setLastNameErrorMessage(t('auth.validationLastNameRequired', 'Last name is required.'));
       isValid = false;
     } else {
       setLastNameError(false);
@@ -165,6 +165,9 @@ export default function SignUp() {
           sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)' }}
         >
           {t('auth.signUp')}
+        </Typography>
+        <Typography variant="body1" color="text.secondary">
+          {t('auth.signUpSubtitle')}
         </Typography>
 
         {error && (
@@ -242,16 +245,11 @@ export default function SignUp() {
             control={<Checkbox value="allowExtraEmails" color="primary" />}
             label="I want to receive updates via email."
           /> */}
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            disabled={isSubmitting}
-          >
+          <Button type="submit" fullWidth variant="contained" disabled={isSubmitting}>
             {isSubmitting ? t('auth.signingUp') : t('auth.signUp')}
           </Button>
           <Typography sx={{ textAlign: 'center' }}>
-            {t('auth.alreadyAccount')} {' '}
+            {t('auth.alreadyAccount')}{' '}
             <span>
               <Link href={`/${lang}/signin`} variant="body2" sx={{ alignSelf: 'center' }}>
                 {t('auth.signIn')}

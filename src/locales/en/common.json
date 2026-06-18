@@ -1,16 +1,16 @@
 {
   "footer": { "about": "About app" },
 
-  "menu": { "admin": "Admin", "myProfile": "My profile ({{name}})" },
+  "menu": { "admin": "Admin", "myProfile": "Profile ({{name}})" },
   "nav": {
     "tournaments": "Tournaments",
     "clubs": "Clubs",
-    "myApplications": "My applications",
-    "myAchievements": "My achievements (Demo)",
-    "myPayments": "My Payments (Demo)",
-    "myTrainings": "My Trainings",
-    "myEquipment": "My Equipment",
-    "myStatistics": "My Statistics",
+    "myApplications": "Applications",
+    "myAchievements": "Achievements (Demo)",
+    "myPayments": "Payments (Demo)",
+    "myTrainings": "Trainings",
+    "myEquipment": "Equipment",
+    "myStatistics": "Statistics",
     "converter": "Converter",
     "categories": "Categories",
     "rules": "Rules",
@@ -161,11 +161,13 @@
     "converter": { "title": "Converter of most common archery measures" },
     "about": {
       "title": "About this App",
-      "intro": "Sokil is a comprehensive web application for archery federations, clubs, and individual archers. Manage tournaments and participants, track personal training sessions, analyze your shooting statistics, and store equipment — all in one place, with offline support.",
-      "currentTitle": "Current Features:",
+      "intro": "Sokil helps archers log training sessions, track progress, unlock achievements, and manage equipment — with offline support and automatic sync.\n\nGamification keeps the hobby engaging.\n\nYour data is stored securely and you choose what to share. Federations and clubs can run tournaments, manage applications, and organize events.\n\nEmpowering archery communities with modern technology.",
+      "archerTitle": "For archers",
+      "federationTitle": "For federations & organizers",
+      "platformTitle": "Platform",
       "current": {
         "auth": "User Authentication & Authorization - JWT-based authentication with Google OAuth, password reset, and role-based access control",
-        "profiles": "User Profiles - Complete profile management with avatar upload, bio, location, federation number, and favorite bow categories",
+        "profiles": "User Profiles - Personal profile with avatar, bio, location, and bow preferences",
         "tournaments": "Tournament Management - Create, edit, and manage tournaments with banners, attachments, location mapping, and application deadlines",
         "applications": "Tournament Applications - Submit applications with category, division, and equipment selection. Admin approval workflow with status tracking",
         "patrols": "Patrol System - Automatic patrol generation with intelligent grouping by bow category, division, and gender. Drag-and-drop management interface and PDF export",
@@ -180,10 +182,13 @@
         "pwa": "Progressive Web App - Installable PWA with offline capabilities",
         "trainingLog": "Training Log - Record and manage personal training sessions with date, distance, target type, and shot count. Works offline with automatic sync",
         "equipment": "Equipment Management - Store and manage bow equipment sets with detailed specifications (draw weight, arrow spine, length, material, and more)",
-        "statistics": "My Statistics - Personal activity dashboard with shots fired by period, distance traveled, training streak, training habits, tournament history, and monthly charts"
+        "statistics": "My Statistics - Personal activity dashboard with shots fired by period, distance traveled, training streak, training habits, tournament history, and monthly charts",
+        "achievements": "Achievements & Gamification - Badge system is live: unlock milestones, stay motivated, and make archery even more fun. Share results and achievements with friends",
+        "security": "Security & Privacy - Your data is stored securely with encrypted connections. You choose what to share — training stats, achievements, and profile visibility stay under your control"
       },
       "plannedTitle": "Planned Features:",
       "planned": {
+        "socialSharing": "Enhanced Social Sharing - Richer ways to share results, stats, and achievements with friends and club mates",
         "achievements": "Achievements System - Demo page available, full tracking coming soon",
         "payments": "Payments System - Demo page available, payment methods, subscriptions and tournament fee tracking coming soon",
         "competitions": "Competition Features - Enhanced competition management and scoring",
@@ -590,7 +595,11 @@
     "signingUp": "Signing up...",
     "backToSignIn": "Back to Sign In",
     "validationEmail": "Please enter a valid email address.",
-    "validationPasswordMin": "Password must be at least 6 characters long."
+    "validationPasswordMin": "Password must be at least 6 characters long.",
+    "validationFirstNameRequired": "First name is required.",
+    "validationLastNameRequired": "Last name is required.",
+    "signInSubtitle": "Track your training, earn achievements, and sync securely. You choose what to share.",
+    "signUpSubtitle": "Join the community — log sessions, unlock badges, and share your progress with friends on your terms."
   },
   "dialog": {
     "yes": "Yes",

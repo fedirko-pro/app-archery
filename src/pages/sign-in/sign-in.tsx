@@ -50,12 +50,10 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
     position: 'absolute',
     zIndex: -1,
     inset: 0,
-    backgroundImage:
-      'radial-gradient(ellipse at 50% 50%, hsl(210, 100%, 97%), hsl(0, 0%, 100%))',
+    backgroundImage: 'radial-gradient(ellipse at 50% 50%, hsl(210, 100%, 97%), hsl(0, 0%, 100%))',
     backgroundRepeat: 'no-repeat',
     ...theme.applyStyles('dark', {
-      backgroundImage:
-        'radial-gradient(at 50% 50%, hsla(210, 100%, 16%, 0.5), hsl(220, 30%, 5%))',
+      backgroundImage: 'radial-gradient(at 50% 50%, hsla(210, 100%, 16%, 0.5), hsl(220, 30%, 5%))',
     }),
   },
 }));
@@ -64,8 +62,7 @@ const SignIn: React.FC = () => {
   const [emailError, setEmailError] = React.useState<boolean>(false);
   const [emailErrorMessage, setEmailErrorMessage] = React.useState<string>('');
   const [passwordError, setPasswordError] = React.useState<boolean>(false);
-  const [passwordErrorMessage, setPasswordErrorMessage] =
-    React.useState<string>('');
+  const [passwordErrorMessage, setPasswordErrorMessage] = React.useState<string>('');
   const [open, setOpen] = React.useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = React.useState<boolean>(false);
   const location = useLocation();
@@ -99,7 +96,9 @@ const SignIn: React.FC = () => {
 
     if (!password.value || password.value.length < 6) {
       setPasswordError(true);
-      setPasswordErrorMessage(t('auth.validationPasswordMin', 'Password must be at least 6 characters long.'));
+      setPasswordErrorMessage(
+        t('auth.validationPasswordMin', 'Password must be at least 6 characters long.'),
+      );
       isValid = false;
     } else {
       setPasswordError(false);
@@ -109,9 +108,7 @@ const SignIn: React.FC = () => {
     return isValid;
   };
 
-  const handleSubmit = async (
-    event: React.FormEvent<HTMLFormElement>,
-  ): Promise<void> => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
 
     if (!validateInputs()) {
@@ -134,17 +131,12 @@ const SignIn: React.FC = () => {
   };
 
   const handleGoogleSignIn = (): void => {
-    const pendingData =
-      location.state?.pendingData ||
-      sessionStorage.getItem('pendingApplication');
+    const pendingData = location.state?.pendingData || sessionStorage.getItem('pendingApplication');
 
     if (pendingData) {
       const pendingApplication =
         typeof pendingData === 'string' ? JSON.parse(pendingData) : pendingData;
-      sessionStorage.setItem(
-        'pendingApplication',
-        JSON.stringify(pendingApplication),
-      );
+      sessionStorage.setItem('pendingApplication', JSON.stringify(pendingApplication));
     }
 
     window.location.href = env.GOOGLE_AUTH_URL;
@@ -159,6 +151,9 @@ const SignIn: React.FC = () => {
           sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)' }}
         >
           {t('auth.signIn')}
+        </Typography>
+        <Typography variant="body1" color="text.secondary">
+          {t('auth.signInSubtitle')}
         </Typography>
 
         {error && (
@@ -178,7 +173,7 @@ const SignIn: React.FC = () => {
             gap: 2,
           }}
         >
-      <FormControl>
+          <FormControl>
             <FormLabel htmlFor="email">{t('forms.email')}</FormLabel>
             <TextField
               error={emailError}
@@ -198,7 +193,7 @@ const SignIn: React.FC = () => {
           </FormControl>
           <FormControl>
             <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-            <FormLabel htmlFor="password">{t('forms.password')}</FormLabel>
+              <FormLabel htmlFor="password">{t('forms.password')}</FormLabel>
               <Link
                 component="button"
                 type="button"
@@ -223,12 +218,7 @@ const SignIn: React.FC = () => {
               color={passwordError ? 'error' : 'primary'}
             />
           </FormControl>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            disabled={isSubmitting}
-          >
+          <Button type="submit" fullWidth variant="contained" disabled={isSubmitting}>
             {isSubmitting ? t('auth.signingIn') : t('auth.signIn')}
           </Button>
           <Typography sx={{ textAlign: 'center' }}>

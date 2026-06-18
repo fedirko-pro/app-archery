@@ -1,35 +1,18 @@
 # Sokil - Archery Management Application
 
-A comprehensive web application for archery federations, clubs, and individual archers. Manage tournaments and participants, track personal training sessions, analyze shooting statistics, and store equipment — all in one place, with offline support.
+Sokil helps archers log training at the range, track progress over time, unlock achievements, and manage equipment — even offline.
+
+Gamification keeps the hobby engaging.
+
+Your data is stored securely and you choose what to share. Clubs and federations get tournament management, applications, and admin tools.
+
+Empowering archery communities with modern technology.
 
 Built with React (frontend) and NestJS (backend).
 
 ## 🏹 Features
 
-### Core Features
-
-- **User Authentication & Authorization**
-  - JWT-based authentication
-  - Google OAuth integration
-  - Role-based access control (Admin/User)
-  - Password reset functionality
-  - Set password for OAuth users
-
-- **Tournament System**
-  - Tournament creation and management
-  - Application system for tournaments
-  - Admin approval workflow
-  - Public tournament applications
-  - Multiple applications per user (different categories)
-  - Application deadline management
-  - Tournament status tracking
-
-- **User Profiles**
-  - Comprehensive user profiles
-  - Profile editing capabilities
-  - Password change functionality
-  - User achievements (demo page with 7 archery achievements)
-  - My Payments (demo page: payment methods, subscriptions, payment history)
+### For Archers
 
 - **Training Log**
   - Record and manage personal training sessions
@@ -52,14 +35,57 @@ Built with React (frontend) and NestJS (backend).
   - Monthly bar charts for arrows and sessions
   - Reactive — updates immediately when training data changes
 
+- **Achievements & Gamification**
+  - Badge system is live — unlock milestones and keep training fun
+  - Makes archery a more engaging hobby through gamification
+  - Share results and achievements with friends
+  - More achievements and auto-tracking from your sessions coming soon
+
+- **User Profiles**
+  - Comprehensive user profiles
+  - Profile editing capabilities
+  - Password change functionality
+  - My Payments (demo page: payment methods, subscriptions, payment history)
+
+### For Federations & Organizers
+
+- **Tournament System**
+  - Tournament creation and management
+  - Application system for tournaments
+  - Admin approval workflow
+  - Public tournament applications
+  - Multiple applications per user (different categories)
+  - Application deadline management
+  - Tournament status tracking
+
 - **Admin Panel**
   - User management
   - Tournament oversight
   - Application approvals
   - System administration
 
+### Platform
+
+- **User Authentication & Authorization**
+  - JWT-based authentication
+  - Google OAuth integration
+  - Role-based access control (Admin/User)
+  - Password reset functionality
+  - Set password for OAuth users
+
 - **Utility Tools**
   - Unit converter (inches/cm, pounds/kg, grains/grams, yards/meters)
+
+- **Progressive Web App**
+  - Installable PWA with offline capabilities
+
+- **Multi-language Support**
+  - Available in English, Ukrainian, Spanish, Italian, and Portuguese
+
+- **Security & Privacy**
+  - Data stored securely with encrypted connections
+  - You control what is shared — stats, achievements, and profile visibility
+  - Choose how much of your training journey is visible to friends and the community
 
 ## 🛠 Tech Stack
 
