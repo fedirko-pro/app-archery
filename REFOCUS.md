@@ -5,54 +5,6 @@
 
 ---
 
-## 1. Current State Analysis
-
-### 1.1 What the docs say
-
-- **README** opens with tournaments and admin workflows; training, equipment, and statistics appear later.
-- **About page** lists 16 “current features” — roughly **11 are federation/organizer oriented** (patrols, admin panel, categories, clubs, divisions, rules, uploads), while only a handful are archer-personal (training log, equipment, statistics).
-- **Planned features** mix both worlds: duels and knowledge base are archer-friendly; news/calendar lean federation.
-
-### 1.2 What the app does on first visit
-
-| Signal | Current behavior | Lean |
-|--------|------------------|------|
-| Default route | `/tournaments` | Federation |
-| Post-login redirect | Tournaments | Federation |
-| Left nav (hamburger) | Tournaments, clubs, rules, divisions, categories, converter, scoring demo | Reference + organizer |
-| Right nav (avatar) | Trainings, equipment, statistics, applications, achievements, payments | Archer-personal (secondary) |
-
-**Key insight:** The archer loop exists but is hidden behind the avatar menu. The primary navigation promotes reference data and tournament administration.
-
-### 1.3 Business logic split
-
-```
-Federation / Organizer domain          Archer domain (local-first)
-─────────────────────────────          ────────────────────────────
-• Tournaments                            • Training log
-• Applications + approval                • Equipment sets
-• Patrols                                • Statistics
-• Admin panel                            • Achievements (demo)
-• Rules / Divisions / Categories / Clubs • Payments (demo)
-
-Bridge: Profile (federation number) ↔ My Applications ↔ Tournament stats in dashboard
-```
-
-**Working loop today:** Training → Statistics (real, reactive).  
-**Broken loop:** Achievements and payments are disconnected demos.  
-**Dominant but separate:** Tournament participation (landing + messaging).
-
-### 1.4 Core UX problems
-
-1. **Identity mismatch** — Copy leads with federations; new archers land on tournament list.
-2. **Discoverability** — Best differentiators (offline training, equipment, streaks) are not in main nav.
-3. **Incomplete archer loop** — Sessions track volume (shots, distance) but not scores or improvement; achievements show fake progress.
-4. **Trust around data** — Sync is opt-in and buried in profile edit; messaging still implies “device only.”
-5. **Demo fatigue** — Achievements, payments, scoring card labeled “Demo” in primary menus.
-6. **Profile still federation-shaped** — `federationNumber` prominent; bow categories are federation taxonomy.
-
----
-
 ## 2. Strategic Direction
 
 **Reframe Sokil as:**  
