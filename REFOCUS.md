@@ -11,15 +11,6 @@
 
 *Core product value. Highest priority after Phase A.*
 
-#### B1. Quick-log training (30-second flow)
-
-- [ ] Dashboard FAB or CTA: “Log today’s session”
-- [ ] Smart defaults from last session (distance, target, equipment)
-- [ ] “Same as yesterday” one-tap option
-- [ ] Optimize form for mobile / PWA / offline at the range
-
-**Files likely touched:** `MyTrainings/`, `TrainingSessionForm.tsx`, dashboard page.
-
 #### B2. Richer session model
 
 Plan fields in tiers:

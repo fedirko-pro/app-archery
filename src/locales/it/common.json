@@ -446,7 +446,8 @@
     "info": "La sezione \"I miei allenamenti\" consente di creare qualsiasi numero di allenamenti personali, selezionare bersaglio, distanza, numero di frecce, ecc.\nPer ogni allenamento sono disponibili statistiche dettagliate. L'utente può condividere i propri risultati.\nIMPORTANTE: le informazioni dell'allenamento non vengono inviate altrove e rimangono solo sul tuo dispositivo (per ora)",
     "deleteQ": "Eliminare l'allenamento?",
     "deleteHint": "Tutti i risultati di questo allenamento verranno eliminati",
-    "add": "Aggiungi allenamento"
+    "add": "Aggiungi allenamento",
+    "moreDetails": "Altri dettagli"
   },
   "units": {
     "inch": "Pollice",
@@ -599,6 +600,8 @@
     "lastSession": "Ultima sessione",
     "noSessions": "Nessuna sessione di allenamento. Registra la prima!",
     "logTraining": "Registra allenamento",
+    "logTodaysSession": "Registra la sessione di oggi",
+    "sameAsLastTime": "Come l'ultima volta",
     "upcomingTournaments": "Prossimi tornei",
     "viewAllApplications": "Vedi tutte le candidature",
     "viewAllTrainings": "Vedi tutti gli allenamenti",

@@ -149,3 +149,22 @@ export function getMostRecentSession(
   if (sessions.length === 0) return null;
   return [...sessions].sort((a, b) => b.date.localeCompare(a.date))[0];
 }
+
+export function getLastLoggedSession(
+  sessions: LocalTrainingSession[],
+): LocalTrainingSession | null {
+  if (sessions.length === 0) return null;
+  return [...sessions].sort((a, b) => b.createdAt.localeCompare(a.createdAt))[0];
+}
+
+export function toSessionFormDefaults(
+  session: LocalTrainingSession,
+): Partial<LocalTrainingSession> {
+  const today = new Date().toISOString().slice(0, 10);
+  return {
+    date: today,
+    distance: session.distance,
+    targetType: session.targetType,
+    equipmentSetId: session.equipmentSetId,
+  };
+}

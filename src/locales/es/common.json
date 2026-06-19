@@ -485,7 +485,8 @@
     "info": "La sección \"Mis entrenamientos\" permite crear cualquier cantidad de entrenamientos personales, seleccionar objetivo, distancia, cantidad de flechas, etc.\nPara cada entrenamiento hay estadísticas detalladas. El usuario puede compartir sus resultados.\nIMPORTANTE: la información del entrenamiento no se envía a ningún lugar y se almacena solo en tu dispositivo (por ahora)",
     "deleteQ": "¿Eliminar entrenamiento?",
     "deleteHint": "Todos los resultados de este entrenamiento serán eliminados",
-    "add": "Agregar entrenamiento"
+    "add": "Agregar entrenamiento",
+    "moreDetails": "Más detalles"
   },
   "units": {
     "inch": "Pulgada",
@@ -598,6 +599,8 @@
     "lastSession": "Última sesión",
     "noSessions": "Aún no hay sesiones de entrenamiento. ¡Registra la primera!",
     "logTraining": "Registrar entrenamiento",
+    "logTodaysSession": "Registrar sesión de hoy",
+    "sameAsLastTime": "Igual que la última vez",
     "upcomingTournaments": "Próximos torneos",
     "viewAllApplications": "Ver todas las solicitudes",
     "viewAllTrainings": "Ver todos los entrenamientos",

@@ -1,12 +1,14 @@
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Accordion from '@mui/material/Accordion';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -15,6 +17,8 @@ import type { LocalTrainingSession, CustomField } from '../../utils/local-data-s
 
 interface TrainingSessionFormProps {
   initial?: Partial<LocalTrainingSession>;
+  formId?: string;
+  showActions?: boolean;
   onSubmit: (
     data: Omit<LocalTrainingSession, 'id' | 'isSynced' | 'createdAt' | 'updatedAt'>,
   ) => void;
@@ -26,6 +30,8 @@ const TARGET_TYPES = ['WA_5_ring', 'WA_10_ring', 'IFAA_Field', 'NFAA_Indoor', 'c
 
 const TrainingSessionForm: React.FC<TrainingSessionFormProps> = ({
   initial = {},
+  formId,
+  showActions = true,
   onSubmit,
   onCancel,
   submitting = false,
@@ -74,7 +80,7 @@ const TrainingSessionForm: React.FC<TrainingSessionFormProps> = ({
   };
 
   return (
-    <Box component="form" onSubmit={handleSubmit} noValidate>
+    <Box component="form" id={formId} onSubmit={handleSubmit} noValidate>
       <TextField
         label={t('trainings.date')}
         type="date"
@@ -93,6 +99,7 @@ const TrainingSessionForm: React.FC<TrainingSessionFormProps> = ({
           value={shotsCount}
           onChange={(e) => setShotsCount(e.target.value)}
           fullWidth
+          autoFocus
           inputProps={{ min: 1 }}
         />
         <TextField
@@ -142,46 +149,49 @@ const TrainingSessionForm: React.FC<TrainingSessionFormProps> = ({
         ))}
       </TextField>
 
-      <Divider sx={{ my: 2 }} />
+      <Accordion disableGutters elevation={0} sx={{ '&:before': { display: 'none' }, mb: 2 }}>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          {t('trainings.moreDetails')}
+        </AccordionSummary>
+        <AccordionDetails sx={{ px: 0, pt: 0 }}>
+          {customFields.map((field, index) => (
+            <Box key={index} sx={{ display: 'flex', gap: 1, mb: 1 }}>
+              <TextField
+                label={t('trainings.fieldKey')}
+                value={field.key}
+                onChange={(e) => handleCustomFieldChange(index, 'key', e.target.value)}
+                size="small"
+                sx={{ flex: 1 }}
+              />
+              <TextField
+                label={t('trainings.fieldValue')}
+                value={field.value}
+                onChange={(e) => handleCustomFieldChange(index, 'value', e.target.value)}
+                size="small"
+                sx={{ flex: 1 }}
+              />
+              <IconButton onClick={() => handleRemoveCustomField(index)} size="small" color="error">
+                <DeleteIcon fontSize="small" />
+              </IconButton>
+            </Box>
+          ))}
 
-      <Typography variant="subtitle2" sx={{ mb: 1 }}>
-        {t('trainings.customFields')}
-      </Typography>
+          <Button startIcon={<AddIcon />} onClick={handleAddCustomField} size="small">
+            {t('trainings.addCustomField')}
+          </Button>
+        </AccordionDetails>
+      </Accordion>
 
-      {customFields.map((field, index) => (
-        <Box key={index} sx={{ display: 'flex', gap: 1, mb: 1 }}>
-          <TextField
-            label={t('trainings.fieldKey')}
-            value={field.key}
-            onChange={(e) => handleCustomFieldChange(index, 'key', e.target.value)}
-            size="small"
-            sx={{ flex: 1 }}
-          />
-          <TextField
-            label={t('trainings.fieldValue')}
-            value={field.value}
-            onChange={(e) => handleCustomFieldChange(index, 'value', e.target.value)}
-            size="small"
-            sx={{ flex: 1 }}
-          />
-          <IconButton onClick={() => handleRemoveCustomField(index)} size="small" color="error">
-            <DeleteIcon fontSize="small" />
-          </IconButton>
+      {showActions && (
+        <Box sx={{ display: 'flex', gap: 1, justifyContent: 'flex-end', mt: 1 }}>
+          <Button onClick={onCancel} disabled={submitting}>
+            {t('common.cancel')}
+          </Button>
+          <Button type="submit" variant="contained" disabled={submitting}>
+            {submitting ? t('common.saving') : t('common.save')}
+          </Button>
         </Box>
-      ))}
-
-      <Button startIcon={<AddIcon />} onClick={handleAddCustomField} size="small" sx={{ mb: 2 }}>
-        {t('trainings.addCustomField')}
-      </Button>
-
-      <Box sx={{ display: 'flex', gap: 1, justifyContent: 'flex-end', mt: 1 }}>
-        <Button onClick={onCancel} disabled={submitting}>
-          {t('common.cancel')}
-        </Button>
-        <Button type="submit" variant="contained" disabled={submitting}>
-          {submitting ? t('common.saving') : t('common.save')}
-        </Button>
-      </Box>
+      )}
     </Box>
   );
 };

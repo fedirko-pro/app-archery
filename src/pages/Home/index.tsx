@@ -7,9 +7,6 @@ import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CircularProgress from '@mui/material/CircularProgress';
-import Dialog from '@mui/material/Dialog';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { format, isBefore, parseISO, startOfDay } from 'date-fns';
@@ -23,8 +20,13 @@ import { useAuth } from '../../contexts/auth-context';
 import { useLocalData, type LocalTrainingSession } from '../../contexts/local-data-context';
 import apiService from '../../services/api';
 import type { TournamentApplicationDto } from '../../services/types';
-import { computeLocalStats, getMostRecentSession } from '../../utils/training-stats';
-import TrainingSessionForm from '../MyTrainings/TrainingSessionForm';
+import {
+  computeLocalStats,
+  getLastLoggedSession,
+  getMostRecentSession,
+  toSessionFormDefaults,
+} from '../../utils/training-stats';
+import TrainingSessionDialog from '../MyTrainings/TrainingSessionDialog';
 
 function isPastTournament(tournament: { endDate?: string; startDate: string }): boolean {
   const today = startOfDay(new Date());
@@ -42,6 +44,8 @@ const HomePage: React.FC = () => {
   const { lang } = useParams();
 
   const [formOpen, setFormOpen] = useState(false);
+  const [formKey, setFormKey] = useState(0);
+  const [formInitial, setFormInitial] = useState<Partial<LocalTrainingSession> | undefined>();
   const [submitting, setSubmitting] = useState(false);
   const [upcomingApps, setUpcomingApps] = useState<TournamentApplicationDto[]>([]);
   const [appsLoading, setAppsLoading] = useState(false);
@@ -49,6 +53,12 @@ const HomePage: React.FC = () => {
 
   const stats = useMemo(() => computeLocalStats(trainingSessions), [trainingSessions]);
   const lastSession = useMemo(() => getMostRecentSession(trainingSessions), [trainingSessions]);
+  const lastLogged = useMemo(() => getLastLoggedSession(trainingSessions), [trainingSessions]);
+
+  const sessionDefaults = useMemo(
+    () => (lastLogged ? toSessionFormDefaults(lastLogged) : undefined),
+    [lastLogged],
+  );
 
   useEffect(() => {
     if (!isAuthenticated) return;
@@ -70,7 +80,13 @@ const HomePage: React.FC = () => {
       .finally(() => setAppsLoading(false));
   }, [isAuthenticated]);
 
-  const handleOpenAdd = () => setFormOpen(true);
+  const openForm = (initial?: Partial<LocalTrainingSession>) => {
+    setFormInitial(initial);
+    setFormKey((k) => k + 1);
+    setFormOpen(true);
+  };
+
+  const handleOpenAdd = () => openForm(sessionDefaults);
   const handleClose = () => setFormOpen(false);
 
   const handleSubmit = async (
@@ -128,7 +144,7 @@ const HomePage: React.FC = () => {
           <Card variant="outlined" sx={{ height: '100%', display: 'flex', alignItems: 'center' }}>
             <CardContent sx={{ width: '100%' }}>
               <Button variant="contained" fullWidth startIcon={<AddIcon />} onClick={handleOpenAdd}>
-                {t('dashboard.logTraining')}
+                {t('dashboard.logTodaysSession')}
               </Button>
             </CardContent>
           </Card>
@@ -173,13 +189,23 @@ const HomePage: React.FC = () => {
                     </Typography>
                   )}
                 </Box>
-                <Button
-                  size="small"
-                  sx={{ mt: 1, px: 0 }}
-                  onClick={() => navigate(`/${lang}/trainings`)}
-                >
-                  {t('dashboard.viewAllTrainings')}
-                </Button>
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mt: 1 }}>
+                  <Button
+                    variant="outlined"
+                    size="small"
+                    startIcon={<AddIcon />}
+                    onClick={handleOpenAdd}
+                  >
+                    {t('dashboard.sameAsLastTime')}
+                  </Button>
+                  <Button
+                    size="small"
+                    sx={{ px: 0 }}
+                    onClick={() => navigate(`/${lang}/trainings`)}
+                  >
+                    {t('dashboard.viewAllTrainings')}
+                  </Button>
+                </Box>
               </Box>
             </Box>
           ) : (
@@ -193,7 +219,7 @@ const HomePage: React.FC = () => {
                 startIcon={<AddIcon />}
                 onClick={handleOpenAdd}
               >
-                {t('dashboard.logTraining')}
+                {t('dashboard.logTodaysSession')}
               </Button>
             </Box>
           )}
@@ -279,18 +305,15 @@ const HomePage: React.FC = () => {
         </Button>
       </Box>
 
-      <Dialog open={formOpen} onClose={handleClose} maxWidth="sm" fullWidth>
-        <DialogTitle>{t('trainings.add')}</DialogTitle>
-        <DialogContent>
-          <Box sx={{ pt: 1 }}>
-            <TrainingSessionForm
-              onSubmit={handleSubmit}
-              onCancel={handleClose}
-              submitting={submitting}
-            />
-          </Box>
-        </DialogContent>
-      </Dialog>
+      <TrainingSessionDialog
+        open={formOpen}
+        onClose={handleClose}
+        title={t('trainings.add')}
+        initial={formInitial}
+        formKey={formKey}
+        onSubmit={handleSubmit}
+        submitting={submitting}
+      />
     </Box>
   );
 };

@@ -8,17 +8,15 @@ import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-import Dialog from '@mui/material/Dialog';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
 import Typography from '@mui/material/Typography';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import LocalDataBanner from '../../components/LocalDataBanner/LocalDataBanner';
 import LocalSyncChip from '../../components/LocalSyncChip/LocalSyncChip';
 import { useLocalData, type LocalTrainingSession } from '../../contexts/local-data-context';
-import TrainingSessionForm from './TrainingSessionForm';
+import { getLastLoggedSession, toSessionFormDefaults } from '../../utils/training-stats';
+import TrainingSessionDialog from './TrainingSessionDialog';
 
 const MyTrainingsPage: React.FC = () => {
   const { t } = useTranslation('common');
@@ -31,17 +29,26 @@ const MyTrainingsPage: React.FC = () => {
   } = useLocalData();
 
   const [formOpen, setFormOpen] = useState(false);
+  const [formKey, setFormKey] = useState(0);
   const [editTarget, setEditTarget] = useState<LocalTrainingSession | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [deleteError, setDeleteError] = useState<string | null>(null);
 
+  const lastLogged = useMemo(() => getLastLoggedSession(trainingSessions), [trainingSessions]);
+  const addDefaults = useMemo(
+    () => (lastLogged ? toSessionFormDefaults(lastLogged) : undefined),
+    [lastLogged],
+  );
+
   const handleOpenAdd = () => {
     setEditTarget(null);
+    setFormKey((k) => k + 1);
     setFormOpen(true);
   };
 
   const handleOpenEdit = (session: LocalTrainingSession) => {
     setEditTarget(session);
+    setFormKey((k) => k + 1);
     setFormOpen(true);
   };
 
@@ -212,19 +219,15 @@ const MyTrainingsPage: React.FC = () => {
         </Box>
       )}
 
-      <Dialog open={formOpen} onClose={handleClose} maxWidth="sm" fullWidth>
-        <DialogTitle>{editTarget ? t('trainings.session') : t('trainings.add')}</DialogTitle>
-        <DialogContent>
-          <Box sx={{ pt: 1 }}>
-            <TrainingSessionForm
-              initial={editTarget ?? undefined}
-              onSubmit={handleSubmit}
-              onCancel={handleClose}
-              submitting={submitting}
-            />
-          </Box>
-        </DialogContent>
-      </Dialog>
+      <TrainingSessionDialog
+        open={formOpen}
+        onClose={handleClose}
+        title={editTarget ? t('trainings.session') : t('trainings.add')}
+        initial={editTarget ?? addDefaults}
+        formKey={formKey}
+        onSubmit={handleSubmit}
+        submitting={submitting}
+      />
     </Box>
   );
 };

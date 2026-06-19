@@ -461,7 +461,8 @@
     "info": "A seção \"Meus treinos\" permite criar qualquer quantidade de treinos pessoais, selecionar alvo, distância, número de flechas, etc.\nPara cada treino há estatísticas detalhadas. O usuário pode compartilhar seus resultados.\nIMPORTANTE: as informações do treino não são enviadas para lugar nenhum e ficam apenas no seu dispositivo (por enquanto)",
     "deleteQ": "Excluir treino?",
     "deleteHint": "Todos os resultados deste treino serão excluídos",
-    "add": "Adicionar treino"
+    "add": "Adicionar treino",
+    "moreDetails": "Mais detalhes"
   },
   "units": {
     "inch": "Polegada",
@@ -614,6 +615,8 @@
     "lastSession": "Última sessão",
     "noSessions": "Ainda sem sessões de treino. Registe a primeira!",
     "logTraining": "Registar treino",
+    "logTodaysSession": "Registar sessão de hoje",
+    "sameAsLastTime": "Igual à última vez",
     "upcomingTournaments": "Próximos torneios",
     "viewAllApplications": "Ver todas as candidaturas",
     "viewAllTrainings": "Ver todos os treinos",
