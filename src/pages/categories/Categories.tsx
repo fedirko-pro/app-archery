@@ -2,11 +2,19 @@ import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Typography } from '@mui/material';
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Box,
+  Button,
+  Typography,
+} from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 
+import { canManageReferenceData } from '../../config/roles';
 import { useAuth } from '../../contexts/auth-context';
 import { useNotification } from '../../contexts/error-feedback-context';
 import apiService from '../../services/api';
@@ -35,9 +43,7 @@ const Categories: React.FC = () => {
         setLoading(true);
         const data = await apiService.getBowCategories();
         // Sort categories alphabetically by code
-        const sortedCategories = data.sort((a, b) => 
-          (a.code || '').localeCompare(b.code || '')
-        );
+        const sortedCategories = data.sort((a, b) => (a.code || '').localeCompare(b.code || ''));
         setCategories(sortedCategories);
       } catch (e) {
         console.error('Failed to load categories:', e);
@@ -48,24 +54,30 @@ const Categories: React.FC = () => {
     load();
   }, []);
 
-  const isAdmin = user?.role === 'admin';
+  const isAdmin = user != null && canManageReferenceData(user.role);
 
   const handleDelete = async (categoryId: string, e: React.MouseEvent) => {
     e.stopPropagation();
-    if (!window.confirm(t('pages.categories.confirmDelete') || 'Are you sure you want to delete this category?')) {
+    if (
+      !window.confirm(
+        t('pages.categories.confirmDelete') || 'Are you sure you want to delete this category?',
+      )
+    ) {
       return;
     }
     try {
       await apiService.deleteBowCategory(categoryId);
       const data = await apiService.getBowCategories();
-      const sortedCategories = data.sort((a, b) =>
-        (a.code || '').localeCompare(b.code || ''),
-      );
+      const sortedCategories = data.sort((a, b) => (a.code || '').localeCompare(b.code || ''));
       setCategories(sortedCategories);
       showSuccess(t('pages.categories.deleteSuccess', 'Category deleted successfully'));
     } catch (error) {
       console.error('Failed to delete category:', error);
-      showError(error instanceof Error ? error.message : t('pages.categories.deleteError', 'Failed to delete category'));
+      showError(
+        error instanceof Error
+          ? error.message
+          : t('pages.categories.deleteError', 'Failed to delete category'),
+      );
     }
   };
 
@@ -73,7 +85,9 @@ const Categories: React.FC = () => {
     return (
       <section>
         <div className="container">
-          <Typography variant="h4" gutterBottom>{t('pages.categories.title')}</Typography>
+          <Typography variant="h4" gutterBottom>
+            {t('pages.categories.title')}
+          </Typography>
           <Typography>Loading...</Typography>
         </div>
       </section>
@@ -113,11 +127,11 @@ const Categories: React.FC = () => {
                   </Typography>
                   <Typography variant="subtitle1">{category.name}</Typography>
                   {isAdmin && (
-                    <Box 
-                      sx={{ 
-                        ml: 'auto', 
-                        display: 'flex', 
-                        gap: 1, 
+                    <Box
+                      sx={{
+                        ml: 'auto',
+                        display: 'flex',
+                        gap: 1,
                         opacity: 0.7,
                         '& > *': {
                           cursor: 'pointer',
@@ -142,10 +156,7 @@ const Categories: React.FC = () => {
                       >
                         <EditIcon fontSize="small" />
                       </Box>
-                      <Box
-                        onClick={(e) => handleDelete(category.id, e)}
-                        title="Delete category"
-                      >
+                      <Box onClick={(e) => handleDelete(category.id, e)} title="Delete category">
                         <DeleteIcon fontSize="small" />
                       </Box>
                     </Box>
@@ -154,7 +165,10 @@ const Categories: React.FC = () => {
               </AccordionSummary>
               <AccordionDetails>
                 <Box sx={{ whiteSpace: 'pre-wrap' }}>
-                  {pickLocalizedDescription(category as unknown as Record<string, unknown>, appLang) || ''}
+                  {pickLocalizedDescription(
+                    category as unknown as Record<string, unknown>,
+                    appLang,
+                  ) || ''}
                 </Box>
                 {(category.ruleReference || category.ruleCitation) && (
                   <Typography variant="body2" sx={{ mt: 1, color: 'text.secondary' }}>
@@ -162,7 +176,9 @@ const Categories: React.FC = () => {
                     {category.ruleCitation && (
                       <>
                         {category.ruleReference ? ' — ' : ''}
-                        <a href={`/${lang}/rules#${encodeURIComponent(category.ruleReference || category.ruleCitation)}`}>
+                        <a
+                          href={`/${lang}/rules#${encodeURIComponent(category.ruleReference || category.ruleCitation)}`}
+                        >
                           {category.ruleCitation}
                         </a>
                       </>
@@ -179,5 +195,3 @@ const Categories: React.FC = () => {
 };
 
 export default Categories;
-
-

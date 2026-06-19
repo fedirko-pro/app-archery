@@ -1,7 +1,11 @@
 {
   "footer": { "about": "About app" },
 
-  "menu": { "admin": "Admin", "myProfile": "Profile ({{name}})" },
+  "menu": {
+    "admin": "Admin",
+    "organizerTools": "Organizer tools",
+    "myProfile": "Profile ({{name}})"
+  },
   "nav": {
     "tournaments": "Tournaments",
     "clubs": "Clubs",

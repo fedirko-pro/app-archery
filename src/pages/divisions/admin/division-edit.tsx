@@ -13,6 +13,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 
+import { canManageReferenceData } from '../../../config/roles';
 import { useAuth } from '../../../contexts/auth-context';
 import { useNotification } from '../../../contexts/error-feedback-context';
 import apiService from '../../../services/api';
@@ -38,7 +39,7 @@ const DivisionEdit: React.FC = () => {
   const [rules, setRules] = useState<RuleDto[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const isAdmin = user?.role === 'admin';
+  const isAdmin = user != null && canManageReferenceData(user.role);
 
   useEffect(() => {
     if (!isAdmin) {
@@ -90,7 +91,11 @@ const DivisionEdit: React.FC = () => {
       navigate(`/${lang}/divisions`);
     } catch (error) {
       console.error('Failed to save division:', error);
-      showError(error instanceof Error ? error.message : t('pages.divisions.saveError', 'Failed to save division'));
+      showError(
+        error instanceof Error
+          ? error.message
+          : t('pages.divisions.saveError', 'Failed to save division'),
+      );
     } finally {
       setLoading(false);
     }
@@ -123,9 +128,7 @@ const DivisionEdit: React.FC = () => {
               <Select
                 value={form.rule_code || ''}
                 label="Rule"
-                onChange={(e) =>
-                  setForm({ ...form, rule_code: e.target.value })
-                }
+                onChange={(e) => setForm({ ...form, rule_code: e.target.value })}
               >
                 <MenuItem value="">
                   <em>Select a rule</em>
@@ -141,9 +144,7 @@ const DivisionEdit: React.FC = () => {
             <TextField
               label="Description"
               value={form.description || ''}
-              onChange={(e) =>
-                setForm({ ...form, description: e.target.value })
-              }
+              onChange={(e) => setForm({ ...form, description: e.target.value })}
               placeholder="e.g. Adult archers (typically 18-49 years)"
               multiline
               minRows={4}
@@ -151,18 +152,10 @@ const DivisionEdit: React.FC = () => {
             />
 
             <Stack direction="row" spacing={2}>
-              <Button
-                variant="contained"
-                onClick={handleSave}
-                disabled={loading}
-              >
+              <Button variant="contained" onClick={handleSave} disabled={loading}>
                 {loading ? 'Saving...' : 'Save'}
               </Button>
-              <Button
-                variant="outlined"
-                onClick={handleCancel}
-                disabled={loading}
-              >
+              <Button variant="outlined" onClick={handleCancel} disabled={loading}>
                 Cancel
               </Button>
             </Stack>

@@ -15,6 +15,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 
+import { canManageReferenceData } from '../../config/roles';
 import { useAuth } from '../../contexts/auth-context';
 import { useNotification } from '../../contexts/error-feedback-context';
 import apiService from '../../services/api';
@@ -34,7 +35,7 @@ const Divisions: React.FC = () => {
   const { user } = useAuth();
   const { showSuccess, showError } = useNotification();
 
-  const isAdmin = user?.role === 'admin';
+  const isAdmin = user != null && canManageReferenceData(user.role);
 
   useEffect(() => {
     const load = async () => {
@@ -52,7 +53,11 @@ const Divisions: React.FC = () => {
   }, []);
 
   const handleDelete = async (divisionId: string) => {
-    if (!window.confirm(t('pages.divisions.deleteConfirm', 'Are you sure you want to delete this division?'))) {
+    if (
+      !window.confirm(
+        t('pages.divisions.deleteConfirm', 'Are you sure you want to delete this division?'),
+      )
+    ) {
       return;
     }
 
@@ -62,7 +67,11 @@ const Divisions: React.FC = () => {
       showSuccess(t('pages.divisions.deleteSuccess', 'Division deleted successfully'));
     } catch (error) {
       console.error('Failed to delete division:', error);
-      showError(error instanceof Error ? error.message : t('pages.divisions.deleteError', 'Failed to delete division'));
+      showError(
+        error instanceof Error
+          ? error.message
+          : t('pages.divisions.deleteError', 'Failed to delete division'),
+      );
     }
   };
 
@@ -104,17 +113,10 @@ const Divisions: React.FC = () => {
             key={division.id}
             sx={{ mb: 1 }}
             expanded={expanded === division.id}
-            onChange={(_, isExpanded) =>
-              setExpanded(isExpanded ? division.id! : false)
-            }
+            onChange={(_, isExpanded) => setExpanded(isExpanded ? division.id! : false)}
           >
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Box
-                display="flex"
-                alignItems="center"
-                width="100%"
-                gap={2}
-              >
+              <Box display="flex" alignItems="center" width="100%" gap={2}>
                 <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
                   {division.name}
                 </Typography>
@@ -131,9 +133,7 @@ const Divisions: React.FC = () => {
                     <span
                       onClick={(e) => {
                         e.stopPropagation();
-                        navigate(
-                          `/${lang}/admin/divisions/${division.id}/edit`
-                        );
+                        navigate(`/${lang}/admin/divisions/${division.id}/edit`);
                       }}
                     >
                       <EditIcon fontSize="small" />
@@ -161,8 +161,7 @@ const Divisions: React.FC = () => {
         {divisions.length === 0 && (
           <Box sx={{ textAlign: 'center', py: 4 }}>
             <Typography variant="body1" color="text.secondary">
-              No divisions found.{' '}
-              {isAdmin && 'Click "Create Division" to add one.'}
+              No divisions found. {isAdmin && 'Click "Create Division" to add one.'}
             </Typography>
           </Box>
         )}

@@ -1,7 +1,11 @@
 {
   "footer": { "about": "Sobre o app" },
   "auth": { "logout": "Sair", "signIn": "Entrar", "signUp": "Registrar" },
-  "menu": { "admin": "Admin", "myProfile": "Perfil ({{name}})" },
+  "menu": {
+    "admin": "Admin",
+    "organizerTools": "Ferramentas de organizador",
+    "myProfile": "Perfil ({{name}})"
+  },
   "nav": {
     "tournaments": "Torneios",
     "clubs": "Clubes",

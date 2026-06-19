@@ -24,6 +24,7 @@ import { useTranslation } from 'react-i18next';
 import { useLocation, useParams } from 'react-router-dom';
 
 import { env } from '../../config/env';
+import { canManageReferenceData } from '../../config/roles';
 import { useAuth } from '../../contexts/auth-context';
 import apiService from '../../services/api';
 import type { CreateRuleDto, RuleDto, UpdateRuleDto } from '../../services/types';
@@ -41,7 +42,7 @@ const Rules: React.FC = () => {
   const { lang } = useParams();
   const appLang = normalizeAppLang(lang);
   const { user } = useAuth();
-  const isAdmin = user?.role === 'admin';
+  const isAdmin = user != null && canManageReferenceData(user.role);
 
   // Dialog states
   const [openDialog, setOpenDialog] = useState(false);
@@ -60,14 +61,18 @@ const Rules: React.FC = () => {
     descriptionUk: '',
     descriptionEs: '',
     link: '',
-    downloadLink: ''
+    downloadLink: '',
   });
 
   // Feedback states
-  const [snackbar, setSnackbar] = useState<{ open: boolean; message: string; severity: 'success' | 'error' }>({
+  const [snackbar, setSnackbar] = useState<{
+    open: boolean;
+    message: string;
+    severity: 'success' | 'error';
+  }>({
     open: false,
     message: '',
-    severity: 'success'
+    severity: 'success',
   });
   const [loading, setLoading] = useState(false);
 
@@ -127,7 +132,10 @@ const Rules: React.FC = () => {
       if (!res.ok) {
         setSnackbar({
           open: true,
-          message: t('pages.rules.downloadFailed', 'PDF could not be loaded. The file may not be available.'),
+          message: t(
+            'pages.rules.downloadFailed',
+            'PDF could not be loaded. The file may not be available.',
+          ),
           severity: 'error',
         });
         return;
@@ -135,7 +143,10 @@ const Rules: React.FC = () => {
       if (contentType.includes('text/html')) {
         setSnackbar({
           open: true,
-          message: t('pages.rules.downloadFailed', 'PDF could not be loaded. The file may not be available.'),
+          message: t(
+            'pages.rules.downloadFailed',
+            'PDF could not be loaded. The file may not be available.',
+          ),
           severity: 'error',
         });
         return;
@@ -144,7 +155,10 @@ const Rules: React.FC = () => {
       if (blob.size < MIN_PDF_SIZE) {
         setSnackbar({
           open: true,
-          message: t('pages.rules.downloadFailed', 'PDF could not be loaded. The file may not be available.'),
+          message: t(
+            'pages.rules.downloadFailed',
+            'PDF could not be loaded. The file may not be available.',
+          ),
           severity: 'error',
         });
         return;
@@ -178,7 +192,7 @@ const Rules: React.FC = () => {
       descriptionUk: '',
       descriptionEs: '',
       link: '',
-      downloadLink: ''
+      downloadLink: '',
     });
     setOpenDialog(true);
   };
@@ -195,7 +209,7 @@ const Rules: React.FC = () => {
       descriptionUk: rule.descriptionUk || '',
       descriptionEs: rule.descriptionEs || '',
       link: rule.link || '',
-      downloadLink: rule.downloadLink || ''
+      downloadLink: rule.downloadLink || '',
     });
     setOpenDialog(true);
   };
@@ -206,7 +220,7 @@ const Rules: React.FC = () => {
   };
 
   const handleFormChange = (field: keyof RuleDto, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleSaveRule = async () => {
@@ -244,7 +258,11 @@ const Rules: React.FC = () => {
       setRules(data);
       handleCloseDialog();
     } catch (error: any) {
-      setSnackbar({ open: true, message: error.message || 'Failed to save rule', severity: 'error' });
+      setSnackbar({
+        open: true,
+        message: error.message || 'Failed to save rule',
+        severity: 'error',
+      });
     } finally {
       setLoading(false);
     }
@@ -275,8 +293,10 @@ const Rules: React.FC = () => {
     } catch (error: any) {
       setSnackbar({
         open: true,
-        message: error.message || 'Failed to delete rule. It may have related divisions or bow categories.',
-        severity: 'error'
+        message:
+          error.message ||
+          'Failed to delete rule. It may have related divisions or bow categories.',
+        severity: 'error',
       });
     } finally {
       setLoading(false);
@@ -284,7 +304,7 @@ const Rules: React.FC = () => {
   };
 
   const handleCloseSnackbar = () => {
-    setSnackbar(prev => ({ ...prev, open: false }));
+    setSnackbar((prev) => ({ ...prev, open: false }));
   };
 
   return (
@@ -355,7 +375,10 @@ const Rules: React.FC = () => {
                   {rule.edition}
                 </Typography>
               )}
-              <Box sx={{ whiteSpace: 'pre-wrap' }}>{pickLocalizedDescription(rule as unknown as Record<string, unknown>, appLang) || ''}</Box>
+              <Box sx={{ whiteSpace: 'pre-wrap' }}>
+                {pickLocalizedDescription(rule as unknown as Record<string, unknown>, appLang) ||
+                  ''}
+              </Box>
               <Box sx={{ mt: 1, display: 'flex', gap: 2, alignItems: 'center', flexWrap: 'wrap' }}>
                 {rule.link && (
                   <MuiLink href={rule.link} target="_blank" rel="noopener noreferrer">
@@ -378,7 +401,9 @@ const Rules: React.FC = () => {
         {/* Create/Edit Dialog */}
         <Dialog open={openDialog} onClose={handleCloseDialog} maxWidth="md" fullWidth>
           <DialogTitle>
-            {editingRule ? t('pages.rules.editRule') || 'Edit Rule' : t('pages.rules.createRule') || 'Create Rule'}
+            {editingRule
+              ? t('pages.rules.editRule') || 'Edit Rule'
+              : t('pages.rules.createRule') || 'Create Rule'}
           </DialogTitle>
           <DialogContent>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 1 }}>
@@ -470,7 +495,8 @@ const Rules: React.FC = () => {
           <DialogTitle>{t('pages.rules.deleteConfirmTitle') || 'Delete Rule?'}</DialogTitle>
           <DialogContent>
             <Typography>
-              {t('pages.rules.deleteConfirmMessage') || 'Are you sure you want to delete this rule?'}
+              {t('pages.rules.deleteConfirmMessage') ||
+                'Are you sure you want to delete this rule?'}
             </Typography>
             {ruleToDelete && (
               <Typography variant="body2" sx={{ mt: 1, fontWeight: 'bold' }}>
@@ -478,7 +504,8 @@ const Rules: React.FC = () => {
               </Typography>
             )}
             <Alert severity="warning" sx={{ mt: 2 }}>
-              {t('pages.rules.deleteWarning') || 'This rule cannot be deleted if it has related divisions or bow categories.'}
+              {t('pages.rules.deleteWarning') ||
+                'This rule cannot be deleted if it has related divisions or bow categories.'}
             </Alert>
           </DialogContent>
           <DialogActions>
@@ -506,5 +533,3 @@ const Rules: React.FC = () => {
 };
 
 export default Rules;
-
-

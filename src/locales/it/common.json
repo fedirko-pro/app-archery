@@ -1,7 +1,11 @@
 {
   "footer": { "about": "Informazioni sull'app" },
 
-  "menu": { "admin": "Admin", "myProfile": "Profilo ({{name}})" },
+  "menu": {
+    "admin": "Admin",
+    "organizerTools": "Strumenti organizzatore",
+    "myProfile": "Profilo ({{name}})"
+  },
   "nav": {
     "tournaments": "Tornei",
     "clubs": "Club",

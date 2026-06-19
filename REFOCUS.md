@@ -5,32 +5,7 @@
 
 ---
 
-## 2. Strategic Direction
-
-**Reframe Sokil as:**  
-> *“Your archery journal + progress tracker, with tournament tools when you need them.”*
-
-Federation features remain, but move to a secondary **“Events & Admin”** zone for roles that need them.
-
-**Tagline shift (messaging):**  
-- From: *“Empowering archery communities with modern technology”*  
-- Toward: *“Your archery training companion”* (communities as secondary benefit)
-
----
-
 ## 3. Implementation Phases
-
-### Phase A — Information Architecture & First Impression
-
-*Low build, high impact. Do first.*
-
-#### A4. Role-aware experience
-
-- [ ] Regular user: no patrols, admin, reference CRUD in nav
-- [ ] Club / federation admin: “Organizer tools” section appears
-- [ ] Document role → visible nav mapping in this file or `config/roles.ts` comments
-
----
 
 ### Phase B — The Daily Archer Loop
 

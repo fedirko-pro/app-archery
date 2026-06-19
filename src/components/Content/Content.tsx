@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { Navigate, Outlet, Route, Routes, useLocation, useParams } from 'react-router-dom';
 
 import {
-  ADMIN_CAPABLE_ROLES,
+  ROLES_CAN_ACCESS_CONTROL,
   ROLES_CAN_DELETE_AND_MANAGE_APPS,
   ROLES_CAN_MANAGE_REFERENCE_DATA,
 } from '../../config/roles';
@@ -173,7 +173,7 @@ function Content() {
           <Route
             path="admin/access-control"
             element={
-              <ProtectedAdminRoute allowedRoles={ADMIN_CAPABLE_ROLES}>
+              <ProtectedAdminRoute allowedRoles={ROLES_CAN_ACCESS_CONTROL}>
                 <AccessControl />
               </ProtectedAdminRoute>
             }

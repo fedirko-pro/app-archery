@@ -23,10 +23,7 @@ export const ADMIN_CAPABLE_ROLES: Role[] = [
 export const ROLES_CAN_ACCESS_CONTROL: Role[] = [ROLES.GeneralAdmin];
 
 /** General Admin and Federation Admin can delete users/tournaments and manage applications/PDFs. */
-export const ROLES_CAN_DELETE_AND_MANAGE_APPS: Role[] = [
-  ROLES.GeneralAdmin,
-  ROLES.FederationAdmin,
-];
+export const ROLES_CAN_DELETE_AND_MANAGE_APPS: Role[] = [ROLES.GeneralAdmin, ROLES.FederationAdmin];
 
 /** Only General Admin can manage reference data (categories, clubs, divisions, rules). */
 export const ROLES_CAN_MANAGE_REFERENCE_DATA: Role[] = [ROLES.GeneralAdmin];
@@ -45,6 +42,39 @@ export function isClubAdmin(role: string): boolean {
 
 export function canAccessAdminSection(role: string): boolean {
   return ADMIN_CAPABLE_ROLES.includes(role as Role);
+}
+
+/**
+ * Left-nav visibility (REFOCUS Phase A4).
+ *
+ * | Section / item                         | guest | user | club_admin | federation_admin | general_admin |
+ * |----------------------------------------|-------|------|------------|------------------|---------------|
+ * | Main: tournaments, reference pages, …  | yes   | yes  | yes        | yes              | yes           |
+ * | Organizer tools: users, applications   | no    | no   | yes        | yes              | yes           |
+ * | Admin: access control                  | no    | no   | no         | no               | yes           |
+ * | Patrols                                | no nav link; entry via tournament applications page |
+ * | Reference CRUD                         | inline on list pages for general_admin only (not in nav) |
+ */
+export interface NavItemConfig {
+  link: string;
+  labelKey: string;
+}
+
+export const ORGANIZER_NAV_ITEMS: NavItemConfig[] = [
+  { link: '/admin/users', labelKey: 'nav.users' },
+  { link: '/admin/applications', labelKey: 'nav.userApplications' },
+];
+
+export const ADMIN_NAV_ITEMS: NavItemConfig[] = [
+  { link: '/admin/access-control', labelKey: 'nav.accessControl' },
+];
+
+export function canSeeOrganizerTools(role: string): boolean {
+  return canAccessAdminSection(role);
+}
+
+export function canSeeAdminNavSection(role: string): boolean {
+  return canAccessAccessControl(role);
 }
 
 export function canAccessAccessControl(role: string): boolean {
@@ -79,7 +109,11 @@ export function canDeleteTournament(role: string): boolean {
   return ROLES_CAN_DELETE_AND_MANAGE_APPS.includes(role as Role);
 }
 
-export function canEditTournament(role: string, tournamentCreatedById: string, userId: string): boolean {
+export function canEditTournament(
+  role: string,
+  tournamentCreatedById: string,
+  userId: string,
+): boolean {
   if (role === ROLES.GeneralAdmin || role === ROLES.FederationAdmin) return true;
   if (role === ROLES.ClubAdmin && tournamentCreatedById === userId) return true;
   return false;
@@ -98,13 +132,34 @@ export const ROLE_LABEL_KEYS: Record<string, string> = {
  * value is array of role values that have it.
  */
 export const ROLE_PERMISSIONS_MATRIX: Array<{ permissionKey: string; roles: Role[] }> = [
-  { permissionKey: 'accessControl.permCreateEditTournament', roles: [ROLES.GeneralAdmin, ROLES.ClubAdmin, ROLES.FederationAdmin] },
-  { permissionKey: 'accessControl.permDeleteTournament', roles: [ROLES.GeneralAdmin, ROLES.FederationAdmin] },
-  { permissionKey: 'accessControl.permCreateEditUser', roles: [ROLES.GeneralAdmin, ROLES.ClubAdmin, ROLES.FederationAdmin] },
-  { permissionKey: 'accessControl.permDeleteUser', roles: [ROLES.GeneralAdmin, ROLES.FederationAdmin] },
-  { permissionKey: 'accessControl.permViewApplications', roles: [ROLES.GeneralAdmin, ROLES.ClubAdmin, ROLES.FederationAdmin] },
-  { permissionKey: 'accessControl.permEditApplications', roles: [ROLES.GeneralAdmin, ROLES.FederationAdmin] },
-  { permissionKey: 'accessControl.permPatrolsPdf', roles: [ROLES.GeneralAdmin, ROLES.FederationAdmin] },
+  {
+    permissionKey: 'accessControl.permCreateEditTournament',
+    roles: [ROLES.GeneralAdmin, ROLES.ClubAdmin, ROLES.FederationAdmin],
+  },
+  {
+    permissionKey: 'accessControl.permDeleteTournament',
+    roles: [ROLES.GeneralAdmin, ROLES.FederationAdmin],
+  },
+  {
+    permissionKey: 'accessControl.permCreateEditUser',
+    roles: [ROLES.GeneralAdmin, ROLES.ClubAdmin, ROLES.FederationAdmin],
+  },
+  {
+    permissionKey: 'accessControl.permDeleteUser',
+    roles: [ROLES.GeneralAdmin, ROLES.FederationAdmin],
+  },
+  {
+    permissionKey: 'accessControl.permViewApplications',
+    roles: [ROLES.GeneralAdmin, ROLES.ClubAdmin, ROLES.FederationAdmin],
+  },
+  {
+    permissionKey: 'accessControl.permEditApplications',
+    roles: [ROLES.GeneralAdmin, ROLES.FederationAdmin],
+  },
+  {
+    permissionKey: 'accessControl.permPatrolsPdf',
+    roles: [ROLES.GeneralAdmin, ROLES.FederationAdmin],
+  },
   { permissionKey: 'accessControl.permReferenceData', roles: [ROLES.GeneralAdmin] },
   { permissionKey: 'accessControl.permAccessControl', roles: [ROLES.GeneralAdmin] },
 ];

@@ -1,7 +1,17 @@
-import { Button, FormControl, InputLabel, MenuItem, Select, Stack, TextField, Typography } from '@mui/material';
+import {
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
+import { canManageReferenceData } from '../../../config/roles';
 import { useAuth } from '../../../contexts/auth-context';
 import apiService from '../../../services/api';
 import type { CreateBowCategoryDto, RuleDto, UpdateBowCategoryDto } from '../../../services/types';
@@ -77,7 +87,7 @@ const CategoryEdit: React.FC = () => {
     load();
   }, [id]);
 
-  const isAdmin = user?.role === 'admin';
+  const isAdmin = user != null && canManageReferenceData(user.role);
 
   useEffect(() => {
     if (!isAdmin) {
@@ -234,7 +244,11 @@ const CategoryEdit: React.FC = () => {
             <Button variant="contained" onClick={handleSave} disabled={loading}>
               {loading ? 'Saving...' : 'Save'}
             </Button>
-            <Button variant="outlined" onClick={() => navigate(`/${lang}/categories`)} disabled={loading}>
+            <Button
+              variant="outlined"
+              onClick={() => navigate(`/${lang}/categories`)}
+              disabled={loading}
+            >
               Cancel
             </Button>
           </Stack>
@@ -245,5 +259,3 @@ const CategoryEdit: React.FC = () => {
 };
 
 export default CategoryEdit;
-
-

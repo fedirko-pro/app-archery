@@ -1,7 +1,11 @@
 {
   "footer": { "about": "Про додаток" },
   "auth": { "logout": "Вийти", "signIn": "Увійти", "signUp": "Зареєструватися" },
-  "menu": { "admin": "Адмін", "myProfile": "Профіль ({{name}})" },
+  "menu": {
+    "admin": "Адмін",
+    "organizerTools": "Інструменти організатора",
+    "myProfile": "Профіль ({{name}})"
+  },
   "nav": {
     "tournaments": "Турніри",
     "clubs": "Клуби",
