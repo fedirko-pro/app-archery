@@ -77,6 +77,7 @@ const ProfileEditPage: React.FC = () => {
         categories: Array.isArray(user.categories) ? user.categories : [],
         appLanguage: getAppLanguageFromUser(user),
         syncTrainingsAndEquipment: user.syncTrainingsAndEquipment ?? false,
+        shareProgressEnabled: user.shareProgressEnabled ?? false,
       });
     }
   }, [user]);
@@ -249,6 +250,12 @@ const ProfileEditPage: React.FC = () => {
             setProfileData((prev) => {
               if (!prev) return prev;
               return { ...prev, syncTrainingsAndEquipment: value };
+            });
+          }}
+          onShareToggleChange={(value) => {
+            setProfileData((prev) => {
+              if (!prev) return prev;
+              return { ...prev, shareProgressEnabled: value };
             });
           }}
           onPictureChange={(dataUrl) => {

@@ -13,6 +13,8 @@ export interface ProfileData {
   role?: string;
   appLanguage?: 'pt' | 'en' | 'it' | 'ua' | 'es';
   syncTrainingsAndEquipment?: boolean;
+  shareProgressEnabled?: boolean;
+  onboardingCompletedAt?: string | null;
 }
 
 export interface PasswordChangeForm {

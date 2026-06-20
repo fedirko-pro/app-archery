@@ -452,6 +452,30 @@
     "default": "Default",
     "setDefault": "Set as default"
   },
+  "onboarding": {
+    "title": "Welcome to Sokil",
+    "skip": "Skip",
+    "continue": "Continue",
+    "finish": "Finish",
+    "stepProgress": "Step {{current}} of {{total}}",
+    "aboutYou": "About you",
+    "equipmentAdded": "Favorite equipment saved",
+    "addAnotherSetup": "Add another setup",
+    "readyForFirstSession": "You're all set — now you can log your first training session.",
+    "createFirstTrainingSession": "Create my first training session",
+    "preferences": "Preferences",
+    "syncHelper": "Keeps your training sessions and equipment backed up across devices.",
+    "shareToggleLabel": "Share my progress",
+    "shareHelper": "When enabled, you can share weekly stats and achievements with friends (coming soon).",
+    "steps": {
+      "profile": "Your profile",
+      "equipment": "Favorite equipment",
+      "getStarted": "Get started",
+      "profileExplanation": "Help friends recognize you. You can change this anytime in Profile.",
+      "equipmentExplanation": "Your default bow setup is pre-selected when you log training sessions. Add more sets later in My Equipment.",
+      "getStartedExplanation": "Choose your sync and sharing preferences. Sync keeps training sessions and equipment backed up across devices."
+    }
+  },
   "localData": {
     "localStorageBadge": "Local data on device",
     "syncButton": "Synchronize",

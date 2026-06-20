@@ -26,6 +26,8 @@ export interface User {
   /** Alternative backend field */
   language?: AppLanguageCode;
   syncTrainingsAndEquipment?: boolean;
+  shareProgressEnabled?: boolean;
+  onboardingCompletedAt?: string | null;
 }
 
 export interface LoginCredentials {

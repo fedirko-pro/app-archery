@@ -10,8 +10,9 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useLocation, useSearchParams } from 'react-router-dom';
 
 import LocalDataBanner from '../../components/LocalDataBanner/LocalDataBanner';
 import LocalSyncChip from '../../components/LocalSyncChip/LocalSyncChip';
@@ -24,6 +25,8 @@ import TrainingSessionDialog from './TrainingSessionDialog';
 const MyTrainingsPage: React.FC = () => {
   const { t } = useTranslation('common');
   const theme = useTheme();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const location = useLocation();
   const {
     trainingSessions,
     equipmentSets,
@@ -55,6 +58,27 @@ const MyTrainingsPage: React.FC = () => {
     setFormKey((k) => k + 1);
     setFormOpen(true);
   };
+
+  const didAutoOpenRef = useRef(false);
+
+  useEffect(() => {
+    if (didAutoOpenRef.current) return;
+
+    const fromOnboarding = (location.state as { openAddForm?: boolean } | null)?.openAddForm;
+    const fromQuery = searchParams.get('add') === '1';
+    if (!fromOnboarding && !fromQuery) return;
+
+    didAutoOpenRef.current = true;
+    setEditTarget(null);
+    setFormKey((k) => k + 1);
+    setFormOpen(true);
+
+    if (fromQuery) {
+      const next = new URLSearchParams(searchParams);
+      next.delete('add');
+      setSearchParams(next, { replace: true });
+    }
+  }, [location.state, searchParams, setSearchParams]);
 
   const handleOpenEdit = (session: LocalTrainingSession) => {
     setEditTarget(session);

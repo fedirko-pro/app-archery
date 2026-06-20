@@ -642,5 +642,28 @@
       "logSession": "Registar sessão",
       "dismiss": "Lembrar amanhã"
     }
+  },
+  "onboarding": {
+    "title": "Bem-vindo ao Sokil",
+    "skip": "Saltar",
+    "continue": "Continuar",
+    "finish": "Concluir",
+    "aboutYou": "Sobre si",
+    "equipmentAdded": "Equipamento favorito guardado",
+    "addAnotherSetup": "Adicionar outro set",
+    "readyForFirstSession": "Está tudo pronto — agora pode registar a sua primeira sessão de treino.",
+    "createFirstTrainingSession": "Criar a minha primeira sessão de treino",
+    "preferences": "Preferências",
+    "syncHelper": "Mantém sessões de treino e equipamento sincronizados em todos os dispositivos.",
+    "shareToggleLabel": "Partilhar o meu progresso",
+    "shareHelper": "Quando ativo, poderá partilhar estatísticas semanais e conquistas com amigos (em breve).",
+    "steps": {
+      "profile": "O seu perfil",
+      "equipment": "Equipamento favorito",
+      "getStarted": "Começar",
+      "profileExplanation": "Ajude os amigos a reconhecê-lo. Pode alterar isto a qualquer momento no Perfil.",
+      "equipmentExplanation": "A sua configuração de arco predefinida é pré-selecionada ao registar sessões de treino. Adicione mais sets depois em O meu equipamento.",
+      "getStartedExplanation": "Escolha as preferências de sincronização e partilha. A sincronização mantém sessões de treino e equipamento em todos os dispositivos."
+    }
   }
 }

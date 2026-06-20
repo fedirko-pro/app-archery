@@ -47,7 +47,7 @@ function isPastTournament(tournament: { endDate?: string; startDate: string }): 
 
 const HomePage: React.FC = () => {
   const { t } = useTranslation('common');
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   const { trainingSessions, equipmentSets, addTrainingSession, defaultEquipmentSetId } =
     useLocalData();
   const theme = useTheme();
@@ -64,8 +64,9 @@ const HomePage: React.FC = () => {
   const [bowPromptDismissTick, setBowPromptDismissTick] = useState(0);
 
   const showBowSetupPrompt = useMemo(
-    () => equipmentSets.length === 0 && !isBowSetupPromptDismissed(),
-    [equipmentSets.length, bowPromptDismissTick],
+    () =>
+      equipmentSets.length === 0 && !isBowSetupPromptDismissed() && !user?.onboardingCompletedAt,
+    [equipmentSets.length, bowPromptDismissTick, user?.onboardingCompletedAt],
   );
 
   const stats = useMemo(

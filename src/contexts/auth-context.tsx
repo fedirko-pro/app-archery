@@ -12,6 +12,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import apiService from '../services/api';
 import { getDefaultLandingPath } from '../utils/default-landing';
 import { fromI18nLang, getCurrentI18nLang, normalizeAppLang } from '../utils/i18n-lang';
+import { needsOnboarding } from '../utils/onboarding-utils';
 import type {
   User,
   RegisterData,
@@ -87,6 +88,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
 
     const landingUser = authenticatedUser !== undefined ? authenticatedUser : user;
+    if (needsOnboarding(landingUser)) {
+      navigate(`/${currentLang}/onboarding`);
+      return;
+    }
     navigate(getDefaultLandingPath(currentLang, landingUser));
   };
 

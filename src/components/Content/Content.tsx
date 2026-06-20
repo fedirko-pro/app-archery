@@ -35,6 +35,7 @@ import MyPaymentsPage from '../../pages/MyPayments';
 import MyStatisticsPage from '../../pages/MyStatistics';
 import MyTrainingsPage from '../../pages/MyTrainings';
 import NotFound from '../../pages/NotFound';
+import OnboardingPage from '../../pages/Onboarding';
 import Profile from '../../pages/profile/profile';
 import ProfileEditPage from '../../pages/profile/profile-edit-page';
 import ProtectedRoute from '../../pages/protected-route';
@@ -189,6 +190,14 @@ function Content() {
           <Route path="rules" element={<Rules />} />
           <Route path="encyclopedia" element={<Encyclopedia />} />
           <Route path="home" element={<HomePage />} />
+          <Route
+            path="onboarding"
+            element={
+              <ProtectedRoute>
+                <OnboardingPage />
+              </ProtectedRoute>
+            }
+          />
           <Route path="trainings" element={<MyTrainingsPage />} />
           <Route path="equipment" element={<MyEquipmentPage />} />
           <Route path="statistics" element={<MyStatisticsPage />} />

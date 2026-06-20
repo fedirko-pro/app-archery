@@ -52,15 +52,6 @@ Achievements should derive from existing statistics:
 
 ### Phase C — Onboarding & Retention
 
-#### C1. First-run wizard (3 steps)
-
-1. Who are you? (hobby / club / competitive) — tunes copy and optional fields
-2. Add equipment (skippable)
-3. Log first session or enable sync
-
-- [ ] New onboarding component + `localStorage` / user preference flag
-- [ ] Skip for returning users
-
 #### C2. Sync story made explicit
 
 - [ ] Signup flow: explain sync across devices

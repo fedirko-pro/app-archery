@@ -13,9 +13,14 @@ import type { LocalEquipmentSet } from '../../utils/local-data-storage';
 interface EquipmentSetMiniFormProps {
   onCreated: (set: LocalEquipmentSet) => void;
   onCancel: () => void;
+  showCancel?: boolean;
 }
 
-const EquipmentSetMiniForm: React.FC<EquipmentSetMiniFormProps> = ({ onCreated, onCancel }) => {
+const EquipmentSetMiniForm: React.FC<EquipmentSetMiniFormProps> = ({
+  onCreated,
+  onCancel,
+  showCancel = true,
+}) => {
   const { t } = useTranslation('common');
   const { addEquipmentSet } = useLocalData();
   const { lang } = useParams();
@@ -86,9 +91,11 @@ const EquipmentSetMiniForm: React.FC<EquipmentSetMiniFormProps> = ({ onCreated, 
         <Button component={Link} to={`/${lang}/equipment`} size="small" sx={{ mr: 'auto' }}>
           {t('trainings.equipment.addFullDetails')}
         </Button>
-        <Button size="small" onClick={onCancel} disabled={submitting}>
-          {t('common.cancel')}
-        </Button>
+        {showCancel && (
+          <Button size="small" onClick={onCancel} disabled={submitting}>
+            {t('common.cancel')}
+          </Button>
+        )}
         <Button type="submit" variant="contained" size="small" disabled={submitting}>
           {submitting ? t('common.saving') : t('trainings.equipment.createSetup')}
         </Button>

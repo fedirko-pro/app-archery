@@ -31,6 +31,7 @@ interface ProfileEditFormProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onCategoriesChange: (categories: string[]) => void;
   onSyncToggleChange?: (value: boolean) => void;
+  onShareToggleChange?: (value: boolean) => void;
   onPictureChange?: (dataUrl: string | null) => void;
 }
 
@@ -45,6 +46,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
   onChange,
   onCategoriesChange,
   onSyncToggleChange,
+  onShareToggleChange,
   onPictureChange,
 }) => {
   const { t } = useTranslation('common');
@@ -298,6 +300,20 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
               />
               <Typography variant="caption" color="text.secondary" display="block">
                 {t('localData.syncToggleDescription')}
+              </Typography>
+            </Box>
+            <Box>
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={profileData.shareProgressEnabled ?? false}
+                    onChange={(e) => onShareToggleChange?.(e.target.checked)}
+                  />
+                }
+                label={t('onboarding.shareToggleLabel')}
+              />
+              <Typography variant="caption" color="text.secondary" display="block">
+                {t('onboarding.shareHelper')}
               </Typography>
             </Box>
           </>
