@@ -9,16 +9,19 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useLocalData } from '../../contexts/local-data-context';
 import type { LocalTrainingSession, CustomField } from '../../utils/local-data-storage';
+import EquipmentSetMiniForm from '../MyEquipment/EquipmentSetMiniForm';
 
 interface TrainingSessionFormProps {
   initial?: Partial<LocalTrainingSession>;
   formId?: string;
   showActions?: boolean;
+  useDefaultEquipment?: boolean;
   onSubmit: (
     data: Omit<LocalTrainingSession, 'id' | 'isSynced' | 'createdAt' | 'updatedAt'>,
   ) => void;
@@ -32,14 +35,18 @@ const TrainingSessionForm: React.FC<TrainingSessionFormProps> = ({
   initial = {},
   formId,
   showActions = true,
+  useDefaultEquipment = true,
   onSubmit,
   onCancel,
   submitting = false,
 }) => {
   const { t } = useTranslation('common');
-  const { equipmentSets } = useLocalData();
+  const { equipmentSets, defaultEquipmentSetId } = useLocalData();
 
   const today = new Date().toISOString().slice(0, 10);
+
+  const initialEquipmentSetId =
+    initial.equipmentSetId ?? (useDefaultEquipment ? (defaultEquipmentSetId ?? '') : '');
 
   const [date, setDate] = useState(initial.date ?? today);
   const [shotsCount, setShotsCount] = useState(
@@ -47,7 +54,8 @@ const TrainingSessionForm: React.FC<TrainingSessionFormProps> = ({
   );
   const [distance, setDistance] = useState(initial.distance ?? '');
   const [targetType, setTargetType] = useState(initial.targetType ?? '');
-  const [equipmentSetId, setEquipmentSetId] = useState(initial.equipmentSetId ?? '');
+  const [equipmentSetId, setEquipmentSetId] = useState(initialEquipmentSetId);
+  const [showMiniForm, setShowMiniForm] = useState(false);
   const [customFields, setCustomFields] = useState<CustomField[]>(initial.customFields ?? []);
 
   const handleAddCustomField = () => {
@@ -132,22 +140,43 @@ const TrainingSessionForm: React.FC<TrainingSessionFormProps> = ({
         ))}
       </TextField>
 
-      <TextField
-        select
-        label={t('trainings.equipmentSet')}
-        value={equipmentSetId}
-        onChange={(e) => setEquipmentSetId(e.target.value)}
-        fullWidth
-        sx={{ mb: 2 }}
-      >
-        <MenuItem value="">{t('trainings.noEquipment')}</MenuItem>
-        {equipmentSets.map((set) => (
-          <MenuItem key={set.id} value={set.id}>
-            {set.name}
-            {set.bowType ? ` (${set.bowType})` : ''}
-          </MenuItem>
-        ))}
-      </TextField>
+      {equipmentSets.length > 0 ? (
+        <TextField
+          select
+          label={t('trainings.equipmentSet')}
+          value={equipmentSetId}
+          onChange={(e) => setEquipmentSetId(e.target.value)}
+          fullWidth
+          sx={{ mb: 2 }}
+        >
+          <MenuItem value="">{t('trainings.noEquipment')}</MenuItem>
+          {equipmentSets.map((set) => (
+            <MenuItem key={set.id} value={set.id}>
+              {set.name}
+              {set.bowType ? ` (${set.bowType})` : ''}
+            </MenuItem>
+          ))}
+        </TextField>
+      ) : (
+        <Box sx={{ mb: 2 }}>
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+            {t('trainings.equipment.optionalHint')}
+          </Typography>
+          {!showMiniForm ? (
+            <Button variant="outlined" size="small" onClick={() => setShowMiniForm(true)}>
+              {t('trainings.equipment.createSetup')}
+            </Button>
+          ) : (
+            <EquipmentSetMiniForm
+              onCreated={(set) => {
+                setEquipmentSetId(set.id);
+                setShowMiniForm(false);
+              }}
+              onCancel={() => setShowMiniForm(false)}
+            />
+          )}
+        </Box>
+      )}
 
       <Accordion disableGutters elevation={0} sx={{ '&:before': { display: 'none' }, mb: 2 }}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>

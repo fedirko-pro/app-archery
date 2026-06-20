@@ -462,7 +462,13 @@
     "deleteQ": "Excluir treino?",
     "deleteHint": "Todos os resultados deste treino serão excluídos",
     "add": "Adicionar treino",
-    "moreDetails": "Mais detalhes"
+    "moreDetails": "Mais detalhes",
+    "equipment": {
+      "optionalHint": "Ainda sem configuração de arco (opcional — pode adicionar depois ao editar)",
+      "createSetup": "Criar configuração",
+      "addFullDetails": "Adicionar detalhes completos",
+      "unspecified": "Não especificado"
+    }
   },
   "units": {
     "inch": "Polegada",
@@ -585,7 +591,8 @@
       "arrows": "Flechas Disparadas",
       "distance": "Distância Percorrida",
       "habits": "Hábitos de Treino",
-      "tournaments": "Torneios"
+      "tournaments": "Torneios",
+      "equipment": "Desempenho por equipamento"
     },
     "memberSince": "Membro desde",
     "totalSessions": "Total de sessões",
@@ -599,6 +606,13 @@
     "avgShotsPerSession": "Média de flechas / sessão",
     "topDistance": "Distância mais treinada",
     "topTargetType": "Alvo mais usado",
+    "mostUsedEquipment": "Configuração mais usada",
+    "byEquipment": {
+      "sessions": "Sessões",
+      "arrows": "Flechas",
+      "avgShots": "Média de flechas / sessão",
+      "empty": "Registe sessões com uma configuração de arco para comparar o desempenho."
+    },
     "applied": "Inscritas",
     "approved": "Aprovadas",
     "rejected": "Rejeitadas",
@@ -613,6 +627,7 @@
     "thisWeekArrows": "Flechas desta semana",
     "currentStreak": "Sequência atual",
     "lastSession": "Última sessão",
+    "recentSessions": "Sessões recentes",
     "noSessions": "Ainda sem sessões de treino. Registe a primeira!",
     "logTraining": "Registar treino",
     "logTodaysSession": "Registar sessão de hoje",
@@ -620,6 +635,12 @@
     "upcomingTournaments": "Próximos torneios",
     "viewAllApplications": "Ver todas as candidaturas",
     "viewAllTrainings": "Ver todos os treinos",
-    "viewStatistics": "Ver estatísticas completas"
+    "viewStatistics": "Ver estatísticas completas",
+    "bowSetupPrompt": {
+      "title": "Adicione a sua configuração de arco",
+      "subtitle": "Associar sessões ao equipamento ajuda a acompanhar o desempenho. Pode adicionar uma configuração a qualquer momento — inclusive ao editar uma sessão.",
+      "logSession": "Registar sessão",
+      "dismiss": "Lembrar amanhã"
+    }
   }
 }

@@ -413,7 +413,13 @@
     "deleteError": "Failed to delete training session",
     "syncing": "Synchronizing...",
     "syncSuccess": "Data synchronized successfully",
-    "syncError": "Synchronization failed"
+    "syncError": "Synchronization failed",
+    "equipment": {
+      "optionalHint": "No bow setup yet (optional — you can add one later when editing)",
+      "createSetup": "Create setup",
+      "addFullDetails": "Add full details",
+      "unspecified": "Unspecified"
+    }
   },
   "equipment": {
     "title": "My Equipment",
@@ -442,7 +448,9 @@
     "deleteConfirm": "Are you sure you want to delete this equipment set?",
     "saveError": "Failed to save equipment set",
     "deleteError": "Failed to delete equipment set",
-    "nameRequired": "Set name is required"
+    "nameRequired": "Set name is required",
+    "default": "Default",
+    "setDefault": "Set as default"
   },
   "localData": {
     "localStorageBadge": "Local data on device",
@@ -663,7 +671,8 @@
       "arrows": "Arrows Fired",
       "distance": "Distance Traveled",
       "habits": "Training Habits",
-      "tournaments": "Tournaments"
+      "tournaments": "Tournaments",
+      "equipment": "Performance by Equipment"
     },
     "memberSince": "Member since",
     "totalSessions": "Total sessions",
@@ -677,6 +686,13 @@
     "avgShotsPerSession": "Avg shots / session",
     "topDistance": "Most trained distance",
     "topTargetType": "Most used target",
+    "mostUsedEquipment": "Most used setup",
+    "byEquipment": {
+      "sessions": "Sessions",
+      "arrows": "Arrows",
+      "avgShots": "Avg arrows / session",
+      "empty": "Log sessions with a bow setup to compare performance across your gear."
+    },
     "applied": "Applied",
     "approved": "Approved",
     "rejected": "Rejected",
@@ -691,6 +707,7 @@
     "thisWeekArrows": "This week's arrows",
     "currentStreak": "Current streak",
     "lastSession": "Last session",
+    "recentSessions": "Recent sessions",
     "noSessions": "No training sessions yet. Log your first session!",
     "logTraining": "Log training",
     "logTodaysSession": "Log today's session",
@@ -698,6 +715,12 @@
     "upcomingTournaments": "Upcoming tournaments",
     "viewAllApplications": "View all applications",
     "viewAllTrainings": "View all trainings",
-    "viewStatistics": "View full statistics"
+    "viewStatistics": "View full statistics",
+    "bowSetupPrompt": {
+      "title": "Add your bow setup",
+      "subtitle": "Linking sessions to your gear helps track performance. You can add a setup anytime — including when editing a session.",
+      "logSession": "Log session",
+      "dismiss": "Remind me tomorrow"
+    }
   }
 }

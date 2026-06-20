@@ -447,7 +447,13 @@
     "deleteQ": "Eliminare l'allenamento?",
     "deleteHint": "Tutti i risultati di questo allenamento verranno eliminati",
     "add": "Aggiungi allenamento",
-    "moreDetails": "Altri dettagli"
+    "moreDetails": "Altri dettagli",
+    "equipment": {
+      "optionalHint": "Nessuna configurazione arco (opzionale — puoi aggiungerla in seguito modificando)",
+      "createSetup": "Crea configurazione",
+      "addFullDetails": "Aggiungi dettagli completi",
+      "unspecified": "Non specificato"
+    }
   },
   "units": {
     "inch": "Pollice",
@@ -570,7 +576,8 @@
       "arrows": "Frecce Sparate",
       "distance": "Distanza Percorsa",
       "habits": "Abitudini di Allenamento",
-      "tournaments": "Tornei"
+      "tournaments": "Tornei",
+      "equipment": "Prestazioni per attrezzatura"
     },
     "memberSince": "Membro dal",
     "totalSessions": "Sessioni totali",
@@ -584,6 +591,13 @@
     "avgShotsPerSession": "Media frecce / sessione",
     "topDistance": "Distanza più allenata",
     "topTargetType": "Bersaglio più usato",
+    "mostUsedEquipment": "Configurazione più usata",
+    "byEquipment": {
+      "sessions": "Sessioni",
+      "arrows": "Frecce",
+      "avgShots": "Media frecce / sessione",
+      "empty": "Registra sessioni con una configurazione arco per confrontare le prestazioni."
+    },
     "applied": "Inviate",
     "approved": "Approvate",
     "rejected": "Rifiutate",
@@ -598,6 +612,7 @@
     "thisWeekArrows": "Frecce di questa settimana",
     "currentStreak": "Serie attuale",
     "lastSession": "Ultima sessione",
+    "recentSessions": "Sessioni recenti",
     "noSessions": "Nessuna sessione di allenamento. Registra la prima!",
     "logTraining": "Registra allenamento",
     "logTodaysSession": "Registra la sessione di oggi",
@@ -605,6 +620,12 @@
     "upcomingTournaments": "Prossimi tornei",
     "viewAllApplications": "Vedi tutte le candidature",
     "viewAllTrainings": "Vedi tutti gli allenamenti",
-    "viewStatistics": "Vedi statistiche complete"
+    "viewStatistics": "Vedi statistiche complete",
+    "bowSetupPrompt": {
+      "title": "Aggiungi la tua configurazione arco",
+      "subtitle": "Collegare le sessioni all'attrezzatura aiuta a monitorare le prestazioni. Puoi aggiungere una configurazione in qualsiasi momento — anche modificando una sessione.",
+      "logSession": "Registra sessione",
+      "dismiss": "Ricordamelo domani"
+    }
   }
 }

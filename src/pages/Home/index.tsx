@@ -1,4 +1,5 @@
 import AddIcon from '@mui/icons-material/Add';
+import ArchitectureOutlinedIcon from '@mui/icons-material/ArchitectureOutlined';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import TrackChangesIcon from '@mui/icons-material/TrackChanges';
 import Alert from '@mui/material/Alert';
@@ -8,6 +9,8 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CircularProgress from '@mui/material/CircularProgress';
 import Grid from '@mui/material/Grid';
+import Paper from '@mui/material/Paper';
+import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { format, isBefore, parseISO, startOfDay } from 'date-fns';
 import React, { useEffect, useMemo, useState } from 'react';
@@ -21,9 +24,15 @@ import { useLocalData, type LocalTrainingSession } from '../../contexts/local-da
 import apiService from '../../services/api';
 import type { TournamentApplicationDto } from '../../services/types';
 import {
+  dismissBowSetupPrompt,
+  getEquipmentSetName,
+  isBowSetupPromptDismissed,
+} from '../../utils/equipment-utils';
+import { getSessionCardTint } from '../../utils/session-card-tints';
+import {
   computeLocalStats,
   getLastLoggedSession,
-  getMostRecentSession,
+  getRecentTrainingSessions,
   toSessionFormDefaults,
 } from '../../utils/training-stats';
 import TrainingSessionDialog from '../MyTrainings/TrainingSessionDialog';
@@ -39,7 +48,9 @@ function isPastTournament(tournament: { endDate?: string; startDate: string }): 
 const HomePage: React.FC = () => {
   const { t } = useTranslation('common');
   const { isAuthenticated } = useAuth();
-  const { trainingSessions, addTrainingSession } = useLocalData();
+  const { trainingSessions, equipmentSets, addTrainingSession, defaultEquipmentSetId } =
+    useLocalData();
+  const theme = useTheme();
   const navigate = useNavigate();
   const { lang } = useParams();
 
@@ -50,14 +61,31 @@ const HomePage: React.FC = () => {
   const [upcomingApps, setUpcomingApps] = useState<TournamentApplicationDto[]>([]);
   const [appsLoading, setAppsLoading] = useState(false);
   const [appsError, setAppsError] = useState<string | null>(null);
+  const [bowPromptDismissTick, setBowPromptDismissTick] = useState(0);
 
-  const stats = useMemo(() => computeLocalStats(trainingSessions), [trainingSessions]);
-  const lastSession = useMemo(() => getMostRecentSession(trainingSessions), [trainingSessions]);
+  const showBowSetupPrompt = useMemo(
+    () => equipmentSets.length === 0 && !isBowSetupPromptDismissed(),
+    [equipmentSets.length, bowPromptDismissTick],
+  );
+
+  const stats = useMemo(
+    () => computeLocalStats(trainingSessions, equipmentSets),
+    [trainingSessions, equipmentSets],
+  );
+  const recentSessions = useMemo(
+    () => getRecentTrainingSessions(trainingSessions, 3),
+    [trainingSessions],
+  );
   const lastLogged = useMemo(() => getLastLoggedSession(trainingSessions), [trainingSessions]);
 
   const sessionDefaults = useMemo(
-    () => (lastLogged ? toSessionFormDefaults(lastLogged) : undefined),
-    [lastLogged],
+    () =>
+      lastLogged
+        ? toSessionFormDefaults(lastLogged, defaultEquipmentSetId)
+        : defaultEquipmentSetId
+          ? { equipmentSetId: defaultEquipmentSetId }
+          : undefined,
+    [lastLogged, defaultEquipmentSetId],
   );
 
   useEffect(() => {
@@ -101,11 +129,13 @@ const HomePage: React.FC = () => {
     }
   };
 
-  const formatSessionDate = (dateStr: string): string => {
+  const formatSessionDateTime = (session: LocalTrainingSession): string => {
     try {
-      return format(parseISO(dateStr), 'dd MMM yyyy');
+      const datePart = format(parseISO(session.date), 'dd MMM yyyy');
+      const timePart = format(parseISO(session.createdAt), 'HH:mm');
+      return `${datePart}, ${timePart}`;
     } catch {
-      return dateStr;
+      return session.date;
     }
   };
 
@@ -119,6 +149,11 @@ const HomePage: React.FC = () => {
     }
   };
 
+  const handleDismissBowPrompt = () => {
+    dismissBowSetupPrompt();
+    setBowPromptDismissTick((t) => t + 1);
+  };
+
   const fmt = (n: number): string => n.toLocaleString();
 
   return (
@@ -128,6 +163,42 @@ const HomePage: React.FC = () => {
       </Typography>
 
       <LocalDataBanner showSyncStatus />
+
+      {showBowSetupPrompt && (
+        <Paper
+          elevation={0}
+          sx={{
+            p: 3,
+            mt: 2,
+            mb: 1,
+            border: `1px solid ${theme.palette.primary.light}`,
+            borderRadius: 2,
+            bgcolor: theme.palette.mode === 'dark' ? 'primary.dark' : 'primary.50',
+            display: 'flex',
+            flexDirection: { xs: 'column', sm: 'row' },
+            alignItems: { xs: 'flex-start', sm: 'center' },
+            gap: 2,
+          }}
+        >
+          <ArchitectureOutlinedIcon sx={{ fontSize: 40, color: 'primary.main', flexShrink: 0 }} />
+          <Box sx={{ flex: 1 }}>
+            <Typography variant="subtitle1" fontWeight={700}>
+              {t('dashboard.bowSetupPrompt.title')}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              {t('dashboard.bowSetupPrompt.subtitle')}
+            </Typography>
+          </Box>
+          <Box sx={{ display: 'flex', gap: 1, flexShrink: 0 }}>
+            <Button variant="contained" size="small" onClick={handleOpenAdd}>
+              {t('dashboard.bowSetupPrompt.logSession')}
+            </Button>
+            <Button variant="text" size="small" onClick={handleDismissBowPrompt}>
+              {t('dashboard.bowSetupPrompt.dismiss')}
+            </Button>
+          </Box>
+        </Paper>
+      )}
 
       <Grid container spacing={2} sx={{ mt: 1 }}>
         <Grid size={{ xs: 6, sm: 4 }}>
@@ -151,64 +222,28 @@ const HomePage: React.FC = () => {
         </Grid>
       </Grid>
 
-      <Typography variant="subtitle1" fontWeight={600} color="text.secondary" sx={{ mt: 3, mb: 1 }}>
-        {t('dashboard.lastSession')}
-      </Typography>
-      <Card variant="outlined" sx={{ mb: 2 }}>
-        <CardContent>
-          {lastSession ? (
-            <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1 }}>
-              <TrackChangesIcon color="primary" sx={{ mt: 0.25 }} />
-              <Box sx={{ flex: 1 }}>
-                <Typography variant="subtitle1" fontWeight={600}>
-                  {formatSessionDate(lastSession.date)}
-                </Typography>
-                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mt: 0.5 }}>
-                  {lastSession.shotsCount !== undefined && (
-                    <Typography variant="body2" color="text.secondary">
-                      {t('trainings.shotsCount')}:{' '}
-                      <Box component="span" fontWeight="bold">
-                        {lastSession.shotsCount}
-                      </Box>
-                    </Typography>
-                  )}
-                  {lastSession.distance && (
-                    <Typography variant="body2" color="text.secondary">
-                      {t('trainings.distance')}:{' '}
-                      <Box component="span" fontWeight="bold">
-                        {Number.parseFloat(lastSession.distance).toFixed(1)}m
-                      </Box>
-                    </Typography>
-                  )}
-                  {lastSession.targetType && (
-                    <Typography variant="body2" color="text.secondary">
-                      {t('trainings.targetType')}:{' '}
-                      <Box component="span" fontWeight="bold">
-                        {lastSession.targetType}
-                      </Box>
-                    </Typography>
-                  )}
-                </Box>
-                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mt: 1 }}>
-                  <Button
-                    variant="outlined"
-                    size="small"
-                    startIcon={<AddIcon />}
-                    onClick={handleOpenAdd}
-                  >
-                    {t('dashboard.sameAsLastTime')}
-                  </Button>
-                  <Button
-                    size="small"
-                    sx={{ px: 0 }}
-                    onClick={() => navigate(`/${lang}/trainings`)}
-                  >
-                    {t('dashboard.viewAllTrainings')}
-                  </Button>
-                </Box>
-              </Box>
-            </Box>
-          ) : (
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          mt: 3,
+          mb: 1,
+        }}
+      >
+        <Typography variant="subtitle1" fontWeight={600} color="text.secondary">
+          {t('dashboard.recentSessions')}
+        </Typography>
+        {recentSessions.length > 0 && (
+          <Button size="small" sx={{ px: 0 }} onClick={() => navigate(`/${lang}/trainings`)}>
+            {t('dashboard.viewAllTrainings')}
+          </Button>
+        )}
+      </Box>
+
+      {recentSessions.length === 0 ? (
+        <Card variant="outlined" sx={{ mb: 2 }}>
+          <CardContent>
             <Box sx={{ textAlign: 'center', py: 1 }}>
               <Typography color="text.secondary" gutterBottom>
                 {t('dashboard.noSessions')}
@@ -222,9 +257,77 @@ const HomePage: React.FC = () => {
                 {t('dashboard.logTodaysSession')}
               </Button>
             </Box>
-          )}
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      ) : (
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5, mb: 2 }}>
+          {recentSessions.map((session, index) => {
+            const tint = getSessionCardTint(theme, index);
+            return (
+              <Card
+                key={session.id}
+                variant="outlined"
+                sx={{ bgcolor: tint.bgcolor, borderColor: tint.borderColor }}
+              >
+                <CardContent sx={{ py: 1.5, '&:last-child': { pb: 1.5 } }}>
+                  <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1 }}>
+                    <TrackChangesIcon color="primary" sx={{ mt: 0.25, fontSize: 20 }} />
+                    <Box sx={{ flex: 1, minWidth: 0 }}>
+                      <Typography variant="subtitle2" fontWeight={600}>
+                        {formatSessionDateTime(session)}
+                      </Typography>
+                      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mt: 0.5 }}>
+                        {session.shotsCount !== undefined && (
+                          <Typography variant="body2" color="text.secondary">
+                            {t('trainings.shotsCount')}:{' '}
+                            <Box component="span" fontWeight="bold">
+                              {session.shotsCount}
+                            </Box>
+                          </Typography>
+                        )}
+                        {session.distance && (
+                          <Typography variant="body2" color="text.secondary">
+                            {t('trainings.distance')}:{' '}
+                            <Box component="span" fontWeight="bold">
+                              {Number.parseFloat(session.distance).toFixed(1)}m
+                            </Box>
+                          </Typography>
+                        )}
+                        {session.targetType && (
+                          <Typography variant="body2" color="text.secondary">
+                            {t('trainings.targetType')}:{' '}
+                            <Box component="span" fontWeight="bold">
+                              {session.targetType}
+                            </Box>
+                          </Typography>
+                        )}
+                        {session.equipmentSetId && (
+                          <Typography variant="body2" color="text.secondary">
+                            {t('trainings.equipmentSet')}:{' '}
+                            <Box component="span" fontWeight="bold">
+                              {getEquipmentSetName(session.equipmentSetId, equipmentSets) ??
+                                session.equipmentSetId}
+                            </Box>
+                          </Typography>
+                        )}
+                      </Box>
+                    </Box>
+                  </Box>
+                </CardContent>
+              </Card>
+            );
+          })}
+          <Button
+            variant="outlined"
+            size="small"
+            startIcon={<AddIcon />}
+            onClick={handleOpenAdd}
+            sx={{ alignSelf: 'flex-start' }}
+          >
+            {t('dashboard.sameAsLastTime')}
+          </Button>
+        </Box>
+      )}
 
       {isAuthenticated && (appsLoading || appsError || upcomingApps.length > 0) && (
         <>

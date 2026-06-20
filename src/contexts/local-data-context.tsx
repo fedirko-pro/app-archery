@@ -11,6 +11,11 @@ import React, {
 
 import apiService from '../services/api';
 import {
+  getDefaultEquipmentSetId,
+  resolveDefaultEquipmentSetId,
+  setDefaultEquipmentSetId,
+} from '../utils/equipment-utils';
+import {
   getEquipmentSets,
   saveEquipmentSet,
   updateEquipmentSet,
@@ -34,6 +39,7 @@ export type {
 interface LocalDataContextType {
   equipmentSets: LocalEquipmentSet[];
   trainingSessions: LocalTrainingSession[];
+  defaultEquipmentSetId: string | null;
   isSyncing: boolean;
   lastSyncError: string | null;
   addEquipmentSet: (
@@ -44,6 +50,7 @@ interface LocalDataContextType {
     data: Partial<Omit<LocalEquipmentSet, 'id' | 'createdAt'>>,
   ) => void;
   removeEquipmentSet: (id: string) => Promise<void>;
+  setDefaultEquipmentSet: (id: string | null) => void;
   addTrainingSession: (
     data: Omit<LocalTrainingSession, 'id' | 'isSynced' | 'createdAt' | 'updatedAt'>,
   ) => Promise<LocalTrainingSession>;
@@ -78,7 +85,15 @@ export const LocalDataProvider: React.FC<Props> = ({ children }) => {
   );
   const [isSyncing, setIsSyncing] = useState(false);
   const [lastSyncError, setLastSyncError] = useState<string | null>(null);
+  const [defaultEquipmentSetIdRaw, setDefaultEquipmentSetIdRaw] = useState<string | null>(() =>
+    getDefaultEquipmentSetId(),
+  );
   const syncInProgress = useRef(false);
+
+  const defaultEquipmentSetId = useMemo(
+    () => resolveDefaultEquipmentSetId(equipmentSets),
+    [equipmentSets, defaultEquipmentSetIdRaw],
+  );
 
   const refresh = useCallback(() => {
     setEquipmentSets(getEquipmentSets());
@@ -244,6 +259,11 @@ export const LocalDataProvider: React.FC<Props> = ({ children }) => {
         }
       });
 
+      if (getDefaultEquipmentSetId() === id) {
+        setDefaultEquipmentSetId(null);
+        setDefaultEquipmentSetIdRaw(null);
+      }
+
       refresh();
     },
     [shouldSync, refresh],
@@ -306,15 +326,22 @@ export const LocalDataProvider: React.FC<Props> = ({ children }) => {
     [shouldSync, refresh],
   );
 
+  const setDefaultEquipmentSet = useCallback((id: string | null) => {
+    setDefaultEquipmentSetId(id);
+    setDefaultEquipmentSetIdRaw(id);
+  }, []);
+
   const value: LocalDataContextType = useMemo(
     () => ({
       equipmentSets,
       trainingSessions,
+      defaultEquipmentSetId,
       isSyncing,
       lastSyncError,
       addEquipmentSet,
       editEquipmentSet,
       removeEquipmentSet,
+      setDefaultEquipmentSet,
       addTrainingSession,
       editTrainingSession,
       removeTrainingSession,
@@ -324,11 +351,13 @@ export const LocalDataProvider: React.FC<Props> = ({ children }) => {
     [
       equipmentSets,
       trainingSessions,
+      defaultEquipmentSetId,
       isSyncing,
       lastSyncError,
       addEquipmentSet,
       editEquipmentSet,
       removeEquipmentSet,
+      setDefaultEquipmentSet,
       addTrainingSession,
       editTrainingSession,
       removeTrainingSession,

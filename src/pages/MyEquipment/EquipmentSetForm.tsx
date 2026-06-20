@@ -10,6 +10,7 @@ import Typography from '@mui/material/Typography';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { BOW_TYPES } from '../../utils/equipment-utils';
 import type { LocalEquipmentSet, CustomField } from '../../utils/local-data-storage';
 
 interface EquipmentSetFormProps {
@@ -18,8 +19,6 @@ interface EquipmentSetFormProps {
   onCancel: () => void;
   submitting?: boolean;
 }
-
-const BOW_TYPES = ['bow', 'crossbow'] as const;
 
 const EquipmentSetForm: React.FC<EquipmentSetFormProps> = ({
   initial = {},

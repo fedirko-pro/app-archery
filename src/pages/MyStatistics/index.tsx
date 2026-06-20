@@ -80,7 +80,7 @@ const DASH = '—';
 const MyStatisticsPage: React.FC = () => {
   const { t } = useTranslation('common');
   const { isAuthenticated, user } = useAuth();
-  const { trainingSessions } = useLocalData();
+  const { trainingSessions, equipmentSets } = useLocalData();
   const navigate = useNavigate();
   const { lang } = useParams();
   const theme = useTheme();
@@ -90,7 +90,12 @@ const MyStatisticsPage: React.FC = () => {
   const [appsError, setAppsError] = useState<string | null>(null);
 
   // Computed reactively from local training data — updates immediately on any training change
-  const stats = useMemo(() => computeLocalStats(trainingSessions), [trainingSessions]);
+  const stats = useMemo(
+    () => computeLocalStats(trainingSessions, equipmentSets, t('trainings.equipment.unspecified')),
+    [trainingSessions, equipmentSets, t],
+  );
+
+  const hasNamedEquipmentStats = stats.byEquipment.some((e) => e.equipmentSetId !== null);
 
   // Tournament applications — server-only, fetched once per login session
   useEffect(() => {
@@ -220,6 +225,7 @@ const MyStatisticsPage: React.FC = () => {
                 { label: t('statistics.avgShotsPerSession'), value: fmt(stats.avgShotsPerSession) },
                 { label: t('statistics.topDistance'), value: str(stats.mostUsedDistance) },
                 { label: t('statistics.topTargetType'), value: str(stats.mostUsedTargetType) },
+                { label: t('statistics.mostUsedEquipment'), value: str(stats.mostUsedEquipment) },
               ].map(({ label, value }, i, arr) => (
                 <React.Fragment key={label}>
                   <Box
@@ -260,6 +266,59 @@ const MyStatisticsPage: React.FC = () => {
           </Grid>
         </Grid>
       </Grid>
+
+      <SectionTitle>{t('statistics.sections.equipment')}</SectionTitle>
+      {hasNamedEquipmentStats ? (
+        <Card variant="outlined" sx={{ mb: 2 }}>
+          <CardContent sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+            {stats.byEquipment
+              .filter((e) => e.equipmentSetId !== null)
+              .map((entry, i, arr) => (
+                <React.Fragment key={entry.equipmentSetId ?? entry.name}>
+                  <Box>
+                    <Typography variant="subtitle2" fontWeight={600} gutterBottom>
+                      {entry.name}
+                    </Typography>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                      {[
+                        {
+                          label: t('statistics.byEquipment.sessions'),
+                          value: fmt(entry.sessions),
+                        },
+                        { label: t('statistics.byEquipment.arrows'), value: fmt(entry.shots) },
+                        {
+                          label: t('statistics.byEquipment.avgShots'),
+                          value: fmt(entry.avgShotsPerSession),
+                        },
+                      ].map(({ label, value }) => (
+                        <Box
+                          key={label}
+                          sx={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                          }}
+                        >
+                          <Typography variant="body2" color="text.secondary">
+                            {label}
+                          </Typography>
+                          <Typography variant="body2" fontWeight={600}>
+                            {value}
+                          </Typography>
+                        </Box>
+                      ))}
+                    </Box>
+                  </Box>
+                  {i < arr.length - 1 && <Divider />}
+                </React.Fragment>
+              ))}
+          </CardContent>
+        </Card>
+      ) : (
+        <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+          {t('statistics.byEquipment.empty')}
+        </Typography>
+      )}
 
       {/* Charts */}
       <SectionTitle>{t('statistics.shotsByMonth')}</SectionTitle>

@@ -8,6 +8,7 @@ import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
+import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -15,17 +16,21 @@ import { useTranslation } from 'react-i18next';
 import LocalDataBanner from '../../components/LocalDataBanner/LocalDataBanner';
 import LocalSyncChip from '../../components/LocalSyncChip/LocalSyncChip';
 import { useLocalData, type LocalTrainingSession } from '../../contexts/local-data-context';
+import { getEquipmentSetName, isBowSetupPromptDismissed } from '../../utils/equipment-utils';
+import { getSessionCardTint } from '../../utils/session-card-tints';
 import { getLastLoggedSession, toSessionFormDefaults } from '../../utils/training-stats';
 import TrainingSessionDialog from './TrainingSessionDialog';
 
 const MyTrainingsPage: React.FC = () => {
   const { t } = useTranslation('common');
+  const theme = useTheme();
   const {
     trainingSessions,
     equipmentSets,
     addTrainingSession,
     editTrainingSession,
     removeTrainingSession,
+    defaultEquipmentSetId,
   } = useLocalData();
 
   const [formOpen, setFormOpen] = useState(false);
@@ -36,8 +41,13 @@ const MyTrainingsPage: React.FC = () => {
 
   const lastLogged = useMemo(() => getLastLoggedSession(trainingSessions), [trainingSessions]);
   const addDefaults = useMemo(
-    () => (lastLogged ? toSessionFormDefaults(lastLogged) : undefined),
-    [lastLogged],
+    () =>
+      lastLogged
+        ? toSessionFormDefaults(lastLogged, defaultEquipmentSetId)
+        : defaultEquipmentSetId
+          ? { equipmentSetId: defaultEquipmentSetId }
+          : undefined,
+    [lastLogged, defaultEquipmentSetId],
   );
 
   const handleOpenAdd = () => {
@@ -82,11 +92,10 @@ const MyTrainingsPage: React.FC = () => {
     }
   };
 
-  const getEquipmentName = (equipmentSetId?: string): string | undefined => {
-    if (!equipmentSetId) return undefined;
-    const set = equipmentSets.find((s) => s.id === equipmentSetId);
-    return set?.name;
-  };
+  const getEquipmentName = (equipmentSetId?: string): string | undefined =>
+    getEquipmentSetName(equipmentSetId, equipmentSets);
+
+  const showBowSetupAlert = equipmentSets.length === 0 && !isBowSetupPromptDismissed();
 
   const formatDate = (dateStr: string): string => {
     try {
@@ -124,6 +133,20 @@ const MyTrainingsPage: React.FC = () => {
 
       <LocalDataBanner showSyncStatus />
 
+      {showBowSetupAlert && (
+        <Alert
+          severity="info"
+          sx={{ mb: 2 }}
+          action={
+            <Button color="inherit" size="small" onClick={handleOpenAdd}>
+              {t('dashboard.bowSetupPrompt.logSession')}
+            </Button>
+          }
+        >
+          {t('dashboard.bowSetupPrompt.subtitle')}
+        </Alert>
+      )}
+
       {deleteError && (
         <Alert severity="error" sx={{ mb: 2 }} onClose={() => setDeleteError(null)}>
           {deleteError}
@@ -136,86 +159,93 @@ const MyTrainingsPage: React.FC = () => {
         </Typography>
       ) : (
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-          {sorted.map((session) => (
-            <Card key={session.id} variant="outlined">
-              <CardContent>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-                  <TrackChangesIcon color="primary" />
-                  <Typography variant="h6">{formatDate(session.date)}</Typography>
-                  {!session.isSynced && <LocalSyncChip />}
-                </Box>
+          {sorted.map((session, index) => {
+            const tint = getSessionCardTint(theme, index);
+            return (
+              <Card
+                key={session.id}
+                variant="outlined"
+                sx={{ bgcolor: tint.bgcolor, borderColor: tint.borderColor }}
+              >
+                <CardContent>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
+                    <TrackChangesIcon color="primary" />
+                    <Typography variant="h6">{formatDate(session.date)}</Typography>
+                    {!session.isSynced && <LocalSyncChip />}
+                  </Box>
 
-                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
-                  {(session.shotsCount !== undefined || session.distance) && (
-                    <Box sx={{ display: 'flex', gap: 2 }}>
-                      {session.shotsCount !== undefined && (
-                        <Typography variant="body2" color="text.secondary">
-                          {t('trainings.shotsCount')}:{' '}
-                          <Box component="span" fontWeight="bold">
-                            {session.shotsCount}
-                          </Box>
-                        </Typography>
-                      )}
-                      {session.distance && (
-                        <Typography variant="body2" color="text.secondary">
-                          {t('trainings.distance')}:{' '}
-                          <Box component="span" fontWeight="bold">
-                            {parseFloat(session.distance).toFixed(1)}m
-                          </Box>
-                        </Typography>
-                      )}
-                    </Box>
-                  )}
-                  {session.targetType && (
-                    <Typography variant="body2" color="text.secondary">
-                      {t('trainings.targetType')}:{' '}
-                      <Box component="span" fontWeight="bold">
-                        {session.targetType}
+                  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
+                    {(session.shotsCount !== undefined || session.distance) && (
+                      <Box sx={{ display: 'flex', gap: 2 }}>
+                        {session.shotsCount !== undefined && (
+                          <Typography variant="body2" color="text.secondary">
+                            {t('trainings.shotsCount')}:{' '}
+                            <Box component="span" fontWeight="bold">
+                              {session.shotsCount}
+                            </Box>
+                          </Typography>
+                        )}
+                        {session.distance && (
+                          <Typography variant="body2" color="text.secondary">
+                            {t('trainings.distance')}:{' '}
+                            <Box component="span" fontWeight="bold">
+                              {parseFloat(session.distance).toFixed(1)}m
+                            </Box>
+                          </Typography>
+                        )}
                       </Box>
-                    </Typography>
-                  )}
-                  {session.equipmentSetId && (
-                    <Typography variant="body2" color="text.secondary">
-                      {t('trainings.equipmentSet')}:{' '}
-                      <Box component="span" fontWeight="bold">
-                        {getEquipmentName(session.equipmentSetId) ?? session.equipmentSetId}
-                      </Box>
-                    </Typography>
-                  )}
-                </Box>
-
-                {session.customFields && session.customFields.length > 0 && (
-                  <Box sx={{ mt: 1 }}>
-                    {session.customFields.map((f) => (
-                      <Typography key={f.key} variant="body2" color="text.secondary">
-                        {f.key}:{' '}
+                    )}
+                    {session.targetType && (
+                      <Typography variant="body2" color="text.secondary">
+                        {t('trainings.targetType')}:{' '}
                         <Box component="span" fontWeight="bold">
-                          {f.value}
+                          {session.targetType}
                         </Box>
                       </Typography>
-                    ))}
+                    )}
+                    {session.equipmentSetId && (
+                      <Typography variant="body2" color="text.secondary">
+                        {t('trainings.equipmentSet')}:{' '}
+                        <Box component="span" fontWeight="bold">
+                          {getEquipmentName(session.equipmentSetId) ?? session.equipmentSetId}
+                        </Box>
+                      </Typography>
+                    )}
                   </Box>
-                )}
-              </CardContent>
-              <CardActions>
-                <Button
-                  size="small"
-                  startIcon={<EditIcon />}
-                  onClick={() => handleOpenEdit(session)}
-                >
-                  {t('common.update')}
-                </Button>
-                <Button
-                  size="small"
-                  color="error"
-                  startIcon={<DeleteIcon />}
-                  onClick={() => handleDelete(session.id)}
-                >
-                  {t('common.delete')}
-                </Button>
-              </CardActions>
-            </Card>
-          ))}
+
+                  {session.customFields && session.customFields.length > 0 && (
+                    <Box sx={{ mt: 1 }}>
+                      {session.customFields.map((f) => (
+                        <Typography key={f.key} variant="body2" color="text.secondary">
+                          {f.key}:{' '}
+                          <Box component="span" fontWeight="bold">
+                            {f.value}
+                          </Box>
+                        </Typography>
+                      ))}
+                    </Box>
+                  )}
+                </CardContent>
+                <CardActions>
+                  <Button
+                    size="small"
+                    startIcon={<EditIcon />}
+                    onClick={() => handleOpenEdit(session)}
+                  >
+                    {t('common.update')}
+                  </Button>
+                  <Button
+                    size="small"
+                    color="error"
+                    startIcon={<DeleteIcon />}
+                    onClick={() => handleDelete(session.id)}
+                  >
+                    {t('common.delete')}
+                  </Button>
+                </CardActions>
+              </Card>
+            );
+          })}
         </Box>
       )}
 
@@ -224,6 +254,7 @@ const MyTrainingsPage: React.FC = () => {
         onClose={handleClose}
         title={editTarget ? t('trainings.session') : t('trainings.add')}
         initial={editTarget ?? addDefaults}
+        useDefaultEquipment={!editTarget}
         formKey={formKey}
         onSubmit={handleSubmit}
         submitting={submitting}

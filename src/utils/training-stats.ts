@@ -1,5 +1,14 @@
 import type { MonthlyDataPoint } from '../services/types';
-import type { LocalTrainingSession } from './local-data-storage';
+import { resolveEquipmentSet } from './equipment-utils';
+import type { LocalEquipmentSet, LocalTrainingSession } from './local-data-storage';
+
+export interface EquipmentStatsEntry {
+  equipmentSetId: string | null;
+  name: string;
+  sessions: number;
+  shots: number;
+  avgShotsPerSession: number;
+}
 
 export interface LocalTrainingStats {
   totalSessions: number;
@@ -9,6 +18,8 @@ export interface LocalTrainingStats {
   avgShotsPerSession: number;
   mostUsedDistance: string | null;
   mostUsedTargetType: string | null;
+  mostUsedEquipment: string | null;
+  byEquipment: EquipmentStatsEntry[];
   shotsByMonth: MonthlyDataPoint[];
   sessionsByMonth: MonthlyDataPoint[];
 }
@@ -105,7 +116,51 @@ function buildMonthlyPoints(
   });
 }
 
-export function computeLocalStats(sessions: LocalTrainingSession[]): LocalTrainingStats {
+function computeEquipmentStats(
+  sessions: LocalTrainingSession[],
+  equipmentSets: LocalEquipmentSet[],
+  unspecifiedLabel: string,
+): { byEquipment: EquipmentStatsEntry[]; mostUsedEquipment: string | null } {
+  const groups = new Map<string | null, { sessions: number; shots: number }>();
+
+  for (const session of sessions) {
+    const resolved = resolveEquipmentSet(session.equipmentSetId, equipmentSets);
+    const key = resolved?.id ?? session.equipmentSetId ?? null;
+    const current = groups.get(key) ?? { sessions: 0, shots: 0 };
+    current.sessions += 1;
+    current.shots += session.shotsCount ?? 0;
+    groups.set(key, current);
+  }
+
+  const byEquipment: EquipmentStatsEntry[] = [...groups.entries()]
+    .map(([equipmentSetId, data]) => {
+      const set = equipmentSetId
+        ? (resolveEquipmentSet(equipmentSetId, equipmentSets) ??
+          equipmentSets.find((s) => s.id === equipmentSetId))
+        : undefined;
+      const name = set?.name ?? (equipmentSetId ? equipmentSetId : unspecifiedLabel);
+      return {
+        equipmentSetId: set?.id ?? (equipmentSetId && !set ? equipmentSetId : null),
+        name,
+        sessions: data.sessions,
+        shots: data.shots,
+        avgShotsPerSession: data.sessions > 0 ? Math.round(data.shots / data.sessions) : 0,
+      };
+    })
+    .sort((a, b) => b.shots - a.shots);
+
+  const namedSets = byEquipment.filter((e) => e.equipmentSetId !== null);
+  const top = namedSets.length > 0 ? namedSets[0] : byEquipment[0];
+  const mostUsedEquipment = top && top.equipmentSetId !== null ? top.name : null;
+
+  return { byEquipment, mostUsedEquipment };
+}
+
+export function computeLocalStats(
+  sessions: LocalTrainingSession[],
+  equipmentSets: LocalEquipmentSet[] = [],
+  unspecifiedLabel = 'Unspecified',
+): LocalTrainingStats {
   const acc: PeriodAccumulator = {
     totalShots: 0,
     shotsWeek: 0,
@@ -120,6 +175,12 @@ export function computeLocalStats(sessions: LocalTrainingSession[]): LocalTraini
   };
 
   for (const s of sessions) accumulateSession(acc, s);
+
+  const { byEquipment, mostUsedEquipment } = computeEquipmentStats(
+    sessions,
+    equipmentSets,
+    unspecifiedLabel,
+  );
 
   return {
     totalSessions: sessions.length,
@@ -138,6 +199,8 @@ export function computeLocalStats(sessions: LocalTrainingSession[]): LocalTraini
     avgShotsPerSession: sessions.length > 0 ? Math.round(acc.totalShots / sessions.length) : 0,
     mostUsedDistance: getMostFrequent(acc.distanceCount),
     mostUsedTargetType: getMostFrequent(acc.targetTypeCount),
+    mostUsedEquipment,
+    byEquipment,
     shotsByMonth: buildMonthlyPoints(sessions, 'shots'),
     sessionsByMonth: buildMonthlyPoints(sessions, 'sessions'),
   };
@@ -147,7 +210,20 @@ export function getMostRecentSession(
   sessions: LocalTrainingSession[],
 ): LocalTrainingSession | null {
   if (sessions.length === 0) return null;
-  return [...sessions].sort((a, b) => b.date.localeCompare(a.date))[0];
+  return getRecentTrainingSessions(sessions, 1)[0] ?? null;
+}
+
+export function getRecentTrainingSessions(
+  sessions: LocalTrainingSession[],
+  limit = 3,
+): LocalTrainingSession[] {
+  return [...sessions]
+    .sort((a, b) => {
+      const dateCmp = b.date.localeCompare(a.date);
+      if (dateCmp !== 0) return dateCmp;
+      return b.createdAt.localeCompare(a.createdAt);
+    })
+    .slice(0, limit);
 }
 
 export function getLastLoggedSession(
@@ -159,12 +235,13 @@ export function getLastLoggedSession(
 
 export function toSessionFormDefaults(
   session: LocalTrainingSession,
+  defaultEquipmentSetId?: string | null,
 ): Partial<LocalTrainingSession> {
   const today = new Date().toISOString().slice(0, 10);
   return {
     date: today,
     distance: session.distance,
     targetType: session.targetType,
-    equipmentSetId: session.equipmentSetId,
+    equipmentSetId: session.equipmentSetId ?? defaultEquipmentSetId ?? undefined,
   };
 }

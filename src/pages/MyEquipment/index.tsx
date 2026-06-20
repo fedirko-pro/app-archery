@@ -2,6 +2,8 @@ import AddIcon from '@mui/icons-material/Add';
 import BowIcon from '@mui/icons-material/ArchitectureOutlined';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import StarIcon from '@mui/icons-material/Star';
+import StarBorderIcon from '@mui/icons-material/StarBorder';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -11,6 +13,8 @@ import CardContent from '@mui/material/CardContent';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -25,7 +29,14 @@ const withUnit = (val: string, unit: string) => (isNumericOnly(val) ? `${val} ${
 
 const MyEquipmentPage: React.FC = () => {
   const { t } = useTranslation('common');
-  const { equipmentSets, addEquipmentSet, editEquipmentSet, removeEquipmentSet } = useLocalData();
+  const {
+    equipmentSets,
+    addEquipmentSet,
+    editEquipmentSet,
+    removeEquipmentSet,
+    defaultEquipmentSetId,
+    setDefaultEquipmentSet,
+  } = useLocalData();
 
   const [formOpen, setFormOpen] = useState(false);
   const [editTarget, setEditTarget] = useState<LocalEquipmentSet | null>(null);
@@ -110,135 +121,157 @@ const MyEquipmentPage: React.FC = () => {
             gap: 2,
           }}
         >
-          {equipmentSets.map((set) => (
-            <Card key={set.id} variant="outlined">
-              <CardContent>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-                  <BowIcon color="primary" />
-                  <Typography variant="h6">{set.name}</Typography>
-                  {!set.isSynced && <LocalSyncChip />}
-                </Box>
-
-                {/* rows container: larger gap between rows, smaller gap between items within a row */}
-                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 0.5 }}>
-                  {set.bowType && (
-                    <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
-                      <Typography variant="body2" color="text.secondary">
-                        {t('equipment.bowType')}:{' '}
-                        <Box component="span" fontWeight="bold">
-                          {t(`equipment.${set.bowType}`)}
-                        </Box>
-                      </Typography>
-                    </Box>
-                  )}
-
-                  {set.manufacturer && (
-                    <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
-                      <Typography variant="body2" color="text.secondary">
-                        {t('equipment.manufacturer')}:{' '}
-                        <Box component="span" fontWeight="bold">
-                          {set.manufacturer}
-                        </Box>
-                      </Typography>
-                    </Box>
-                  )}
-
-                  {(set.model || set.drawWeight) && (
-                    <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
-                      {set.model && (
-                        <Typography variant="body2" color="text.secondary">
-                          {t('equipment.model')}:{' '}
-                          <Box component="span" fontWeight="bold">
-                            {set.model}
-                          </Box>
-                        </Typography>
-                      )}
-                      {set.drawWeight && (
-                        <Typography variant="body2" color="text.secondary">
-                          {t('equipment.drawWeight')}:{' '}
-                          <Box component="span" fontWeight="bold">
-                            {withUnit(set.drawWeight, 'lbs')}
-                          </Box>
-                        </Typography>
-                      )}
-                    </Box>
-                  )}
-
-                  {(set.arrowLength || set.arrowSpine || set.arrowWeight || set.arrowMaterial) && (
-                    <Box>
-                      <Typography
-                        variant="caption"
-                        color="text.disabled"
-                        sx={{ textTransform: 'uppercase', letterSpacing: 0.5 }}
+          {equipmentSets.map((set) => {
+            const isDefault = defaultEquipmentSetId === set.id;
+            return (
+              <Card key={set.id} variant="outlined">
+                <CardContent>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
+                    <BowIcon color="primary" />
+                    <Typography variant="h6" sx={{ flex: 1 }}>
+                      {set.name}
+                    </Typography>
+                    <Tooltip title={t('equipment.setDefault')}>
+                      <IconButton
+                        size="small"
+                        aria-label={t('equipment.setDefault')}
+                        onClick={() => setDefaultEquipmentSet(isDefault ? null : set.id)}
+                        color={isDefault ? 'warning' : 'default'}
                       >
-                        {t('equipment.arrowGroup')}
-                      </Typography>
-                      <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', mt: 0.25 }}>
-                        {set.arrowLength && (
+                        {isDefault ? (
+                          <StarIcon fontSize="small" />
+                        ) : (
+                          <StarBorderIcon fontSize="small" />
+                        )}
+                      </IconButton>
+                    </Tooltip>
+                    {!set.isSynced && <LocalSyncChip />}
+                  </Box>
+
+                  {/* rows container: larger gap between rows, smaller gap between items within a row */}
+                  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 0.5 }}>
+                    {set.bowType && (
+                      <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+                        <Typography variant="body2" color="text.secondary">
+                          {t('equipment.bowType')}:{' '}
+                          <Box component="span" fontWeight="bold">
+                            {t(`equipment.${set.bowType}`)}
+                          </Box>
+                        </Typography>
+                      </Box>
+                    )}
+
+                    {set.manufacturer && (
+                      <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+                        <Typography variant="body2" color="text.secondary">
+                          {t('equipment.manufacturer')}:{' '}
+                          <Box component="span" fontWeight="bold">
+                            {set.manufacturer}
+                          </Box>
+                        </Typography>
+                      </Box>
+                    )}
+
+                    {(set.model || set.drawWeight) && (
+                      <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+                        {set.model && (
                           <Typography variant="body2" color="text.secondary">
-                            {t('equipment.length')}:{' '}
+                            {t('equipment.model')}:{' '}
                             <Box component="span" fontWeight="bold">
-                              {withUnit(set.arrowLength, 'inch')}
+                              {set.model}
                             </Box>
                           </Typography>
                         )}
-                        {set.arrowSpine && (
+                        {set.drawWeight && (
                           <Typography variant="body2" color="text.secondary">
-                            {t('equipment.arrowSpine')}:{' '}
+                            {t('equipment.drawWeight')}:{' '}
                             <Box component="span" fontWeight="bold">
-                              {set.arrowSpine}
-                            </Box>
-                          </Typography>
-                        )}
-                        {set.arrowWeight && (
-                          <Typography variant="body2" color="text.secondary">
-                            {t('equipment.weight')}:{' '}
-                            <Box component="span" fontWeight="bold">
-                              {set.arrowWeight}
-                            </Box>
-                          </Typography>
-                        )}
-                        {set.arrowMaterial && (
-                          <Typography variant="body2" color="text.secondary">
-                            {t('equipment.material')}:{' '}
-                            <Box component="span" fontWeight="bold">
-                              {set.arrowMaterial}
+                              {withUnit(set.drawWeight, 'lbs')}
                             </Box>
                           </Typography>
                         )}
                       </Box>
-                    </Box>
-                  )}
+                    )}
 
-                  {set.customFields && set.customFields.length > 0 && (
-                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
-                      {set.customFields.map((f) => (
-                        <Typography key={f.key} variant="body2" color="text.secondary">
-                          {f.key}:{' '}
-                          <Box component="span" fontWeight="bold">
-                            {f.value}
-                          </Box>
+                    {(set.arrowLength ||
+                      set.arrowSpine ||
+                      set.arrowWeight ||
+                      set.arrowMaterial) && (
+                      <Box>
+                        <Typography
+                          variant="caption"
+                          color="text.disabled"
+                          sx={{ textTransform: 'uppercase', letterSpacing: 0.5 }}
+                        >
+                          {t('equipment.arrowGroup')}
                         </Typography>
-                      ))}
-                    </Box>
-                  )}
-                </Box>
-              </CardContent>
-              <CardActions>
-                <Button size="small" startIcon={<EditIcon />} onClick={() => handleOpenEdit(set)}>
-                  {t('common.update')}
-                </Button>
-                <Button
-                  size="small"
-                  color="error"
-                  startIcon={<DeleteIcon />}
-                  onClick={() => handleDelete(set.id)}
-                >
-                  {t('common.delete')}
-                </Button>
-              </CardActions>
-            </Card>
-          ))}
+                        <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', mt: 0.25 }}>
+                          {set.arrowLength && (
+                            <Typography variant="body2" color="text.secondary">
+                              {t('equipment.length')}:{' '}
+                              <Box component="span" fontWeight="bold">
+                                {withUnit(set.arrowLength, 'inch')}
+                              </Box>
+                            </Typography>
+                          )}
+                          {set.arrowSpine && (
+                            <Typography variant="body2" color="text.secondary">
+                              {t('equipment.arrowSpine')}:{' '}
+                              <Box component="span" fontWeight="bold">
+                                {set.arrowSpine}
+                              </Box>
+                            </Typography>
+                          )}
+                          {set.arrowWeight && (
+                            <Typography variant="body2" color="text.secondary">
+                              {t('equipment.weight')}:{' '}
+                              <Box component="span" fontWeight="bold">
+                                {set.arrowWeight}
+                              </Box>
+                            </Typography>
+                          )}
+                          {set.arrowMaterial && (
+                            <Typography variant="body2" color="text.secondary">
+                              {t('equipment.material')}:{' '}
+                              <Box component="span" fontWeight="bold">
+                                {set.arrowMaterial}
+                              </Box>
+                            </Typography>
+                          )}
+                        </Box>
+                      </Box>
+                    )}
+
+                    {set.customFields && set.customFields.length > 0 && (
+                      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
+                        {set.customFields.map((f) => (
+                          <Typography key={f.key} variant="body2" color="text.secondary">
+                            {f.key}:{' '}
+                            <Box component="span" fontWeight="bold">
+                              {f.value}
+                            </Box>
+                          </Typography>
+                        ))}
+                      </Box>
+                    )}
+                  </Box>
+                </CardContent>
+                <CardActions>
+                  <Button size="small" startIcon={<EditIcon />} onClick={() => handleOpenEdit(set)}>
+                    {t('common.update')}
+                  </Button>
+                  <Button
+                    size="small"
+                    color="error"
+                    startIcon={<DeleteIcon />}
+                    onClick={() => handleDelete(set.id)}
+                  >
+                    {t('common.delete')}
+                  </Button>
+                </CardActions>
+              </Card>
+            );
+          })}
         </Box>
       )}
 

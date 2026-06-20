@@ -20,6 +20,7 @@ interface TrainingSessionDialogProps {
   title: string;
   initial?: Partial<LocalTrainingSession>;
   formKey: number;
+  useDefaultEquipment?: boolean;
   onSubmit: (
     data: Omit<LocalTrainingSession, 'id' | 'isSynced' | 'createdAt' | 'updatedAt'>,
   ) => void;
@@ -32,6 +33,7 @@ const TrainingSessionDialog: React.FC<TrainingSessionDialogProps> = ({
   title,
   initial,
   formKey,
+  useDefaultEquipment = true,
   onSubmit,
   submitting = false,
 }) => {
@@ -49,6 +51,7 @@ const TrainingSessionDialog: React.FC<TrainingSessionDialogProps> = ({
             formId={FORM_ID}
             showActions={false}
             initial={initial}
+            useDefaultEquipment={useDefaultEquipment}
             onSubmit={onSubmit}
             onCancel={onClose}
             submitting={submitting}

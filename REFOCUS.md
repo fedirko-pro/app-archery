@@ -9,40 +9,34 @@
 
 ### Phase B — The Daily Archer Loop
 
-*Core product value. Highest priority after Phase A.*
+_Core product value. Highest priority after Phase A._
 
 #### B2. Richer session model
 
 Plan fields in tiers:
 
-| Tier | Fields | Purpose |
-|------|--------|---------|
-| MVP+ | Score total, ends × arrows, notes, mood/conditions | See improvement |
-| Next | Per-end scores, grouping size, indoor/outdoor | Accuracy trends |
-| Later | Photo of target, coach notes | Deep analysis |
+| Tier  | Fields                                             | Purpose         |
+| ----- | -------------------------------------------------- | --------------- |
+| MVP+  | Score total, ends × arrows, notes, mood/conditions | See improvement |
+| Next  | Per-end scores, grouping size, indoor/outdoor      | Accuracy trends |
+| Later | Photo of target, coach notes                       | Deep analysis   |
 
 - [ ] Extend `LocalTrainingSession` type and storage schema
 - [ ] Update form UI with progressive disclosure (basic vs detailed)
 - [ ] Migration for existing local/server data
 - [ ] Statistics: average score, best session, score trend by distance
 
-#### B3. Equipment as context, not a separate chore
-
-- [ ] First-time flow: prompt “Add your bow setup” before/during first training
-- [ ] Training form: inline mini-create if no equipment sets exist
-- [ ] Statistics: “Performance by equipment set”
-
 #### B4. Connect achievements to real data
 
 Achievements should derive from existing statistics:
 
-| Achievement | Data source |
-|-------------|-------------|
-| First training logged | `trainingSessions.length >= 1` |
-| 4-week streak | `currentStreakWeeks >= 4` |
-| 1,000 arrows lifetime | `shots.total >= 1000` |
-| 5 different distances | unique distances in sessions |
-| First approved application | application stats API |
+| Achievement                | Data source                    |
+| -------------------------- | ------------------------------ |
+| First training logged      | `trainingSessions.length >= 1` |
+| 4-week streak              | `currentStreakWeeks >= 4`      |
+| 1,000 arrows lifetime      | `shots.total >= 1000`          |
+| 5 different distances      | unique distances in sessions   |
+| First approved application | application stats API          |
 
 - [ ] Remove hardcoded demo earned states from `achievements.tsx`
 - [ ] Compute progress from `local-data-context` + API
@@ -89,7 +83,7 @@ Achievements should derive from existing statistics:
 
 ### Phase D — Tournaments from the Archer’s Lens
 
-*Reframe, don’t remove.*
+_Reframe, don’t remove._
 
 #### D1. “My season” view
 
@@ -138,10 +132,10 @@ Achievements should derive from existing statistics:
 
 #### F1. Progressive profile fields
 
-| User type | Show | De-emphasize |
-|-----------|------|--------------|
-| Hobby | Location, bow type, club (optional) | Federation number |
-| Competitive | + federation number, divisions | — |
+| User type   | Show                                | De-emphasize      |
+| ----------- | ----------------------------------- | ----------------- |
+| Hobby       | Location, bow type, club (optional) | Federation number |
+| Competitive | + federation number, divisions      | —                 |
 
 - [ ] Onboarding “who are you?” drives which fields appear
 - [ ] Federation number optional, not required in UI
@@ -191,14 +185,14 @@ Phase E & F              ──► polish / later
 
 ## 5. Metrics to Track the Pivot
 
-| Metric | Why |
-|--------|-----|
-| DAU logging ≥1 training / week | Core habit |
-| Time to first training log after signup | Onboarding success |
-| % users with sync enabled | Trust + retention |
-| Training sessions per user per month | Engagement depth |
-| Tournament apply rate | Federation path still healthy |
-| Bounce rate on old `/tournaments` landing for new users | IA fix validation |
+| Metric                                                  | Why                           |
+| ------------------------------------------------------- | ----------------------------- |
+| DAU logging ≥1 training / week                          | Core habit                    |
+| Time to first training log after signup                 | Onboarding success            |
+| % users with sync enabled                               | Trust + retention             |
+| Training sessions per user per month                    | Engagement depth              |
+| Tournament apply rate                                   | Federation path still healthy |
+| Bounce rate on old `/tournaments` landing for new users | IA fix validation             |
 
 ---
 
@@ -213,21 +207,21 @@ Phase E & F              ──► polish / later
 
 ## 7. Key Files Reference
 
-| Area | Paths |
-|------|-------|
-| Routing / default home | `src/components/Content/Content.tsx` |
-| Post-login redirect | `src/contexts/auth-context.tsx` |
-| Main nav | `src/components/NavMenu/NavMenu.tsx` |
-| User menu | `src/components/UserMenu/UserMenu.tsx` |
-| Training | `src/pages/MyTrainings/` |
-| Statistics | `src/pages/MyStatistics/` |
-| Equipment | `src/pages/MyEquipment/` |
-| Achievements (demo) | `src/pages/achievements/achievements.tsx` |
-| Local data / sync | `src/contexts/local-data-context.tsx` |
-| Sync UI | `src/components/LocalDataBanner/`, `LocalSyncChip/` |
-| Profile / sync toggle | `src/pages/profile/profile-edit-form/` |
-| About copy | `src/pages/About.tsx`, `src/locales/*/common.json` |
-| Roles | `src/config/roles.ts` |
+| Area                   | Paths                                               |
+| ---------------------- | --------------------------------------------------- |
+| Routing / default home | `src/components/Content/Content.tsx`                |
+| Post-login redirect    | `src/contexts/auth-context.tsx`                     |
+| Main nav               | `src/components/NavMenu/NavMenu.tsx`                |
+| User menu              | `src/components/UserMenu/UserMenu.tsx`              |
+| Training               | `src/pages/MyTrainings/`                            |
+| Statistics             | `src/pages/MyStatistics/`                           |
+| Equipment              | `src/pages/MyEquipment/`                            |
+| Achievements (demo)    | `src/pages/achievements/achievements.tsx`           |
+| Local data / sync      | `src/contexts/local-data-context.tsx`               |
+| Sync UI                | `src/components/LocalDataBanner/`, `LocalSyncChip/` |
+| Profile / sync toggle  | `src/pages/profile/profile-edit-form/`              |
+| About copy             | `src/pages/About.tsx`, `src/locales/*/common.json`  |
+| Roles                  | `src/config/roles.ts`                               |
 
 ---
 
@@ -254,4 +248,4 @@ The refocus is successful when:
 
 ---
 
-*Document created for step-by-step implementation. Update checkboxes as work completes.*
+_Document created for step-by-step implementation. Update checkboxes as work completes._
