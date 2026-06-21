@@ -62,6 +62,7 @@ const UserEdit: React.FC = () => {
         gender: foundUser.gender || 'M',
         clubId: foundUser.clubId || '',
         categories: foundUser.categories || [],
+        divisionId: foundUser.divisionId || '',
         appLanguage: getAppLanguageFromUser(foundUser),
       });
     } catch (error) {
@@ -171,12 +172,7 @@ const UserEdit: React.FC = () => {
 
   if (loading) {
     return (
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        minHeight="50vh"
-      >
+      <Box display="flex" justifyContent="center" alignItems="center" minHeight="50vh">
         <CircularProgress />
       </Box>
     );
@@ -208,11 +204,7 @@ const UserEdit: React.FC = () => {
     <section>
       <div className="container">
         <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Button
-            startIcon={<ArrowBack />}
-            onClick={handleBack}
-            sx={{ minWidth: 0 }}
-          >
+          <Button startIcon={<ArrowBack />} onClick={handleBack} sx={{ minWidth: 0 }}>
             Back to Admin Panel
           </Button>
           <Button

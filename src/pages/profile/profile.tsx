@@ -15,10 +15,7 @@ interface ProfileProps {
   isAdminView?: boolean;
 }
 
-const Profile: React.FC<ProfileProps> = ({
-  userOverride,
-  isAdminView = false,
-}) => {
+const Profile: React.FC<ProfileProps> = ({ userOverride, isAdminView = false }) => {
   const { user: authUser } = useAuth();
   const user = userOverride || authUser;
   const { t } = useTranslation('common');
@@ -46,9 +43,7 @@ const Profile: React.FC<ProfileProps> = ({
       healthCheckExecutedRef.current = true;
 
       try {
-        const response = await fetch(
-          `${import.meta.env.VITE_API_BASE_URL}/auth/google/test`,
-        );
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/auth/google/test`);
         if (!response.ok) {
           console.error('Backend health check failed:', response.status);
         }
@@ -71,6 +66,7 @@ const Profile: React.FC<ProfileProps> = ({
         picture: user.picture || '',
         federationNumber: user.federationNumber || '',
         categories: user.categories || [],
+        divisionId: user.divisionId || '',
       });
     }
   }, [user]);
@@ -86,6 +82,7 @@ const Profile: React.FC<ProfileProps> = ({
         picture: user?.picture || '',
         federationNumber: user?.federationNumber || '',
         categories: user?.categories || [],
+        divisionId: user?.divisionId || '',
       });
     }
     setIsEditing(!isEditing);
@@ -112,12 +109,7 @@ const Profile: React.FC<ProfileProps> = ({
 
   if (!user) {
     return (
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        minHeight="50vh"
-      >
+      <Box display="flex" justifyContent="center" alignItems="center" minHeight="50vh">
         <CircularProgress />
       </Box>
     );

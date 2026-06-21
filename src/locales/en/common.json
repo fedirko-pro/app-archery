@@ -564,6 +564,8 @@
     "federationNumber": "Federation Number",
     "categories": "Favorite categories",
     "selectCategories": "Select favorite categories",
+    "preferredDivision": "Preferred division",
+    "selectDivision": "Select division",
     "applicationLanguage": "Application language",
     "role": "Role"
   },
@@ -596,6 +598,7 @@
     "gender": "Gender",
     "club": "Club",
     "bowCategories": "Favorite categories",
+    "preferredDivision": "Preferred division",
     "aboutMe": "About Me",
     "location": "Location",
     "editProfile": "Edit Profile",

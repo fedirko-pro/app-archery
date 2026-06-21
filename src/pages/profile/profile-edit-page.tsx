@@ -75,6 +75,7 @@ const ProfileEditPage: React.FC = () => {
         gender: user.gender || 'M',
         clubId: user.clubId || '',
         categories: Array.isArray(user.categories) ? user.categories : [],
+        divisionId: user.divisionId || '',
         appLanguage: getAppLanguageFromUser(user),
         syncTrainingsAndEquipment: user.syncTrainingsAndEquipment ?? false,
         shareProgressEnabled: user.shareProgressEnabled ?? false,

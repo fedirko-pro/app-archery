@@ -19,6 +19,7 @@ import { useTranslation } from 'react-i18next';
 import type { User } from '../../contexts/types';
 import apiService from '../../services/api';
 import type { BowCategory, DivisionDto } from '../../services/types';
+import { getApplicationPrefillDefaults } from '../../utils/application-prefill-utils';
 
 export interface AdminApplyUserDialogProps {
   open: boolean;
@@ -93,9 +94,7 @@ const AdminApplyUserDialog: React.FC<AdminApplyUserDialogProps> = ({
       setCategories(categoriesData);
 
       // Remove duplicates by id
-      const uniqueDivisions = Array.from(
-        new Map(divisionsData.map((d) => [d.id, d])).values(),
-      );
+      const uniqueDivisions = Array.from(new Map(divisionsData.map((d) => [d.id, d])).values());
       setDivisions(uniqueDivisions);
     } catch (err) {
       console.error('Failed to load options:', err);
@@ -106,6 +105,14 @@ const AdminApplyUserDialog: React.FC<AdminApplyUserDialogProps> = ({
     }
   };
 
+  useEffect(() => {
+    if (!selectedUser || loadingOptions) return;
+
+    const defaults = getApplicationPrefillDefaults(selectedUser, categories, divisions);
+    setCategory(defaults.category);
+    setDivision(defaults.division);
+  }, [selectedUser, categories, divisions, loadingOptions]);
+
   const handleSubmit = async () => {
     if (!selectedUser) {
       setError(t('admin.applyUser.selectUserRequired', 'Please select a user'));
@@ -113,16 +120,12 @@ const AdminApplyUserDialog: React.FC<AdminApplyUserDialogProps> = ({
     }
 
     if (!division) {
-      setError(
-        t('admin.applyUser.divisionRequired', 'Please select a division'),
-      );
+      setError(t('admin.applyUser.divisionRequired', 'Please select a division'));
       return;
     }
 
     if (!category) {
-      setError(
-        t('admin.applyUser.categoryRequired', 'Please select a bow category'),
-      );
+      setError(t('admin.applyUser.categoryRequired', 'Please select a bow category'));
       return;
     }
 
@@ -167,18 +170,13 @@ const AdminApplyUserDialog: React.FC<AdminApplyUserDialogProps> = ({
 
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
-      <DialogTitle>
-        {t('admin.applyUser.title', 'Apply User to Tournament')}
-      </DialogTitle>
+      <DialogTitle>{t('admin.applyUser.title', 'Apply User to Tournament')}</DialogTitle>
       <DialogContent>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 1 }}>
-          {error && (
-            <Box sx={{ color: 'error.main', mb: 1 }}>{error}</Box>
-          )}
+          {error && <Box sx={{ color: 'error.main', mb: 1 }}>{error}</Box>}
 
           <Box sx={{ mb: 1 }}>
-            <strong>{t('admin.applyUser.tournament', 'Tournament')}:</strong>{' '}
-            {tournamentTitle}
+            <strong>{t('admin.applyUser.tournament', 'Tournament')}:</strong> {tournamentTitle}
           </Box>
 
           {/* User search autocomplete */}
@@ -193,9 +191,7 @@ const AdminApplyUserDialog: React.FC<AdminApplyUserDialogProps> = ({
               return options.filter(
                 (user) =>
                   user.email.toLowerCase().includes(lowercaseInput) ||
-                  (user.firstName || '')
-                    .toLowerCase()
-                    .includes(lowercaseInput) ||
+                  (user.firstName || '').toLowerCase().includes(lowercaseInput) ||
                   (user.lastName || '').toLowerCase().includes(lowercaseInput),
               );
             }}
@@ -203,18 +199,13 @@ const AdminApplyUserDialog: React.FC<AdminApplyUserDialogProps> = ({
               <TextField
                 {...params}
                 label={t('admin.applyUser.selectUser', 'Select User')}
-                placeholder={t(
-                  'admin.applyUser.searchPlaceholder',
-                  'Search by name or email...',
-                )}
+                placeholder={t('admin.applyUser.searchPlaceholder', 'Search by name or email...')}
                 required
                 InputProps={{
                   ...params.InputProps,
                   endAdornment: (
                     <>
-                      {loadingUsers ? (
-                        <CircularProgress color="inherit" size={20} />
-                      ) : null}
+                      {loadingUsers ? <CircularProgress color="inherit" size={20} /> : null}
                       {params.InputProps.endAdornment}
                     </>
                   ),
@@ -227,9 +218,7 @@ const AdminApplyUserDialog: React.FC<AdminApplyUserDialogProps> = ({
                   <Box sx={{ fontWeight: 500 }}>
                     {user.firstName} {user.lastName}
                   </Box>
-                  <Box sx={{ fontSize: '0.85em', color: 'text.secondary' }}>
-                    {user.email}
-                  </Box>
+                  <Box sx={{ fontSize: '0.85em', color: 'text.secondary' }}>{user.email}</Box>
                 </Box>
               </li>
             )}
@@ -238,9 +227,7 @@ const AdminApplyUserDialog: React.FC<AdminApplyUserDialogProps> = ({
 
           {/* Division select */}
           <FormControl fullWidth required disabled={loadingOptions}>
-            <InputLabel>
-              {t('pages.applicationForm.division', 'Division')}
-            </InputLabel>
+            <InputLabel>{t('pages.applicationForm.division', 'Division')}</InputLabel>
             <Select
               value={division}
               label={t('pages.applicationForm.division', 'Division')}
@@ -256,9 +243,7 @@ const AdminApplyUserDialog: React.FC<AdminApplyUserDialogProps> = ({
 
           {/* Category select */}
           <FormControl fullWidth required disabled={loadingOptions}>
-            <InputLabel>
-              {t('pages.applicationForm.category', 'Bow Category')}
-            </InputLabel>
+            <InputLabel>{t('pages.applicationForm.category', 'Bow Category')}</InputLabel>
             <Select
               value={category}
               label={t('pages.applicationForm.category', 'Bow Category')}
@@ -280,10 +265,7 @@ const AdminApplyUserDialog: React.FC<AdminApplyUserDialogProps> = ({
             rows={3}
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
-            placeholder={t(
-              'admin.applyUser.notesPlaceholder',
-              'Additional notes (optional)...',
-            )}
+            placeholder={t('admin.applyUser.notesPlaceholder', 'Additional notes (optional)...')}
           />
         </Box>
       </DialogContent>

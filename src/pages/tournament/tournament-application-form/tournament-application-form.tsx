@@ -18,6 +18,7 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../../contexts/auth-context';
 import apiService from '../../../services/api';
 import type { BowCategory, DivisionDto } from '../../../services/types';
+import { getApplicationPrefillDefaults } from '../../../utils/application-prefill-utils';
 
 interface TournamentApplicationFormProps {
   tournamentId: string;
@@ -63,11 +64,9 @@ const TournamentApplicationForm: React.FC<TournamentApplicationFormProps> = ({
             : apiService.getDivisions(),
         ]);
         setCategories(categoriesData);
-        
+
         // Remove duplicates by id to prevent showing duplicate divisions
-        const uniqueDivisions = Array.from(
-          new Map(divisionsData.map((d) => [d.id, d])).values()
-        );
+        const uniqueDivisions = Array.from(new Map(divisionsData.map((d) => [d.id, d])).values());
         setDivisions(uniqueDivisions);
       } catch (error) {
         console.error('Failed to load options:', error);
@@ -79,6 +78,17 @@ const TournamentApplicationForm: React.FC<TournamentApplicationFormProps> = ({
     };
     loadOptions();
   }, [tournamentRuleCode]);
+
+  useEffect(() => {
+    if (loadingOptions || !user) return;
+
+    const defaults = getApplicationPrefillDefaults(user, categories, divisions);
+    setFormData((prev) => ({
+      ...prev,
+      category: prev.category || defaults.category,
+      division: prev.division || defaults.division,
+    }));
+  }, [user, categories, divisions, loadingOptions]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -117,11 +127,7 @@ const TournamentApplicationForm: React.FC<TournamentApplicationFormProps> = ({
           </Typography>
 
           {error && (
-            <Alert
-              severity="error"
-              sx={{ mb: 2 }}
-              onClose={() => setError(null)}
-            >
+            <Alert severity="error" sx={{ mb: 2 }} onClose={() => setError(null)}>
               {error}
             </Alert>
           )}
@@ -135,9 +141,7 @@ const TournamentApplicationForm: React.FC<TournamentApplicationFormProps> = ({
                     <Select
                       value={formData.nationality}
                       label={t('pages.applicationForm.nationality', 'Nationality')}
-                      onChange={(e) =>
-                        handleInputChange('nationality', e.target.value)
-                      }
+                      onChange={(e) => handleInputChange('nationality', e.target.value)}
                     >
                       <MenuItem value="Portuguesa">Portuguesa</MenuItem>
                       <MenuItem value="Outro">Outro</MenuItem>
@@ -151,13 +155,15 @@ const TournamentApplicationForm: React.FC<TournamentApplicationFormProps> = ({
                     <Select
                       value={formData.gender}
                       label={t('pages.applicationForm.gender', 'Gender')}
-                      onChange={(e) =>
-                        handleInputChange('gender', e.target.value)
-                      }
+                      onChange={(e) => handleInputChange('gender', e.target.value)}
                     >
                       <MenuItem value="M">{t('pages.applicationForm.opts.male', 'Male')}</MenuItem>
-                      <MenuItem value="F">{t('pages.applicationForm.opts.female', 'Female')}</MenuItem>
-                      <MenuItem value="Other">{t('pages.applicationForm.opts.other', 'Other')}</MenuItem>
+                      <MenuItem value="F">
+                        {t('pages.applicationForm.opts.female', 'Female')}
+                      </MenuItem>
+                      <MenuItem value="Other">
+                        {t('pages.applicationForm.opts.other', 'Other')}
+                      </MenuItem>
                     </Select>
                   </FormControl>
                 </Box>
@@ -170,14 +176,13 @@ const TournamentApplicationForm: React.FC<TournamentApplicationFormProps> = ({
                     <Select
                       value={formData.division}
                       label={t('pages.applicationForm.division', 'Division')}
-                      onChange={(e) =>
-                        handleInputChange('division', e.target.value)
-                      }
+                      onChange={(e) => handleInputChange('division', e.target.value)}
                     >
                       {divisions
-                        .filter((division, index, self) => 
-                          // Remove duplicates by id
-                          index === self.findIndex((d) => d.id === division.id)
+                        .filter(
+                          (division, index, self) =>
+                            // Remove duplicates by id
+                            index === self.findIndex((d) => d.id === division.id),
                         )
                         .map((division) => (
                           <MenuItem key={division.id} value={division.id}>
@@ -194,9 +199,7 @@ const TournamentApplicationForm: React.FC<TournamentApplicationFormProps> = ({
                     <Select
                       value={formData.category}
                       label={t('pages.applicationForm.category', 'Bow Category')}
-                      onChange={(e) =>
-                        handleInputChange('category', e.target.value)
-                      }
+                      onChange={(e) => handleInputChange('category', e.target.value)}
                     >
                       {categories.map((category) => (
                         <MenuItem key={category.code} value={category.code}>
@@ -220,11 +223,7 @@ const TournamentApplicationForm: React.FC<TournamentApplicationFormProps> = ({
 
               <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end' }}>
                 {onCancel && (
-                  <Button
-                    variant="outlined"
-                    onClick={onCancel}
-                    disabled={loading}
-                  >
+                  <Button variant="outlined" onClick={onCancel} disabled={loading}>
                     {t('common.cancel')}
                   </Button>
                 )}
@@ -234,7 +233,9 @@ const TournamentApplicationForm: React.FC<TournamentApplicationFormProps> = ({
                   disabled={loading}
                   startIcon={loading ? <CircularProgress size={20} /> : null}
                 >
-                  {loading ? t('pages.applicationForm.submitting') : t('pages.applicationForm.submit')}
+                  {loading
+                    ? t('pages.applicationForm.submitting')
+                    : t('pages.applicationForm.submit')}
                 </Button>
               </Box>
             </Box>

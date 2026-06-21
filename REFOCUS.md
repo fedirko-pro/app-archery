@@ -54,19 +54,10 @@ Achievements should derive from existing statistics:
 
 _Reframe, don’t remove._
 
-#### D1. “My season” view
-
-- [ ] Combined timeline: applications status, upcoming events, past results, fees
-- [ ] Replaces scattered Applications + Payments demo + Tournaments list for archers
-
 #### D2. Tournament discovery for archers
 
 - [ ] Dashboard section: “Open for registration” filtered by profile categories
 - [ ] Location-aware filtering (if profile has location)
-
-#### D3. Application flow tied to profile
-
-- [ ] Pre-fill category, division, equipment from profile + equipment sets
 
 #### D4. Post-tournament archer moment
 

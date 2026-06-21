@@ -65,6 +65,7 @@ const UserProfileView: React.FC = () => {
         location: foundUser.location || '',
         picture: foundUser.picture || '',
         categories: Array.isArray(foundUser.categories) ? foundUser.categories : [],
+        divisionId: foundUser.divisionId || '',
       });
     } catch (error) {
       setError('Failed to fetch user data');
@@ -84,6 +85,7 @@ const UserProfileView: React.FC = () => {
         location: user?.location || '',
         picture: user?.picture || '',
         categories: Array.isArray(user?.categories) ? user.categories : [],
+        divisionId: user?.divisionId || '',
       });
     }
     setIsEditing(!isEditing);
@@ -105,10 +107,7 @@ const UserProfileView: React.FC = () => {
     setError(null);
 
     try {
-      const updatedUser = await apiService.adminUpdateUser(
-        user.id,
-        profileData,
-      );
+      const updatedUser = await apiService.adminUpdateUser(user.id, profileData);
       setUser(updatedUser);
       setIsEditing(false);
       showSuccess(t('profile.profileSaved', 'Profile saved successfully!'));
@@ -136,7 +135,16 @@ const UserProfileView: React.FC = () => {
   };
 
   const handleDeleteUser = () => {
-    if (!user || !window.confirm(t('admin.deleteUserConfirm', 'Are you sure you want to delete this user? This cannot be undone.'))) return;
+    if (
+      !user ||
+      !window.confirm(
+        t(
+          'admin.deleteUserConfirm',
+          'Are you sure you want to delete this user? This cannot be undone.',
+        ),
+      )
+    )
+      return;
     apiService
       .deleteUser(user.id)
       .then(() => navigate(`/${lang}/admin/users`))
@@ -167,12 +175,7 @@ const UserProfileView: React.FC = () => {
 
   if (loading) {
     return (
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        minHeight="50vh"
-      >
+      <Box display="flex" justifyContent="center" alignItems="center" minHeight="50vh">
         <CircularProgress />
       </Box>
     );
@@ -204,11 +207,7 @@ const UserProfileView: React.FC = () => {
     <section>
       <div className="container">
         <Box sx={{ mb: 2 }}>
-          <Button
-            startIcon={<ArrowBack />}
-            onClick={handleBack}
-            sx={{ minWidth: 0 }}
-          >
+          <Button startIcon={<ArrowBack />} onClick={handleBack} sx={{ minWidth: 0 }}>
             Back to Admin Panel
           </Button>
         </Box>

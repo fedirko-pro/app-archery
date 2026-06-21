@@ -19,6 +19,8 @@ export interface User {
   clubId?: string;
   club?: { id: string; name: string };
   categories?: string[];
+  divisionId?: string;
+  division?: { id: string; name: string };
   /** Preferred app language (camelCase from API) */
   appLanguage?: AppLanguageCode;
   /** Backend may return snake_case */

@@ -369,6 +369,8 @@
     "federationNumber": "Numero di federazione",
     "categories": "Categorie preferite",
     "selectCategories": "Seleziona categorie preferite",
+    "preferredDivision": "Divisione preferita",
+    "selectDivision": "Seleziona divisione",
     "applicationLanguage": "Lingua dell'applicazione",
     "role": "Ruolo"
   },
@@ -401,6 +403,7 @@
     "gender": "Genere",
     "club": "Club",
     "bowCategories": "Categorie preferite",
+    "preferredDivision": "Divisione preferita",
     "aboutMe": "Su di me",
     "location": "Località",
     "editProfile": "Modifica profilo",

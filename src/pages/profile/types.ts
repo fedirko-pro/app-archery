@@ -10,6 +10,8 @@ export interface ProfileData {
   gender?: string;
   clubId?: string;
   categories?: string[];
+  divisionId?: string;
+  division?: { id: string; name: string };
   role?: string;
   appLanguage?: 'pt' | 'en' | 'it' | 'ua' | 'es';
   syncTrainingsAndEquipment?: boolean;

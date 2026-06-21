@@ -16,7 +16,7 @@ import { useTranslation } from 'react-i18next';
 
 import AvatarUploader from '../../../components/AvatarUploader';
 import apiService from '../../../services/api';
-import type { ClubDto } from '../../../services/types';
+import type { ClubDto, DivisionDto } from '../../../services/types';
 import type { ProfileData } from '../types';
 
 interface ProfileEditFormProps {
@@ -52,6 +52,8 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
   const { t } = useTranslation('common');
   const [categoryOptions, setCategoryOptions] = useState<string[]>([]);
   const [isLoadingCategories, setIsLoadingCategories] = useState<boolean>(false);
+  const [divisions, setDivisions] = useState<DivisionDto[]>([]);
+  const [isLoadingDivisions, setIsLoadingDivisions] = useState<boolean>(false);
   const [clubs, setClubs] = useState<ClubDto[]>([]);
   const [isLoadingClubs, setIsLoadingClubs] = useState<boolean>(false);
 
@@ -86,8 +88,22 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
       }
     };
 
+    const loadDivisions = async () => {
+      setIsLoadingDivisions(true);
+      try {
+        const data = await apiService.getDivisions();
+        const uniqueDivisions = Array.from(new Map(data.map((d) => [d.id, d])).values());
+        setDivisions(uniqueDivisions);
+      } catch (e) {
+        console.error('Failed to load divisions:', e);
+      } finally {
+        setIsLoadingDivisions(false);
+      }
+    };
+
     loadCategories();
     loadClubs();
+    loadDivisions();
   }, []);
 
   return (
@@ -284,6 +300,26 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
           )}
           filterSelectedOptions
         />
+
+        <TextField
+          select
+          label={t('forms.preferredDivision', 'Preferred division')}
+          name="divisionId"
+          value={profileData.divisionId || ''}
+          onChange={onChange}
+          fullWidth
+          margin="normal"
+          disabled={isLoadingDivisions}
+        >
+          <MenuItem value="">
+            <em>{t('forms.selectDivision', 'Select division')}</em>
+          </MenuItem>
+          {divisions.map((division) => (
+            <MenuItem key={division.id} value={division.id}>
+              {division.name}
+            </MenuItem>
+          ))}
+        </TextField>
 
         {!isAdminView && (
           <>

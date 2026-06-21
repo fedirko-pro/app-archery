@@ -390,6 +390,8 @@
     "federationNumber": "Номер федерації",
     "categories": "Улюблені категорії",
     "selectCategories": "Оберіть улюблені категорії",
+    "preferredDivision": "Улюблений дивізіон",
+    "selectDivision": "Оберіть дивізіон",
     "applicationLanguage": "Мова застосунку",
     "role": "Роль"
   },
@@ -429,6 +431,7 @@
     "gender": "Стать",
     "club": "Клуб",
     "bowCategories": "Улюблені категорії",
+    "preferredDivision": "Улюблений дивізіон",
     "aboutMe": "Про мене",
     "location": "Локація",
     "editProfile": "Редагувати профіль",

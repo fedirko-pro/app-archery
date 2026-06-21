@@ -189,6 +189,10 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                     }
                   />
                   <TableInfoRow
+                    label={t('profile.preferredDivision', 'Preferred division')}
+                    value={user.division?.name || profileData.divisionId}
+                  />
+                  <TableInfoRow
                     label={t('profile.aboutMe', 'About Me')}
                     value={(profileData.bio || user.bio) as string}
                   />
