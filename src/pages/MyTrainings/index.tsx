@@ -8,6 +8,7 @@ import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
+import Chip from '@mui/material/Chip';
 import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
@@ -20,6 +21,7 @@ import { useLocalData, type LocalTrainingSession } from '../../contexts/local-da
 import { getEquipmentSetName, isBowSetupPromptDismissed } from '../../utils/equipment-utils';
 import { getSessionCardTint } from '../../utils/session-card-tints';
 import { getLastLoggedSession, toSessionFormDefaults } from '../../utils/training-stats';
+import { TRAINING_TEMPLATES, type TrainingTemplate } from '../../utils/training-templates';
 import TrainingSessionDialog from './TrainingSessionDialog';
 
 const MyTrainingsPage: React.FC = () => {
@@ -41,6 +43,9 @@ const MyTrainingsPage: React.FC = () => {
   const [editTarget, setEditTarget] = useState<LocalTrainingSession | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [deleteError, setDeleteError] = useState<string | null>(null);
+  const [templateDefaults, setTemplateDefaults] = useState<Partial<LocalTrainingSession> | null>(
+    null,
+  );
 
   const lastLogged = useMemo(() => getLastLoggedSession(trainingSessions), [trainingSessions]);
   const addDefaults = useMemo(
@@ -55,6 +60,18 @@ const MyTrainingsPage: React.FC = () => {
 
   const handleOpenAdd = () => {
     setEditTarget(null);
+    setTemplateDefaults(null);
+    setFormKey((k) => k + 1);
+    setFormOpen(true);
+  };
+
+  const handleOpenWithTemplate = (template: TrainingTemplate) => {
+    setEditTarget(null);
+    const defaults = { ...template.defaults };
+    if (defaultEquipmentSetId && !defaults.equipmentSetId) {
+      defaults.equipmentSetId = defaultEquipmentSetId;
+    }
+    setTemplateDefaults(defaults);
     setFormKey((k) => k + 1);
     setFormOpen(true);
   };
@@ -89,6 +106,7 @@ const MyTrainingsPage: React.FC = () => {
   const handleClose = () => {
     setFormOpen(false);
     setEditTarget(null);
+    setTemplateDefaults(null);
   };
 
   const handleSubmit = async (
@@ -162,7 +180,7 @@ const MyTrainingsPage: React.FC = () => {
           severity="info"
           sx={{ mb: 2 }}
           action={
-            <Button color="inherit" size="small" onClick={handleOpenAdd}>
+            <Button variant="contained" size="small" onClick={handleOpenAdd}>
               {t('dashboard.bowSetupPrompt.logSession')}
             </Button>
           }
@@ -178,9 +196,43 @@ const MyTrainingsPage: React.FC = () => {
       )}
 
       {sorted.length === 0 ? (
-        <Typography color="text.secondary" sx={{ textAlign: 'center', mt: 4 }}>
-          {t('trainings.empty')}
-        </Typography>
+        <Card variant="outlined">
+          <CardContent>
+            <Box sx={{ textAlign: 'center', py: 1 }}>
+              <Typography color="text.secondary" gutterBottom>
+                {t('trainings.emptyState.intro')}
+              </Typography>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  gap: 1,
+                  justifyContent: 'center',
+                  my: 2,
+                }}
+              >
+                {TRAINING_TEMPLATES.map((template) => (
+                  <Chip
+                    key={template.id}
+                    label={t(template.labelKey)}
+                    clickable
+                    color="primary"
+                    variant="outlined"
+                    onClick={() => handleOpenWithTemplate(template)}
+                  />
+                ))}
+              </Box>
+              <Button
+                variant="contained"
+                size="small"
+                startIcon={<AddIcon />}
+                onClick={handleOpenAdd}
+              >
+                {t('trainings.emptyState.orBlank')}
+              </Button>
+            </Box>
+          </CardContent>
+        </Card>
       ) : (
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           {sorted.map((session, index) => {
@@ -277,7 +329,7 @@ const MyTrainingsPage: React.FC = () => {
         open={formOpen}
         onClose={handleClose}
         title={editTarget ? t('trainings.session') : t('trainings.add')}
-        initial={editTarget ?? addDefaults}
+        initial={editTarget ?? templateDefaults ?? addDefaults}
         useDefaultEquipment={!editTarget}
         formKey={formKey}
         onSubmit={handleSubmit}

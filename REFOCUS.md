@@ -52,19 +52,6 @@ Achievements should derive from existing statistics:
 
 ### Phase C — Onboarding & Retention
 
-#### C2. Sync story made explicit
-
-- [ ] Signup flow: explain sync across devices
-- [ ] Consider default sync **on** for new users (with privacy note)
-- [ ] Move sync toggle out of buried profile edit — surface on dashboard or onboarding
-- [ ] Always show sync chip when pending/error (extend `LocalDataBanner` / `LocalSyncChip`)
-
-#### C3. Empty states as guides
-
-- [ ] Trainings empty: suggest template (“18m indoor, 60 arrows”)
-- [ ] Statistics empty: ghost charts with explanatory copy
-- [ ] Equipment empty: link from training form
-
 #### C4. Re-engagement (later)
 
 - [ ] Streak-at-risk messaging on dashboard

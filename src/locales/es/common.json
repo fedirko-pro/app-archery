@@ -487,7 +487,23 @@
     "deleteQ": "¿Eliminar entrenamiento?",
     "deleteHint": "Todos los resultados de este entrenamiento serán eliminados",
     "add": "Agregar entrenamiento",
-    "moreDetails": "Más detalles"
+    "moreDetails": "Más detalles",
+    "emptyState": {
+      "intro": "Empieza con una sesión habitual o añade la tuya.",
+      "orBlank": "O añadir sesión en blanco",
+      "templates": {
+        "indoor18m": "18m indoor · 60 flechas",
+        "outdoor70m": "70m outdoor · 72 flechas",
+        "quickLog": "Registro rápido"
+      }
+    },
+    "equipment": {
+      "optionalHint": "Aún no hay configuración de arco (opcional — puedes añadirla después al editar)",
+      "createSetup": "Crear configuración",
+      "addFullDetails": "Añadir detalles completos",
+      "goToEquipment": "Mi equipo",
+      "unspecified": "No especificado"
+    }
   },
   "units": {
     "inch": "Pulgada",
@@ -591,7 +607,13 @@
     "sessionsByMonth": "Sesiones por mes",
     "arrows": "flechas",
     "sessions": "sesiones",
-    "loadError": "Error al cargar las estadísticas"
+    "loadError": "Error al cargar las estadísticas",
+    "emptyState": {
+      "chartsIntro": "Registra sesiones de entrenamiento para desbloquear tus tendencias mensuales.",
+      "ghostTitle": "Tus gráficos aparecerán aquí",
+      "ghostSubtitle": "Sigue flechas y sesiones a lo largo del tiempo cuando empieces a registrar.",
+      "logSession": "Registrar sesión"
+    }
   },
   "dashboard": {
     "title": "Inicio",

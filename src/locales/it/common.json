@@ -448,10 +448,20 @@
     "deleteHint": "Tutti i risultati di questo allenamento verranno eliminati",
     "add": "Aggiungi allenamento",
     "moreDetails": "Altri dettagli",
+    "emptyState": {
+      "intro": "Inizia con una sessione comune o aggiungi la tua.",
+      "orBlank": "O aggiungi sessione vuota",
+      "templates": {
+        "indoor18m": "18m indoor · 60 frecce",
+        "outdoor70m": "70m outdoor · 72 frecce",
+        "quickLog": "Registro rapido"
+      }
+    },
     "equipment": {
       "optionalHint": "Nessuna configurazione arco (opzionale — puoi aggiungerla in seguito modificando)",
       "createSetup": "Crea configurazione",
       "addFullDetails": "Aggiungi dettagli completi",
+      "goToEquipment": "La mia attrezzatura",
       "unspecified": "Non specificato"
     }
   },
@@ -606,7 +616,13 @@
     "sessionsByMonth": "Sessioni per mese",
     "arrows": "frecce",
     "sessions": "sessioni",
-    "loadError": "Impossibile caricare le statistiche"
+    "loadError": "Impossibile caricare le statistiche",
+    "emptyState": {
+      "chartsIntro": "Registra sessioni di allenamento per sbloccare le tendenze mensili.",
+      "ghostTitle": "I tuoi grafici appariranno qui",
+      "ghostSubtitle": "Monitora frecce e sessioni nel tempo quando inizi a registrare.",
+      "logSession": "Registra sessione"
+    }
   },
   "dashboard": {
     "title": "Home",

@@ -1,3 +1,4 @@
+import AddIcon from '@mui/icons-material/Add';
 import EmojiEventsOutlinedIcon from '@mui/icons-material/EmojiEventsOutlined';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
@@ -31,38 +32,109 @@ const formatMonthTick = (month: string): string => {
 
 const fmt = (n: number): string => n.toLocaleString();
 
+function buildGhostMonthlyPoints(counts: number[]): MonthlyDataPoint[] {
+  const now = new Date();
+  return counts.map((count, i) => {
+    const d = new Date(now.getFullYear(), now.getMonth() - (11 - i), 1);
+    const m = `${d.getFullYear()}-${(d.getMonth() + 1).toString().padStart(2, '0')}`;
+    return { month: m, count };
+  });
+}
+
+const GHOST_SHOTS_COUNTS = [120, 180, 150, 200, 160, 190, 210, 175, 165, 185, 195, 170];
+const GHOST_SESSIONS_COUNTS = [4, 6, 5, 7, 5, 6, 8, 5, 5, 6, 7, 5];
+
 interface ChartCardProps {
   title: string;
   data: MonthlyDataPoint[];
   color: string;
   dataLabel: string;
+  ghost?: boolean;
+  ghostTitle?: string;
+  ghostSubtitle?: string;
+  ghostCtaLabel?: string;
+  onGhostCta?: () => void;
 }
 
-const ChartCard: React.FC<ChartCardProps> = ({ title, data, color, dataLabel }) => (
-  <Card variant="outlined">
-    <CardContent>
+const ChartCard: React.FC<ChartCardProps> = ({
+  title,
+  data,
+  color,
+  dataLabel,
+  ghost = false,
+  ghostTitle,
+  ghostSubtitle,
+  ghostCtaLabel,
+  onGhostCta,
+}) => (
+  <Card variant="outlined" sx={{ mb: 2 }}>
+    <CardContent sx={{ position: 'relative' }}>
       <Typography variant="subtitle1" fontWeight={600} gutterBottom>
         {title}
       </Typography>
-      <ResponsiveContainer width="100%" height={220}>
-        <BarChart data={data} margin={{ top: 4, right: 8, left: -16, bottom: 0 }}>
-          <CartesianGrid strokeDasharray="3 3" vertical={false} />
-          <XAxis
-            dataKey="month"
-            tickFormatter={formatMonthTick}
-            tick={{ fontSize: 11 }}
-            tickLine={false}
-            axisLine={false}
-          />
-          <YAxis tick={{ fontSize: 11 }} tickLine={false} axisLine={false} allowDecimals={false} />
-          <Tooltip
-            formatter={(value) => [fmt(Number(value ?? 0)), dataLabel]}
-            labelFormatter={(label) => formatMonthTick(String(label))}
-            cursor={{ fill: alpha('#000000', 0.04) }}
-          />
-          <Bar dataKey="count" fill={color} radius={[4, 4, 0, 0]} maxBarSize={40} />
-        </BarChart>
-      </ResponsiveContainer>
+      <Box sx={{ position: 'relative', pointerEvents: ghost ? 'none' : 'auto' }}>
+        <ResponsiveContainer width="100%" height={220}>
+          <BarChart data={data} margin={{ top: 4, right: 8, left: -16, bottom: 0 }}>
+            <CartesianGrid strokeDasharray="3 3" vertical={false} />
+            <XAxis
+              dataKey="month"
+              tickFormatter={formatMonthTick}
+              tick={{ fontSize: 11 }}
+              tickLine={false}
+              axisLine={false}
+            />
+            <YAxis
+              tick={{ fontSize: 11 }}
+              tickLine={false}
+              axisLine={false}
+              allowDecimals={false}
+            />
+            {!ghost && (
+              <Tooltip
+                formatter={(value) => [fmt(Number(value ?? 0)), dataLabel]}
+                labelFormatter={(label) => formatMonthTick(String(label))}
+                cursor={{ fill: alpha('#000000', 0.04) }}
+              />
+            )}
+            <Bar
+              dataKey="count"
+              fill={ghost ? alpha(color, 0.2) : color}
+              radius={[4, 4, 0, 0]}
+              maxBarSize={40}
+              isAnimationActive={!ghost}
+            />
+          </BarChart>
+        </ResponsiveContainer>
+        {ghost && ghostTitle && (
+          <Box
+            sx={{
+              position: 'absolute',
+              inset: 0,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              textAlign: 'center',
+              px: 2,
+              pointerEvents: 'auto',
+            }}
+          >
+            <Typography variant="subtitle2" fontWeight={600} gutterBottom>
+              {ghostTitle}
+            </Typography>
+            {ghostSubtitle && (
+              <Typography variant="body2" color="text.secondary" sx={{ mb: 1.5, maxWidth: 280 }}>
+                {ghostSubtitle}
+              </Typography>
+            )}
+            {ghostCtaLabel && onGhostCta && (
+              <Button variant="outlined" size="small" startIcon={<AddIcon />} onClick={onGhostCta}>
+                {ghostCtaLabel}
+              </Button>
+            )}
+          </Box>
+        )}
+      </Box>
     </CardContent>
   </Card>
 );
@@ -96,6 +168,12 @@ const MyStatisticsPage: React.FC = () => {
   );
 
   const hasNamedEquipmentStats = stats.byEquipment.some((e) => e.equipmentSetId !== null);
+  const hasTrainingData = trainingSessions.length > 0;
+
+  const ghostShotsByMonth = useMemo(() => buildGhostMonthlyPoints(GHOST_SHOTS_COUNTS), []);
+  const ghostSessionsByMonth = useMemo(() => buildGhostMonthlyPoints(GHOST_SESSIONS_COUNTS), []);
+
+  const handleLogSession = () => navigate(`/${lang}/trainings?add=1`);
 
   // Tournament applications — server-only, fetched once per login session
   useEffect(() => {
@@ -321,20 +399,36 @@ const MyStatisticsPage: React.FC = () => {
       )}
 
       {/* Charts */}
+      {!hasTrainingData && (
+        <Typography variant="body2" color="text.secondary" sx={{ mt: 3, mb: 1 }}>
+          {t('statistics.emptyState.chartsIntro')}
+        </Typography>
+      )}
+
       <SectionTitle>{t('statistics.shotsByMonth')}</SectionTitle>
       <ChartCard
         title={t('statistics.shotsByMonth')}
-        data={stats.shotsByMonth}
+        data={hasTrainingData ? stats.shotsByMonth : ghostShotsByMonth}
         color={theme.palette.primary.main}
         dataLabel={t('statistics.arrows')}
+        ghost={!hasTrainingData}
+        ghostTitle={t('statistics.emptyState.ghostTitle')}
+        ghostSubtitle={t('statistics.emptyState.ghostSubtitle')}
+        ghostCtaLabel={t('statistics.emptyState.logSession')}
+        onGhostCta={handleLogSession}
       />
 
       <SectionTitle>{t('statistics.sessionsByMonth')}</SectionTitle>
       <ChartCard
         title={t('statistics.sessionsByMonth')}
-        data={stats.sessionsByMonth}
+        data={hasTrainingData ? stats.sessionsByMonth : ghostSessionsByMonth}
         color={theme.palette.success.main}
         dataLabel={t('statistics.sessions')}
+        ghost={!hasTrainingData}
+        ghostTitle={t('statistics.emptyState.ghostTitle')}
+        ghostSubtitle={t('statistics.emptyState.ghostSubtitle')}
+        ghostCtaLabel={t('statistics.emptyState.logSession')}
+        onGhostCta={handleLogSession}
       />
     </Box>
   );

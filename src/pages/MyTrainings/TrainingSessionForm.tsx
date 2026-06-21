@@ -12,6 +12,7 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link, useParams } from 'react-router-dom';
 
 import { useLocalData } from '../../contexts/local-data-context';
 import type { LocalTrainingSession, CustomField } from '../../utils/local-data-storage';
@@ -41,6 +42,7 @@ const TrainingSessionForm: React.FC<TrainingSessionFormProps> = ({
   submitting = false,
 }) => {
   const { t } = useTranslation('common');
+  const { lang } = useParams();
   const { equipmentSets, defaultEquipmentSetId } = useLocalData();
 
   const today = new Date().toISOString().slice(0, 10);
@@ -163,9 +165,19 @@ const TrainingSessionForm: React.FC<TrainingSessionFormProps> = ({
             {t('trainings.equipment.optionalHint')}
           </Typography>
           {!showMiniForm ? (
-            <Button variant="outlined" size="small" onClick={() => setShowMiniForm(true)}>
-              {t('trainings.equipment.createSetup')}
-            </Button>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, alignItems: 'center' }}>
+              <Button variant="outlined" size="small" onClick={() => setShowMiniForm(true)}>
+                {t('trainings.equipment.createSetup')}
+              </Button>
+              <Button
+                component={Link}
+                to={`/${lang}/equipment`}
+                size="small"
+                sx={{ textTransform: 'none' }}
+              >
+                {t('trainings.equipment.goToEquipment')}
+              </Button>
+            </Box>
           ) : (
             <EquipmentSetMiniForm
               onCreated={(set) => {

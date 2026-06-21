@@ -396,6 +396,15 @@
     "deleteHint": "All results for this training will be deleted",
     "add": "Add training",
     "empty": "No training sessions yet. Add your first one!",
+    "emptyState": {
+      "intro": "Start with a common session or add your own.",
+      "orBlank": "Or add a blank session",
+      "templates": {
+        "indoor18m": "18m indoor · 60 arrows",
+        "outdoor70m": "70m outdoor · 72 arrows",
+        "quickLog": "Quick log"
+      }
+    },
     "session": "Training session",
     "date": "Date",
     "shotsCount": "Number of shots",
@@ -418,12 +427,17 @@
       "optionalHint": "No bow setup yet (optional — you can add one later when editing)",
       "createSetup": "Create setup",
       "addFullDetails": "Add full details",
+      "goToEquipment": "My Equipment",
       "unspecified": "Unspecified"
     }
   },
   "equipment": {
     "title": "My Equipment",
     "empty": "No equipment sets yet. Add your first bow/crossbow set!",
+    "emptyState": {
+      "intro": "Track bow specs and arrows to compare performance in statistics.",
+      "logSessionLink": "Or add a quick setup while logging a session"
+    },
     "addSet": "Add set",
     "editSet": "Edit set",
     "setName": "Set name",
@@ -730,7 +744,13 @@
     "sessionsByMonth": "Sessions by month",
     "arrows": "arrows",
     "sessions": "sessions",
-    "loadError": "Failed to load statistics"
+    "loadError": "Failed to load statistics",
+    "emptyState": {
+      "chartsIntro": "Log training sessions to unlock your monthly trends.",
+      "ghostTitle": "Your charts will appear here",
+      "ghostSubtitle": "Track arrows and sessions over time once you start logging.",
+      "logSession": "Log a session"
+    }
   },
   "dashboard": {
     "title": "Home",

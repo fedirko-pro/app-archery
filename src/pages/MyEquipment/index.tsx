@@ -18,6 +18,7 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link, useParams } from 'react-router-dom';
 
 import LocalDataBanner from '../../components/LocalDataBanner/LocalDataBanner';
 import LocalSyncChip from '../../components/LocalSyncChip/LocalSyncChip';
@@ -29,6 +30,7 @@ const withUnit = (val: string, unit: string) => (isNumericOnly(val) ? `${val} ${
 
 const MyEquipmentPage: React.FC = () => {
   const { t } = useTranslation('common');
+  const { lang } = useParams();
   const {
     equipmentSets,
     addEquipmentSet,
@@ -110,9 +112,34 @@ const MyEquipmentPage: React.FC = () => {
       )}
 
       {equipmentSets.length === 0 ? (
-        <Typography color="text.secondary" sx={{ textAlign: 'center', mt: 4 }}>
-          {t('equipment.empty')}
-        </Typography>
+        <Card variant="outlined">
+          <CardContent>
+            <Box sx={{ textAlign: 'center', py: 1 }}>
+              <Typography color="text.secondary" gutterBottom>
+                {t('equipment.emptyState.intro')}
+              </Typography>
+              <Button
+                variant="contained"
+                size="small"
+                startIcon={<AddIcon />}
+                onClick={handleOpenAdd}
+                sx={{ mt: 1, mb: 2 }}
+              >
+                {t('equipment.addSet')}
+              </Button>
+              <Typography variant="body2" color="text.secondary">
+                <Button
+                  component={Link}
+                  to={`/${lang}/trainings?add=1`}
+                  size="small"
+                  sx={{ textTransform: 'none', p: 0, minWidth: 0, verticalAlign: 'baseline' }}
+                >
+                  {t('equipment.emptyState.logSessionLink')}
+                </Button>
+              </Typography>
+            </Box>
+          </CardContent>
+        </Card>
       ) : (
         <Box
           sx={{
