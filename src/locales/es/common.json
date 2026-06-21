@@ -628,7 +628,27 @@
     "upcomingTournaments": "Próximos torneos",
     "viewAllApplications": "Ver todas las solicitudes",
     "viewAllTrainings": "Ver todos los entrenamientos",
-    "viewStatistics": "Ver estadísticas completas"
+    "viewStatistics": "Ver estadísticas completas",
+    "bowSetupPrompt": {
+      "title": "Añade tu configuración de arco",
+      "subtitle": "Vincular sesiones a tu equipo ayuda a seguir el rendimiento. Puedes añadir una configuración en cualquier momento — incluso al editar una sesión.",
+      "logSession": "Registrar sesión",
+      "dismiss": "Recordarme mañana"
+    },
+    "streakAtRisk": {
+      "title": "Mantén tu racha de {{count}} semanas",
+      "subtitle": "Registra una sesión esta semana antes de que termine.",
+      "logSession": "Registrar sesión de hoy",
+      "dismiss": "Recordarme mañana",
+      "statSubtitle": "en riesgo"
+    },
+    "monthlySummary": {
+      "title": "Tu {{month}} en resumen",
+      "sessions": "{{count}} sesiones",
+      "arrows": "{{count}} flechas",
+      "viewStatistics": "Ver estadísticas completas",
+      "dismiss": "Entendido"
+    }
   },
   "onboarding": {
     "title": "Bienvenido a Sokil",

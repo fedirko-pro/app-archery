@@ -50,15 +50,6 @@ Achievements should derive from existing statistics:
 
 ---
 
-### Phase C — Onboarding & Retention
-
-#### C4. Re-engagement (later)
-
-- [ ] Streak-at-risk messaging on dashboard
-- [ ] Monthly summary (PWA push when notifications added)
-
----
-
 ### Phase D — Tournaments from the Archer’s Lens
 
 _Reframe, don’t remove._

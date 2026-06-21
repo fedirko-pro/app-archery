@@ -1,6 +1,8 @@
 import AddIcon from '@mui/icons-material/Add';
 import ArchitectureOutlinedIcon from '@mui/icons-material/ArchitectureOutlined';
+import BarChartOutlinedIcon from '@mui/icons-material/BarChartOutlined';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import LocalFireDepartmentOutlinedIcon from '@mui/icons-material/LocalFireDepartmentOutlined';
 import TrackChangesIcon from '@mui/icons-material/TrackChanges';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
@@ -10,7 +12,7 @@ import CardContent from '@mui/material/CardContent';
 import CircularProgress from '@mui/material/CircularProgress';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import { useTheme } from '@mui/material/styles';
+import { alpha, useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { format, isBefore, parseISO, startOfDay } from 'date-fns';
 import React, { useEffect, useMemo, useState } from 'react';
@@ -29,11 +31,21 @@ import {
   getEquipmentSetName,
   isBowSetupPromptDismissed,
 } from '../../utils/equipment-utils';
+import {
+  dismissMonthlySummary,
+  dismissStreakAtRisk,
+  isMonthlySummaryDismissed,
+  isMonthlySummaryWindow,
+  isStreakAtRiskDismissed,
+} from '../../utils/re-engagement-utils';
 import { getSessionCardTint } from '../../utils/session-card-tints';
 import {
+  buildWeekSetFromSessions,
   computeLocalStats,
+  computePriorMonthSummary,
   getLastLoggedSession,
   getRecentTrainingSessions,
+  getStreakAtRiskState,
   toSessionFormDefaults,
 } from '../../utils/training-stats';
 import TrainingSessionDialog from '../MyTrainings/TrainingSessionDialog';
@@ -63,6 +75,8 @@ const HomePage: React.FC = () => {
   const [appsLoading, setAppsLoading] = useState(false);
   const [appsError, setAppsError] = useState<string | null>(null);
   const [bowPromptDismissTick, setBowPromptDismissTick] = useState(0);
+  const [streakDismissTick, setStreakDismissTick] = useState(0);
+  const [monthlySummaryDismissTick, setMonthlySummaryDismissTick] = useState(0);
 
   const showBowSetupPrompt = useMemo(
     () =>
@@ -74,6 +88,30 @@ const HomePage: React.FC = () => {
     () => computeLocalStats(trainingSessions, equipmentSets),
     [trainingSessions, equipmentSets],
   );
+  const streakAtRisk = useMemo(
+    () => getStreakAtRiskState(buildWeekSetFromSessions(trainingSessions)),
+    [trainingSessions],
+  );
+  const priorMonthSummary = useMemo(
+    () => computePriorMonthSummary(trainingSessions),
+    [trainingSessions],
+  );
+  const showStreakAtRisk = useMemo(
+    () => streakAtRisk.isAtRisk && !isStreakAtRiskDismissed() && !showBowSetupPrompt,
+    [streakAtRisk, showBowSetupPrompt, streakDismissTick],
+  );
+  const showMonthlySummary = useMemo(
+    () =>
+      isMonthlySummaryWindow() &&
+      priorMonthSummary !== null &&
+      !isMonthlySummaryDismissed(priorMonthSummary.monthKey),
+    [priorMonthSummary, monthlySummaryDismissTick],
+  );
+  const priorMonthLabel = useMemo(() => {
+    if (!priorMonthSummary) return '';
+    const [year, month] = priorMonthSummary.monthKey.split('-').map(Number);
+    return format(new Date(year, month - 1, 1), 'MMMM yyyy');
+  }, [priorMonthSummary]);
   const recentSessions = useMemo(
     () => getRecentTrainingSessions(trainingSessions, 3),
     [trainingSessions],
@@ -156,6 +194,16 @@ const HomePage: React.FC = () => {
     setBowPromptDismissTick((t) => t + 1);
   };
 
+  const handleDismissStreakAtRisk = () => {
+    dismissStreakAtRisk();
+    setStreakDismissTick((t) => t + 1);
+  };
+
+  const handleDismissMonthlySummary = () => {
+    if (priorMonthSummary) dismissMonthlySummary(priorMonthSummary.monthKey);
+    setMonthlySummaryDismissTick((t) => t + 1);
+  };
+
   const fmt = (n: number): string => n.toLocaleString();
 
   return (
@@ -202,6 +250,47 @@ const HomePage: React.FC = () => {
         </Paper>
       )}
 
+      {showStreakAtRisk && (
+        <Paper
+          elevation={0}
+          sx={{
+            p: 3,
+            mt: 2,
+            mb: 1,
+            border: `1px solid ${theme.palette.warning.light}`,
+            borderRadius: 2,
+            bgcolor:
+              theme.palette.mode === 'dark'
+                ? 'warning.dark'
+                : alpha(theme.palette.warning.main, 0.08),
+            display: 'flex',
+            flexDirection: { xs: 'column', sm: 'row' },
+            alignItems: { xs: 'flex-start', sm: 'center' },
+            gap: 2,
+          }}
+        >
+          <LocalFireDepartmentOutlinedIcon
+            sx={{ fontSize: 40, color: 'warning.main', flexShrink: 0 }}
+          />
+          <Box sx={{ flex: 1 }}>
+            <Typography variant="subtitle1" fontWeight={700}>
+              {t('dashboard.streakAtRisk.title', { count: streakAtRisk.priorStreakWeeks })}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              {t('dashboard.streakAtRisk.subtitle')}
+            </Typography>
+          </Box>
+          <Box sx={{ display: 'flex', gap: 1, flexShrink: 0 }}>
+            <Button variant="contained" color="warning" size="small" onClick={handleOpenAdd}>
+              {t('dashboard.streakAtRisk.logSession')}
+            </Button>
+            <Button variant="text" size="small" onClick={handleDismissStreakAtRisk}>
+              {t('dashboard.streakAtRisk.dismiss')}
+            </Button>
+          </Box>
+        </Paper>
+      )}
+
       <Grid container spacing={2} sx={{ mt: 1 }}>
         <Grid size={{ xs: 6, sm: 4 }}>
           <StatCard label={t('dashboard.thisWeekArrows')} value={fmt(stats.shots.thisWeek)} />
@@ -209,8 +298,15 @@ const HomePage: React.FC = () => {
         <Grid size={{ xs: 6, sm: 4 }}>
           <StatCard
             label={t('dashboard.currentStreak')}
-            value={fmt(stats.currentStreakWeeks)}
-            subtitle={t('statistics.weeks')}
+            value={fmt(
+              streakAtRisk.isAtRisk ? streakAtRisk.priorStreakWeeks : stats.currentStreakWeeks,
+            )}
+            subtitle={
+              streakAtRisk.isAtRisk
+                ? t('dashboard.streakAtRisk.statSubtitle')
+                : t('statistics.weeks')
+            }
+            valueColor={streakAtRisk.isAtRisk ? 'warning.main' : undefined}
           />
         </Grid>
         <Grid size={{ xs: 12, sm: 4 }}>
@@ -223,6 +319,42 @@ const HomePage: React.FC = () => {
           </Card>
         </Grid>
       </Grid>
+
+      {showMonthlySummary && priorMonthSummary && (
+        <Paper
+          elevation={0}
+          sx={{
+            p: 3,
+            mt: 2,
+            border: `1px solid ${theme.palette.divider}`,
+            borderRadius: 2,
+            display: 'flex',
+            flexDirection: { xs: 'column', sm: 'row' },
+            alignItems: { xs: 'flex-start', sm: 'center' },
+            gap: 2,
+          }}
+        >
+          <BarChartOutlinedIcon sx={{ fontSize: 40, color: 'primary.main', flexShrink: 0 }} />
+          <Box sx={{ flex: 1 }}>
+            <Typography variant="subtitle1" fontWeight={700}>
+              {t('dashboard.monthlySummary.title', { month: priorMonthLabel })}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              {t('dashboard.monthlySummary.sessions', { count: priorMonthSummary.sessions })}
+              {' · '}
+              {t('dashboard.monthlySummary.arrows', { count: priorMonthSummary.shots })}
+            </Typography>
+          </Box>
+          <Box sx={{ display: 'flex', gap: 1, flexShrink: 0 }}>
+            <Button component={Link} to={`/${lang}/statistics`} variant="contained" size="small">
+              {t('dashboard.monthlySummary.viewStatistics')}
+            </Button>
+            <Button variant="text" size="small" onClick={handleDismissMonthlySummary}>
+              {t('dashboard.monthlySummary.dismiss')}
+            </Button>
+          </Box>
+        </Paper>
+      )}
 
       <Box
         sx={{

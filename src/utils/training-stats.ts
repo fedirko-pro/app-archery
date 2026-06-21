@@ -91,14 +91,81 @@ function accumulateSession(acc: PeriodAccumulator, s: LocalTrainingSession): voi
     acc.targetTypeCount[s.targetType] = (acc.targetTypeCount[s.targetType] ?? 0) + 1;
 }
 
-export function computeStreak(weekSet: Set<string>): number {
+export function computeStreak(weekSet: Set<string>, referenceDate: Date = new Date()): number {
+  return computeStreakAsOf(weekSet, referenceDate);
+}
+
+export function buildWeekSetFromSessions(sessions: LocalTrainingSession[]): Set<string> {
+  const weekSet = new Set<string>();
+  for (const s of sessions) {
+    weekSet.add(getIsoWeekString(new Date(`${s.date}T00:00:00`)));
+  }
+  return weekSet;
+}
+
+export function hasSessionInIsoWeek(weekSet: Set<string>, date: Date): boolean {
+  return weekSet.has(getIsoWeekString(date));
+}
+
+export function computeStreakAsOf(weekSet: Set<string>, date: Date): number {
   let streak = 0;
-  const cursor = new Date();
+  const cursor = new Date(date);
   while (weekSet.has(getIsoWeekString(cursor))) {
     streak++;
     cursor.setDate(cursor.getDate() - 7);
   }
   return streak;
+}
+
+export interface StreakAtRiskState {
+  isAtRisk: boolean;
+  priorStreakWeeks: number;
+}
+
+export function getStreakAtRiskState(
+  weekSet: Set<string>,
+  referenceDate: Date = new Date(),
+): StreakAtRiskState {
+  const hasThisWeek = hasSessionInIsoWeek(weekSet, referenceDate);
+  const lastWeek = new Date(referenceDate);
+  lastWeek.setDate(lastWeek.getDate() - 7);
+  const priorStreakWeeks = computeStreakAsOf(weekSet, lastWeek);
+  return {
+    isAtRisk: !hasThisWeek && priorStreakWeeks >= 1,
+    priorStreakWeeks,
+  };
+}
+
+/** Prior calendar month stats. Shape matches a future push notification payload. */
+export interface PriorMonthSummary {
+  monthKey: string;
+  sessions: number;
+  shots: number;
+  mostUsedDistance: string | null;
+}
+
+export function computePriorMonthSummary(
+  sessions: LocalTrainingSession[],
+  referenceDate: Date = new Date(),
+): PriorMonthSummary | null {
+  const priorMonth = new Date(referenceDate.getFullYear(), referenceDate.getMonth() - 1, 1);
+  const monthKey = `${priorMonth.getFullYear()}-${(priorMonth.getMonth() + 1).toString().padStart(2, '0')}`;
+  const monthSessions = sessions.filter((s) => s.date.slice(0, 7) === monthKey);
+  if (monthSessions.length === 0) return null;
+
+  let shots = 0;
+  const distanceCount: Record<string, number> = {};
+  for (const s of monthSessions) {
+    shots += s.shotsCount ?? 0;
+    if (s.distance) distanceCount[s.distance] = (distanceCount[s.distance] ?? 0) + 1;
+  }
+
+  return {
+    monthKey,
+    sessions: monthSessions.length,
+    shots,
+    mostUsedDistance: getMostFrequent(distanceCount),
+  };
 }
 
 function buildMonthlyPoints(

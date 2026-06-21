@@ -658,6 +658,20 @@
       "subtitle": "Associar sessões ao equipamento ajuda a acompanhar o desempenho. Pode adicionar uma configuração a qualquer momento — inclusive ao editar uma sessão.",
       "logSession": "Registar sessão",
       "dismiss": "Lembrar amanhã"
+    },
+    "streakAtRisk": {
+      "title": "Mantenha a sequência de {{count}} semanas",
+      "subtitle": "Registe uma sessão esta semana antes que a semana termine.",
+      "logSession": "Registar sessão de hoje",
+      "dismiss": "Lembrar amanhã",
+      "statSubtitle": "em risco"
+    },
+    "monthlySummary": {
+      "title": "O seu {{month}} em resumo",
+      "sessions": "{{count}} sessões",
+      "arrows": "{{count}} flechas",
+      "viewStatistics": "Ver estatísticas completas",
+      "dismiss": "Entendido"
     }
   },
   "onboarding": {

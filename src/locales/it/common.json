@@ -643,6 +643,20 @@
       "subtitle": "Collegare le sessioni all'attrezzatura aiuta a monitorare le prestazioni. Puoi aggiungere una configurazione in qualsiasi momento — anche modificando una sessione.",
       "logSession": "Registra sessione",
       "dismiss": "Ricordamelo domani"
+    },
+    "streakAtRisk": {
+      "title": "Mantieni la serie di {{count}} settimane",
+      "subtitle": "Registra una sessione questa settimana prima che finisca.",
+      "logSession": "Registra la sessione di oggi",
+      "dismiss": "Ricordamelo domani",
+      "statSubtitle": "a rischio"
+    },
+    "monthlySummary": {
+      "title": "Il tuo {{month}} in sintesi",
+      "sessions": "{{count}} sessioni",
+      "arrows": "{{count}} frecce",
+      "viewStatistics": "Vedi statistiche complete",
+      "dismiss": "Capito"
     }
   },
   "onboarding": {

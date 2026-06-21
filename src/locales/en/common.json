@@ -771,6 +771,20 @@
       "subtitle": "Linking sessions to your gear helps track performance. You can add a setup anytime — including when editing a session.",
       "logSession": "Log session",
       "dismiss": "Remind me tomorrow"
+    },
+    "streakAtRisk": {
+      "title": "Keep your {{count}}-week streak going",
+      "subtitle": "Log a session this week before the week ends.",
+      "logSession": "Log today's session",
+      "dismiss": "Remind me tomorrow",
+      "statSubtitle": "at risk"
+    },
+    "monthlySummary": {
+      "title": "Your {{month}} in review",
+      "sessions": "{{count}} sessions",
+      "arrows": "{{count}} arrows",
+      "viewStatistics": "View full statistics",
+      "dismiss": "Got it"
     }
   }
 }
