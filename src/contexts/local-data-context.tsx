@@ -42,6 +42,9 @@ interface LocalDataContextType {
   defaultEquipmentSetId: string | null;
   isSyncing: boolean;
   lastSyncError: string | null;
+  unsyncedCount: number;
+  hasPendingSync: boolean;
+  hasUnsyncedData: boolean;
   addEquipmentSet: (
     data: Omit<LocalEquipmentSet, 'id' | 'isSynced' | 'createdAt' | 'updatedAt'>,
   ) => Promise<LocalEquipmentSet>;
@@ -101,6 +104,17 @@ export const LocalDataProvider: React.FC<Props> = ({ children }) => {
   }, []);
 
   const shouldSync = isAuthenticated && user?.syncTrainingsAndEquipment === true;
+
+  const unsyncedCount = useMemo(
+    () =>
+      equipmentSets.filter((s) => !s.isSynced).length +
+      trainingSessions.filter((s) => !s.isSynced).length,
+    [equipmentSets, trainingSessions],
+  );
+
+  const hasUnsyncedData = unsyncedCount > 0;
+
+  const hasPendingSync = shouldSync && hasUnsyncedData && !isSyncing && !lastSyncError;
 
   const syncNow = useCallback(async () => {
     if (!shouldSync || syncInProgress.current) return;
@@ -338,6 +352,9 @@ export const LocalDataProvider: React.FC<Props> = ({ children }) => {
       defaultEquipmentSetId,
       isSyncing,
       lastSyncError,
+      unsyncedCount,
+      hasPendingSync,
+      hasUnsyncedData,
       addEquipmentSet,
       editEquipmentSet,
       removeEquipmentSet,
@@ -354,6 +371,9 @@ export const LocalDataProvider: React.FC<Props> = ({ children }) => {
       defaultEquipmentSetId,
       isSyncing,
       lastSyncError,
+      unsyncedCount,
+      hasPendingSync,
+      hasUnsyncedData,
       addEquipmentSet,
       editEquipmentSet,
       removeEquipmentSet,

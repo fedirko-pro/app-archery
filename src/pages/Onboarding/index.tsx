@@ -53,6 +53,10 @@ const OnboardingPage: React.FC = () => {
         bio: user.bio || '',
         picture: user.picture || '',
       });
+      setSettingsDraft({
+        syncEnabled: user.syncTrainingsAndEquipment ?? true,
+        sharingEnabled: user.shareProgressEnabled ?? false,
+      });
     }
   }, [user]);
 

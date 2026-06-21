@@ -532,7 +532,8 @@
     "signingUp": "Registrando...",
     "backToSignIn": "Voltar ao login",
     "signInSubtitle": "Acompanhe treinos, ganhe conquistas e sincronize com segurança. Você escolhe o que compartilhar.",
-    "signUpSubtitle": "Junte-se à comunidade — registre treinos, desbloqueie badges e compartilhe seu progresso com amigos nos seus termos."
+    "signUpSubtitle": "Junte-se à comunidade — registre treinos, sincronize com segurança entre dispositivos e partilhe o progresso nos seus termos.",
+    "signUpSyncNote": "O Sokil funciona offline neste dispositivo. Depois de criar a conta, escolhe se quer fazer backup de treinos e equipamento na conta para usar noutros dispositivos."
   },
   "dialog": {
     "yes": "Sim",
@@ -654,7 +655,8 @@
     "readyForFirstSession": "Está tudo pronto — agora pode registar a sua primeira sessão de treino.",
     "createFirstTrainingSession": "Criar a minha primeira sessão de treino",
     "preferences": "Preferências",
-    "syncHelper": "Mantém sessões de treino e equipamento sincronizados em todos os dispositivos.",
+    "syncHelper": "Mantém sessões de treino e equipamento sincronizados em todos os dispositivos quando está online.",
+    "syncPrivacyNote": "Apenas treinos e equipamento são sincronizados. Pode desativar a qualquer momento nas definições. Partilhar progresso é uma escolha separada abaixo.",
     "shareToggleLabel": "Partilhar o meu progresso",
     "shareHelper": "Quando ativo, poderá partilhar estatísticas semanais e conquistas com amigos (em breve).",
     "steps": {

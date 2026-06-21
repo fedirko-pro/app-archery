@@ -170,6 +170,10 @@ export default function SignUp() {
           {t('auth.signUpSubtitle')}
         </Typography>
 
+        <Alert severity="info" sx={{ textAlign: 'left' }}>
+          {t('auth.signUpSyncNote')}
+        </Alert>
+
         {error && (
           <Alert severity="error" onClose={clearError}>
             {error}

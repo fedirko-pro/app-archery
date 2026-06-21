@@ -464,7 +464,8 @@
     "readyForFirstSession": "You're all set — now you can log your first training session.",
     "createFirstTrainingSession": "Create my first training session",
     "preferences": "Preferences",
-    "syncHelper": "Keeps your training sessions and equipment backed up across devices.",
+    "syncHelper": "Backs up your training sessions and equipment across devices when you're online.",
+    "syncPrivacyNote": "Only trainings and equipment sync to your account. You can turn this off anytime in settings. Sharing progress is a separate choice below.",
     "shareToggleLabel": "Share my progress",
     "shareHelper": "When enabled, you can share weekly stats and achievements with friends (coming soon).",
     "steps": {
@@ -483,7 +484,11 @@
     "syncDialogText": "Your data is stored securely ONLY on this device. To save and synchronize across devices, you need to log in.",
     "syncDialogAction": "Sign in to sync",
     "syncToggleLabel": "Sync trainings and equipment",
-    "syncToggleDescription": "When enabled, your training sessions and equipment sets are automatically synchronized with your account when online."
+    "syncToggleDescription": "When enabled, your training sessions and equipment sets are automatically synchronized with your account when online.",
+    "syncOffBanner": "Your sessions and equipment are stored on this device only. Turn on sync to back them up across devices.",
+    "pendingSyncBanner": "{{count}} item waiting to sync",
+    "pendingSyncBanner_other": "{{count}} items waiting to sync",
+    "syncNow": "Sync now"
   },
   "units": {
     "inch": "Inch",
@@ -636,7 +641,8 @@
     "validationFirstNameRequired": "First name is required.",
     "validationLastNameRequired": "Last name is required.",
     "signInSubtitle": "Track your training, earn achievements, and sync securely. You choose what to share.",
-    "signUpSubtitle": "Join the community — log sessions, unlock badges, and share your progress with friends on your terms."
+    "signUpSubtitle": "Join the community — log sessions, sync securely across devices, and share progress on your terms.",
+    "signUpSyncNote": "Sokil works offline on this device. After you create an account, you choose whether to back up trainings and equipment to your account for use on other devices."
   },
   "dialog": {
     "yes": "Yes",

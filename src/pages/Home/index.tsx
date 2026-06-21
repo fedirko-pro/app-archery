@@ -18,6 +18,7 @@ import { useTranslation } from 'react-i18next';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import LocalDataBanner from '../../components/LocalDataBanner/LocalDataBanner';
+import LocalSyncChip from '../../components/LocalSyncChip/LocalSyncChip';
 import StatCard from '../../components/StatCard/StatCard';
 import { useAuth } from '../../contexts/auth-context';
 import { useLocalData, type LocalTrainingSession } from '../../contexts/local-data-context';
@@ -312,6 +313,11 @@ const HomePage: React.FC = () => {
                           </Typography>
                         )}
                       </Box>
+                      {!session.isSynced && (
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mt: 1 }}>
+                          <LocalSyncChip />
+                        </Box>
+                      )}
                     </Box>
                   </Box>
                 </CardContent>

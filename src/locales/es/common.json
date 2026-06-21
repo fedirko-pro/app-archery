@@ -470,7 +470,8 @@
     "validationFirstNameRequired": "El nombre es obligatorio.",
     "validationLastNameRequired": "El apellido es obligatorio.",
     "signInSubtitle": "Sigue tu entrenamiento, gana logros y sincroniza de forma segura. Tú eliges qué compartir.",
-    "signUpSubtitle": "Únete a la comunidad — registra sesiones, desbloquea insignias y comparte tu progreso con amigos en tus términos."
+    "signUpSubtitle": "Únete a la comunidad — registra sesiones, sincroniza de forma segura entre dispositivos y comparte tu progreso en tus términos.",
+    "signUpSyncNote": "Sokil funciona sin conexión en este dispositivo. Tras crear tu cuenta, eliges si respaldar entrenamientos y equipo en tu cuenta para usarlos en otros dispositivos."
   },
   "dialog": {
     "yes": "Sí",
@@ -618,7 +619,8 @@
     "readyForFirstSession": "Todo listo — ahora puedes registrar tu primera sesión de entrenamiento.",
     "createFirstTrainingSession": "Crear mi primera sesión de entrenamiento",
     "preferences": "Preferencias",
-    "syncHelper": "Mantiene tus sesiones de entrenamiento y equipo respaldados en todos los dispositivos.",
+    "syncHelper": "Respalda tus sesiones de entrenamiento y equipo en todos los dispositivos cuando estés en línea.",
+    "syncPrivacyNote": "Solo se sincronizan entrenamientos y equipo. Puedes desactivarlo en cualquier momento en ajustes. Compartir progreso es una opción aparte abajo.",
     "shareToggleLabel": "Compartir mi progreso",
     "shareHelper": "Cuando esté activado, podrás compartir estadísticas semanales y logros con amigos (próximamente).",
     "steps": {

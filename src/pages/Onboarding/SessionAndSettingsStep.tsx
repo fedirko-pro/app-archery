@@ -51,6 +51,9 @@ const SessionAndSettingsStep: React.FC<SessionAndSettingsStepProps> = ({
       <Typography variant="caption" color="text.secondary" display="block" sx={{ mt: -1 }}>
         {t('onboarding.syncHelper')}
       </Typography>
+      <Typography variant="caption" color="text.secondary" display="block">
+        {t('onboarding.syncPrivacyNote')}
+      </Typography>
 
       <FormControlLabel
         control={

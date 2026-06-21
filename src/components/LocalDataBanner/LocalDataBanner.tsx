@@ -1,11 +1,15 @@
 import StorageIcon from '@mui/icons-material/Storage';
 import SyncIcon from '@mui/icons-material/Sync';
 import Alert from '@mui/material/Alert';
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch';
 import Typography from '@mui/material/Typography';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -13,6 +17,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import { useAuth } from '../../contexts/auth-context';
 import { useLocalData } from '../../contexts/local-data-context';
+import { useEnableSync } from '../../hooks/use-enable-sync';
 
 interface LocalDataBannerProps {
   /** When true, shows sync-in-progress state for authenticated users */
@@ -24,7 +29,8 @@ const LocalDataBanner: React.FC<LocalDataBannerProps> = ({ showSyncStatus = fals
   const { lang } = useParams();
   const navigate = useNavigate();
   const { isAuthenticated, user } = useAuth();
-  const { isSyncing, lastSyncError, syncNow } = useLocalData();
+  const { isSyncing, lastSyncError, syncNow, hasPendingSync, unsyncedCount } = useLocalData();
+  const { enableSyncAndSync, enabling } = useEnableSync();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [isOffline, setIsOffline] = useState(!navigator.onLine);
   const [cachedDismissed, setCachedDismissed] = useState(false);
@@ -48,29 +54,48 @@ const LocalDataBanner: React.FC<LocalDataBannerProps> = ({ showSyncStatus = fals
   // Dismissable "Showing last saved data" hint — shown only when offline and not yet dismissed
   const showCachedHint = isOffline && !cachedDismissed;
 
+  const cachedHint = showCachedHint ? (
+    <Alert severity="warning" sx={{ mb: 1 }} onClose={() => setCachedDismissed(true)}>
+      {t('pwa.showingCachedData')}
+    </Alert>
+  ) : null;
+
   // For authenticated users with sync enabled: show sync status if requested
   if (isAuthenticated && isSyncEnabled && showSyncStatus) {
     return (
       <>
-        {showCachedHint && (
-          <Alert severity="warning" sx={{ mb: 1 }} onClose={() => setCachedDismissed(true)}>
-            {t('pwa.showingCachedData')}
-          </Alert>
-        )}
-        {(isSyncing || lastSyncError) && (
+        {cachedHint}
+        {lastSyncError && (
           <Alert
-            severity={lastSyncError ? 'error' : 'info'}
+            severity="error"
             icon={<SyncIcon />}
             sx={{ mb: 2 }}
             action={
-              lastSyncError ? (
-                <Button size="small" onClick={syncNow}>
-                  {t('trainings.syncing')}
-                </Button>
-              ) : undefined
+              <Button size="small" onClick={syncNow}>
+                {t('localData.syncNow')}
+              </Button>
             }
           >
-            {lastSyncError ?? t('trainings.syncing')}
+            {lastSyncError}
+          </Alert>
+        )}
+        {!lastSyncError && isSyncing && (
+          <Alert severity="info" icon={<CircularProgress size={16} />} sx={{ mb: 2 }}>
+            {t('trainings.syncing')}
+          </Alert>
+        )}
+        {!lastSyncError && !isSyncing && hasPendingSync && (
+          <Alert
+            severity="warning"
+            icon={<SyncIcon />}
+            sx={{ mb: 2 }}
+            action={
+              <Button size="small" onClick={syncNow}>
+                {t('localData.syncNow')}
+              </Button>
+            }
+          >
+            {t('localData.pendingSyncBanner', { count: unsyncedCount })}
           </Alert>
         )}
       </>
@@ -81,11 +106,7 @@ const LocalDataBanner: React.FC<LocalDataBannerProps> = ({ showSyncStatus = fals
   if (!isAuthenticated) {
     return (
       <>
-        {showCachedHint && (
-          <Alert severity="warning" sx={{ mb: 1 }} onClose={() => setCachedDismissed(true)}>
-            {t('pwa.showingCachedData')}
-          </Alert>
-        )}
+        {cachedHint}
 
         <Alert
           severity="info"
@@ -130,7 +151,37 @@ const LocalDataBanner: React.FC<LocalDataBannerProps> = ({ showSyncStatus = fals
     );
   }
 
-  // Authenticated without sync: still show cached hint if offline
+  // Authenticated without sync: nudge to enable sync
+  if (showSyncStatus) {
+    return (
+      <>
+        {cachedHint}
+        <Alert severity="info" icon={<StorageIcon />} sx={{ mb: 2 }}>
+          <Typography variant="body2" sx={{ mb: 1 }}>
+            {t('localData.syncOffBanner')}
+          </Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={false}
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      void enableSyncAndSync();
+                    }
+                  }}
+                  disabled={enabling}
+                />
+              }
+              label={t('localData.syncToggleLabel')}
+            />
+            {enabling && <CircularProgress size={16} sx={{ ml: 1 }} />}
+          </Box>
+        </Alert>
+      </>
+    );
+  }
+
   if (showCachedHint) {
     return (
       <Alert severity="warning" sx={{ mb: 2 }} onClose={() => setCachedDismissed(true)}>

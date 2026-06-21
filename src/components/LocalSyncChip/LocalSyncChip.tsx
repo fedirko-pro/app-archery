@@ -13,8 +13,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { useAuth } from '../../contexts/auth-context';
-import { useLocalData } from '../../contexts/local-data-context';
-import apiService from '../../services/api';
+import { useEnableSync } from '../../hooks/use-enable-sync';
 
 /**
  * Shows a "Local data on device" chip plus a small sync icon button.
@@ -24,11 +23,10 @@ const LocalSyncChip: React.FC = () => {
   const { t } = useTranslation('common');
   const { lang } = useParams();
   const navigate = useNavigate();
-  const { isAuthenticated, user, updateUser } = useAuth();
-  const { syncNow } = useLocalData();
+  const { isAuthenticated } = useAuth();
+  const { enableSyncAndSync, enabling } = useEnableSync();
 
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [syncing, setSyncing] = useState(false);
 
   const handleSyncClick = async (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -38,19 +36,7 @@ const LocalSyncChip: React.FC = () => {
       return;
     }
 
-    // Authenticated: enable sync toggle if not already on, then trigger sync
-    setSyncing(true);
-    try {
-      if (!user?.syncTrainingsAndEquipment) {
-        const updated = await apiService.updateProfile({
-          syncTrainingsAndEquipment: true,
-        });
-        updateUser(updated);
-      }
-      await syncNow();
-    } finally {
-      setSyncing(false);
-    }
+    await enableSyncAndSync();
   };
 
   return (
@@ -68,10 +54,10 @@ const LocalSyncChip: React.FC = () => {
             variant="contained"
             color="primary"
             onClick={handleSyncClick}
-            disabled={syncing}
+            disabled={enabling}
             sx={{ minWidth: 0, width: 28, height: 28, p: 0, borderRadius: '50%' }}
           >
-            {syncing ? (
+            {enabling ? (
               <CircularProgress size={14} color="inherit" />
             ) : (
               <SyncIcon sx={{ fontSize: 16 }} />

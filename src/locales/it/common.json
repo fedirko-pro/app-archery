@@ -517,7 +517,8 @@
     "signingUp": "Registrazione in corso...",
     "backToSignIn": "Torna all'accesso",
     "signInSubtitle": "Monitora allenamenti, conquista traguardi e sincronizza in sicurezza. Tu scegli cosa condividere.",
-    "signUpSubtitle": "Unisciti alla comunità — registra sessioni, sblocca badge e condividi i progressi con gli amici alle tue condizioni."
+    "signUpSubtitle": "Unisciti alla comunità — registra sessioni, sincronizza in sicurezza tra dispositivi e condividi i progressi alle tue condizioni.",
+    "signUpSyncNote": "Sokil funziona offline su questo dispositivo. Dopo aver creato l'account, scegli se salvare allenamenti e attrezzatura nel tuo account per usarli su altri dispositivi."
   },
   "dialog": {
     "yes": "Sì",
@@ -639,7 +640,8 @@
     "readyForFirstSession": "Tutto pronto — ora puoi registrare la tua prima sessione di allenamento.",
     "createFirstTrainingSession": "Crea la mia prima sessione di allenamento",
     "preferences": "Preferenze",
-    "syncHelper": "Mantiene sessioni di allenamento e attrezzatura sincronizzate su tutti i dispositivi.",
+    "syncHelper": "Salva sessioni di allenamento e attrezzatura su tutti i dispositivi quando sei online.",
+    "syncPrivacyNote": "Si sincronizzano solo allenamenti e attrezzatura. Puoi disattivarlo in qualsiasi momento nelle impostazioni. Condividere i progressi è una scelta separata sotto.",
     "shareToggleLabel": "Condividi i miei progressi",
     "shareHelper": "Quando attivo, potrai condividere statistiche settimanali e traguardi con gli amici (in arrivo).",
     "steps": {
