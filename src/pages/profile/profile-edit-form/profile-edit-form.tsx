@@ -15,6 +15,7 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import AvatarUploader from '../../../components/AvatarUploader';
+import { COUNTRIES } from '../../../config/countries';
 import apiService from '../../../services/api';
 import type { ClubDto, DivisionDto } from '../../../services/types';
 import type { ProfileData } from '../types';
@@ -165,6 +166,25 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
           margin="normal"
           placeholder={t('profile.locationPlaceholder', 'City, Country')}
         />
+
+        <TextField
+          select
+          label={t('forms.country', 'Country')}
+          name="country"
+          value={profileData.country || ''}
+          onChange={onChange}
+          fullWidth
+          margin="normal"
+        >
+          <MenuItem value="">
+            <em>{t('forms.countryNotSet', 'Not set')}</em>
+          </MenuItem>
+          {COUNTRIES.map((c) => (
+            <MenuItem key={c.code} value={c.code}>
+              {c.name}
+            </MenuItem>
+          ))}
+        </TextField>
 
         <TextField
           label={t('forms.profilePictureUrl', 'Profile Picture URL')}

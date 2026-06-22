@@ -69,6 +69,7 @@ const ProfileEditPage: React.FC = () => {
         email: user.email || '',
         bio: user.bio || '',
         location: user.location || '',
+        country: user.country || '',
         picture: user.picture || '',
         federationNumber: user.federationNumber || '',
         nationality: user.nationality || 'Portuguesa',

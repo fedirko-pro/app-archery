@@ -10,57 +10,123 @@ import {
   CircularProgress,
   Tabs,
   Tab,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from '@mui/material';
-import { isBefore, parseISO, startOfDay } from 'date-fns';
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useSearchParams } from 'react-router-dom';
 
+import { ALL_COUNTRIES_FILTER, COUNTRIES, getCountryName } from '../../../config/countries';
 import { canCreateTournament, canEditTournament, canDeleteTournament } from '../../../config/roles';
 import { useAuth } from '../../../contexts/auth-context';
 import defaultBanner from '../../../img/default_turnament_bg.png';
 import apiService from '../../../services/api';
 import type { TournamentDto, TournamentApplicationDto } from '../../../services/types';
+import {
+  getSavedCountryFilter,
+  resolveDefaultCountryCode,
+  saveCountryFilter,
+} from '../../../utils/country-default';
 import { formatDate } from '../../../utils/date-utils';
+import { isPastTournament } from '../../../utils/tournament-filters';
 
 const TournamentList: React.FC = () => {
   const { user } = useAuth();
   const { lang } = useParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { t } = useTranslation('common');
   const [tournaments, setTournaments] = useState<TournamentDto[]>([]);
   const [userApplications, setUserApplications] = useState<TournamentApplicationDto[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState(0);
+  const [countryFilter, setCountryFilter] = useState<string | null>(null);
+  const [filterReady, setFilterReady] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    const initFilter = async () => {
+      const fromUrl = searchParams.get('country');
+      if (fromUrl) {
+        if (!cancelled) {
+          setCountryFilter(fromUrl === ALL_COUNTRIES_FILTER ? ALL_COUNTRIES_FILTER : fromUrl);
+          setFilterReady(true);
+        }
+        return;
+      }
+      const saved = getSavedCountryFilter();
+      if (saved) {
+        if (!cancelled) {
+          setCountryFilter(saved);
+          setFilterReady(true);
+        }
+        return;
+      }
+      const resolved = await resolveDefaultCountryCode(user);
+      if (!cancelled) {
+        setCountryFilter(resolved);
+        setFilterReady(true);
+      }
+    };
+    void initFilter();
+    return () => {
+      cancelled = true;
+    };
+  }, [user, searchParams]);
 
   const fetchTournaments = useCallback(async () => {
+    if (!filterReady || countryFilter === null) return;
     try {
       setLoading(true);
-      const data = await apiService.getAllTournaments();
+      const params: { country?: string; upcoming?: boolean } = {
+        upcoming: activeTab === 0,
+      };
+      if (countryFilter !== ALL_COUNTRIES_FILTER) {
+        params.country = countryFilter;
+      }
+      const data = await apiService.getAllTournaments(params);
       setTournaments(data);
-    } catch (error) {
+    } catch (fetchError) {
       setError(t('pages.tournaments.fetchError'));
-      console.error('Error fetching tournaments:', error);
+      console.error('Error fetching tournaments:', fetchError);
     } finally {
       setLoading(false);
     }
-  }, [t]);
+  }, [t, activeTab, countryFilter, filterReady]);
 
   const fetchUserApplications = useCallback(async () => {
     try {
       const data = await apiService.getMyApplications();
       setUserApplications(data);
-    } catch (error) {
-      console.error('Error fetching user applications:', error);
+    } catch (fetchError) {
+      console.error('Error fetching user applications:', fetchError);
     }
   }, []);
 
   useEffect(() => {
-    fetchTournaments();
+    void fetchTournaments();
+  }, [fetchTournaments]);
+
+  useEffect(() => {
     if (user) {
-      fetchUserApplications();
+      void fetchUserApplications();
     }
-  }, [user, fetchTournaments, fetchUserApplications]);
+  }, [user, fetchUserApplications]);
+
+  const handleCountryFilterChange = (value: string) => {
+    setCountryFilter(value);
+    saveCountryFilter(value);
+    const next = new URLSearchParams(searchParams);
+    if (value === ALL_COUNTRIES_FILTER) {
+      next.delete('country');
+    } else {
+      next.set('country', value);
+    }
+    setSearchParams(next, { replace: true });
+  };
 
   const hasApplicationForTournament = (tournamentId: string) => {
     return userApplications.some(
@@ -76,10 +142,10 @@ const TournamentList: React.FC = () => {
     if (window.confirm(t('pages.tournaments.deleteConfirm'))) {
       try {
         await apiService.deleteTournament(id);
-        fetchTournaments();
-      } catch (error: unknown) {
+        void fetchTournaments();
+      } catch (deleteError: unknown) {
         setError(t('pages.tournaments.deleteError'));
-        const err = error instanceof Error ? error : new Error(String(error));
+        const err = deleteError instanceof Error ? deleteError : new Error(String(deleteError));
         if (import.meta.env.DEV) {
           console.error('Error deleting tournament:', err.message);
         }
@@ -87,25 +153,11 @@ const TournamentList: React.FC = () => {
     }
   };
 
-  const isPastTournament = (tournament: TournamentDto): boolean => {
-    const today = startOfDay(new Date());
-    const tournamentEndDate = tournament.endDate
-      ? parseISO(tournament.endDate)
-      : parseISO(tournament.startDate);
-    return isBefore(startOfDay(tournamentEndDate), today);
-  };
+  const showCountryOnCards = countryFilter === ALL_COUNTRIES_FILTER;
 
-  const filteredTournaments = useMemo(() => {
-    if (activeTab === 0) {
-      // Future tournaments (default)
-      return tournaments.filter((tournament) => !isPastTournament(tournament));
-    } else {
-      // Past tournaments
-      return tournaments.filter((tournament) => isPastTournament(tournament));
-    }
-  }, [tournaments, activeTab]);
+  const filteredTournaments = useMemo(() => tournaments, [tournaments]);
 
-  if (loading) {
+  if (!filterReady || (loading && tournaments.length === 0)) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" minHeight="200px">
         <CircularProgress />
@@ -121,6 +173,8 @@ const TournamentList: React.FC = () => {
           justifyContent: 'space-between',
           alignItems: 'center',
           mb: 3,
+          flexWrap: 'wrap',
+          gap: 2,
         }}
       >
         <Typography variant="h4">{t('pages.tournaments.title')}</Typography>
@@ -150,6 +204,26 @@ const TournamentList: React.FC = () => {
           {error}
         </Alert>
       )}
+
+      <Box sx={{ mb: 3, maxWidth: 320 }}>
+        <FormControl fullWidth size="small">
+          <InputLabel>{t('pages.tournaments.countryFilter', 'Country')}</InputLabel>
+          <Select
+            value={countryFilter ?? ALL_COUNTRIES_FILTER}
+            label={t('pages.tournaments.countryFilter', 'Country')}
+            onChange={(e) => handleCountryFilterChange(e.target.value)}
+          >
+            <MenuItem value={ALL_COUNTRIES_FILTER}>
+              {t('pages.tournaments.allCountries', 'All countries')}
+            </MenuItem>
+            {COUNTRIES.map((c) => (
+              <MenuItem key={c.code} value={c.code}>
+                {c.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Box>
 
       <Box sx={{ mb: 3 }}>
         <Tabs
@@ -217,6 +291,12 @@ const TournamentList: React.FC = () => {
                       <strong>{t('pages.tournaments.location')}:</strong> {tournament.address}
                     </Typography>
                   )}
+                  {showCountryOnCards && tournament.country && (
+                    <Typography variant="body2">
+                      <strong>{t('pages.tournaments.country', 'Country')}:</strong>{' '}
+                      {getCountryName(tournament.country)}
+                    </Typography>
+                  )}
                   <Box sx={{ mt: 2, display: 'flex', gap: 1, flexWrap: 'wrap' }}>
                     <Button
                       size="small"
@@ -277,7 +357,7 @@ const TournamentList: React.FC = () => {
                               variant="outlined"
                               color="error"
                               startIcon={<Delete />}
-                              onClick={() => handleDeleteTournament(tournament.id)}
+                              onClick={() => void handleDeleteTournament(tournament.id)}
                             >
                               {t('pages.tournaments.delete')}
                             </Button>

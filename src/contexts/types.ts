@@ -9,6 +9,7 @@ export interface User {
   picture?: string;
   bio?: string;
   location?: string;
+  country?: string;
   authProvider: 'local' | 'google' | 'facebook';
   password?: string;
   createdAt: string;

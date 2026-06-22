@@ -14,7 +14,7 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import { alpha, useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
-import { format, isBefore, parseISO, startOfDay } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate, useParams } from 'react-router-dom';
@@ -25,7 +25,12 @@ import StatCard from '../../components/StatCard/StatCard';
 import { useAuth } from '../../contexts/auth-context';
 import { useLocalData, type LocalTrainingSession } from '../../contexts/local-data-context';
 import apiService from '../../services/api';
-import type { TournamentApplicationDto } from '../../services/types';
+import type {
+  ApplicationStatus,
+  TournamentApplicationDto,
+  TournamentDto,
+} from '../../services/types';
+import { resolveDefaultCountryCode } from '../../utils/country-default';
 import {
   dismissBowSetupPrompt,
   getEquipmentSetName,
@@ -49,12 +54,9 @@ import {
   toSessionFormDefaults,
 } from '../../utils/training-stats';
 
-function isPastTournament(tournament: { endDate?: string; startDate: string }): boolean {
-  const today = startOfDay(new Date());
-  const tournamentEndDate = tournament.endDate
-    ? parseISO(tournament.endDate)
-    : parseISO(tournament.startDate);
-  return isBefore(startOfDay(tournamentEndDate), today);
+interface MergedTournamentCard {
+  tournament: TournamentDto;
+  applicationStatus?: ApplicationStatus;
 }
 
 const HomePage: React.FC = () => {
@@ -67,9 +69,10 @@ const HomePage: React.FC = () => {
   const { lang } = useParams();
 
   const [submitting, setSubmitting] = useState(false);
-  const [upcomingApps, setUpcomingApps] = useState<TournamentApplicationDto[]>([]);
-  const [appsLoading, setAppsLoading] = useState(false);
-  const [appsError, setAppsError] = useState<string | null>(null);
+  const [mergedTournaments, setMergedTournaments] = useState<MergedTournamentCard[]>([]);
+  const [tournamentsLoading, setTournamentsLoading] = useState(true);
+  const [tournamentsError, setTournamentsError] = useState<string | null>(null);
+  const [defaultCountry, setDefaultCountry] = useState('PT');
   const [bowPromptDismissTick, setBowPromptDismissTick] = useState(0);
   const [streakDismissTick, setStreakDismissTick] = useState(0);
   const [monthlySummaryDismissTick, setMonthlySummaryDismissTick] = useState(0);
@@ -125,24 +128,55 @@ const HomePage: React.FC = () => {
   );
 
   useEffect(() => {
-    if (!isAuthenticated) return;
-    setAppsLoading(true);
-    setAppsError(null);
-    apiService
-      .getMyApplications()
-      .then((apps) => {
-        const upcoming = apps
-          .filter((app) => !isPastTournament(app.tournament))
-          .sort(
-            (a, b) =>
-              parseISO(a.tournament.startDate).getTime() -
-              parseISO(b.tournament.startDate).getTime(),
+    let cancelled = false;
+
+    const loadUpcomingTournaments = async () => {
+      setTournamentsLoading(true);
+      setTournamentsError(null);
+      try {
+        const country = await resolveDefaultCountryCode(user);
+        if (cancelled) return;
+        setDefaultCountry(country);
+
+        const [tournaments, applications] = await Promise.all([
+          apiService.getAllTournaments({ country, upcoming: true }),
+          isAuthenticated ? apiService.getMyApplications() : Promise.resolve([]),
+        ]);
+
+        const appByTournamentId = new Map<string, TournamentApplicationDto>();
+        for (const app of applications) {
+          if (!appByTournamentId.has(app.tournament.id)) {
+            appByTournamentId.set(app.tournament.id, app);
+          }
+        }
+
+        const merged: MergedTournamentCard[] = tournaments
+          .sort((a, b) => parseISO(a.startDate).getTime() - parseISO(b.startDate).getTime())
+          .map((tournament) => {
+            const app = appByTournamentId.get(tournament.id);
+            return {
+              tournament,
+              applicationStatus: app?.status,
+            };
+          });
+
+        if (!cancelled) setMergedTournaments(merged);
+      } catch (err: unknown) {
+        if (!cancelled) {
+          setTournamentsError(
+            err instanceof Error ? err.message : t('pages.tournaments.fetchError'),
           );
-        setUpcomingApps(upcoming);
-      })
-      .catch((err: Error) => setAppsError(err.message))
-      .finally(() => setAppsLoading(false));
-  }, [isAuthenticated]);
+        }
+      } finally {
+        if (!cancelled) setTournamentsLoading(false);
+      }
+    };
+
+    void loadUpcomingTournaments();
+    return () => {
+      cancelled = true;
+    };
+  }, [isAuthenticated, user, t]);
 
   const handleOpenAdd = async () => {
     setSubmitting(true);
@@ -459,50 +493,57 @@ const HomePage: React.FC = () => {
         </Box>
       )}
 
-      {isAuthenticated && (appsLoading || appsError || upcomingApps.length > 0) && (
+      {(tournamentsLoading || tournamentsError || mergedTournaments.length > 0) && (
         <>
           <Box
             sx={{
               display: 'flex',
               justifyContent: 'space-between',
-              alignItems: 'center',
+              alignItems: 'flex-start',
               mt: 2,
               mb: 1,
+              gap: 1,
             }}
           >
-            <Typography variant="subtitle1" fontWeight={600} color="text.secondary">
-              {t('dashboard.upcomingTournaments')}
-            </Typography>
-            {upcomingApps.length > 0 && (
+            <Box>
+              <Typography variant="subtitle1" fontWeight={600} color="text.secondary">
+                {t('dashboard.upcomingTournaments')}
+              </Typography>
+              <Typography variant="caption" color="text.secondary" display="block" sx={{ mt: 0.5 }}>
+                {t('dashboard.discoveryDisclaimer')}
+              </Typography>
+            </Box>
+            {mergedTournaments.length > 0 && (
               <Button
                 component={Link}
-                to={`/${lang}/applications`}
+                to={`/${lang}/tournaments?country=${defaultCountry}`}
                 size="small"
                 endIcon={<ChevronRightIcon />}
+                sx={{ flexShrink: 0 }}
               >
-                {t('dashboard.viewAllApplications')}
+                {t('dashboard.browseAllTournaments')}
               </Button>
             )}
           </Box>
 
-          {appsError && (
+          {tournamentsError && (
             <Alert severity="error" sx={{ mb: 2 }}>
-              {t('pages.applications.fetchError')}
+              {tournamentsError}
             </Alert>
           )}
 
-          {appsLoading ? (
+          {tournamentsLoading ? (
             <Box display="flex" justifyContent="center" py={3}>
               <CircularProgress size={28} />
             </Box>
           ) : (
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
-              {upcomingApps.slice(0, 3).map((app) => (
+              {mergedTournaments.slice(0, 5).map(({ tournament, applicationStatus }) => (
                 <Card
-                  key={app.id}
+                  key={tournament.id}
                   variant="outlined"
                   component={Link}
-                  to={`/${lang}/tournaments/${app.tournament.id}`}
+                  to={`/${lang}/tournaments/${tournament.id}`}
                   sx={{
                     textDecoration: 'none',
                     color: 'inherit',
@@ -514,15 +555,17 @@ const HomePage: React.FC = () => {
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: 1 }}>
                       <Box>
                         <Typography variant="subtitle2" fontWeight={600}>
-                          {app.tournament.title}
+                          {tournament.title}
                         </Typography>
                         <Typography variant="caption" color="text.secondary">
-                          {formatTournamentDates(app.tournament.startDate, app.tournament.endDate)}
+                          {formatTournamentDates(tournament.startDate, tournament.endDate)}
                         </Typography>
                       </Box>
-                      <Typography variant="caption" color="text.secondary" sx={{ flexShrink: 0 }}>
-                        {t(`pages.adminApplications.status.${app.status}`)}
-                      </Typography>
+                      {applicationStatus && (
+                        <Typography variant="caption" color="text.secondary" sx={{ flexShrink: 0 }}>
+                          {t(`pages.adminApplications.status.${applicationStatus}`)}
+                        </Typography>
+                      )}
                     </Box>
                   </CardContent>
                 </Card>

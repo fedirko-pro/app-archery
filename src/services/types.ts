@@ -136,6 +136,7 @@ export interface TournamentDto {
   startDate: string;
   endDate: string;
   address?: string;
+  country?: string;
   allowMultipleApplications?: boolean;
   applicationDeadline?: string;
   banner?: string;

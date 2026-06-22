@@ -16,6 +16,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
 
+import { getCountryName } from '../../../config/countries';
 import { ROLE_LABEL_KEYS } from '../../../config/roles';
 import type { User } from '../../../contexts/types';
 import userIcon from '../../../img/icons/user.svg';
@@ -175,6 +176,10 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                         <>📍 {profileData.location || user.location}</>
                       )
                     }
+                  />
+                  <TableInfoRow
+                    label={t('forms.country', 'Country')}
+                    value={getCountryName(profileData.country || user.country)}
                   />
                   <TableInfoRow
                     label={t('profile.bowCategories', 'Favorite categories')}

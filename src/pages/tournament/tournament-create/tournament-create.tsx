@@ -19,7 +19,10 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import BannerUploader from '../../../components/BannerUploader/BannerUploader';
-import FileAttachments, { FileAttachment } from '../../../components/FileAttachments/FileAttachments';
+import FileAttachments, {
+  FileAttachment,
+} from '../../../components/FileAttachments/FileAttachments';
+import { COUNTRIES, DEFAULT_COUNTRY_CODE } from '../../../config/countries';
 import apiService from '../../../services/api';
 import type { RuleDto } from '../../../services/types';
 
@@ -39,6 +42,7 @@ const TournamentCreate: React.FC = () => {
     endDate: '',
     applicationDeadline: '',
     address: '',
+    country: DEFAULT_COUNTRY_CODE,
     ruleCode: '',
     targetCount: 18,
     allowMultipleApplications: true,
@@ -114,9 +118,7 @@ const TournamentCreate: React.FC = () => {
               <Select
                 value={formData.ruleCode}
                 label={t('pages.tournaments.form.rules', 'Rules')}
-                onChange={(e) =>
-                  setFormData({ ...formData, ruleCode: e.target.value })
-                }
+                onChange={(e) => setFormData({ ...formData, ruleCode: e.target.value })}
                 required
               >
                 <MenuItem value="">
@@ -175,9 +177,7 @@ const TournamentCreate: React.FC = () => {
               label={t('pages.tournaments.form.applicationDeadline')}
               type="date"
               value={formData.applicationDeadline}
-              onChange={(e) =>
-                setFormData({ ...formData, applicationDeadline: e.target.value })
-              }
+              onChange={(e) => setFormData({ ...formData, applicationDeadline: e.target.value })}
               fullWidth
               margin="normal"
               InputLabelProps={{ shrink: true }}
@@ -192,15 +192,35 @@ const TournamentCreate: React.FC = () => {
               margin="normal"
             />
 
+            <FormControl fullWidth margin="normal" required>
+              <InputLabel>{t('pages.tournaments.form.country', 'Country')}</InputLabel>
+              <Select
+                value={formData.country}
+                label={t('pages.tournaments.form.country', 'Country')}
+                onChange={(e) => setFormData({ ...formData, country: e.target.value })}
+              >
+                {COUNTRIES.map((c) => (
+                  <MenuItem key={c.code} value={c.code}>
+                    {c.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
             <TextField
               label={t('pages.tournaments.form.targetCount', 'Number of Targets')}
               type="number"
               value={formData.targetCount}
-              onChange={(e) => setFormData({ ...formData, targetCount: parseInt(e.target.value) || 18 })}
+              onChange={(e) =>
+                setFormData({ ...formData, targetCount: parseInt(e.target.value) || 18 })
+              }
               fullWidth
               margin="normal"
               inputProps={{ min: 1, max: 100 }}
-              helperText={t('pages.tournaments.form.targetCountHelper', 'Number of targets/patrols for the tournament')}
+              helperText={t(
+                'pages.tournaments.form.targetCountHelper',
+                'Number of targets/patrols for the tournament',
+              )}
             />
 
             <FormControlLabel
@@ -251,12 +271,7 @@ const TournamentCreate: React.FC = () => {
           >
             {t('common.cancel', 'Cancel')}
           </Button>
-          <Button
-            type="submit"
-            variant="contained"
-            startIcon={<Save />}
-            disabled={submitting}
-          >
+          <Button type="submit" variant="contained" startIcon={<Save />} disabled={submitting}>
             {submitting
               ? t('pages.tournaments.creating', 'Creating...')
               : t('common.create', 'Create')}

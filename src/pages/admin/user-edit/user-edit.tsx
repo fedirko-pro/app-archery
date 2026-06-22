@@ -55,6 +55,7 @@ const UserEdit: React.FC = () => {
         email: foundUser.email || '',
         bio: foundUser.bio || '',
         location: foundUser.location || '',
+        country: foundUser.country || '',
         picture: foundUser.picture || '',
         role: foundUser.role || 'user',
         federationNumber: foundUser.federationNumber || '',

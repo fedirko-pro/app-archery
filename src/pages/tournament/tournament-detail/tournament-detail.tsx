@@ -40,6 +40,7 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 
 import AdminApplyUserDialog from '../../../components/dialogs/admin-apply-user-dialog';
 import { FileAttachment } from '../../../components/FileAttachments/FileAttachments';
+import { getCountryName } from '../../../config/countries';
 import { canApplyOtherUsers, canEditTournament } from '../../../config/roles';
 import { useAuth } from '../../../contexts/auth-context';
 import { useNotification } from '../../../contexts/error-feedback-context';
@@ -102,7 +103,7 @@ const TournamentDetail: React.FC = () => {
 
   const isPastTournament = (tournament: TournamentDto): boolean => {
     const today = startOfDay(new Date());
-    const tournamentEndDate = tournament.endDate 
+    const tournamentEndDate = tournament.endDate
       ? parseISO(tournament.endDate)
       : parseISO(tournament.startDate);
     return isBefore(startOfDay(tournamentEndDate), today);
@@ -149,7 +150,9 @@ const TournamentDetail: React.FC = () => {
   if (error || !tournament) {
     return (
       <Box sx={{ p: 3 }}>
-        <Alert severity="error">{error || t('pages.tournaments.notFound', 'Tournament not found')}</Alert>
+        <Alert severity="error">
+          {error || t('pages.tournaments.notFound', 'Tournament not found')}
+        </Alert>
         <Button
           startIcon={<ArrowBack />}
           onClick={() => navigate(`/${lang}/tournaments`)}
@@ -197,7 +200,8 @@ const TournamentDetail: React.FC = () => {
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 <Gavel color="action" fontSize="small" />
                 <Typography variant="body1">
-                  <strong>{t('pages.tournaments.rules', 'Rules')}:</strong> {tournament.rule?.ruleName || tournament.ruleCode}
+                  <strong>{t('pages.tournaments.rules', 'Rules')}:</strong>{' '}
+                  {tournament.rule?.ruleName || tournament.ruleCode}
                 </Typography>
               </Box>
             )}
@@ -220,16 +224,21 @@ const TournamentDetail: React.FC = () => {
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 <EventBusy color="warning" fontSize="small" />
                 <Typography variant="body1" color="warning.main">
-                  <strong>{t('pages.tournaments.applicationDeadline', 'Application Deadline')}:</strong> {formatDate(tournament.applicationDeadline)}
+                  <strong>
+                    {t('pages.tournaments.applicationDeadline', 'Application Deadline')}:
+                  </strong>{' '}
+                  {formatDate(tournament.applicationDeadline)}
                 </Typography>
               </Box>
             )}
 
-            {tournament.address && (
+            {(tournament.address || tournament.country) && (
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 <LocationOn color="action" fontSize="small" />
                 <Typography variant="body1">
                   <strong>{t('pages.tournaments.location')}:</strong> {tournament.address}
+                  {tournament.address && tournament.country && ', '}
+                  {tournament.country && getCountryName(tournament.country)}
                 </Typography>
               </Box>
             )}
@@ -238,7 +247,8 @@ const TournamentDetail: React.FC = () => {
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 <GpsFixed color="action" fontSize="small" />
                 <Typography variant="body1">
-                  <strong>{t('pages.tournaments.targetCount', 'Number of Targets')}:</strong> {tournament.targetCount}
+                  <strong>{t('pages.tournaments.targetCount', 'Number of Targets')}:</strong>{' '}
+                  {tournament.targetCount}
                 </Typography>
               </Box>
             )}
@@ -297,12 +307,7 @@ const TournamentDetail: React.FC = () => {
           <Divider sx={{ my: 3 }} />
 
           <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
-            <Button
-              variant="outlined"
-              size="large"
-              startIcon={<Share />}
-              onClick={handleShare}
-            >
+            <Button variant="outlined" size="large" startIcon={<Share />} onClick={handleShare}>
               {t('pages.tournaments.share', 'Share')}
             </Button>
             {!isPastTournament(tournament) && (
@@ -316,45 +321,38 @@ const TournamentDetail: React.FC = () => {
                 {t('pages.tournaments.apply', 'Apply to tournament')}
               </Button>
             )}
-            {user &&
-              canEditTournament(
-                user.role,
-                tournament.createdBy?.id ?? '',
-                user.id,
-              ) && (
-                <>
-                  <Button
-                    variant="outlined"
-                    size="large"
-                    startIcon={<Edit />}
-                    component={Link}
-                    to={`/${lang}/tournaments/${tournament.id}/edit`}
-                  >
-                    {t('pages.tournaments.edit', 'Edit')}
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    size="large"
-                    startIcon={<Assignment />}
-                    component={Link}
-                    to={`/${lang}/admin/applications/${tournament.id}`}
-                  >
-                    {t('pages.tournaments.checkApplications', 'Check Applications')}
-                  </Button>
-                </>
-              )}
-            {user &&
-              canApplyOtherUsers(user.role) &&
-              !isPastTournament(tournament) && (
+            {user && canEditTournament(user.role, tournament.createdBy?.id ?? '', user.id) && (
+              <>
                 <Button
                   variant="outlined"
                   size="large"
-                  startIcon={<PersonAdd />}
-                  onClick={() => setApplyUserDialogOpen(true)}
+                  startIcon={<Edit />}
+                  component={Link}
+                  to={`/${lang}/tournaments/${tournament.id}/edit`}
                 >
-                  {t('pages.tournaments.applyOtherUser', 'Apply Other User')}
+                  {t('pages.tournaments.edit', 'Edit')}
                 </Button>
-              )}
+                <Button
+                  variant="outlined"
+                  size="large"
+                  startIcon={<Assignment />}
+                  component={Link}
+                  to={`/${lang}/admin/applications/${tournament.id}`}
+                >
+                  {t('pages.tournaments.checkApplications', 'Check Applications')}
+                </Button>
+              </>
+            )}
+            {user && canApplyOtherUsers(user.role) && !isPastTournament(tournament) && (
+              <Button
+                variant="outlined"
+                size="large"
+                startIcon={<PersonAdd />}
+                onClick={() => setApplyUserDialogOpen(true)}
+              >
+                {t('pages.tournaments.applyOtherUser', 'Apply Other User')}
+              </Button>
+            )}
           </Box>
         </CardContent>
       </Card>
@@ -369,10 +367,7 @@ const TournamentDetail: React.FC = () => {
           onClose={() => setApplyUserDialogOpen(false)}
           onSuccess={() => {
             showSuccess(
-              t(
-                'pages.tournaments.applicationSubmitted',
-                'Application submitted successfully!',
-              ),
+              t('pages.tournaments.applicationSubmitted', 'Application submitted successfully!'),
             );
           }}
         />

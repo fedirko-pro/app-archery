@@ -16,6 +16,7 @@ import {
   isNetworkError,
   type OfflineCacheKey,
 } from '../utils/offline-cache';
+import { filterTournamentsClient } from '../utils/tournament-filters';
 import type {
   ApiError,
   BowCategory,
@@ -299,8 +300,35 @@ class ApiService {
     });
   }
 
-  async getAllTournaments(): Promise<TournamentDto[]> {
-    return this.getWithOfflineFallback<TournamentDto[]>('tournaments', '/tournaments');
+  async getAllTournaments(params?: {
+    country?: string;
+    upcoming?: boolean;
+  }): Promise<TournamentDto[]> {
+    const searchParams = new URLSearchParams();
+    if (params?.country) searchParams.set('country', params.country);
+    if (params?.upcoming === true) searchParams.set('upcoming', 'true');
+    if (params?.upcoming === false) searchParams.set('upcoming', 'false');
+    const query = searchParams.toString();
+    const endpoint = query ? `/tournaments?${query}` : '/tournaments';
+
+    if (!params?.country && params?.upcoming === undefined) {
+      return this.getWithOfflineFallback<TournamentDto[]>('tournaments', endpoint);
+    }
+
+    try {
+      const data = await this.get<TournamentDto[]>(endpoint);
+      setLastServedFromCache(false);
+      return data;
+    } catch (error) {
+      if (isNetworkError(error)) {
+        const cached = getOfflineCache<TournamentDto[]>('tournaments');
+        if (cached != null) {
+          setLastServedFromCache(true);
+          return filterTournamentsClient(cached, params);
+        }
+      }
+      throw error;
+    }
   }
 
   async getTournament(id: string): Promise<TournamentDto> {

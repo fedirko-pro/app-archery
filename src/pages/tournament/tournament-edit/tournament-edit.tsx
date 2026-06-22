@@ -20,7 +20,10 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import BannerUploader from '../../../components/BannerUploader/BannerUploader';
-import FileAttachments, { FileAttachment } from '../../../components/FileAttachments/FileAttachments';
+import FileAttachments, {
+  FileAttachment,
+} from '../../../components/FileAttachments/FileAttachments';
+import { COUNTRIES, DEFAULT_COUNTRY_CODE } from '../../../config/countries';
 import apiService from '../../../services/api';
 import type { RuleDto, TournamentDto } from '../../../services/types';
 
@@ -42,6 +45,7 @@ const TournamentEdit: React.FC = () => {
     endDate: '',
     applicationDeadline: '',
     address: '',
+    country: DEFAULT_COUNTRY_CODE,
     ruleCode: '',
     targetCount: 18,
     allowMultipleApplications: true,
@@ -76,8 +80,11 @@ const TournamentEdit: React.FC = () => {
           description: data.description || '',
           startDate: data.startDate.split('T')[0],
           endDate: data.endDate.split('T')[0],
-          applicationDeadline: data.applicationDeadline ? data.applicationDeadline.split('T')[0] : '',
+          applicationDeadline: data.applicationDeadline
+            ? data.applicationDeadline.split('T')[0]
+            : '',
           address: data.address || '',
+          country: data.country || DEFAULT_COUNTRY_CODE,
           ruleCode: data.ruleCode || '',
           targetCount: data.targetCount || 18,
           allowMultipleApplications: data.allowMultipleApplications ?? true,
@@ -171,9 +178,7 @@ const TournamentEdit: React.FC = () => {
               <Select
                 value={formData.ruleCode}
                 label={t('pages.tournaments.form.rules', 'Rules')}
-                onChange={(e) =>
-                  setFormData({ ...formData, ruleCode: e.target.value })
-                }
+                onChange={(e) => setFormData({ ...formData, ruleCode: e.target.value })}
                 required
               >
                 <MenuItem value="">
@@ -232,9 +237,7 @@ const TournamentEdit: React.FC = () => {
               label={t('pages.tournaments.form.applicationDeadline')}
               type="date"
               value={formData.applicationDeadline}
-              onChange={(e) =>
-                setFormData({ ...formData, applicationDeadline: e.target.value })
-              }
+              onChange={(e) => setFormData({ ...formData, applicationDeadline: e.target.value })}
               fullWidth
               margin="normal"
               InputLabelProps={{ shrink: true }}
@@ -249,15 +252,35 @@ const TournamentEdit: React.FC = () => {
               margin="normal"
             />
 
+            <FormControl fullWidth margin="normal" required>
+              <InputLabel>{t('pages.tournaments.form.country', 'Country')}</InputLabel>
+              <Select
+                value={formData.country}
+                label={t('pages.tournaments.form.country', 'Country')}
+                onChange={(e) => setFormData({ ...formData, country: e.target.value })}
+              >
+                {COUNTRIES.map((c) => (
+                  <MenuItem key={c.code} value={c.code}>
+                    {c.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
             <TextField
               label={t('pages.tournaments.form.targetCount', 'Number of Targets')}
               type="number"
               value={formData.targetCount}
-              onChange={(e) => setFormData({ ...formData, targetCount: parseInt(e.target.value) || 18 })}
+              onChange={(e) =>
+                setFormData({ ...formData, targetCount: parseInt(e.target.value) || 18 })
+              }
               fullWidth
               margin="normal"
               inputProps={{ min: 1, max: 100 }}
-              helperText={t('pages.tournaments.form.targetCountHelper', 'Number of targets/patrols for the tournament')}
+              helperText={t(
+                'pages.tournaments.form.targetCountHelper',
+                'Number of targets/patrols for the tournament',
+              )}
             />
 
             <FormControlLabel
@@ -309,12 +332,7 @@ const TournamentEdit: React.FC = () => {
           >
             {t('common.cancel', 'Cancel')}
           </Button>
-          <Button
-            type="submit"
-            variant="contained"
-            startIcon={<Save />}
-            disabled={submitting}
-          >
+          <Button type="submit" variant="contained" startIcon={<Save />} disabled={submitting}>
             {submitting
               ? t('pages.tournaments.updating', 'Updating...')
               : t('common.update', 'Update')}

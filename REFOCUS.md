@@ -11,21 +11,6 @@
 
 _Core product value. Highest priority after Phase A._
 
-#### B2. Richer session model
-
-Plan fields in tiers:
-
-| Tier  | Fields                                             | Purpose         |
-| ----- | -------------------------------------------------- | --------------- |
-| MVP+  | Score total, ends × arrows, notes, mood/conditions | See improvement |
-| Next  | Per-end scores, grouping size, indoor/outdoor      | Accuracy trends |
-| Later | Photo of target, coach notes                       | Deep analysis   |
-
-- [ ] Extend `LocalTrainingSession` type and storage schema
-- [ ] Update form UI with progressive disclosure (basic vs detailed)
-- [ ] Migration for existing local/server data
-- [ ] Statistics: average score, best session, score trend by distance
-
 #### B4. Connect achievements to real data
 
 Achievements should derive from existing statistics:
@@ -53,11 +38,6 @@ Achievements should derive from existing statistics:
 ### Phase D — Tournaments from the Archer’s Lens
 
 _Reframe, don’t remove._
-
-#### D2. Tournament discovery for archers
-
-- [ ] Dashboard section: “Open for registration” filtered by profile categories
-- [ ] Location-aware filtering (if profile has location)
 
 #### D4. Post-tournament archer moment
 

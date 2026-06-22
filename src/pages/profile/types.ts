@@ -4,6 +4,7 @@ export interface ProfileData {
   email: string;
   bio: string;
   location: string;
+  country?: string;
   picture: string;
   federationNumber?: string;
   nationality?: string;
