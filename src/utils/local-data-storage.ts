@@ -31,15 +31,23 @@ export interface LocalEquipmentSet {
   updatedAt: string;
 }
 
+export type TrainingSessionStatus = 'started' | 'finished';
+export type TrainingMood = 'bad' | 'normal' | 'good' | 'amazing';
+
 export interface LocalTrainingSession {
   id: string;
   serverId?: string;
   isSynced: boolean;
   date: string;
+  status?: TrainingSessionStatus;
   shotsCount?: number;
+  arrowsPerSet?: number;
   distance?: string;
   targetType?: string;
   equipmentSetId?: string;
+  scoreTotal?: number;
+  notes?: string;
+  mood?: TrainingMood;
   customFields?: CustomField[];
   createdAt: string;
   updatedAt: string;
@@ -221,10 +229,15 @@ export function mergeServerTrainingSessions(
   serverSessions: Array<{
     id: string;
     date: string;
+    status?: string;
     shotsCount?: number;
+    arrowsPerSet?: number;
     distance?: string;
     targetType?: string;
     equipmentSetId?: string;
+    scoreTotal?: number;
+    notes?: string;
+    mood?: string;
     customFields?: CustomField[];
     createdAt: string;
     updatedAt: string;
@@ -243,10 +256,15 @@ export function mergeServerTrainingSessions(
         serverId: serverSession.id,
         isSynced: true,
         date: serverSession.date,
+        status: (serverSession.status as TrainingSessionStatus) ?? 'finished',
         shotsCount: serverSession.shotsCount,
+        arrowsPerSet: serverSession.arrowsPerSet,
         distance: serverSession.distance,
         targetType: serverSession.targetType,
         equipmentSetId: serverSession.equipmentSetId,
+        scoreTotal: serverSession.scoreTotal,
+        notes: serverSession.notes,
+        mood: serverSession.mood as TrainingMood | undefined,
         customFields: serverSession.customFields,
         createdAt: serverSession.createdAt,
         updatedAt: serverSession.updatedAt,

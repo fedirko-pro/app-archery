@@ -48,7 +48,6 @@ import {
   getStreakAtRiskState,
   toSessionFormDefaults,
 } from '../../utils/training-stats';
-import TrainingSessionDialog from '../MyTrainings/TrainingSessionDialog';
 
 function isPastTournament(tournament: { endDate?: string; startDate: string }): boolean {
   const today = startOfDay(new Date());
@@ -61,15 +60,12 @@ function isPastTournament(tournament: { endDate?: string; startDate: string }): 
 const HomePage: React.FC = () => {
   const { t } = useTranslation('common');
   const { isAuthenticated, user } = useAuth();
-  const { trainingSessions, equipmentSets, addTrainingSession, defaultEquipmentSetId } =
+  const { trainingSessions, equipmentSets, startTrainingSession, defaultEquipmentSetId } =
     useLocalData();
   const theme = useTheme();
   const navigate = useNavigate();
   const { lang } = useParams();
 
-  const [formOpen, setFormOpen] = useState(false);
-  const [formKey, setFormKey] = useState(0);
-  const [formInitial, setFormInitial] = useState<Partial<LocalTrainingSession> | undefined>();
   const [submitting, setSubmitting] = useState(false);
   const [upcomingApps, setUpcomingApps] = useState<TournamentApplicationDto[]>([]);
   const [appsLoading, setAppsLoading] = useState(false);
@@ -148,22 +144,11 @@ const HomePage: React.FC = () => {
       .finally(() => setAppsLoading(false));
   }, [isAuthenticated]);
 
-  const openForm = (initial?: Partial<LocalTrainingSession>) => {
-    setFormInitial(initial);
-    setFormKey((k) => k + 1);
-    setFormOpen(true);
-  };
-
-  const handleOpenAdd = () => openForm(sessionDefaults);
-  const handleClose = () => setFormOpen(false);
-
-  const handleSubmit = async (
-    data: Omit<LocalTrainingSession, 'id' | 'isSynced' | 'createdAt' | 'updatedAt'>,
-  ) => {
+  const handleOpenAdd = async () => {
     setSubmitting(true);
     try {
-      await addTrainingSession(data);
-      handleClose();
+      await startTrainingSession(sessionDefaults);
+      navigate(`/${lang}/trainings`);
     } finally {
       setSubmitting(false);
     }
@@ -312,7 +297,13 @@ const HomePage: React.FC = () => {
         <Grid size={{ xs: 12, sm: 4 }}>
           <Card variant="outlined" sx={{ height: '100%', display: 'flex', alignItems: 'center' }}>
             <CardContent sx={{ width: '100%' }}>
-              <Button variant="contained" fullWidth startIcon={<AddIcon />} onClick={handleOpenAdd}>
+              <Button
+                variant="contained"
+                fullWidth
+                startIcon={<AddIcon />}
+                onClick={() => void handleOpenAdd()}
+                disabled={submitting}
+              >
                 {t('dashboard.logTodaysSession')}
               </Button>
             </CardContent>
@@ -546,16 +537,6 @@ const HomePage: React.FC = () => {
           {t('dashboard.viewStatistics')}
         </Button>
       </Box>
-
-      <TrainingSessionDialog
-        open={formOpen}
-        onClose={handleClose}
-        title={t('trainings.add')}
-        initial={formInitial}
-        formKey={formKey}
-        onSubmit={handleSubmit}
-        submitting={submitting}
-      />
     </Box>
   );
 };

@@ -1,6 +1,25 @@
 import type { MonthlyDataPoint } from '../services/types';
 import { resolveEquipmentSet } from './equipment-utils';
 import type { LocalEquipmentSet, LocalTrainingSession } from './local-data-storage';
+import { isSessionFinished } from './training-session-utils';
+
+export interface ScoreStatsEntry {
+  distance: string;
+  avgScore: number;
+  count: number;
+}
+
+export interface BestSessionEntry {
+  score: number;
+  date: string;
+  distance?: string;
+}
+
+export interface ScoringStats {
+  avgScore: number | null;
+  bestSession: BestSessionEntry | null;
+  avgScoreByDistance: ScoreStatsEntry[];
+}
 
 export interface EquipmentStatsEntry {
   equipmentSetId: string | null;
@@ -22,6 +41,7 @@ export interface LocalTrainingStats {
   byEquipment: EquipmentStatsEntry[];
   shotsByMonth: MonthlyDataPoint[];
   sessionsByMonth: MonthlyDataPoint[];
+  scoring: ScoringStats;
 }
 
 export function getStartOfWeek(date: Date): Date {
@@ -223,11 +243,52 @@ function computeEquipmentStats(
   return { byEquipment, mostUsedEquipment };
 }
 
+function computeScoringStats(sessions: LocalTrainingSession[]): ScoringStats {
+  const scored = sessions.filter((s) => s.scoreTotal !== undefined && s.scoreTotal !== null);
+  if (scored.length === 0) {
+    return { avgScore: null, bestSession: null, avgScoreByDistance: [] };
+  }
+
+  const totalScore = scored.reduce((sum, s) => sum + (s.scoreTotal ?? 0), 0);
+  const best = [...scored].sort((a, b) => {
+    const scoreDiff = (b.scoreTotal ?? 0) - (a.scoreTotal ?? 0);
+    if (scoreDiff !== 0) return scoreDiff;
+    return b.date.localeCompare(a.date);
+  })[0];
+
+  const byDistance = new Map<string, { total: number; count: number }>();
+  for (const s of scored) {
+    if (!s.distance) continue;
+    const current = byDistance.get(s.distance) ?? { total: 0, count: 0 };
+    current.total += s.scoreTotal ?? 0;
+    current.count += 1;
+    byDistance.set(s.distance, current);
+  }
+
+  const avgScoreByDistance: ScoreStatsEntry[] = [...byDistance.entries()]
+    .map(([distance, data]) => ({
+      distance,
+      avgScore: Math.round((data.total / data.count) * 10) / 10,
+      count: data.count,
+    }))
+    .sort((a, b) => Number.parseFloat(a.distance) - Number.parseFloat(b.distance));
+
+  return {
+    avgScore: Math.round((totalScore / scored.length) * 10) / 10,
+    bestSession: best
+      ? { score: best.scoreTotal ?? 0, date: best.date, distance: best.distance }
+      : null,
+    avgScoreByDistance,
+  };
+}
+
 export function computeLocalStats(
   sessions: LocalTrainingSession[],
   equipmentSets: LocalEquipmentSet[] = [],
   unspecifiedLabel = 'Unspecified',
 ): LocalTrainingStats {
+  const finishedSessions = sessions.filter(isSessionFinished);
+
   const acc: PeriodAccumulator = {
     totalShots: 0,
     shotsWeek: 0,
@@ -241,16 +302,18 @@ export function computeLocalStats(
     weekSet: new Set(),
   };
 
-  for (const s of sessions) accumulateSession(acc, s);
+  for (const s of finishedSessions) accumulateSession(acc, s);
 
   const { byEquipment, mostUsedEquipment } = computeEquipmentStats(
-    sessions,
+    finishedSessions,
     equipmentSets,
     unspecifiedLabel,
   );
 
+  const scoring = computeScoringStats(finishedSessions);
+
   return {
-    totalSessions: sessions.length,
+    totalSessions: finishedSessions.length,
     currentStreakWeeks: computeStreak(acc.weekSet),
     shots: {
       total: acc.totalShots,
@@ -263,13 +326,15 @@ export function computeLocalStats(
       thisMonth: Math.round(acc.metersMonth),
       thisYear: Math.round(acc.metersYear),
     },
-    avgShotsPerSession: sessions.length > 0 ? Math.round(acc.totalShots / sessions.length) : 0,
+    avgShotsPerSession:
+      finishedSessions.length > 0 ? Math.round(acc.totalShots / finishedSessions.length) : 0,
     mostUsedDistance: getMostFrequent(acc.distanceCount),
     mostUsedTargetType: getMostFrequent(acc.targetTypeCount),
     mostUsedEquipment,
     byEquipment,
-    shotsByMonth: buildMonthlyPoints(sessions, 'shots'),
-    sessionsByMonth: buildMonthlyPoints(sessions, 'sessions'),
+    shotsByMonth: buildMonthlyPoints(finishedSessions, 'shots'),
+    sessionsByMonth: buildMonthlyPoints(finishedSessions, 'sessions'),
+    scoring,
   };
 }
 

@@ -69,6 +69,16 @@ export const ADMIN_NAV_ITEMS: NavItemConfig[] = [
   { link: '/admin/access-control', labelKey: 'nav.accessControl' },
 ];
 
+/** Public hamburger nav — demo / preview pages always rendered last in the menu. */
+export const PUBLIC_DEMO_NAV_ITEMS: NavItemConfig[] = [
+  { link: '/competition/user', labelKey: 'nav.scoringDemo' },
+];
+
+/** User avatar menu — demo pages always rendered last (before logout). */
+export const USER_DEMO_NAV_ITEMS: NavItemConfig[] = [
+  { link: '/achievements', labelKey: 'nav.myAchievements' },
+];
+
 export function canSeeOrganizerTools(role: string): boolean {
   return canAccessAdminSection(role);
 }

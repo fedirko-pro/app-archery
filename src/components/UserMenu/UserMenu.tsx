@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 
+import { USER_DEMO_NAV_ITEMS } from '../../config/roles';
 import { useAuth } from '../../contexts/auth-context';
 import { normalizeAppLang } from '../../utils/i18n-lang';
 import LanguageToggler from '../LanguageToggler/LanguageToggler';
@@ -44,17 +45,22 @@ const UserMenu: React.FC = () => {
 
   // const handleLanguageChange = (_lang: string) => setLanguage(_lang);
 
+  const demoMenuItems = USER_DEMO_NAV_ITEMS.map((item) => ({
+    link: item.link,
+    label: t(item.labelKey),
+  }));
+
   const authenticatedMenuItems = [
     { link: '/home', label: t('dashboard.title') },
     { link: '/trainings', label: t('nav.myTrainings') },
     { link: '/statistics', label: t('nav.myStatistics') },
     { link: '/applications', label: t('nav.myApplications') },
-    { link: '/achievements', label: t('nav.myAchievements') },
     { link: '/equipment', label: t('nav.myEquipment') },
     {
       link: '/profile',
       label: t('menu.myProfile', { name: (user?.firstName || '') + ' ' + (user?.lastName || '') }),
     },
+    ...demoMenuItems,
   ];
 
   const unauthenticatedSections: MenuSection[] = [
@@ -63,8 +69,8 @@ const UserMenu: React.FC = () => {
         { link: '/home', label: t('dashboard.title') },
         { link: '/trainings', label: t('nav.myTrainings') },
         { link: '/statistics', label: t('nav.myStatistics') },
-        { link: '/achievements', label: t('nav.myAchievements') },
         { link: '/equipment', label: t('nav.myEquipment') },
+        ...demoMenuItems,
       ],
     },
     {

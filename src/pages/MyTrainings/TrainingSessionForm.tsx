@@ -15,7 +15,12 @@ import { useTranslation } from 'react-i18next';
 import { Link, useParams } from 'react-router-dom';
 
 import { useLocalData } from '../../contexts/local-data-context';
-import type { LocalTrainingSession, CustomField } from '../../utils/local-data-storage';
+import type {
+  LocalTrainingSession,
+  CustomField,
+  TrainingMood,
+} from '../../utils/local-data-storage';
+import { TRAINING_MOODS } from '../../utils/training-session-utils';
 import EquipmentSetMiniForm from '../MyEquipment/EquipmentSetMiniForm';
 
 interface TrainingSessionFormProps {
@@ -58,6 +63,11 @@ const TrainingSessionForm: React.FC<TrainingSessionFormProps> = ({
   const [targetType, setTargetType] = useState(initial.targetType ?? '');
   const [equipmentSetId, setEquipmentSetId] = useState(initialEquipmentSetId);
   const [showMiniForm, setShowMiniForm] = useState(false);
+  const [scoreTotal, setScoreTotal] = useState(
+    initial.scoreTotal !== undefined ? String(initial.scoreTotal) : '',
+  );
+  const [notes, setNotes] = useState(initial.notes ?? '');
+  const [mood, setMood] = useState<TrainingMood | ''>(initial.mood ?? '');
   const [customFields, setCustomFields] = useState<CustomField[]>(initial.customFields ?? []);
 
   const handleAddCustomField = () => {
@@ -78,13 +88,18 @@ const TrainingSessionForm: React.FC<TrainingSessionFormProps> = ({
     e.preventDefault();
 
     const parsedShots = shotsCount ? parseInt(shotsCount, 10) : undefined;
+    const parsedScore = scoreTotal ? parseInt(scoreTotal, 10) : undefined;
 
     onSubmit({
       date,
+      status: initial.status ?? 'finished',
       shotsCount: parsedShots,
       distance: distance.trim() || undefined,
       targetType: targetType || undefined,
       equipmentSetId: equipmentSetId || undefined,
+      scoreTotal: parsedScore !== undefined && !Number.isNaN(parsedScore) ? parsedScore : undefined,
+      notes: notes.trim() || undefined,
+      mood: mood || undefined,
       customFields: customFields.filter((f) => f.key.trim()),
     });
   };
@@ -195,6 +210,39 @@ const TrainingSessionForm: React.FC<TrainingSessionFormProps> = ({
           {t('trainings.moreDetails')}
         </AccordionSummary>
         <AccordionDetails sx={{ px: 0, pt: 0 }}>
+          <TextField
+            label={t('trainings.scoreTotal')}
+            type="number"
+            value={scoreTotal}
+            onChange={(e) => setScoreTotal(e.target.value)}
+            fullWidth
+            sx={{ mb: 2 }}
+            inputProps={{ min: 0 }}
+          />
+          <TextField
+            label={t('trainings.notes')}
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
+            fullWidth
+            multiline
+            minRows={2}
+            sx={{ mb: 2 }}
+          />
+          <TextField
+            select
+            label={t('trainings.mood')}
+            value={mood}
+            onChange={(e) => setMood(e.target.value as TrainingMood | '')}
+            fullWidth
+            sx={{ mb: 2 }}
+          >
+            <MenuItem value="">&mdash;</MenuItem>
+            {TRAINING_MOODS.map((m) => (
+              <MenuItem key={m} value={m}>
+                {t(`trainings.moodOptions.${m}`)}
+              </MenuItem>
+            ))}
+          </TextField>
           {customFields.map((field, index) => (
             <Box key={index} sx={{ display: 'flex', gap: 1, mb: 1 }}>
               <TextField

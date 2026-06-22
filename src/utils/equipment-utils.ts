@@ -2,6 +2,17 @@ import type { LocalEquipmentSet } from './local-data-storage';
 
 export const BOW_TYPES = ['bow', 'crossbow'] as const;
 
+export const ARROW_MATERIALS = [
+  'wood',
+  'carbon',
+  'fiberglass',
+  'aluminium',
+  'mix',
+  'custom',
+] as const;
+
+export type ArrowMaterial = (typeof ARROW_MATERIALS)[number];
+
 export const DISMISSED_BOW_SETUP_PROMPT_KEY = 'dismissedBowSetupPrompt';
 export const DEFAULT_EQUIPMENT_SET_ID_KEY = 'sokil_default_equipment_set_id';
 

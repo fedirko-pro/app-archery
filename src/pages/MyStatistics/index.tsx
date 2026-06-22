@@ -345,6 +345,69 @@ const MyStatisticsPage: React.FC = () => {
         </Grid>
       </Grid>
 
+      <SectionTitle>{t('statistics.sections.scoring')}</SectionTitle>
+      {stats.scoring.avgScore !== null ? (
+        <>
+          <Grid container spacing={2} sx={{ mb: 2 }}>
+            <Grid size={{ xs: 6, sm: 4 }}>
+              <StatCard label={t('statistics.avgScore')} value={String(stats.scoring.avgScore)} />
+            </Grid>
+            <Grid size={{ xs: 6, sm: 8 }}>
+              <StatCard
+                label={t('statistics.bestSession')}
+                value={
+                  stats.scoring.bestSession
+                    ? `${stats.scoring.bestSession.score}${
+                        stats.scoring.bestSession.distance
+                          ? ` @ ${stats.scoring.bestSession.distance}m`
+                          : ''
+                      }`
+                    : DASH
+                }
+                subtitle={
+                  stats.scoring.bestSession
+                    ? format(parseISO(stats.scoring.bestSession.date), 'dd MMM yyyy')
+                    : undefined
+                }
+              />
+            </Grid>
+          </Grid>
+          {stats.scoring.avgScoreByDistance.length > 0 && (
+            <Card variant="outlined" sx={{ mb: 2 }}>
+              <CardContent>
+                <Typography variant="subtitle1" fontWeight={600} gutterBottom>
+                  {t('statistics.scoreByDistance')}
+                </Typography>
+                {stats.scoring.avgScoreByDistance.map((entry, i, arr) => (
+                  <React.Fragment key={entry.distance}>
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        py: 0.5,
+                      }}
+                    >
+                      <Typography variant="body2" color="text.secondary">
+                        {entry.distance}m ({entry.count})
+                      </Typography>
+                      <Typography variant="body2" fontWeight={600}>
+                        {entry.avgScore}
+                      </Typography>
+                    </Box>
+                    {i < arr.length - 1 && <Divider />}
+                  </React.Fragment>
+                ))}
+              </CardContent>
+            </Card>
+          )}
+        </>
+      ) : (
+        <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+          {t('statistics.noScoringData')}
+        </Typography>
+      )}
+
       <SectionTitle>{t('statistics.sections.equipment')}</SectionTitle>
       {hasNamedEquipmentStats ? (
         <Card variant="outlined" sx={{ mb: 2 }}>

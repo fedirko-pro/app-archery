@@ -9,6 +9,7 @@ import {
   canSeeAdminNavSection,
   canSeeOrganizerTools,
   ORGANIZER_NAV_ITEMS,
+  PUBLIC_DEMO_NAV_ITEMS,
 } from '../../config/roles';
 import { useAuth } from '../../contexts/auth-context';
 import Menu from '../Menu/Menu';
@@ -39,8 +40,12 @@ function NavMenu() {
     { link: '/divisions', label: t('nav.divisions', 'Divisions') },
     { link: '/categories', label: t('nav.categories') },
     { link: '/converter', label: t('nav.converter') },
-    { link: '/competition/user', label: t('nav.scoringDemo', 'Scoring Card (Demo)') },
   ];
+
+  const demoMenuItems = PUBLIC_DEMO_NAV_ITEMS.map((item) => ({
+    link: item.link,
+    label: t(item.labelKey),
+  }));
 
   const sections: MenuSection[] = [{ items: mainMenuItems }];
 
@@ -70,6 +75,13 @@ function NavMenu() {
     divider: true,
     items: [{ link: '/about', label: t('nav.about') }],
   });
+
+  if (demoMenuItems.length > 0) {
+    sections.push({
+      divider: true,
+      items: demoMenuItems,
+    });
+  }
 
   return (
     <>

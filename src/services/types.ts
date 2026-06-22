@@ -43,10 +43,15 @@ export interface CreateEquipmentSetDto {
 export interface TrainingSessionDto {
   id: string;
   date: string;
+  status?: string;
   shotsCount?: number;
+  arrowsPerSet?: number;
   distance?: string;
   targetType?: string;
   equipmentSetId?: string;
+  scoreTotal?: number;
+  notes?: string;
+  mood?: string;
   customFields?: CustomFieldDto[];
   createdAt: string;
   updatedAt: string;
@@ -54,10 +59,15 @@ export interface TrainingSessionDto {
 
 export interface CreateTrainingSessionDto {
   date: string;
+  status?: string;
   shotsCount?: number;
+  arrowsPerSet?: number;
   distance?: string;
   targetType?: string;
   equipmentSetId?: string;
+  scoreTotal?: number;
+  notes?: string;
+  mood?: string;
   customFields?: CustomFieldDto[];
 }
 

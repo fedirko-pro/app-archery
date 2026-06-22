@@ -15,6 +15,7 @@ import {
   resolveDefaultEquipmentSetId,
   setDefaultEquipmentSetId,
 } from '../utils/equipment-utils';
+import { runLocalDataMigrations } from '../utils/local-data-migrations';
 import {
   getEquipmentSets,
   saveEquipmentSet,
@@ -28,6 +29,11 @@ import {
   mergeServerTrainingSessions,
 } from '../utils/local-data-storage';
 import type { LocalEquipmentSet, LocalTrainingSession } from '../utils/local-data-storage';
+import {
+  DEFAULT_ARROWS_PER_SET,
+  finishOtherStartedSessions,
+  sessionToDto,
+} from '../utils/training-session-utils';
 import { useAuth } from './auth-context';
 
 export type {
@@ -57,10 +63,15 @@ interface LocalDataContextType {
   addTrainingSession: (
     data: Omit<LocalTrainingSession, 'id' | 'isSynced' | 'createdAt' | 'updatedAt'>,
   ) => Promise<LocalTrainingSession>;
+  startTrainingSession: (
+    data?: Partial<
+      Omit<LocalTrainingSession, 'id' | 'isSynced' | 'createdAt' | 'updatedAt' | 'status'>
+    >,
+  ) => Promise<LocalTrainingSession>;
   editTrainingSession: (
     id: string,
     data: Partial<Omit<LocalTrainingSession, 'id' | 'createdAt'>>,
-  ) => void;
+  ) => Promise<void>;
   removeTrainingSession: (id: string) => Promise<void>;
   syncNow: () => Promise<void>;
   refresh: () => void;
@@ -82,7 +93,10 @@ interface Props {
 
 export const LocalDataProvider: React.FC<Props> = ({ children }) => {
   const { user, isAuthenticated } = useAuth();
-  const [equipmentSets, setEquipmentSets] = useState<LocalEquipmentSet[]>(() => getEquipmentSets());
+  const [equipmentSets, setEquipmentSets] = useState<LocalEquipmentSet[]>(() => {
+    runLocalDataMigrations();
+    return getEquipmentSets();
+  });
   const [trainingSessions, setTrainingSessions] = useState<LocalTrainingSession[]>(() =>
     getTrainingSessions(),
   );
@@ -104,6 +118,20 @@ export const LocalDataProvider: React.FC<Props> = ({ children }) => {
   }, []);
 
   const shouldSync = isAuthenticated && user?.syncTrainingsAndEquipment === true;
+
+  const pushSessionToServer = useCallback(async (session: LocalTrainingSession): Promise<void> => {
+    const dto = sessionToDto(session);
+    if (session.serverId) {
+      await apiService.updateTrainingSession(session.serverId, dto);
+      updateTrainingSession(session.id, { isSynced: true });
+    } else {
+      const created = await apiService.createTrainingSession(dto);
+      updateTrainingSession(session.id, {
+        serverId: created.id,
+        isSynced: true,
+      });
+    }
+  }, []);
 
   const unsyncedCount = useMemo(
     () =>
@@ -163,18 +191,7 @@ export const LocalDataProvider: React.FC<Props> = ({ children }) => {
 
       for (const session of unsyncedSessions) {
         try {
-          const created = await apiService.createTrainingSession({
-            date: session.date,
-            shotsCount: session.shotsCount,
-            distance: session.distance,
-            targetType: session.targetType,
-            equipmentSetId: session.equipmentSetId,
-            customFields: session.customFields,
-          });
-          updateTrainingSession(session.id, {
-            serverId: created.id,
-            isSynced: true,
-          });
+          await pushSessionToServer(session);
         } catch {
           // skip and retry on next sync
         }
@@ -186,7 +203,7 @@ export const LocalDataProvider: React.FC<Props> = ({ children }) => {
       setIsSyncing(false);
       refresh();
     }
-  }, [shouldSync, refresh]);
+  }, [shouldSync, refresh, pushSessionToServer]);
 
   // Sync on login and when sync setting changes to true
   useEffect(() => {
@@ -291,18 +308,7 @@ export const LocalDataProvider: React.FC<Props> = ({ children }) => {
 
       if (shouldSync && navigator.onLine) {
         try {
-          const created = await apiService.createTrainingSession({
-            date: newSession.date,
-            shotsCount: newSession.shotsCount,
-            distance: newSession.distance,
-            targetType: newSession.targetType,
-            equipmentSetId: newSession.equipmentSetId,
-            customFields: newSession.customFields,
-          });
-          updateTrainingSession(newSession.id, {
-            serverId: created.id,
-            isSynced: true,
-          });
+          await pushSessionToServer(newSession);
         } catch {
           // will sync next time
         }
@@ -311,15 +317,59 @@ export const LocalDataProvider: React.FC<Props> = ({ children }) => {
       refresh();
       return newSession;
     },
-    [shouldSync, refresh],
+    [shouldSync, refresh, pushSessionToServer],
+  );
+
+  const startTrainingSession = useCallback(
+    async (
+      data: Partial<
+        Omit<LocalTrainingSession, 'id' | 'isSynced' | 'createdAt' | 'updatedAt' | 'status'>
+      > = {},
+    ): Promise<LocalTrainingSession> => {
+      finishOtherStartedSessions();
+
+      const today = new Date().toISOString().slice(0, 10);
+      const newSession = saveTrainingSession({
+        date: data.date ?? today,
+        status: 'started',
+        shotsCount: 0,
+        arrowsPerSet: data.arrowsPerSet ?? DEFAULT_ARROWS_PER_SET,
+        distance: data.distance,
+        targetType: data.targetType,
+        equipmentSetId: data.equipmentSetId,
+        customFields: data.customFields,
+      });
+
+      if (shouldSync && navigator.onLine) {
+        try {
+          await pushSessionToServer(newSession);
+        } catch {
+          // will sync next time
+        }
+      }
+
+      refresh();
+      return getTrainingSessions().find((s) => s.id === newSession.id) ?? newSession;
+    },
+    [shouldSync, refresh, pushSessionToServer],
   );
 
   const editTrainingSession = useCallback(
-    (id: string, data: Partial<Omit<LocalTrainingSession, 'id' | 'createdAt'>>) => {
+    async (id: string, data: Partial<Omit<LocalTrainingSession, 'id' | 'createdAt'>>) => {
       updateTrainingSession(id, data);
+      const updated = getTrainingSessions().find((s) => s.id === id);
+
+      if (updated && shouldSync && navigator.onLine) {
+        try {
+          await pushSessionToServer(updated);
+        } catch {
+          // will sync next time
+        }
+      }
+
       refresh();
     },
-    [refresh],
+    [shouldSync, refresh, pushSessionToServer],
   );
 
   const removeTrainingSession = useCallback(
@@ -360,6 +410,7 @@ export const LocalDataProvider: React.FC<Props> = ({ children }) => {
       removeEquipmentSet,
       setDefaultEquipmentSet,
       addTrainingSession,
+      startTrainingSession,
       editTrainingSession,
       removeTrainingSession,
       syncNow,
@@ -379,6 +430,7 @@ export const LocalDataProvider: React.FC<Props> = ({ children }) => {
       removeEquipmentSet,
       setDefaultEquipmentSet,
       addTrainingSession,
+      startTrainingSession,
       editTrainingSession,
       removeTrainingSession,
       syncNow,

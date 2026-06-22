@@ -10,7 +10,7 @@ import Typography from '@mui/material/Typography';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { BOW_TYPES } from '../../utils/equipment-utils';
+import { ARROW_MATERIALS, BOW_TYPES } from '../../utils/equipment-utils';
 import type { LocalEquipmentSet, CustomField } from '../../utils/local-data-storage';
 
 interface EquipmentSetFormProps {
@@ -164,12 +164,19 @@ const EquipmentSetForm: React.FC<EquipmentSetFormProps> = ({
           placeholder="e.g. 350 gr"
         />
         <TextField
+          select
           label={t('equipment.arrowMaterial')}
           value={arrowMaterial}
           onChange={(e) => setArrowMaterial(e.target.value)}
           fullWidth
-          placeholder="e.g. carbon"
-        />
+        >
+          <MenuItem value="">&mdash;</MenuItem>
+          {ARROW_MATERIALS.map((material) => (
+            <MenuItem key={material} value={material}>
+              {t(`equipment.arrowMaterials.${material}`)}
+            </MenuItem>
+          ))}
+        </TextField>
       </Box>
 
       <Divider sx={{ my: 2 }} />

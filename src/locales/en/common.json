@@ -423,6 +423,20 @@
     "syncing": "Synchronizing...",
     "syncSuccess": "Data synchronized successfully",
     "syncError": "Synchronization failed",
+    "inProgress": "In progress",
+    "addShot": "Add shot",
+    "addSet": "Add set",
+    "finishSession": "Finish",
+    "arrowsPerSet": "Arrows per set",
+    "scoreTotal": "Total score",
+    "notes": "Notes",
+    "mood": "How did it feel?",
+    "moodOptions": {
+      "bad": "Bad",
+      "normal": "Normal",
+      "good": "Good",
+      "amazing": "Amazing"
+    },
     "equipment": {
       "optionalHint": "No bow setup yet (optional — you can add one later when editing)",
       "createSetup": "Create setup",
@@ -446,12 +460,20 @@
     "crossbow": "Crossbow",
     "manufacturer": "Manufacturer",
     "model": "Model",
-    "drawWeight": "Draw weight",
+    "drawWeight": "Draw weight (lbs)",
     "arrowGroup": "Arrow",
     "arrowLength": "Arrow length",
     "arrowSpine": "Spine",
     "arrowWeight": "Arrow weight",
     "arrowMaterial": "Arrow material",
+    "arrowMaterials": {
+      "wood": "Wood",
+      "carbon": "Carbon",
+      "fiberglass": "Fiberglass",
+      "aluminium": "Aluminium",
+      "mix": "Mix",
+      "custom": "Custom"
+    },
     "length": "Length",
     "weight": "Weight",
     "material": "Material",
@@ -719,7 +741,8 @@
       "distance": "Distance Traveled",
       "habits": "Training Habits",
       "tournaments": "Tournaments",
-      "equipment": "Performance by Equipment"
+      "equipment": "Performance by Equipment",
+      "scoring": "Scoring"
     },
     "memberSince": "Member since",
     "totalSessions": "Total sessions",
@@ -748,6 +771,10 @@
     "arrows": "arrows",
     "sessions": "sessions",
     "loadError": "Failed to load statistics",
+    "avgScore": "Average score",
+    "bestSession": "Best session",
+    "scoreByDistance": "Average score by distance",
+    "noScoringData": "Finish sessions with a score to see scoring trends.",
     "emptyState": {
       "chartsIntro": "Log training sessions to unlock your monthly trends.",
       "ghostTitle": "Your charts will appear here",

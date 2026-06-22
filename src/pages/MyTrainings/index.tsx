@@ -20,8 +20,11 @@ import LocalSyncChip from '../../components/LocalSyncChip/LocalSyncChip';
 import { useLocalData, type LocalTrainingSession } from '../../contexts/local-data-context';
 import { getEquipmentSetName, isBowSetupPromptDismissed } from '../../utils/equipment-utils';
 import { getSessionCardTint } from '../../utils/session-card-tints';
+import { getStartedSession } from '../../utils/training-session-utils';
 import { getLastLoggedSession, toSessionFormDefaults } from '../../utils/training-stats';
 import { TRAINING_TEMPLATES, type TrainingTemplate } from '../../utils/training-templates';
+import ActiveSessionCard from './ActiveSessionCard';
+import FinishSessionDialog from './FinishSessionDialog';
 import TrainingSessionDialog from './TrainingSessionDialog';
 
 const MyTrainingsPage: React.FC = () => {
@@ -32,7 +35,7 @@ const MyTrainingsPage: React.FC = () => {
   const {
     trainingSessions,
     equipmentSets,
-    addTrainingSession,
+    startTrainingSession,
     editTrainingSession,
     removeTrainingSession,
     defaultEquipmentSetId,
@@ -43,37 +46,42 @@ const MyTrainingsPage: React.FC = () => {
   const [editTarget, setEditTarget] = useState<LocalTrainingSession | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [deleteError, setDeleteError] = useState<string | null>(null);
-  const [templateDefaults, setTemplateDefaults] = useState<Partial<LocalTrainingSession> | null>(
-    null,
+  const [finishOpen, setFinishOpen] = useState(false);
+
+  const activeSession = useMemo(() => getStartedSession(trainingSessions), [trainingSessions]);
+  const finishedSessions = useMemo(
+    () => trainingSessions.filter((s) => s.status !== 'started'),
+    [trainingSessions],
   );
 
-  const lastLogged = useMemo(() => getLastLoggedSession(trainingSessions), [trainingSessions]);
-  const addDefaults = useMemo(
-    () =>
-      lastLogged
-        ? toSessionFormDefaults(lastLogged, defaultEquipmentSetId)
-        : defaultEquipmentSetId
-          ? { equipmentSetId: defaultEquipmentSetId }
-          : undefined,
-    [lastLogged, defaultEquipmentSetId],
-  );
+  const lastLogged = useMemo(() => getLastLoggedSession(finishedSessions), [finishedSessions]);
+
+  const buildStartDefaults = (
+    template?: Partial<LocalTrainingSession>,
+  ): Partial<LocalTrainingSession> => {
+    const fromLast = lastLogged
+      ? toSessionFormDefaults(lastLogged, defaultEquipmentSetId)
+      : defaultEquipmentSetId
+        ? { equipmentSetId: defaultEquipmentSetId }
+        : {};
+    return { ...fromLast, ...template };
+  };
+
+  const handleStartTraining = async (template?: Partial<LocalTrainingSession>) => {
+    setSubmitting(true);
+    try {
+      await startTrainingSession(buildStartDefaults(template));
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   const handleOpenAdd = () => {
-    setEditTarget(null);
-    setTemplateDefaults(null);
-    setFormKey((k) => k + 1);
-    setFormOpen(true);
+    void handleStartTraining();
   };
 
   const handleOpenWithTemplate = (template: TrainingTemplate) => {
-    setEditTarget(null);
-    const defaults = { ...template.defaults };
-    if (defaultEquipmentSetId && !defaults.equipmentSetId) {
-      defaults.equipmentSetId = defaultEquipmentSetId;
-    }
-    setTemplateDefaults(defaults);
-    setFormKey((k) => k + 1);
-    setFormOpen(true);
+    void handleStartTraining(template.defaults);
   };
 
   const didAutoOpenRef = useRef(false);
@@ -86,9 +94,7 @@ const MyTrainingsPage: React.FC = () => {
     if (!fromOnboarding && !fromQuery) return;
 
     didAutoOpenRef.current = true;
-    setEditTarget(null);
-    setFormKey((k) => k + 1);
-    setFormOpen(true);
+    void handleStartTraining();
 
     if (fromQuery) {
       const next = new URLSearchParams(searchParams);
@@ -106,19 +112,15 @@ const MyTrainingsPage: React.FC = () => {
   const handleClose = () => {
     setFormOpen(false);
     setEditTarget(null);
-    setTemplateDefaults(null);
   };
 
   const handleSubmit = async (
     data: Omit<LocalTrainingSession, 'id' | 'isSynced' | 'createdAt' | 'updatedAt'>,
   ) => {
+    if (!editTarget) return;
     setSubmitting(true);
     try {
-      if (editTarget) {
-        editTrainingSession(editTarget.id, { ...data, isSynced: false });
-      } else {
-        await addTrainingSession(data);
-      }
+      await editTrainingSession(editTarget.id, { ...data, isSynced: false });
       handleClose();
     } finally {
       setSubmitting(false);
@@ -134,9 +136,6 @@ const MyTrainingsPage: React.FC = () => {
     }
   };
 
-  const getEquipmentName = (equipmentSetId?: string): string | undefined =>
-    getEquipmentSetName(equipmentSetId, equipmentSets);
-
   const showBowSetupAlert = equipmentSets.length === 0 && !isBowSetupPromptDismissed();
 
   const formatDate = (dateStr: string): string => {
@@ -151,7 +150,7 @@ const MyTrainingsPage: React.FC = () => {
     }
   };
 
-  const sorted = [...trainingSessions].sort(
+  const sortedFinished = [...finishedSessions].sort(
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
   );
 
@@ -168,7 +167,12 @@ const MyTrainingsPage: React.FC = () => {
         <Typography variant="h5" component="h1">
           {t('trainings.title')}
         </Typography>
-        <Button variant="contained" startIcon={<AddIcon />} onClick={handleOpenAdd}>
+        <Button
+          variant="contained"
+          startIcon={<AddIcon />}
+          onClick={handleOpenAdd}
+          disabled={submitting}
+        >
           {t('trainings.add')}
         </Button>
       </Box>
@@ -195,7 +199,13 @@ const MyTrainingsPage: React.FC = () => {
         </Alert>
       )}
 
-      {sorted.length === 0 ? (
+      {activeSession && (
+        <Box sx={{ mb: 2 }}>
+          <ActiveSessionCard session={activeSession} onFinish={() => setFinishOpen(true)} />
+        </Box>
+      )}
+
+      {sortedFinished.length === 0 && !activeSession ? (
         <Card variant="outlined">
           <CardContent>
             <Box sx={{ textAlign: 'center', py: 1 }}>
@@ -227,6 +237,7 @@ const MyTrainingsPage: React.FC = () => {
                 size="small"
                 startIcon={<AddIcon />}
                 onClick={handleOpenAdd}
+                disabled={submitting}
               >
                 {t('trainings.emptyState.orBlank')}
               </Button>
@@ -235,7 +246,7 @@ const MyTrainingsPage: React.FC = () => {
         </Card>
       ) : (
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-          {sorted.map((session, index) => {
+          {sortedFinished.map((session, index) => {
             const tint = getSessionCardTint(theme, index);
             return (
               <Card
@@ -251,26 +262,30 @@ const MyTrainingsPage: React.FC = () => {
                   </Box>
 
                   <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
-                    {(session.shotsCount !== undefined || session.distance) && (
-                      <Box sx={{ display: 'flex', gap: 2 }}>
-                        {session.shotsCount !== undefined && (
-                          <Typography variant="body2" color="text.secondary">
-                            {t('trainings.shotsCount')}:{' '}
-                            <Box component="span" fontWeight="bold">
-                              {session.shotsCount}
-                            </Box>
-                          </Typography>
-                        )}
-                        {session.distance && (
-                          <Typography variant="body2" color="text.secondary">
-                            {t('trainings.distance')}:{' '}
-                            <Box component="span" fontWeight="bold">
-                              {parseFloat(session.distance).toFixed(1)}m
-                            </Box>
-                          </Typography>
-                        )}
-                      </Box>
-                    )}
+                    <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+                      <Typography variant="body2" color="text.secondary">
+                        {t('trainings.shotsCount')}:{' '}
+                        <Box component="span" fontWeight="bold">
+                          {session.shotsCount ?? 0}
+                        </Box>
+                      </Typography>
+                      {session.distance && (
+                        <Typography variant="body2" color="text.secondary">
+                          {t('trainings.distance')}:{' '}
+                          <Box component="span" fontWeight="bold">
+                            {parseFloat(session.distance).toFixed(1)}m
+                          </Box>
+                        </Typography>
+                      )}
+                      {session.scoreTotal !== undefined && (
+                        <Typography variant="body2" color="text.secondary">
+                          {t('trainings.scoreTotal')}:{' '}
+                          <Box component="span" fontWeight="bold">
+                            {session.scoreTotal}
+                          </Box>
+                        </Typography>
+                      )}
+                    </Box>
                     {session.targetType && (
                       <Typography variant="body2" color="text.secondary">
                         {t('trainings.targetType')}:{' '}
@@ -283,7 +298,24 @@ const MyTrainingsPage: React.FC = () => {
                       <Typography variant="body2" color="text.secondary">
                         {t('trainings.equipmentSet')}:{' '}
                         <Box component="span" fontWeight="bold">
-                          {getEquipmentName(session.equipmentSetId) ?? session.equipmentSetId}
+                          {getEquipmentSetName(session.equipmentSetId, equipmentSets) ??
+                            session.equipmentSetId}
+                        </Box>
+                      </Typography>
+                    )}
+                    {session.mood && (
+                      <Typography variant="body2" color="text.secondary">
+                        {t('trainings.mood')}:{' '}
+                        <Box component="span" fontWeight="bold">
+                          {t(`trainings.moodOptions.${session.mood}`)}
+                        </Box>
+                      </Typography>
+                    )}
+                    {session.notes && (
+                      <Typography variant="body2" color="text.secondary">
+                        {t('trainings.notes')}:{' '}
+                        <Box component="span" fontWeight="bold">
+                          {session.notes}
                         </Box>
                       </Typography>
                     )}
@@ -314,7 +346,7 @@ const MyTrainingsPage: React.FC = () => {
                     size="small"
                     color="error"
                     startIcon={<DeleteIcon />}
-                    onClick={() => handleDelete(session.id)}
+                    onClick={() => void handleDelete(session.id)}
                   >
                     {t('common.delete')}
                   </Button>
@@ -325,12 +357,18 @@ const MyTrainingsPage: React.FC = () => {
         </Box>
       )}
 
+      <FinishSessionDialog
+        open={finishOpen}
+        session={activeSession}
+        onClose={() => setFinishOpen(false)}
+      />
+
       <TrainingSessionDialog
         open={formOpen}
         onClose={handleClose}
-        title={editTarget ? t('trainings.session') : t('trainings.add')}
-        initial={editTarget ?? templateDefaults ?? addDefaults}
-        useDefaultEquipment={!editTarget}
+        title={t('trainings.session')}
+        initial={editTarget ?? undefined}
+        useDefaultEquipment={false}
         formKey={formKey}
         onSubmit={handleSubmit}
         submitting={submitting}
