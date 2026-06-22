@@ -45,6 +45,9 @@ const TournamentList: React.FC = () => {
   const [activeTab, setActiveTab] = useState(0);
   const [countryFilter, setCountryFilter] = useState<string | null>(null);
   const [filterReady, setFilterReady] = useState(false);
+  const [countriesWithTournaments, setCountriesWithTournaments] = useState<Set<string> | null>(
+    null,
+  );
 
   useEffect(() => {
     let cancelled = false;
@@ -76,6 +79,34 @@ const TournamentList: React.FC = () => {
       cancelled = true;
     };
   }, [user, searchParams]);
+
+  useEffect(() => {
+    if (!filterReady) return;
+    let cancelled = false;
+    const loadCountriesWithTournaments = async () => {
+      try {
+        const all = await apiService.getAllTournaments();
+        if (!cancelled) {
+          setCountriesWithTournaments(
+            new Set(
+              all
+                .map((tournament) => tournament.country)
+                .filter((code): code is string => Boolean(code)),
+            ),
+          );
+        }
+      } catch (fetchError) {
+        console.error('Error fetching tournament countries:', fetchError);
+        if (!cancelled) {
+          setCountriesWithTournaments(new Set());
+        }
+      }
+    };
+    void loadCountriesWithTournaments();
+    return () => {
+      cancelled = true;
+    };
+  }, [filterReady]);
 
   const fetchTournaments = useCallback(async () => {
     if (!filterReady || countryFilter === null) return;
@@ -157,6 +188,18 @@ const TournamentList: React.FC = () => {
 
   const filteredTournaments = useMemo(() => tournaments, [tournaments]);
 
+  const emptyListMessage = useMemo(() => {
+    if (filteredTournaments.length > 0) return null;
+    const isUpcoming = activeTab === 0;
+    if (countryFilter && countryFilter !== ALL_COUNTRIES_FILTER) {
+      const countryName = getCountryName(countryFilter) ?? countryFilter;
+      return isUpcoming
+        ? t('pages.tournaments.noUpcomingInCountry', { country: countryName })
+        : t('pages.tournaments.noPastInCountry', { country: countryName });
+    }
+    return isUpcoming ? t('pages.tournaments.noUpcomingAll') : t('pages.tournaments.noPastAll');
+  }, [activeTab, countryFilter, filteredTournaments.length, t]);
+
   if (!filterReady || (loading && tournaments.length === 0)) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" minHeight="200px">
@@ -216,11 +259,15 @@ const TournamentList: React.FC = () => {
             <MenuItem value={ALL_COUNTRIES_FILTER}>
               {t('pages.tournaments.allCountries', 'All countries')}
             </MenuItem>
-            {COUNTRIES.map((c) => (
-              <MenuItem key={c.code} value={c.code}>
-                {c.name}
-              </MenuItem>
-            ))}
+            {COUNTRIES.map((c) => {
+              const hasTournaments =
+                countriesWithTournaments === null || countriesWithTournaments.has(c.code);
+              return (
+                <MenuItem key={c.code} value={c.code} disabled={!hasTournaments}>
+                  {c.name}
+                </MenuItem>
+              );
+            })}
           </Select>
         </FormControl>
       </Box>
@@ -235,6 +282,12 @@ const TournamentList: React.FC = () => {
           <Tab label={t('pages.tournaments.pastTournaments', 'Past')} />
         </Tabs>
       </Box>
+
+      {!loading && emptyListMessage && (
+        <Alert severity="info" sx={{ mb: 2 }}>
+          {emptyListMessage}
+        </Alert>
+      )}
 
       <Box
         sx={{
