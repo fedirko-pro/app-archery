@@ -207,6 +207,7 @@
       "copyFailed": "Impossibile copiare il link negli appunti",
       "targetCount": "Numero di bersagli",
       "checkApplications": "Controlla domande",
+      "viewFeedback": "Visualizza feedback",
       "applyOtherUser": "Iscrivi altro utente",
       "start": "Inizio",
       "end": "Fine",
@@ -239,7 +240,37 @@
         "applicationDeadline": "Scadenza domande (opzionale - 5 giorni prima dell'inizio)",
         "applicationDeadlineHelper": "Lascia vuoto per impostare 5 giorni prima della data di inizio",
         "address": "Indirizzo",
-        "allowMultipleLabel": "Consenti domande multiple per utente (solo categorie diverse)"
+        "allowMultipleLabel": "Consenti domande multiple per utente (solo categorie diverse)",
+        "collectFeedbackLabel": "Raccogli feedback dai partecipanti"
+      },
+      "feedback": {
+        "title": "Com'è stato {{title}}?",
+        "subtitle": "Aiutaci a migliorare — valuta la tua esperienza e lascia un commento opzionale.",
+        "ratingLabel": "La tua valutazione",
+        "ratingRequired": "Seleziona una valutazione prima di inviare.",
+        "commentLabel": "Commento (opzionale)",
+        "commentPlaceholder": "Cosa è andato bene? Cosa si potrebbe migliorare?",
+        "commentHelper": "Il tuo feedback aiuta gli organizzatori a migliorare i futuri eventi.",
+        "submit": "Invia feedback",
+        "submitting": "Invio in corso...",
+        "submitError": "Impossibile inviare il feedback. Riprova.",
+        "loadError": "Impossibile caricare il modulo di feedback.",
+        "thankYouTitle": "Grazie per il tuo feedback!",
+        "thankYouMessage": "La tua risposta è stata registrata.",
+        "backToHome": "Torna alla Home",
+        "admin": {
+          "title": "Feedback — {{title}}",
+          "averageRating": "Valutazione media",
+          "totalFeedbacks": "Feedback totali",
+          "participant": "Partecipante",
+          "rating": "Valutazione",
+          "comment": "Commento",
+          "date": "Data",
+          "empty": "Nessun feedback inviato ancora.",
+          "loadError": "Impossibile caricare i feedback.",
+          "noPermission": "Non hai il permesso di visualizzare i feedback per questo torneo.",
+          "unknownUser": "Utente sconosciuto"
+        }
       }
     },
     "applications": {
@@ -667,6 +698,12 @@
       "arrows": "{{count}} frecce",
       "viewStatistics": "Vedi statistiche complete",
       "dismiss": "Capito"
+    },
+    "tournamentFeedback": {
+      "title": "Com'è stato {{title}}?",
+      "subtitle": "Aiutaci a migliorare",
+      "leaveFeedback": "Lascia feedback",
+      "dismiss": "Non ora"
     }
   },
   "onboarding": {

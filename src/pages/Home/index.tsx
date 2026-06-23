@@ -3,6 +3,7 @@ import ArchitectureOutlinedIcon from '@mui/icons-material/ArchitectureOutlined';
 import BarChartOutlinedIcon from '@mui/icons-material/BarChartOutlined';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import LocalFireDepartmentOutlinedIcon from '@mui/icons-material/LocalFireDepartmentOutlined';
+import RateReviewOutlinedIcon from '@mui/icons-material/RateReviewOutlined';
 import TrackChangesIcon from '@mui/icons-material/TrackChanges';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
@@ -27,6 +28,7 @@ import { useLocalData, type LocalTrainingSession } from '../../contexts/local-da
 import apiService from '../../services/api';
 import type {
   ApplicationStatus,
+  PendingTournamentFeedbackDto,
   TournamentApplicationDto,
   TournamentDto,
 } from '../../services/types';
@@ -44,6 +46,10 @@ import {
   isStreakAtRiskDismissed,
 } from '../../utils/re-engagement-utils';
 import { getSessionCardTint } from '../../utils/session-card-tints';
+import {
+  dismissTournamentFeedback,
+  isTournamentFeedbackDismissed,
+} from '../../utils/tournament-feedback-utils';
 import {
   buildWeekSetFromSessions,
   computeLocalStats,
@@ -76,6 +82,13 @@ const HomePage: React.FC = () => {
   const [bowPromptDismissTick, setBowPromptDismissTick] = useState(0);
   const [streakDismissTick, setStreakDismissTick] = useState(0);
   const [monthlySummaryDismissTick, setMonthlySummaryDismissTick] = useState(0);
+  const [pendingFeedback, setPendingFeedback] = useState<PendingTournamentFeedbackDto[]>([]);
+  const [feedbackDismissTick, setFeedbackDismissTick] = useState(0);
+
+  const visiblePendingFeedback = useMemo(
+    () => pendingFeedback.filter((item) => !isTournamentFeedbackDismissed(item.id)),
+    [pendingFeedback, feedbackDismissTick],
+  );
 
   const showBowSetupPrompt = useMemo(
     () =>
@@ -178,6 +191,29 @@ const HomePage: React.FC = () => {
     };
   }, [isAuthenticated, user, t]);
 
+  useEffect(() => {
+    if (!isAuthenticated) {
+      setPendingFeedback([]);
+      return;
+    }
+
+    let cancelled = false;
+
+    const loadPendingFeedback = async () => {
+      try {
+        const data = await apiService.getPendingTournamentFeedback();
+        if (!cancelled) setPendingFeedback(data);
+      } catch {
+        if (!cancelled) setPendingFeedback([]);
+      }
+    };
+
+    void loadPendingFeedback();
+    return () => {
+      cancelled = true;
+    };
+  }, [isAuthenticated]);
+
   const handleOpenAdd = async () => {
     setSubmitting(true);
     try {
@@ -221,6 +257,11 @@ const HomePage: React.FC = () => {
   const handleDismissMonthlySummary = () => {
     if (priorMonthSummary) dismissMonthlySummary(priorMonthSummary.monthKey);
     setMonthlySummaryDismissTick((t) => t + 1);
+  };
+
+  const handleDismissTournamentFeedback = (tournamentId: string) => {
+    dismissTournamentFeedback(tournamentId);
+    setFeedbackDismissTick((t) => t + 1);
   };
 
   const fmt = (n: number): string => n.toLocaleString();
@@ -309,6 +350,54 @@ const HomePage: React.FC = () => {
           </Box>
         </Paper>
       )}
+
+      {visiblePendingFeedback.map((item) => (
+        <Paper
+          key={item.id}
+          elevation={0}
+          sx={{
+            p: 3,
+            mt: 2,
+            mb: 1,
+            border: `1px solid ${theme.palette.info.light}`,
+            borderRadius: 2,
+            bgcolor:
+              theme.palette.mode === 'dark' ? 'info.dark' : alpha(theme.palette.info.main, 0.08),
+            display: 'flex',
+            flexDirection: { xs: 'column', sm: 'row' },
+            alignItems: { xs: 'flex-start', sm: 'center' },
+            gap: 2,
+          }}
+        >
+          <RateReviewOutlinedIcon sx={{ fontSize: 40, color: 'info.main', flexShrink: 0 }} />
+          <Box sx={{ flex: 1 }}>
+            <Typography variant="subtitle1" fontWeight={700}>
+              {t('dashboard.tournamentFeedback.title', { title: item.title })}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              {t('dashboard.tournamentFeedback.subtitle')}
+            </Typography>
+          </Box>
+          <Box sx={{ display: 'flex', gap: 1, flexShrink: 0 }}>
+            <Button
+              variant="contained"
+              color="info"
+              size="small"
+              component={Link}
+              to={`/${lang}/tournaments/${item.id}/feedback`}
+            >
+              {t('dashboard.tournamentFeedback.leaveFeedback')}
+            </Button>
+            <Button
+              variant="text"
+              size="small"
+              onClick={() => handleDismissTournamentFeedback(item.id)}
+            >
+              {t('dashboard.tournamentFeedback.dismiss')}
+            </Button>
+          </Box>
+        </Paper>
+      ))}
 
       <Grid container spacing={2} sx={{ mt: 1 }}>
         <Grid size={{ xs: 6, sm: 4 }}>

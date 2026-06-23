@@ -39,10 +39,6 @@ Achievements should derive from existing statistics:
 
 _Reframe, don’t remove._
 
-#### D4. Post-tournament archer moment
-
-- [ ] After event: prompt to log “competition session” linked to tournament ID
-
 ---
 
 ### Phase E — Knowledge & Tools (Supporting)

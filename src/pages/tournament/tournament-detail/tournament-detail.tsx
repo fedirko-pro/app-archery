@@ -13,6 +13,7 @@ import {
   LocationOn,
   PersonAdd,
   PictureAsPdf,
+  RateReview,
   Send,
   Share,
 } from '@mui/icons-material';
@@ -341,6 +342,17 @@ const TournamentDetail: React.FC = () => {
                 >
                   {t('pages.tournaments.checkApplications', 'Check Applications')}
                 </Button>
+                {tournament.collectFeedback && (
+                  <Button
+                    variant="outlined"
+                    size="large"
+                    startIcon={<RateReview />}
+                    component={Link}
+                    to={`/${lang}/tournaments/${tournament.id}/feedback/admin`}
+                  >
+                    {t('pages.tournaments.viewFeedback')}
+                  </Button>
+                )}
               </>
             )}
             {user && canApplyOtherUsers(user.role) && !isPastTournament(tournament) && (

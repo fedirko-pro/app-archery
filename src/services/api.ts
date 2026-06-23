@@ -27,6 +27,9 @@ import type {
   DivisionDto,
   RuleDto,
   TournamentDto,
+  PendingTournamentFeedbackDto,
+  TournamentFeedbackDto,
+  TournamentFeedbackListDto,
   PatrolDto,
   TournamentApplicationDto,
   ApplicationStatsDto,
@@ -356,6 +359,33 @@ class ApiService {
     return await this.request<void>(`/tournaments/${id}`, {
       method: 'DELETE',
     });
+  }
+
+  async getPendingTournamentFeedback(): Promise<PendingTournamentFeedbackDto[]> {
+    return await this.request<PendingTournamentFeedbackDto[]>('/tournament-feedback/pending');
+  }
+
+  async submitTournamentFeedback(data: {
+    tournamentId: string;
+    rating: number;
+    comment?: string;
+  }): Promise<TournamentFeedbackDto> {
+    return await this.request<TournamentFeedbackDto>('/tournament-feedback', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async getMyTournamentFeedback(tournamentId: string): Promise<TournamentFeedbackDto | null> {
+    return await this.request<TournamentFeedbackDto | null>(
+      `/tournament-feedback/tournament/${tournamentId}/mine`,
+    );
+  }
+
+  async getTournamentFeedback(tournamentId: string): Promise<TournamentFeedbackListDto> {
+    return await this.request<TournamentFeedbackListDto>(
+      `/tournament-feedback/tournament/${tournamentId}`,
+    );
   }
 
   async getAllPatrols(): Promise<PatrolDto[]> {

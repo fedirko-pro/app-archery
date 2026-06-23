@@ -1,4 +1,12 @@
-import { Check, Close, Visibility, Groups, ArrowUpward, ArrowDownward } from '@mui/icons-material';
+import {
+  Check,
+  Close,
+  Visibility,
+  Groups,
+  ArrowUpward,
+  ArrowDownward,
+  RateReview,
+} from '@mui/icons-material';
 import {
   Avatar,
   Box,
@@ -49,16 +57,13 @@ const AdminApplications: React.FC = () => {
   const { user } = useAuth();
   const { tournamentId, lang } = useParams<{ tournamentId?: string; lang?: string }>();
   const canEditApplications = canManageApplicationsAndPdfs(user?.role ?? '');
-  const [applications, setApplications] = useState<
-    TournamentApplicationDto[]
-  >([]);
+  const [applications, setApplications] = useState<TournamentApplicationDto[]>([]);
   const [stats, setStats] = useState<ApplicationStatsDto | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedTournament, setSelectedTournament] = useState<string>('');
   const [tournaments, setTournaments] = useState<TournamentDto[]>([]);
-  const [currentTournament, setCurrentTournament] =
-    useState<TournamentDto | null>(null);
+  const [currentTournament, setCurrentTournament] = useState<TournamentDto | null>(null);
   const [statusDialog, setStatusDialog] = useState<{
     open: boolean;
     application: TournamentApplicationDto | null;
@@ -110,12 +115,13 @@ const AdminApplications: React.FC = () => {
 
     try {
       setLoading(true);
-      const data =
-        await apiService.getTournamentApplications(selectedTournament);
+      const data = await apiService.getTournamentApplications(selectedTournament);
       // Sort applications by applicant name (firstName + lastName)
       const sortedData = [...data].sort((a, b) => {
-        const nameA = `${a.applicant?.firstName ?? ''} ${a.applicant?.lastName ?? ''}`.toLowerCase();
-        const nameB = `${b.applicant?.firstName ?? ''} ${b.applicant?.lastName ?? ''}`.toLowerCase();
+        const nameA =
+          `${a.applicant?.firstName ?? ''} ${a.applicant?.lastName ?? ''}`.toLowerCase();
+        const nameB =
+          `${b.applicant?.firstName ?? ''} ${b.applicant?.lastName ?? ''}`.toLowerCase();
         return nameA.localeCompare(nameB);
       });
       setApplications(sortedData);
@@ -131,8 +137,7 @@ const AdminApplications: React.FC = () => {
     if (!selectedTournament) return;
 
     try {
-      const data =
-        await apiService.getTournamentApplicationStats(selectedTournament);
+      const data = await apiService.getTournamentApplicationStats(selectedTournament);
       setStats(data);
     } catch (error) {
       console.error('Error fetching stats:', error);
@@ -148,16 +153,20 @@ const AdminApplications: React.FC = () => {
         statusDialog.newStatus,
         statusDialog.rejectionReason || undefined,
       );
-      
+
       // Update local state to keep position in list
       setApplications((prev) =>
         prev.map((app) =>
           app.id === statusDialog.application!.id
-            ? { ...app, status: statusDialog.newStatus as ApplicationStatus, rejectionReason: statusDialog.rejectionReason }
-            : app
-        )
+            ? {
+                ...app,
+                status: statusDialog.newStatus as ApplicationStatus,
+                rejectionReason: statusDialog.rejectionReason,
+              }
+            : app,
+        ),
       );
-      
+
       setStatusDialog({
         open: false,
         application: null,
@@ -198,11 +207,9 @@ const AdminApplications: React.FC = () => {
 
       // Update local state to keep position in list
       setApplications((prev) =>
-        prev.map((app) =>
-          app.id === applicationId ? { ...app, status: newStatus } : app
-        )
+        prev.map((app) => (app.id === applicationId ? { ...app, status: newStatus } : app)),
       );
-      
+
       fetchStats();
 
       const messageKey =
@@ -226,17 +233,11 @@ const AdminApplications: React.FC = () => {
           ? 'pages.adminApplications.notifications.approveFailedGeneric'
           : 'pages.adminApplications.notifications.rejectFailedGeneric';
 
-      setError(
-        applicantName
-          ? t(errorMessageKey, { name: applicantName })
-          : t(fallbackKey),
-      );
+      setError(applicantName ? t(errorMessageKey, { name: applicantName }) : t(fallbackKey));
       console.error('Error updating status:', error);
       setSnackbar({
         open: true,
-        message: applicantName
-          ? t(errorMessageKey, { name: applicantName })
-          : t(fallbackKey),
+        message: applicantName ? t(errorMessageKey, { name: applicantName }) : t(fallbackKey),
         severity: 'error',
       });
     } finally {
@@ -251,8 +252,7 @@ const AdminApplications: React.FC = () => {
   const handleSort = (field: string) => {
     setSortConfig((prev) => ({
       field,
-      direction:
-        prev.field === field && prev.direction === 'asc' ? 'desc' : 'asc',
+      direction: prev.field === field && prev.direction === 'asc' ? 'desc' : 'asc',
     }));
   };
 
@@ -277,8 +277,16 @@ const AdminApplications: React.FC = () => {
           bValue = (b.bowCategory?.name || b.bowCategory?.code || b.category || '').toLowerCase();
           break;
         case 'division':
-          aValue = (typeof a.division === 'object' && a.division && 'name' in a.division ? (a.division as { name: string }).name : (a.division || '')).toLowerCase();
-          bValue = (typeof b.division === 'object' && b.division && 'name' in b.division ? (b.division as { name: string }).name : (b.division || '')).toLowerCase();
+          aValue = (
+            typeof a.division === 'object' && a.division && 'name' in a.division
+              ? (a.division as { name: string }).name
+              : a.division || ''
+          ).toLowerCase();
+          bValue = (
+            typeof b.division === 'object' && b.division && 'name' in b.division
+              ? (b.division as { name: string }).name
+              : b.division || ''
+          ).toLowerCase();
           break;
         case 'status':
           aValue = (a.status || '').toLowerCase();
@@ -298,9 +306,7 @@ const AdminApplications: React.FC = () => {
     });
   }, [applications, sortConfig]);
 
-  const getStatusColor = (
-    status: string,
-  ): 'success' | 'error' | 'default' | 'warning' => {
+  const getStatusColor = (status: string): 'success' | 'error' | 'default' | 'warning' => {
     switch (status) {
       case 'approved':
         return 'success';
@@ -330,12 +336,7 @@ const AdminApplications: React.FC = () => {
 
   if (loading) {
     return (
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        minHeight="200px"
-      >
+      <Box display="flex" justifyContent="center" alignItems="center" minHeight="200px">
         <CircularProgress />
       </Box>
     );
@@ -353,18 +354,23 @@ const AdminApplications: React.FC = () => {
           gap: 2,
         }}
       >
-        <Typography variant="h4">
-          {t('pages.adminApplications.title')}
-        </Typography>
+        <Typography variant="h4">{t('pages.adminApplications.title')}</Typography>
         {selectedTournament && canEditApplications && (
           <Button
             variant="contained"
             startIcon={<Groups />}
-            onClick={() =>
-              navigate(`/${lang}/tournaments/${selectedTournament}/patrols`)
-            }
+            onClick={() => navigate(`/${lang}/tournaments/${selectedTournament}/patrols`)}
           >
             {t('pages.adminApplications.managePatrols', 'Manage Patrols')}
+          </Button>
+        )}
+        {currentTournament?.collectFeedback && canEditApplications && (
+          <Button
+            variant="outlined"
+            startIcon={<RateReview />}
+            onClick={() => navigate(`/${lang}/tournaments/${selectedTournament}/feedback/admin`)}
+          >
+            {t('pages.tournaments.viewFeedback')}
           </Button>
         )}
       </Box>
@@ -382,12 +388,8 @@ const AdminApplications: React.FC = () => {
               <a
                 href={`/tournaments`}
                 style={{ color: 'inherit', textDecoration: 'none' }}
-                onMouseEnter={(e) =>
-                  (e.currentTarget.style.textDecoration = 'underline')
-                }
-                onMouseLeave={(e) =>
-                  (e.currentTarget.style.textDecoration = 'none')
-                }
+                onMouseEnter={(e) => (e.currentTarget.style.textDecoration = 'underline')}
+                onMouseLeave={(e) => (e.currentTarget.style.textDecoration = 'none')}
               >
                 {currentTournament.title}
               </a>
@@ -410,15 +412,15 @@ const AdminApplications: React.FC = () => {
                   <strong>{t('pages.adminApplications.tournament.applicationDeadline')}:</strong>{' '}
                   {currentTournament.applicationDeadline
                     ? formatDate(currentTournament.applicationDeadline)
-                    : formatDate(
-                        getApplicationDeadline(currentTournament.startDate),
-                      )}
+                    : formatDate(getApplicationDeadline(currentTournament.startDate))}
                 </Typography>
               </Box>
               <Box sx={{ minWidth: '200px' }}>
                 <Typography variant="body2" color="text.secondary">
                   <strong>{t('pages.tournaments.rules', 'Rules')}:</strong>{' '}
-                  {currentTournament.rule?.ruleName || currentTournament.ruleCode || t('pages.tournaments.notSpecified', 'Not specified')}
+                  {currentTournament.rule?.ruleName ||
+                    currentTournament.ruleCode ||
+                    t('pages.tournaments.notSpecified', 'Not specified')}
                 </Typography>
               </Box>
             </Box>
@@ -502,7 +504,9 @@ const AdminApplications: React.FC = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell sx={{ width: '60px' }}>{t('pages.adminApplications.table.avatar')}</TableCell>
+                <TableCell sx={{ width: '60px' }}>
+                  {t('pages.adminApplications.table.avatar')}
+                </TableCell>
                 <TableCell
                   onClick={() => handleSort('applicant')}
                   sx={{
@@ -638,8 +642,7 @@ const AdminApplications: React.FC = () => {
                   </TableCell>
                   <TableCell>
                     <Typography variant="body2">
-                      {application.applicant?.firstName}{' '}
-                      {application.applicant?.lastName}
+                      {application.applicant?.firstName} {application.applicant?.lastName}
                     </Typography>
                     <Typography variant="caption" color="text.secondary">
                       {application.applicant?.email}
@@ -651,15 +654,34 @@ const AdminApplications: React.FC = () => {
                         label={application.applicant.gender}
                         size="small"
                         variant="outlined"
-                        color={application.applicant.gender === 'M' ? 'info' : application.applicant.gender === 'F' ? 'secondary' : 'default'}
+                        color={
+                          application.applicant.gender === 'M'
+                            ? 'info'
+                            : application.applicant.gender === 'F'
+                              ? 'secondary'
+                              : 'default'
+                        }
                         sx={{ height: 20, minWidth: 28, '& .MuiChip-label': { px: 0.5 } }}
                       />
                     ) : (
-                      <Typography variant="body2" color="text.disabled">-</Typography>
+                      <Typography variant="body2" color="text.disabled">
+                        -
+                      </Typography>
                     )}
                   </TableCell>
-                  <TableCell>{application.bowCategory?.name || application.bowCategory?.code || application.category || '-'}</TableCell>
-                  <TableCell>{typeof application.division === 'object' && application.division && 'name' in application.division ? (application.division as { name: string }).name : (application.division || '-')}</TableCell>
+                  <TableCell>
+                    {application.bowCategory?.name ||
+                      application.bowCategory?.code ||
+                      application.category ||
+                      '-'}
+                  </TableCell>
+                  <TableCell>
+                    {typeof application.division === 'object' &&
+                    application.division &&
+                    'name' in application.division
+                      ? (application.division as { name: string }).name
+                      : application.division || '-'}
+                  </TableCell>
                   <TableCell>
                     <Chip
                       label={getStatusLabel(application.status)}
@@ -690,9 +712,7 @@ const AdminApplications: React.FC = () => {
                             size="small"
                             color="success"
                             startIcon={<Check />}
-                            onClick={() =>
-                              handleQuickStatusUpdate(application.id, 'approved')
-                            }
+                            onClick={() => handleQuickStatusUpdate(application.id, 'approved')}
                             disabled={updatingApplicationId === application.id}
                           >
                             {updatingApplicationId === application.id
@@ -703,9 +723,7 @@ const AdminApplications: React.FC = () => {
                             size="small"
                             color="error"
                             startIcon={<Close />}
-                            onClick={() =>
-                              handleQuickStatusUpdate(application.id, 'rejected')
-                            }
+                            onClick={() => handleQuickStatusUpdate(application.id, 'rejected')}
                             disabled={updatingApplicationId === application.id}
                           >
                             {updatingApplicationId === application.id
@@ -749,30 +767,42 @@ const AdminApplications: React.FC = () => {
               <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                 <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
                   <Box sx={{ flex: '1 1 300px' }}>
-                    <Typography variant="subtitle2">{t('pages.adminApplications.dialog.tournament')}</Typography>
+                    <Typography variant="subtitle2">
+                      {t('pages.adminApplications.dialog.tournament')}
+                    </Typography>
                     <Typography variant="body2" gutterBottom>
                       {statusDialog.application.tournament.title}
                     </Typography>
                   </Box>
                   <Box sx={{ flex: '1 1 300px' }}>
-                    <Typography variant="subtitle2">{t('pages.adminApplications.dialog.category')}</Typography>
+                    <Typography variant="subtitle2">
+                      {t('pages.adminApplications.dialog.category')}
+                    </Typography>
                     <Typography variant="body2" gutterBottom>
-                      {statusDialog.application.bowCategory?.name || statusDialog.application.category || '-'}
+                      {statusDialog.application.bowCategory?.name ||
+                        statusDialog.application.category ||
+                        '-'}
                     </Typography>
                   </Box>
                 </Box>
                 <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
                   <Box sx={{ flex: '1 1 300px' }}>
-                    <Typography variant="subtitle2">{t('pages.adminApplications.dialog.division')}</Typography>
+                    <Typography variant="subtitle2">
+                      {t('pages.adminApplications.dialog.division')}
+                    </Typography>
                     <Typography variant="body2" gutterBottom>
-                      {typeof statusDialog.application.division === 'object' && statusDialog.application.division && 'name' in statusDialog.application.division
+                      {typeof statusDialog.application.division === 'object' &&
+                      statusDialog.application.division &&
+                      'name' in statusDialog.application.division
                         ? (statusDialog.application.division as { name: string }).name
-                        : (statusDialog.application.division || '-')}
+                        : statusDialog.application.division || '-'}
                     </Typography>
                   </Box>
                 </Box>
                 <Box>
-                  <Typography variant="subtitle2">{t('pages.adminApplications.dialog.notes')}</Typography>
+                  <Typography variant="subtitle2">
+                    {t('pages.adminApplications.dialog.notes')}
+                  </Typography>
                   <Typography variant="body2" gutterBottom>
                     {statusDialog.application.notes || t('pages.adminApplications.dialog.noNotes')}
                   </Typography>
@@ -792,10 +822,18 @@ const AdminApplications: React.FC = () => {
                             }))
                           }
                         >
-                          <MenuItem value="pending">{t('pages.adminApplications.status.pending')}</MenuItem>
-                          <MenuItem value="approved">{t('pages.adminApplications.status.approved')}</MenuItem>
-                          <MenuItem value="rejected">{t('pages.adminApplications.status.rejected')}</MenuItem>
-                          <MenuItem value="withdrawn">{t('pages.adminApplications.status.withdrawn')}</MenuItem>
+                          <MenuItem value="pending">
+                            {t('pages.adminApplications.status.pending')}
+                          </MenuItem>
+                          <MenuItem value="approved">
+                            {t('pages.adminApplications.status.approved')}
+                          </MenuItem>
+                          <MenuItem value="rejected">
+                            {t('pages.adminApplications.status.rejected')}
+                          </MenuItem>
+                          <MenuItem value="withdrawn">
+                            {t('pages.adminApplications.status.withdrawn')}
+                          </MenuItem>
                         </Select>
                       </FormControl>
                     </Box>
@@ -813,7 +851,9 @@ const AdminApplications: React.FC = () => {
                               rejectionReason: e.target.value,
                             }))
                           }
-                          placeholder={t('pages.adminApplications.dialog.rejectionReasonPlaceholder')}
+                          placeholder={t(
+                            'pages.adminApplications.dialog.rejectionReasonPlaceholder',
+                          )}
                         />
                       </Box>
                     )}
@@ -850,11 +890,7 @@ const AdminApplications: React.FC = () => {
         onClose={handleCloseSnackbar}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       >
-        <Alert
-          onClose={handleCloseSnackbar}
-          severity={snackbar.severity}
-          sx={{ width: '100%' }}
-        >
+        <Alert onClose={handleCloseSnackbar} severity={snackbar.severity} sx={{ width: '100%' }}>
           {snackbar.message}
         </Alert>
       </Snackbar>

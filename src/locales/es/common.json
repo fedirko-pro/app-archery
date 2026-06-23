@@ -206,6 +206,7 @@
       "copyFailed": "Error al copiar el enlace al portapapeles",
       "targetCount": "Número de dianas",
       "checkApplications": "Revisar solicitudes",
+      "viewFeedback": "Ver comentarios",
       "applyOtherUser": "Inscribir otro usuario",
       "start": "Inicio",
       "end": "Fin",
@@ -238,7 +239,37 @@
         "applicationDeadline": "Fecha límite de solicitud (opcional - 5 días antes del inicio)",
         "applicationDeadlineHelper": "Déjalo vacío para establecer 5 días antes del inicio",
         "address": "Dirección",
-        "allowMultipleLabel": "Permitir múltiples solicitudes por usuario (solo categorías diferentes)"
+        "allowMultipleLabel": "Permitir múltiples solicitudes por usuario (solo categorías diferentes)",
+        "collectFeedbackLabel": "Recopilar comentarios de los participantes"
+      },
+      "feedback": {
+        "title": "¿Qué tal fue {{title}}?",
+        "subtitle": "Ayúdanos a mejorar — valora tu experiencia y deja un comentario opcional.",
+        "ratingLabel": "Tu valoración",
+        "ratingRequired": "Selecciona una valoración antes de enviar.",
+        "commentLabel": "Comentario (opcional)",
+        "commentPlaceholder": "¿Qué salió bien? ¿Qué se podría mejorar?",
+        "commentHelper": "Tu opinión ayuda a los organizadores a mejorar futuros eventos.",
+        "submit": "Enviar comentario",
+        "submitting": "Enviando...",
+        "submitError": "No se pudo enviar el comentario. Inténtalo de nuevo.",
+        "loadError": "No se pudo cargar el formulario de comentarios.",
+        "thankYouTitle": "¡Gracias por tu comentario!",
+        "thankYouMessage": "Tu respuesta ha sido registrada.",
+        "backToHome": "Volver al inicio",
+        "admin": {
+          "title": "Comentarios — {{title}}",
+          "averageRating": "Valoración media",
+          "totalFeedbacks": "Total de comentarios",
+          "participant": "Participante",
+          "rating": "Valoración",
+          "comment": "Comentario",
+          "date": "Fecha",
+          "empty": "Aún no hay comentarios.",
+          "loadError": "No se pudieron cargar los comentarios.",
+          "noPermission": "No tienes permiso para ver los comentarios de este torneo.",
+          "unknownUser": "Usuario desconocido"
+        }
       }
     },
     "applications": {
@@ -658,6 +689,12 @@
       "arrows": "{{count}} flechas",
       "viewStatistics": "Ver estadísticas completas",
       "dismiss": "Entendido"
+    },
+    "tournamentFeedback": {
+      "title": "¿Qué tal fue {{title}}?",
+      "subtitle": "Ayúdanos a mejorar",
+      "leaveFeedback": "Dejar comentario",
+      "dismiss": "Ahora no"
     }
   },
   "onboarding": {

@@ -138,6 +138,7 @@ export interface TournamentDto {
   address?: string;
   country?: string;
   allowMultipleApplications?: boolean;
+  collectFeedback?: boolean;
   applicationDeadline?: string;
   banner?: string;
   attachments?: AttachmentDto[];
@@ -145,6 +146,43 @@ export interface TournamentDto {
   targetCount?: number;
   rule?: { id: string; ruleCode: string; ruleName: string };
   createdBy?: CreatedBy;
+  createdAt: string;
+}
+
+export interface PendingTournamentFeedbackDto {
+  id: string;
+  title: string;
+  startDate: string;
+  endDate: string;
+}
+
+export interface TournamentFeedbackSummaryDto {
+  averageRating: number | null;
+  totalCount: number;
+}
+
+export interface TournamentFeedbackItemDto {
+  id: string;
+  rating: number;
+  comment?: string;
+  createdAt: string;
+  user: {
+    id: string;
+    firstName?: string;
+    lastName?: string;
+    email?: string;
+  };
+}
+
+export interface TournamentFeedbackListDto {
+  summary: TournamentFeedbackSummaryDto;
+  items: TournamentFeedbackItemDto[];
+}
+
+export interface TournamentFeedbackDto {
+  id: string;
+  rating: number;
+  comment?: string;
   createdAt: string;
 }
 

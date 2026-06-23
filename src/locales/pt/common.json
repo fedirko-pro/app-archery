@@ -229,6 +229,7 @@
       "copyFailed": "Falha ao copiar link para a área de transferência",
       "targetCount": "Número de alvos",
       "checkApplications": "Verificar inscrições",
+      "viewFeedback": "Ver feedback",
       "applyOtherUser": "Inscrever outro usuário",
       "banner": "Banner do torneio",
       "bannerSubheader": "Selecione uma imagem e arraste para reposicionar (PNG, JPG até 3MB)",
@@ -258,7 +259,37 @@
         "address": "Endereço",
         "country": "País",
         "allowMultipleLabel": "Permitir múltiplas inscrições por usuário (apenas categorias diferentes)",
+        "collectFeedbackLabel": "Recolher feedback dos participantes",
         "basicInfo": "Informações básicas"
+      },
+      "feedback": {
+        "title": "Como foi o {{title}}?",
+        "subtitle": "Ajude-nos a melhorar — avalie a sua experiência e deixe um comentário opcional.",
+        "ratingLabel": "A sua avaliação",
+        "ratingRequired": "Selecione uma avaliação antes de enviar.",
+        "commentLabel": "Comentário (opcional)",
+        "commentPlaceholder": "O que correu bem? O que poderia melhorar?",
+        "commentHelper": "O seu feedback ajuda os organizadores a melhorar eventos futuros.",
+        "submit": "Enviar feedback",
+        "submitting": "A enviar...",
+        "submitError": "Falha ao enviar feedback. Tente novamente.",
+        "loadError": "Falha ao carregar o formulário de feedback.",
+        "thankYouTitle": "Obrigado pelo seu feedback!",
+        "thankYouMessage": "A sua resposta foi registada.",
+        "backToHome": "Voltar ao início",
+        "admin": {
+          "title": "Feedback — {{title}}",
+          "averageRating": "Avaliação média",
+          "totalFeedbacks": "Total de feedbacks",
+          "participant": "Participante",
+          "rating": "Avaliação",
+          "comment": "Comentário",
+          "date": "Data",
+          "empty": "Ainda não há feedback.",
+          "loadError": "Falha ao carregar feedback.",
+          "noPermission": "Não tem permissão para ver o feedback deste torneio.",
+          "unknownUser": "Utilizador desconhecido"
+        }
       }
     },
     "applications": {
@@ -687,6 +718,12 @@
       "arrows": "{{count}} flechas",
       "viewStatistics": "Ver estatísticas completas",
       "dismiss": "Entendido"
+    },
+    "tournamentFeedback": {
+      "title": "Como foi o {{title}}?",
+      "subtitle": "Ajude-nos a melhorar",
+      "leaveFeedback": "Deixar feedback",
+      "dismiss": "Agora não"
     }
   },
   "onboarding": {

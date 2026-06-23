@@ -49,6 +49,8 @@ import PublicApplication from '../../pages/tournament/public-application/public-
 import TournamentCreate from '../../pages/tournament/tournament-create/tournament-create';
 import TournamentDetail from '../../pages/tournament/tournament-detail/tournament-detail';
 import TournamentEdit from '../../pages/tournament/tournament-edit/tournament-edit';
+import TournamentFeedbackAdmin from '../../pages/tournament/tournament-feedback-admin/tournament-feedback-admin';
+import TournamentFeedback from '../../pages/tournament/tournament-feedback/tournament-feedback';
 import TournamentList from '../../pages/tournament/tournament-list/tournament-list';
 import UserApplications from '../../pages/tournament/user-applications/user-applications';
 import Training from '../../pages/Trainings';
@@ -214,6 +216,22 @@ function Content() {
               }
             />
             <Route path=":tournamentId" element={<TournamentDetail />} />
+            <Route
+              path=":tournamentId/feedback"
+              element={
+                <ProtectedRoute>
+                  <TournamentFeedback />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path=":tournamentId/feedback/admin"
+              element={
+                <ProtectedAdminRoute>
+                  <TournamentFeedbackAdmin />
+                </ProtectedAdminRoute>
+              }
+            />
             <Route
               path=":tournamentId/edit"
               element={

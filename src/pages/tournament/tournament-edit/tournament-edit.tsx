@@ -49,6 +49,7 @@ const TournamentEdit: React.FC = () => {
     ruleCode: '',
     targetCount: 18,
     allowMultipleApplications: true,
+    collectFeedback: false,
     banner: '',
     attachments: [] as FileAttachment[],
   });
@@ -88,6 +89,7 @@ const TournamentEdit: React.FC = () => {
           ruleCode: data.ruleCode || '',
           targetCount: data.targetCount || 18,
           allowMultipleApplications: data.allowMultipleApplications ?? true,
+          collectFeedback: data.collectFeedback ?? false,
           banner: data.banner || '',
           attachments: data.attachments || [],
         });
@@ -297,6 +299,22 @@ const TournamentEdit: React.FC = () => {
               }
               label={t('pages.tournaments.form.allowMultipleLabel')}
               sx={{ mt: 2 }}
+            />
+
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={formData.collectFeedback}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      collectFeedback: e.target.checked,
+                    })
+                  }
+                />
+              }
+              label={t('pages.tournaments.form.collectFeedbackLabel')}
+              sx={{ mt: 1 }}
             />
           </CardContent>
         </Card>

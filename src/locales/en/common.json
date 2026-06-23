@@ -227,6 +227,7 @@
       "copyFailed": "Failed to copy link to clipboard",
       "targetCount": "Number of Targets",
       "checkApplications": "Check Applications",
+      "viewFeedback": "View Feedback",
       "applyOtherUser": "Apply Other User",
       "start": "Start",
       "end": "End",
@@ -278,7 +279,37 @@
         "address": "Address",
         "country": "Country",
         "allowMultipleLabel": "Allow multiple applications from one user (different categories only)",
+        "collectFeedbackLabel": "Collect feedback from participants",
         "basicInfo": "Basic Information"
+      },
+      "feedback": {
+        "title": "How was {{title}}?",
+        "subtitle": "Please help us improve — rate your experience and leave an optional comment.",
+        "ratingLabel": "Your rating",
+        "ratingRequired": "Please select a star rating before submitting.",
+        "commentLabel": "Comment (optional)",
+        "commentPlaceholder": "What went well? What could be better?",
+        "commentHelper": "Your feedback helps organizers improve future events.",
+        "submit": "Submit feedback",
+        "submitting": "Submitting...",
+        "submitError": "Failed to submit feedback. Please try again.",
+        "loadError": "Failed to load feedback form.",
+        "thankYouTitle": "Thank you for your feedback!",
+        "thankYouMessage": "Your response has been recorded.",
+        "backToHome": "Back to Home",
+        "admin": {
+          "title": "Feedback — {{title}}",
+          "averageRating": "Average rating",
+          "totalFeedbacks": "Total feedbacks",
+          "participant": "Participant",
+          "rating": "Rating",
+          "comment": "Comment",
+          "date": "Date",
+          "empty": "No feedback submitted yet.",
+          "loadError": "Failed to load feedback.",
+          "noPermission": "You do not have permission to view feedback for this tournament.",
+          "unknownUser": "Unknown user"
+        }
       }
     },
     "applications": {
@@ -827,6 +858,12 @@
       "arrows": "{{count}} arrows",
       "viewStatistics": "View full statistics",
       "dismiss": "Got it"
+    },
+    "tournamentFeedback": {
+      "title": "How was {{title}}?",
+      "subtitle": "Please help us improve",
+      "leaveFeedback": "Leave feedback",
+      "dismiss": "Not now"
     }
   }
 }
