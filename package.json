@@ -58,6 +58,7 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest",
     "test:run": "vitest run",
+    "pre-push": "node scripts/pre-push-check.mjs",
     "prepare": "husky"
   },
   "lint-staged": {

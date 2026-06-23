@@ -1,2 +1,2 @@
-echo "🔨 Running build check before push..."
-npm run build
+echo "🔨 Running pre-push checks..."
+npm run pre-push
