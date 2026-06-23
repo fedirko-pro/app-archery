@@ -7,7 +7,6 @@ import type {
   ChangePasswordData,
 } from '../contexts/types';
 import categoriesData from '../data/categories';
-import type { ProfileData } from '../pages/profile/types';
 import { getCurrentI18nLang } from '../utils/i18n-lang';
 import {
   getOfflineCache,
@@ -17,6 +16,7 @@ import {
   type OfflineCacheKey,
 } from '../utils/offline-cache';
 import { filterTournamentsClient } from '../utils/tournament-filters';
+import type { ProfileData } from '../views/profile/types';
 import type {
   ApiError,
   BowCategory,
@@ -59,14 +59,17 @@ class ApiService {
   }
 
   private getToken(): string | null {
+    if (typeof window === 'undefined') return null;
     return localStorage.getItem('authToken');
   }
 
   private setToken(token: string): void {
+    if (typeof window === 'undefined') return;
     localStorage.setItem('authToken', token);
   }
 
   private removeToken(): void {
+    if (typeof window === 'undefined') return;
     localStorage.removeItem('authToken');
   }
 

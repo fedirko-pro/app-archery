@@ -37,11 +37,7 @@ export function toI18nLang(appLang: AppLanguage): string {
 
 export function fromI18nLang(i18nLang: string): AppLanguage {
   const lower = i18nLang.toLowerCase();
-  return (
-    I18N_TO_APP_MAP[lower] ||
-    I18N_TO_APP_MAP[lower.split('-')[0]] ||
-    'pt'
-  );
+  return I18N_TO_APP_MAP[lower] || I18N_TO_APP_MAP[lower.split('-')[0]] || 'pt';
 }
 
 export function isRtlLanguage(_appLang: AppLanguage): boolean {
@@ -49,15 +45,21 @@ export function isRtlLanguage(_appLang: AppLanguage): boolean {
 }
 
 export function getCurrentI18nLang(): string {
+  if (typeof window === 'undefined') {
+    return 'pt';
+  }
+
   // Prefer i18next stored lang, then <html lang>, then default
   try {
     const stored = localStorage.getItem('i18nextLng');
     if (stored) return stored;
-  } catch {}
-  if (typeof document !== 'undefined') {
-    const htmlLang = document.documentElement.getAttribute('lang');
-    if (htmlLang) return htmlLang;
+  } catch {
+    /* ignore */
   }
+
+  const htmlLang = document.documentElement.getAttribute('lang');
+  if (htmlLang) return htmlLang;
+
   return 'pt';
 }
 
@@ -79,8 +81,7 @@ export function getAppLanguageFromUser(
   user: UserLanguageSource,
   defaultLang: AppLanguage = 'pt',
 ): AppLanguage {
-  const raw =
-    user?.appLanguage ?? user?.app_language ?? user?.language ?? defaultLang;
+  const raw = user?.appLanguage ?? user?.app_language ?? user?.language ?? defaultLang;
   return normalizeAppLang(raw);
 }
 
@@ -91,7 +92,7 @@ export function getAppLanguageFromUser(
 export function pickLocalizedDescription(
   record: Record<string, unknown>,
   appLang: AppLanguage,
-  baseKey: string = 'description'
+  baseKey: string = 'description',
 ): string | undefined {
   const langForKey = appLang === 'ua' ? 'uk' : appLang;
 
@@ -123,5 +124,3 @@ export function pickLocalizedDescription(
   const plain = record[baseKey];
   return typeof plain === 'string' && plain.trim() ? plain : undefined;
 }
-
-

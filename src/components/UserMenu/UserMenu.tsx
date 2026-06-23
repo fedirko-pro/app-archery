@@ -1,13 +1,16 @@
 import '../Header/Header.scss';
 
+import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import Avatar from '@mui/material/Avatar';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 
+import { isDev } from '../../config/env';
 import { USER_DEMO_NAV_ITEMS } from '../../config/roles';
 import { useAuth } from '../../contexts/auth-context';
 import { normalizeAppLang } from '../../utils/i18n-lang';
+import { resolveUserAvatarWithCacheBust, getAvatarInitials } from '../../utils/placeholder-images';
 import LanguageToggler from '../LanguageToggler/LanguageToggler';
 import Menu from '../Menu/Menu';
 import type { MenuSection } from '../Menu/types';
@@ -86,6 +89,17 @@ const UserMenu: React.FC = () => {
     ? [{ items: authenticatedMenuItems }]
     : unauthenticatedSections;
 
+  const avatarSrc =
+    isAuthenticated && user?.picture
+      ? resolveUserAvatarWithCacheBust(user.picture, user.updatedAt)
+      : undefined;
+
+  const avatarFallback = !isAuthenticated ? (
+    <PersonOutlineIcon fontSize="small" />
+  ) : !avatarSrc ? (
+    getAvatarInitials(user?.firstName, user?.lastName)
+  ) : null;
+
   return (
     <>
       <Avatar
@@ -94,25 +108,19 @@ const UserMenu: React.FC = () => {
           marginRight: '16px',
           cursor: 'pointer',
         }}
-        src={
-          user?.picture
-            ? user.picture.startsWith('data:')
-              ? user.picture
-              : `${user.picture}${user.picture.includes('?') ? '&' : '?'}t=${user.updatedAt || ''}`
-            : undefined
-        }
+        src={avatarSrc}
         alt={user?.firstName || 'User'}
         imgProps={{
           referrerPolicy: 'no-referrer',
           onError: (e) => {
-            if (import.meta.env.DEV) {
+            if (isDev) {
               console.error('Avatar image failed to load:', user?.picture);
             }
             e.currentTarget.style.display = 'none';
           },
         }}
       >
-        {!user?.picture && user?.firstName ? user.firstName[0].toUpperCase() : null}
+        {avatarFallback}
       </Avatar>
       <Menu
         active={active}

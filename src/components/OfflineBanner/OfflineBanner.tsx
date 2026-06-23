@@ -5,9 +5,11 @@ import { useTranslation } from 'react-i18next';
 
 const OfflineBanner: React.FC = () => {
   const { t } = useTranslation('common');
-  const [isOffline, setIsOffline] = useState(!navigator.onLine);
+  const [isOffline, setIsOffline] = useState(false);
 
   useEffect(() => {
+    setIsOffline(!navigator.onLine);
+
     const handleOnline = () => setIsOffline(false);
     const handleOffline = () => setIsOffline(true);
 

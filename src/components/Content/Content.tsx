@@ -1,7 +1,6 @@
 import './Content.scss';
 
-import { useEffect } from 'react';
-import { Navigate, Outlet, Route, Routes, useLocation, useParams } from 'react-router-dom';
+import { Navigate, Outlet, Route, Routes, useParams } from 'react-router-dom';
 
 import {
   ROLES_CAN_ACCESS_CONTROL,
@@ -9,58 +8,49 @@ import {
   ROLES_CAN_MANAGE_REFERENCE_DATA,
 } from '../../config/roles';
 import { useAuth } from '../../contexts/auth-context';
-import i18n from '../../i18n';
-import About from '../../pages/About';
-import Achievements from '../../pages/achievements/achievements';
-import AccessControl from '../../pages/admin/access-control/access-control';
-import AdminPanel from '../../pages/admin/admin-panel';
-import ProtectedAdminRoute from '../../pages/admin/protected-admin-route';
-import UserEdit from '../../pages/admin/user-edit/user-edit';
-import UserProfileView from '../../pages/admin/user-profile-view/user-profile-view';
-import CategoryEdit from '../../pages/categories/admin/category-edit';
-import Categories from '../../pages/categories/Categories';
-import ClubEdit from '../../pages/clubs/admin/club-edit';
-import Clubs from '../../pages/clubs/Clubs';
-import UserPage from '../../pages/competition/user-page/user-page';
-import ConverterPage from '../../pages/ConverterPage';
-import DivisionEdit from '../../pages/divisions/admin/division-edit';
-import Divisions from '../../pages/divisions/Divisions';
-import Encyclopedia from '../../pages/Encyclopedia';
-// TODO: Settings temporarily disabled - functionality moved to Profile
-// import Settings from '../Settings/Settings.tsx';
-import GoogleCallback from '../../pages/google-callback/google-callback';
-import HomePage from '../../pages/Home';
-import MyEquipmentPage from '../../pages/MyEquipment';
-import MyPaymentsPage from '../../pages/MyPayments';
-import MyStatisticsPage from '../../pages/MyStatistics';
-import MyTrainingsPage from '../../pages/MyTrainings';
-import NotFound from '../../pages/NotFound';
-import OnboardingPage from '../../pages/Onboarding';
-import Profile from '../../pages/profile/profile';
-import ProfileEditPage from '../../pages/profile/profile-edit-page';
-import ProtectedRoute from '../../pages/protected-route';
-import ResetPassword from '../../pages/reset-password/reset-password';
-import Rules from '../../pages/rules/Rules';
-import SignIn from '../../pages/sign-in/sign-in';
-import SignUp from '../../pages/sign-up/sign-up';
-import AdminApplications from '../../pages/tournament/admin-applications/admin-applications';
-import PatrolsPage from '../../pages/tournament/patrols/PatrolsPage';
-import PublicApplication from '../../pages/tournament/public-application/public-application';
-import TournamentCreate from '../../pages/tournament/tournament-create/tournament-create';
-import TournamentDetail from '../../pages/tournament/tournament-detail/tournament-detail';
-import TournamentEdit from '../../pages/tournament/tournament-edit/tournament-edit';
-import TournamentFeedbackAdmin from '../../pages/tournament/tournament-feedback-admin/tournament-feedback-admin';
-import TournamentFeedback from '../../pages/tournament/tournament-feedback/tournament-feedback';
-import TournamentList from '../../pages/tournament/tournament-list/tournament-list';
-import UserApplications from '../../pages/tournament/user-applications/user-applications';
-import Training from '../../pages/Trainings';
 import { getDefaultLandingPath } from '../../utils/default-landing';
-import {
-  isRtlLanguage,
-  normalizeAppLang,
-  toI18nLang,
-  getDefaultAppLang,
-} from '../../utils/i18n-lang';
+import { normalizeAppLang } from '../../utils/i18n-lang';
+import About from '../../views/About';
+import Achievements from '../../views/achievements/achievements';
+import AccessControl from '../../views/admin/access-control/access-control';
+import AdminPanel from '../../views/admin/admin-panel';
+import ProtectedAdminRoute from '../../views/admin/protected-admin-route';
+import UserEdit from '../../views/admin/user-edit/user-edit';
+import UserProfileView from '../../views/admin/user-profile-view/user-profile-view';
+import CategoryEdit from '../../views/categories/admin/category-edit';
+import Categories from '../../views/categories/Categories';
+import ClubEdit from '../../views/clubs/admin/club-edit';
+import Clubs from '../../views/clubs/Clubs';
+import UserPage from '../../views/competition/user-page/user-page';
+import ConverterPage from '../../views/ConverterPage';
+import DivisionEdit from '../../views/divisions/admin/division-edit';
+import Divisions from '../../views/divisions/Divisions';
+import Encyclopedia from '../../views/Encyclopedia';
+import HomePage from '../../views/Home';
+import MyEquipmentPage from '../../views/MyEquipment';
+import MyPaymentsPage from '../../views/MyPayments';
+import MyStatisticsPage from '../../views/MyStatistics';
+import MyTrainingsPage from '../../views/MyTrainings';
+import NotFound from '../../views/NotFound';
+import OnboardingPage from '../../views/Onboarding';
+import Profile from '../../views/profile/profile';
+import ProfileEditPage from '../../views/profile/profile-edit-page';
+import ProtectedRoute from '../../views/protected-route';
+import ResetPassword from '../../views/reset-password/reset-password';
+import Rules from '../../views/rules/Rules';
+import SignIn from '../../views/sign-in/sign-in';
+import SignUp from '../../views/sign-up/sign-up';
+import AdminApplications from '../../views/tournament/admin-applications/admin-applications';
+import PatrolsPage from '../../views/tournament/patrols/PatrolsPage';
+import PublicApplication from '../../views/tournament/public-application/public-application';
+import TournamentCreate from '../../views/tournament/tournament-create/tournament-create';
+import TournamentDetail from '../../views/tournament/tournament-detail/tournament-detail';
+import TournamentEdit from '../../views/tournament/tournament-edit/tournament-edit';
+import TournamentFeedbackAdmin from '../../views/tournament/tournament-feedback-admin/tournament-feedback-admin';
+import TournamentFeedback from '../../views/tournament/tournament-feedback/tournament-feedback';
+import TournamentList from '../../views/tournament/tournament-list/tournament-list';
+import UserApplications from '../../views/tournament/user-applications/user-applications';
+import Training from '../../views/Trainings';
 
 function DefaultLandingRedirect() {
   const { user, loading } = useAuth();
@@ -76,61 +66,18 @@ function DefaultLandingRedirect() {
   return <Navigate to={segment} replace />;
 }
 
-function LangRedirect({ path }: { path: string }) {
-  const location = useLocation();
-  const defaultLang = getDefaultAppLang();
-  return <Navigate to={`/${defaultLang}/${path}${location.search}`} replace />;
-}
-
-function LangRedirectWithParams({ pathPrefix }: { pathPrefix: string }) {
-  const params = useParams();
-  const location = useLocation();
-  const defaultLang = getDefaultAppLang();
-  const suffix = Object.entries(params)
-    .filter(([k]) => k !== 'lang')
-    .map(([, v]) => v)
-    .filter(Boolean)
-    .join('/');
-  return <Navigate to={`/${defaultLang}/${pathPrefix}/${suffix}${location.search}`} replace />;
-}
-
 function LangLayout() {
-  const params = useParams();
-  const appLang = normalizeAppLang(params.lang);
-
-  useEffect(() => {
-    const i18nLang = toI18nLang(appLang);
-    if (i18n.language !== i18nLang) {
-      void i18n.changeLanguage(i18nLang);
-    }
-    document.documentElement.setAttribute('lang', i18nLang);
-    document.documentElement.setAttribute('dir', isRtlLanguage(appLang) ? 'rtl' : 'ltr');
-  }, [appLang]);
-
   return <Outlet />;
 }
 
 function Content() {
-  const defaultLang = getDefaultAppLang();
-
   return (
     <main>
       <Routes>
-        <Route path="/" element={<Navigate to={`/${defaultLang}/tournaments`} replace />} />
-        {/* Language-agnostic auth routes to avoid 404s from backend redirects */}
-        <Route path="/auth/google/callback" element={<GoogleCallback />} />
-        <Route path="/signin" element={<Navigate to={`/${defaultLang}/signin`} replace />} />
-        <Route path="/signup" element={<Navigate to={`/${defaultLang}/signup`} replace />} />
-        <Route
-          path="/apply/:tournamentId"
-          element={<LangRedirectWithParams pathPrefix="apply" />}
-        />
-        <Route path="/reset-password" element={<LangRedirect path="reset-password" />} />
         <Route path=":lang" element={<LangLayout />}>
           <Route index element={<DefaultLandingRedirect />} />
           <Route path="signin" element={<SignIn />} />
           <Route path="signup" element={<SignUp />} />
-          <Route path="auth/google/callback" element={<GoogleCallback />} />
           <Route path="reset-password" element={<ResetPassword />} />
           <Route
             path="profile"
@@ -181,8 +128,6 @@ function Content() {
               </ProtectedAdminRoute>
             }
           />
-          {/* TODO: Settings route temporarily disabled - functionality moved to Profile */}
-          {/* <Route path="settings" element={<Settings />} /> */}
           <Route path="converter" element={<ConverterPage />} />
           <Route path="competition/user" element={<UserPage />} />
           <Route path="about" element={<About />} />
@@ -317,7 +262,6 @@ function Content() {
           />
           <Route path="*" element={<NotFound />} />
         </Route>
-        <Route path="*" element={<Navigate to={`/${defaultLang}`} replace />} />
       </Routes>
     </main>
   );

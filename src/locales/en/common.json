@@ -294,6 +294,8 @@
         "submitting": "Submitting...",
         "submitError": "Failed to submit feedback. Please try again.",
         "loadError": "Failed to load feedback form.",
+        "notCollecting": "This tournament does not collect participant feedback.",
+        "notYetAvailable": "Feedback will be available after the tournament ends.",
         "thankYouTitle": "Thank you for your feedback!",
         "thankYouMessage": "Your response has been recorded.",
         "backToHome": "Back to Home",

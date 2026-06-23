@@ -274,6 +274,8 @@
         "submitting": "A enviar...",
         "submitError": "Falha ao enviar feedback. Tente novamente.",
         "loadError": "Falha ao carregar o formulário de feedback.",
+        "notCollecting": "Este torneio não recolhe feedback dos participantes.",
+        "notYetAvailable": "O feedback estará disponível após o fim do torneio.",
         "thankYouTitle": "Obrigado pelo seu feedback!",
         "thankYouMessage": "A sua resposta foi registada.",
         "backToHome": "Voltar ao início",

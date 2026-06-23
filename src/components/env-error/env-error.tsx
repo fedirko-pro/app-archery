@@ -10,7 +10,7 @@ const EnvError = () => {
   useEffect(() => {
     const checkEnv = () => {
       const requiredEnvVars = {
-        VITE_API_BASE_URL: import.meta.env.VITE_API_BASE_URL,
+        NEXT_PUBLIC_API_BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL,
       };
 
       const missingVars: string[] = [];
@@ -19,8 +19,10 @@ const EnvError = () => {
       Object.entries(requiredEnvVars).forEach(([key, value]) => {
         if (!value) {
           missingVars.push(key);
-        } else if (key === 'VITE_API_BASE_URL' && !isValidUrlOrPath(value)) {
-          invalidVars.push(`${key}: "${value}" is not a valid URL or path (use /api for dev proxy)`);
+        } else if (key === 'NEXT_PUBLIC_API_BASE_URL' && !isValidUrlOrPath(value)) {
+          invalidVars.push(
+            `${key}: "${value}" is not a valid URL or path (use /api for dev proxy)`,
+          );
         }
       });
 
@@ -64,11 +66,7 @@ const EnvError = () => {
         severity="error"
         onClose={() => setEnvErrors(null)}
         action={
-          <Button
-            color="inherit"
-            size="small"
-            onClick={() => setEnvErrors(null)}
-          >
+          <Button color="inherit" size="small" onClick={() => setEnvErrors(null)}>
             Dismiss
           </Button>
         }

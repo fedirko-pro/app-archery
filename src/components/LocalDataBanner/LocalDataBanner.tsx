@@ -32,10 +32,12 @@ const LocalDataBanner: React.FC<LocalDataBannerProps> = ({ showSyncStatus = fals
   const { isSyncing, lastSyncError, syncNow, hasPendingSync, unsyncedCount } = useLocalData();
   const { enableSyncAndSync, enabling } = useEnableSync();
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [isOffline, setIsOffline] = useState(!navigator.onLine);
+  const [isOffline, setIsOffline] = useState(false);
   const [cachedDismissed, setCachedDismissed] = useState(false);
 
   useEffect(() => {
+    setIsOffline(!navigator.onLine);
+
     const handleOnline = () => setIsOffline(false);
     const handleOffline = () => {
       setIsOffline(true);

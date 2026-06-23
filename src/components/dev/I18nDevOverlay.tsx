@@ -1,6 +1,8 @@
 import i18n from 'i18next';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 
+import { isProd } from '../../config/env';
+
 type MissingKey = {
   ns: string;
   key: string;
@@ -31,10 +33,7 @@ function useMissingKeys() {
     };
   }, []);
 
-  const list = useMemo(
-    () => Object.values(missing).sort((a, b) => b.lastAt - a.lastAt),
-    [missing],
-  );
+  const list = useMemo(() => Object.values(missing).sort((a, b) => b.lastAt - a.lastAt), [missing]);
 
   return { list, clear: () => setMissing({}) };
 }
@@ -86,15 +85,25 @@ const buttonStyle: React.CSSProperties = {
 
 export default function I18nDevOverlay() {
   const { list, clear } = useMissingKeys();
-  const [open, setOpen] = useState<boolean>(() => localStorage.getItem('i18nDevOverlayOpen') === '1');
+  const [open, setOpen] = useState(false);
   const badgeRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    try {
+      setOpen(localStorage.getItem('i18nDevOverlayOpen') === '1');
+    } catch {
+      /* ignore */
+    }
+  }, []);
+
+  useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.altKey && (e.key.toLowerCase() === 'i')) {
+      if (e.altKey && e.key.toLowerCase() === 'i') {
         setOpen((prev) => {
           const next = !prev;
-          try { localStorage.setItem('i18nDevOverlayOpen', next ? '1' : '0'); } catch {}
+          try {
+            localStorage.setItem('i18nDevOverlayOpen', next ? '1' : '0');
+          } catch {}
           return next;
         });
       }
@@ -103,7 +112,7 @@ export default function I18nDevOverlay() {
     return () => window.removeEventListener('keydown', onKey);
   }, []);
 
-  if (import.meta.env.PROD) return null;
+  if (isProd) return null;
 
   const copySnippet = async (_ns: string, key: string) => {
     const snippet = `"${key}": "TODO"`;
@@ -119,11 +128,22 @@ export default function I18nDevOverlay() {
       </div>
       {open && (
         <div style={panelStyle}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginBottom: 8,
+            }}
+          >
             <strong>Missing translation keys</strong>
             <div style={{ display: 'flex', gap: 8 }}>
-              <button style={buttonStyle} onClick={clear}>Clear</button>
-              <button style={buttonStyle} onClick={() => setOpen(false)}>Close</button>
+              <button style={buttonStyle} onClick={clear}>
+                Clear
+              </button>
+              <button style={buttonStyle} onClick={() => setOpen(false)}>
+                Close
+              </button>
             </div>
           </div>
           {list.length === 0 ? (
@@ -131,10 +151,17 @@ export default function I18nDevOverlay() {
           ) : (
             list.map((m) => (
               <div key={`${m.lng}:${m.ns}:${m.key}`} style={rowStyle}>
-                <div><strong>key:</strong> {m.key}</div>
-                <div><strong>ns:</strong> {m.ns} <strong>lng:</strong> {m.lng} <strong>count:</strong> {m.count}</div>
+                <div>
+                  <strong>key:</strong> {m.key}
+                </div>
+                <div>
+                  <strong>ns:</strong> {m.ns} <strong>lng:</strong> {m.lng} <strong>count:</strong>{' '}
+                  {m.count}
+                </div>
                 <div style={{ marginTop: 6, display: 'flex', gap: 6 }}>
-                  <button style={buttonStyle} onClick={() => copySnippet(m.ns, m.key)}>Copy JSON</button>
+                  <button style={buttonStyle} onClick={() => copySnippet(m.ns, m.key)}>
+                    Copy JSON
+                  </button>
                 </div>
               </div>
             ))
@@ -144,5 +171,3 @@ export default function I18nDevOverlay() {
     </>
   );
 }
-
-

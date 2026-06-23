@@ -1,6 +1,7 @@
 import { Box, Button, Typography } from '@mui/material';
 import { Component, type ErrorInfo, type ReactNode } from 'react';
 
+import { isDev } from '../../config/env';
 import i18n from '../../i18n';
 
 interface ErrorBoundaryProps {
@@ -13,10 +14,7 @@ interface ErrorBoundaryState {
   error: Error | null;
 }
 
-export class ErrorBoundary extends Component<
-  ErrorBoundaryProps,
-  ErrorBoundaryState
-> {
+export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = { hasError: false, error: null };
@@ -27,7 +25,7 @@ export class ErrorBoundary extends Component<
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
-    if (import.meta.env.DEV) {
+    if (isDev) {
       console.error('ErrorBoundary caught:', error, errorInfo);
     }
   }
@@ -57,7 +55,7 @@ export class ErrorBoundary extends Component<
           <Typography variant="h5" gutterBottom>
             {i18n.t('errorBoundary.title', 'Something went wrong')}
           </Typography>
-          {import.meta.env.DEV && this.state.error && (
+          {isDev && this.state.error && (
             <Typography
               component="pre"
               variant="body2"

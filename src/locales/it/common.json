@@ -255,6 +255,8 @@
         "submitting": "Invio in corso...",
         "submitError": "Impossibile inviare il feedback. Riprova.",
         "loadError": "Impossibile caricare il modulo di feedback.",
+        "notCollecting": "Questo torneo non raccoglie feedback dai partecipanti.",
+        "notYetAvailable": "Il feedback sarà disponibile dopo la fine del torneo.",
         "thankYouTitle": "Grazie per il tuo feedback!",
         "thankYouMessage": "La tua risposta è stata registrata.",
         "backToHome": "Torna alla Home",

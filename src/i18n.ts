@@ -1,5 +1,4 @@
 import i18n from 'i18next';
-import LanguageDetector from 'i18next-browser-languagedetector';
 import { initReactI18next } from 'react-i18next';
 
 import enCommon from './locales/en/common.json';
@@ -17,23 +16,29 @@ const resources = {
   es: { common: esCommon },
 };
 
-i18n
-  .use(LanguageDetector)
-  .use(initReactI18next)
-  .init({
-    resources,
-    fallbackLng: 'en',
-    supportedLngs: SUPPORTED_APP_LANGS.map(toI18nLang),
-    ns: ['common'],
-    defaultNS: 'common',
-    interpolation: { escapeValue: false },
-    detection: {
-      order: ['path', 'localStorage', 'navigator', 'htmlTag'],
-      lookupFromPathIndex: 0,
-      caches: ['localStorage'],
-    },
-  });
+const isBrowser = typeof window !== 'undefined';
+
+if (isBrowser) {
+   
+  const LanguageDetector = require('i18next-browser-languagedetector').default;
+  i18n.use(LanguageDetector);
+}
+
+void i18n.use(initReactI18next).init({
+  resources,
+  fallbackLng: 'en',
+  supportedLngs: SUPPORTED_APP_LANGS.map(toI18nLang),
+  ns: ['common'],
+  defaultNS: 'common',
+  interpolation: { escapeValue: false },
+  lng: isBrowser ? undefined : 'pt',
+  detection: isBrowser
+    ? {
+        order: ['path', 'localStorage', 'navigator', 'htmlTag'],
+        lookupFromPathIndex: 0,
+        caches: ['localStorage'],
+      }
+    : undefined,
+});
 
 export default i18n;
-
-

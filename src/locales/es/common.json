@@ -254,6 +254,8 @@
         "submitting": "Enviando...",
         "submitError": "No se pudo enviar el comentario. Inténtalo de nuevo.",
         "loadError": "No se pudo cargar el formulario de comentarios.",
+        "notCollecting": "Este torneo no recopila comentarios de los participantes.",
+        "notYetAvailable": "Los comentarios estarán disponibles después de que termine el torneo.",
         "thankYouTitle": "¡Gracias por tu comentario!",
         "thankYouMessage": "Tu respuesta ha sido registrada.",
         "backToHome": "Volver al inicio",

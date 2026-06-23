@@ -78,10 +78,7 @@ export default [
           alwaysTryTypes: true,
         },
       },
-      'import-x/core-modules': [
-        'virtual:pwa-register',
-        '@testing-library/jest-dom',
-      ],
+      'import-x/core-modules': ['@testing-library/jest-dom'],
     },
   },
 ];

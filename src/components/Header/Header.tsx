@@ -18,7 +18,7 @@ const Header: React.FC = () => {
       <NavMenu />
 
       <div className="header_logo">
-        <NavLink to={`/${currentLang}`} />
+        <NavLink to={`/${currentLang}`} aria-label="Home" />
       </div>
 
       <UserMenu />

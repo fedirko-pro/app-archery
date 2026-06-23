@@ -16,6 +16,7 @@ import flagEs from '../../img/flags/es.svg';
 import flagIt from '../../img/flags/it.svg';
 import flagPt from '../../img/flags/pt.svg';
 import flagUa from '../../img/flags/ua.svg';
+import { assetUrl } from '../../utils/asset-url';
 import {
   fromI18nLang,
   getAppLanguageFromUser,
@@ -24,11 +25,11 @@ import {
 } from '../../utils/i18n-lang';
 
 const options: Array<{ value: string; code: string; flagSrc: string }> = [
-  { value: 'pt', code: 'PT', flagSrc: flagPt },
-  { value: 'en', code: 'EN', flagSrc: flagEn },
-  { value: 'it', code: 'IT', flagSrc: flagIt },
-  { value: 'es', code: 'ES', flagSrc: flagEs },
-  { value: 'ua', code: 'UA', flagSrc: flagUa },
+  { value: 'pt', code: 'PT', flagSrc: assetUrl(flagPt) },
+  { value: 'en', code: 'EN', flagSrc: assetUrl(flagEn) },
+  { value: 'it', code: 'IT', flagSrc: assetUrl(flagIt) },
+  { value: 'es', code: 'ES', flagSrc: assetUrl(flagEs) },
+  { value: 'ua', code: 'UA', flagSrc: assetUrl(flagUa) },
 ];
 
 const LanguageToggler: React.FC = () => {

@@ -13,6 +13,11 @@ import {
 } from '@mui/material';
 import React from 'react';
 
+import {
+  resolveUserAvatarWithCacheBust,
+  getAvatarInitials,
+} from '../../../utils/placeholder-images';
+
 export interface ProfileFormData {
   firstName: string;
   lastName: string;
@@ -53,6 +58,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
     formData.firstName && formData.lastName
       ? `${formData.firstName} ${formData.lastName}`
       : formData.email || 'User';
+  const avatarSrc = resolveUserAvatarWithCacheBust(formData.picture);
 
   const formContent = (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
@@ -103,11 +109,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
         multiline
         rows={3}
         margin="normal"
-        placeholder={
-          isAdminView
-            ? 'Tell us about this user...'
-            : 'Tell us about yourself...'
-        }
+        placeholder={isAdminView ? 'Tell us about this user...' : 'Tell us about yourself...'}
       />
 
       <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
@@ -138,12 +140,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
 
   const actionButtons = (
     <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end' }}>
-      <Button
-        variant="outlined"
-        onClick={onCancel}
-        disabled={isSaving}
-        startIcon={<Cancel />}
-      >
+      <Button variant="outlined" onClick={onCancel} disabled={isSaving} startIcon={<Cancel />}>
         Cancel
       </Button>
 
@@ -164,11 +161,9 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
       <Card>
         <CardHeader
           avatar={
-            <Avatar
-              src={formData.picture}
-              alt="User Avatar"
-              sx={{ width: 60, height: 60 }}
-            />
+            <Avatar src={avatarSrc} alt="User Avatar" sx={{ width: 60, height: 60 }}>
+              {!avatarSrc ? getAvatarInitials(formData.firstName, formData.lastName) : null}
+            </Avatar>
           }
           title={displayName}
           subheader={
