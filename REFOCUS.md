@@ -56,11 +56,6 @@ _Reframe, don’t remove._
 - [ ] **Option B:** Move to “Labs / Coming soon” until real
 - [ ] Remove from main hamburger nav while demo
 
-#### E3. Payments
-
-- [ ] **Option A:** Connect to real tournament entry fees
-- [ ] **Option B:** Remove from user menu until real
-- [ ] Do not show demo in primary nav
 
 ---
 

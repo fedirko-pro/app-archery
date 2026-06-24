@@ -201,6 +201,14 @@
       "backToList": "Volver a torneos",
       "notFound": "Torneo no encontrado",
       "share": "Compartir",
+      "shareNative": "Compartir…",
+      "shareCopyLink": "Copiar enlace",
+      "shareWhatsApp": "WhatsApp",
+      "shareTelegram": "Telegram",
+      "shareFacebook": "Facebook",
+      "shareX": "X",
+      "shareLinkedIn": "LinkedIn",
+      "shareEmail": "Email",
       "linkCopied": "¡Enlace copiado al portapapeles!",
       "copyLink": "Copia este enlace:",
       "copyFailed": "Error al copiar el enlace al portapapeles",
@@ -481,7 +489,12 @@
   "notFound": {
     "title": "Página no encontrada",
     "subtitle": "La página que buscas puede haber sido eliminada o no estar disponible temporalmente.",
-    "goHome": "Ir al inicio"
+    "goHome": "Ir al inicio",
+    "tournament": {
+      "title": "Torneo no encontrado",
+      "subtitle": "Este torneo puede haber sido eliminado o el enlace es incorrecto.",
+      "goToList": "Ver torneos"
+    }
   },
   "common": {
     "or": "o",

@@ -1,5 +1,5 @@
 import NotFoundPage from '@/components/NotFound/NotFoundPage';
 
-export default function NotFound() {
+export default function LangNotFound() {
   return <NotFoundPage variant="default" />;
 }

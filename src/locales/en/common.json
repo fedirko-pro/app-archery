@@ -222,6 +222,14 @@
       "backToList": "Back to tournaments",
       "notFound": "Tournament not found",
       "share": "Share",
+      "shareNative": "Share…",
+      "shareCopyLink": "Copy link",
+      "shareWhatsApp": "WhatsApp",
+      "shareTelegram": "Telegram",
+      "shareFacebook": "Facebook",
+      "shareX": "X",
+      "shareLinkedIn": "LinkedIn",
+      "shareEmail": "Email",
       "linkCopied": "Link copied to clipboard!",
       "copyLink": "Copy this link:",
       "copyFailed": "Failed to copy link to clipboard",
@@ -703,7 +711,12 @@
   "notFound": {
     "title": "Page not found",
     "subtitle": "The page you are looking for might have been removed or is temporarily unavailable.",
-    "goHome": "Go to Home"
+    "goHome": "Go to Home",
+    "tournament": {
+      "title": "Tournament not found",
+      "subtitle": "This tournament may have been removed or the link is incorrect.",
+      "goToList": "Browse tournaments"
+    }
   },
 
   "auth": {

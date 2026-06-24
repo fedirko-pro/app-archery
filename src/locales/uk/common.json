@@ -222,6 +222,14 @@
       "backToList": "Назад до турнірів",
       "notFound": "Турнір не знайдено",
       "share": "Поділитися",
+      "shareNative": "Поділитися…",
+      "shareCopyLink": "Копіювати посилання",
+      "shareWhatsApp": "WhatsApp",
+      "shareTelegram": "Telegram",
+      "shareFacebook": "Facebook",
+      "shareX": "X",
+      "shareLinkedIn": "LinkedIn",
+      "shareEmail": "Email",
       "linkCopied": "Посилання скопійовано в буфер обміну!",
       "copyLink": "Скопіюйте це посилання:",
       "copyFailed": "Не вдалося скопіювати посилання",
@@ -504,7 +512,12 @@
   "notFound": {
     "title": "Сторінку не знайдено",
     "subtitle": "Сторінка, яку ви шукаєте, можливо, була видалена або тимчасово недоступна.",
-    "goHome": "На головну"
+    "goHome": "На головну",
+    "tournament": {
+      "title": "Турнір не знайдено",
+      "subtitle": "Цей турнір могли видалити або посилання неправильне.",
+      "goToList": "Переглянути турніри"
+    }
   },
   "trainings": {
     "title": "Мої тренування",

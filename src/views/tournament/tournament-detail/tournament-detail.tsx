@@ -15,7 +15,6 @@ import {
   PictureAsPdf,
   RateReview,
   Send,
-  Share,
 } from '@mui/icons-material';
 import {
   Box,
@@ -41,6 +40,8 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 
 import AdminApplyUserDialog from '../../../components/dialogs/admin-apply-user-dialog';
 import { FileAttachment } from '../../../components/FileAttachments/FileAttachments';
+import NotFoundPage from '../../../components/NotFound/NotFoundPage';
+import ShareMenu from '../../../components/share/ShareMenu';
 import { getCountryName } from '../../../config/countries';
 import { canApplyOtherUsers, canEditTournament } from '../../../config/roles';
 import { useAuth } from '../../../contexts/auth-context';
@@ -55,10 +56,11 @@ const TournamentDetail: React.FC = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { t } = useTranslation('common');
-  const { showSuccess, showError } = useNotification();
+  const { showSuccess } = useNotification();
   const [tournament, setTournament] = useState<TournamentDto | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [notFound, setNotFound] = useState(false);
   const [applyUserDialogOpen, setApplyUserDialogOpen] = useState(false);
 
   useEffect(() => {
@@ -69,8 +71,13 @@ const TournamentDetail: React.FC = () => {
         const data = await apiService.getTournament(tournamentId);
         setTournament(data);
       } catch (error) {
-        setError(t('pages.tournaments.fetchError', 'Failed to fetch tournament'));
-        console.error('Error fetching tournament:', error);
+        const message = error instanceof Error ? error.message : '';
+        if (message.includes('status: 404')) {
+          setNotFound(true);
+        } else {
+          setError(t('pages.tournaments.fetchError', 'Failed to fetch tournament'));
+          console.error('Error fetching tournament:', error);
+        }
       } finally {
         setLoading(false);
       }
@@ -110,42 +117,16 @@ const TournamentDetail: React.FC = () => {
     return isBefore(startOfDay(tournamentEndDate), today);
   };
 
-  const handleShare = async () => {
-    const tournamentUrl = `${window.location.origin}/${lang}/tournaments/${tournamentId}`;
-    const shareData = {
-      title: tournament?.title || 'Tournament',
-      text: tournament?.description || `Check out this tournament: ${tournament?.title}`,
-      url: tournamentUrl,
-    };
-
-    // Check if Web Share API is supported (mainly mobile devices)
-    if (navigator.share) {
-      try {
-        await navigator.share(shareData);
-      } catch (err) {
-        // User cancelled or error occurred
-        if ((err as Error).name !== 'AbortError') {
-          console.error('Error sharing:', err);
-        }
-      }
-    } else {
-      // Fallback: Copy URL to clipboard
-      try {
-        await navigator.clipboard.writeText(tournamentUrl);
-        showSuccess(t('pages.tournaments.linkCopied', 'Link copied to clipboard!'));
-      } catch (err) {
-        console.error('Failed to copy link:', err);
-        showError(t('pages.tournaments.copyFailed', 'Failed to copy link to clipboard'));
-      }
-    }
-  };
-
   if (loading) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" minHeight="400px">
         <CircularProgress />
       </Box>
     );
+  }
+
+  if (notFound) {
+    return <NotFoundPage variant="tournament" lang={lang} />;
   }
 
   if (error || !tournament) {
@@ -164,6 +145,8 @@ const TournamentDetail: React.FC = () => {
       </Box>
     );
   }
+
+  const shareUrl = `${window.location.origin}/${lang}/tournaments/${tournament.id}`;
 
   return (
     <Box sx={{ p: 3, maxWidth: 1200, mx: 'auto' }}>
@@ -308,9 +291,12 @@ const TournamentDetail: React.FC = () => {
           <Divider sx={{ my: 3 }} />
 
           <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
-            <Button variant="outlined" size="large" startIcon={<Share />} onClick={handleShare}>
-              {t('pages.tournaments.share', 'Share')}
-            </Button>
+            <ShareMenu
+              url={shareUrl}
+              title={tournament.title}
+              text={tournament.description}
+              imageUrl={resolveTournamentBanner(tournament.banner)}
+            />
             {!isPastTournament(tournament) && (
               <Button
                 variant="contained"

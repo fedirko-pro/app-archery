@@ -224,6 +224,14 @@
       "backToList": "Voltar aos torneios",
       "notFound": "Torneio não encontrado",
       "share": "Compartilhar",
+      "shareNative": "Compartilhar…",
+      "shareCopyLink": "Copiar link",
+      "shareWhatsApp": "WhatsApp",
+      "shareTelegram": "Telegram",
+      "shareFacebook": "Facebook",
+      "shareX": "X",
+      "shareLinkedIn": "LinkedIn",
+      "shareEmail": "Email",
       "linkCopied": "Link copiado para a área de transferência!",
       "copyLink": "Copie este link:",
       "copyFailed": "Falha ao copiar link para a área de transferência",
@@ -500,7 +508,12 @@
   "notFound": {
     "title": "Página não encontrada",
     "subtitle": "A página que você procura pode ter sido removida ou está temporariamente indisponível.",
-    "goHome": "Ir para Início"
+    "goHome": "Ir para Início",
+    "tournament": {
+      "title": "Torneio não encontrado",
+      "subtitle": "Este torneio pode ter sido removido ou o link está incorreto.",
+      "goToList": "Ver torneios"
+    }
   },
   "trainings": {
     "title": "Meus treinos",

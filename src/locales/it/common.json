@@ -202,6 +202,14 @@
       "backToList": "Torna ai tornei",
       "notFound": "Torneo non trovato",
       "share": "Condividi",
+      "shareNative": "Condividi…",
+      "shareCopyLink": "Copia link",
+      "shareWhatsApp": "WhatsApp",
+      "shareTelegram": "Telegram",
+      "shareFacebook": "Facebook",
+      "shareX": "X",
+      "shareLinkedIn": "LinkedIn",
+      "shareEmail": "Email",
       "linkCopied": "Link copiato negli appunti!",
       "copyLink": "Copia questo link:",
       "copyFailed": "Impossibile copiare il link negli appunti",
@@ -482,7 +490,12 @@
   "notFound": {
     "title": "Pagina non trovata",
     "subtitle": "La pagina che stai cercando potrebbe essere stata rimossa o temporaneamente non disponibile.",
-    "goHome": "Vai alla Home"
+    "goHome": "Vai alla Home",
+    "tournament": {
+      "title": "Torneo non trovato",
+      "subtitle": "Questo torneo potrebbe essere stato rimosso o il link non è corretto.",
+      "goToList": "Sfoglia tornei"
+    }
   },
   "trainings": {
     "title": "I miei allenamenti",
