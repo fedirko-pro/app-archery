@@ -1,6 +1,6 @@
 import './achievements.scss';
 
-import { EmojiEvents, MilitaryTech, Share, Star, WorkspacePremium } from '@mui/icons-material';
+import { EmojiEvents, MilitaryTech, Star, WorkspacePremium } from '@mui/icons-material';
 import {
   Avatar,
   Box,
@@ -8,13 +8,15 @@ import {
   CardContent,
   Chip,
   Container,
-  IconButton,
   LinearProgress,
   Typography,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import { useParams } from 'react-router-dom';
 
 import { ACHIEVEMENT_COLORS, RARITY_ICON_COLORS } from '../../theme/achievementTokens';
+import PrivacyAwareShareMenu from '@/components/share/PrivacyAwareShareMenu';
+import { useAuth } from '@/contexts/auth-context';
 
 interface Achievement {
   id: string;
@@ -141,12 +143,10 @@ const sortedAchievements = [...achievements].sort(
 
 const Achievements = () => {
   const { t } = useTranslation('common');
+  const { user } = useAuth();
+  const { lang } = useParams();
 
   const earnedCount = achievements.filter((a) => a.earned).length;
-
-  const handleShare = (_achievementId: string) => {
-    // TODO: share achievement functionality
-  };
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
@@ -280,13 +280,16 @@ const Achievements = () => {
                 </Box>
               )}
               <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 1 }}>
-                <IconButton
-                  onClick={() => handleShare(achievement.id)}
-                  size="small"
-                  aria-label={t('achievements.share')}
-                >
-                  <Share fontSize="small" />
-                </IconButton>
+                {user && (
+                  <PrivacyAwareShareMenu
+                    url={`${typeof window !== 'undefined' ? window.location.origin : ''}/${lang}/archers/${user.id}/achievements/${achievement.id}`}
+                    title={t(achievement.titleKey)}
+                    text={t(achievement.descriptionKey)}
+                    variant="icon"
+                    size="small"
+                    canShare={achievement.earned}
+                  />
+                )}
               </Box>
             </CardContent>
           </Card>

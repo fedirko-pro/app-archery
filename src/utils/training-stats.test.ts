@@ -1,13 +1,19 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi, afterEach } from 'vitest';
 
 import type { LocalTrainingSession } from './local-data-storage';
 import {
   buildWeekSetFromSessions,
+  computeLocalStats,
   computePriorMonthSummary,
   computeStreakAsOf,
   getIsoWeekString,
+  getLastLoggedSession,
+  getMostRecentSession,
+  getRecentTrainingSessions,
+  getStartOfWeek,
   getStreakAtRiskState,
   hasSessionInIsoWeek,
+  toSessionFormDefaults,
 } from './training-stats';
 
 function session(date: string): LocalTrainingSession {
@@ -96,5 +102,179 @@ describe('computePriorMonthSummary', () => {
       shots: 100,
       mostUsedDistance: '18',
     });
+  });
+});
+
+describe('getStartOfWeek', () => {
+  it('returns Monday for a weekday', () => {
+    const result = getStartOfWeek(new Date('2026-06-17T14:00:00'));
+    expect(result.getDay()).toBe(1);
+    expect(result.getDate()).toBe(15);
+  });
+
+  it('returns Monday for a Sunday', () => {
+    const result = getStartOfWeek(new Date('2026-06-14T14:00:00'));
+    expect(result.getDay()).toBe(1);
+  });
+
+  it('zeroes out time', () => {
+    const result = getStartOfWeek(new Date('2026-06-17T14:30:45'));
+    expect(result.getHours()).toBe(0);
+    expect(result.getMinutes()).toBe(0);
+    expect(result.getSeconds()).toBe(0);
+  });
+});
+
+describe('getMostRecentSession', () => {
+  it('returns null for empty array', () => {
+    expect(getMostRecentSession([])).toBeNull();
+  });
+
+  it('returns the most recent session by date', () => {
+    const s1 = session('2026-06-01');
+    const s2 = session('2026-06-15');
+    expect(getMostRecentSession([s1, s2])!.id).toBe('2026-06-15');
+  });
+
+  it('breaks date ties by createdAt', () => {
+    const s1 = { ...session('2026-06-15'), createdAt: '2026-06-15T08:00:00.000Z' };
+    const s2 = { ...session('2026-06-15'), createdAt: '2026-06-15T14:00:00.000Z' };
+    expect(getMostRecentSession([s1, s2])!.id).toBe('2026-06-15');
+  });
+});
+
+describe('getRecentTrainingSessions', () => {
+  it('returns empty array for empty input', () => {
+    expect(getRecentTrainingSessions([])).toEqual([]);
+  });
+
+  it('returns up to limit (default 3)', () => {
+    const sessions = [
+      session('2026-06-01'),
+      session('2026-06-05'),
+      session('2026-06-10'),
+      session('2026-06-15'),
+    ];
+    const result = getRecentTrainingSessions(sessions);
+    expect(result).toHaveLength(3);
+    expect(result[0].date).toBe('2026-06-15');
+  });
+
+  it('respects custom limit', () => {
+    const sessions = [session('2026-06-01'), session('2026-06-05'), session('2026-06-10')];
+    const result = getRecentTrainingSessions(sessions, 1);
+    expect(result).toHaveLength(1);
+    expect(result[0].date).toBe('2026-06-10');
+  });
+});
+
+describe('getLastLoggedSession', () => {
+  it('returns null for empty array', () => {
+    expect(getLastLoggedSession([])).toBeNull();
+  });
+
+  it('returns session with most recent createdAt', () => {
+    const s1 = { ...session('2026-06-01'), createdAt: '2026-06-01T08:00:00.000Z' };
+    const s2 = { ...session('2026-06-01'), createdAt: '2026-06-01T14:00:00.000Z' };
+    expect(getLastLoggedSession([s1, s2])!.createdAt).toBe('2026-06-01T14:00:00.000Z');
+  });
+});
+
+describe('toSessionFormDefaults', () => {
+  it('copies distance, targetType, equipmentSetId from session', () => {
+    const s = {
+      ...session('2026-06-15'),
+      distance: '18',
+      targetType: 'triple',
+      equipmentSetId: 'eq1',
+    };
+    const result = toSessionFormDefaults(s);
+    expect(result.distance).toBe('18');
+    expect(result.targetType).toBe('triple');
+    expect(result.equipmentSetId).toBe('eq1');
+  });
+
+  it('uses defaultEquipmentSetId when session has none', () => {
+    const s = session('2026-06-15');
+    const result = toSessionFormDefaults(s, 'default-eq');
+    expect(result.equipmentSetId).toBe('default-eq');
+  });
+
+  it('prefers session equipmentSetId over default', () => {
+    const s = { ...session('2026-06-15'), equipmentSetId: 'session-eq' };
+    const result = toSessionFormDefaults(s, 'default-eq');
+    expect(result.equipmentSetId).toBe('session-eq');
+  });
+
+  it('sets date to today', () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date('2026-07-04T12:00:00'));
+    const result = toSessionFormDefaults(session('2026-07-04'));
+    expect(result.date).toBe('2026-07-04');
+    vi.useRealTimers();
+  });
+});
+
+describe('computeLocalStats', () => {
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it('returns zeroed stats for empty sessions', () => {
+    const stats = computeLocalStats([]);
+    expect(stats.totalSessions).toBe(0);
+    expect(stats.shots.total).toBe(0);
+    expect(stats.avgShotsPerSession).toBe(0);
+    expect(stats.mostUsedDistance).toBeNull();
+    expect(stats.scoring.avgScore).toBeNull();
+  });
+
+  it('filters out unfinished sessions', () => {
+    const s1 = { ...session('2026-06-15'), status: 'started' as const };
+    const s2 = { ...session('2026-06-16'), status: 'finished' as const };
+    const stats = computeLocalStats([s1, s2]);
+    expect(stats.totalSessions).toBe(1);
+  });
+
+  it('counts total shots correctly', () => {
+    const s1 = { ...session('2026-06-15'), shotsCount: 60 };
+    const s2 = { ...session('2026-06-16'), shotsCount: 40 };
+    const stats = computeLocalStats([s1, s2]);
+    expect(stats.shots.total).toBe(100);
+  });
+
+  it('computes avgShotsPerSession', () => {
+    const s1 = { ...session('2026-06-15'), shotsCount: 60 };
+    const s2 = { ...session('2026-06-16'), shotsCount: 40 };
+    const stats = computeLocalStats([s1, s2]);
+    expect(stats.avgShotsPerSession).toBe(50);
+  });
+
+  it('computes scoring stats when sessions have scores', () => {
+    const s1 = { ...session('2026-06-15'), scoreTotal: 100, distance: '18' };
+    const s2 = { ...session('2026-06-16'), scoreTotal: 200, distance: '30' };
+    const stats = computeLocalStats([s1, s2]);
+    expect(stats.scoring.avgScore).toBe(150);
+    expect(stats.scoring.bestSession?.score).toBe(200);
+    expect(stats.scoring.avgScoreByDistance).toHaveLength(2);
+  });
+
+  it('computes equipment stats', () => {
+    const s1 = { ...session('2026-06-15'), equipmentSetId: 'eq1', shotsCount: 60 };
+    const s2 = { ...session('2026-06-16'), equipmentSetId: 'eq1', shotsCount: 40 };
+    const equipmentSets = [
+      {
+        id: 'eq1',
+        isSynced: false,
+        name: 'My Bow',
+        createdAt: '2026-01-01',
+        updatedAt: '2026-01-01',
+      },
+    ];
+    const stats = computeLocalStats([s1, s2], equipmentSets);
+    expect(stats.byEquipment).toHaveLength(1);
+    expect(stats.byEquipment[0].name).toBe('My Bow');
+    expect(stats.byEquipment[0].shots).toBe(100);
+    expect(stats.mostUsedEquipment).toBe('My Bow');
   });
 });

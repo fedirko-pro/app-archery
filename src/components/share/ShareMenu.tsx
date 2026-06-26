@@ -11,7 +11,15 @@ import {
   WhatsApp,
   X,
 } from '@mui/icons-material';
-import { Button, Divider, ListItemIcon, ListItemText, Menu, MenuItem } from '@mui/material';
+import {
+  Button,
+  Divider,
+  IconButton,
+  ListItemIcon,
+  ListItemText,
+  Menu,
+  MenuItem,
+} from '@mui/material';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -26,6 +34,8 @@ interface ShareMenuProps {
   imageUrl?: string;
   buttonLabel?: string;
   size?: 'small' | 'medium' | 'large';
+  variant?: 'button' | 'icon';
+  onBeforeOpen?: () => boolean;
 }
 
 export default function ShareMenu({
@@ -35,6 +45,8 @@ export default function ShareMenu({
   imageUrl,
   buttonLabel,
   size = 'large',
+  variant = 'button',
+  onBeforeOpen,
 }: ShareMenuProps) {
   const { t } = useTranslation('common');
   const { showSuccess, showError } = useNotification();
@@ -47,6 +59,9 @@ export default function ShareMenu({
   const sharePayload = { title, description: text, url, imageUrl };
 
   const handleOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
+    if (onBeforeOpen && !onBeforeOpen()) {
+      return;
+    }
     setAnchorEl(event.currentTarget);
   };
 
@@ -100,15 +115,26 @@ export default function ShareMenu({
 
   return (
     <>
-      <Button
-        variant="outlined"
-        size={size}
-        startIcon={<Share />}
-        onClick={handleOpen}
-        disabled={sharing}
-      >
-        {buttonLabel ?? t('pages.tournaments.share', 'Share')}
-      </Button>
+      {variant === 'icon' ? (
+        <IconButton
+          size="small"
+          onClick={handleOpen}
+          disabled={sharing}
+          aria-label={buttonLabel ?? t('pages.tournaments.share', 'Share')}
+        >
+          <Share fontSize="small" />
+        </IconButton>
+      ) : (
+        <Button
+          variant="outlined"
+          size={size}
+          startIcon={<Share />}
+          onClick={handleOpen}
+          disabled={sharing}
+        >
+          {buttonLabel ?? t('pages.tournaments.share', 'Share')}
+        </Button>
+      )}
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
         {canNativeShare && (
           <MenuItem onClick={handleNativeShare} disabled={sharing}>

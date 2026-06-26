@@ -42,7 +42,7 @@ const OnboardingPage: React.FC = () => {
   });
   const [settingsDraft, setSettingsDraft] = useState<SettingsDraft>({
     syncEnabled: true,
-    sharingEnabled: false,
+    profileVisibility: 'personal',
   });
 
   useEffect(() => {
@@ -55,7 +55,7 @@ const OnboardingPage: React.FC = () => {
       });
       setSettingsDraft({
         syncEnabled: user.syncTrainingsAndEquipment ?? true,
-        sharingEnabled: user.shareProgressEnabled ?? false,
+        profileVisibility: user.profileVisibility ?? 'personal',
       });
     }
   }, [user]);
@@ -100,7 +100,7 @@ const OnboardingPage: React.FC = () => {
         bio: profileDraft.bio,
         picture: profileDraft.picture,
         syncTrainingsAndEquipment: settingsDraft.syncEnabled,
-        shareProgressEnabled: settingsDraft.sharingEnabled,
+        profileVisibility: settingsDraft.profileVisibility,
         onboardingCompletedAt: new Date().toISOString(),
       });
       updateUser(updated);

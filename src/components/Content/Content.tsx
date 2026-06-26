@@ -11,6 +11,7 @@ import { useAuth } from '../../contexts/auth-context';
 import { getDefaultLandingPath } from '../../utils/default-landing';
 import { normalizeAppLang } from '../../utils/i18n-lang';
 import About from '../../views/About';
+import AchievementSharePage from '../../views/achievement-share/achievement-share';
 import Achievements from '../../views/achievements/achievements';
 import AccessControl from '../../views/admin/access-control/access-control';
 import AdminPanel from '../../views/admin/admin-panel';
@@ -36,6 +37,7 @@ import OnboardingPage from '../../views/Onboarding';
 import Profile from '../../views/profile/profile';
 import ProfileEditPage from '../../views/profile/profile-edit-page';
 import ProtectedRoute from '../../views/protected-route';
+import PublicProfilePage from '../../views/public-profile/public-profile';
 import ResetPassword from '../../views/reset-password/reset-password';
 import Rules from '../../views/rules/Rules';
 import SignIn from '../../views/sign-in/sign-in';
@@ -96,6 +98,11 @@ function Content() {
             }
           />
           <Route path="achievements" element={<Achievements />} />
+          <Route path="archers/:userId" element={<PublicProfilePage />} />
+          <Route
+            path="archers/:userId/achievements/:achievementId"
+            element={<AchievementSharePage />}
+          />
           <Route
             path="admin/users"
             element={

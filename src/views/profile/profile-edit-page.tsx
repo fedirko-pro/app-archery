@@ -79,7 +79,7 @@ const ProfileEditPage: React.FC = () => {
         divisionId: user.divisionId || '',
         appLanguage: getAppLanguageFromUser(user),
         syncTrainingsAndEquipment: user.syncTrainingsAndEquipment ?? false,
-        shareProgressEnabled: user.shareProgressEnabled ?? false,
+        profileVisibility: user.profileVisibility ?? 'personal',
       });
     }
   }, [user]);
@@ -254,10 +254,10 @@ const ProfileEditPage: React.FC = () => {
               return { ...prev, syncTrainingsAndEquipment: value };
             });
           }}
-          onShareToggleChange={(value) => {
+          onProfileVisibilityChange={(value) => {
             setProfileData((prev) => {
               if (!prev) return prev;
-              return { ...prev, shareProgressEnabled: value };
+              return { ...prev, profileVisibility: value };
             });
           }}
           onPictureChange={(dataUrl) => {

@@ -16,7 +16,7 @@ export interface ProfileData {
   role?: string;
   appLanguage?: 'pt' | 'en' | 'it' | 'ua' | 'es';
   syncTrainingsAndEquipment?: boolean;
-  shareProgressEnabled?: boolean;
+  profileVisibility?: 'personal' | 'limited' | 'public';
   onboardingCompletedAt?: string | null;
 }
 

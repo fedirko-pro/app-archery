@@ -24,7 +24,9 @@ import {
   resolveUserAvatarWithCacheBust,
   getAvatarInitials,
 } from '../../../utils/placeholder-images';
+import { getOrigin } from '../../../utils/user-display';
 import type { ProfileData } from '../types';
+import PrivacyAwareShareMenu from '@/components/share/PrivacyAwareShareMenu';
 
 interface ProfileCardProps {
   profileData: ProfileData;
@@ -210,7 +212,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
             </TableContainer>
 
             {!isAdminView && (
-              <Box sx={{ p: 2 }}>
+              <Box sx={{ p: 2, display: 'flex', gap: 1, flexWrap: 'wrap' }}>
                 <Button
                   variant="contained"
                   color="primary"
@@ -218,6 +220,14 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                 >
                   {t('profile.editProfile')}
                 </Button>
+                <PrivacyAwareShareMenu
+                  url={`${getOrigin()}/${currentLang}/archers/${user.id}`}
+                  title={getFullName()}
+                  text={profileData.bio || user.bio}
+                  imageUrl={avatarSrc}
+                  buttonLabel={t('pages.tournaments.share', 'Share')}
+                  size="medium"
+                />
               </Box>
             )}
           </Paper>

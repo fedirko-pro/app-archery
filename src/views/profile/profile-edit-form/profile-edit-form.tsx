@@ -15,10 +15,12 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import AvatarUploader from '../../../components/AvatarUploader';
+import ProfileVisibilitySelect from '../../../components/ProfileVisibilitySelect/ProfileVisibilitySelect';
 import { COUNTRIES } from '../../../config/countries';
 import apiService from '../../../services/api';
 import type { ClubDto, DivisionDto } from '../../../services/types';
 import type { ProfileData } from '../types';
+import type { ProfileVisibility } from '@/types/profile-visibility';
 
 interface ProfileEditFormProps {
   profileData: ProfileData;
@@ -32,7 +34,7 @@ interface ProfileEditFormProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onCategoriesChange: (categories: string[]) => void;
   onSyncToggleChange?: (value: boolean) => void;
-  onShareToggleChange?: (value: boolean) => void;
+  onProfileVisibilityChange?: (value: ProfileVisibility) => void;
   onPictureChange?: (dataUrl: string | null) => void;
 }
 
@@ -47,7 +49,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
   onChange,
   onCategoriesChange,
   onSyncToggleChange,
-  onShareToggleChange,
+  onProfileVisibilityChange,
   onPictureChange,
 }) => {
   const { t } = useTranslation('common');
@@ -358,19 +360,11 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
                 {t('localData.syncToggleDescription')}
               </Typography>
             </Box>
-            <Box>
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={profileData.shareProgressEnabled ?? false}
-                    onChange={(e) => onShareToggleChange?.(e.target.checked)}
-                  />
-                }
-                label={t('onboarding.shareToggleLabel')}
+            <Box sx={{ mt: 2 }}>
+              <ProfileVisibilitySelect
+                value={profileData.profileVisibility ?? 'personal'}
+                onChange={(value) => onProfileVisibilityChange?.(value)}
               />
-              <Typography variant="caption" color="text.secondary" display="block">
-                {t('onboarding.shareHelper')}
-              </Typography>
             </Box>
           </>
         )}

@@ -402,3 +402,39 @@ export interface DivisionDto {
   created_at?: string;
   updated_at?: string;
 }
+
+export interface PublicProgressStatsDto {
+  memberSince: string;
+  totalSessions: number;
+  currentStreakWeeks: number;
+  shotsThisWeek: number;
+  shotsTotal: number;
+}
+
+export interface PublicProfileDto {
+  id: string;
+  firstName?: string;
+  lastName?: string;
+  picture?: string;
+  bio?: string;
+  location?: string;
+  country?: string;
+  club?: { id: string; name: string } | null;
+  profileVisibility: 'public' | 'limited';
+  progress?: PublicProgressStatsDto;
+}
+
+export interface PublicAchievementShareDto {
+  id: string;
+  title: string;
+  description: string;
+  rarity: string;
+  earned: boolean;
+  earnedDate?: string | null;
+  owner: {
+    id: string;
+    firstName?: string;
+    lastName?: string;
+    picture?: string;
+  };
+}

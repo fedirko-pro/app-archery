@@ -29,7 +29,7 @@ export interface User {
   /** Alternative backend field */
   language?: AppLanguageCode;
   syncTrainingsAndEquipment?: boolean;
-  shareProgressEnabled?: boolean;
+  profileVisibility?: 'personal' | 'limited' | 'public';
   onboardingCompletedAt?: string | null;
 }
 

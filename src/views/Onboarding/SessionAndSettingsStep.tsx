@@ -7,9 +7,12 @@ import Typography from '@mui/material/Typography';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
+import ProfileVisibilitySelect from '@/components/ProfileVisibilitySelect/ProfileVisibilitySelect';
+import type { ProfileVisibility } from '@/types/profile-visibility';
+
 export interface SettingsDraft {
   syncEnabled: boolean;
-  sharingEnabled: boolean;
+  profileVisibility: ProfileVisibility;
 }
 
 interface SessionAndSettingsStepProps {
@@ -55,18 +58,10 @@ const SessionAndSettingsStep: React.FC<SessionAndSettingsStepProps> = ({
         {t('onboarding.syncPrivacyNote')}
       </Typography>
 
-      <FormControlLabel
-        control={
-          <Switch
-            checked={settings.sharingEnabled}
-            onChange={(e) => updateSettings({ sharingEnabled: e.target.checked })}
-          />
-        }
-        label={t('onboarding.shareToggleLabel')}
+      <ProfileVisibilitySelect
+        value={settings.profileVisibility}
+        onChange={(value) => updateSettings({ profileVisibility: value })}
       />
-      <Typography variant="caption" color="text.secondary" display="block" sx={{ mt: -1 }}>
-        {t('onboarding.shareHelper')}
-      </Typography>
 
       <Divider />
 

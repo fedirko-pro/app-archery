@@ -550,17 +550,55 @@
     "createFirstTrainingSession": "Create my first training session",
     "preferences": "Preferences",
     "syncHelper": "Backs up your training sessions and equipment across devices when you're online.",
-    "syncPrivacyNote": "Only trainings and equipment sync to your account. You can turn this off anytime in settings. Sharing progress is a separate choice below.",
-    "shareToggleLabel": "Share my progress",
-    "shareHelper": "When enabled, you can share weekly stats and achievements with friends (coming soon).",
+    "syncPrivacyNote": "Only trainings and equipment sync to your account. You can turn this off anytime in settings. Profile visibility controls who can see your shared progress.",
     "steps": {
       "profile": "Your profile",
       "equipment": "Favorite equipment",
       "getStarted": "Get started",
       "profileExplanation": "Help friends recognize you. You can change this anytime in Profile.",
       "equipmentExplanation": "Your default bow setup is pre-selected when you log training sessions. Add more sets later in My Equipment.",
-      "getStartedExplanation": "Choose your sync and sharing preferences. Sync keeps training sessions and equipment backed up across devices."
+      "getStartedExplanation": "Choose your sync preferences and who can see your profile when you share progress."
     }
+  },
+  "privacy": {
+    "visibility": {
+      "title": "Profile visibility",
+      "personal": {
+        "label": "Personal",
+        "helper": "Only you can view your shared profile link. Share buttons will remind you to change this setting."
+      },
+      "limited": {
+        "label": "Limited",
+        "helper": "Club members and federation admins can view your profile when they are signed in."
+      },
+      "public": {
+        "label": "Public",
+        "helper": "Anyone with the link can view your profile and achievement shares."
+      }
+    }
+  },
+  "sharing": {
+    "privacyPersonalTitle": "Sharing is set to Personal",
+    "privacyPersonalMessage": "Your privacy setting is {{visibility}}. To share this, open your profile and change visibility to Limited or Public.",
+    "goToProfileSettings": "Open profile settings",
+    "notEarnedTitle": "Achievement not earned yet",
+    "notEarnedMessage": "You can share this achievement after you unlock it."
+  },
+  "publicProfile": {
+    "notFoundTitle": "Profile not available",
+    "notFoundMessage": "This profile is private or does not exist.",
+    "progressTitle": "Progress snapshot",
+    "weeklyArrows": "Arrows this week",
+    "streak": "Training streak",
+    "streakWeeks": "{{count}} weeks",
+    "totalArrows": "Total arrows",
+    "shareText": "{{name}} on Sokil"
+  },
+  "achievementShare": {
+    "notFoundTitle": "Achievement not available",
+    "notFoundMessage": "This achievement share link is private or does not exist.",
+    "badge": "Achievement",
+    "earnedBy": "Archer"
   },
   "localData": {
     "localStorageBadge": "Local data on device",

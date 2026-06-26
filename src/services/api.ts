@@ -41,6 +41,8 @@ import type {
   TrainingSessionDto,
   CreateTrainingSessionDto,
   TrainingStatsDto,
+  PublicProfileDto,
+  PublicAchievementShareDto,
 } from './types';
 
 interface RequestOptions extends RequestInit {
@@ -236,6 +238,32 @@ class ApiService {
       method: 'PATCH',
       body: JSON.stringify(profileData),
     });
+  }
+
+  async getPublicProfile(userId: string): Promise<PublicProfileDto> {
+    return await this.request<PublicProfileDto>(`/users/public/${userId}`);
+  }
+
+  async getLimitedProfile(userId: string): Promise<PublicProfileDto> {
+    return await this.request<PublicProfileDto>(`/users/${userId}/shared-profile`);
+  }
+
+  async getPublicAchievementShare(
+    userId: string,
+    achievementId: string,
+  ): Promise<PublicAchievementShareDto> {
+    return await this.request<PublicAchievementShareDto>(
+      `/users/public/${userId}/achievements/${achievementId}`,
+    );
+  }
+
+  async getLimitedAchievement(
+    userId: string,
+    achievementId: string,
+  ): Promise<PublicAchievementShareDto> {
+    return await this.request<PublicAchievementShareDto>(
+      `/users/${userId}/shared-profile/achievements/${achievementId}`,
+    );
   }
 
   async changePassword(passwordData: ChangePasswordData): Promise<void> {
