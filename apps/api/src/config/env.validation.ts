@@ -1,5 +1,6 @@
-import { config } from 'dotenv';
-config();
+import { loadRootEnv } from './load-root-env';
+
+loadRootEnv();
 
 const required: string[] = [
   'DATABASE_HOST',

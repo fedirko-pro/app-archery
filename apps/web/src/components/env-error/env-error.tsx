@@ -106,7 +106,7 @@ const EnvError = () => {
         )}
 
         <Typography variant="body2" sx={{ mt: 2 }}>
-          Please check your .env file and restart the development server.
+          Please check the root `.env` file and restart the development server.
         </Typography>
       </Alert>
     </Box>

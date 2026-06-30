@@ -1,3 +1,0 @@
-export ESLINT_USE_FLAT_CONFIG=false
-npx lint-staged
-npx tsc --noEmit

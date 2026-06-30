@@ -8,6 +8,7 @@ import { EmailModule } from './email/email.module';
 import { ConfigModule } from '@nestjs/config';
 import { ScheduleModule } from '@nestjs/schedule';
 import { envSchema } from './config/env.zod';
+import { resolveRootEnvPath } from './config/load-root-env';
 import { TournamentModule } from './tournament/tournament.module';
 import { UploadModule } from './upload/upload.module';
 import { ClubModule } from './club/club.module';
@@ -21,6 +22,7 @@ import { TrainingModule } from './training/training.module';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+      envFilePath: resolveRootEnvPath(),
       validate: (config) => {
         const parsed = envSchema.safeParse(config);
 

@@ -1,44 +1,37 @@
 # -----------------------
-# Build stage
+# Build stage (monorepo root context)
 # -----------------------
 FROM node:22-alpine AS build
 
 WORKDIR /app
 
-# Встановлюємо pnpm
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
-# Копіюємо залежності
-COPY package*.json pnpm-lock.yaml ./
-RUN pnpm install --frozen-lockfile
+COPY pnpm-lock.yaml pnpm-workspace.yaml package.json ./
+COPY apps/api/package.json ./apps/api/
+RUN pnpm install --frozen-lockfile --filter @sokil/api...
 
-# Копіюємо весь код проекту (TS + конфіги)
-COPY . .
-
-# Збираємо TypeScript
-RUN pnpm run build
+COPY apps/api ./apps/api
+RUN pnpm --filter @sokil/api build
 
 # -----------------------
 # Runner stage
 # -----------------------
 FROM node:22-alpine AS runner
 
-WORKDIR /app
+WORKDIR /app/apps/api
 
-# Копіюємо залежності та весь код з build stage
-COPY --from=build /app/node_modules ./node_modules
-COPY --from=build /app/dist ./dist
-COPY --from=build /app/src ./src
-COPY --from=build /app/package.json ./package.json
-COPY --from=build /app/tsconfig.json ./tsconfig.json
-COPY --from=build /app/mikro-orm.config.ts ./mikro-orm.config.ts
-COPY --from=build /app/.env* ./
+COPY --from=build /app/node_modules /app/node_modules
+COPY --from=build /app/apps/api/node_modules ./node_modules
+COPY --from=build /app/apps/api/dist ./dist
+COPY --from=build /app/apps/api/src ./src
+COPY --from=build /app/apps/api/package.json ./package.json
+COPY --from=build /app/apps/api/tsconfig.json ./tsconfig.json
+COPY --from=build /app/apps/api/mikro-orm.config.ts ./mikro-orm.config.ts
+COPY --from=build /app/apps/api/nest-cli.json ./nest-cli.json
+COPY --from=build /app/package.json /app/package.json
+COPY --from=build /app/pnpm-workspace.yaml /app/pnpm-workspace.yaml
 
-# Створюємо потрібні директорії для аплоадів
 RUN mkdir -p uploads/images/avatars uploads/images/banners uploads/attachments pdf/rules
 
-# Вказуємо робочий каталог для запуску команд TS
-WORKDIR /app
-
-# Команда за замовчуванням
 CMD ["node", "dist/src/main.js"]

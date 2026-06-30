@@ -30,7 +30,7 @@ const validateEnv = (): ValidationResult => {
 
   if (missingVars.length > 0) {
     console.error('❌ Missing required environment variables:', missingVars);
-    console.error('Please check your .env file');
+    console.error('Please check the root .env file');
   }
 
   if (invalidVars.length > 0) {

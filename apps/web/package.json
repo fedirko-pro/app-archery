@@ -1,5 +1,5 @@
 {
-  "name": "app-sokil",
+  "name": "@sokil/web",
   "version": "0.1.10",
   "private": true,
   "type": "module",
@@ -33,6 +33,7 @@
     "@typescript-eslint/eslint-plugin": "^8.58.0",
     "@typescript-eslint/parser": "^8.58.0",
     "@vitejs/plugin-react": "^4.7.0",
+    "dotenv-cli": "^11.0.0",
     "eslint": "^9.39.4",
     "eslint-config-next": "^15.5.19",
     "eslint-config-prettier": "^10.1.8",
@@ -50,7 +51,7 @@
     "vitest": "^2.1.9"
   },
   "scripts": {
-    "dev": "next dev -p 3001",
+    "dev": "dotenv -e ../../.env -- next dev -p 3001",
     "build": "next build",
     "start": "next start -p 3001",
     "lint": "eslint .",
@@ -58,8 +59,7 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest",
     "test:run": "vitest run",
-    "pre-push": "node scripts/pre-push-check.mjs",
-    "prepare": "husky"
+    "pre-push": "node scripts/pre-push-check.mjs"
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx,css,scss,md,json,html}": [

@@ -1,0 +1,69 @@
+# Local development: PostgreSQL + API + Web
+# Usage: docker compose up -d --build
+# Or DB only: docker compose up db -d && pnpm dev
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: archery_db_dev
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DATABASE_USER:-archery_user}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-archery_password}
+      POSTGRES_DB: ${DATABASE_NAME:-archery_db}
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+    networks:
+      - archery_network
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${DATABASE_USER:-archery_user} -d ${DATABASE_NAME:-archery_db}']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    container_name: archery_api_dev
+    restart: unless-stopped
+    ports:
+      - '3000:3000'
+    env_file:
+      - .env
+    environment:
+      DATABASE_HOST: db
+      NODE_ENV: production
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./apps/api/uploads:/app/apps/api/uploads
+      - ./apps/api/pdf:/app/apps/api/pdf
+    networks:
+      - archery_network
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+      args:
+        NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL:-http://localhost:3000}
+        NEXT_PUBLIC_GOOGLE_AUTH_URL: ${NEXT_PUBLIC_GOOGLE_AUTH_URL:-http://localhost:3000/auth/google}
+    container_name: archery_web_dev
+    restart: unless-stopped
+    ports:
+      - '8080:3001'
+    depends_on:
+      - api
+    networks:
+      - archery_network
+
+networks:
+  archery_network:
+    driver: bridge
+
+volumes:
+  db_data:

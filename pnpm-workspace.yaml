@@ -1,0 +1,21 @@
+packages:
+  - 'apps/*'
+
+allowBuilds:
+  '@parcel/watcher': true
+  esbuild: true
+  sharp: true
+  unrs-resolver: true
+
+ignoredBuiltDependencies:
+  - '@nestjs/core'
+  - bcrypt
+
+overrides:
+  '@isaacs/brace-expansion': '>=5.0.1'
+  esbuild: '>=0.25.0'
+  glob: '>=10.5.0'
+  lodash: '>=4.17.23'
+  magic-string: ^0.30.10
+  tmp: '>=0.2.4'
+  webpack: '>=5.104.1'

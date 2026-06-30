@@ -1,11 +1,8 @@
 # Deployment Guide - Frontend
 
-Це фронтенд частина Sokil застосунку.
+> **Moved to monorepo root:** see [../../DEPLOYMENT.md](../../DEPLOYMENT.md)
 
-## Повна інструкція
-
-Повна інструкція з деплою (фронтенд + бекенд) знаходиться в репозиторії бекенду:
-`archery-app-backend/DEPLOYMENT.md`
+Legacy quick reference below.
 
 ---
 
