@@ -1,18 +1,34 @@
+import { sharedIgnores, sharedTypeScriptRules } from '@sokil/shared-configs/eslint.base.config.mjs';
+import tseslint from '@typescript-eslint/eslint-plugin';
+import tsParser from '@typescript-eslint/parser';
 import globals from 'globals';
 import eslintPluginReact from 'eslint-plugin-react';
-import eslintPluginTypeScript from '@typescript-eslint/eslint-plugin';
-import tsParser from '@typescript-eslint/parser';
 import importPlugin from 'eslint-plugin-import-x';
 import unicorn from 'eslint-plugin-unicorn';
 import perfectionist from 'eslint-plugin-perfectionist';
 
 export default [
+  { ignores: sharedIgnores },
   {
-    files: ['src/**/*.{js,jsx,ts,tsx}'], // Match JavaScript and TypeScript files
+    files: ['**/*.{ts,tsx}'],
     languageOptions: {
-      ecmaVersion: 'latest',
-      sourceType: 'module',
       parser: tsParser,
+      parserOptions: {
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+      },
+    },
+    plugins: {
+      '@typescript-eslint': tseslint,
+    },
+    rules: {
+      ...tseslint.configs.recommended.rules,
+      ...sharedTypeScriptRules,
+    },
+  },
+  {
+    files: ['src/**/*.{js,jsx,ts,tsx}'],
+    languageOptions: {
       globals: {
         ...globals.browser,
         ...globals.es2021,
@@ -21,23 +37,14 @@ export default [
     },
     plugins: {
       react: eslintPluginReact,
-      '@typescript-eslint': eslintPluginTypeScript,
       import: importPlugin,
       unicorn,
       perfectionist,
     },
     rules: {
-      'react/react-in-jsx-scope': 'off', // Not needed in React 17+
-      'react/prop-types': 'off', // Disable prop-types checks when using TypeScript
-      '@typescript-eslint/no-unused-vars': [
-        'warn',
-        { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
-      ],
-      '@typescript-eslint/explicit-function-return-type': 'off',
-
-      // Enforce import resolution
+      'react/react-in-jsx-scope': 'off',
+      'react/prop-types': 'off',
       'import/no-unresolved': ['error', { caseSensitive: true }],
-      // Enforce import order and grouping
       'perfectionist/sort-imports': [
         'error',
         {
@@ -50,12 +57,9 @@ export default [
             'unknown',
           ],
           newlinesBetween: 'always',
-          // no custom alias groups
         },
       ],
-      // Prefer explicit extensions only for non-TS
       'import/extensions': ['error', 'ignorePackages', { ts: 'never', tsx: 'never' }],
-      // Guard against incorrect filename casing on case-insensitive FS
       'unicorn/filename-case': [
         'error',
         {
@@ -71,7 +75,6 @@ export default [
       react: {
         version: 'detect',
       },
-      // Use TS resolver so extensionless TS imports resolve in lint
       'import-x/resolver': {
         typescript: {
           project: './tsconfig.json',

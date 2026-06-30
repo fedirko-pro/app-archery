@@ -7,7 +7,7 @@ import { EntityManager } from '@mikro-orm/core';
 import { Tournament } from './tournament.entity';
 import { Rule } from '../rule/rule.entity';
 import { subDays, parseISO, startOfDay } from 'date-fns';
-import type { FilterQuery } from '@mikro-orm/core';
+import { type RequiredEntityData, type FilterQuery } from '@mikro-orm/core';
 import { UploadService } from '../upload/upload.service';
 
 @Injectable()
@@ -59,7 +59,7 @@ export class TournamentService {
       }
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+     
     const { ruleCode: _ruleCode, ruleId: _ruleId, ...tournamentData } = data;
 
     const tournament = this.em.create(Tournament, {
@@ -69,7 +69,7 @@ export class TournamentService {
       endDate,
       applicationDeadline,
       allowMultipleApplications: data.allowMultipleApplications ?? true,
-    } as any);
+    } as RequiredEntityData<Tournament>);
 
     await this.em.persistAndFlush(tournament);
     return tournament;
@@ -166,7 +166,7 @@ export class TournamentService {
       tournament.rule = rule;
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+     
     const { ruleCode: _rc, ruleId: _ri, ...updateData } = data;
     Object.assign(tournament, updateData);
     tournament.updatedAt = new Date();

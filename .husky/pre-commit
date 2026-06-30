@@ -1,2 +1,2 @@
-npx --yes lint-staged
+npx lint-staged
 pnpm typecheck

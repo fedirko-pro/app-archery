@@ -1,0 +1,8 @@
+dist/
+.next/
+coverage/
+node_modules/
+pnpm-lock.yaml
+*.tsbuildinfo
+*.min.js
+*.snap

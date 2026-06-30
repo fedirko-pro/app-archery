@@ -256,7 +256,7 @@ const LogoUploader: React.FC<LogoUploaderProps> = ({
                 onTouchMove={handleTouchMove}
                 onTouchEnd={handleTouchEnd}
                 className="logo-uploader__viewport"
-                style={{ ['--logo-size' as any]: `${size}px` }}
+                style={{ '--logo-size': `${size}px` } as React.CSSProperties}
             >
                 {imageEl ? (
                 <img
@@ -280,7 +280,7 @@ const LogoUploader: React.FC<LogoUploaderProps> = ({
                 </Typography>
                 <Slider
                 value={zoom}
-                onChange={handleZoomChange as any}
+                onChange={handleZoomChange}
                 min={1}
                 max={3}
                 step={0.01}

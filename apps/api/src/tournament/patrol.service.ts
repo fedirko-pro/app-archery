@@ -4,7 +4,7 @@ import {
   NotFoundException,
   Logger,
 } from '@nestjs/common';
-import { EntityManager } from '@mikro-orm/core';
+import { EntityManager, type RequiredEntityData } from '@mikro-orm/core';
 import { Patrol } from './patrol.entity';
 import { PatrolMember } from './patrol-member.entity';
 import { PatrolRole } from './patrol-member.entity';
@@ -41,12 +41,12 @@ export class PatrolService {
       );
     }
 
-    const patrol = this.em.create(Patrol, data as any);
+    const patrol = this.em.create(Patrol, data as RequiredEntityData<Patrol>);
     await this.em.persistAndFlush(patrol);
     return patrol;
   }
 
-  async findAll(): Promise<any[]> {
+  async findAll(): Promise<Record<string, unknown>[]> {
     const patrols = await this.em.find(
       Patrol,
       {},
@@ -109,7 +109,7 @@ export class PatrolService {
     });
   }
 
-  async findById(id: string): Promise<any> {
+  async findById(id: string): Promise<Record<string, unknown>> {
     const patrol = await this.em.findOne(
       Patrol,
       { id },
@@ -166,7 +166,7 @@ export class PatrolService {
     };
   }
 
-  async findByTournament(tournamentId: string): Promise<any[]> {
+  async findByTournament(tournamentId: string): Promise<Record<string, unknown>[]> {
     const patrols = await this.em.find(
       Patrol,
       { tournament: tournamentId },
@@ -260,7 +260,7 @@ export class PatrolService {
     });
   }
 
-  async update(id: string, data: Partial<Patrol>): Promise<any> {
+  async update(id: string, data: Partial<Patrol>): Promise<Record<string, unknown>> {
     const patrolEntity = await this.em.findOne(Patrol, { id });
     if (!patrolEntity) {
       throw new NotFoundException('Patrol not found');
@@ -290,7 +290,7 @@ export class PatrolService {
    * Distributes to the smallest patrols first to balance sizes. Renumbers patrols so there are no gaps.
    * Returns the updated list of patrols for the tournament.
    */
-  async deletePatrolAndRedistribute(patrolId: string): Promise<any[]> {
+  async deletePatrolAndRedistribute(patrolId: string): Promise<Record<string, unknown>[]> {
     const patrol = await this.em.findOne(
       Patrol,
       { id: patrolId },
@@ -539,7 +539,7 @@ export class PatrolService {
   async saveGeneratedPatrols(
     tournamentId: string,
     generatedPatrols: PatrolGenerationResult,
-  ): Promise<any[]> {
+  ): Promise<Record<string, unknown>[]> {
     const tournament = await this.em.findOne(Tournament, { id: tournamentId });
     if (!tournament) {
       throw new NotFoundException(
@@ -644,7 +644,7 @@ export class PatrolService {
       // Get members for this patrol
       const members = allPatrolMembers.filter((m) => {
         const patrolId =
-          typeof m.patrol === 'string' ? m.patrol : (m.patrol as any).id;
+          typeof m.patrol === 'string' ? m.patrol : (m.patrol as Patrol).id;
         return patrolId === patrol.id;
       });
 
@@ -776,7 +776,7 @@ export class PatrolService {
     const generatedPatrols = patrols.map((patrol) => {
       const members = allPatrolMembers.filter((m) => {
         const patrolId =
-          typeof m.patrol === 'string' ? m.patrol : (m.patrol as any).id;
+          typeof m.patrol === 'string' ? m.patrol : (m.patrol as Patrol).id;
         return patrolId === patrol.id;
       });
 

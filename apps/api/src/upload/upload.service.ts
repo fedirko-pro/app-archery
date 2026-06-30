@@ -2,7 +2,7 @@ import { Injectable, BadRequestException, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { promises as fs } from 'fs';
 import { join } from 'path';
-import * as sharp from 'sharp';
+import sharp from 'sharp';
 import { v4 as uuidV4 } from 'uuid';
 import {
   ImageUploadOptions,

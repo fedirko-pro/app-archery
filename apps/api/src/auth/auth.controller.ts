@@ -64,7 +64,7 @@ export class AuthController {
     @Request() req: ExpressRequest,
     @Body() setPasswordDto: SetPasswordDto,
   ): Promise<{ message: string }> {
-    const user = req.user as any;
+    const user = req.user as { id: string };
     return this.authService.setPasswordForOAuthUser(user.id, setPasswordDto);
   }
 
@@ -78,7 +78,7 @@ export class AuthController {
     @Request() req: ExpressRequest,
     @Res() res: Response,
   ) {
-    const { jwt } = req.user as any;
+    const { jwt } = req.user as { jwt: string };
     const frontendUrl = this.configService.get<string>('FRONTEND_URL');
     const redirectUrl = `${frontendUrl}/auth/google/callback?token=${jwt}`;
     res.redirect(redirectUrl);

@@ -10,6 +10,8 @@
     "@mui/icons-material": "^7.3.9",
     "@mui/material": "^7.3.9",
     "@mui/material-nextjs": "^9.1.1",
+    "@sokil/shared-configs": "workspace:*",
+    "@sokil/shared-types": "workspace:*",
     "classnames": "^2.5.1",
     "date-fns": "^4.1.0",
     "i18next": "^25.10.10",
@@ -25,6 +27,7 @@
   "devDependencies": {
     "@babel/core": "^7.29.0",
     "@babel/plugin-transform-private-property-in-object": "^7.28.6",
+    "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",
     "@types/node": "^26.0.0",

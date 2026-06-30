@@ -110,15 +110,15 @@ export class UserService {
     }
 
     const safeUpdate: Record<string, unknown> = {};
-    for (const [key, value] of Object.entries(updateData as any)) {
+    for (const [key, value] of Object.entries(updateData as Record<string, unknown>)) {
       if (value !== undefined) {
         safeUpdate[key] = value;
       }
     }
 
-    delete (safeUpdate as any).role;
+    delete safeUpdate.role;
     if (!isAdmin) {
-      delete (safeUpdate as any).email;
+      delete safeUpdate.email;
     }
 
     if (
@@ -133,7 +133,7 @@ export class UserService {
     // Handle clubId separately
     if ('clubId' in safeUpdate) {
       const clubId = safeUpdate.clubId as string | undefined;
-      delete (safeUpdate as any).clubId;
+      delete safeUpdate.clubId;
 
       if (clubId && clubId.trim() !== '') {
         const club = await this.entityManager.findOne(Club, { id: clubId });
@@ -149,7 +149,7 @@ export class UserService {
     // Handle divisionId separately
     if ('divisionId' in safeUpdate) {
       const divisionId = safeUpdate.divisionId as string | undefined;
-      delete (safeUpdate as any).divisionId;
+      delete safeUpdate.divisionId;
 
       if (divisionId && divisionId.trim() !== '') {
         const division = await this.entityManager.findOne(Division, {
@@ -305,7 +305,7 @@ export class UserService {
     await this.entityManager.persistAndFlush(user);
   }
 
-  async getAllUsers(): Promise<any[]> {
+  async getAllUsers(): Promise<Record<string, unknown>[]> {
     const em = this.entityManager.fork();
 
     // Load users and clubs separately to avoid lazy loading issues
@@ -382,7 +382,7 @@ export class UserService {
     }
 
     const safeUpdate: Record<string, unknown> = {};
-    for (const [key, value] of Object.entries(updateData as any)) {
+    for (const [key, value] of Object.entries(updateData as Record<string, unknown>)) {
       if (value !== undefined) {
         safeUpdate[key] = value;
       }
@@ -391,7 +391,7 @@ export class UserService {
     // Handle clubId separately
     if ('clubId' in safeUpdate) {
       const clubId = safeUpdate.clubId as string | undefined;
-      delete (safeUpdate as any).clubId;
+      delete safeUpdate.clubId;
 
       if (clubId && clubId.trim() !== '') {
         const club = await this.entityManager.findOne(Club, { id: clubId });
@@ -407,7 +407,7 @@ export class UserService {
     // Handle divisionId separately
     if ('divisionId' in safeUpdate) {
       const divisionId = safeUpdate.divisionId as string | undefined;
-      delete (safeUpdate as any).divisionId;
+      delete safeUpdate.divisionId;
 
       if (divisionId && divisionId.trim() !== '') {
         const division = await this.entityManager.findOne(Division, {

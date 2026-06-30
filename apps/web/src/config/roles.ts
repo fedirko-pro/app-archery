@@ -1,32 +1,18 @@
-/**
- * Role constants and permission helpers for RBAC.
- * Must match backend src/user/types.ts and auth/permissions.ts.
- */
+import {
+  ROLES,
+  ADMIN_CAPABLE_ROLES,
+  ROLES_CAN_MANAGE_REFERENCE_DATA,
+} from '@sokil/shared-types';
+import type { Role } from '@sokil/shared-types';
 
-export const ROLES = {
-  User: 'user',
-  GeneralAdmin: 'general_admin',
-  ClubAdmin: 'club_admin',
-  FederationAdmin: 'federation_admin',
-} as const;
-
-export type Role = (typeof ROLES)[keyof typeof ROLES];
-
-/** Roles that can access admin-style features (users, applications, tournaments). */
-export const ADMIN_CAPABLE_ROLES: Role[] = [
-  ROLES.GeneralAdmin,
-  ROLES.ClubAdmin,
-  ROLES.FederationAdmin,
-];
+export { ROLES, ADMIN_CAPABLE_ROLES, ROLES_CAN_MANAGE_REFERENCE_DATA };
+export type { Role };
 
 /** Only General Admin can access Access Control and change roles. */
 export const ROLES_CAN_ACCESS_CONTROL: Role[] = [ROLES.GeneralAdmin];
 
 /** General Admin and Federation Admin can delete users/tournaments and manage applications/PDFs. */
 export const ROLES_CAN_DELETE_AND_MANAGE_APPS: Role[] = [ROLES.GeneralAdmin, ROLES.FederationAdmin];
-
-/** Only General Admin can manage reference data (categories, clubs, divisions, rules). */
-export const ROLES_CAN_MANAGE_REFERENCE_DATA: Role[] = [ROLES.GeneralAdmin];
 
 export function isGeneralAdmin(role: string): boolean {
   return role === ROLES.GeneralAdmin;
@@ -44,17 +30,6 @@ export function canAccessAdminSection(role: string): boolean {
   return ADMIN_CAPABLE_ROLES.includes(role as Role);
 }
 
-/**
- * Left-nav visibility (REFOCUS Phase A4).
- *
- * | Section / item                         | guest | user | club_admin | federation_admin | general_admin |
- * |----------------------------------------|-------|------|------------|------------------|---------------|
- * | Main: tournaments, reference pages, …  | yes   | yes  | yes        | yes              | yes           |
- * | Organizer tools: users, applications   | no    | no   | yes        | yes              | yes           |
- * | Admin: access control                  | no    | no   | no         | no               | yes           |
- * | Patrols                                | no nav link; entry via tournament applications page |
- * | Reference CRUD                         | inline on list pages for general_admin only (not in nav) |
- */
 export interface NavItemConfig {
   link: string;
   labelKey: string;
@@ -69,12 +44,10 @@ export const ADMIN_NAV_ITEMS: NavItemConfig[] = [
   { link: '/admin/access-control', labelKey: 'nav.accessControl' },
 ];
 
-/** Public hamburger nav — demo / preview pages always rendered last in the menu. */
 export const PUBLIC_DEMO_NAV_ITEMS: NavItemConfig[] = [
   { link: '/competition/user', labelKey: 'nav.scoringDemo' },
 ];
 
-/** User avatar menu — demo pages always rendered last (before logout). */
 export const USER_DEMO_NAV_ITEMS: NavItemConfig[] = [
   { link: '/achievements', labelKey: 'nav.myAchievements' },
 ];
@@ -129,7 +102,6 @@ export function canEditTournament(
   return false;
 }
 
-/** i18n key for each role (use with t(key)). */
 export const ROLE_LABEL_KEYS: Record<string, string> = {
   [ROLES.User]: 'accessControl.roleUser',
   [ROLES.ClubAdmin]: 'accessControl.roleClubAdmin',
@@ -137,10 +109,6 @@ export const ROLE_LABEL_KEYS: Record<string, string> = {
   [ROLES.GeneralAdmin]: 'accessControl.roleGeneralAdmin',
 };
 
-/**
- * Permission matrix for display: each key is a permission label key,
- * value is array of role values that have it.
- */
 export const ROLE_PERMISSIONS_MATRIX: Array<{ permissionKey: string; roles: Role[] }> = [
   {
     permissionKey: 'accessControl.permCreateEditTournament',

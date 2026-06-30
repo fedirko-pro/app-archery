@@ -11,20 +11,19 @@ const config: Options = {
   user: process.env.DATABASE_USER || 'archery_user',
   password: process.env.DATABASE_PASSWORD || 'archery_password',
   dbName: process.env.DATABASE_NAME || 'archery_db',
-  
-  // Вказуємо реальні шляхи після компіляції
+
   entities: ['./dist/src/**/*.entity.js'],
-  entitiesTs: ['./dist/src/**/*.entity.js'], // 👈 Примушуємо шукати JS файли
-  
+  entitiesTs: ['./src/**/*.entity.ts'],
+
   debug: process.env.NODE_ENV !== 'production',
   migrations: {
     path: './dist/src/migrations',
-    pathTs: './src/migrations', // 👈 Змінюємо назад на src
+    pathTs: './src/migrations',
     glob: '!(*.d).{js,ts}',
   },
   seeder: {
     path: './dist/src/seeders',
-    pathTs: './dist/src/seeders', // 👈 Повертаємо на dist!
+    pathTs: './src/seeders',
     defaultSeeder: 'DatabaseSeeder',
     glob: '!(*.d).{js,ts}',
   },
