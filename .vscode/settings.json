@@ -1,18 +1,24 @@
 {
   "files.exclude": {
-    "**/.next": true,
     "**/node_modules": true,
+    "**/.next": true,
+    "**/dist": true,
+    "**/coverage": true,
+    "**/.pnpm-store": true
+  },
+  "files.watcherExclude": {
+    "**/node_modules/**": true,
+    "**/.next/**": true,
+    "**/dist/**": true,
+    "**/coverage/**": true
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/.next": true,
     "**/dist": true,
     "**/coverage": true
   },
-  "files.watcherExclude": {
-    "**/.next/**": true,
-    "**/node_modules/**": true,
-    "**/dist/**": true
-  },
-  "search.exclude": {
-    "**/.next": true,
-    "**/node_modules": true,
-    "**/dist": true
-  }
+  "explorer.excludeGitIgnore": true,
+  "search.useIgnoreFiles": true,
+  "search.useGlobalIgnoreFiles": true
 }
