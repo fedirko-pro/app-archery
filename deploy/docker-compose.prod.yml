@@ -1,0 +1,85 @@
+# Production stack: PostgreSQL + API + Frontend (Traefik)
+# Run from monorepo root: docker compose -f deploy/docker-compose.prod.yml up -d --build
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: archery_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DATABASE_NAME}
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - archery_network
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${DATABASE_USER} -d ${DATABASE_NAME}']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    container_name: archery_api
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      DATABASE_HOST: db
+      NODE_ENV: production
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./apps/api/uploads:/app/apps/api/uploads
+      - ./apps/api/pdf:/app/apps/api/pdf
+    networks:
+      - archery_network
+      - traefik-public
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.docker.network=traefik-public'
+      - 'traefik.http.routers.archery-api.rule=Host(`api-archery.fedirko.pro`)'
+      - 'traefik.http.routers.archery-api.entrypoints=websecure'
+      - 'traefik.http.routers.archery-api.tls.certresolver=le'
+      - 'traefik.http.services.archery-api.loadbalancer.server.port=3000'
+    command: >
+      sh -c "npx mikro-orm migration:up && npx mikro-orm seeder:run && node dist/src/main.js"
+
+  frontend:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+      args:
+        NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL}
+        NEXT_PUBLIC_GOOGLE_AUTH_URL: ${NEXT_PUBLIC_GOOGLE_AUTH_URL}
+    container_name: archery_frontend
+    restart: unless-stopped
+    networks:
+      - archery_network
+      - traefik-public
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.docker.network=traefik-public'
+      - 'traefik.http.routers.archery-front.rule=Host(`archery.fedirko.pro`)'
+      - 'traefik.http.routers.archery-front.entrypoints=websecure'
+      - 'traefik.http.routers.archery-front.tls.certresolver=le'
+      - 'traefik.http.services.archery-front.loadbalancer.server.port=3001'
+    healthcheck:
+      test: ['CMD', 'wget', '--no-verbose', '--tries=1', '--spider', 'http://localhost:3001/']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+networks:
+  archery_network:
+    driver: bridge
+  traefik-public:
+    external: true
+
+volumes:
+  db_data:

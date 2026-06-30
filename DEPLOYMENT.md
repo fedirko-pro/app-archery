@@ -1,94 +1,131 @@
-# Deployment Guide - Frontend
+# Deployment Guide — Sokil Monorepo (VPS + Docker + Traefik)
 
-Це фронтенд частина Sokil застосунку.
-
-## Повна інструкція
-
-Повна інструкція з деплою (фронтенд + бекенд) знаходиться в репозиторії бекенду:
-`archery-app-backend/DEPLOYMENT.md`
+Single-repo deployment for `apps/api` (NestJS), `apps/web` (Next.js), and PostgreSQL.
 
 ---
 
-## Швидкий старт (тільки frontend)
-
-### 1. Структура на сервері
+## Server layout
 
 ```
-/srv/archery-front/
-├── docker-compose.yml  # Копія з deploy/docker-compose.front.yml
-├── .env                # Build-time змінні
-└── src/                # Цей git репозиторій
-```
-
-### 2. Деплой
-
-```bash
-# Створення директорії
-sudo mkdir -p /srv/archery-front
-sudo chown -R $USER:$USER /srv/archery-front
-
-# Клонування
-cd /srv/archery-front
-git clone https://github.com/YOUR_ORG/app-archery.git src
-
-# Docker compose
-cp src/deploy/docker-compose.front.yml docker-compose.yml
-
-# Environment variables
-cat > .env << EOF
-VITE_API_BASE_URL=https://api.yourdomain.com
-VITE_GOOGLE_AUTH_URL=https://api.yourdomain.com/auth/google
-EOF
-
-# Запуск
-docker compose up -d --build
-```
-
-### 3. Оновлення
-
-```bash
-cd /srv/archery-front/src
-git pull origin main
-cd ..
-docker compose up -d --build
+/srv/archery/                    # git clone of app-archery (monorepo root)
+├── .env                         # single env file (from .env.example)
+├── deploy/docker-compose.prod.yml
+└── apps/ ...
 ```
 
 ---
 
-## Локальна розробка
+## 1. Traefik (one-time setup)
+
+Create the shared network once:
 
 ```bash
-# Встановлення залежностей
+docker network create traefik-public
+```
+
+Traefik config (`/srv/proxy/docker-compose.yml`):
+
+```yaml
+services:
+  traefik:
+    image: traefik:v3
+    container_name: traefik
+    restart: unless-stopped
+    environment:
+      - DOCKER_API_VERSION=1.44
+    command:
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.le.acme.httpchallenge=true"
+      - "--certificatesresolvers.le.acme.httpchallenge.entrypoint=web"
+      - "--certificatesresolvers.le.acme.email=your-email@gmail.com"
+      - "--certificatesresolvers.le.acme.storage=/letsencrypt/acme.json"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./letsencrypt:/letsencrypt
+    networks:
+      - traefik-public
+
+networks:
+  traefik-public:
+    external: true
+```
+
+---
+
+## 2. Deploy monorepo stack
+
+```bash
+sudo mkdir -p /srv/archery
+sudo chown -R $USER:$USER /srv/archery
+cd /srv/archery
+git clone https://github.com/fedirko-pro/app-archery.git .
+
+cp .env.example .env
+# Edit .env with production values (DB, JWT, SMTP, NEXT_PUBLIC_*)
+
+docker compose -f deploy/docker-compose.prod.yml up -d --build
+```
+
+The production compose includes **db**, **api**, and **frontend** with Traefik labels.
+
+### Preserving existing database volume
+
+If migrating from separate `archery-api` / `archery-front` deployments:
+
+1. Note the existing volume: `docker volume ls | grep db_data`
+2. If the compose project name changes, mark the volume as external:
+
+```yaml
+volumes:
+  db_data:
+    external: true
+    name: archery-api_db_data   # use your actual volume name
+```
+
+3. Stop old frontend first, deploy monorepo, verify, then remove old stacks.
+
+---
+
+## 3. Updates
+
+```bash
+cd /srv/archery
+git pull
+docker compose -f deploy/docker-compose.prod.yml up -d --build
+```
+
+API runs migrations and seeders on container start.
+Frontend requires `--build` when `NEXT_PUBLIC_*` env vars change.
+
+---
+
+## 4. Local development
+
+```bash
 pnpm install
-
-# Dev server
-pnpm dev
-
-# Build для production
-pnpm build
-
-# Preview production build
-pnpm start
+docker compose up db -d    # PostgreSQL only
+pnpm dev                   # API :3000 + Web :3001
 ```
+
+Or full stack: `docker compose up -d --build` — Web on http://localhost:8080
 
 ---
 
-## Docker для локальної розробки
+## 5. Troubleshooting
 
 ```bash
-# Build та запуск
-docker compose up -d --build
-
-# Відкрити http://localhost:8080
+docker ps
+docker logs -f archery_api
+docker logs -f archery_frontend
+docker logs -f archery_db
 ```
 
----
-
-## Змінні оточення
-
-| Змінна                 | Опис                 | Приклад                                  |
-| ---------------------- | -------------------- | ---------------------------------------- |
-| `VITE_API_BASE_URL`    | URL бекенд API       | `https://api.yourdomain.com`             |
-| `VITE_GOOGLE_AUTH_URL` | URL для Google OAuth | `https://api.yourdomain.com/auth/google` |
-
-⚠️ Всі Vite змінні повинні мати префікс `VITE_`
+**Note:** `next build` with `output: standalone` may fail on Windows without symlink permissions. Docker builds on Linux are unaffected.

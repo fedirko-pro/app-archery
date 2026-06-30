@@ -1,3 +1,24 @@
 {
-    "typescript.tsdk": "node_modules/typescript/lib"
+  "files.exclude": {
+    "**/node_modules": true,
+    "**/.next": true,
+    "**/dist": true,
+    "**/coverage": true,
+    "**/.pnpm-store": true
+  },
+  "files.watcherExclude": {
+    "**/node_modules/**": true,
+    "**/.next/**": true,
+    "**/dist/**": true,
+    "**/coverage/**": true
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/.next": true,
+    "**/dist": true,
+    "**/coverage": true
+  },
+  "explorer.excludeGitIgnore": true,
+  "search.useIgnoreFiles": true,
+  "search.useGlobalIgnoreFiles": true
 }

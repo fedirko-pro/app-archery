@@ -1,30 +1,47 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-.idea
-
 # dependencies
-/node_modules
-/.pnp
+node_modules/
+.pnp
 .pnp.js
 
-# testing
-/coverage
+# build outputs
+dist/
+build/
+.next/
+out/
+coverage/
+*.tsbuildinfo
 
-# production
-/build
-
-# misc
-.DS_Store
+# secrets — single root .env only; never commit real env files
 .env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env.*
+!.env.example
+apps/**/.env
+apps/**/.env.*
+!apps/**/.env.example
 
+# logs
+logs/
+*.log
 npm-debug.log*
+pnpm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-/dist
-/.next
-/out
-*.tsbuildinfo
+# OS / IDE
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# runtime / temp
+.temp/
+.tmp/
+pids/
+*.pid
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# api uploads (local)
+apps/api/uploads/

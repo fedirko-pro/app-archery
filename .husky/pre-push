@@ -1,2 +1,3 @@
-echo "🔨 Running pre-push checks..."
-npm run pre-push
+echo "Running pre-push checks..."
+pnpm --filter @sokil/web run pre-push
+pnpm --filter @sokil/api run build
