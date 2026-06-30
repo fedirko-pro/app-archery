@@ -854,18 +854,18 @@ class ApiService {
   /**
    * Transform raw backend divisions to DivisionDto[].
    */
-  private static mapDivisionsFromBackend(divisions: any[]): DivisionDto[] {
+  private static mapDivisionsFromBackend(divisions: Record<string, unknown>[]): DivisionDto[] {
     if (!Array.isArray(divisions) || divisions.length === 0) return [];
     const transformed = divisions
-      .filter((div: any) => div && div.id && div.name)
-      .map((div: any) => ({
-        id: div.id,
-        name: div.name,
-        description: div.description || undefined,
-        rule_id: div.rule?.id,
-        rule_code: div.rule?.ruleCode,
-        created_at: div.createdAt,
-        updated_at: div.updatedAt,
+      .filter((div: Record<string, unknown>) => div && div.id && div.name)
+      .map((div: Record<string, unknown>) => ({
+        id: div.id as string,
+        name: div.name as string,
+        description: (div.description as string) || undefined,
+        rule_id: ((div.rule as Record<string, unknown>)?.id as string),
+        rule_code: ((div.rule as Record<string, unknown>)?.ruleCode as string),
+        created_at: div.createdAt as string,
+        updated_at: div.updatedAt as string,
       }));
     return Array.from(new Map(transformed.map((d) => [d.id, d])).values());
   }
@@ -875,15 +875,15 @@ class ApiService {
    */
   async getDivisions(ruleId?: string): Promise<DivisionDto[]> {
     try {
-      let raw: any[];
+      let raw: Record<string, unknown>[];
       if (!ruleId) {
-        raw = await this.getWithOfflineFallback<any[]>('divisions', '/divisions');
+        raw = await this.getWithOfflineFallback<Record<string, unknown>[]>('divisions', '/divisions');
       } else {
         try {
-          raw = await this.get<any[]>(`/divisions?ruleId=${ruleId}`);
+          raw = await this.get<Record<string, unknown>[]>(`/divisions?ruleId=${ruleId}`);
         } catch (error) {
           if (isNetworkError(error)) {
-            const cached = getOfflineCache<any[]>('divisions');
+            const cached = getOfflineCache<Record<string, unknown>[]>('divisions');
             raw = Array.isArray(cached) ? cached : [];
             if (raw.length > 0) setLastServedFromCache(true);
           } else throw error;
@@ -892,7 +892,7 @@ class ApiService {
       return ApiService.mapDivisionsFromBackend(raw);
     } catch (error) {
       console.error('Failed to fetch divisions from backend:', error);
-      const cached = getOfflineCache<any[]>('divisions');
+      const cached = getOfflineCache<Record<string, unknown>[]>('divisions');
       if (Array.isArray(cached)) {
         setLastServedFromCache(true);
         return ApiService.mapDivisionsFromBackend(cached);
@@ -928,18 +928,18 @@ class ApiService {
    */
   async getDivisionById(id: string): Promise<DivisionDto | undefined> {
     try {
-      const division = await this.get<any>(`/divisions/${id}`);
+      const division = await this.get<Record<string, unknown>>(`/divisions/${id}`);
       if (!division) return undefined;
 
       // Transform backend response to DivisionDto format
       return {
-        id: division.id,
-        name: division.name,
-        description: division.description,
-        rule_id: division.rule?.id,
-        rule_code: division.rule?.ruleCode,
-        created_at: division.createdAt,
-        updated_at: division.updatedAt,
+        id: division.id as string,
+        name: division.name as string,
+        description: division.description as string,
+        rule_id: (division.rule as Record<string, unknown>)?.id as string,
+        rule_code: (division.rule as Record<string, unknown>)?.ruleCode as string,
+        created_at: division.createdAt as string,
+        updated_at: division.updatedAt as string,
       };
     } catch (error) {
       console.error(`Failed to fetch division ${id}:`, error);

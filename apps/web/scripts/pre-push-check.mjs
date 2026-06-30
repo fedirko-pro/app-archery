@@ -9,8 +9,8 @@ if (platform() === 'win32') {
   console.log(
     'Windows: skipping standalone next build (symlinks require Developer Mode). Running typecheck + lint...',
   );
-  run('npm run typecheck');
-  run('npm run lint');
+  run('pnpm typecheck');
+  run('pnpm lint');
 } else {
-  run('npm run build');
+  run('pnpm build');
 }

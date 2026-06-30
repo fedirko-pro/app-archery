@@ -20,6 +20,7 @@ import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { Roles as UserRoles, ProfileVisibilities } from './types';
 import { PermissionsService } from '../auth/permissions.service';
+import { RequestUser } from '../auth/permissions';
 
 function serializeUserProfile(user: Record<string, unknown>) {
   const {
@@ -37,14 +38,15 @@ function serializeUserProfile(user: Record<string, unknown>) {
     nationality,
     gender,
     categories,
-    club,
-    division,
     syncTrainingsAndEquipment,
     profileVisibility,
     onboardingCompletedAt,
     createdAt,
     updatedAt,
-  } = user as any;
+  } = user as Record<string, unknown>;
+
+  const club = user.club as { id: string; name: string } | undefined;
+  const division = user.division as { id: string; name: string } | undefined;
 
   return {
     id,
@@ -92,7 +94,7 @@ export class UserController {
 
   @Get('profile')
   @UseGuards(JwtAuthGuard)
-  getProfile(@Request() req: any) {
+  getProfile(@Request() req: { user: RequestUser }) {
     return this.userService.findById(req.user.sub).then((user) => {
       if (!user) return null;
       return serializeUserProfile(user as unknown as Record<string, unknown>);
@@ -102,7 +104,7 @@ export class UserController {
   @Patch('profile')
   @UseGuards(JwtAuthGuard)
   async updateProfile(
-    @Request() req: any,
+    @Request() req: { user: RequestUser },
     @Body() updateUserDto: UpdateUserDto,
   ) {
     const isAdmin = this.permissionsService.canManageUsers(req.user);
@@ -117,7 +119,7 @@ export class UserController {
   @Patch('change-password')
   @UseGuards(JwtAuthGuard)
   changePassword(
-    @Request() req: any,
+    @Request() req: { user: RequestUser },
     @Body() changePasswordDto: ChangePasswordDto,
   ) {
     return this.userService.changePassword(req.user.sub, changePasswordDto);
@@ -125,7 +127,7 @@ export class UserController {
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
-  remove(@Param('id') id: string, @Request() req: any) {
+  remove(@Param('id') id: string, @Request() req: { user: RequestUser }) {
     if (
       req.user.sub !== id &&
       !this.permissionsService.canDeleteUser(req.user)
@@ -152,7 +154,7 @@ export class UserController {
   @Roles(UserRoles.GeneralAdmin, UserRoles.FederationAdmin)
   async adminCreateUser(
     @Body() createUserDto: AdminCreateUserDto,
-    @Request() req: any,
+    @Request() req: { user: RequestUser & { firstName?: string; lastName?: string; email: string } },
   ) {
     const creatorName =
       `${req.user.firstName || ''} ${req.user.lastName || ''}`.trim() ||
@@ -178,47 +180,30 @@ export class UserController {
   async getUserById(@Param('userId') userId: string) {
     const user = await this.userService.findById(userId);
     if (!user) return null;
-    const {
-      id,
-      email,
-      role,
-      firstName,
-      lastName,
-      picture,
-      bio,
-      location,
-      country,
-      appLanguage,
-      federationNumber,
-      nationality,
-      gender,
-      categories,
-      club,
-      division,
-      createdAt,
-      updatedAt,
-    } = user as any;
+    const userRecord = user as unknown as Record<string, unknown>;
+    const club = userRecord.club as { id: string; name: string } | undefined;
+    const division = userRecord.division as { id: string; name: string } | undefined;
     return {
-      id,
-      email,
-      role,
-      firstName,
-      lastName,
-      picture,
-      bio,
-      location,
-      language: appLanguage ?? undefined,
-      appLanguage: appLanguage ?? undefined,
-      country: country ?? undefined,
-      federationNumber,
-      nationality,
-      gender,
-      categories,
+      id: userRecord.id as string,
+      email: userRecord.email as string,
+      role: userRecord.role as string,
+      firstName: userRecord.firstName as string,
+      lastName: userRecord.lastName as string,
+      picture: userRecord.picture as string | undefined,
+      bio: userRecord.bio as string | undefined,
+      location: userRecord.location as string | undefined,
+      language: (userRecord.appLanguage as string) ?? undefined,
+      appLanguage: userRecord.appLanguage as string | undefined,
+      country: (userRecord.country as string) ?? undefined,
+      federationNumber: userRecord.federationNumber as string | undefined,
+      nationality: userRecord.nationality as string | undefined,
+      gender: userRecord.gender as string | undefined,
+      categories: userRecord.categories as string[],
       clubId: club?.id || null,
       divisionId: division?.id || null,
       division: division ? { id: division.id, name: division.name } : null,
-      createdAt,
-      updatedAt,
+      createdAt: userRecord.createdAt as Date,
+      updatedAt: userRecord.updatedAt as Date,
     };
   }
 
@@ -228,7 +213,7 @@ export class UserController {
   adminUpdateUser(
     @Param('id') id: string,
     @Body() updateUserDto: AdminUpdateUserDto,
-    @Request() req: any,
+    @Request() req: { user: RequestUser & { firstName?: string; lastName?: string; email: string } },
   ) {
     const dto = { ...updateUserDto };
     if (

@@ -157,9 +157,9 @@ const PatrolsPage: React.FC = () => {
           severity: 'success',
         });
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Failed to load patrols:', error);
-      setError(error.message || 'Failed to load patrols. Please try again.');
+      setError(error instanceof Error ? error.message : 'Failed to load patrols. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -195,11 +195,11 @@ const PatrolsPage: React.FC = () => {
         message: 'Patrols saved successfully!',
         severity: 'success',
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Failed to save:', error);
       setSnackbar({
         open: true,
-        message: error.message || 'Failed to save patrols. Please try again.',
+        message: error instanceof Error ? error.message : 'Failed to save patrols. Please try again.',
         severity: 'error',
       });
     } finally {
@@ -430,11 +430,11 @@ const PatrolsPage: React.FC = () => {
         message: 'Патруль видалено, учасників перерозподілено.',
         severity: 'success',
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Failed to delete and redistribute:', error);
       setSnackbar({
         open: true,
-        message: error.message || 'Не вдалося видалити патруль і перерозподілити.',
+        message: error instanceof Error ? error.message : 'Не вдалося видалити патруль і перерозподілити.',
         severity: 'error',
       });
     } finally {
@@ -518,11 +518,11 @@ const PatrolsPage: React.FC = () => {
         message: 'Patrols regenerated successfully!',
         severity: 'success',
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Failed to regenerate:', error);
       setSnackbar({
         open: true,
-        message: error.message || 'Failed to regenerate patrols',
+        message: error instanceof Error ? error.message : 'Failed to regenerate patrols',
         severity: 'error',
       });
     } finally {

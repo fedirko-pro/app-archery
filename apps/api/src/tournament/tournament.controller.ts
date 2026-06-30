@@ -18,6 +18,7 @@ import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { Roles as UserRoles } from '../user/types';
 import { PermissionsService } from '../auth/permissions.service';
+import { RequestUser } from '../auth/permissions';
 
 @Controller('tournaments')
 export class TournamentController {
@@ -29,11 +30,11 @@ export class TournamentController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRoles.GeneralAdmin, UserRoles.ClubAdmin, UserRoles.FederationAdmin)
   @Post()
-  async create(@Body() data: any, @Request() req: any) {
+  async create(@Body() data: Record<string, unknown>, @Request() req: { user: RequestUser }) {
     if (!this.permissionsService.canCreateTournament(req.user)) {
       throw new ForbiddenException();
     }
-    return this.tournamentService.create({ ...data, createdBy: req.user.sub });
+    return this.tournamentService.create({ ...data, createdBy: req.user.sub } as unknown as Parameters<typeof this.tournamentService.create>[0]);
   }
 
   @Get()
@@ -49,7 +50,7 @@ export class TournamentController {
     });
     // Serialize to plain JSON to avoid class-transformer issues with Patrol class
     return tournaments.map((t) => {
-      const json: any = wrap(t).toJSON();
+      const json: Record<string, unknown> = wrap(t).toJSON() as Record<string, unknown>;
       return {
         ...json,
         ruleCode: t.rule?.ruleCode || null,
@@ -78,7 +79,7 @@ export class TournamentController {
   async findOne(@Param('id') id: string) {
     const tournament = await this.tournamentService.findById(id);
     // Serialize to plain JSON to avoid class-transformer issues
-    const json: any = wrap(tournament).toJSON();
+    const json: Record<string, unknown> = wrap(tournament).toJSON() as Record<string, unknown>;
     // Add ruleCode for convenience
     json.ruleCode = tournament.rule?.ruleCode || null;
     return json;
@@ -88,8 +89,8 @@ export class TournamentController {
   @Put(':id')
   async update(
     @Param('id') id: string,
-    @Body() data: any,
-    @Request() req: any,
+    @Body() data: Record<string, unknown>,
+    @Request() req: { user: RequestUser },
   ) {
     const tournament = await this.tournamentService.findById(id);
     if (!this.permissionsService.canUpdateTournament(req.user, tournament)) {
@@ -101,7 +102,7 @@ export class TournamentController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRoles.GeneralAdmin, UserRoles.FederationAdmin)
   @Delete(':id')
-  async remove(@Param('id') id: string, @Request() req: any) {
+  async remove(@Param('id') id: string, @Request() req: { user: RequestUser }) {
     if (!this.permissionsService.canDeleteTournament(req.user)) {
       throw new ForbiddenException();
     }

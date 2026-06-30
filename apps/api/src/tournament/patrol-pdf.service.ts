@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import * as path from 'path';
-import * as PDFDocument from 'pdfkit';
+import PDFDocument from 'pdfkit';
 import {
   GeneratedPatrol,
   PatrolEntry,

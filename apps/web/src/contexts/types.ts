@@ -1,61 +1,14 @@
-export type AppLanguageCode = 'pt' | 'en' | 'it' | 'ua' | 'es';
+import type { LoginCredentials, RegisterData, ChangePasswordData, AuthResponse, User } from '@sokil/shared-types';
 
-export interface User {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  role: string;
-  picture?: string;
-  bio?: string;
-  location?: string;
-  country?: string;
-  authProvider: 'local' | 'google' | 'facebook';
-  password?: string;
-  createdAt: string;
-  updatedAt: string;
-  federationNumber?: string;
-  nationality?: string;
-  gender?: string;
-  clubId?: string;
-  club?: { id: string; name: string };
-  categories?: string[];
-  divisionId?: string;
-  division?: { id: string; name: string };
-  /** Preferred app language (camelCase from API) */
-  appLanguage?: AppLanguageCode;
-  /** Backend may return snake_case */
-  app_language?: AppLanguageCode;
-  /** Alternative backend field */
-  language?: AppLanguageCode;
-  syncTrainingsAndEquipment?: boolean;
-  profileVisibility?: 'personal' | 'limited' | 'public';
-  onboardingCompletedAt?: string | null;
-}
+export type {
+  LoginCredentials,
+  RegisterData,
+  ChangePasswordData,
+  AuthResponse,
+  User,
+};
 
-export interface LoginCredentials {
-  email: string;
-  password: string;
-}
-
-export interface RegisterData {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  authProvider: 'local';
-}
-
-export interface ChangePasswordData {
-  currentPassword: string;
-  newPassword: string;
-  confirmPassword: string;
-}
-
-export interface AuthResponse {
-  access_token: string;
-  user: User;
-}
+export type { AppLanguageCode } from '@sokil/shared-types';
 
 export interface AuthContextType {
   user: User | null;

@@ -1,67 +1,38 @@
-export const Roles = {
-  User: 'user',
-  GeneralAdmin: 'general_admin',
-  ClubAdmin: 'club_admin',
-  FederationAdmin: 'federation_admin',
-  /** @deprecated Use GeneralAdmin */
-  Admin: 'general_admin',
-} as const;
+export {
+  ROLES,
+  ADMIN_CAPABLE_ROLES,
+  ROLES_CAN_MANAGE_REFERENCE_DATA,
+  VALID_ROLES,
+  AuthProviders,
+  ProfileVisibilities,
+  VALID_PROFILE_VISIBILITIES,
+} from '@sokil/shared-types';
 
-export type Role = (typeof Roles)[keyof typeof Roles];
+export type {
+  Role,
+  AuthProvider,
+  ProfileVisibility,
+} from '@sokil/shared-types';
 
-// Alias for backward compatibility
-export const UserRoles = Roles;
+import { ROLES } from '@sokil/shared-types';
 
-/** Roles that can access admin-style features (tournaments, users, applications). */
-export const ADMIN_CAPABLE_ROLES = [
-  Roles.GeneralAdmin,
-  Roles.ClubAdmin,
-  Roles.FederationAdmin,
-] as const;
+/** @deprecated Use ROLES instead. */
+export const Roles = ROLES;
+
+/** @deprecated Use ROLES.Admin instead. */
+export const UserRoles = ROLES;
 
 /** Roles that can change user roles (Access Control). */
-export const ROLES_CAN_CHANGE_ROLE = [Roles.GeneralAdmin] as const;
+export const ROLES_CAN_CHANGE_ROLE = [ROLES.GeneralAdmin] as const;
 
 /** Roles that can delete users or tournaments. */
 export const ROLES_CAN_DELETE = [
-  Roles.GeneralAdmin,
-  Roles.FederationAdmin,
+  ROLES.GeneralAdmin,
+  ROLES.FederationAdmin,
 ] as const;
 
 /** Roles that can edit/delete applications and generate PDFs. */
 export const ROLES_CAN_MANAGE_APPLICATIONS_AND_PDFS = [
-  Roles.GeneralAdmin,
-  Roles.FederationAdmin,
-] as const;
-
-/** Roles that can manage reference data (categories, clubs, divisions, rules). */
-export const ROLES_CAN_MANAGE_REFERENCE_DATA = [Roles.GeneralAdmin] as const;
-
-export const VALID_ROLES = [
-  'user',
-  'general_admin',
-  'club_admin',
-  'federation_admin',
-] as const;
-
-export const AuthProviders = {
-  Local: 'local',
-  Google: 'google',
-} as const;
-
-export type AuthProvider = (typeof AuthProviders)[keyof typeof AuthProviders];
-
-export const ProfileVisibilities = {
-  Personal: 'personal',
-  Limited: 'limited',
-  Public: 'public',
-} as const;
-
-export type ProfileVisibility =
-  (typeof ProfileVisibilities)[keyof typeof ProfileVisibilities];
-
-export const VALID_PROFILE_VISIBILITIES = [
-  ProfileVisibilities.Personal,
-  ProfileVisibilities.Limited,
-  ProfileVisibilities.Public,
+  ROLES.GeneralAdmin,
+  ROLES.FederationAdmin,
 ] as const;

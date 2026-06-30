@@ -109,8 +109,8 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
       setCreateDialogOpen(false);
       // Refresh the users list
       fetchUsers();
-    } catch (err: any) {
-      setError(err.message || 'Failed to create user');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Failed to create user');
       throw err; // Re-throw to let dialog know about the error
     }
   };
@@ -126,8 +126,8 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
     if (!sortConfig.field) return users;
 
     return [...users].sort((a, b) => {
-      let aValue: any;
-      let bValue: any;
+      let aValue: string | number;
+      let bValue: string | number;
 
       switch (sortConfig.field) {
         case 'name':

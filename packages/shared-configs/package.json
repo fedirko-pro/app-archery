@@ -1,0 +1,14 @@
+{
+  "name": "@sokil/shared-configs",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test:run": "echo \"No tests yet\"",
+    "typecheck": "tsc --noEmit"
+  },
+  "exports": {
+    "./eslint.base.config.mjs": "./eslint.base.config.mjs",
+    "./tsconfig.base.json": "./tsconfig.base.json"
+  }
+}
