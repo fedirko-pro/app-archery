@@ -4,22 +4,40 @@
   "private": true,
   "packageManager": "pnpm@10.20.0",
   "scripts": {
-    "dev": "pnpm --parallel --filter @sokil/web --filter @sokil/api dev",
+    "dev": "pnpm --filter @sokil/shared-types build && pnpm --parallel --filter @sokil/web --filter @sokil/api dev",
     "dev:web": "pnpm --filter @sokil/web dev",
     "dev:api": "pnpm --filter @sokil/api dev",
     "build": "pnpm -r build",
     "lint": "pnpm -r lint",
     "test": "pnpm -r test",
+    "test:run": "pnpm -r test:run",
     "typecheck": "pnpm --filter @sokil/web typecheck && pnpm --filter @sokil/api typecheck",
     "docker:up": "docker compose up -d --build",
     "docker:down": "docker compose down",
     "prepare": "husky"
   },
+  "lint-staged": {
+    "apps/**/*.{js,jsx,ts,tsx}": [
+      "eslint --fix"
+    ],
+    "*.{js,jsx,ts,tsx,json,css,scss,md}": [
+      "prettier --write"
+    ]
+  },
   "devDependencies": {
-    "husky": "^9.1.7"
+    "@commitlint/cli": "^19.8.0",
+    "@commitlint/config-conventional": "^19.8.0",
+    "eslint": "^9.39.4",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
+    "prettier": "^3.9.3",
+    "turbo": "^2.10.1"
   },
   "engines": {
     "node": ">=22.12.0",
     "pnpm": ">=9.0.0"
+  },
+  "dependencies": {
+    "@turbo/windows-64": "2.10.1"
   }
 }
