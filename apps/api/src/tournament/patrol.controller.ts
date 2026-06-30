@@ -12,6 +12,8 @@ import {
 import { Response } from 'express';
 import { format } from 'date-fns';
 import { PatrolService } from './patrol.service';
+import { Patrol } from './patrol.entity';
+import { PatrolRole } from './patrol-member.entity';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
@@ -24,7 +26,7 @@ export class PatrolController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRoles.GeneralAdmin, UserRoles.FederationAdmin)
   @Post()
-  async create(@Body() data: any) {
+  async create(@Body() data: Partial<Patrol>) {
     return this.patrolService.create(data);
   }
 
@@ -46,7 +48,7 @@ export class PatrolController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRoles.GeneralAdmin, UserRoles.FederationAdmin)
   @Put(':id')
-  async update(@Param('id') id: string, @Body() data: any) {
+  async update(@Param('id') id: string, @Body() data: Partial<Patrol>) {
     return this.patrolService.update(id, data);
   }
 
@@ -78,7 +80,7 @@ export class PatrolController {
     return this.patrolService.addMember(
       patrolId,
       data.userId,
-      data.role as any,
+      data.role as PatrolRole,
     );
   }
 

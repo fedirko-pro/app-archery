@@ -28,15 +28,16 @@ async function testProfileApi() {
   console.log('  club?.name:', user.club?.name);
 
   // Simulate what the controller does
-  const { id, email, role, firstName, lastName, club } = user as any;
+  const userRecord = user as unknown as Record<string, unknown>;
+  const clubRecord = userRecord.club as Record<string, unknown> | undefined;
 
   const response = {
-    id,
-    email,
-    role,
-    firstName,
-    lastName,
-    clubId: club?.id || null,
+    id: userRecord.id as string,
+    email: userRecord.email as string,
+    role: userRecord.role as string,
+    firstName: userRecord.firstName as string,
+    lastName: userRecord.lastName as string,
+    clubId: (clubRecord?.id as string) || null,
   };
 
   console.log('\nSimulated API response:');

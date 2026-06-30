@@ -257,10 +257,10 @@ const Rules: React.FC = () => {
       const data = await apiService.getRules();
       setRules(data);
       handleCloseDialog();
-    } catch (error: any) {
+    } catch (error: unknown) {
       setSnackbar({
         open: true,
-        message: error.message || 'Failed to save rule',
+        message: error instanceof Error ? error.message : 'Failed to save rule',
         severity: 'error',
       });
     } finally {
@@ -290,11 +290,11 @@ const Rules: React.FC = () => {
       const data = await apiService.getRules();
       setRules(data);
       handleCloseDeleteConfirm();
-    } catch (error: any) {
+    } catch (error: unknown) {
       setSnackbar({
         open: true,
         message:
-          error.message ||
+          error instanceof Error ? error.message :
           'Failed to delete rule. It may have related divisions or bow categories.',
         severity: 'error',
       });

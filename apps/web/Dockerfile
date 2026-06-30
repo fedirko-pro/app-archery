@@ -6,6 +6,7 @@ FROM base AS deps
 WORKDIR /app
 COPY pnpm-lock.yaml pnpm-workspace.yaml package.json ./
 COPY apps/web/package.json ./apps/web/
+COPY packages ./packages
 RUN pnpm install --frozen-lockfile --filter @sokil/web...
 
 FROM base AS build

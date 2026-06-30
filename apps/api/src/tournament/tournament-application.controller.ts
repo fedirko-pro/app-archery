@@ -15,11 +15,22 @@ import { wrap } from '@mikro-orm/core';
 import { TournamentApplicationService } from './tournament-application.service';
 import { TournamentService } from './tournament.service';
 import { ApplicationStatus } from './tournament-application.entity';
+import { Tournament } from './tournament.entity';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { Roles as UserRoles } from '../user/types';
 import { PermissionsService } from '../auth/permissions.service';
+
+interface ReqWithUser {
+  user: {
+    sub: string;
+    role: string;
+    email: string;
+    firstName?: string;
+    lastName?: string;
+  };
+}
 
 @Controller('tournament-applications')
 export class TournamentApplicationController {
@@ -40,7 +51,7 @@ export class TournamentApplicationController {
       equipment?: string;
       notes?: string;
     },
-    @Request() req: any,
+    @Request() req: ReqWithUser,
   ) {
     return this.applicationService.create({
       ...data,
@@ -65,7 +76,7 @@ export class TournamentApplicationController {
       equipment?: string;
       notes?: string;
     },
-    @Request() req: any,
+    @Request() req: ReqWithUser,
   ) {
     // Build the notes with admin attribution
     const adminName =
@@ -86,7 +97,7 @@ export class TournamentApplicationController {
   @Get()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRoles.GeneralAdmin, UserRoles.ClubAdmin, UserRoles.FederationAdmin)
-  async findAll(@Request() req: any) {
+  async findAll(@Request() req: ReqWithUser) {
     const applications =
       req.user.role === UserRoles.GeneralAdmin
         ? await this.applicationService.findAll()
@@ -95,7 +106,7 @@ export class TournamentApplicationController {
           );
     // Serialize to plain JSON to avoid class-transformer issues
     return applications.map((app) => {
-      const json: any = wrap(app).toJSON();
+      const json: Record<string, unknown> = wrap(app).toJSON() as Record<string, unknown>;
       return {
         ...json,
         applicant: {
@@ -128,9 +139,9 @@ export class TournamentApplicationController {
   @Roles(UserRoles.GeneralAdmin, UserRoles.ClubAdmin, UserRoles.FederationAdmin)
   async findByTournament(
     @Param('tournamentId') tournamentId: string,
-    @Request() req: any,
+    @Request() req: ReqWithUser,
   ) {
-    let tournament;
+    let tournament: Tournament;
     try {
       tournament = await this.tournamentService.findById(tournamentId);
     } catch {
@@ -148,7 +159,7 @@ export class TournamentApplicationController {
       await this.applicationService.findByTournament(tournamentId);
     // Serialize to plain JSON to avoid class-transformer issues
     return applications.map((app) => {
-      const json: any = wrap(app).toJSON();
+      const json: Record<string, unknown> = wrap(app).toJSON() as Record<string, unknown>;
       return {
         ...json,
         applicant: {
@@ -181,9 +192,9 @@ export class TournamentApplicationController {
   @Roles(UserRoles.GeneralAdmin, UserRoles.ClubAdmin, UserRoles.FederationAdmin)
   async getTournamentStats(
     @Param('tournamentId') tournamentId: string,
-    @Request() req: any,
+    @Request() req: ReqWithUser,
   ) {
-    let tournament;
+    let tournament: Tournament;
     try {
       tournament = await this.tournamentService.findById(tournamentId);
     } catch {
@@ -202,7 +213,7 @@ export class TournamentApplicationController {
 
   @Get('my-applications')
   @UseGuards(JwtAuthGuard)
-  async findMyApplications(@Request() req: any) {
+  async findMyApplications(@Request() req: ReqWithUser) {
     return this.applicationService.findByApplicant(req.user.sub);
   }
 
@@ -218,7 +229,7 @@ export class TournamentApplicationController {
   async updateStatus(
     @Param('id') id: string,
     @Body() data: { status: ApplicationStatus; rejectionReason?: string },
-    @Request() req: any,
+    @Request() req: ReqWithUser,
   ) {
     if (!this.permissionsService.canManageApplicationsAndPdfs(req.user)) {
       throw new ForbiddenException();
@@ -233,14 +244,14 @@ export class TournamentApplicationController {
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
-  async withdraw(@Param('id') id: string, @Request() req: any) {
+  async withdraw(@Param('id') id: string, @Request() req: ReqWithUser) {
     return this.applicationService.withdraw(id, req.user.sub);
   }
 
   @Delete(':id/admin')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRoles.GeneralAdmin, UserRoles.FederationAdmin)
-  async remove(@Param('id') id: string, @Request() req: any) {
+  async remove(@Param('id') id: string, @Request() req: ReqWithUser) {
     if (!this.permissionsService.canManageApplicationsAndPdfs(req.user)) {
       throw new ForbiddenException();
     }

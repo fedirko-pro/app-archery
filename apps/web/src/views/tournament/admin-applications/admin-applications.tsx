@@ -260,8 +260,8 @@ const AdminApplications: React.FC = () => {
     if (!sortConfig.field) return applications;
 
     return [...applications].sort((a, b) => {
-      let aValue: any;
-      let bValue: any;
+      let aValue: string | number;
+      let bValue: string | number;
 
       switch (sortConfig.field) {
         case 'applicant':
