@@ -9,13 +9,13 @@ Single-repo deployment for `apps/api` (NestJS), `apps/web` (Next.js), and Postgr
 ```
 /srv/archery/                    # git clone of app-archery (monorepo root)
 ├── .env                         # single env file (from .env.example)
-├── docker-compose.yml           # optional: copy of deploy/docker-compose.prod.yml
+├── deploy/docker-compose.prod.yml
 └── apps/ ...
 ```
 
 ---
 
-## 1. Traefik (unchanged)
+## 1. Traefik (one-time setup)
 
 Create the shared network once:
 
@@ -23,7 +23,40 @@ Create the shared network once:
 docker network create traefik-public
 ```
 
-See [apps/api/DEPLOYMENT.md](./apps/api/DEPLOYMENT.md) section 1 for full Traefik `docker-compose.yml`.
+Traefik config (`/srv/proxy/docker-compose.yml`):
+
+```yaml
+services:
+  traefik:
+    image: traefik:v3
+    container_name: traefik
+    restart: unless-stopped
+    environment:
+      - DOCKER_API_VERSION=1.44
+    command:
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.le.acme.httpchallenge=true"
+      - "--certificatesresolvers.le.acme.httpchallenge.entrypoint=web"
+      - "--certificatesresolvers.le.acme.email=your-email@gmail.com"
+      - "--certificatesresolvers.le.acme.storage=/letsencrypt/acme.json"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./letsencrypt:/letsencrypt
+    networks:
+      - traefik-public
+
+networks:
+  traefik-public:
+    external: true
+```
 
 ---
 
@@ -48,7 +81,7 @@ The production compose includes **db**, **api**, and **frontend** with Traefik l
 If migrating from separate `archery-api` / `archery-front` deployments:
 
 1. Note the existing volume: `docker volume ls | grep db_data`
-2. If the compose project name changes, mark the volume as external in `docker-compose.yml`:
+2. If the compose project name changes, mark the volume as external:
 
 ```yaml
 volumes:
@@ -70,7 +103,6 @@ docker compose -f deploy/docker-compose.prod.yml up -d --build
 ```
 
 API runs migrations and seeders on container start.
-
 Frontend requires `--build` when `NEXT_PUBLIC_*` env vars change.
 
 ---
@@ -83,7 +115,7 @@ docker compose up db -d    # PostgreSQL only
 pnpm dev                   # API :3000 + Web :3001
 ```
 
-Or full stack: `docker compose up -d --build` → Web on http://localhost:8080
+Or full stack: `docker compose up -d --build` — Web on http://localhost:8080
 
 ---
 
