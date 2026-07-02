@@ -1,5 +1,5 @@
 {
-  "extends": "@sokil/shared-configs/tsconfig.base.json",
+  "extends": "../../packages/shared-configs/tsconfig.base.json",
   "compilerOptions": {
     "module": "commonjs",
     "moduleResolution": "node",

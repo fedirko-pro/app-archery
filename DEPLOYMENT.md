@@ -1,131 +1,192 @@
-# Deployment Guide â€” Sokil Monorepo (VPS + Docker + Traefik)
+# Deployment Guide - Hostinger VPS
 
-Single-repo deployment for `apps/api` (NestJS), `apps/web` (Next.js), and PostgreSQL.
+## Server Info
 
----
+- **VPS IP:** 148.230.116.33
+- **SSH:** `ssh root@148.230.116.33` (ed25519 key at `~/.ssh/id_ed25519`)
+- **OS:** Linux (Ubuntu/Debian)
 
-## Server layout
+## URLs
+
+| Service | URL | Port |
+|---------|-----|------|
+| Frontend | https://archery.fedirko.pro | 3001 |
+| API | https://api-archery.fedirko.pro | 3000 |
+| Traefik dashboard | — | 80/443 |
+
+## Folder Structure
 
 ```
-/srv/archery/                    # git clone of app-archery (monorepo root)
-â”œâ”€â”€ .env                         # single env file (from .env.example)
-â”œâ”€â”€ deploy/docker-compose.prod.yml
-â””â”€â”€ apps/ ...
+/srv/test-archery/
++-- .env                        # Production secrets (DO NOT commit)
++-- docker-compose.prod.yml     # Local compose (NOT in git, has DB volume patches)
++-- src/                        # Git repo (fedirko-pro/app-archery)
+    +-- apps/
+    ¦   +-- api/                # NestJS API
+    ¦   ¦   +-- Dockerfile
+    ¦   ¦   +-- src/
+    ¦   ¦   +-- mikro-orm.config.ts
+    ¦   ¦   +-- tsconfig.json
+    ¦   +-- web/                # Next.js frontend
+    ¦       +-- Dockerfile
+    +-- packages/
+    ¦   +-- shared-configs/     # tsconfig base, eslint config
+    ¦   +-- shared-types/       # Shared TypeScript types
+    +-- deploy/
+    ¦   +-- docker-compose.prod.yml  # Repo's deploy compose
+    +-- (monorepo config: pnpm-workspace, turbo, etc.)
 ```
 
----
+## Docker Resources
 
-## 1. Traefik (one-time setup)
+| Resource | Name | Notes |
+|----------|------|-------|
+| Container | `archery_api` | NestJS API |
+| Container | `archery_frontend` | Next.js |
+| Container | `archery_db` | PostgreSQL 15 |
+| Volume | `test-archery_archery-api_postgres_data` | Active DB data |
+| Network | `test-archery_archery_network` | Internal bridge |
+| Network | `traefik-public` | Shared with Traefik |
 
-Create the shared network once:
+## Traefik Setup (one-time)
+
+The Traefik reverse proxy runs at `/srv/proxy/`. It's already configured with:
+
+- SSL via Let's Encrypt (auto-renewal)
+- HTTP ? HTTPS redirect
+- Routes `archery.fedirko.pro` ? frontend:3001
+- Routes `api-archery.fedirko.pro` ? api:3000
+
+To create the shared network (if not present):
 
 ```bash
 docker network create traefik-public
 ```
 
-Traefik config (`/srv/proxy/docker-compose.yml`):
+## Deployment
 
-```yaml
-services:
-  traefik:
-    image: traefik:v3
-    container_name: traefik
-    restart: unless-stopped
-    environment:
-      - DOCKER_API_VERSION=1.44
-    command:
-      - "--providers.docker=true"
-      - "--providers.docker.exposedbydefault=false"
-      - "--entrypoints.web.address=:80"
-      - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
-      - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
-      - "--entrypoints.websecure.address=:443"
-      - "--certificatesresolvers.le.acme.httpchallenge=true"
-      - "--certificatesresolvers.le.acme.httpchallenge.entrypoint=web"
-      - "--certificatesresolvers.le.acme.email=your-email@gmail.com"
-      - "--certificatesresolvers.le.acme.storage=/letsencrypt/acme.json"
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./letsencrypt:/letsencrypt
-    networks:
-      - traefik-public
-
-networks:
-  traefik-public:
-    external: true
-```
-
----
-
-## 2. Deploy monorepo stack
+### Standard deploy (code changes)
 
 ```bash
-sudo mkdir -p /srv/archery
-sudo chown -R $USER:$USER /srv/archery
-cd /srv/archery
-git clone https://github.com/fedirko-pro/app-archery.git .
+ssh root@148.230.116.33
 
-cp .env.example .env
-# Edit .env with production values (DB, JWT, SMTP, NEXT_PUBLIC_*)
-
-docker compose -f deploy/docker-compose.prod.yml up -d --build
-```
-
-The production compose includes **db**, **api**, and **frontend** with Traefik labels.
-
-### Preserving existing database volume
-
-If migrating from separate `archery-api` / `archery-front` deployments:
-
-1. Note the existing volume: `docker volume ls | grep db_data`
-2. If the compose project name changes, mark the volume as external:
-
-```yaml
-volumes:
-  db_data:
-    external: true
-    name: archery-api_db_data   # use your actual volume name
-```
-
-3. Stop old frontend first, deploy monorepo, verify, then remove old stacks.
-
----
-
-## 3. Updates
-
-```bash
-cd /srv/archery
+cd /srv/test-archery/src
 git pull
-docker compose -f deploy/docker-compose.prod.yml up -d --build
+
+docker compose -f /srv/test-archery/docker-compose.prod.yml up -d --build
 ```
 
-API runs migrations and seeders on container start.
-Frontend requires `--build` when `NEXT_PUBLIC_*` env vars change.
+This rebuilds changed images and recreates containers. API runs migrations automatically on startup.
 
----
-
-## 4. Local development
+### Deploy only API changes
 
 ```bash
-pnpm install
-docker compose up db -d    # PostgreSQL only
-pnpm dev                   # API :3000 + Web :3001
+docker compose -f /srv/test-archery/docker-compose.prod.yml up -d --build api
 ```
 
-Or full stack: `docker compose up -d --build` â€” Web on http://localhost:8080
-
----
-
-## 5. Troubleshooting
+### Deploy only frontend changes
 
 ```bash
-docker ps
-docker logs -f archery_api
-docker logs -f archery_frontend
-docker logs -f archery_db
+docker compose -f /srv/test-archery/docker-compose.prod.yml up -d --build frontend
 ```
 
-**Note:** `next build` with `output: standalone` may fail on Windows without symlink permissions. Docker builds on Linux are unaffected.
+### Database migration only (no code change)
+
+```bash
+docker compose -f /srv/test-archery/docker-compose.prod.yml exec api \
+  ./node_modules/.bin/mikro-orm migration:up
+```
+
+### Full rebuild (clear cache)
+
+```bash
+docker compose -f /srv/test-archery/docker-compose.prod.yml up -d --build --no-cache
+```
+
+## Environment Variables
+
+Edit `/srv/test-archery/.env` for secrets:
+
+```env
+DATABASE_HOST=db
+DATABASE_PORT=5432
+DATABASE_USER=archery_user
+DATABASE_PASSWORD=...
+DATABASE_NAME=archery_db
+JWT_SECRET=...
+GOOGLE_CLIENT_ID=...
+GOOGLE_CLIENT_SECRET=...
+GOOGLE_CALLBACK_URL=https://api-archery.fedirko.pro/auth/google/callback
+FRONTEND_URL=https://archery.fedirko.pro
+BACKEND_URL=https://api-archery.fedirko.pro
+PORT=3000
+NODE_ENV=production
+SMTP_HOST=smtp.zoho.eu
+SMTP_PORT=465
+SMTP_USER=info@fedirko.pro
+SMTP_PASSWORD=...
+SMTP_FROM_EMAIL=info@fedirko.pro
+SMTP_FROM_NAME=Archery App
+NEXT_PUBLIC_API_BASE_URL=https://api-archery.fedirko.pro
+NEXT_PUBLIC_GOOGLE_AUTH_URL=https://api-archery.fedirko.pro/auth/google
+```
+
+After editing, restart API:
+
+```bash
+docker compose -f /srv/test-archery/docker-compose.prod.yml restart api
+```
+
+**Note:** `NEXT_PUBLIC_*` vars are baked into the frontend at build time. Changing them requires `--build`.
+
+## Troubleshooting
+
+```bash
+# Check container status
+docker compose -f /srv/test-archery/docker-compose.prod.yml ps
+
+# View logs
+docker logs archery_api --tail 50
+docker logs archery_frontend --tail 50
+docker logs archery_db --tail 10
+
+# Restart a service
+docker compose -f /srv/test-archery/docker-compose.prod.yml restart api
+
+# Enter a container
+docker exec -it archery_api sh
+
+# Check API health
+curl http://localhost:3000
+
+# Check frontend health
+curl http://localhost:3001
+```
+
+### Common issues
+
+| Problem | Fix |
+|---------|-----|
+| API keeps restarting | `docker logs archery_api` — check env vars, DB connection |
+| Frontend 502 | API is down or Traefik routing issue |
+| Migration errors | `docker exec archery_api ./node_modules/.bin/mikro-orm migration:up` |
+| Port conflict | Check `docker ps` for other services using the same port |
+| SSL not working | Check Traefik logs: `docker logs traefik --tail 20` |
+
+## Git Workflow
+
+- All deployment fixes are committed to `origin/main`
+- Commits are pushed from the VPS directly
+- Pull locally to continue development: `git pull`
+- The `deploy/docker-compose.prod.yml` in git has the canonical compose config
+- `/srv/test-archery/docker-compose.prod.yml` on VPS has additional local patches (absolute paths, DB volume reuse, `DATABASE_PORT` in environment)
+
+### VPS-specific patches (not in git)
+
+The local compose at `/srv/test-archery/docker-compose.prod.yml` differs from the repo's `deploy/docker-compose.prod.yml`:
+
+1. `build.context` changed from `.` to `./src` (repo is nested)
+2. `env_file` uses absolute path `/srv/test-archery/.env`
+3. Volume uses `archery-api_postgres_data` (reuses old DB volume)
+4. Healthcheck uses `127.0.0.1` instead of `localhost` (Alpine IPv6 fix)
+5. `DATABASE_PORT: "5432"` added to environment block (env_file not passing it)
