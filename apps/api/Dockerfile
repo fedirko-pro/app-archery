@@ -21,6 +21,7 @@ COPY --from=build /app/apps/api/package.json ./
 COPY --from=build /app/apps/api/tsconfig.json ./
 COPY --from=build /app/apps/api/mikro-orm.config.ts ./
 COPY --from=build /app/apps/api/src ./src
+COPY --from=build /app/packages/shared-configs /app/packages/shared-configs
 
 RUN mkdir -p uploads/images/avatars uploads/images/banners uploads/attachments pdf/rules
 
