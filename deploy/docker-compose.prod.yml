@@ -11,7 +11,7 @@ services:
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
       POSTGRES_DB: ${DATABASE_NAME}
     volumes:
-      - db_data:/var/lib/postgresql/data
+      - archery-api_postgres_data:/var/lib/postgresql/data
     networks:
       - archery_network
     healthcheck:
@@ -48,7 +48,7 @@ services:
       - 'traefik.http.routers.archery-api.tls.certresolver=le'
       - 'traefik.http.services.archery-api.loadbalancer.server.port=3000'
     command: >
-      sh -c "npx mikro-orm migration:up && npx mikro-orm seeder:run && node dist/src/main.js"
+      sh -c "./node_modules/.bin/mikro-orm migration:up && ./node_modules/.bin/mikro-orm seeder:run && node dist/src/main.js"
 
   frontend:
     build:
@@ -70,7 +70,7 @@ services:
       - 'traefik.http.routers.archery-front.tls.certresolver=le'
       - 'traefik.http.services.archery-front.loadbalancer.server.port=3001'
     healthcheck:
-      test: ['CMD', 'wget', '--no-verbose', '--tries=1', '--spider', 'http://localhost:3001/']
+      test: ['CMD', 'wget', '--no-verbose', '--tries=1', '--spider', 'http://127.0.0.1:3001/']
       interval: 30s
       timeout: 10s
       retries: 3
@@ -82,4 +82,4 @@ networks:
     external: true
 
 volumes:
-  db_data:
+  archery-api_postgres_data:
