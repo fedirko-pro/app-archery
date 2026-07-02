@@ -18,6 +18,9 @@ COPY --from=build /app/apps/api/dist ./dist
 COPY --from=build /app/node_modules /app/node_modules
 COPY --from=build /app/apps/api/node_modules ./node_modules
 COPY --from=build /app/apps/api/package.json ./
+COPY --from=build /app/apps/api/tsconfig.json ./
+COPY --from=build /app/apps/api/mikro-orm.config.ts ./
+COPY --from=build /app/apps/api/src ./src
 
 RUN mkdir -p uploads/images/avatars uploads/images/banners uploads/attachments pdf/rules
 
