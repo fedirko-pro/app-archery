@@ -6,6 +6,7 @@ COPY pnpm-lock.yaml pnpm-workspace.yaml package.json ./
 COPY apps/api/package.json ./apps/api/
 COPY packages ./packages
 RUN pnpm install --frozen-lockfile --filter @sokil/api...
+RUN pnpm --filter @sokil/shared-types build
 
 COPY apps/api ./apps/api
 RUN pnpm --filter @sokil/api build
