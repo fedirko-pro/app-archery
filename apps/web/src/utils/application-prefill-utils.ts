@@ -15,12 +15,10 @@ export function getApplicationPrefillDefaults(
   let division = '';
 
   if (user?.categories?.length && availableCategories.length > 0) {
-    const availableCodeMap = new Map(
-      availableCategories.filter((c) => c.code).map((c) => [c.code, c.id]),
-    );
-    const match = user.categories.find((code) => availableCodeMap.has(code));
+    const availableCodes = new Set(availableCategories.filter((c) => c.code).map((c) => c.code));
+    const match = user.categories.find((code) => availableCodes.has(code));
     if (match) {
-      category = availableCodeMap.get(match)!;
+      category = match;
     }
   }
 
