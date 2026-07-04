@@ -4,14 +4,14 @@ import { Rule } from '../rule/rule.entity';
 import { Division } from '../division/division.entity';
 
 const STANDARD_DIVISIONS = [
-  { name: 'Cub Male', description: 'Boys under 12 years' },
-  { name: 'Cub Female', description: 'Girls under 12 years' },
-  { name: 'Junior Male', description: 'Boys 12-17 years' },
-  { name: 'Junior Female', description: 'Girls 12-17 years' },
-  { name: 'Adult Male', description: 'Men 18-49 years' },
   { name: 'Adult Female', description: 'Women 18-49 years' },
-  { name: 'Veteran Male', description: 'Men 50+ years' },
+  { name: 'Adult Male', description: 'Men 18-49 years' },
+  { name: 'Cub Female', description: 'Girls under 12 years' },
+  { name: 'Cub Male', description: 'Boys under 12 years' },
+  { name: 'Junior Female', description: 'Girls 12-17 years' },
+  { name: 'Junior Male', description: 'Boys 12-17 years' },
   { name: 'Veteran Female', description: 'Women 50+ years' },
+  { name: 'Veteran Male', description: 'Men 50+ years' },
 ];
 
 const RULE_CODES = ['IFAA', 'IFAA-HB', 'FABP', 'HDH-IAA'];

@@ -45,17 +45,15 @@ _Reframe, don’t remove._
 
 #### E1. Merge encyclopedia + converter + rules
 
-- [ ] Single “Archery reference” hub
+- [ ] Single "Archery reference" hub
 - [ ] Unit converter, glossary (GPP/GPI), links to rules PDFs
 - [ ] Remove from main nav; link from training form contextually
-- [ ] Replace or finish WIP `Encyclopedia.tsx` stub
 
 #### E2. Scoring card
 
 - [ ] **Option A:** Integrate into training/competition session logging
 - [ ] **Option B:** Move to “Labs / Coming soon” until real
 - [ ] Remove from main hamburger nav while demo
-
 
 ---
 

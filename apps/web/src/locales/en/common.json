@@ -121,6 +121,7 @@
   "pages": {
     "rules": {
       "title": "Rules",
+      "description": "Official archery rulebooks with multi-language descriptions and PDF downloads",
       "openOfficialPage": "Open official page",
       "downloadPdf": "Download PDF",
       "downloadFailed": "PDF could not be loaded. The file may not be available.",
@@ -141,13 +142,16 @@
       "deleteWarning": "This rule cannot be deleted if it has related divisions or bow categories."
     },
     "categories": {
-      "title": "Bow categories (sorted A-Z)",
+      "title": "Bow categories",
+      "description": "Bow categories grouped by classification code",
       "ruleReference": "Rule reference",
       "confirmDelete": "Are you sure you want to delete this category?",
       "deleteSuccess": "Category deleted successfully",
       "deleteError": "Failed to delete category"
     },
     "divisions": {
+      "title": "Divisions",
+      "description": "Competition divisions grouped by rule set and age group",
       "deleteConfirm": "Are you sure you want to delete this division?",
       "deleteSuccess": "Division deleted successfully",
       "deleteError": "Failed to delete division",
@@ -164,7 +168,10 @@
       "saveSuccess": "Club saved successfully",
       "saveError": "Failed to save club. Please try again."
     },
-    "converter": { "title": "Converter of most common archery measures" },
+    "converter": {
+      "title": "Converter of most common archery measures",
+      "description": "Convert between inches/cm, pounds/kg, grains/grams, yards/meters"
+    },
     "about": {
       "title": "About this App",
       "intro": "Sokil helps archers log training sessions, track progress, unlock achievements, and manage equipment — with offline support and automatic sync.\n\nGamification keeps the hobby engaging.\n\nYour data is stored securely and you choose what to share. Federations and clubs can run tournaments, manage applications, and organize events.\n\nEmpowering archery communities with modern technology.",

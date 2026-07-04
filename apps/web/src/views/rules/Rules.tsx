@@ -85,13 +85,12 @@ const Rules: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    const anchor = decodeURIComponent((hash || '').replace(/^#/, ''));
-    if (!anchor) return;
-    // If anchor matches ruleCode or part of citation, expand it
-    const match = rules.find((r) => r.ruleCode.toLowerCase() === anchor.toLowerCase());
+    const raw = decodeURIComponent((hash || '').replace(/^#/, ''));
+    if (!raw) return;
+    const ruleCodePart = raw.includes('~') ? raw.slice(0, raw.indexOf('~')) : raw;
+    const match = rules.find((r) => r.ruleCode.toLowerCase() === ruleCodePart.toLowerCase());
     if (match) {
       setExpanded(match.ruleCode);
-      // Scroll into view after expansion paints
       requestAnimationFrame(() => {
         const el = document.getElementById(`rule-${match.ruleCode}`);
         el?.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -101,20 +100,17 @@ const Rules: React.FC = () => {
 
   const buildDownloadHref = (downloadLink?: string) => {
     if (!downloadLink) return undefined;
-    // External URL: use as-is
     if (downloadLink.startsWith('http')) return downloadLink;
-    // Use filename only: support "2021-Book-of-Rules.pdf", "pdf/rules/2021-Book-of-Rules.pdf", "/mnt/data/2021-Book-of-Rules.pdf"
-    const filename = downloadLink.split('/').filter(Boolean).pop() || '';
-    if (!filename) return undefined;
     const base = (env.API_BASE_URL || '').replace(/\/$/, '');
-    // Served from backend at /pdf/rules/ (Rule.downloadLink in DB is path/filename; files in backend pdf/rules/)
-    return base ? `${base}/pdf/rules/${filename}` : `/pdf/rules/${filename}`;
+    const path = downloadLink.startsWith('/') ? downloadLink : `/${downloadLink}`;
+    return base ? `${base}${path}` : path;
   };
 
-  /** Absolute URL for fetch (same as buildDownloadHref when using API_BASE_URL). */
+  /** Absolute URL for fetch. */
   const getPdfDownloadUrl = (downloadLink?: string) => {
     const href = buildDownloadHref(downloadLink);
-    if (!href || href.startsWith('http')) return href;
+    if (!href) return undefined;
+    if (href.startsWith('http')) return href;
     return href.startsWith('/') ? `${window.location.origin}${href}` : href;
   };
 
@@ -294,8 +290,9 @@ const Rules: React.FC = () => {
       setSnackbar({
         open: true,
         message:
-          error instanceof Error ? error.message :
-          'Failed to delete rule. It may have related divisions or bow categories.',
+          error instanceof Error
+            ? error.message
+            : 'Failed to delete rule. It may have related divisions or bow categories.',
         severity: 'error',
       });
     } finally {
@@ -310,18 +307,25 @@ const Rules: React.FC = () => {
   return (
     <section>
       <div className="container">
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-          <Typography variant="h4">{t('pages.rules.title')}</Typography>
-          {isAdmin && (
-            <Button
-              variant="contained"
-              color="primary"
-              startIcon={<AddIcon />}
-              onClick={handleOpenCreateDialog}
-            >
-              {t('pages.rules.createRule') || 'Create Rule'}
-            </Button>
-          )}
+        <Box sx={{ mb: 2 }}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Typography variant="h4" component="h1" sx={{ mb: 0.5 }}>
+              {t('pages.rules.title')}
+            </Typography>
+            {isAdmin && (
+              <Button
+                variant="contained"
+                color="primary"
+                startIcon={<AddIcon />}
+                onClick={handleOpenCreateDialog}
+              >
+                {t('pages.rules.createRule') || 'Create Rule'}
+              </Button>
+            )}
+          </Box>
+          <Typography variant="body2" component="h2" color="text.secondary">
+            {t('pages.rules.description')}
+          </Typography>
         </Box>
 
         {rules.map((rule) => (

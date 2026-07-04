@@ -5,10 +5,7 @@ import {
   ConflictException,
 } from '@nestjs/common';
 import { EntityManager } from '@mikro-orm/core';
-import {
-  TournamentApplication,
-  ApplicationStatus,
-} from './tournament-application.entity';
+import { TournamentApplication, ApplicationStatus } from './tournament-application.entity';
 import { Tournament } from './tournament.entity';
 import { User } from '../user/entity/user.entity';
 import { Division } from '../division/division.entity';
@@ -23,24 +20,22 @@ export class TournamentApplicationService {
   ) {}
 
   /** Resolve divisionId from division (id) or divisionId. */
-  private resolveDivisionId(data: {
-    divisionId?: string;
-    division?: string;
-  }): string | undefined {
+  private resolveDivisionId(data: { divisionId?: string; division?: string }): string | undefined {
     return data.divisionId ?? data.division ?? undefined;
   }
 
   /** Resolve bowCategoryId from bowCategoryId or category (id or code). */
-  private async resolveBowCategoryId(data: {
-    bowCategoryId?: string;
-    category?: string;
-  }): Promise<string | undefined> {
+  private async resolveBowCategoryId(
+    data: {
+      bowCategoryId?: string;
+      category?: string;
+    },
+    ruleId?: string,
+  ): Promise<string | undefined> {
     const raw = data.bowCategoryId ?? data.category;
     if (!raw) return undefined;
     const isUuid =
-      /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(
-        raw,
-      );
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(raw);
     if (isUuid) {
       const found = await this.em.findOne(BowCategory, { id: raw });
       if (!found) {
@@ -48,7 +43,9 @@ export class TournamentApplicationService {
       }
       return found.id;
     }
-    const byCode = await this.em.findOne(BowCategory, { code: raw });
+    const where: Record<string, unknown> = { code: raw };
+    if (ruleId) where.rule = ruleId;
+    const byCode = await this.em.findOne(BowCategory, where);
     if (!byCode) {
       throw new NotFoundException(`BowCategory with code ${raw} not found`);
     }
@@ -64,15 +61,15 @@ export class TournamentApplicationService {
     category?: string;
     notes?: string;
   }): Promise<TournamentApplication> {
-    const divisionId = this.resolveDivisionId(data);
-    const bowCategoryId = await this.resolveBowCategoryId(data);
-
     const tournament = await this.em.findOne(Tournament, {
       id: data.tournamentId,
     });
     if (!tournament) {
       throw new NotFoundException('Tournament not found');
     }
+
+    const divisionId = this.resolveDivisionId(data);
+    const bowCategoryId = await this.resolveBowCategoryId(data, tournament.rule?.id);
 
     const applicant = await this.em.findOne(User, { id: data.applicantId });
     if (!applicant) {
@@ -86,9 +83,7 @@ export class TournamentApplicationService {
 
     if (existingApplications.length > 0) {
       if (!tournament.allowMultipleApplications) {
-        throw new ConflictException(
-          'Application already exists for this tournament',
-        );
+        throw new ConflictException('Application already exists for this tournament');
       }
 
       if (bowCategoryId) {
@@ -120,9 +115,7 @@ export class TournamentApplicationService {
         id: bowCategoryId,
       });
       if (!bowCategory) {
-        throw new NotFoundException(
-          `BowCategory with ID ${bowCategoryId} not found`,
-        );
+        throw new NotFoundException(`BowCategory with ID ${bowCategoryId} not found`);
       }
     }
 
@@ -149,9 +142,7 @@ export class TournamentApplicationService {
         tournament.address,
         applicant.appLanguage,
       )
-      .catch((err) =>
-        console.error('Failed to send application submitted email:', err),
-      );
+      .catch((err) => console.error('Failed to send application submitted email:', err));
 
     return application;
   }
@@ -169,29 +160,19 @@ export class TournamentApplicationService {
   /**
    * Find all applications for tournaments created by the given user (for Club/Federation admin).
    */
-  async findAllByTournamentCreator(
-    createdByUserId: string,
-  ): Promise<TournamentApplication[]> {
+  async findAllByTournamentCreator(createdByUserId: string): Promise<TournamentApplication[]> {
     return this.em.find(
       TournamentApplication,
       {
         tournament: { createdBy: { id: createdByUserId } },
       },
       {
-        populate: [
-          'tournament',
-          'tournament.createdBy',
-          'applicant',
-          'division',
-          'bowCategory',
-        ],
+        populate: ['tournament', 'tournament.createdBy', 'applicant', 'division', 'bowCategory'],
       },
     );
   }
 
-  async findByTournament(
-    tournamentId: string,
-  ): Promise<TournamentApplication[]> {
+  async findByTournament(tournamentId: string): Promise<TournamentApplication[]> {
     return this.em.find(
       TournamentApplication,
       {
@@ -242,9 +223,7 @@ export class TournamentApplicationService {
     // ✅ Status transition validation
     // Prevent changing to the same status
     if (application.status === status) {
-      throw new BadRequestException(
-        `Application is already ${status}. No change needed.`,
-      );
+      throw new BadRequestException(`Application is already ${status}. No change needed.`);
     }
 
     // Prevent admins from changing withdrawn applications
@@ -285,8 +264,7 @@ export class TournamentApplicationService {
     // ✅ Audit trail - track who processed the application
     if (
       adminUserId &&
-      (status === ApplicationStatus.APPROVED ||
-        status === ApplicationStatus.REJECTED)
+      (status === ApplicationStatus.APPROVED || status === ApplicationStatus.REJECTED)
     ) {
       const admin = await this.em.findOne(User, { id: adminUserId });
       if (admin) {
@@ -332,17 +310,12 @@ export class TournamentApplicationService {
     return application;
   }
 
-  async withdraw(
-    id: string,
-    applicantId: string,
-  ): Promise<TournamentApplication> {
+  async withdraw(id: string, applicantId: string): Promise<TournamentApplication> {
     const application = await this.findById(id);
 
     // Ensure the application belongs to the user
     if (application.applicant.id !== applicantId) {
-      throw new BadRequestException(
-        'You can only withdraw your own applications',
-      );
+      throw new BadRequestException('You can only withdraw your own applications');
     }
 
     if (application.status !== ApplicationStatus.PENDING) {
@@ -372,18 +345,10 @@ export class TournamentApplicationService {
 
     return {
       total: applications.length,
-      pending: applications.filter(
-        (app) => app.status === ApplicationStatus.PENDING,
-      ).length,
-      approved: applications.filter(
-        (app) => app.status === ApplicationStatus.APPROVED,
-      ).length,
-      rejected: applications.filter(
-        (app) => app.status === ApplicationStatus.REJECTED,
-      ).length,
-      withdrawn: applications.filter(
-        (app) => app.status === ApplicationStatus.WITHDRAWN,
-      ).length,
+      pending: applications.filter((app) => app.status === ApplicationStatus.PENDING).length,
+      approved: applications.filter((app) => app.status === ApplicationStatus.APPROVED).length,
+      rejected: applications.filter((app) => app.status === ApplicationStatus.REJECTED).length,
+      withdrawn: applications.filter((app) => app.status === ApplicationStatus.WITHDRAWN).length,
     };
   }
 }

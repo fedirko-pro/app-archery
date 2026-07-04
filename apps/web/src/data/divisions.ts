@@ -7,27 +7,21 @@ import type { DivisionDto } from '../services/types';
  */
 const divisionsData: DivisionDto[] = [
   {
-    id: '1',
-    name: 'Cub',
-    description: 'Young archers (typically under 12 years)',
-    rule_code: 'IFAA',
-  },
-  {
-    id: '2',
-    name: 'Junior',
-    description: 'Junior archers (typically 12-17 years)',
-    rule_code: 'IFAA',
-  },
-  {
     id: '3',
     name: 'Adult',
     description: 'Adult archers (typically 18-49 years)',
     rule_code: 'IFAA',
   },
   {
-    id: '4',
-    name: 'Veteran',
-    description: 'Veteran archers (typically 50+ years)',
+    id: '7',
+    name: 'Adult',
+    description: 'Adult archers as per FABP rules',
+    rule_code: 'FABP',
+  },
+  {
+    id: '1',
+    name: 'Cub',
+    description: 'Young archers (typically under 12 years)',
     rule_code: 'IFAA',
   },
   {
@@ -37,16 +31,22 @@ const divisionsData: DivisionDto[] = [
     rule_code: 'FABP',
   },
   {
+    id: '2',
+    name: 'Junior',
+    description: 'Junior archers (typically 12-17 years)',
+    rule_code: 'IFAA',
+  },
+  {
     id: '6',
     name: 'Junior',
     description: 'Junior archers as per FABP rules',
     rule_code: 'FABP',
   },
   {
-    id: '7',
-    name: 'Adult',
-    description: 'Adult archers as per FABP rules',
-    rule_code: 'FABP',
+    id: '4',
+    name: 'Veteran',
+    description: 'Veteran archers (typically 50+ years)',
+    rule_code: 'IFAA',
   },
   {
     id: '8',

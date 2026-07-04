@@ -19,14 +19,15 @@ async function bootstrap() {
   });
 
   // Serve static files from uploads directory
-  // Use process.cwd() to get project root, as __dirname points to dist/src
-  app.useStaticAssets(join(process.cwd(), 'uploads'), {
+  // From dist/src/main.js: go up 4 levels to reach project root
+  const projectRoot = join(__dirname, '..', '..', '..', '..');
+  app.useStaticAssets(join(projectRoot, 'uploads'), {
     prefix: '/uploads/',
   });
 
-  // Rule PDFs: files in pdf/rules/ served at /pdf/rules/ (Rule.downloadLink in DB is path/filename; frontend requests from API)
-  app.useStaticAssets(join(process.cwd(), 'pdf'), {
-    prefix: '/pdf/',
+  // Rule PDFs: files in uploads/rules/ served at /uploads/rules/
+  app.useStaticAssets(join(projectRoot, 'uploads', 'rules'), {
+    prefix: '/pdf/rules/',
   });
 
   app.useGlobalPipes(

@@ -1,7 +1,5 @@
 {
-  "namespaces": [
-    "public"
-  ],
+  "namespaces": ["public"],
   "name": "public",
   "tables": [
     {
@@ -219,19 +217,15 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": [
-            "code"
-          ],
-          "composite": false,
+          "columnNames": ["code", "rule_id"],
+          "composite": true,
           "constraint": true,
-          "keyName": "bow_category_code_unique",
+          "keyName": "bow_category_code_rule_id_unique",
           "unique": true,
           "primary": false
         },
         {
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "constraint": false,
           "keyName": "bow_category_pkey",
@@ -242,15 +236,11 @@
       "checks": [],
       "foreignKeys": {
         "bow_category_rule_id_foreign": {
-          "columnNames": [
-            "rule_id"
-          ],
+          "columnNames": ["rule_id"],
           "constraintName": "bow_category_rule_id_foreign",
           "localTableName": "public.bow_category",
           "referencedTableName": "public.rule",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "updateRule": "cascade",
           "deleteRule": "no action"
         }
@@ -393,9 +383,7 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "constraint": false,
           "keyName": "club_pkey",
@@ -511,9 +499,7 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "constraint": false,
           "keyName": "division_pkey",
@@ -524,15 +510,11 @@
       "checks": [],
       "foreignKeys": {
         "division_rule_id_foreign": {
-          "columnNames": [
-            "rule_id"
-          ],
+          "columnNames": ["rule_id"],
           "constraintName": "division_rule_id_foreign",
           "localTableName": "public.division",
           "referencedTableName": "public.rule",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "updateRule": "cascade",
           "deleteRule": "no action"
         }
@@ -771,9 +753,7 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "constraint": false,
           "keyName": "equipment_set_pkey",
@@ -784,15 +764,11 @@
       "checks": [],
       "foreignKeys": {
         "equipment_set_user_id_foreign": {
-          "columnNames": [
-            "user_id"
-          ],
+          "columnNames": ["user_id"],
           "constraintName": "equipment_set_user_id_foreign",
           "localTableName": "public.equipment_set",
           "referencedTableName": "public.user",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "updateRule": "cascade",
           "deleteRule": "no action"
         }
@@ -919,9 +895,7 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "constraint": false,
           "keyName": "patrol_pkey",
@@ -932,28 +906,20 @@
       "checks": [],
       "foreignKeys": {
         "patrol_leader_id_foreign": {
-          "columnNames": [
-            "leader_id"
-          ],
+          "columnNames": ["leader_id"],
           "constraintName": "patrol_leader_id_foreign",
           "localTableName": "public.patrol",
           "referencedTableName": "public.user",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "updateRule": "cascade",
           "deleteRule": "no action"
         },
         "patrol_tournament_id_foreign": {
-          "columnNames": [
-            "tournament_id"
-          ],
+          "columnNames": ["tournament_id"],
           "constraintName": "patrol_tournament_id_foreign",
           "localTableName": "public.patrol",
           "referencedTableName": "public.tournament",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "updateRule": "cascade",
           "deleteRule": "no action"
         }
@@ -1064,9 +1030,7 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "constraint": false,
           "keyName": "patrol_member_pkey",
@@ -1077,28 +1041,20 @@
       "checks": [],
       "foreignKeys": {
         "patrol_member_patrol_id_foreign": {
-          "columnNames": [
-            "patrol_id"
-          ],
+          "columnNames": ["patrol_id"],
           "constraintName": "patrol_member_patrol_id_foreign",
           "localTableName": "public.patrol_member",
           "referencedTableName": "public.patrol",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "updateRule": "cascade",
           "deleteRule": "no action"
         },
         "patrol_member_user_id_foreign": {
-          "columnNames": [
-            "user_id"
-          ],
+          "columnNames": ["user_id"],
           "constraintName": "patrol_member_user_id_foreign",
           "localTableName": "public.patrol_member",
           "referencedTableName": "public.user",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "updateRule": "cascade",
           "deleteRule": "no action"
         }
@@ -1145,10 +1101,7 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": [
-            "role",
-            "permission_key"
-          ],
+          "columnNames": ["role", "permission_key"],
           "composite": true,
           "constraint": false,
           "keyName": "role_permission_pkey",
@@ -1392,9 +1345,7 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "constraint": false,
           "keyName": "rule_pkey",
@@ -1402,9 +1353,7 @@
           "primary": true
         },
         {
-          "columnNames": [
-            "rule_code"
-          ],
+          "columnNames": ["rule_code"],
           "composite": false,
           "constraint": true,
           "keyName": "rule_rule_code_unique",
@@ -1712,9 +1661,7 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "constraint": false,
           "keyName": "tournament_pkey",
@@ -1725,28 +1672,20 @@
       "checks": [],
       "foreignKeys": {
         "tournament_created_by_id_foreign": {
-          "columnNames": [
-            "created_by_id"
-          ],
+          "columnNames": ["created_by_id"],
           "constraintName": "tournament_created_by_id_foreign",
           "localTableName": "public.tournament",
           "referencedTableName": "public.user",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "updateRule": "cascade",
           "deleteRule": "no action"
         },
         "tournament_rule_id_foreign": {
-          "columnNames": [
-            "rule_id"
-          ],
+          "columnNames": ["rule_id"],
           "constraintName": "tournament_rule_id_foreign",
           "localTableName": "public.tournament",
           "referencedTableName": "public.rule",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "updateRule": "cascade",
           "deleteRule": "set null"
         }
@@ -1953,9 +1892,7 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "constraint": false,
           "keyName": "tournament_application_pkey",
@@ -1966,67 +1903,47 @@
       "checks": [],
       "foreignKeys": {
         "tournament_application_applicant_id_foreign": {
-          "columnNames": [
-            "applicant_id"
-          ],
+          "columnNames": ["applicant_id"],
           "constraintName": "tournament_application_applicant_id_foreign",
           "localTableName": "public.tournament_application",
           "referencedTableName": "public.user",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "updateRule": "cascade",
           "deleteRule": "no action"
         },
         "tournament_application_bow_category_id_foreign": {
-          "columnNames": [
-            "bow_category_id"
-          ],
+          "columnNames": ["bow_category_id"],
           "constraintName": "tournament_application_bow_category_id_foreign",
           "localTableName": "public.tournament_application",
           "referencedTableName": "public.bow_category",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "updateRule": "cascade",
           "deleteRule": "set null"
         },
         "tournament_application_division_id_foreign": {
-          "columnNames": [
-            "division_id"
-          ],
+          "columnNames": ["division_id"],
           "constraintName": "tournament_application_division_id_foreign",
           "localTableName": "public.tournament_application",
           "referencedTableName": "public.division",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "updateRule": "cascade",
           "deleteRule": "set null"
         },
         "tournament_application_processed_by_id_foreign": {
-          "columnNames": [
-            "processed_by_id"
-          ],
+          "columnNames": ["processed_by_id"],
           "constraintName": "tournament_application_processed_by_id_foreign",
           "localTableName": "public.tournament_application",
           "referencedTableName": "public.user",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "updateRule": "cascade",
           "deleteRule": "set null"
         },
         "tournament_application_tournament_id_foreign": {
-          "columnNames": [
-            "tournament_id"
-          ],
+          "columnNames": ["tournament_id"],
           "constraintName": "tournament_application_tournament_id_foreign",
           "localTableName": "public.tournament_application",
           "referencedTableName": "public.tournament",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "updateRule": "cascade",
           "deleteRule": "no action"
         }
@@ -2137,9 +2054,7 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "constraint": false,
           "keyName": "tournament_feedback_pkey",
@@ -2147,20 +2062,7 @@
           "primary": true
         },
         {
-          "columnNames": [
-            "tournament_id"
-          ],
-          "composite": false,
-          "constraint": false,
-          "keyName": "tournament_feedback_tournament_id_index",
-          "unique": false,
-          "primary": false
-        },
-        {
-          "columnNames": [
-            "tournament_id",
-            "user_id"
-          ],
+          "columnNames": ["tournament_id", "user_id"],
           "composite": true,
           "constraint": true,
           "keyName": "tournament_feedback_tournament_id_user_id_unique",
@@ -2171,30 +2073,22 @@
       "checks": [],
       "foreignKeys": {
         "tournament_feedback_tournament_id_foreign": {
-          "columnNames": [
-            "tournament_id"
-          ],
+          "columnNames": ["tournament_id"],
           "constraintName": "tournament_feedback_tournament_id_foreign",
           "localTableName": "public.tournament_feedback",
           "referencedTableName": "public.tournament",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "updateRule": "cascade",
-          "deleteRule": "cascade"
+          "deleteRule": "no action"
         },
         "tournament_feedback_user_id_foreign": {
-          "columnNames": [
-            "user_id"
-          ],
+          "columnNames": ["user_id"],
           "constraintName": "tournament_feedback_user_id_foreign",
           "localTableName": "public.tournament_feedback",
           "referencedTableName": "public.user",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "updateRule": "cascade",
-          "deleteRule": "cascade"
+          "deleteRule": "no action"
         }
       },
       "nativeEnums": {},
@@ -2447,9 +2341,7 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "constraint": false,
           "keyName": "training_session_pkey",
@@ -2460,15 +2352,11 @@
       "checks": [],
       "foreignKeys": {
         "training_session_user_id_foreign": {
-          "columnNames": [
-            "user_id"
-          ],
+          "columnNames": ["user_id"],
           "constraintName": "training_session_user_id_foreign",
           "localTableName": "public.training_session",
           "referencedTableName": "public.user",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "updateRule": "cascade",
           "deleteRule": "no action"
         }
@@ -2864,28 +2752,26 @@
         },
         "profile_visibility": {
           "name": "profile_visibility",
-          "type": "text",
+          "type": "varchar(255)",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
           "unique": false,
-          "length": null,
+          "length": 255,
           "precision": null,
           "scale": null,
           "default": "'personal'",
           "comment": null,
           "enumItems": [],
-          "mappedType": "text"
+          "mappedType": "string"
         }
       },
       "name": "user",
       "schema": "public",
       "indexes": [
         {
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "constraint": false,
           "keyName": "user_pkey",
@@ -2896,28 +2782,20 @@
       "checks": [],
       "foreignKeys": {
         "user_club_id_foreign": {
-          "columnNames": [
-            "club_id"
-          ],
+          "columnNames": ["club_id"],
           "constraintName": "user_club_id_foreign",
           "localTableName": "public.user",
           "referencedTableName": "public.club",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "updateRule": "cascade",
           "deleteRule": "set null"
         },
         "user_division_id_foreign": {
-          "columnNames": [
-            "division_id"
-          ],
+          "columnNames": ["division_id"],
           "constraintName": "user_division_id_foreign",
           "localTableName": "public.user",
           "referencedTableName": "public.division",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "updateRule": "cascade",
           "deleteRule": "set null"
         }

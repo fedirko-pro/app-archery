@@ -30,8 +30,10 @@
   "devDependencies": {
     "@commitlint/cli": "^19.8.0",
     "@commitlint/config-conventional": "^19.8.0",
+    "eslint": "^9.39.4",
     "husky": "^9.1.7",
     "lint-staged": "^16.4.0",
+    "prettier": "^3.9.3",
     "turbo": "^2.10.1"
   },
   "engines": {

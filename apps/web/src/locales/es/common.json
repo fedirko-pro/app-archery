@@ -120,6 +120,7 @@
   "pages": {
     "rules": {
       "title": "Reglas",
+      "description": "Reglamentos oficiales de tiro con arco con descripciones multilingües y descargas PDF",
       "openOfficialPage": "Abrir página oficial",
       "downloadPdf": "Descargar PDF",
       "downloadFailed": "No se pudo cargar el PDF. El archivo puede no estar disponible.",
@@ -140,10 +141,21 @@
       "deleteWarning": "Esta regla no puede eliminarse si tiene divisiones o categorías de arco relacionadas."
     },
     "categories": {
-      "title": "Categorías de arco (ordenadas A-Z)",
-      "ruleReference": "Referencia de regla"
+      "title": "Categorías de arco",
+      "description": "Categorías de arcos agrupadas por código de clasificación",
+      "ruleReference": "Referencia de regla",
+      "confirmDelete": "¿Estás seguro de que quieres eliminar esta categoría?",
+      "deleteSuccess": "Categoría eliminada correctamente",
+      "deleteError": "Error al eliminar la categoría"
     },
-    "converter": { "title": "Conversor de las medidas más comunes en arquería" },
+    "converter": {
+      "title": "Conversor de las medidas más comunes en arquería",
+      "description": "Convertir entre pulgadas/cm, libras/kg, granos/gramos, yardas/metros"
+    },
+    "divisions": {
+      "title": "Divisiones",
+      "description": "Divisiones de competición agrupadas por reglas"
+    },
     "about": {
       "title": "Acerca de esta aplicación",
       "intro": "Sokil ayuda a los arqueros a registrar entrenamientos, seguir su progreso, desbloquear logros y gestionar el equipamiento — con soporte offline y sincronización automática.\n\nLa gamificación hace el hobby más atractivo.\n\nTus datos se almacenan de forma segura y tú eliges qué compartir. Federaciones y clubes pueden organizar torneos, gestionar solicitudes y eventos.\n\nEmpoderando comunidades de tiro con arco con tecnología moderna.",

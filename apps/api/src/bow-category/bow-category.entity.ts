@@ -1,13 +1,14 @@
-import { Entity, PrimaryKey, Property, ManyToOne } from '@mikro-orm/core';
+import { Entity, PrimaryKey, Property, ManyToOne, Unique } from '@mikro-orm/core';
 import { v4 as uuid } from 'uuid';
 import { Rule } from '../rule/rule.entity';
 
 @Entity()
+@Unique({ properties: ['code', 'rule'] })
 export class BowCategory {
   @PrimaryKey()
   id: string = uuid();
 
-  @Property({ unique: true })
+  @Property()
   code: string; // Short code (FSC, LB, BBC, etc.)
 
   @Property()

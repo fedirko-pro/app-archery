@@ -250,7 +250,7 @@ const AdminApplyUserDialog: React.FC<AdminApplyUserDialogProps> = ({
               onChange={(e) => setCategory(e.target.value)}
             >
               {categories.map((cat) => (
-                <MenuItem key={cat.code} value={cat.code}>
+                <MenuItem key={cat.id} value={cat.id}>
                   {cat.code} - {cat.name}
                 </MenuItem>
               ))}

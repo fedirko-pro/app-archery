@@ -201,9 +201,9 @@ const TournamentApplicationForm: React.FC<TournamentApplicationFormProps> = ({
                       label={t('pages.applicationForm.category', 'Bow Category')}
                       onChange={(e) => handleInputChange('category', e.target.value)}
                     >
-                      {categories.map((category) => (
-                        <MenuItem key={category.code} value={category.code}>
-                          {category.code} - {category.name}
+                      {categories.map((cat) => (
+                        <MenuItem key={cat.id} value={cat.id}>
+                          {cat.code} - {cat.name}
                         </MenuItem>
                       ))}
                     </Select>

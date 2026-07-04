@@ -34,8 +34,8 @@ export class BowCategoryController {
   }
 
   @Get('code/:code')
-  findByCode(@Param('code') code: string) {
-    return this.bowCategoryService.findByCode(code);
+  findByCode(@Param('code') code: string, @Query('ruleId') ruleId?: string) {
+    return this.bowCategoryService.findByCode(code, ruleId);
   }
 
   @Get(':id')
@@ -46,10 +46,7 @@ export class BowCategoryController {
   @Patch(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRoles.GeneralAdmin)
-  update(
-    @Param('id') id: string,
-    @Body() updateBowCategoryDto: UpdateBowCategoryDto,
-  ) {
+  update(@Param('id') id: string, @Body() updateBowCategoryDto: UpdateBowCategoryDto) {
     return this.bowCategoryService.update(id, updateBowCategoryDto);
   }
 

@@ -263,6 +263,12 @@ export interface DivisionDto {
   updated_at?: string;
 }
 
+export interface GroupedDivision {
+  name: string;
+  description?: string;
+  items: DivisionDto[];
+}
+
 export interface PublicProgressStatsDto {
   memberSince: string;
   totalSessions: number;
