@@ -23,7 +23,9 @@
     "userApplications": "Domande degli utenti",
     "accessControl": "Controllo accessi",
     "divisions": "Divisioni",
-    "scoringDemo": "Scheda Punteggio (Demo)"
+    "scoringDemo": "Scheda Punteggio (Demo)",
+    "glossary": "Glossario",
+    "fieldGuide": "Guida da Campo"
   },
   "accessControl": {
     "title": "Controllo accessi",
@@ -744,5 +746,10 @@
       "equipmentExplanation": "La tua configurazione arco predefinita è preselezionata quando registri sessioni di allenamento. Aggiungi altri set dopo in La mia attrezzatura.",
       "getStartedExplanation": "Scegli le preferenze di sincronizzazione e condivisione. La sincronizzazione mantiene sessioni di allenamento e attrezzatura su tutti i dispositivi."
     }
+  },
+  "fieldGuide": {
+    "title": "Guida da Campo",
+    "glossary": "Glossario",
+    "glossaryDesc": "Termini e abbreviazioni comuni usati nel tiro con l'arco"
   }
 }

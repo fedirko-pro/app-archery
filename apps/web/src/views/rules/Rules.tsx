@@ -341,7 +341,7 @@ const Rules: React.FC = () => {
           >
             <AccordionSummary id={`rule-${rule.ruleCode}`} expandIcon={<ExpandMoreIcon />}>
               <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', gap: 1 }}>
-                <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
+                <Typography variant="subtitle1" sx={{ fontWeight: 700, minWidth: 110 }}>
                   {rule.ruleCode}
                 </Typography>
                 <Typography variant="subtitle1" sx={{ flex: 1 }}>

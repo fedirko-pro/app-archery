@@ -26,7 +26,7 @@ import UserPage from '../../views/competition/user-page/user-page';
 import ConverterPage from '../../views/ConverterPage';
 import DivisionEdit from '../../views/divisions/admin/division-edit';
 import Divisions from '../../views/divisions/Divisions';
-import Encyclopedia from '../../views/Encyclopedia';
+import Glossary from '../../views/field-guide/Glossary';
 import HomePage from '../../views/Home';
 import MyEquipmentPage from '../../views/MyEquipment';
 import MyPaymentsPage from '../../views/MyPayments';
@@ -136,13 +136,13 @@ function Content() {
             }
           />
           <Route path="converter" element={<ConverterPage />} />
+          <Route path="glossary" element={<Glossary />} />
           <Route path="competition/user" element={<UserPage />} />
           <Route path="about" element={<About />} />
           <Route path="categories" element={<Categories />} />
           <Route path="clubs" element={<Clubs />} />
           <Route path="divisions" element={<Divisions />} />
           <Route path="rules" element={<Rules />} />
-          <Route path="encyclopedia" element={<Encyclopedia />} />
           <Route path="home" element={<HomePage />} />
           <Route
             path="onboarding"

@@ -23,7 +23,9 @@
     "userApplications": "User applications",
     "accessControl": "Access Control",
     "divisions": "Divisions",
-    "scoringDemo": "Scoring Card (Demo)"
+    "scoringDemo": "Scoring Card (Demo)",
+    "glossary": "Glossary",
+    "fieldGuide": "Field Guide"
   },
   "accessControl": {
     "title": "Access Control",
@@ -918,5 +920,10 @@
       "leaveFeedback": "Leave feedback",
       "dismiss": "Not now"
     }
+  },
+  "fieldGuide": {
+    "title": "Field Guide",
+    "glossary": "Glossary",
+    "glossaryDesc": "Common terms and abbreviations used in archery"
   }
 }

@@ -32,13 +32,7 @@ export class RuleService {
   }
 
   async findAll(): Promise<Rule[]> {
-    return this.em.find(
-      Rule,
-      {},
-      {
-        orderBy: { ruleCode: 'ASC' },
-      },
-    );
+    return this.em.find(Rule, {}, { orderBy: { sortOrder: 'ASC' } });
   }
 
   async findOne(id: string): Promise<Rule> {

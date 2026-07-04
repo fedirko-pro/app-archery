@@ -23,7 +23,9 @@
     "userApplications": "Заявки користувачів",
     "accessControl": "Контроль доступу",
     "divisions": "Дивізіони",
-    "scoringDemo": "Картка підрахунку (Демо)"
+    "scoringDemo": "Картка підрахунку (Демо)",
+    "glossary": "Глосарій",
+    "fieldGuide": "Путівник"
   },
   "accessControl": {
     "title": "Контроль доступу",
@@ -871,5 +873,10 @@
       "leaveFeedback": "Залишити відгук",
       "dismiss": "Не зараз"
     }
+  },
+  "fieldGuide": {
+    "title": "Путівник",
+    "glossary": "Глосарій",
+    "glossaryDesc": "Поширені терміни та абревіатури в стрільбі з лука"
   }
 }

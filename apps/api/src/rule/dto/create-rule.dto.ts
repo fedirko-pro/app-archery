@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsOptional, IsUrl } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional, IsUrl, IsInt } from 'class-validator';
 
 export class CreateRuleDto {
   @IsString()
@@ -40,4 +40,8 @@ export class CreateRuleDto {
   @IsString()
   @IsOptional()
   downloadLink?: string;
+
+  @IsInt()
+  @IsOptional()
+  sortOrder?: number;
 }

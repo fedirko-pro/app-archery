@@ -18,7 +18,6 @@ const RULE_CODES = ['IFAA', 'IFAA-HB', 'FABP', 'HDH-IAA'];
 
 /**
  * Seeds standard divisions (Cub, Junior, Adult, Veteran - Male/Female) for main rules.
- * FABP-ROTA has its own divisions from FABPRotaSeeder.
  */
 export class DivisionSeeder extends Seeder {
   async run(em: EntityManager): Promise<void> {

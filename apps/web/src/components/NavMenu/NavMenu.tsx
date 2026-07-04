@@ -8,6 +8,7 @@ import {
   ADMIN_NAV_ITEMS,
   canSeeAdminNavSection,
   canSeeOrganizerTools,
+  FIELD_GUIDE_NAV_ITEMS,
   ORGANIZER_NAV_ITEMS,
   PUBLIC_DEMO_NAV_ITEMS,
 } from '../../config/roles';
@@ -36,11 +37,12 @@ function NavMenu() {
   const mainMenuItems = [
     { link: '/tournaments', label: t('nav.tournaments') },
     { link: '/clubs', label: t('nav.clubs', 'Clubs') },
-    { link: '/rules', label: t('nav.rules') },
-    { link: '/divisions', label: t('nav.divisions', 'Divisions') },
-    { link: '/categories', label: t('nav.categories') },
-    { link: '/converter', label: t('nav.converter') },
   ];
+
+  const fieldGuideItems = FIELD_GUIDE_NAV_ITEMS.map((item) => ({
+    link: item.link,
+    label: t(item.labelKey),
+  }));
 
   const demoMenuItems = PUBLIC_DEMO_NAV_ITEMS.map((item) => ({
     link: item.link,
@@ -48,6 +50,12 @@ function NavMenu() {
   }));
 
   const sections: MenuSection[] = [{ items: mainMenuItems }];
+
+  sections.push({
+    items: fieldGuideItems,
+    isCollapsible: true,
+    sectionLabelKey: 'nav.fieldGuide',
+  });
 
   if (user && canSeeOrganizerTools(user.role)) {
     sections.push({

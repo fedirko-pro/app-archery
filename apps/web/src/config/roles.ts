@@ -44,6 +44,14 @@ export const ADMIN_NAV_ITEMS: NavItemConfig[] = [
   { link: '/admin/access-control', labelKey: 'nav.accessControl' },
 ];
 
+export const FIELD_GUIDE_NAV_ITEMS: NavItemConfig[] = [
+  { link: '/converter', labelKey: 'nav.converter' },
+  { link: '/glossary', labelKey: 'nav.glossary' },
+  { link: '/rules', labelKey: 'nav.rules' },
+  { link: '/divisions', labelKey: 'nav.divisions' },
+  { link: '/categories', labelKey: 'nav.categories' },
+];
+
 export const PUBLIC_DEMO_NAV_ITEMS: NavItemConfig[] = [
   { link: '/competition/user', labelKey: 'nav.scoringDemo' },
 ];

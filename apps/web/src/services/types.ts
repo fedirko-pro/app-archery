@@ -228,6 +228,7 @@ export interface RuleDto {
   descriptionEs?: string;
   link?: string;
   downloadLink?: string;
+  sortOrder?: number;
   divisions?: unknown[];
   bowCategories?: unknown[];
   createdAt?: string;

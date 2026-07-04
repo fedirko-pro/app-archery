@@ -14,7 +14,6 @@ import { ClubSeeder } from './ClubSeeder';
 import { RuleSeeder } from './RuleSeeder';
 import { DivisionSeeder } from './DivisionSeeder';
 import { BowCategorySeeder } from './BowCategorySeeder';
-import { FABPRotaSeeder } from './FABPRotaSeeder';
 import { Division } from '../division/division.entity';
 import { BowCategory } from '../bow-category/bow-category.entity';
 
@@ -33,7 +32,6 @@ export class DatabaseSeeder extends Seeder {
       RuleSeeder,
       DivisionSeeder,
       BowCategorySeeder,
-      FABPRotaSeeder,
     ]);
 
     // Fetch clubs for user assignment

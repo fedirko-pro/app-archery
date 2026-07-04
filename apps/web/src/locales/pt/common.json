@@ -23,7 +23,9 @@
     "userApplications": "Inscrições de usuários",
     "accessControl": "Controle de Acesso",
     "divisions": "Divisões",
-    "scoringDemo": "Cartão de Pontuação (Demo)"
+    "scoringDemo": "Cartão de Pontuação (Demo)",
+    "glossary": "Glossário",
+    "fieldGuide": "Guia de Campo"
   },
   "accessControl": {
     "title": "Controle de Acesso",
@@ -764,5 +766,10 @@
       "equipmentExplanation": "A sua configuração de arco predefinida é pré-selecionada ao registar sessões de treino. Adicione mais sets depois em O meu equipamento.",
       "getStartedExplanation": "Escolha as preferências de sincronização e partilha. A sincronização mantém sessões de treino e equipamento em todos os dispositivos."
     }
+  },
+  "fieldGuide": {
+    "title": "Guia de Campo",
+    "glossary": "Glossário",
+    "glossaryDesc": "Termos e abreviaturas comuns usados no tiro com arco"
   }
 }

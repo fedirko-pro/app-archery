@@ -45,6 +45,9 @@ export class Rule {
   @Property({ nullable: true })
   downloadLink?: string; // PDF download link
 
+  @Property({ default: 0 })
+  sortOrder: number = 0;
+
   @Exclude()
   @OneToMany(() => Division, (division) => division.rule)
   divisions = new Collection<Division>(this);
