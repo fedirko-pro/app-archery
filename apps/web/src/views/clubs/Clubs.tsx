@@ -1,11 +1,26 @@
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import { Box, Button, Card, CardContent, CardMedia, Typography } from '@mui/material';
-import { useEffect, useState } from 'react';
+import LockIcon from '@mui/icons-material/Lock';
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  CardMedia,
+  CircularProgress,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+  Typography,
+} from '@mui/material';
+import { useEffect, useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 
+import { ALL_COUNTRIES_FILTER, COUNTRIES, getCountryName } from '../../config/countries';
 import { canManageReferenceData } from '../../config/roles';
 import { useAuth } from '../../contexts/auth-context';
 import { useNotification } from '../../contexts/error-feedback-context';
@@ -13,15 +28,15 @@ import apiService from '../../services/api';
 import type { ClubDto } from '../../services/types';
 import { LOCAL_CLUB_LOGO, resolveClubLogo } from '../../utils/placeholder-images';
 
-/**
- * Clubs page displays a list of all archery clubs.
- * Admins can create, edit, and delete clubs.
- */
 const Clubs: React.FC = () => {
   const [clubs, setClubs] = useState<ClubDto[]>([]);
   const [loading, setLoading] = useState(true);
+  const [countryFilter, setCountryFilter] = useState<string>(ALL_COUNTRIES_FILTER);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filterReady, setFilterReady] = useState(false);
   const navigate = useNavigate();
   const { lang } = useParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { t } = useTranslation('common');
   const { user } = useAuth();
   const { showSuccess, showError } = useNotification();
@@ -29,20 +44,48 @@ const Clubs: React.FC = () => {
   const isAdmin = user && canManageReferenceData(user.role);
 
   useEffect(() => {
-    const load = async () => {
-      try {
-        setLoading(true);
-        const data = await apiService.getClubs();
-        setClubs(data || []);
-      } catch (error) {
-        console.error('Failed to load clubs:', error);
-        setClubs([]);
-      } finally {
-        setLoading(false);
+    const fromUrl = searchParams.get('country');
+    if (fromUrl) {
+      setCountryFilter(fromUrl);
+    }
+    setFilterReady(true);
+  }, [searchParams]);
+
+  const fetchClubs = useCallback(async () => {
+    if (!filterReady) return;
+    try {
+      setLoading(true);
+      const params: { country?: string; visibility?: string; search?: string } = {};
+      if (countryFilter !== ALL_COUNTRIES_FILTER) {
+        params.country = countryFilter;
       }
-    };
-    load();
-  }, []);
+      if (searchQuery.trim()) {
+        params.search = searchQuery.trim();
+      }
+      const data = await apiService.getClubs(params);
+      setClubs(data || []);
+    } catch (error) {
+      console.error('Failed to load clubs:', error);
+      setClubs([]);
+    } finally {
+      setLoading(false);
+    }
+  }, [countryFilter, searchQuery, filterReady]);
+
+  useEffect(() => {
+    void fetchClubs();
+  }, [fetchClubs]);
+
+  const handleCountryFilterChange = (value: string) => {
+    setCountryFilter(value);
+    const next = new URLSearchParams(searchParams);
+    if (value === ALL_COUNTRIES_FILTER) {
+      next.delete('country');
+    } else {
+      next.set('country', value);
+    }
+    setSearchParams(next, { replace: true });
+  };
 
   const handleDelete = async (clubId: string) => {
     if (
@@ -65,13 +108,11 @@ const Clubs: React.FC = () => {
     }
   };
 
-  if (loading) {
+  if (!filterReady || loading) {
     return (
-      <section>
-        <div className="container">
-          <Typography>Loading...</Typography>
-        </div>
-      </section>
+      <Box display="flex" justifyContent="center" alignItems="center" minHeight="200px">
+        <CircularProgress />
+      </Box>
     );
   }
 
@@ -84,18 +125,47 @@ const Clubs: React.FC = () => {
             justifyContent: 'space-between',
             alignItems: 'center',
             mb: 3,
+            flexWrap: 'wrap',
+            gap: 2,
           }}
         >
-          <Typography variant="h4">Clubs</Typography>
+          <Typography variant="h4">{t('nav.clubs', 'Clubs')}</Typography>
           {isAdmin && (
             <Button
               variant="contained"
               startIcon={<AddIcon />}
               onClick={() => navigate(`/${lang}/admin/clubs/create`)}
             >
-              Create Club
+              {t('pages.clubs.create', 'Create Club')}
             </Button>
           )}
+        </Box>
+
+        <Box sx={{ mb: 3, display: 'flex', gap: 2, flexWrap: 'wrap', maxWidth: 600 }}>
+          <FormControl size="small" sx={{ minWidth: 200 }}>
+            <InputLabel>{t('pages.tournaments.countryFilter', 'Country')}</InputLabel>
+            <Select
+              value={countryFilter}
+              label={t('pages.tournaments.countryFilter', 'Country')}
+              onChange={(e) => handleCountryFilterChange(e.target.value)}
+            >
+              <MenuItem value={ALL_COUNTRIES_FILTER}>
+                {t('pages.tournaments.allCountries', 'All countries')}
+              </MenuItem>
+              {COUNTRIES.map((c) => (
+                <MenuItem key={c.code} value={c.code}>
+                  {c.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <TextField
+            size="small"
+            placeholder={t('pages.clubs.search', 'Search clubs...')}
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            sx={{ minWidth: 200 }}
+          />
         </Box>
 
         <Box
@@ -110,84 +180,104 @@ const Clubs: React.FC = () => {
             },
           }}
         >
-          {clubs.map((club) => (
-            <Card key={club.id} sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-              <Box
-                sx={{
-                  height: 300,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  bgcolor: 'grey.100',
-                  p: 2,
-                }}
-              >
-                <CardMedia
-                  component="img"
-                  image={resolveClubLogo(club.clubLogo)}
-                  alt={club.name}
+          {clubs.map((club) => {
+            const isPrivate = club.visibility === 'private';
+            return (
+              <Card key={club.id} sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                <Box
                   sx={{
-                    maxWidth: '100%',
-                    maxHeight: '100%',
-                    objectFit: 'contain',
+                    height: 300,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    bgcolor: 'grey.100',
+                    p: 2,
                   }}
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).src = LOCAL_CLUB_LOGO;
-                  }}
-                />
-              </Box>
-              <CardContent sx={{ flexGrow: 1 }}>
-                <Typography variant="h6" gutterBottom>
-                  {club.name}
-                  {club.shortCode && (
-                    <Typography
-                      component="span"
-                      variant="body2"
-                      color="text.secondary"
-                      sx={{ ml: 1, fontWeight: 500 }}
-                    >
-                      ({club.shortCode})
+                >
+                  {isPrivate ? (
+                    <LockIcon sx={{ fontSize: 64, color: 'grey.400' }} />
+                  ) : (
+                    <CardMedia
+                      component="img"
+                      image={resolveClubLogo(club.clubLogo)}
+                      alt={club.name}
+                      sx={{
+                        maxWidth: '100%',
+                        maxHeight: '100%',
+                        objectFit: 'contain',
+                      }}
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = LOCAL_CLUB_LOGO;
+                      }}
+                    />
+                  )}
+                </Box>
+                <CardContent sx={{ flexGrow: 1 }}>
+                  <Typography variant="h6" gutterBottom>
+                    {isPrivate ? (
+                      <>
+                        <LockIcon sx={{ fontSize: 18, verticalAlign: 'middle', mr: 0.5 }} />
+                        {t('pages.clubs.privateClub', 'Private Club')}
+                      </>
+                    ) : (
+                      club.name
+                    )}
+                    {club.shortCode && !isPrivate && (
+                      <Typography
+                        component="span"
+                        variant="body2"
+                        color="text.secondary"
+                        sx={{ ml: 1, fontWeight: 500 }}
+                      >
+                        ({club.shortCode})
+                      </Typography>
+                    )}
+                  </Typography>
+                  {club.city && club.country && (
+                    <Typography variant="body2" color="text.secondary" gutterBottom>
+                      {club.city}, {getCountryName(club.country)}
                     </Typography>
                   )}
-                </Typography>
-                {club.location && (
-                  <Typography variant="body2" color="text.secondary" gutterBottom>
-                    {club.location}
-                  </Typography>
-                )}
-                {club.description && (
-                  <Typography variant="body2" sx={{ mt: 1 }}>
-                    {club.description}
-                  </Typography>
-                )}
-                {isAdmin && (
-                  <Box sx={{ mt: 2, display: 'flex', gap: 1 }}>
-                    <Button
-                      size="small"
-                      startIcon={<EditIcon />}
-                      onClick={() => navigate(`/${lang}/admin/clubs/${club.id}/edit`)}
-                    >
-                      Edit
-                    </Button>
-                    <Button
-                      size="small"
-                      color="error"
-                      startIcon={<DeleteIcon />}
-                      onClick={() => handleDelete(club.id!)}
-                    >
-                      Delete
-                    </Button>
-                  </Box>
-                )}
-              </CardContent>
-            </Card>
-          ))}
+                  {club.description && !isPrivate && (
+                    <Typography variant="body2" sx={{ mt: 1 }}>
+                      {club.description}
+                    </Typography>
+                  )}
+                  {isPrivate && (
+                    <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+                      {t('pages.clubs.contactAdmin', 'Contact club admin for access')}
+                    </Typography>
+                  )}
+                  {isAdmin && (
+                    <Box sx={{ mt: 2, display: 'flex', gap: 1 }}>
+                      <Button
+                        size="small"
+                        startIcon={<EditIcon />}
+                        onClick={() => navigate(`/${lang}/admin/clubs/${club.id}/edit`)}
+                      >
+                        {t('common.edit', 'Edit')}
+                      </Button>
+                      <Button
+                        size="small"
+                        color="error"
+                        startIcon={<DeleteIcon />}
+                        onClick={() => handleDelete(club.id!)}
+                      >
+                        {t('common.delete', 'Delete')}
+                      </Button>
+                    </Box>
+                  )}
+                </CardContent>
+              </Card>
+            );
+          })}
         </Box>
 
         {clubs.length === 0 && (
           <Box sx={{ textAlign: 'center', py: 4 }}>
             <Typography variant="body1" color="text.secondary">
-              No clubs found. {isAdmin && 'Click "Create Club" to add one.'}
+              {t('pages.clubs.noClubs', 'No clubs found.')}
+              {isAdmin && ` ${t('pages.clubs.createHint', 'Click "Create Club" to add one.')}`}
             </Typography>
           </Box>
         )}

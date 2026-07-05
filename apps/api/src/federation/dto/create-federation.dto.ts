@@ -1,6 +1,6 @@
 import { IsString, IsNotEmpty, IsOptional, IsIn } from 'class-validator';
 
-export class CreateClubDto {
+export class CreateFederationDto {
   @IsString()
   @IsNotEmpty()
   name: string;
@@ -8,10 +8,6 @@ export class CreateClubDto {
   @IsString()
   @IsOptional()
   shortCode?: string;
-
-  @IsString()
-  @IsOptional()
-  description?: string;
 
   @IsString()
   @IsOptional()
@@ -23,7 +19,11 @@ export class CreateClubDto {
 
   @IsString()
   @IsOptional()
-  clubLogo?: string;
+  description?: string;
+
+  @IsString()
+  @IsOptional()
+  logo?: string;
 
   @IsIn(['public', 'private'])
   @IsOptional()

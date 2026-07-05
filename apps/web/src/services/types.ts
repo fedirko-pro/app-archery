@@ -248,7 +248,35 @@ export interface ClubDto {
   shortCode?: string;
   description?: string;
   location?: string;
+  country?: string;
+  city?: string;
   clubLogo?: string;
+  visibility?: 'public' | 'private';
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface ClubMembershipDto {
+  id: string;
+  club: ClubDto;
+  user: { id: string; firstName?: string; lastName?: string; email: string };
+  status: 'pending' | 'approved' | 'rejected';
+  role?: 'member' | 'admin';
+  isCustom: boolean;
+  customName?: string;
+  invitedBy?: { id: string; firstName?: string; email: string };
+  createdAt: string;
+}
+
+export interface FederationDto {
+  id?: string;
+  name: string;
+  shortCode?: string;
+  country?: string;
+  city?: string;
+  description?: string;
+  logo?: string;
+  visibility?: 'public' | 'private';
   createdAt?: string;
   updatedAt?: string;
 }

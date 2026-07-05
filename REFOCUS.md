@@ -41,14 +41,6 @@ _Reframe, don’t remove._
 
 ---
 
-### Phase E — Knowledge & Tools (Supporting)
-
-#### E1. Merge encyclopedia + converter + rules
-
-- [ ] Single "Archery reference" hub
-- [ ] Unit converter, glossary (GPP/GPI), links to rules PDFs
-- [ ] Remove from main nav; link from training form contextually
-
 #### E2. Scoring card
 
 - [ ] **Option A:** Integrate into training/competition session logging
@@ -73,9 +65,17 @@ _Reframe, don’t remove._
 
 - [ ] Header stats from statistics: streak, total arrows, member since
 
-#### F3. Club as affiliation
+#### F3. Club & Federation Affiliation
 
-- [ ] “My club” on profile vs full clubs directory under More
+- [x] Club directory with filters (country, search, visibility)
+- [x] Federation → Club → User hierarchy
+- [x] Club membership system (verified/unverified/pending badges)
+- [x] Club admin can invite members via email
+- [x] Federation admin can invite clubs via email
+- [x] Profile shows club list with verified/unverified icons
+- [x] Users can self-add custom (unverified) club entries
+- [x] Leave club functionality with email notifications
+- [x] My Club / My Federation admin pages
 
 ---
 
@@ -112,29 +112,7 @@ Phase E & F              ──► polish / later
 
 ---
 
-## 5. Metrics to Track the Pivot
-
-| Metric                                                  | Why                           |
-| ------------------------------------------------------- | ----------------------------- |
-| DAU logging ≥1 training / week                          | Core habit                    |
-| Time to first training log after signup                 | Onboarding success            |
-| % users with sync enabled                               | Trust + retention             |
-| Training sessions per user per month                    | Engagement depth              |
-| Tournament apply rate                                   | Federation path still healthy |
-| Bounce rate on old `/tournaments` landing for new users | IA fix validation             |
-
----
-
-## 6. Deprioritize (During Refocus)
-
-- Expanding admin/reference CRUD in main navigation
-- New federation features before personal loop feels complete
-- Demo pages in primary menus without real data
-- Federation-first language in hero, About, signup
-
----
-
-## 7. Key Files Reference
+## 6. Key Files Reference
 
 | Area                   | Paths                                               |
 | ---------------------- | --------------------------------------------------- |

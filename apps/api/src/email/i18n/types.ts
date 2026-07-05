@@ -83,4 +83,54 @@ export interface EmailI18n {
     roleLabels: Record<string, string>;
     rolePermissions: Record<string, string[]>;
   };
+
+  clubInvitation: {
+    subject: string;
+    heading: string;
+    greeting: string; // supports {{clubName}}
+    body: string; // supports {{inviterName}}, {{clubName}}
+    ctaLabel: string;
+    linkFallback: string;
+    ignoreNote: string;
+  };
+
+  clubJoined: {
+    subject: string;
+    heading: string;
+    greeting: string; // supports {{clubName}}
+    body: string; // supports {{userName}}, {{clubName}}
+    viewProfile: string; // supports {{profileUrl}}
+  };
+
+  clubLeft: {
+    subject: string;
+    heading: string;
+    greeting: string; // supports {{clubName}}
+    body: string; // supports {{userName}}, {{clubName}}
+    viewProfile: string; // supports {{profileUrl}}
+  };
+
+  federationInvitation: {
+    subject: string;
+    heading: string;
+    greeting: string; // supports {{federationName}}
+    body: string; // supports {{inviterName}}, {{federationName}}, {{clubName}}
+    ctaLabel: string;
+    linkFallback: string;
+    ignoreNote: string;
+  };
+
+  federationClubJoined: {
+    subject: string;
+    heading: string;
+    greeting: string; // supports {{federationName}}
+    body: string; // supports {{clubName}}, {{federationName}}
+  };
+
+  federationClubRemoved: {
+    subject: string;
+    heading: string;
+    greeting: string; // supports {{federationName}}
+    body: string; // supports {{clubName}}, {{federationName}}, {{removedBy}}
+  };
 }

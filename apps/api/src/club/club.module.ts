@@ -3,12 +3,22 @@ import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { ClubService } from './club.service';
 import { ClubController } from './club.controller';
 import { Club } from './club.entity';
+import { ClubMembership } from './club-membership.entity';
+import { ClubInvitation } from './club-invitation.entity';
+import { ClubMembershipService } from './club-membership.service';
+import { ClubMembershipController } from './club-membership.controller';
+import { ClubInvitationService } from './club-invitation.service';
 import { UploadModule } from '../upload/upload.module';
+import { EmailModule } from '../email/email.module';
 
 @Module({
-  imports: [MikroOrmModule.forFeature([Club]), UploadModule],
-  controllers: [ClubController],
-  providers: [ClubService],
-  exports: [ClubService],
+  imports: [
+    MikroOrmModule.forFeature([Club, ClubMembership, ClubInvitation]),
+    UploadModule,
+    EmailModule,
+  ],
+  controllers: [ClubController, ClubMembershipController],
+  providers: [ClubService, ClubMembershipService, ClubInvitationService],
+  exports: [ClubService, ClubMembershipService],
 })
 export class ClubModule {}

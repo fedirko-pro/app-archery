@@ -1,9 +1,22 @@
-import { Box, Button, Stack, TextField, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  FormControl,
+  FormControlLabel,
+  InputLabel,
+  MenuItem,
+  Select,
+  Stack,
+  Switch,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import LogoUploader from '../../../components/LogoUploader/LogoUploader';
+import { COUNTRIES } from '../../../config/countries';
 import { canManageReferenceData } from '../../../config/roles';
 import { useAuth } from '../../../contexts/auth-context';
 import { useNotification } from '../../../contexts/error-feedback-context';
@@ -26,7 +39,9 @@ const ClubEdit: React.FC = () => {
     name: '',
     shortCode: '',
     description: '',
-    location: '',
+    country: '',
+    city: '',
+    visibility: 'public',
     clubLogo: '',
   });
   const [loading, setLoading] = useState<boolean>(false);
@@ -86,13 +101,15 @@ const ClubEdit: React.FC = () => {
     <section>
       <div className="container">
         <Typography variant="h4" gutterBottom>
-          {id === 'create' ? 'Create Club' : 'Edit Club'}
+          {id === 'create'
+            ? t('pages.clubs.create', 'Create Club')
+            : t('pages.clubs.edit', 'Edit Club')}
         </Typography>
 
         <Box sx={{ maxWidth: 600 }}>
           <Stack spacing={3}>
             <TextField
-              label="Club Name"
+              label={t('pages.clubs.name', 'Club Name')}
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
               required
@@ -100,24 +117,53 @@ const ClubEdit: React.FC = () => {
             />
 
             <TextField
-              label="Short code"
+              label={t('pages.clubs.shortCode', 'Short Code')}
               value={form.shortCode || ''}
               onChange={(e) => setForm({ ...form, shortCode: e.target.value })}
-              placeholder="e.g. KSP for Kyiv Sport Club"
+              placeholder="e.g. KSP"
               fullWidth
-              helperText="Used on score cards and lists (e.g. 3–5 letters)"
+              helperText={t('pages.clubs.shortCodeHelp', 'Used on score cards (3–5 letters)')}
+            />
+
+            <FormControl fullWidth>
+              <InputLabel>{t('forms.country', 'Country')}</InputLabel>
+              <Select
+                value={form.country || ''}
+                label={t('forms.country', 'Country')}
+                onChange={(e) => setForm({ ...form, country: e.target.value })}
+              >
+                <MenuItem value="">
+                  <em>{t('forms.none', 'None')}</em>
+                </MenuItem>
+                {COUNTRIES.map((c) => (
+                  <MenuItem key={c.code} value={c.code}>
+                    {c.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
+            <TextField
+              label={t('pages.clubs.city', 'City')}
+              value={form.city || ''}
+              onChange={(e) => setForm({ ...form, city: e.target.value })}
+              fullWidth
+            />
+
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={form.visibility === 'public'}
+                  onChange={(e) =>
+                    setForm({ ...form, visibility: e.target.checked ? 'public' : 'private' })
+                  }
+                />
+              }
+              label={t('pages.clubs.publicClub', 'Public club (visible in directory)')}
             />
 
             <TextField
-              label="Location"
-              value={form.location || ''}
-              onChange={(e) => setForm({ ...form, location: e.target.value })}
-              placeholder="e.g. Kyiv, Ukraine"
-              fullWidth
-            />
-
-            <TextField
-              label="Description"
+              label={t('pages.clubs.description', 'Description')}
               value={form.description || ''}
               onChange={(e) => setForm({ ...form, description: e.target.value })}
               multiline
@@ -133,10 +179,10 @@ const ClubEdit: React.FC = () => {
 
             <Stack direction="row" spacing={2}>
               <Button variant="contained" onClick={handleSave} disabled={loading}>
-                {loading ? 'Saving...' : 'Save'}
+                {loading ? t('common.saving', 'Saving...') : t('common.save', 'Save')}
               </Button>
               <Button variant="outlined" onClick={handleCancel} disabled={loading}>
-                Cancel
+                {t('common.cancel', 'Cancel')}
               </Button>
             </Stack>
           </Stack>

@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { ClubService } from './club.service';
 import { CreateClubDto } from './dto/create-club.dto';
@@ -28,8 +29,12 @@ export class ClubController {
   }
 
   @Get()
-  findAll() {
-    return this.clubService.findAll();
+  findAll(
+    @Query('country') country?: string,
+    @Query('visibility') visibility?: string,
+    @Query('search') search?: string,
+  ) {
+    return this.clubService.findAll({ country, visibility, search });
   }
 
   @Get(':id')

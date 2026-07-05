@@ -1,25 +1,21 @@
 import { Entity, PrimaryKey, Property } from '@mikro-orm/core';
 import { v4 as uuid } from 'uuid';
 
-export enum ClubVisibility {
+export enum FederationVisibility {
   PUBLIC = 'public',
   PRIVATE = 'private',
 }
 
 @Entity()
-export class Club {
+export class Federation {
   @PrimaryKey()
   id: string = uuid();
 
   @Property()
   name: string;
 
-  /** Short code for score cards etc., e.g. "KSP" for "Kyiv Sport Club" */
   @Property({ nullable: true })
   shortCode?: string;
-
-  @Property({ nullable: true })
-  description?: string;
 
   @Property({ nullable: true, length: 2 })
   country?: string;
@@ -28,10 +24,13 @@ export class Club {
   city?: string;
 
   @Property({ nullable: true })
-  clubLogo?: string;
+  description?: string;
 
-  @Property({ default: ClubVisibility.PUBLIC })
-  visibility: ClubVisibility = ClubVisibility.PUBLIC;
+  @Property({ nullable: true })
+  logo?: string;
+
+  @Property({ default: FederationVisibility.PUBLIC })
+  visibility: FederationVisibility = FederationVisibility.PUBLIC;
 
   @Property({ onCreate: () => new Date() })
   createdAt?: Date = new Date();

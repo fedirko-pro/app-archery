@@ -22,6 +22,7 @@ import type {
   BowCategory,
   CategoryDto,
   ClubDto,
+  ClubMembershipDto,
   CreateBowCategoryDto,
   CreateRuleDto,
   DivisionDto,
@@ -809,10 +810,83 @@ class ApiService {
   }
 
   /**
-   * Fetch all clubs from the backend.
+   * Fetch clubs from the backend with optional filters.
    */
-  async getClubs(): Promise<ClubDto[]> {
-    return this.getWithOfflineFallback<ClubDto[]>('clubs', '/clubs');
+  async getClubs(params?: {
+    country?: string;
+    visibility?: string;
+    search?: string;
+  }): Promise<ClubDto[]> {
+    const searchParams = new URLSearchParams();
+    if (params?.country) searchParams.set('country', params.country);
+    if (params?.visibility) searchParams.set('visibility', params.visibility);
+    if (params?.search) searchParams.set('search', params.search);
+    const qs = searchParams.toString();
+    const url = `/clubs${qs ? `?${qs}` : ''}`;
+    return this.getWithOfflineFallback<ClubDto[]>('clubs', url);
+  }
+
+  /**
+   * Fetch club memberships for the current user.
+   */
+  async getMyClubMemberships(): Promise<ClubMembershipDto[]> {
+    return this.get<ClubMembershipDto[]>('/clubs/my-memberships');
+  }
+
+  /**
+   * Fetch club members (admin only).
+   */
+  async getClubMembers(clubId: string): Promise<ClubMembershipDto[]> {
+    return this.get<ClubMembershipDto[]>(`/clubs/${clubId}/members`);
+  }
+
+  /**
+   * Request membership in a club.
+   */
+  async requestClubMembership(clubId: string): Promise<ClubMembershipDto> {
+    return this.post<ClubMembershipDto>(`/clubs/${clubId}/join`);
+  }
+
+  /**
+   * Add a custom (unverified) club entry.
+   */
+  async joinClubAsCustom(clubName: string): Promise<ClubMembershipDto> {
+    return this.post<ClubMembershipDto>('/clubs/join-custom', { clubName });
+  }
+
+  /**
+   * Club admin invites a user by email.
+   */
+  async inviteClubMember(clubId: string, email: string): Promise<void> {
+    await this.post(`/clubs/${clubId}/invite`, { email });
+  }
+
+  /**
+   * Accept a club invitation via token.
+   */
+  async acceptClubInvitation(token: string): Promise<ClubMembershipDto> {
+    return this.post<ClubMembershipDto>(`/clubs/accept-invitation/${token}`);
+  }
+
+  /**
+   * Approve a club membership (admin only).
+   */
+  async approveClubMembership(membershipId: string): Promise<ClubMembershipDto> {
+    return this.patch<ClubMembershipDto>(`/clubs/membership/${membershipId}/approve`);
+  }
+
+  /**
+   * Leave or remove from club.
+   */
+  async removeClubMembership(membershipId: string): Promise<void> {
+    await this.delete(`/clubs/membership/${membershipId}`);
+  }
+
+  /**
+   * Accept a federation invitation via ID.
+   */
+  async acceptFederationInvitation(id: string): Promise<void> {
+    await this.post(`/federations/accept-invitation/${id}`);
   }
 
   /**
@@ -862,8 +936,8 @@ class ApiService {
         id: div.id as string,
         name: div.name as string,
         description: (div.description as string) || undefined,
-        rule_id: ((div.rule as Record<string, unknown>)?.id as string),
-        rule_code: ((div.rule as Record<string, unknown>)?.ruleCode as string),
+        rule_id: (div.rule as Record<string, unknown>)?.id as string,
+        rule_code: (div.rule as Record<string, unknown>)?.ruleCode as string,
         created_at: div.createdAt as string,
         updated_at: div.updatedAt as string,
       }));
@@ -877,7 +951,10 @@ class ApiService {
     try {
       let raw: Record<string, unknown>[];
       if (!ruleId) {
-        raw = await this.getWithOfflineFallback<Record<string, unknown>[]>('divisions', '/divisions');
+        raw = await this.getWithOfflineFallback<Record<string, unknown>[]>(
+          'divisions',
+          '/divisions',
+        );
       } else {
         try {
           raw = await this.get<Record<string, unknown>[]>(`/divisions?ruleId=${ruleId}`);

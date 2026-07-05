@@ -28,6 +28,9 @@ import DivisionEdit from '../../views/divisions/admin/division-edit';
 import Divisions from '../../views/divisions/Divisions';
 import Glossary from '../../views/field-guide/Glossary';
 import HomePage from '../../views/Home';
+import AcceptClubInvitation from '../../views/invitations/accept-club-invitation';
+import AcceptFederationInvitation from '../../views/invitations/accept-federation-invitation';
+import MyClub from '../../views/my-club/my-club';
 import MyEquipmentPage from '../../views/MyEquipment';
 import MyPaymentsPage from '../../views/MyPayments';
 import MyStatisticsPage from '../../views/MyStatistics';
@@ -141,6 +144,30 @@ function Content() {
           <Route path="about" element={<About />} />
           <Route path="categories" element={<Categories />} />
           <Route path="clubs" element={<Clubs />} />
+          <Route
+            path="accept-club-invitation/:token"
+            element={
+              <ProtectedRoute>
+                <AcceptClubInvitation />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="accept-federation-invitation/:id"
+            element={
+              <ProtectedRoute>
+                <AcceptFederationInvitation />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="my-club"
+            element={
+              <ProtectedRoute>
+                <MyClub />
+              </ProtectedRoute>
+            }
+          />
           <Route path="divisions" element={<Divisions />} />
           <Route path="rules" element={<Rules />} />
           <Route path="home" element={<HomePage />} />

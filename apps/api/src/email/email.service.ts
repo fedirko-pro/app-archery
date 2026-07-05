@@ -12,6 +12,12 @@ import {
   getApplicationSubmittedContent,
   getInvitationContent,
   getRoleChangedContent,
+  getClubInvitationContent,
+  getClubJoinedContent,
+  getClubLeftContent,
+  getFederationInvitationContent,
+  getFederationClubJoinedContent,
+  getFederationClubRemovedContent,
 } from './templates';
 
 export interface EmailOptions {
@@ -57,10 +63,7 @@ export class EmailService {
 
     this.transporter.verify((error) => {
       if (error) {
-        this.logger.error(
-          `SMTP connection failed (${host}:${port}):`,
-          error.message,
-        );
+        this.logger.error(`SMTP connection failed (${host}:${port}):`, error.message);
       } else {
         this.logger.log(`SMTP server ready (${host}:${port}, user: ${user})`);
       }
@@ -107,10 +110,7 @@ export class EmailService {
     locale?: string,
   ): Promise<void> {
     const t = getEmailI18n(locale);
-    const content = getInvitationContent(
-      { recipientName, adminName, setPasswordUrl },
-      t,
-    );
+    const content = getInvitationContent({ recipientName, adminName, setPasswordUrl }, t);
     const { html, text } = wrapEmail(content.html, content.text, t.footer);
     await this.sendEmail({
       to: email,
@@ -166,11 +166,7 @@ export class EmailService {
     });
   }
 
-  async sendWelcomeEmail(
-    email: string,
-    firstName: string,
-    locale?: string,
-  ): Promise<void> {
+  async sendWelcomeEmail(email: string, firstName: string, locale?: string): Promise<void> {
     const t = getEmailI18n(locale);
     const content = getWelcomeContent({ firstName }, t);
     const { html, text } = wrapEmail(content.html, content.text, t.footer);
@@ -233,6 +229,146 @@ export class EmailService {
         : t.applicationStatus.subjectRejected,
       { tournamentTitle },
     );
+    await this.sendEmail({ to: email, subject, html, text });
+  }
+
+  async sendClubInvitationEmail(
+    email: string,
+    clubName: string,
+    inviterName: string,
+    acceptUrl: string,
+    locale?: string,
+  ): Promise<void> {
+    const t = getEmailI18n(locale);
+    const content = getClubInvitationContent({ clubName, inviterName, acceptUrl }, t);
+    const { html, text } = wrapEmail(content.html, content.text, t.footer);
+    const subject = interpolate(t.clubInvitation.subject, { clubName });
+    await this.sendEmail({ to: email, subject, html, text });
+  }
+
+  async sendClubJoinedEmail(
+    adminEmail: string,
+    adminName: string,
+    clubName: string,
+    userName: string,
+    profileUrl: string,
+    locale?: string,
+  ): Promise<void> {
+    const t = getEmailI18n(locale);
+    const content = getClubJoinedContent({ clubName, userName, profileUrl }, t);
+    const { html, text } = wrapEmail(content.html, content.text, t.footer);
+    const subject = interpolate(t.clubJoined.subject, { clubName });
+    await this.sendEmail({ to: adminEmail, subject, html, text });
+  }
+
+  async sendClubLeftEmail(
+    email: string,
+    userName: string,
+    clubName: string,
+    profileUrl: string,
+    locale?: string,
+  ): Promise<void> {
+    const t = getEmailI18n(locale);
+    const content = getClubLeftContent({ userName, clubName, profileUrl }, t);
+    const { html, text } = wrapEmail(content.html, content.text, t.footer);
+    const subject = interpolate(t.clubLeft.subject, { clubName });
+    await this.sendEmail({ to: email, subject, html, text });
+  }
+
+  async sendClubMemberRemovedEmail(
+    email: string,
+    recipientName: string,
+    clubName: string,
+    removedUserName: string,
+    locale?: string,
+  ): Promise<void> {
+    const t = getEmailI18n(locale);
+    const content = getClubLeftContent({ userName: removedUserName, clubName, profileUrl: '' }, t);
+    const { html, text } = wrapEmail(content.html, content.text, t.footer);
+    const subject = interpolate(t.clubLeft.subject, { clubName });
+    await this.sendEmail({ to: email, subject, html, text });
+  }
+
+  async sendFederationInvitationEmail(
+    email: string,
+    recipientName: string,
+    clubName: string,
+    federationName: string,
+    inviterName: string,
+    acceptUrl: string,
+    locale?: string,
+  ): Promise<void> {
+    const t = getEmailI18n(locale);
+    const content = getFederationInvitationContent(
+      { clubName, federationName, inviterName, acceptUrl },
+      t,
+    );
+    const { html, text } = wrapEmail(content.html, content.text, t.footer);
+    const subject = interpolate(t.federationInvitation.subject, { federationName });
+    await this.sendEmail({ to: email, subject, html, text });
+  }
+
+  async sendFederationClubJoinedEmail(
+    email: string,
+    recipientName: string,
+    federationName: string,
+    clubName: string,
+    locale?: string,
+  ): Promise<void> {
+    const t = getEmailI18n(locale);
+    const content = getFederationClubJoinedContent({ federationName, clubName }, t);
+    const { html, text } = wrapEmail(content.html, content.text, t.footer);
+    const subject = interpolate(t.federationClubJoined.subject, { clubName, federationName });
+    await this.sendEmail({ to: email, subject, html, text });
+  }
+
+  async sendFederationClubRemovedEmail(
+    email: string,
+    recipientName: string,
+    federationName: string,
+    clubName: string,
+    removedBy: string,
+    locale?: string,
+  ): Promise<void> {
+    const t = getEmailI18n(locale);
+    const content = getFederationClubRemovedContent({ federationName, clubName, removedBy }, t);
+    const { html, text } = wrapEmail(content.html, content.text, t.footer);
+    const subject = interpolate(t.federationClubRemoved.subject, { federationName });
+    await this.sendEmail({ to: email, subject, html, text });
+  }
+
+  async sendClubLeftFederationEmail(
+    email: string,
+    recipientName: string,
+    clubName: string,
+    federationName: string,
+    profileUrl: string,
+    locale?: string,
+  ): Promise<void> {
+    const t = getEmailI18n(locale);
+    const content = getFederationClubRemovedContent(
+      { federationName, clubName, removedBy: clubName },
+      t,
+    );
+    const { html, text } = wrapEmail(content.html, content.text, t.footer);
+    const subject = interpolate(t.federationClubRemoved.subject, { federationName });
+    await this.sendEmail({ to: email, subject, html, text });
+  }
+
+  async sendClubRemovedFromFederationEmail(
+    email: string,
+    recipientName: string,
+    federationName: string,
+    clubName: string,
+    locale?: string,
+  ): Promise<void> {
+    const t = getEmailI18n(locale);
+    const content = getFederationClubRemovedContent(
+      { federationName, clubName, removedBy: 'Federation Admin' },
+      t,
+    );
+    const { html, text } = wrapEmail(content.html, content.text, t.footer);
+    const subject = interpolate(t.federationClubRemoved.subject, { federationName });
     await this.sendEmail({ to: email, subject, html, text });
   }
 }

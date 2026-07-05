@@ -1,6 +1,7 @@
 # Email Service Setup
 
 ## Overview
+
 The email service is implemented using Nodemailer and supports SMTP for sending emails. All emails are sent in the **recipient's preferred language** (`appLanguage` field on the `User` entity). If no language is set the app default (`pt`) is used.
 
 ## Environment Variables
@@ -21,22 +22,30 @@ SMTP_FROM_NAME=Archery App
 
 ## Email Structure (What We Send)
 
-| # | Email type | Trigger | `EmailService` method | Status |
-|---|------------|---------|----------------------|--------|
-| 1 | **Password reset** | User clicks "Forgot password" or admin resets a user | `sendPasswordResetEmail` | ✅ Active |
-| 2 | **Application submitted** | User submits a tournament application | `sendApplicationSubmittedEmail` | ✅ Active |
-| 3 | **Application status** | Application approved or rejected by admin | `sendApplicationStatusEmail` | ✅ Active |
-| 4 | **Welcome** | New user registered (email/password or Google OAuth) | `sendWelcomeEmail` | ✅ Active |
-| 5 | **Role changed** | Admin changes a user's role | `sendRoleChangedEmail` | ✅ Active |
-| 6 | **Invitation** | Admin creates a user via admin panel | `sendInvitationEmail` | ✅ Active |
+| #   | Email type                  | Trigger                                              | `EmailService` method            | Status    |
+| --- | --------------------------- | ---------------------------------------------------- | -------------------------------- | --------- |
+| 1   | **Password reset**          | User clicks "Forgot password" or admin resets a user | `sendPasswordResetEmail`         | ✅ Active |
+| 2   | **Application submitted**   | User submits a tournament application                | `sendApplicationSubmittedEmail`  | ✅ Active |
+| 3   | **Application status**      | Application approved or rejected by admin            | `sendApplicationStatusEmail`     | ✅ Active |
+| 4   | **Welcome**                 | New user registered (email/password or Google OAuth) | `sendWelcomeEmail`               | ✅ Active |
+| 5   | **Role changed**            | Admin changes a user's role                          | `sendRoleChangedEmail`           | ✅ Active |
+| 6   | **Invitation**              | Admin creates a user via admin panel                 | `sendInvitationEmail`            | ✅ Active |
+| 7   | **Club invitation**         | Club admin invites a user by email                   | `sendClubInvitationEmail`        | ✅ Active |
+| 8   | **Club joined**             | User accepts club invitation                         | `sendClubJoinedEmail`            | ✅ Active |
+| 9   | **Club left**               | User leaves club or is removed                       | `sendClubLeftEmail`              | ✅ Active |
+| 10  | **Federation invitation**   | Federation admin invites a club                      | `sendFederationInvitationEmail`  | ✅ Active |
+| 11  | **Federation club joined**  | Club accepts federation invitation                   | `sendFederationClubJoinedEmail`  | ✅ Active |
+| 12  | **Federation club removed** | Club removed from federation                         | `sendFederationClubRemovedEmail` | ✅ Active |
 
 **Notes:**
+
 - **Welcome email** requires `firstName` — enforced by `CreateUserDto` (`@IsNotEmpty`) for email signup; Google strategy always provides `name.givenName` with a fallback to the email username prefix.
 - **Invitation email** includes the inviting admin's name and a set-password link valid for **24 hours** (reuses the `resetPasswordToken` mechanism). The link leads to the existing `/reset-password` page.
 - **Password reset body** is intentionally passive ("We received a request…") so it reads correctly whether the user or an admin triggered it.
 - All non-critical emails are **fire-and-forget** — a failed send never blocks or fails the triggering operation.
 
 All emails use:
+
 - **HTML + plain text** (fallback for clients that don't render HTML)
 - **Consistent layout:** header → content → footer ("automated / do not reply")
 - **Localised content:** subject, body, button labels, month names and role descriptions all come from the i18n translation files
@@ -50,12 +59,12 @@ Emails are sent in the language stored in the recipient's `appLanguage` field. I
 
 ### Supported languages
 
-| Code (DB) | Language   |
-|-----------|-----------|
-| `pt`      | Portuguese |
-| `en`      | English    |
-| `es`      | Spanish    |
-| `it`      | Italian    |
+| Code (DB)   | Language                                                |
+| ----------- | ------------------------------------------------------- |
+| `pt`        | Portuguese                                              |
+| `en`        | English                                                 |
+| `es`        | Spanish                                                 |
+| `it`        | Italian                                                 |
 | `uk` / `ua` | Ukrainian (the app stores `ua`, both resolve correctly) |
 
 ### Translation files
@@ -77,17 +86,18 @@ src/email/i18n/
 
 ### `EmailI18n` interface sections
 
-| Section | Content |
-|---------|---------|
-| `footer` | "This is an automated email…" note |
-| `passwordReset` | Subject, heading, body, button, expiry, ignore note |
-| `welcome` | Subject, heading, greeting, intro, 4 feature bullets, help note |
-| `invitation` | Subject, heading, body, button, expiry, ignore note |
-| `applicationSubmitted` | Subject, heading, labels, wait message, 12 month names |
-| `applicationStatus` | Subject×2, heading×2, approved/rejected blocks, feedback label |
-| `roleChanged` | Subject, heading, body, permissions heading, role labels, role permissions |
+| Section                | Content                                                                    |
+| ---------------------- | -------------------------------------------------------------------------- |
+| `footer`               | "This is an automated email…" note                                         |
+| `passwordReset`        | Subject, heading, body, button, expiry, ignore note                        |
+| `welcome`              | Subject, heading, greeting, intro, 4 feature bullets, help note            |
+| `invitation`           | Subject, heading, body, button, expiry, ignore note                        |
+| `applicationSubmitted` | Subject, heading, labels, wait message, 12 month names                     |
+| `applicationStatus`    | Subject×2, heading×2, approved/rejected blocks, feedback label             |
+| `roleChanged`          | Subject, heading, body, permissions heading, role labels, role permissions |
 
 ### Adding a new language
+
 1. Create `src/email/i18n/xx.ts` implementing the full `EmailI18n` interface
 2. Add it to the map in `src/email/i18n/index.ts`:
    ```ts
@@ -123,6 +133,7 @@ src/email/templates/
 - **Content templates:** each function accepts `(params, t: EmailI18n)` and returns `{ html, text }`.
 
 **Adding a new email type:**
+
 1. Create `src/email/templates/your-type.template.ts`:
    ```ts
    import type { EmailI18n } from '../i18n';
@@ -161,6 +172,7 @@ SMTP_FROM_NAME=Archery App
 - If 2FA is enabled on the account, use a [Zoho application-specific password](https://www.zoho.com/mail/help/adminconsole/two-factor-authentication.html).
 
 ### Gmail
+
 1. Enable 2-factor authentication on your Google account
 2. Generate an App Password: Google Account → Security → 2-Step Verification → App passwords
 3. Use the generated password as `SMTP_PASSWORD`
@@ -175,6 +187,7 @@ SMTP_FROM_NAME=Archery App
 ```
 
 ### Outlook/Hotmail
+
 ```env
 SMTP_HOST=smtp-mail.outlook.com
 SMTP_PORT=587
@@ -185,6 +198,7 @@ SMTP_FROM_NAME=Archery App
 ```
 
 ### Custom SMTP Server
+
 ```env
 SMTP_HOST=your-smtp-server.com
 SMTP_PORT=587
@@ -197,11 +211,13 @@ SMTP_FROM_NAME=Archery App
 ## Testing the Email Service
 
 ### Check loaded SMTP config
+
 ```bash
 curl http://localhost:3000/email/config
 ```
 
 ### Send a test email
+
 ```bash
 curl -X POST http://localhost:3000/email/test \
   -H "Content-Type: application/json" \
@@ -216,15 +232,15 @@ curl -X POST http://localhost:3000/email/test \
 
 All methods accept an optional trailing `locale?: string` parameter that controls email language.
 
-| Method | Params | Notes |
-|--------|--------|-------|
-| `sendEmail(options)` | `{ to, subject, html, text? }` | Generic low-level send |
-| `sendPasswordResetEmail(email, _token, resetUrl, locale?)` | — | Token stored in DB; link expires in 1h; body is passive ("We received a request…") |
-| `sendWelcomeEmail(email, firstName, locale?)` | — | Sent on every new registration |
-| `sendApplicationSubmittedEmail(email, applicantName, tournamentTitle, startDate, endDate?, location?, locale?)` | — | Sent when user submits a tournament application |
-| `sendApplicationStatusEmail(email, applicantName, tournamentTitle, status, rejectionReason?, locale?)` | `status: 'approved' \| 'rejected'` | Sent when admin updates application status |
-| `sendRoleChangedEmail(email, recipientName, adminName, oldRole, newRole, locale?)` | — | Sent when admin changes a user's role; includes permission list |
-| `sendInvitationEmail(email, recipientName, adminName, setPasswordUrl, locale?)` | — | Sent when admin creates a user; link valid 24h |
+| Method                                                                                                          | Params                             | Notes                                                                              |
+| --------------------------------------------------------------------------------------------------------------- | ---------------------------------- | ---------------------------------------------------------------------------------- |
+| `sendEmail(options)`                                                                                            | `{ to, subject, html, text? }`     | Generic low-level send                                                             |
+| `sendPasswordResetEmail(email, _token, resetUrl, locale?)`                                                      | —                                  | Token stored in DB; link expires in 1h; body is passive ("We received a request…") |
+| `sendWelcomeEmail(email, firstName, locale?)`                                                                   | —                                  | Sent on every new registration                                                     |
+| `sendApplicationSubmittedEmail(email, applicantName, tournamentTitle, startDate, endDate?, location?, locale?)` | —                                  | Sent when user submits a tournament application                                    |
+| `sendApplicationStatusEmail(email, applicantName, tournamentTitle, status, rejectionReason?, locale?)`          | `status: 'approved' \| 'rejected'` | Sent when admin updates application status                                         |
+| `sendRoleChangedEmail(email, recipientName, adminName, oldRole, newRole, locale?)`                              | —                                  | Sent when admin changes a user's role; includes permission list                    |
+| `sendInvitationEmail(email, recipientName, adminName, setPasswordUrl, locale?)`                                 | —                                  | Sent when admin creates a user; link valid 24h                                     |
 
 ## Usage in Other Services
 
@@ -242,7 +258,7 @@ export class YourService {
     await this.emailService.sendYourTypeEmail(
       user.email,
       /* …params… */
-      user.appLanguage,   // ← recipient locale
+      user.appLanguage, // ← recipient locale
     );
   }
 }

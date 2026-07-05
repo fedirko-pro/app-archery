@@ -1,8 +1,7 @@
 import type { EmailI18n } from './types';
 
 export const it: EmailI18n = {
-  footer:
-    "Questa è un'e-mail automatica. Si prega di non rispondere a questo messaggio.",
+  footer: "Questa è un'e-mail automatica. Si prega di non rispondere a questo messaggio.",
 
   passwordReset: {
     subject: 'Richiesta di reimpostazione della password',
@@ -13,8 +12,7 @@ export const it: EmailI18n = {
     linkFallback:
       'Se il pulsante non funziona, puoi copiare e incollare questo link nel tuo browser:',
     expiry: 'Questo link scadrà tra 1 ora per ragioni di sicurezza.',
-    ignoreNote:
-      'Se non hai richiesto questa reimpostazione della password, ignora questa e-mail.',
+    ignoreNote: 'Se non hai richiesto questa reimpostazione della password, ignora questa e-mail.',
   },
 
   welcome: {
@@ -29,8 +27,7 @@ export const it: EmailI18n = {
       'Tieni traccia dei tuoi progressi',
       'Connettiti con altri arcieri',
     ],
-    helpNote:
-      'Se hai domande, non esitare a contattare il nostro team di supporto.',
+    helpNote: 'Se hai domande, non esitare a contattare il nostro team di supporto.',
   },
 
   invitation: {
@@ -38,19 +35,16 @@ export const it: EmailI18n = {
     heading: 'Sei Invitato/a su Archery App',
     body: '{{adminName}} ha creato un account per te su Archery App. Clicca il pulsante qui sotto per impostare la tua password e iniziare:',
     ctaLabel: 'Imposta la Tua Password',
-    linkFallback:
-      'Se il pulsante non funziona, copia e incolla questo link nel tuo browser:',
+    linkFallback: 'Se il pulsante non funziona, copia e incolla questo link nel tuo browser:',
     expiry: 'Questo link scadrà tra 24 ore.',
-    ignoreNote:
-      'Se non ti aspettavi questo invito, puoi ignorare questa e-mail tranquillamente.',
+    ignoreNote: 'Se non ti aspettavi questo invito, puoi ignorare questa e-mail tranquillamente.',
   },
 
   applicationSubmitted: {
     subject: 'Candidatura Inviata – {{tournamentTitle}}',
     heading: 'Candidatura Inviata',
     greeting: 'Ciao {{name}},',
-    successMessage:
-      'La tua candidatura per {{tournamentTitle}} è stata inviata con successo.',
+    successMessage: 'La tua candidatura per {{tournamentTitle}} è stata inviata con successo.',
     labelTournament: 'Torneo',
     labelDate: 'Data',
     labelLocation: 'Luogo',
@@ -84,8 +78,7 @@ export const it: EmailI18n = {
     approvedDetail:
       'Sei ora registrato/a per questo torneo. Controlla i dettagli della tua candidatura e preparati per la competizione.',
     approvedLookForward: "Non vediamo l'ora di vederti lì!",
-    rejectedMessage:
-      'La tua candidatura per {{tournamentTitle}} è stata esaminata.',
+    rejectedMessage: 'La tua candidatura per {{tournamentTitle}} è stata esaminata.',
     feedbackLabel: 'Feedback:',
     questionsNote: 'Se hai domande o dubbi, non esitare a contattarci.',
     ctaLabel: 'Visualizza le Mie Candidature',
@@ -97,8 +90,7 @@ export const it: EmailI18n = {
     greeting: 'Ciao {{name}},',
     body: '{{adminName}} ha aggiornato il tuo ruolo su Archery App:',
     permissionsHeading: 'Con il ruolo {{role}} puoi:',
-    questionsNote:
-      'Se hai domande sui tuoi nuovi permessi, contatta il tuo amministratore.',
+    questionsNote: 'Se hai domande sui tuoi nuovi permessi, contatta il tuo amministratore.',
     ctaLabel: 'Visualizza il Mio Profilo',
     roleLabels: {
       user: 'Utente',
@@ -135,5 +127,55 @@ export const it: EmailI18n = {
         'Tutte le altre capacità amministrative',
       ],
     },
+  },
+
+  clubInvitation: {
+    subject: 'Sei invitato a unirti a {{clubName}}',
+    heading: 'Invito al Club',
+    greeting: 'Sei stato invitato a unirti a {{clubName}}.',
+    body: '{{inviterName}} (Admin del Club {{clubName}}) ti ha invitato a unirti al suo club. Puoi accettare questo invito o ignorare questa email.',
+    ctaLabel: 'Unirsi al Club',
+    linkFallback: 'Se il pulsante non funziona, copia e incolla questo link nel tuo browser:',
+    ignoreNote: 'Se non ti aspettavi questo invito, puoi ignorare questa email in sicurezza.',
+  },
+
+  clubJoined: {
+    subject: 'Nuovo membro si è unito a {{clubName}}',
+    heading: 'Nuovo Membro del Club',
+    greeting: 'Un nuovo membro si è unito a {{clubName}}.',
+    body: '{{userName}} si è unito a {{clubName}}.',
+    viewProfile: 'Visualizza profilo: {{profileUrl}}',
+  },
+
+  clubLeft: {
+    subject: 'Membro ha lasciato {{clubName}}',
+    heading: 'Membro del Club Ha Lasciato',
+    greeting: 'Un membro ha lasciato {{clubName}}.',
+    body: '{{userName}} ha lasciato {{clubName}}.',
+    viewProfile: 'Visualizza profilo: {{profileUrl}}',
+  },
+
+  federationInvitation: {
+    subject: '{{federationName}} invita il tuo club a unirsi',
+    heading: 'Invito alla Federazione',
+    greeting: '{{federationName}} ha invitato il tuo club a unirsi.',
+    body: '{{inviterName}} (Admin della Federazione {{federationName}}) ha invitato {{clubName}} a unirsi alla federazione. Puoi accettare questo invito o ignorare questa email.',
+    ctaLabel: 'Accetta Invito',
+    linkFallback: 'Se il pulsante non funziona, copia e incolla questo link nel tuo browser:',
+    ignoreNote: 'Se non ti aspettavi questo invito, puoi ignorare questa email in sicurezza.',
+  },
+
+  federationClubJoined: {
+    subject: '{{clubName}} si è unito a {{federationName}}',
+    heading: 'Club Si È Unito Alla Federazione',
+    greeting: '{{federationName}} ha un nuovo club membro.',
+    body: '{{clubName}} si è unito a {{federationName}}.',
+  },
+
+  federationClubRemoved: {
+    subject: 'Club rimosso da {{federationName}}',
+    heading: 'Club Rimosso Dalla Federazione',
+    greeting: 'Un club è stato rimosso da {{federationName}}.',
+    body: '{{clubName}} è stato rimosso da {{federationName}} da {{removedBy}}.',
   },
 };

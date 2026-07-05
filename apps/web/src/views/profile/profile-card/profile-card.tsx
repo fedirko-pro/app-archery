@@ -1,8 +1,13 @@
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
 import {
   Avatar,
   Box,
   Button,
   Chip,
+  IconButton,
   Paper,
   Stack,
   Table,
@@ -10,15 +15,18 @@ import {
   TableCell,
   TableContainer,
   TableRow,
+  Tooltip,
   Typography,
 } from '@mui/material';
-import React from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { getCountryName } from '../../../config/countries';
 import { ROLE_LABEL_KEYS } from '../../../config/roles';
 import type { User } from '../../../contexts/types';
+import apiService from '../../../services/api';
+import type { ClubMembershipDto } from '../../../services/types';
 import { fromI18nLang, getCurrentI18nLang, normalizeAppLang } from '../../../utils/i18n-lang';
 import {
   resolveUserAvatarWithCacheBust,
@@ -76,10 +84,41 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   const inferredLang = fromI18nLang(getCurrentI18nLang());
   const currentLang = normalizeAppLang(location.pathname.split('/')[1] || inferredLang);
   const { t } = useTranslation('common');
+  const [clubMemberships, setClubMemberships] = useState<ClubMembershipDto[]>([]);
+
+  useEffect(() => {
+    const loadMemberships = async () => {
+      try {
+        const data = await apiService.getMyClubMemberships();
+        setClubMemberships(data || []);
+      } catch {
+        // Silently fail - memberships are optional display
+      }
+    };
+    if (user) {
+      void loadMemberships();
+    }
+  }, [user]);
+
+  const handleLeaveClub = useCallback(
+    async (membershipId: string) => {
+      if (
+        !window.confirm(t('profile.confirmLeaveClub', 'Are you sure you want to leave this club?'))
+      ) {
+        return;
+      }
+      try {
+        await apiService.removeClubMembership(membershipId);
+        setClubMemberships((prev) => prev.filter((m) => m.id !== membershipId));
+      } catch (error) {
+        console.error('Failed to leave club:', error);
+      }
+    },
+    [t],
+  );
 
   const clubName = user.club?.name;
   const federationNumber = profileData.federationNumber || user.federationNumber;
-  const nationality = profileData.nationality || user.nationality;
   const gender = profileData.gender || user.gender;
   const authProviderLabel =
     user.authProvider === 'google'
@@ -169,12 +208,70 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                     label={t('profile.federationNumber', 'Federation number')}
                     value={federationNumber}
                   />
-                  <TableInfoRow
-                    label={t('profile.nationality', 'Nationality')}
-                    value={nationality}
-                  />
                   <TableInfoRow label={t('profile.gender', 'Gender')} value={gender} />
-                  <TableInfoRow label={t('profile.club', 'Club')} value={clubName} />
+                  <TableInfoRow
+                    label={t('profile.clubs', 'Clubs')}
+                    value={
+                      clubMemberships.length > 0 ? (
+                        <Stack direction="column" spacing={0.5}>
+                          {clubMemberships.map((m) => (
+                            <Box
+                              key={m.id}
+                              sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}
+                            >
+                              {m.status === 'approved' && !m.isCustom && (
+                                <Tooltip
+                                  title={t('profile.verifiedClubMember', 'Verified club member')}
+                                >
+                                  <CheckCircleIcon sx={{ fontSize: 16, color: 'primary.main' }} />
+                                </Tooltip>
+                              )}
+                              {m.status === 'pending' && (
+                                <Tooltip
+                                  title={t('profile.pendingInvitation', 'Invitation pending')}
+                                >
+                                  <HourglassEmptyIcon
+                                    sx={{ fontSize: 16, color: 'warning.main' }}
+                                  />
+                                </Tooltip>
+                              )}
+                              {m.isCustom && (
+                                <Tooltip title={t('profile.unverifiedClub', 'Unverified')}>
+                                  <HelpOutlineIcon sx={{ fontSize: 16, color: 'grey.500' }} />
+                                </Tooltip>
+                              )}
+                              <Typography variant="body2">
+                                {m.isCustom ? m.customName : m.club?.name}
+                                {m.status === 'pending' && (
+                                  <Typography
+                                    component="span"
+                                    variant="caption"
+                                    color="text.secondary"
+                                    sx={{ ml: 0.5 }}
+                                  >
+                                    ({t('profile.pending', 'pending')})
+                                  </Typography>
+                                )}
+                              </Typography>
+                              {(m.status === 'approved' || m.isCustom) && (
+                                <Tooltip title={t('profile.leaveClub', 'Leave club')}>
+                                  <IconButton
+                                    size="small"
+                                    onClick={() => handleLeaveClub(m.id)}
+                                    sx={{ ml: 'auto' }}
+                                  >
+                                    <ExitToAppIcon sx={{ fontSize: 14 }} />
+                                  </IconButton>
+                                </Tooltip>
+                              )}
+                            </Box>
+                          ))}
+                        </Stack>
+                      ) : (
+                        clubName || null
+                      )
+                    }
+                  />
                   <TableInfoRow
                     label={t('profile.location', 'Location')}
                     value={

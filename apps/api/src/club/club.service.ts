@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { EntityManager } from '@mikro-orm/core';
-import { Club } from './club.entity';
+import { EntityManager, FilterQuery } from '@mikro-orm/core';
+import { Club, ClubVisibility } from './club.entity';
 import { CreateClubDto } from './dto/create-club.dto';
 import { UpdateClubDto } from './dto/update-club.dto';
 import { UploadService } from '../upload/upload.service';
@@ -20,8 +20,26 @@ export class ClubService {
     return club;
   }
 
-  async findAll(): Promise<Club[]> {
-    return this.em.find(Club, {}, { orderBy: { name: 'ASC' } });
+  async findAll(options?: {
+    country?: string;
+    visibility?: string;
+    search?: string;
+  }): Promise<Club[]> {
+    const where: FilterQuery<Club> = {};
+
+    if (options?.country) {
+      where.country = options.country;
+    }
+
+    if (options?.visibility === 'public') {
+      where.visibility = ClubVisibility.PUBLIC;
+    }
+
+    if (options?.search) {
+      where.name = { $ilike: `%${options.search}%` };
+    }
+
+    return this.em.find(Club, where, { orderBy: { name: 'ASC' } });
   }
 
   async findOne(id: string): Promise<Club> {

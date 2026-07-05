@@ -1,6 +1,7 @@
 {
-  "footer": { "about": "About app" },
-
+  "footer": {
+    "about": "About app"
+  },
   "menu": {
     "admin": "Admin",
     "organizerTools": "Organizer tools",
@@ -186,7 +187,7 @@
         "patrols": "Patrol System - Automatic patrol generation with intelligent grouping by bow category, division, and gender. Drag-and-drop management interface and PDF export",
         "admin": "Admin Panel - User management, application approvals, tournament oversight, and system administration",
         "categories": "Bow Categories Management - Complete CRUD for bow categories with rule references",
-        "clubs": "Clubs Management - Manage archery clubs with logos, descriptions, and locations",
+        "clubs": "Clubs & Federations - Club directory with filters, club membership system with verified/unverified badges, federation hierarchy, invitation flows, and admin management",
         "divisions": "Divisions Management - Age group and division management linked to rules",
         "rules": "Rules Management - Official archery rules with multi-language descriptions and PDF downloads",
         "converter": "Unit Converter - Convert between common archery measurements (inches/cm, pounds/kg, grains/grams, yards/meters)",
@@ -754,7 +755,10 @@
     "userIdRequired": "User ID is required for avatar upload",
     "profileSaved": "Profile saved successfully!"
   },
-  "role": { "user": "User", "admin": "Admin" },
+  "role": {
+    "user": "User",
+    "admin": "Admin"
+  },
   "notFound": {
     "title": "Page not found",
     "subtitle": "The page you are looking for might have been removed or is temporarily unavailable.",
@@ -765,7 +769,6 @@
       "goToList": "Browse tournaments"
     }
   },
-
   "auth": {
     "logout": "Log out",
     "signIn": "Sign In",

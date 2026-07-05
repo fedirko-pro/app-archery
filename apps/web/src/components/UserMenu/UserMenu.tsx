@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 
 import { isDev } from '../../config/env';
-import { USER_DEMO_NAV_ITEMS } from '../../config/roles';
+import { USER_DEMO_NAV_ITEMS, isClubAdmin, isFederationAdmin } from '../../config/roles';
 import { useAuth } from '../../contexts/auth-context';
 import { normalizeAppLang } from '../../utils/i18n-lang';
 import { resolveUserAvatarWithCacheBust, getAvatarInitials } from '../../utils/placeholder-images';
@@ -63,6 +63,12 @@ const UserMenu: React.FC = () => {
       link: '/profile',
       label: t('menu.myProfile', { name: (user?.firstName || '') + ' ' + (user?.lastName || '') }),
     },
+    ...(user && isClubAdmin(user.role)
+      ? [{ link: '/my-club', label: t('nav.myClub', 'My Club') }]
+      : []),
+    ...(user && isFederationAdmin(user.role)
+      ? [{ link: '/my-federation', label: t('nav.myFederation', 'My Federation') }]
+      : []),
     ...demoMenuItems,
   ];
 

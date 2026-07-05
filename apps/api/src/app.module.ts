@@ -12,6 +12,7 @@ import { resolveRootEnvPath } from './config/load-root-env';
 import { TournamentModule } from './tournament/tournament.module';
 import { UploadModule } from './upload/upload.module';
 import { ClubModule } from './club/club.module';
+import { FederationModule } from './federation/federation.module';
 import { RuleModule } from './rule/rule.module';
 import { DivisionModule } from './division/division.module';
 import { BowCategoryModule } from './bow-category/bow-category.module';
@@ -41,6 +42,7 @@ import { TrainingModule } from './training/training.module';
     TournamentModule,
     UploadModule,
     ClubModule,
+    FederationModule,
     RuleModule,
     DivisionModule,
     BowCategoryModule,
