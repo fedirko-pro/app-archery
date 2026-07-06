@@ -43,5 +43,8 @@ pids/
 *.pid
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
+# MikroORM snapshot (regenerated from entities)
+apps/api/src/migrations/.snapshot-*.json
+
 # api uploads (local)
 apps/api/uploads/
