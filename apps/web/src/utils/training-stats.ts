@@ -32,6 +32,7 @@ export interface EquipmentStatsEntry {
 export interface LocalTrainingStats {
   totalSessions: number;
   currentStreakWeeks: number;
+  bestStreakWeeks: number;
   shots: { total: number; thisWeek: number; thisMonth: number; thisYear: number };
   metersTraveled: { total: number; thisMonth: number; thisYear: number };
   avgShotsPerSession: number;
@@ -135,6 +136,40 @@ export function computeStreakAsOf(weekSet: Set<string>, date: Date): number {
     cursor.setDate(cursor.getDate() - 7);
   }
   return streak;
+}
+
+export function computeBestStreakWeeks(weekSet: Set<string>): number {
+  if (weekSet.size === 0) return 0;
+
+  const sortedWeeks = [...weekSet].sort();
+  let best = 1;
+  let current = 1;
+
+  for (let i = 1; i < sortedWeeks.length; i++) {
+    const prevDate = isoWeekToDate(sortedWeeks[i - 1]);
+    const currDate = isoWeekToDate(sortedWeeks[i]);
+    const diffDays = Math.round((currDate.getTime() - prevDate.getTime()) / 86_400_000);
+    if (diffDays === 7) {
+      current++;
+      best = Math.max(best, current);
+    } else {
+      current = 1;
+    }
+  }
+
+  return best;
+}
+
+function isoWeekToDate(isoWeek: string): Date {
+  const [yearStr, weekStr] = isoWeek.split('-');
+  const year = Number.parseInt(yearStr, 10);
+  const week = Number.parseInt(weekStr, 10);
+  const jan4 = new Date(year, 0, 4);
+  const dayOfWeek = jan4.getDay() || 7;
+  const monday = new Date(jan4);
+  monday.setDate(jan4.getDate() - dayOfWeek + 1 + (week - 1) * 7);
+  monday.setHours(0, 0, 0, 0);
+  return monday;
 }
 
 export interface StreakAtRiskState {
@@ -315,6 +350,7 @@ export function computeLocalStats(
   return {
     totalSessions: finishedSessions.length,
     currentStreakWeeks: computeStreak(acc.weekSet),
+    bestStreakWeeks: computeBestStreakWeeks(acc.weekSet),
     shots: {
       total: acc.totalShots,
       thisWeek: acc.shotsWeek,

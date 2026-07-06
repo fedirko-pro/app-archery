@@ -130,6 +130,7 @@ export interface TrainingStatsDto {
   registrationDate: string;
   totalSessions: number;
   currentStreakWeeks: number;
+  bestStreakWeeks: number;
   shots: ShotPeriodStats;
   metersTraveled: MetersPeriodStats;
   avgShotsPerSession: number;
@@ -320,11 +321,59 @@ export interface PublicProfileDto {
 
 export interface PublicAchievementShareDto {
   id: string;
-  title: string;
-  description: string;
+  titleKey: string;
+  descriptionKey: string;
+  icon: string;
   rarity: string;
   earned: boolean;
   earnedDate?: string | null;
+  owner: {
+    id: string;
+    firstName?: string;
+    lastName?: string;
+    picture?: string;
+  };
+}
+
+export interface AchievementProgressDto {
+  id: string;
+  category: string;
+  rarity: 'common' | 'rare' | 'epic' | 'legendary';
+  icon: string;
+  titleKey: string;
+  descriptionKey: string;
+  type: 'computed' | 'event';
+  earned: boolean;
+  progress: number;
+  current?: number;
+  threshold?: number;
+  earnedAt?: string | null;
+  source?: 'computed' | 'granted';
+}
+
+export interface AchievementsListDto {
+  achievements: AchievementProgressDto[];
+  earnedCount: number;
+  totalCount: number;
+  percent: number;
+  byRarity: Record<'common' | 'rare' | 'epic' | 'legendary', number>;
+}
+
+export interface AchievementSyncResultDto {
+  newlyUnlocked: string[];
+}
+
+export interface PublicProgressShareDto {
+  id: string;
+  earnedCount: number;
+  totalCount: number;
+  percent: number;
+  topAchievements: Array<{
+    id: string;
+    title: string;
+    rarity: string;
+    icon: string;
+  }>;
   owner: {
     id: string;
     firstName?: string;

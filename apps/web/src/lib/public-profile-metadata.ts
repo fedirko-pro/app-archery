@@ -1,6 +1,10 @@
 import type { Metadata } from 'next';
 
-import type { PublicAchievementShareDto, PublicProfileDto } from '@/services/types';
+import type {
+  PublicAchievementShareDto,
+  PublicProfileDto,
+  PublicProgressShareDto,
+} from '@/services/types';
 import { displayName } from '@/utils/user-display';
 
 export const DEFAULT_PROFILE_OG_IMAGE_PATH = '/og/default-tournament-banner.png';
@@ -57,28 +61,64 @@ export function buildAchievementShareMetadata(
   achievement: PublicAchievementShareDto,
   lang: string,
   siteUrl: string,
+  titleResolver?: (key: string) => string,
 ): Metadata {
   const ownerName = displayName(achievement.owner);
   const pageUrl = `${siteUrl}/${lang}/archers/${achievement.owner.id}/achievements/${achievement.id}`;
-  const description = achievement.description;
+  const title = titleResolver ? titleResolver(achievement.titleKey) : achievement.titleKey;
+  const description = titleResolver
+    ? titleResolver(achievement.descriptionKey)
+    : achievement.descriptionKey;
   const imageUrl = resolveOgImageUrl(achievement.owner.picture, siteUrl);
 
   return {
-    title: `${achievement.title} · ${ownerName} | Sokil`,
+    title: `${title} · ${ownerName} | Sokil`,
     description,
     alternates: { canonical: pageUrl },
     openGraph: {
-      title: `${achievement.title} — ${ownerName}`,
+      title: `${title} — ${ownerName}`,
       description,
       url: pageUrl,
       siteName: 'Sokil',
       type: 'website',
       locale: lang,
-      images: [{ url: imageUrl, width: 1200, height: 630, alt: achievement.title }],
+      images: [{ url: imageUrl, width: 1200, height: 630, alt: title }],
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${achievement.title} — ${ownerName}`,
+      title: `${title} — ${ownerName}`,
+      description,
+      images: [imageUrl],
+    },
+  };
+}
+
+export function buildProgressShareMetadata(
+  progress: PublicProgressShareDto,
+  lang: string,
+  siteUrl: string,
+): Metadata {
+  const ownerName = displayName(progress.owner);
+  const pageUrl = `${siteUrl}/${lang}/archers/${progress.owner.id}/progress`;
+  const description = `${progress.earnedCount} of ${progress.totalCount} achievements unlocked (${progress.percent}%)`;
+  const imageUrl = resolveOgImageUrl(progress.owner.picture, siteUrl);
+
+  return {
+    title: `${ownerName}'s achievements · ${progress.percent}% | Sokil`,
+    description,
+    alternates: { canonical: pageUrl },
+    openGraph: {
+      title: `${ownerName}'s achievement progress`,
+      description,
+      url: pageUrl,
+      siteName: 'Sokil',
+      type: 'website',
+      locale: lang,
+      images: [{ url: imageUrl, width: 1200, height: 630, alt: ownerName }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${ownerName}'s achievement progress`,
       description,
       images: [imageUrl],
     },

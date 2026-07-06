@@ -18,6 +18,7 @@ import { DivisionModule } from './division/division.module';
 import { BowCategoryModule } from './bow-category/bow-category.module';
 import { EquipmentModule } from './equipment/equipment.module';
 import { TrainingModule } from './training/training.module';
+import { AchievementsModule } from './achievements/achievements.module';
 
 @Module({
   imports: [
@@ -48,6 +49,7 @@ import { TrainingModule } from './training/training.module';
     BowCategoryModule,
     EquipmentModule,
     TrainingModule,
+    AchievementsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

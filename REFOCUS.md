@@ -35,12 +35,6 @@ Achievements should derive from existing statistics:
 
 ---
 
-### Phase D — Tournaments from the Archer’s Lens
-
-_Reframe, don’t remove._
-
----
-
 #### E2. Scoring card
 
 - [ ] **Option A:** Integrate into training/competition session logging
@@ -59,23 +53,10 @@ _Reframe, don’t remove._
 | Competitive | + federation number, divisions      | —                 |
 
 - [ ] Onboarding “who are you?” drives which fields appear
-- [ ] Federation number optional, not required in UI
 
 #### F2. Profile as progress snapshot
 
 - [ ] Header stats from statistics: streak, total arrows, member since
-
-#### F3. Club & Federation Affiliation
-
-- [x] Club directory with filters (country, search, visibility)
-- [x] Federation → Club → User hierarchy
-- [x] Club membership system (verified/unverified/pending badges)
-- [x] Club admin can invite members via email
-- [x] Federation admin can invite clubs via email
-- [x] Profile shows club list with verified/unverified icons
-- [x] Users can self-add custom (unverified) club entries
-- [x] Leave club functionality with email notifications
-- [x] My Club / My Federation admin pages
 
 ---
 
@@ -134,12 +115,8 @@ Phase E & F              ──► polish / later
 
 ## 8. Open Decisions (Resolve Before Implementation)
 
-- [ ] Dashboard route name: `/home` vs `/dashboard`
-- [ ] Default sync on for new users: yes/no
 - [ ] Scoring card: integrate vs defer
 - [ ] Payments: build vs hide until real
-- [ ] Federation number: optional everywhere vs competitive-only
-- [ ] Single “My season” page vs enhanced applications page
 
 ---
 

@@ -4,3 +4,4 @@ export * from './auth';
 export * from './tournament';
 export * from './common';
 export * from './user';
+export * from './achievements';

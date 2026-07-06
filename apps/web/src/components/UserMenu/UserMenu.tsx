@@ -59,6 +59,7 @@ const UserMenu: React.FC = () => {
     { link: '/statistics', label: t('nav.myStatistics') },
     { link: '/applications', label: t('nav.myApplications') },
     { link: '/equipment', label: t('nav.myEquipment') },
+    { link: '/achievements', label: t('nav.myAchievements') },
     {
       link: '/profile',
       label: t('menu.myProfile', { name: (user?.firstName || '') + ' ' + (user?.lastName || '') }),
@@ -79,6 +80,7 @@ const UserMenu: React.FC = () => {
         { link: '/trainings', label: t('nav.myTrainings') },
         { link: '/statistics', label: t('nav.myStatistics') },
         { link: '/equipment', label: t('nav.myEquipment') },
+        { link: '/achievements', label: t('nav.myAchievements') },
         ...demoMenuItems,
       ],
     },

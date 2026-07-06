@@ -5,11 +5,13 @@ import { notFound } from 'next/navigation';
 import LangCatchAllClient from './LangCatchAllClient';
 import {
   buildAchievementShareMetadata,
+  buildProgressShareMetadata,
   buildPublicProfileMetadata,
   buildShareNotFoundMetadata,
 } from '@/lib/public-profile-metadata';
 import {
   fetchAchievementShareForMetadata,
+  fetchProgressShareForMetadata,
   fetchPublicProfileForMetadata,
   fetchTournamentForMetadata,
 } from '@/lib/server-api';
@@ -41,6 +43,14 @@ export async function generateMetadata({ params }: LangCatchAllPageProps): Promi
         return buildShareNotFoundMetadata();
       }
       return buildAchievementShareMetadata(achievement, lang, siteUrl);
+    }
+
+    if (archerRoute.progress) {
+      const progress = await fetchProgressShareForMetadata(archerRoute.userId);
+      if (!progress) {
+        return buildShareNotFoundMetadata();
+      }
+      return buildProgressShareMetadata(progress, lang, siteUrl);
     }
 
     const profile = await fetchPublicProfileForMetadata(archerRoute.userId);

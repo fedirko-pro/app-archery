@@ -1,7 +1,8 @@
 export class PublicAchievementShareDto {
   id: string;
-  title: string;
-  description: string;
+  titleKey: string;
+  descriptionKey: string;
+  icon: string;
   rarity: string;
   earned: boolean;
   earnedDate?: string | null;

@@ -1,4 +1,76 @@
 @use '../../sass/helpers/variables' as *;
 
-// Achievements page uses primarily MUI components
-// Custom styles can be added here if needed
+.achievements-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+
+  @media (min-width: 600px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (min-width: 900px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media (min-width: 1200px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  &--locked {
+    @media (min-width: 600px) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    @media (min-width: 900px) {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    @media (min-width: 1200px) {
+      grid-template-columns: repeat(5, 1fr);
+    }
+  }
+}
+
+.achievement-card {
+  position: relative;
+  overflow: visible;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+
+  &--earned:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  }
+
+  &--locked {
+    opacity: 0.85;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+  }
+
+  &__new-badge {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    z-index: 1;
+  }
+
+  &__medallion-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1.5rem;
+    min-height: 140px;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.02) 0%, transparent 100%);
+
+    &--compact {
+      min-height: 100px;
+      padding: 1rem;
+    }
+  }
+}

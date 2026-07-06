@@ -10,6 +10,7 @@ import { UploadModule } from '../upload/upload.module';
 import { RolePermissionsModule } from '../auth/role-permissions.module';
 import { EmailModule } from '../email/email.module';
 import { TrainingModule } from '../training/training.module';
+import { AchievementsModule } from '../achievements/achievements.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { TrainingModule } from '../training/training.module';
     RolePermissionsModule,
     EmailModule,
     TrainingModule,
+    AchievementsModule,
   ],
   providers: [UserService, PublicProfileService, ProfileVisibilityService],
   controllers: [UserController, PublicProfileController],

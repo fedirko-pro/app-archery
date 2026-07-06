@@ -18,6 +18,7 @@ import { TournamentApplicationController } from './tournament-application.contro
 import { UploadModule } from '../upload/upload.module';
 import { EmailModule } from '../email/email.module';
 import { RolePermissionsModule } from '../auth/role-permissions.module';
+import { AchievementsModule } from '../achievements/achievements.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { RolePermissionsModule } from '../auth/role-permissions.module';
     UploadModule,
     EmailModule,
     RolePermissionsModule,
+    AchievementsModule,
   ],
   providers: [
     TournamentService,

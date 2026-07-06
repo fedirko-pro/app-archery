@@ -1,8 +1,4 @@
-import {
-  ROLES,
-  ADMIN_CAPABLE_ROLES,
-  ROLES_CAN_MANAGE_REFERENCE_DATA,
-} from '@sokil/shared-types';
+import { ROLES, ADMIN_CAPABLE_ROLES, ROLES_CAN_MANAGE_REFERENCE_DATA } from '@sokil/shared-types';
 import type { Role } from '@sokil/shared-types';
 
 export { ROLES, ADMIN_CAPABLE_ROLES, ROLES_CAN_MANAGE_REFERENCE_DATA };
@@ -56,9 +52,7 @@ export const PUBLIC_DEMO_NAV_ITEMS: NavItemConfig[] = [
   { link: '/competition/user', labelKey: 'nav.scoringDemo' },
 ];
 
-export const USER_DEMO_NAV_ITEMS: NavItemConfig[] = [
-  { link: '/achievements', labelKey: 'nav.myAchievements' },
-];
+export const USER_DEMO_NAV_ITEMS: NavItemConfig[] = [];
 
 export function canSeeOrganizerTools(role: string): boolean {
   return canAccessAdminSection(role);

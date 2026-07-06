@@ -11,7 +11,7 @@
     "tournaments": "Tournaments",
     "clubs": "Clubs",
     "myApplications": "Applications",
-    "myAchievements": "Achievements (Demo)",
+    "myAchievements": "Achievements",
     "myPayments": "Payments (Demo)",
     "myTrainings": "Trainings",
     "myEquipment": "Equipment",
@@ -82,42 +82,144 @@
     "progress": "{{earned}} of {{total}} achievements unlocked",
     "earnedOn": "Earned on {{date}}",
     "progressLabel": "Progress",
-    "demoNotice": "This is a demo page. Achievements will be linked to your real competition results in the future.",
     "share": "Share",
+    "shareProgress": "Share my progress",
+    "shareProgressTitle": "My archery achievements",
+    "shareProgressText": "{{earned}} of {{total}} achievements unlocked on Sokil",
+    "guestHint": "Sign in to save your achievements and sync them across devices.",
+    "new": "NEW",
+    "sections": {
+      "unlocked": "Unlocked",
+      "locked": "Locked"
+    },
+    "categories": {
+      "all": "All",
+      "onboarding": "Getting started",
+      "consistency": "Consistency",
+      "volume": "Volume",
+      "exploration": "Exploration",
+      "tournaments": "Tournaments",
+      "mastery": "Mastery"
+    },
+    "locked": {
+      "eventHint": "This achievement is awarded at special events or by tournament results."
+    },
+    "unlocked": {
+      "title": "Achievement Unlocked!",
+      "nice": "Nice!"
+    },
     "rarity": {
       "common": "Common",
       "rare": "Rare",
       "epic": "Epic",
       "legendary": "Legendary"
     },
-    "firstBullseye": {
-      "title": "First Bullseye",
-      "description": "Score your first perfect 10-point shot in competition"
+    "firstSession": {
+      "title": "First Steps",
+      "description": "Log your first training session"
     },
-    "perfectRound": {
-      "title": "Perfect Round",
-      "description": "Achieve a perfect score in a single round (all 10s)"
+    "firstEquipment": {
+      "title": "Gear Up",
+      "description": "Add your first equipment set"
     },
-    "tournamentWinner": {
+    "profileComplete": {
+      "title": "Identity Set",
+      "description": "Complete your archer profile"
+    },
+    "streak2Weeks": {
+      "title": "Warming Up",
+      "description": "Train at least once a week for 2 weeks in a row"
+    },
+    "streak4Weeks": {
+      "title": "Steady Archer",
+      "description": "Maintain a 4-week training streak"
+    },
+    "streak12Weeks": {
+      "title": "Iron Routine",
+      "description": "Maintain a 12-week training streak"
+    },
+    "streak26Weeks": {
+      "title": "Year-Round Archer",
+      "description": "Maintain a 26-week training streak"
+    },
+    "arrows500": {
+      "title": "Arrow Apprentice",
+      "description": "Shoot 500 arrows in training"
+    },
+    "arrows2500": {
+      "title": "Arrow Adept",
+      "description": "Shoot 2,500 arrows in training"
+    },
+    "arrows10000": {
+      "title": "Arrow Veteran",
+      "description": "Shoot 10,000 arrows in training"
+    },
+    "arrows25000": {
+      "title": "Arrow Legend",
+      "description": "Shoot 25,000 arrows in training"
+    },
+    "sessions10": {
+      "title": "Regular Practice",
+      "description": "Complete 10 training sessions"
+    },
+    "sessions50": {
+      "title": "Dedicated Archer",
+      "description": "Complete 50 training sessions"
+    },
+    "sessions150": {
+      "title": "Training Devotee",
+      "description": "Complete 150 training sessions"
+    },
+    "sessions500": {
+      "title": "Range Regular",
+      "description": "Complete 500 training sessions"
+    },
+    "distances3": {
+      "title": "Distance Explorer",
+      "description": "Train at 3 different distances"
+    },
+    "distances5": {
+      "title": "Range Rover",
+      "description": "Train at 5 different distances"
+    },
+    "targetTypes3": {
+      "title": "Target Variety",
+      "description": "Train with 3 different target types"
+    },
+    "scoredSessions5": {
+      "title": "Score Tracker",
+      "description": "Log scores in 5 training sessions"
+    },
+    "firstApplication": {
+      "title": "On the Start List",
+      "description": "Submit your first tournament application"
+    },
+    "competitor": {
+      "title": "Competitor",
+      "description": "Get your first tournament application approved"
+    },
+    "seasonedCompetitor": {
+      "title": "Seasoned Competitor",
+      "description": "Get 5 tournament applications approved"
+    },
+    "tournamentChampion": {
       "title": "Tournament Champion",
       "description": "Win first place in an official tournament"
     },
-    "consistentArcher": {
-      "title": "Consistent Archer",
-      "description": "Complete 10 tournaments without missing any targets"
-    },
-    "longDistance": {
-      "title": "Long Range Master",
-      "description": "Score 8+ on all arrows at maximum distance (60m+)"
-    },
-    "teamSpirit": {
-      "title": "Team Spirit",
-      "description": "Participate in 5 team competitions"
-    },
-    "precisionMaster": {
-      "title": "Precision Master",
-      "description": "Maintain 95%+ accuracy over 100 consecutive arrows"
+    "personalBest": {
+      "title": "Personal Best",
+      "description": "Set a new personal best score in competition"
     }
+  },
+  "progressShare": {
+    "notFoundTitle": "Progress not available",
+    "notFoundMessage": "This progress share link is private or does not exist.",
+    "badge": "Achievement progress",
+    "title": "Achievement Collection",
+    "topBadges": "Top badges",
+    "by": "Archer",
+    "shareTitle": "{{name}}'s achievements on Sokil",
+    "shareText": "{{earned}} of {{total}} achievements unlocked"
   },
   "pages": {
     "rules": {

@@ -1,17 +1,12 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { UserService } from './user.service';
-import {
-  ProfileVisibilityService,
-  ProfileViewer,
-} from './profile-visibility.service';
+import { ProfileVisibilityService, ProfileViewer } from './profile-visibility.service';
 import { TrainingService } from '../training/training.service';
-import {
-  PublicProfileDto,
-  PublicProgressStatsDto,
-} from './dto/public-profile.dto';
+import { AchievementsService } from './achievements.service';
+import { PublicProfileDto, PublicProgressStatsDto } from './dto/public-profile.dto';
 import { PublicAchievementShareDto } from './dto/public-achievement-share.dto';
 import {
-  ACHIEVEMENT_CATALOG,
+  ACHIEVEMENT_CATALOG_BY_ID,
   AchievementRarity,
   isValidAchievementId,
 } from './achievement-catalog';
@@ -26,6 +21,7 @@ export class PublicProfileService {
     private readonly userService: UserService,
     private readonly visibilityService: ProfileVisibilityService,
     private readonly trainingService: TrainingService,
+    private readonly achievementsService: AchievementsService,
   ) {}
 
   async getPublicProfile(userId: string): Promise<PublicProfileDto> {
@@ -36,10 +32,7 @@ export class PublicProfileService {
     return this.buildProfileDto(user, ProfileVisibilities.Public);
   }
 
-  async getSharedProfile(
-    userId: string,
-    viewer: ProfileViewer,
-  ): Promise<PublicProfileDto> {
+  async getSharedProfile(userId: string, viewer: ProfileViewer): Promise<PublicProfileDto> {
     const user = await this.userService.findById(userId);
     if (!user) {
       throw new NotFoundException('Profile not found');
@@ -51,9 +44,7 @@ export class PublicProfileService {
     }
 
     const visibility =
-      level === 'limited'
-        ? ProfileVisibilities.Limited
-        : ProfileVisibilities.Public;
+      level === 'limited' ? ProfileVisibilities.Limited : ProfileVisibilities.Public;
 
     return this.buildProfileDto(user, visibility);
   }
@@ -103,10 +94,7 @@ export class PublicProfileService {
         shotsTotal: stats.shots.total,
       };
     } catch (err) {
-      this.logger.warn(
-        `Failed to load training stats for user ${user.id}`,
-        err,
-      );
+      this.logger.warn(`Failed to load training stats for user ${user.id}`, err);
       progress = undefined;
     }
 
@@ -124,24 +112,29 @@ export class PublicProfileService {
     };
   }
 
-  private buildAchievementShareDto(
+  private async buildAchievementShareDto(
     user: User,
     achievementId: string,
-  ): PublicAchievementShareDto {
+  ): Promise<PublicAchievementShareDto> {
     if (!isValidAchievementId(achievementId)) {
       throw new NotFoundException('Achievement not found');
     }
 
-    const catalog = ACHIEVEMENT_CATALOG[achievementId];
+    const catalog = ACHIEVEMENT_CATALOG_BY_ID[achievementId];
+    const row = await this.achievementsService.hasEarned(user.id, achievementId);
 
-    // TODO: compute `earned` and `earnedDate` from real training/tournament data
+    if (!row) {
+      throw new NotFoundException('Achievement not found');
+    }
+
     return {
       id: achievementId,
-      title: catalog.title,
-      description: catalog.description,
+      titleKey: catalog.titleKey,
+      descriptionKey: catalog.descriptionKey,
+      icon: catalog.icon,
       rarity: catalog.rarity as AchievementRarity,
-      earned: false,
-      earnedDate: null,
+      earned: true,
+      earnedDate: row.earnedAt.toISOString(),
       owner: {
         id: user.id,
         firstName: user.firstName,

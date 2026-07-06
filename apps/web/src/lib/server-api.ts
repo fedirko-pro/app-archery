@@ -1,4 +1,9 @@
-import type { PublicAchievementShareDto, PublicProfileDto, TournamentDto } from '@/services/types';
+import type {
+  PublicAchievementShareDto,
+  PublicProfileDto,
+  PublicProgressShareDto,
+  TournamentDto,
+} from '@/services/types';
 
 /** Absolute API base URL for server-side fetches (dev proxy `/api` is client-only). */
 export function getServerApiBaseUrl(): string {
@@ -67,6 +72,25 @@ export async function fetchAchievementShareForMetadata(
     }
 
     return (await response.json()) as PublicAchievementShareDto;
+  } catch {
+    return null;
+  }
+}
+
+export async function fetchProgressShareForMetadata(
+  userId: string,
+): Promise<PublicProgressShareDto | null> {
+  try {
+    const response = await fetch(`${getServerApiBaseUrl()}/users/public/${userId}/progress`, {
+      headers: { Accept: 'application/json' },
+      next: { revalidate: 60 },
+    });
+
+    if (response.status === 404 || !response.ok) {
+      return null;
+    }
+
+    return (await response.json()) as PublicProgressShareDto;
   } catch {
     return null;
   }

@@ -39,6 +39,7 @@ import NotFound from '../../views/NotFound';
 import OnboardingPage from '../../views/Onboarding';
 import Profile from '../../views/profile/profile';
 import ProfileEditPage from '../../views/profile/profile-edit-page';
+import ProgressSharePage from '../../views/progress-share/progress-share';
 import ProtectedRoute from '../../views/protected-route';
 import PublicProfilePage from '../../views/public-profile/public-profile';
 import ResetPassword from '../../views/reset-password/reset-password';
@@ -106,6 +107,7 @@ function Content() {
             path="archers/:userId/achievements/:achievementId"
             element={<AchievementSharePage />}
           />
+          <Route path="archers/:userId/progress" element={<ProgressSharePage />} />
           <Route
             path="admin/users"
             element={

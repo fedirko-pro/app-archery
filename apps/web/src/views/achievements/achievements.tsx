@@ -2,109 +2,31 @@ import './achievements.scss';
 
 import { EmojiEvents, MilitaryTech, Star, WorkspacePremium } from '@mui/icons-material';
 import {
-  Avatar,
   Box,
   Card,
   CardContent,
   Chip,
+  CircularProgress,
   Container,
   LinearProgress,
   Typography,
 } from '@mui/material';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 
-import { ACHIEVEMENT_COLORS, RARITY_ICON_COLORS } from '../../theme/achievementTokens';
+import AchievementLockedDialog from '@/components/achievements/AchievementLockedDialog';
+import AchievementMedallion from '@/components/achievements/AchievementMedallion';
+import AchievementUnlockedDialog from '@/components/achievements/AchievementUnlockedDialog';
 import PrivacyAwareShareMenu from '@/components/share/PrivacyAwareShareMenu';
 import { useAuth } from '@/contexts/auth-context';
+import { useAchievements } from '@/hooks/use-achievements';
+import type { AchievementProgressDto } from '@/services/types';
+import { RARITY_ICON_COLORS } from '@/theme/achievementTokens';
 
-interface Achievement {
-  id: string;
-  titleKey: string;
-  descriptionKey: string;
-  icon: React.ReactNode;
-  color: string;
-  bgGradient: string;
-  earned: boolean;
-  earnedDate?: string;
-  progress?: number;
-  rarity: 'common' | 'rare' | 'epic' | 'legendary';
-}
+type CategoryFilter = 'all' | AchievementProgressDto['category'];
 
-const achievements: Achievement[] = [
-  {
-    id: 'first-bullseye',
-    titleKey: 'achievements.firstBullseye.title',
-    descriptionKey: 'achievements.firstBullseye.description',
-    icon: '🎯',
-    ...ACHIEVEMENT_COLORS['first-bullseye'],
-    earned: true,
-    earnedDate: '2024-03-15',
-    rarity: 'common',
-  },
-  {
-    id: 'perfect-round',
-    titleKey: 'achievements.perfectRound.title',
-    descriptionKey: 'achievements.perfectRound.description',
-    icon: '⭐',
-    ...ACHIEVEMENT_COLORS['perfect-round'],
-    earned: true,
-    earnedDate: '2024-05-20',
-    rarity: 'epic',
-  },
-  {
-    id: 'tournament-winner',
-    titleKey: 'achievements.tournamentWinner.title',
-    descriptionKey: 'achievements.tournamentWinner.description',
-    icon: '🏆',
-    ...ACHIEVEMENT_COLORS['tournament-winner'],
-    earned: true,
-    earnedDate: '2024-07-10',
-    rarity: 'legendary',
-  },
-  {
-    id: 'consistent-archer',
-    titleKey: 'achievements.consistentArcher.title',
-    descriptionKey: 'achievements.consistentArcher.description',
-    icon: '🏹',
-    ...ACHIEVEMENT_COLORS['consistent-archer'],
-    earned: true,
-    earnedDate: '2024-04-01',
-    rarity: 'rare',
-  },
-  {
-    id: 'long-distance',
-    titleKey: 'achievements.longDistance.title',
-    descriptionKey: 'achievements.longDistance.description',
-    icon: '🎖️',
-    ...ACHIEVEMENT_COLORS['long-distance'],
-    earned: false,
-    progress: 75,
-    rarity: 'rare',
-  },
-  {
-    id: 'team-spirit',
-    titleKey: 'achievements.teamSpirit.title',
-    descriptionKey: 'achievements.teamSpirit.description',
-    icon: '🤝',
-    ...ACHIEVEMENT_COLORS['team-spirit'],
-    earned: false,
-    progress: 40,
-    rarity: 'common',
-  },
-  {
-    id: 'precision-master',
-    titleKey: 'achievements.precisionMaster.title',
-    descriptionKey: 'achievements.precisionMaster.description',
-    icon: '💎',
-    ...ACHIEVEMENT_COLORS['precision-master'],
-    earned: false,
-    progress: 20,
-    rarity: 'legendary',
-  },
-];
-
-const getRarityIcon = (rarity: Achievement['rarity']) => {
+const getRarityIcon = (rarity: AchievementProgressDto['rarity']) => {
   switch (rarity) {
     case 'legendary':
       return <EmojiEvents sx={{ fontSize: 16, color: RARITY_ICON_COLORS.legendary }} />;
@@ -117,36 +39,101 @@ const getRarityIcon = (rarity: Achievement['rarity']) => {
   }
 };
 
-const getRarityLabel = (rarity: Achievement['rarity'], t: (key: string) => string) => {
-  switch (rarity) {
-    case 'legendary':
-      return t('achievements.rarity.legendary');
-    case 'epic':
-      return t('achievements.rarity.epic');
-    case 'rare':
-      return t('achievements.rarity.rare');
-    default:
-      return t('achievements.rarity.common');
-  }
-};
-
-const RARITY_ORDER: Record<Achievement['rarity'], number> = {
-  legendary: 4,
-  epic: 3,
-  rare: 2,
-  common: 1,
-};
-
-const sortedAchievements = [...achievements].sort(
-  (a, b) => RARITY_ORDER[b.rarity] - RARITY_ORDER[a.rarity],
-);
-
 const Achievements = () => {
   const { t } = useTranslation('common');
   const { user } = useAuth();
   const { lang } = useParams();
+  const {
+    earned,
+    locked,
+    earnedCount,
+    totalCount,
+    percent,
+    byRarity,
+    loading,
+    error,
+    isGuest,
+    syncAndCelebrate,
+    markSeen,
+    isNewAchievement,
+  } = useAchievements();
 
-  const earnedCount = achievements.filter((a) => a.earned).length;
+  const [categoryFilter, setCategoryFilter] = useState<CategoryFilter>('all');
+  const [lockedDialog, setLockedDialog] = useState<AchievementProgressDto | null>(null);
+  const [celebrationQueue, setCelebrationQueue] = useState<string[]>([]);
+  const [celebrationIndex, setCelebrationIndex] = useState(0);
+
+  useEffect(() => {
+    void syncAndCelebrate().then((ids) => {
+      if (ids.length > 0) {
+        setCelebrationQueue(ids);
+        setCelebrationIndex(0);
+      }
+    });
+  }, [syncAndCelebrate]);
+
+  const filterByCategory = useCallback(
+    (items: AchievementProgressDto[]) =>
+      categoryFilter === 'all' ? items : items.filter((a) => a.category === categoryFilter),
+    [categoryFilter],
+  );
+
+  const filteredEarned = useMemo(() => filterByCategory(earned), [earned, filterByCategory]);
+  const filteredLocked = useMemo(() => filterByCategory(locked), [locked, filterByCategory]);
+
+  const sortedEarned = useMemo(
+    () =>
+      [...filteredEarned].sort((a, b) => {
+        const dateA = a.earnedAt ?? '';
+        const dateB = b.earnedAt ?? '';
+        return dateB.localeCompare(dateA);
+      }),
+    [filteredEarned],
+  );
+
+  const currentCelebration = celebrationQueue[celebrationIndex]
+    ? (earned.find((a) => a.id === celebrationQueue[celebrationIndex]) ?? null)
+    : null;
+
+  const handleCelebrationClose = () => {
+    if (currentCelebration) {
+      markSeen([currentCelebration.id]);
+    }
+    if (celebrationIndex < celebrationQueue.length - 1) {
+      setCelebrationIndex((i) => i + 1);
+    } else {
+      setCelebrationQueue([]);
+      setCelebrationIndex(0);
+    }
+  };
+
+  const rarityBreakdown = (['legendary', 'epic', 'rare', 'common'] as const)
+    .filter((r) => byRarity[r] > 0)
+    .map((r) => `${byRarity[r]} ${t(`achievements.rarity.${r}`).toLowerCase()}`)
+    .join(' · ');
+
+  const categories: CategoryFilter[] = [
+    'all',
+    'onboarding',
+    'consistency',
+    'volume',
+    'exploration',
+    'tournaments',
+    'mastery',
+  ];
+
+  const progressShareUrl =
+    user && typeof window !== 'undefined'
+      ? `${window.location.origin}/${lang}/archers/${user.id}/progress`
+      : '';
+
+  if (loading && earnedCount === 0 && locked.length === 0) {
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" minHeight="40vh">
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
@@ -157,150 +144,178 @@ const Achievements = () => {
         <Typography variant="body1" color="text.secondary" gutterBottom>
           {t('achievements.subtitle')}
         </Typography>
-        <Chip
-          label={t('achievements.progress', { earned: earnedCount, total: achievements.length })}
-          color="primary"
-          sx={{ mt: 1 }}
-        />
+
+        <Box sx={{ mt: 2, mb: 2 }}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}>
+            <Typography variant="body2" fontWeight={600}>
+              {t('achievements.progress', { earned: earnedCount, total: totalCount })}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              {percent}%
+            </Typography>
+          </Box>
+          <LinearProgress
+            variant="determinate"
+            value={percent}
+            sx={{ height: 10, borderRadius: 5 }}
+          />
+        </Box>
+
+        {rarityBreakdown && (
+          <Typography variant="caption" color="text.secondary" display="block" sx={{ mb: 1 }}>
+            {rarityBreakdown}
+          </Typography>
+        )}
+
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, alignItems: 'center' }}>
+          {categories.map((cat) => (
+            <Chip
+              key={cat}
+              label={
+                cat === 'all'
+                  ? t('achievements.categories.all')
+                  : t(`achievements.categories.${cat}`)
+              }
+              onClick={() => setCategoryFilter(cat)}
+              color={categoryFilter === cat ? 'primary' : 'default'}
+              variant={categoryFilter === cat ? 'filled' : 'outlined'}
+              size="small"
+            />
+          ))}
+          {user && progressShareUrl && (
+            <Box sx={{ ml: 'auto' }}>
+              <PrivacyAwareShareMenu
+                url={progressShareUrl}
+                title={t('achievements.shareProgressTitle')}
+                text={t('achievements.shareProgressText', {
+                  earned: earnedCount,
+                  total: totalCount,
+                })}
+                buttonLabel={t('achievements.shareProgress')}
+                variant="button"
+                size="small"
+                canShare={earnedCount > 0}
+              />
+            </Box>
+          )}
+        </Box>
+
+        {isGuest && (
+          <Typography variant="body2" color="text.secondary" sx={{ mt: 2 }}>
+            {t('achievements.guestHint')}
+          </Typography>
+        )}
+        {error && (
+          <Typography variant="body2" color="error" sx={{ mt: 1 }}>
+            {error}
+          </Typography>
+        )}
       </Box>
 
-      <Box
-        sx={{
-          display: 'grid',
-          gridTemplateColumns: {
-            xs: '1fr',
-            sm: 'repeat(2, 1fr)',
-            md: 'repeat(3, 1fr)',
-            lg: 'repeat(4, 1fr)',
-          },
-          gap: 3,
-        }}
-      >
-        {sortedAchievements.map((achievement) => (
-          <Card
-            key={achievement.id}
-            sx={{
-              position: 'relative',
-              overflow: 'visible',
-              opacity: achievement.earned ? 1 : 0.7,
-              filter: achievement.earned ? 'none' : 'grayscale(30%)',
-              transition: 'transform 0.2s, box-shadow 0.2s',
-              '&:hover': {
-                transform: 'translateY(-4px)',
-                boxShadow: 6,
-              },
-            }}
-          >
-            <Box
-              sx={{
-                background: achievement.bgGradient,
-                p: 3,
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                minHeight: 120,
-              }}
-            >
-              <Avatar
-                sx={{
-                  width: 80,
-                  height: 80,
-                  fontSize: '2.5rem',
-                  bgcolor: 'rgba(255,255,255,0.9)',
-                  boxShadow: '0 4px 14px rgba(0,0,0,0.2)',
-                }}
-              >
-                {achievement.icon}
-              </Avatar>
-              {achievement.earned && (
-                <Box
-                  sx={{
-                    position: 'absolute',
-                    top: 8,
-                    right: 8,
-                    bgcolor: 'success.main',
-                    color: 'white',
-                    borderRadius: '50%',
-                    width: 28,
-                    height: 28,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '1rem',
-                    boxShadow: 2,
-                  }}
-                >
-                  ✓
-                </Box>
-              )}
-            </Box>
-            <CardContent>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mb: 1 }}>
-                {getRarityIcon(achievement.rarity)}
-                <Typography variant="caption" color="text.secondary">
-                  {getRarityLabel(achievement.rarity, t)}
-                </Typography>
-              </Box>
-              <Typography variant="h6" component="h2" gutterBottom sx={{ fontSize: '1rem' }}>
-                {t(achievement.titleKey)}
-              </Typography>
-              <Typography variant="body2" color="text.secondary" sx={{ mb: 1, minHeight: 40 }}>
-                {t(achievement.descriptionKey)}
-              </Typography>
-              {achievement.earned && achievement.earnedDate && (
-                <Typography variant="caption" color="success.main" display="block">
-                  {t('achievements.earnedOn', {
-                    date: new Date(achievement.earnedDate).toLocaleDateString(),
-                  })}
-                </Typography>
-              )}
-              {!achievement.earned && achievement.progress !== undefined && (
-                <Box sx={{ mt: 1 }}>
-                  <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}>
-                    <Typography variant="caption" color="text.secondary">
-                      {t('achievements.progressLabel')}
-                    </Typography>
-                    <Typography variant="caption" color="text.secondary">
-                      {achievement.progress}%
-                    </Typography>
-                  </Box>
-                  <LinearProgress
-                    variant="determinate"
-                    value={achievement.progress}
-                    sx={{
-                      height: 6,
-                      borderRadius: 3,
-                      bgcolor: 'grey.200',
-                      '& .MuiLinearProgress-bar': {
-                        bgcolor: achievement.color,
-                        borderRadius: 3,
-                      },
-                    }}
-                  />
-                </Box>
-              )}
-              <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 1 }}>
-                {user && (
-                  <PrivacyAwareShareMenu
-                    url={`${typeof window !== 'undefined' ? window.location.origin : ''}/${lang}/archers/${user.id}/achievements/${achievement.id}`}
-                    title={t(achievement.titleKey)}
-                    text={t(achievement.descriptionKey)}
-                    variant="icon"
+      {sortedEarned.length > 0 && (
+        <>
+          <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
+            {t('achievements.sections.unlocked')}
+          </Typography>
+          <Box className="achievements-grid">
+            {sortedEarned.map((achievement) => (
+              <Card key={achievement.id} className="achievement-card achievement-card--earned">
+                {isNewAchievement(achievement.id, achievement.earnedAt) && (
+                  <Chip
+                    label={t('achievements.new')}
                     size="small"
-                    canShare={achievement.earned}
+                    color="success"
+                    className="achievement-card__new-badge"
                   />
                 )}
-              </Box>
-            </CardContent>
-          </Card>
-        ))}
-      </Box>
+                <Box className="achievement-card__medallion-wrap">
+                  <AchievementMedallion
+                    icon={achievement.icon}
+                    rarity={achievement.rarity}
+                    showGlow
+                  />
+                </Box>
+                <CardContent>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mb: 0.5 }}>
+                    {getRarityIcon(achievement.rarity)}
+                    <Typography variant="caption" color="text.secondary">
+                      {t(`achievements.rarity.${achievement.rarity}`)}
+                    </Typography>
+                  </Box>
+                  <Typography variant="h6" component="h2" sx={{ fontSize: '1rem' }} gutterBottom>
+                    {t(achievement.titleKey)}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary" sx={{ mb: 1, minHeight: 40 }}>
+                    {t(achievement.descriptionKey)}
+                  </Typography>
+                  {achievement.earnedAt && (
+                    <Typography variant="caption" color="success.main" display="block">
+                      {t('achievements.earnedOn', {
+                        date: new Date(achievement.earnedAt).toLocaleDateString(),
+                      })}
+                    </Typography>
+                  )}
+                  <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 1 }}>
+                    {user && (
+                      <PrivacyAwareShareMenu
+                        url={`${typeof window !== 'undefined' ? window.location.origin : ''}/${lang}/archers/${user.id}/achievements/${achievement.id}`}
+                        title={t(achievement.titleKey)}
+                        text={t(achievement.descriptionKey)}
+                        variant="icon"
+                        size="small"
+                        canShare
+                      />
+                    )}
+                  </Box>
+                </CardContent>
+              </Card>
+            ))}
+          </Box>
+        </>
+      )}
 
-      <Box sx={{ mt: 4, p: 2, bgcolor: 'grey.100', borderRadius: 2 }}>
-        <Typography variant="body2" color="text.secondary" align="center">
-          {t('achievements.demoNotice')}
-        </Typography>
-      </Box>
+      {filteredLocked.length > 0 && (
+        <>
+          <Typography variant="h6" gutterBottom sx={{ mt: 4 }}>
+            {t('achievements.sections.locked')}
+          </Typography>
+          <Box className="achievements-grid achievements-grid--locked">
+            {filteredLocked.map((achievement) => (
+              <Card
+                key={achievement.id}
+                className="achievement-card achievement-card--locked"
+                onClick={() => setLockedDialog(achievement)}
+                sx={{ cursor: 'pointer' }}
+              >
+                <Box className="achievement-card__medallion-wrap achievement-card__medallion-wrap--compact">
+                  <AchievementMedallion
+                    icon={achievement.icon}
+                    rarity={achievement.rarity}
+                    locked
+                    size={64}
+                  />
+                </Box>
+                <CardContent sx={{ textAlign: 'center', pt: 1 }}>
+                  <Typography variant="subtitle2" fontWeight={600}>
+                    {t(achievement.titleKey)}
+                  </Typography>
+                </CardContent>
+              </Card>
+            ))}
+          </Box>
+        </>
+      )}
+
+      <AchievementUnlockedDialog
+        achievement={currentCelebration}
+        open={!!currentCelebration}
+        onClose={handleCelebrationClose}
+      />
+      <AchievementLockedDialog
+        achievement={lockedDialog}
+        open={!!lockedDialog}
+        onClose={() => setLockedDialog(null)}
+      />
     </Container>
   );
 };

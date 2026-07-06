@@ -44,6 +44,9 @@ import type {
   TrainingStatsDto,
   PublicProfileDto,
   PublicAchievementShareDto,
+  AchievementsListDto,
+  AchievementSyncResultDto,
+  PublicProgressShareDto,
 } from './types';
 
 interface RequestOptions extends RequestInit {
@@ -265,6 +268,32 @@ class ApiService {
     return await this.request<PublicAchievementShareDto>(
       `/users/${userId}/shared-profile/achievements/${achievementId}`,
     );
+  }
+
+  async getMyAchievements(): Promise<AchievementsListDto> {
+    return await this.request<AchievementsListDto>('/users/me/achievements');
+  }
+
+  async syncAchievements(): Promise<AchievementSyncResultDto> {
+    return await this.request<AchievementSyncResultDto>('/users/me/achievements/sync', {
+      method: 'POST',
+    });
+  }
+
+  async getUserAchievements(userId: string): Promise<AchievementsListDto> {
+    return await this.request<AchievementsListDto>(`/users/public/${userId}/achievements`);
+  }
+
+  async getLimitedUserAchievements(userId: string): Promise<AchievementsListDto> {
+    return await this.request<AchievementsListDto>(`/users/${userId}/shared-profile/achievements`);
+  }
+
+  async getPublicProgressShare(userId: string): Promise<PublicProgressShareDto> {
+    return await this.request<PublicProgressShareDto>(`/users/public/${userId}/progress`);
+  }
+
+  async getLimitedProgressShare(userId: string): Promise<PublicProgressShareDto> {
+    return await this.request<PublicProgressShareDto>(`/users/${userId}/shared-profile/progress`);
   }
 
   async changePassword(passwordData: ChangePasswordData): Promise<void> {

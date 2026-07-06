@@ -13,6 +13,7 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useParams } from 'react-router-dom';
 
+import AchievementMedallion from '@/components/achievements/AchievementMedallion';
 import ShareMenu from '@/components/share/ShareMenu';
 import { useAuth } from '@/contexts/auth-context';
 import apiService from '@/services/api';
@@ -78,6 +79,8 @@ const AchievementSharePage: React.FC = () => {
 
   const name = displayName(achievement.owner);
   const shareUrl = `${getOrigin()}/${lang}/archers/${achievement.owner.id}/achievements/${achievement.id}`;
+  const title = t(achievement.titleKey);
+  const description = t(achievement.descriptionKey);
 
   return (
     <Container maxWidth="sm" sx={{ py: 4 }}>
@@ -87,11 +90,30 @@ const AchievementSharePage: React.FC = () => {
             <Typography variant="overline" color="text.secondary">
               {t('achievementShare.badge')}
             </Typography>
-            <Typography variant="h4">{achievement.title}</Typography>
-            <Chip label={t(`achievements.rarity.${achievement.rarity}`)} size="small" />
-            <Typography variant="body1" color="text.secondary">
-              {achievement.description}
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+              <AchievementMedallion
+                icon={achievement.icon}
+                rarity={achievement.rarity as 'common' | 'rare' | 'epic' | 'legendary'}
+                size={96}
+                showGlow
+              />
+            </Box>
+            <Typography variant="h4" textAlign="center">
+              {title}
             </Typography>
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+              <Chip label={t(`achievements.rarity.${achievement.rarity}`)} size="small" />
+            </Box>
+            <Typography variant="body1" color="text.secondary" textAlign="center">
+              {description}
+            </Typography>
+            {achievement.earnedDate && (
+              <Typography variant="caption" color="success.main" textAlign="center">
+                {t('achievements.earnedOn', {
+                  date: new Date(achievement.earnedDate).toLocaleDateString(),
+                })}
+              </Typography>
+            )}
 
             <Stack direction="row" spacing={2} alignItems="center" sx={{ mt: 2 }}>
               <Avatar src={resolveUserAvatarWithCacheBust(achievement.owner.picture)}>
@@ -112,8 +134,8 @@ const AchievementSharePage: React.FC = () => {
               </Box>
               <ShareMenu
                 url={shareUrl}
-                title={achievement.title}
-                text={achievement.description}
+                title={title}
+                text={description}
                 imageUrl={achievement.owner.picture}
                 size="small"
               />

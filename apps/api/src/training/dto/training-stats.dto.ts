@@ -28,6 +28,7 @@ export class TrainingStatsDto {
   registrationDate: string;
   totalSessions: number;
   currentStreakWeeks: number;
+  bestStreakWeeks: number;
   shots: ShotPeriodStatsDto;
   metersTraveled: MetersPeriodStatsDto;
   avgShotsPerSession: number;

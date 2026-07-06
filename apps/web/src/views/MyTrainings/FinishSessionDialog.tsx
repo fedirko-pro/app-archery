@@ -11,7 +11,9 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { useAuth } from '../../contexts/auth-context';
 import { useLocalData, type LocalTrainingSession } from '../../contexts/local-data-context';
+import apiService from '../../services/api';
 import type { TrainingMood } from '../../utils/local-data-storage';
 import { TRAINING_MOODS } from '../../utils/training-session-utils';
 
@@ -26,6 +28,7 @@ const FinishSessionDialog: React.FC<FinishSessionDialogProps> = ({ open, session
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const { editTrainingSession } = useLocalData();
+  const { isAuthenticated } = useAuth();
 
   const [scoreTotal, setScoreTotal] = useState('');
   const [notes, setNotes] = useState('');
@@ -52,6 +55,11 @@ const FinishSessionDialog: React.FC<FinishSessionDialogProps> = ({ open, session
         notes: notes.trim() || undefined,
         mood: mood || undefined,
       });
+      if (isAuthenticated) {
+        void apiService.syncAchievements().catch(() => {
+          /* non-blocking */
+        });
+      }
       onClose();
     } finally {
       setSubmitting(false);

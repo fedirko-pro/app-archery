@@ -1,8 +1,4 @@
-import {
-  Injectable,
-  NotFoundException,
-  ForbiddenException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { EntityManager } from '@mikro-orm/core';
 import { TrainingSession } from './training-session.entity';
 import { CreateTrainingSessionDto } from './dto/create-training-session.dto';
@@ -24,10 +20,7 @@ import {
 export class TrainingService {
   constructor(private readonly em: EntityManager) {}
 
-  async create(
-    userId: string,
-    createDto: CreateTrainingSessionDto,
-  ): Promise<TrainingSession> {
+  async create(userId: string, createDto: CreateTrainingSessionDto): Promise<TrainingSession> {
     const user = this.em.getReference(User, userId);
     const session = new TrainingSession();
     Object.assign(session, createDto);
@@ -38,11 +31,7 @@ export class TrainingService {
   }
 
   async findAllForUser(userId: string): Promise<TrainingSession[]> {
-    return this.em.find(
-      TrainingSession,
-      { user: { id: userId } },
-      { orderBy: { date: 'DESC' } },
-    );
+    return this.em.find(TrainingSession, { user: { id: userId } }, { orderBy: { date: 'DESC' } });
   }
 
   async findOne(id: string, userId: string): Promise<TrainingSession> {
@@ -77,10 +66,7 @@ export class TrainingService {
     await this.em.removeAndFlush(session);
   }
 
-  async bulkSync(
-    userId: string,
-    sessions: CreateTrainingSessionDto[],
-  ): Promise<TrainingSession[]> {
+  async bulkSync(userId: string, sessions: CreateTrainingSessionDto[]): Promise<TrainingSession[]> {
     const user = this.em.getReference(User, userId);
     const created: TrainingSession[] = [];
 
@@ -112,8 +98,7 @@ export class TrainingService {
       applicant: { id: userId },
     });
 
-    const { shots, metersTraveled, distanceCount, targetTypeCount } =
-      aggregateSessions(sessions);
+    const { shots, metersTraveled, distanceCount, targetTypeCount } = aggregateSessions(sessions);
 
     const tournamentApplications = aggregateApplications(applications);
 
@@ -121,10 +106,10 @@ export class TrainingService {
       registrationDate: (user.createdAt ?? new Date()).toISOString(),
       totalSessions: sessions.length,
       currentStreakWeeks: calculateStreakWeeks(sessions),
+      bestStreakWeeks: calculateBestStreakWeeks(sessions),
       shots,
       metersTraveled,
-      avgShotsPerSession:
-        sessions.length > 0 ? Math.round(shots.total / sessions.length) : 0,
+      avgShotsPerSession: sessions.length > 0 ? Math.round(shots.total / sessions.length) : 0,
       mostUsedDistance: getMostFrequent(distanceCount),
       mostUsedTargetType: getMostFrequent(targetTypeCount),
       shotsByMonth: buildLast12MonthsData(sessions, 'shots'),
@@ -158,13 +143,8 @@ function aggregateSessions(sessions: TrainingSession[]): {
   for (const session of sessions) {
     const sessionDate = new Date(session.date + 'T00:00:00');
     const shots = session.shotsCount ?? 0;
-    const distanceNum = session.distance
-      ? Number.parseFloat(session.distance)
-      : 0;
-    const meters =
-      !Number.isNaN(distanceNum) && distanceNum > 0
-        ? shots * distanceNum * 2
-        : 0;
+    const distanceNum = session.distance ? Number.parseFloat(session.distance) : 0;
+    const meters = !Number.isNaN(distanceNum) && distanceNum > 0 ? shots * distanceNum * 2 : 0;
 
     totalShots += shots;
     totalMeters += meters;
@@ -200,22 +180,13 @@ function aggregateSessions(sessions: TrainingSession[]): {
   };
 }
 
-function aggregateApplications(
-  applications: TournamentApplication[],
-): ApplicationStatsForUserDto {
+function aggregateApplications(applications: TournamentApplication[]): ApplicationStatsForUserDto {
   return {
     total: applications.length,
-    approved: applications.filter(
-      (a) => a.status === ApplicationStatus.APPROVED,
-    ).length,
-    pending: applications.filter((a) => a.status === ApplicationStatus.PENDING)
-      .length,
-    rejected: applications.filter(
-      (a) => a.status === ApplicationStatus.REJECTED,
-    ).length,
-    withdrawn: applications.filter(
-      (a) => a.status === ApplicationStatus.WITHDRAWN,
-    ).length,
+    approved: applications.filter((a) => a.status === ApplicationStatus.APPROVED).length,
+    pending: applications.filter((a) => a.status === ApplicationStatus.PENDING).length,
+    rejected: applications.filter((a) => a.status === ApplicationStatus.REJECTED).length,
+    withdrawn: applications.filter((a) => a.status === ApplicationStatus.WITHDRAWN).length,
   };
 }
 
@@ -235,9 +206,7 @@ function incrementCount(map: Record<string, number>, key?: string): void {
 function getMostFrequent(countMap: Record<string, number>): string | null {
   const entries = Object.entries(countMap);
   if (entries.length === 0) return null;
-  const sorted = [...entries].sort(
-    ([, a]: [string, number], [, b]: [string, number]) => b - a,
-  );
+  const sorted = [...entries].sort(([, a]: [string, number], [, b]: [string, number]) => b - a);
   return sorted[0][0];
 }
 
@@ -248,12 +217,7 @@ function getIsoWeekString(date: Date): string {
   const week1 = new Date(d.getFullYear(), 0, 4);
   const weekNum =
     1 +
-    Math.round(
-      ((d.getTime() - week1.getTime()) / 86_400_000 -
-        3 +
-        ((week1.getDay() + 6) % 7)) /
-        7,
-    );
+    Math.round(((d.getTime() - week1.getTime()) / 86_400_000 - 3 + ((week1.getDay() + 6) % 7)) / 7);
   return `${d.getFullYear()}-${weekNum.toString().padStart(2, '0')}`;
 }
 
@@ -277,6 +241,47 @@ function calculateStreakWeeks(sessions: TrainingSession[]): number {
     }
   }
   return streak;
+}
+
+function calculateBestStreakWeeks(sessions: TrainingSession[]): number {
+  if (sessions.length === 0) return 0;
+
+  const weekSet = new Set<string>();
+  for (const s of sessions) {
+    weekSet.add(getIsoWeekString(new Date(s.date + 'T00:00:00')));
+  }
+
+  const sortedWeeks = [...weekSet].sort();
+  if (sortedWeeks.length === 0) return 0;
+
+  let best = 1;
+  let current = 1;
+
+  for (let i = 1; i < sortedWeeks.length; i++) {
+    const prevDate = isoWeekToDate(sortedWeeks[i - 1]);
+    const currDate = isoWeekToDate(sortedWeeks[i]);
+    const diffDays = Math.round((currDate.getTime() - prevDate.getTime()) / 86_400_000);
+    if (diffDays === 7) {
+      current++;
+      best = Math.max(best, current);
+    } else {
+      current = 1;
+    }
+  }
+
+  return best;
+}
+
+function isoWeekToDate(isoWeek: string): Date {
+  const [yearStr, weekStr] = isoWeek.split('-');
+  const year = Number.parseInt(yearStr, 10);
+  const week = Number.parseInt(weekStr, 10);
+  const jan4 = new Date(year, 0, 4);
+  const dayOfWeek = jan4.getDay() || 7;
+  const monday = new Date(jan4);
+  monday.setDate(jan4.getDate() - dayOfWeek + 1 + (week - 1) * 7);
+  monday.setHours(0, 0, 0, 0);
+  return monday;
 }
 
 function buildLast12MonthsData(

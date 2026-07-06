@@ -29,6 +29,11 @@ describe('getArcherRouteFromPath', () => {
     expect(result).toEqual({ userId: 'user123', achievementId: 'ach456' });
   });
 
+  it('returns userId and progress for /archers/{userId}/progress', () => {
+    const result = getArcherRouteFromPath(['archers', 'user123', 'progress']);
+    expect(result).toEqual({ userId: 'user123', progress: true });
+  });
+
   it('returns null for /archers/{userId}/other/{id} (non-achievements)', () => {
     expect(getArcherRouteFromPath(['archers', 'user123', 'other', 'something'])).toBeNull();
   });

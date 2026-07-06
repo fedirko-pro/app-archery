@@ -11,12 +11,14 @@ import { User } from '../user/entity/user.entity';
 import { Division } from '../division/division.entity';
 import { BowCategory } from '../bow-category/bow-category.entity';
 import { EmailService } from '../email/email.service';
+import { AchievementsService } from '../user/achievements.service';
 
 @Injectable()
 export class TournamentApplicationService {
   constructor(
     private readonly em: EntityManager,
     private readonly emailService: EmailService,
+    private readonly achievementsService: AchievementsService,
   ) {}
 
   /** Resolve divisionId from division (id) or divisionId. */
@@ -276,6 +278,19 @@ export class TournamentApplicationService {
     application.updatedAt = new Date();
 
     await this.em.persistAndFlush(application);
+
+    if (status === ApplicationStatus.APPROVED) {
+      const applicantId = application.applicant.id;
+      void this.achievementsService
+        .grant(applicantId, 'competitor', {
+          tournamentId: application.tournament.id,
+          applicationId: application.id,
+        })
+        .then(() => this.achievementsService.syncComputed(applicantId))
+        .catch(() => {
+          /* non-blocking */
+        });
+    }
 
     // ✅ Send email notification
     try {

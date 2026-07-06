@@ -1,42 +1,45 @@
+import type { AchievementRarity } from '@sokil/shared-types';
+
 /**
  * Achievement and rarity color palette.
  * These are decorative/gamification colors — intentionally distinct from brand tokens.
- * Centralized here so changes propagate to achievements.tsx without hunting for hex literals.
  */
-export const ACHIEVEMENT_COLORS: Record<string, { color: string; bgGradient: string }> = {
-  'first-bullseye': {
-    color: '#FFD700',
-    bgGradient: 'linear-gradient(135deg, #FFD700 0%, #FFA500 100%)',
+export const RARITY_COLORS: Record<
+  AchievementRarity,
+  { color: string; bgGradient: string; glow: string }
+> = {
+  common: {
+    color: '#9E9E9E',
+    bgGradient: 'linear-gradient(135deg, #BDBDBD 0%, #9E9E9E 100%)',
+    glow: 'rgba(158, 158, 158, 0.4)',
   },
-  'perfect-round': {
-    color: '#9C27B0',
-    bgGradient: 'linear-gradient(135deg, #9C27B0 0%, #E040FB 100%)',
-  },
-  'tournament-winner': {
-    color: '#F44336',
-    bgGradient: 'linear-gradient(135deg, #F44336 0%, #FF9800 100%)',
-  },
-  'consistent-archer': {
+  rare: {
     color: '#2196F3',
     bgGradient: 'linear-gradient(135deg, #2196F3 0%, #03A9F4 100%)',
+    glow: 'rgba(33, 150, 243, 0.45)',
   },
-  'long-distance': {
-    color: '#4CAF50',
-    bgGradient: 'linear-gradient(135deg, #4CAF50 0%, #8BC34A 100%)',
+  epic: {
+    color: '#9C27B0',
+    bgGradient: 'linear-gradient(135deg, #9C27B0 0%, #E040FB 100%)',
+    glow: 'rgba(156, 39, 176, 0.45)',
   },
-  'team-spirit': {
-    color: '#00BCD4',
-    bgGradient: 'linear-gradient(135deg, #00BCD4 0%, #26C6DA 100%)',
-  },
-  'precision-master': {
-    color: '#673AB7',
-    bgGradient: 'linear-gradient(135deg, #673AB7 0%, #9575CD 100%)',
+  legendary: {
+    color: '#FFD700',
+    bgGradient: 'linear-gradient(135deg, #FFD700 0%, #FF9800 100%)',
+    glow: 'rgba(255, 215, 0, 0.5)',
   },
 };
 
-export const RARITY_ICON_COLORS: Record<string, string> = {
+export const RARITY_ICON_COLORS: Record<AchievementRarity, string> = {
   legendary: '#FFD700',
   epic: '#9C27B0',
   rare: '#2196F3',
   common: '#9E9E9E',
 };
+
+export function getRarityStyle(rarity: AchievementRarity) {
+  return RARITY_COLORS[rarity] ?? RARITY_COLORS.common;
+}
+
+/** @deprecated legacy demo ids — use getRarityStyle instead */
+export const ACHIEVEMENT_COLORS: Record<string, { color: string; bgGradient: string }> = {};
