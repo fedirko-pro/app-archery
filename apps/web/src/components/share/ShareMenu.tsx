@@ -7,7 +7,6 @@ import {
   IosShare,
   LinkedIn,
   Share,
-  Telegram,
   WhatsApp,
   X,
 } from '@mui/icons-material';
@@ -156,12 +155,6 @@ export default function ShareMenu({
             <WhatsApp fontSize="small" />
           </ListItemIcon>
           <ListItemText>{t('pages.tournaments.shareWhatsApp', 'WhatsApp')}</ListItemText>
-        </MenuItem>
-        <MenuItem onClick={() => openExternal(links.telegram)}>
-          <ListItemIcon>
-            <Telegram fontSize="small" />
-          </ListItemIcon>
-          <ListItemText>{t('pages.tournaments.shareTelegram', 'Telegram')}</ListItemText>
         </MenuItem>
         <MenuItem onClick={() => openExternal(links.facebook)}>
           <ListItemIcon>

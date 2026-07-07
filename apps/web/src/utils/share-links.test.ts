@@ -9,26 +9,13 @@ describe('buildShareLinks', () => {
 
   it('builds all platform links', () => {
     const links = buildShareLinks(url, title, text);
-    expect(Object.keys(links)).toEqual([
-      'whatsapp',
-      'telegram',
-      'facebook',
-      'twitter',
-      'linkedin',
-      'email',
-    ]);
+    expect(Object.keys(links)).toEqual(['whatsapp', 'facebook', 'twitter', 'linkedin', 'email']);
   });
 
   it('builds correct whatsapp link', () => {
     const links = buildShareLinks(url, title, text);
     expect(links.whatsapp).toContain('wa.me');
     expect(links.whatsapp).toContain(encodeURIComponent(url));
-  });
-
-  it('builds correct telegram link', () => {
-    const links = buildShareLinks(url, title, text);
-    expect(links.telegram).toContain('t.me/share/url');
-    expect(links.telegram).toContain(`url=${encodeURIComponent(url)}`);
   });
 
   it('builds correct facebook link', () => {

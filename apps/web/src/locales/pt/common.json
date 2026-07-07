@@ -241,7 +241,6 @@
       "shareNative": "Compartilhar…",
       "shareCopyLink": "Copiar link",
       "shareWhatsApp": "WhatsApp",
-      "shareTelegram": "Telegram",
       "shareFacebook": "Facebook",
       "shareX": "X",
       "shareLinkedIn": "LinkedIn",
@@ -753,6 +752,11 @@
       "subtitle": "Ajude-nos a melhorar",
       "leaveFeedback": "Deixar feedback",
       "dismiss": "Agora não"
+    },
+    "lastAchievement": {
+      "title": "Última conquista",
+      "earnedOn": "Conquistada em {{date}}",
+      "viewAll": "Ver todas"
     }
   },
   "onboarding": {

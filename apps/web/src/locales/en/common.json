@@ -337,7 +337,6 @@
       "shareNative": "Share…",
       "shareCopyLink": "Copy link",
       "shareWhatsApp": "WhatsApp",
-      "shareTelegram": "Telegram",
       "shareFacebook": "Facebook",
       "shareX": "X",
       "shareLinkedIn": "LinkedIn",
@@ -1031,6 +1030,11 @@
       "subtitle": "Please help us improve",
       "leaveFeedback": "Leave feedback",
       "dismiss": "Not now"
+    },
+    "lastAchievement": {
+      "title": "Last achievement",
+      "earnedOn": "Earned on {{date}}",
+      "viewAll": "View all"
     }
   },
   "fieldGuide": {

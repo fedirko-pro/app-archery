@@ -218,7 +218,6 @@
       "shareNative": "Compartir…",
       "shareCopyLink": "Copiar enlace",
       "shareWhatsApp": "WhatsApp",
-      "shareTelegram": "Telegram",
       "shareFacebook": "Facebook",
       "shareX": "X",
       "shareLinkedIn": "LinkedIn",
@@ -724,6 +723,11 @@
       "subtitle": "Ayúdanos a mejorar",
       "leaveFeedback": "Dejar comentario",
       "dismiss": "Ahora no"
+    },
+    "lastAchievement": {
+      "title": "Último logro",
+      "earnedOn": "Obtenido el {{date}}",
+      "viewAll": "Ver todos"
     }
   },
   "onboarding": {

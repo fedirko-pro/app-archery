@@ -8,9 +8,11 @@ loadEnvConfig(monorepoRoot);
 const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3000';
 const proxyTarget = apiBase.startsWith('http') ? apiBase : 'http://localhost:3000';
 
+const isWindows = process.platform === 'win32';
+
 const nextConfig: NextConfig = {
-  output: 'standalone',
-  outputFileTracingRoot: monorepoRoot,
+  output: isWindows ? undefined : 'standalone',
+  outputFileTracingRoot: isWindows ? undefined : monorepoRoot,
   reactStrictMode: true,
   env: {
     NEXT_PUBLIC_API_BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL ?? '',

@@ -1,11 +1,21 @@
 import './AvatarUploader.scss';
 
-import { Box, Button, Card, CardContent, CardHeader, Slider, Typography, CircularProgress } from '@mui/material';
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  Slider,
+  Typography,
+  CircularProgress,
+} from '@mui/material';
 import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useNotification } from '../../contexts/error-feedback-context';
 import { apiService } from '../../services/api';
+import { isExternalPlaceholderUrl } from '../../utils/placeholder-images';
 
 interface AvatarUploaderProps {
   value?: string;
@@ -47,7 +57,7 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({
   }, [value]);
 
   useEffect(() => {
-    if (!imageSrc) return;
+    if (!imageSrc || isExternalPlaceholderUrl(imageSrc)) return;
     const img = new Image();
     img.crossOrigin = 'anonymous';
     img.onload = () => {
@@ -178,9 +188,19 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({
       const cropWidth = Math.round(sSize);
       const cropHeight = Math.round(sSize);
 
-      if (isNaN(cropX) || isNaN(cropY) || isNaN(cropWidth) || isNaN(cropHeight) ||
-        cropX < 0 || cropY < 0 || cropWidth <= 0 || cropHeight <= 0) {
-        setError(t('profile.invalidCrop', 'Invalid crop parameters. Please try adjusting the image.'));
+      if (
+        isNaN(cropX) ||
+        isNaN(cropY) ||
+        isNaN(cropWidth) ||
+        isNaN(cropHeight) ||
+        cropX < 0 ||
+        cropY < 0 ||
+        cropWidth <= 0 ||
+        cropHeight <= 0
+      ) {
+        setError(
+          t('profile.invalidCrop', 'Invalid crop parameters. Please try adjusting the image.'),
+        );
         setUploading(false);
         return;
       }
@@ -192,18 +212,14 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({
         return;
       }
 
-      const result = await apiService.uploadImage(
-        currentFileRef.current,
-        'avatar',
-        {
-          entityId: userId,
-          cropX,
-          cropY,
-          cropWidth,
-          cropHeight,
-          quality: 85,
-        }
-      );
+      const result = await apiService.uploadImage(currentFileRef.current, 'avatar', {
+        entityId: userId,
+        cropX,
+        cropY,
+        cropWidth,
+        cropHeight,
+        quality: 85,
+      });
 
       // Backend now returns full URL, so we can use it directly
       onChange(result.url);
@@ -232,10 +248,21 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({
     <Card className="avatar-uploader">
       <CardHeader
         title={t('profile.avatar', 'Avatar')}
-        subheader={t('profile.avatarSubheader', 'Select an image, then drag to reposition (PNG, JPG up to 3MB)')}
+        subheader={t(
+          'profile.avatarSubheader',
+          'Select an image, then drag to reposition (PNG, JPG up to 3MB)',
+        )}
       />
       <CardContent>
-        <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap' }}>
+        <Box
+          sx={{
+            display: 'flex',
+            gap: 2,
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexWrap: 'wrap',
+          }}
+        >
           <div
             ref={containerRef}
             onMouseDown={handleMouseDown}
@@ -255,7 +282,7 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({
                 draggable={false}
                 className="avatar-uploader__image"
                 style={{
-                  transform: `translate(${offset.x}px, ${offset.y}px) scale(${Math.max(size / (naturalSize?.w || 1), size / (naturalSize?.h || 1)) * zoom})`
+                  transform: `translate(${offset.x}px, ${offset.y}px) scale(${Math.max(size / (naturalSize?.w || 1), size / (naturalSize?.h || 1)) * zoom})`,
                 }}
               />
             ) : (
@@ -287,8 +314,14 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({
               ref={fileInputRef}
               className="avatar-uploader__file-input"
             />
-            <Button variant="outlined" onClick={() => fileInputRef.current?.click()} disabled={uploading}>
-              {imageEl ? t('profile.changePhoto', 'Change Photo') : t('profile.uploadPhoto', 'Upload Photo')}
+            <Button
+              variant="outlined"
+              onClick={() => fileInputRef.current?.click()}
+              disabled={uploading}
+            >
+              {imageEl
+                ? t('profile.changePhoto', 'Change Photo')
+                : t('profile.uploadPhoto', 'Upload Photo')}
             </Button>
             <Button
               variant="contained"
@@ -296,13 +329,17 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({
               disabled={!imageEl || uploading}
               startIcon={uploading ? <CircularProgress size={16} /> : null}
             >
-              {uploading ? t('pages.tournaments.uploading', 'Uploading...') : t('profile.cropAndSave', 'Crop and Save')}
+              {uploading
+                ? t('pages.tournaments.uploading', 'Uploading...')
+                : t('profile.cropAndSave', 'Crop and Save')}
             </Button>
             <Button color="error" onClick={handleRemove} disabled={!imageEl || uploading}>
               {t('profile.removePhoto', 'Remove Photo')}
             </Button>
             {error && (
-              <Typography variant="caption" color="error">{error}</Typography>
+              <Typography variant="caption" color="error">
+                {error}
+              </Typography>
             )}
           </Box>
         </Box>
@@ -312,5 +349,3 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({
 };
 
 export default AvatarUploader;
-
-

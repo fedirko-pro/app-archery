@@ -234,7 +234,6 @@
       "shareNative": "Поділитися…",
       "shareCopyLink": "Копіювати посилання",
       "shareWhatsApp": "WhatsApp",
-      "shareTelegram": "Telegram",
       "shareFacebook": "Facebook",
       "shareX": "X",
       "shareLinkedIn": "LinkedIn",
@@ -879,6 +878,11 @@
       "subtitle": "Допоможіть нам стати кращими",
       "leaveFeedback": "Залишити відгук",
       "dismiss": "Не зараз"
+    },
+    "lastAchievement": {
+      "title": "Останнє досягнення",
+      "earnedOn": "Отримано {{date}}",
+      "viewAll": "Переглянути всі"
     }
   },
   "fieldGuide": {

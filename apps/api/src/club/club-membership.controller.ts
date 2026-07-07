@@ -25,6 +25,12 @@ export class ClubMembershipController {
     private readonly invitationService: ClubInvitationService,
   ) {}
 
+  @Get('my-memberships')
+  @UseGuards(JwtAuthGuard)
+  findMyMemberships(@Request() req: { user: RequestUser }) {
+    return this.membershipService.findUserMemberships(req.user.sub);
+  }
+
   @Get(':id/members')
   @UseGuards(JwtAuthGuard)
   findMembers(@Param('id') id: string) {

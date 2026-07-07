@@ -20,11 +20,13 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
+import AchievementMedallion from '../../components/achievements/AchievementMedallion';
 import LocalDataBanner from '../../components/LocalDataBanner/LocalDataBanner';
 import LocalSyncChip from '../../components/LocalSyncChip/LocalSyncChip';
 import StatCard from '../../components/StatCard/StatCard';
 import { useAuth } from '../../contexts/auth-context';
 import { useLocalData, type LocalTrainingSession } from '../../contexts/local-data-context';
+import { useAchievements } from '../../hooks/use-achievements';
 import apiService from '../../services/api';
 import type {
   ApplicationStatus,
@@ -95,6 +97,18 @@ const HomePage: React.FC = () => {
       equipmentSets.length === 0 && !isBowSetupPromptDismissed() && !user?.onboardingCompletedAt,
     [equipmentSets.length, bowPromptDismissTick, user?.onboardingCompletedAt],
   );
+
+  const { earned } = useAchievements();
+
+  const lastAchievement = useMemo(() => {
+    if (earned.length === 0) return null;
+    return (
+      earned
+        .filter((a) => a.earnedAt)
+        .sort((a, b) => new Date(b.earnedAt!).getTime() - new Date(a.earnedAt!).getTime())[0] ??
+      null
+    );
+  }, [earned]);
 
   const stats = useMemo(
     () => computeLocalStats(trainingSessions, equipmentSets),
@@ -433,6 +447,67 @@ const HomePage: React.FC = () => {
           </Card>
         </Grid>
       </Grid>
+
+      {lastAchievement && (
+        <Box
+          sx={{
+            mt: 2,
+            width: { xs: '100%', md: '50%' },
+          }}
+        >
+          <Card
+            variant="outlined"
+            component={Link}
+            to={`/${lang}/achievements`}
+            sx={{
+              display: 'block',
+              textDecoration: 'none',
+              color: 'inherit',
+              transition: 'border-color 0.2s, box-shadow 0.2s',
+              '&:hover': {
+                textDecoration: 'none',
+                borderColor: 'primary.main',
+                boxShadow: 2,
+              },
+            }}
+          >
+            <CardContent sx={{ py: 2, '&:last-child': { pb: 2 } }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                <AchievementMedallion
+                  icon={lastAchievement.icon}
+                  rarity={lastAchievement.rarity as 'common' | 'rare' | 'epic' | 'legendary'}
+                  size={48}
+                  showGlow
+                />
+                <Box sx={{ flex: 1, minWidth: 0 }}>
+                  <Typography
+                    variant="caption"
+                    color="text.secondary"
+                    fontWeight={600}
+                    textTransform="uppercase"
+                  >
+                    {t('dashboard.lastAchievement.title')}
+                  </Typography>
+                  <Typography variant="subtitle2" fontWeight={600} noWrap>
+                    {t(lastAchievement.titleKey)}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary" sx={{ mt: 0.25 }}>
+                    {t(lastAchievement.descriptionKey)}
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary">
+                    {t('dashboard.lastAchievement.earnedOn', {
+                      date: format(parseISO(lastAchievement.earnedAt!), 'dd MMM yyyy'),
+                    })}
+                  </Typography>
+                </Box>
+                <Typography variant="caption" color="primary" sx={{ flexShrink: 0 }}>
+                  {t('dashboard.lastAchievement.viewAll')}
+                </Typography>
+              </Box>
+            </CardContent>
+          </Card>
+        </Box>
+      )}
 
       {showMonthlySummary && priorMonthSummary && (
         <Paper

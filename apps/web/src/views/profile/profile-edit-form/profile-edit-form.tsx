@@ -109,6 +109,14 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
     loadDivisions();
   }, []);
 
+  const visibleClubs = React.useMemo(() => {
+    const list = clubs.filter((club): club is ClubDto & { id: string } => Boolean(club.id));
+    if (profileData.clubId && !list.some((c) => c.id === profileData.clubId)) {
+      return [{ id: profileData.clubId, name: profileData.clubId } as ClubDto, ...list];
+    }
+    return list;
+  }, [clubs, profileData.clubId]);
+
   return (
     <div className="profile-edit">
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
@@ -287,13 +295,11 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
           <MenuItem value="">
             <em>{t('forms.noClub', 'No Club')}</em>
           </MenuItem>
-          {clubs
-            .filter((club): club is ClubDto & { id: string } => Boolean(club.id))
-            .map((club) => (
-              <MenuItem key={club.id} value={club.id}>
-                {club.name} {club.location && `(${club.location})`}
-              </MenuItem>
-            ))}
+          {visibleClubs.map((club) => (
+            <MenuItem key={club.id} value={club.id}>
+              {club.name} {club.location && `(${club.location})`}
+            </MenuItem>
+          ))}
         </TextField>
 
         <Autocomplete

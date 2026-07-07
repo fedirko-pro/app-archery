@@ -2,7 +2,6 @@ import { buildShareBody, buildShareMessage } from './share-message';
 
 export interface ShareLinks {
   whatsapp: string;
-  telegram: string;
   facebook: string;
   twitter: string;
   linkedin: string;
@@ -20,7 +19,6 @@ export function buildShareLinks(url: string, title: string, text?: string): Shar
 
   return {
     whatsapp: `https://wa.me/?text=${encodedMessage}`,
-    telegram: `https://t.me/share/url?url=${encodedUrl}&text=${encodedBody}`,
     facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
     twitter: `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedBody}`,
     linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
