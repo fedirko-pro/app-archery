@@ -273,7 +273,7 @@
       "saveError": "Failed to save club. Please try again."
     },
     "converter": {
-      "title": "Converter of most common archery measures",
+      "title": "Archery converter",
       "description": "Convert between inches/cm, pounds/kg, grains/grams, yards/meters"
     },
     "about": {

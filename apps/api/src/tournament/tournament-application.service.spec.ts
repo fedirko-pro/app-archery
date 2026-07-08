@@ -4,13 +4,24 @@ import { EntityManager } from '@mikro-orm/core';
 import { TournamentApplicationService } from './tournament-application.service';
 import { ApplicationStatus } from './tournament-application.entity';
 import { EmailService } from '../email/email.service';
+import { AchievementsService } from '../user/achievements.service';
 
 describe('TournamentApplicationService', () => {
   let service: TournamentApplicationService;
   let em: jest.Mocked<EntityManager>;
 
-  const mockTournament = { id: 'tournament-1', title: 'Test Tournament', allowMultipleApplications: true };
-  const mockUser = { id: 'user-1', email: 'user@example.com', firstName: 'John', lastName: 'Doe', appLanguage: 'en' };
+  const mockTournament = {
+    id: 'tournament-1',
+    title: 'Test Tournament',
+    allowMultipleApplications: true,
+  };
+  const mockUser = {
+    id: 'user-1',
+    email: 'user@example.com',
+    firstName: 'John',
+    lastName: 'Doe',
+    appLanguage: 'en',
+  };
 
   const mockEm = {
     findOne: jest.fn(),
@@ -36,6 +47,13 @@ describe('TournamentApplicationService', () => {
             sendApplicationSubmittedEmail: jest.fn().mockResolvedValue(undefined),
           },
         },
+        {
+          provide: AchievementsService,
+          useValue: {
+            grant: jest.fn().mockResolvedValue(undefined),
+            syncComputed: jest.fn().mockResolvedValue(undefined),
+          },
+        },
       ],
     }).compile();
 
@@ -53,16 +71,15 @@ describe('TournamentApplicationService', () => {
       const mockDivision = { id: 'division-1', name: 'Recurve' };
 
       // resolveBowCategoryId called first: looks up by { code: 'R' }
-      em.findOne
-        .mockResolvedValueOnce(mockCategory as any);
+      em.findOne.mockResolvedValueOnce(mockCategory as any);
       // then tournament, applicant, existing apps, division
       em.findOne
         .mockResolvedValueOnce(mockTournament as any)
         .mockResolvedValueOnce(mockUser as any);
       em.find.mockResolvedValue([]);
       em.findOne
-        .mockResolvedValueOnce(mockDivision as any)  // division
-        .mockResolvedValueOnce(mockCategory as any);  // bow category by ID
+        .mockResolvedValueOnce(mockDivision as any) // division
+        .mockResolvedValueOnce(mockCategory as any); // bow category by ID
 
       const mockApp = { id: 'app-1', tournament: mockTournament, applicant: mockUser };
       em.create.mockReturnValue(mockApp as any);
@@ -91,7 +108,10 @@ describe('TournamentApplicationService', () => {
     it('should throw ConflictException for duplicate application when not allowed', async () => {
       // resolveBowCategoryId: no category → returns undefined, no query
       // tournament lookup → returns tournament with allowMultipleApplications: false
-      em.findOne.mockResolvedValueOnce({ ...mockTournament, allowMultipleApplications: false } as any);
+      em.findOne.mockResolvedValueOnce({
+        ...mockTournament,
+        allowMultipleApplications: false,
+      } as any);
       // applicant lookup → returns user
       em.findOne.mockResolvedValueOnce(mockUser as any);
       // existing applications → returns 1
@@ -135,7 +155,12 @@ describe('TournamentApplicationService', () => {
       };
       em.findOne.mockResolvedValue(mockApp as any);
 
-      const result = await service.updateStatus('app-1', ApplicationStatus.APPROVED, undefined, 'admin-1');
+      const result = await service.updateStatus(
+        'app-1',
+        ApplicationStatus.APPROVED,
+        undefined,
+        'admin-1',
+      );
       expect(result.status).toBe(ApplicationStatus.APPROVED);
       expect(em.persistAndFlush).toHaveBeenCalled();
     });
@@ -149,7 +174,12 @@ describe('TournamentApplicationService', () => {
       };
       em.findOne.mockResolvedValue(mockApp as any);
 
-      const result = await service.updateStatus('app-1', ApplicationStatus.REJECTED, 'Full', 'admin-1');
+      const result = await service.updateStatus(
+        'app-1',
+        ApplicationStatus.REJECTED,
+        'Full',
+        'admin-1',
+      );
       expect(result.status).toBe(ApplicationStatus.REJECTED);
       expect(result.rejectionReason).toBe('Full');
     });

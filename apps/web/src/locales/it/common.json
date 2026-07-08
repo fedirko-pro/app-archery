@@ -151,7 +151,7 @@
       "deleteError": "Errore nell'eliminazione della categoria"
     },
     "converter": {
-      "title": "Convertitore delle misure di tiro con l'arco più comuni",
+      "title": "Convertitore per tiro con l'arco",
       "description": "Convertire tra pollici/cm, libbre/kg, grani/grammi, iarde/metri"
     },
     "divisions": {

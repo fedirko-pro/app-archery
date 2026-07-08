@@ -151,7 +151,7 @@
       "deleteError": "Falha ao excluir a categoria"
     },
     "converter": {
-      "title": "Conversor das medidas mais comuns de arco",
+      "title": "Conversor de tiro com arco",
       "description": "Converter entre polegadas/cm, libras/kg, grãos/gramas, jardas/metros"
     },
     "divisions": {

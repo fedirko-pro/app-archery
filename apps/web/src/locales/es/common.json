@@ -150,7 +150,7 @@
       "deleteError": "Error al eliminar la categoría"
     },
     "converter": {
-      "title": "Conversor de las medidas más comunes en arquería",
+      "title": "Conversor de tiro con arco",
       "description": "Convertir entre pulgadas/cm, libras/kg, granos/gramos, yardas/metros"
     },
     "divisions": {
