@@ -1,6 +1,6 @@
-export type AppLanguage = 'pt' | 'en' | 'it' | 'ua' | 'es';
+export type AppLanguage = 'pt' | 'en' | 'it' | 'ua' | 'es' | 'de';
 
-export const SUPPORTED_APP_LANGS: AppLanguage[] = ['pt', 'en', 'it', 'ua', 'es'];
+export const SUPPORTED_APP_LANGS: AppLanguage[] = ['pt', 'en', 'it', 'ua', 'es', 'de'];
 
 const APP_TO_I18N_MAP: Record<AppLanguage, string> = {
   pt: 'pt',
@@ -8,6 +8,7 @@ const APP_TO_I18N_MAP: Record<AppLanguage, string> = {
   it: 'it',
   ua: 'uk', // BCP-47 code for Ukrainian is "uk"
   es: 'es',
+  de: 'de',
 };
 
 const I18N_TO_APP_MAP: Record<string, AppLanguage> = {
@@ -21,6 +22,8 @@ const I18N_TO_APP_MAP: Record<string, AppLanguage> = {
   'uk-UA': 'ua',
   es: 'es',
   'es-ES': 'es',
+  de: 'de',
+  'de-DE': 'de',
 };
 
 export function normalizeAppLang(lang: string | undefined | null): AppLanguage {
@@ -107,7 +110,7 @@ export function pickLocalizedDescription(
   if (typeof snakeCaseDirect === 'string' && snakeCaseDirect.trim()) return snakeCaseDirect;
 
   // fallback order: pt -> en -> it -> es -> uk -> plain description
-  const fallbacks: Array<AppLanguage | 'uk'> = ['pt', 'en', 'it', 'es', 'ua', 'uk'];
+  const fallbacks: Array<AppLanguage | 'uk'> = ['pt', 'en', 'it', 'es', 'de', 'ua', 'uk'];
   for (const fb of fallbacks) {
     const fbKey = fb === 'ua' ? 'uk' : fb;
 

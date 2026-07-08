@@ -1,10 +1,4 @@
-import {
-  Entity,
-  PrimaryKey,
-  Property,
-  OneToMany,
-  Collection,
-} from '@mikro-orm/core';
+import { Entity, PrimaryKey, Property, OneToMany, Collection } from '@mikro-orm/core';
 import { v4 as uuid } from 'uuid';
 import { Exclude } from 'class-transformer';
 import { Division } from '../division/division.entity';
@@ -38,6 +32,9 @@ export class Rule {
 
   @Property({ nullable: true, columnType: 'text' })
   descriptionEs?: string;
+
+  @Property({ nullable: true, columnType: 'text' })
+  descriptionDe?: string;
 
   @Property({ nullable: true })
   link?: string; // Official website link

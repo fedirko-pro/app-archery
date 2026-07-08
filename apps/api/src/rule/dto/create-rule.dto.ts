@@ -33,6 +33,10 @@ export class CreateRuleDto {
   @IsOptional()
   descriptionEs?: string;
 
+  @IsString()
+  @IsOptional()
+  descriptionDe?: string;
+
   @IsUrl()
   @IsOptional()
   link?: string;

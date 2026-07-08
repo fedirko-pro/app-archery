@@ -34,6 +34,7 @@ const CategoryEdit: React.FC = () => {
     descriptionIt: '',
     descriptionUk: '',
     descriptionEs: '',
+    descriptionDe: '',
     ruleReference: '',
     ruleCitation: '',
     ruleId: '',
@@ -72,6 +73,7 @@ const CategoryEdit: React.FC = () => {
             descriptionIt: data.descriptionIt || '',
             descriptionUk: data.descriptionUk || '',
             descriptionEs: data.descriptionEs || '',
+            descriptionDe: data.descriptionDe || '',
             ruleReference: data.ruleReference || '',
             ruleCitation: data.ruleCitation || '',
             ruleId: data.rule?.id || '',
@@ -115,6 +117,7 @@ const CategoryEdit: React.FC = () => {
           descriptionIt: form.descriptionIt || undefined,
           descriptionUk: form.descriptionUk || undefined,
           descriptionEs: form.descriptionEs || undefined,
+          descriptionDe: form.descriptionDe || undefined,
           ruleReference: form.ruleReference || undefined,
           ruleCitation: form.ruleCitation || undefined,
           ruleId: form.ruleId || undefined,
@@ -130,6 +133,7 @@ const CategoryEdit: React.FC = () => {
           descriptionIt: form.descriptionIt || undefined,
           descriptionUk: form.descriptionUk || undefined,
           descriptionEs: form.descriptionEs || undefined,
+          descriptionDe: form.descriptionDe || undefined,
           ruleReference: form.ruleReference || undefined,
           ruleCitation: form.ruleCitation || undefined,
           ruleId: form.ruleId,
@@ -224,6 +228,14 @@ const CategoryEdit: React.FC = () => {
             label="Description (ES)"
             value={form.descriptionEs || ''}
             onChange={(e) => setForm({ ...form, descriptionEs: e.target.value })}
+            multiline
+            minRows={3}
+            disabled={loading}
+          />
+          <TextField
+            label="Description (DE)"
+            value={form.descriptionDe || ''}
+            onChange={(e) => setForm({ ...form, descriptionDe: e.target.value })}
             multiline
             minRows={3}
             disabled={loading}

@@ -1,0 +1,1046 @@
+{
+  "footer": {
+    "about": "Über die App"
+  },
+  "menu": {
+    "admin": "Admin",
+    "organizerTools": "Organisatoren-Werkzeuge",
+    "myProfile": "Profil ({{name}})"
+  },
+  "nav": {
+    "tournaments": "Turniere",
+    "clubs": "Vereine",
+    "myApplications": "Bewerbungen",
+    "myAchievements": "Erfolge",
+    "myPayments": "Zahlungen (Demo)",
+    "myTrainings": "Trainings",
+    "myEquipment": "Ausrüstung",
+    "myStatistics": "Statistiken",
+    "converter": "Konverter",
+    "categories": "Kategorien",
+    "rules": "Regeln",
+    "about": "Über die App",
+    "users": "Benutzer",
+    "userApplications": "Benutzerbewerbungen",
+    "accessControl": "Zugriffskontrolle",
+    "divisions": "Altersgruppen",
+    "scoringDemo": "Punktekarte (Demo)",
+    "glossary": "Glossar",
+    "fieldGuide": "Feldführer"
+  },
+  "accessControl": {
+    "title": "Zugriffskontrolle",
+    "description": "Benutzerrollen verwalten. Nur General-Admins können auf diese Seite zugreifen und Rollen ändern.",
+    "descriptionEdit": "Berechtigungen pro Rolle verwalten. Nur General-Admin kann bearbeiten. Andere Admins können nur sehen.",
+    "descriptionView": "Berechtigungen pro Rolle anzeigen. Nur General-Admin kann bearbeiten.",
+    "name": "Name",
+    "email": "E-Mail",
+    "role": "Rolle",
+    "fetchError": "Benutzer konnten nicht geladen werden",
+    "updateSuccess": "Rolle erfolgreich aktualisiert",
+    "updateError": "Rolle konnte nicht aktualisiert werden",
+    "roleUser": "Benutzer",
+    "roleClubAdmin": "Vereinsadmin",
+    "roleFederationAdmin": "Verbandsadmin",
+    "roleGeneralAdmin": "General-Admin",
+    "rolesAndPermissions": "Rollen & Berechtigungen",
+    "permission": "Berechtigung",
+    "assignRole": "Rolle an Benutzer zuweisen",
+    "permCreateEditTournament": "Turniere erstellen / bearbeiten",
+    "permDeleteTournament": "Turniere löschen",
+    "permCreateEditUser": "Benutzer erstellen / bearbeiten",
+    "permDeleteUser": "Benutzer löschen",
+    "permViewApplications": "Turnierbewerbungen anzeigen",
+    "permEditApplications": "Bewerbungen bearbeiten / genehmigen / ablehnen",
+    "permApplyOtherUsers": "Andere Benutzer für Turniere anmelden",
+    "permPatrolsPdf": "Patrouillen verwalten & PDFs erstellen",
+    "permReferenceData": "Kategorien, Vereine, Altersgruppen, Regeln verwalten",
+    "permAccessControl": "Zugriffskontrolle (Rollen ändern)"
+  },
+  "admin": {
+    "editProfile": "Profil bearbeiten",
+    "resetPassword": "Passwort zurücksetzen",
+    "sending": "Senden...",
+    "deleteUser": "Benutzer löschen",
+    "deleteUserConfirm": "Sind Sie sicher, dass Sie diesen Benutzer löschen möchten? Dies kann nicht rückgängig gemacht werden.",
+    "deleteUserError": "Benutzer konnte nicht gelöscht werden",
+    "applyUser": {
+      "title": "Benutzer für Turnier anmelden",
+      "tournament": "Turnier",
+      "selectUser": "Benutzer auswählen",
+      "selectUserRequired": "Bitte wählen Sie einen Benutzer",
+      "divisionRequired": "Bitte wählen Sie eine Altersgruppe",
+      "categoryRequired": "Bitte wählen Sie eine Bogenkategorie",
+      "submit": "Bewerbung einreichen",
+      "submitting": "Wird eingereicht...",
+      "submitError": "Bewerbung konnte nicht eingereicht werden"
+    }
+  },
+  "achievements": {
+    "title": "Meine Erfolge",
+    "subtitle": "Verfolgen Sie Ihren Bogenschieß-Fortschritt und schalten Sie neue Erfolge frei",
+    "progress": "{{earned}} von {{total}} Erfolgen freigeschaltet",
+    "earnedOn": "Erreicht am {{date}}",
+    "progressLabel": "Fortschritt",
+    "share": "Teilen",
+    "shareProgress": "Meinen Fortschritt teilen",
+    "shareProgressTitle": "Meine Bogenschieß-Erfolge",
+    "shareProgressText": "{{earned}} von {{total}} Erfolgen freigeschaltet auf Sokil",
+    "guestHint": "Melden Sie sich an, um Ihre Erfolge zu speichern und auf Geräten zu synchronisieren.",
+    "new": "NEU",
+    "sections": {
+      "unlocked": "Freigeschaltet",
+      "locked": "Gesperrt"
+    },
+    "categories": {
+      "all": "Alle",
+      "onboarding": "Erste Schritte",
+      "consistency": "Konstanz",
+      "volume": "Umfang",
+      "exploration": "Erkundung",
+      "tournaments": "Turniere",
+      "mastery": "Meisterschaft"
+    },
+    "locked": {
+      "eventHint": "Dieser Erfolg wird bei speziellen Events oder durch Turnierergebnisse verliehen."
+    },
+    "unlocked": {
+      "title": "Erfolg freigeschaltet!",
+      "nice": "Toll!"
+    },
+    "rarity": {
+      "common": "Häufig",
+      "rare": "Selten",
+      "epic": "Episch",
+      "legendary": "Legendär"
+    },
+    "firstSession": {
+      "title": "Erste Schritte",
+      "description": "Protokollieren Sie Ihre erste Trainingseinheit"
+    },
+    "firstEquipment": {
+      "title": "Erste Ausrüstung",
+      "description": "Fügen Sie Ihr erstes Ausrüstungsset hinzu"
+    },
+    "profileComplete": {
+      "title": "Identität festgelegt",
+      "description": "Vervollständigen Sie Ihr Bogenschützenprofil"
+    },
+    "streak2Weeks": {
+      "title": "Aufwärmen",
+      "description": "Trainieren Sie mindestens einmal pro Woche für 2 Wochen hintereinander"
+    },
+    "streak4Weeks": {
+      "title": "Konstanter Bogenschütze",
+      "description": "Halten Sie eine 4-wöchige Trainingsserie aufrecht"
+    },
+    "streak12Weeks": {
+      "title": "Eiserne Routine",
+      "description": "Halten Sie eine 12-wöchige Trainingsserie aufrecht"
+    },
+    "streak26Weeks": {
+      "title": "Ganzjähriger Bogenschütze",
+      "description": "Halten Sie eine 26-wöchige Trainingsserie aufrecht"
+    },
+    "arrows500": {
+      "title": "Pfeil-Lehrling",
+      "description": "Schießen Sie 500 Pfeile im Training"
+    },
+    "arrows2500": {
+      "title": "Pfeil-Kenner",
+      "description": "Schießen Sie 2.500 Pfeile im Training"
+    },
+    "arrows10000": {
+      "title": "Pfeil-Veteran",
+      "description": "Schießen Sie 10.000 Pfeile im Training"
+    },
+    "arrows25000": {
+      "title": "Pfeil-Legende",
+      "description": "Schießen Sie 25.000 Pfeile im Training"
+    },
+    "sessions10": {
+      "title": "Regelmäßiges Üben",
+      "description": "Schließen Sie 10 Trainingseinheiten ab"
+    },
+    "sessions50": {
+      "title": "Hingebungsvoller Bogenschütze",
+      "description": "Schließen Sie 50 Trainingseinheiten ab"
+    },
+    "sessions150": {
+      "title": "Trainings-Eiferer",
+      "description": "Schließen Sie 150 Trainingseinheiten ab"
+    },
+    "sessions500": {
+      "title": "Stammgast der Scheibe",
+      "description": "Schließen Sie 500 Trainingseinheiten ab"
+    },
+    "distances3": {
+      "title": "Distanz-Entdecker",
+      "description": "Trainieren Sie auf 3 verschiedenen Distanzen"
+    },
+    "distances5": {
+      "title": "Distanz-Rover",
+      "description": "Trainieren Sie auf 5 verschiedenen Distanzen"
+    },
+    "targetTypes3": {
+      "title": "Zielvielfalt",
+      "description": "Trainieren Sie mit 3 verschiedenen Zieltypen"
+    },
+    "scoredSessions5": {
+      "title": "Punkte-Verfolger",
+      "description": "Tragen Sie Punkte in 5 Trainingseinheiten ein"
+    },
+    "firstApplication": {
+      "title": "Auf der Startliste",
+      "description": "Reichen Sie Ihre erste Turnierbewerbung ein"
+    },
+    "competitor": {
+      "title": "Wettkämpfer",
+      "description": "Erhalten Sie Ihre erste Turnierbewerbung genehmigt"
+    },
+    "seasonedCompetitor": {
+      "title": "Erfahrener Wettkämpfer",
+      "description": "Erhalten Sie 5 Turnierbewerbungen genehmigt"
+    },
+    "tournamentChampion": {
+      "title": "Turniersieger",
+      "description": "Gewinnen Sie den ersten Platz in einem offiziellen Turnier"
+    },
+    "personalBest": {
+      "title": "Persönliche Bestleistung",
+      "description": "Erzielen Sie einen neuen persönlichen Bestwert im Wettkampf"
+    }
+  },
+  "progressShare": {
+    "notFoundTitle": "Fortschritt nicht verfügbar",
+    "notFoundMessage": "Dieser Fortschritts-Link ist privat oder existiert nicht.",
+    "badge": "Erfolgsfortschritt",
+    "title": "Erfolgssammlung",
+    "topBadges": "Top-Abzeichen",
+    "by": "Bogenschütze",
+    "shareTitle": "{{name}}'s Erfolge auf Sokil",
+    "shareText": "{{earned}} von {{total}} Erfolgen freigeschaltet"
+  },
+  "pages": {
+    "rules": {
+      "title": "Regeln",
+      "description": "Offizielle Bogenschießregelbücher mit mehrsprachigen Beschreibungen und PDF-Downloads",
+      "openOfficialPage": "Offizielle Seite öffnen",
+      "downloadPdf": "PDF herunterladen",
+      "downloadFailed": "PDF konnte nicht geladen werden. Die Datei ist möglicherweise nicht verfügbar.",
+      "createRule": "Regel erstellen",
+      "editRule": "Regel bearbeiten",
+      "ruleCode": "Regelcode",
+      "ruleName": "Regelname",
+      "edition": "Ausgabe",
+      "descriptionEn": "Beschreibung (Englisch)",
+      "descriptionPt": "Beschreibung (Portugiesisch)",
+      "descriptionIt": "Beschreibung (Italienisch)",
+      "descriptionUk": "Beschreibung (Ukrainisch)",
+      "descriptionEs": "Beschreibung (Spanisch)",
+      "descriptionDe": "Beschreibung (Deutsch)",
+      "link": "Offizieller Seitenlink",
+      "downloadLink": "Download-Link",
+      "deleteConfirmTitle": "Regel löschen?",
+      "deleteConfirmMessage": "Sind Sie sicher, dass Sie diese Regel löschen möchten?",
+      "deleteWarning": "Diese Regel kann nicht gelöscht werden, wenn sie zugeordnete Altersgruppen oder Bogenkategorien hat."
+    },
+    "categories": {
+      "title": "Bogenkategorien",
+      "description": "Bogenkategorien gruppiert nach Klassifizierungscode",
+      "ruleReference": "Regelverweis",
+      "confirmDelete": "Sind Sie sicher, dass Sie diese Kategorie löschen möchten?",
+      "deleteSuccess": "Kategorie erfolgreich gelöscht",
+      "deleteError": "Kategorie konnte nicht gelöscht werden"
+    },
+    "divisions": {
+      "title": "Altersgruppen",
+      "description": "Wettkampfgruppen gruppiert nach Regelwerk und Altersgruppe",
+      "deleteConfirm": "Sind Sie sicher, dass Sie diese Altersgruppe löschen möchten?",
+      "deleteSuccess": "Altersgruppe erfolgreich gelöscht",
+      "deleteError": "Altersgruppe konnte nicht gelöscht werden",
+      "nameRequired": "Name der Altersgruppe ist erforderlich",
+      "ruleRequired": "Bitte wählen Sie eine Regel",
+      "saveSuccess": "Altersgruppe erfolgreich gespeichert",
+      "saveError": "Altersgruppe konnte nicht gespeichert werden"
+    },
+    "clubs": {
+      "deleteConfirm": "Sind Sie sicher, dass Sie diesen Verein löschen möchten?",
+      "deleteSuccess": "Verein erfolgreich gelöscht",
+      "deleteError": "Verein konnte nicht gelöscht werden",
+      "nameRequired": "Vereinsname ist erforderlich",
+      "saveSuccess": "Verein erfolgreich gespeichert",
+      "saveError": "Verein konnte nicht gespeichert werden. Bitte versuchen Sie es erneut."
+    },
+    "converter": {
+      "title": "Konverter der gängigsten Bogenschießmaße",
+      "description": "Zwischen Zoll/cm, Pfund/kg, Grain/Gramm, Yards/Meter umrechnen"
+    },
+    "about": {
+      "title": "Über diese App",
+      "intro": "Sokil hilft Bogenschützen, Trainingseinheiten zu protokollieren, Fortschritte zu verfolgen, Erfolge freizuschalten und Ausrüstung zu verwalten – mit Offline-Unterstützung und automatischer Synchronisation.\n\nGamification macht das Hobby spannend.\n\nIhre Daten werden sicher gespeichert und Sie entscheiden, was Sie teilen. Verbände und Vereine können Turniere veranstalten, Bewerbungen verwalten und Events organisieren.\n\nStärkung von Bogenschießgemeinschaften mit moderner Technologie.",
+      "archerTitle": "Für Bogenschützen",
+      "federationTitle": "Für Verbände & Organisatoren",
+      "platformTitle": "Plattform",
+      "current": {
+        "auth": "Benutzerauthentifizierung & -autoritisierung - JWT-basierte Authentifizierung mit Google OAuth, Passwort-Zurücksetzung und rollenbasierter Zugriffskontrolle",
+        "profiles": "Benutzerprofile - Persönliches Profil mit Avatar, Bio, Standort und Bogenpräferenzen",
+        "tournaments": "Turnierverwaltung - Turniere mit Banner, Anhängern, Kartenstandorten und Bewerbungsfristen erstellen, bearbeiten und verwalten",
+        "applications": "Turnierbewerbungen - Bewerbungen mit Kategorie, Altersgruppe und Ausrüstungsauswahl einreichen. Admin-Genehmigungsworkflow mit Statusverfolgung",
+        "patrols": "Patrouillensystem - Automatische Patrouillengenerierung mit intelligenter Gruppierung nach Bogenkategorie, Altersgruppe und Geschlecht. Drag-and-drop-Verwaltungsoberfläche und PDF-Export",
+        "admin": "Admin-Panel - Benutzerverwaltung, Bewerbungsgenehmigungen, Turnierüberwachung und Systemverwaltung",
+        "categories": "Bogenkategorien-Verwaltung - Vollständige CRUD für Bogenkategorien mit Regelverweisen",
+        "clubs": "Vereine & Verbände - Vereinsverzeichnis mit Filtern, Vereinsmitgliedschaftssystem mit verifizierten/unverifizierten Abzeichen, Verbandshierarchie, Einladungsabläufe und Admin-Verwaltung",
+        "divisions": "Altersgruppen-Verwaltung - Altersgruppen- und Gruppenverwaltung, die mit Regeln verknüpft ist",
+        "rules": "Regelverwaltung - Offizielle Bogenschießregeln mit mehrsprachigen Beschreibungen und PDF-Downloads",
+        "converter": "Einheitenkonverter - Umrechnung zwischen gängigen Bogenschießmaßen (Zoll/cm, Pfund/kg, Grain/Gramm, Yards/Meter)",
+        "uploads": "Datei-Upload-System - Bildverarbeitung für Avatare und Banner, Anhangsverwaltung für Turniere",
+        "multilang": "Mehrsprachige Unterstützung - Verfügbar auf Englisch, Ukrainisch, Spanisch, Italienisch, Portugiesisch und Deutsch",
+        "pwa": "Progressive Web App - Installierbare PWA mit Offline-Funktionen",
+        "trainingLog": "Trainingsprotokoll - Persönliche Trainingseinheiten mit Datum, Distanz, Zieltyp und Pfeilanzahl aufzeichnen und verwalten. Funktioniert offline mit automatischer Synchronisation",
+        "equipment": "Ausrüstungsverwaltung - Bogenausrüstungssets mit detaillierten Spezifikationen (Zugkraft, Pfeil-Spine, Länge, Material und mehr) speichern und verwalten",
+        "statistics": "Meine Statistiken - Persönliches Aktivitätsdashboard mit Pfeilen nach Zeitraum, zurückgelegter Distanz, Trainingsserie, Trainingsgewohnheiten, Turnierverlauf und Monatsdiagrammen",
+        "achievements": "Erfolge & Gamification - Abzeichensystem ist live: Meilensteine freischalten, motiviert bleiben und Bogenschießen noch lustiger machen. Teilen Sie Ergebnisse und Erfolge mit Freunden",
+        "security": "Sicherheit & Datenschutz - Ihre Daten werden sicher mit verschlüsselten Verbindungen gespeichert. Sie entscheiden, was Sie teilen – Trainingsstatistiken, Erfolge und Profilsichtbarkeit bleiben unter Ihrer Kontrolle"
+      },
+      "plannedTitle": "Geplante Funktionen:",
+      "planned": {
+        "socialSharing": "Erweitertes Social Sharing - Mehr Möglichkeiten, Ergebnisse, Statistiken und Erfolge mit Freunden und Vereinskameraden zu teilen",
+        "achievements": "Erfolgssystem - Demo-Seite verfügbar, vollständige Verfolgung kommt bald",
+        "payments": "Zahlungssystem - Demo-Seite verfügbar, Zahlungsmethoden, Abonnements und Turniergebührenverfolgung kommen bald",
+        "competitions": "Wettbewerbsfunktionen - Erweitertes Wettbewerbsmanagement und Wertung",
+        "duels": "Freundschaftliche Duelle - Fordern Sie andere Bogenschützen zu freundschaftlichen Duellen heraus",
+        "news": "Nachrichten & Updates - Turniernachrichten und Verbandsankündigungen",
+        "calendar": "Veranstaltungskalender - Integrierte Kalenderansicht von Turnieren und Veranstaltungen",
+        "knowledgeBase": "Wissensdatenbank - Umfassendes Bogenschieß-Lexikon und Ressourcen",
+        "more": "Und vieles mehr..."
+      },
+      "contact": "Für Funktioneanfragen, Fehlerberichte oder Fragen kontaktieren Sie bitte",
+      "authorsTitle": "Autoren",
+      "authorMariia": "Mariia Fedirko",
+      "authorSerhii": "Serhii Fedirko",
+      "copyrightPrefix": "© 2023-2025",
+      "copyrightSuffix": ". Alle Rechte vorbehalten."
+    },
+    "tournaments": {
+      "title": "Turniere",
+      "futureTournaments": "Zukünftige",
+      "pastTournaments": "Vergangene",
+      "create": "Turnier erstellen",
+      "edit": "Bearbeiten",
+      "delete": "Löschen",
+      "apply": "Bewerben",
+      "viewApplications": "Bewerbungen anzeigen",
+      "viewDetails": "Details anzeigen",
+      "backToList": "Zurück zu Turnieren",
+      "notFound": "Turnier nicht gefunden",
+      "share": "Teilen",
+      "shareNative": "Teilen…",
+      "shareCopyLink": "Link kopieren",
+      "shareWhatsApp": "WhatsApp",
+      "shareFacebook": "Facebook",
+      "shareX": "X",
+      "shareLinkedIn": "LinkedIn",
+      "shareEmail": "E-Mail",
+      "linkCopied": "Link in die Zwischenablage kopiert!",
+      "copyLink": "Diesen Link kopieren:",
+      "copyFailed": "Link konnte nicht in die Zwischenablage kopiert werden",
+      "targetCount": "Anzahl der Ziele",
+      "checkApplications": "Bewerbungen prüfen",
+      "viewFeedback": "Feedback anzeigen",
+      "applyOtherUser": "Anderen Benutzer anmelden",
+      "start": "Start",
+      "end": "Ende",
+      "location": "Standort",
+      "country": "Land",
+      "countryFilter": "Land",
+      "allCountries": "Alle Länder",
+      "noUpcomingInCountry": "Es gibt keine kommenden Turniere in {{country}}.",
+      "noPastInCountry": "Es gibt keine vergangenen Turniere in {{country}}.",
+      "noUpcomingAll": "Es gibt keine kommenden Turniere.",
+      "noPastAll": "Es gibt keine vergangenen Turniere.",
+      "multipleApplications": "Mehrere Bewerbungen",
+      "multipleAllowed": "Erlaubt (verschiedene Kategorien)",
+      "multipleNotAllowed": "Nicht erlaubt",
+      "fetchError": "Turniere konnten nicht geladen werden",
+      "createError": "Turnier konnte nicht erstellt werden",
+      "deleteError": "Turnier konnte nicht gelöscht werden",
+      "deleteConfirm": "Sind Sie sicher, dass Sie dieses Turnier löschen möchten?",
+      "updateError": "Turnier konnte nicht aktualisiert werden",
+      "editDialogTitle": "Turnier bearbeiten",
+      "createDialogTitle": "Turnier erstellen",
+      "banner": "Turnier-Banner",
+      "bannerSubheader": "Wählen Sie ein Bild aus und ziehen Sie es dann neu positionieren (PNG, JPG bis zu 3MB)",
+      "bannerSaved": "Banner erfolgreich gespeichert",
+      "attachmentsSaved": "{{count}} Datei(en) erfolgreich hochgeladen",
+      "dragToReposition": "Wählen Sie ein Bild aus und ziehen Sie es dann neu positionieren",
+      "attachments": "Zusätzliche Anhänge",
+      "attachmentsSubheader": "Laden Sie benutzerdefinierte Regeln, Bilder oder Dokumente hoch (PNG, JPG, PDF, DOC, DOCX bis zu {{maxSize}} je Datei, max. {{maxFiles}} Dateien)",
+      "addFiles": "Dateien hinzufügen",
+      "filesCount": "{{count}}/{{max}} Dateien",
+      "noAttachments": "Noch keine Anhänge hinzugefügt",
+      "tooManyFiles": "Maximal {{maxFiles}} Dateien erlaubt. Sie können noch {{remaining}} weitere Datei(en) hochladen.",
+      "unsupportedFileType": "{{fileName}}: Nicht unterstützter Dateityp. Erlaubt: PNG, JPG, PDF, DOC, DOCX",
+      "fileTooLarge": "{{fileName}}: Datei ist zu groß (max. {{maxSize}})",
+      "fileReadError": "{{fileName}}: Datei konnte nicht gelesen werden",
+      "uploadFailed": "Upload fehlgeschlagen. Bitte versuchen Sie es erneut.",
+      "uploading": "Wird hochgeladen...",
+      "deleteFileFailed": "Datei konnte nicht gelöscht werden. Bitte versuchen Sie es erneut.",
+      "creating": "Wird erstellt...",
+      "updating": "Wird aktualisiert...",
+      "form": {
+        "title": "Titel",
+        "description": "Beschreibung",
+        "startDate": "Startdatum",
+        "endDate": "Enddatum (optional - Standard ist Startdatum)",
+        "endDateHelper": "Leer lassen, um Startdatum zu verwenden",
+        "applicationDeadline": "Bewerbungsfrist (optional - Standard ist 5 Tage vor Beginn)",
+        "applicationDeadlineHelper": "Leer lassen, um 5 Tage vor Startdatum zu setzen",
+        "address": "Adresse",
+        "country": "Land",
+        "allowMultipleLabel": "Mehrere Bewerbungen von einem Benutzer erlauben (nur verschiedene Kategorien)",
+        "collectFeedbackLabel": "Feedback von Teilnehmern sammeln",
+        "basicInfo": "Grundlegende Informationen"
+      },
+      "feedback": {
+        "title": "Wie war {{title}}?",
+        "subtitle": "Bitte helfen Sie uns, uns zu verbessern — bewerten Sie Ihre Erfahrung und hinterlassen Sie einen optionalen Kommentar.",
+        "ratingLabel": "Ihre Bewertung",
+        "ratingRequired": "Bitte wählen Sie eine Sternebewertung vor dem Absenden.",
+        "commentLabel": "Kommentar (optional)",
+        "commentPlaceholder": "Was lief gut? Was könnte besser sein?",
+        "commentHelper": "Ihr Feedback hilft Organisatoren, zukünftige Events zu verbessern.",
+        "submit": "Feedback absenden",
+        "submitting": "Wird abgesendet...",
+        "submitError": "Feedback konnte nicht gesendet werden. Bitte versuchen Sie es erneut.",
+        "loadError": "Feedback-Formular konnte nicht geladen werden.",
+        "notCollecting": "Dieses Turnier sammelt kein Teilnehmer-Feedback.",
+        "notYetAvailable": "Feedback wird nach Ende des Turniers verfügbar sein.",
+        "thankYouTitle": "Vielen Dank für Ihr Feedback!",
+        "thankYouMessage": "Ihre Antwort wurde aufgezeichnet.",
+        "backToHome": "Zurück zur Startseite",
+        "admin": {
+          "title": "Feedback — {{title}}",
+          "averageRating": "Durchschnittliche Bewertung",
+          "totalFeedbacks": "Gesamte Feedbacks",
+          "participant": "Teilnehmer",
+          "rating": "Bewertung",
+          "comment": "Kommentar",
+          "date": "Datum",
+          "empty": "Noch kein Feedback eingereicht.",
+          "loadError": "Feedback konnte nicht geladen werden.",
+          "noPermission": "Sie haben keine Berechtigung, Feedback für dieses Turnier anzuzeigen.",
+          "unknownUser": "Unbekannter Benutzer"
+        }
+      }
+    },
+    "applications": {
+      "title": "Meine Turnierbewerbungen",
+      "fetchError": "Bewerbungen konnten nicht geladen werden",
+      "empty": "Sie haben noch keine Turnierbewerbungen eingereicht.",
+      "dates": "Daten",
+      "category": "Kategorie",
+      "division": "Altersgruppe",
+      "equipment": "Ausrüstung",
+      "notes": "Notizen",
+      "rejectionReason": "Ablehnungsgrund",
+      "appliedOn": "Beworben am",
+      "withdraw": "Zurückziehen",
+      "withdrawTitle": "Bewerbung zurückziehen",
+      "withdrawConfirm": "Sind Sie sicher, dass Sie diese Bewerbung zurückziehen möchten? Dies kann nicht rückgängig gemacht werden."
+    },
+    "publicApplication": {
+      "notFound": "Turnier nicht gefunden",
+      "applyFor": "Bewerben für {{title}}",
+      "signInPrompt": "Um Ihre Bewerbung für dieses Turnier einzureichen, müssen Sie ein Konto erstellen oder sich in Ihr bestehendes Konto anmelden.",
+      "redirectInfo": "Nach der Registrierung oder Anmeldung werden Sie zu diesem Bewerbungsformular zurückgeleitet.",
+      "applicationSubmitted": "Bewerbung erfolgreich eingereicht!"
+    },
+    "applicationForm": {
+      "title": "Bewerbung für {{title}} einreichen",
+      "submit": "Bewerbung einreichen",
+      "submitting": "Wird eingereicht...",
+      "submitError": "Bewerbung konnte nicht eingereicht werden",
+      "category": "Kategorie",
+      "division": "Altersgruppe",
+      "equipment": "Ausrüstung",
+      "notes": "Zusätzliche Notizen",
+      "notesPlaceholder": "Zusätzliche Informationen zu Ihrer Teilnahme...",
+      "opts": {
+        "recurve": "Olympischer Bogen",
+        "compound": "Compound",
+        "barebow": "Blankbogen",
+        "traditional": "Traditionell",
+        "longbow": "Langbogen",
+        "men": "Männer",
+        "women": "Frauen",
+        "mixed": "Gemischt",
+        "olympic": "Olympischer Recurve",
+        "compoundBow": "Compound-Bogen",
+        "traditionalBow": "Traditioneller Bogen"
+      }
+    },
+    "admin": {
+      "favoriteCategories": "Lieblingskategorien"
+    },
+    "adminApplications": {
+      "title": "Turnierbewerbungen Verwaltung",
+      "selectTournament": "Turnier auswählen",
+      "noApplications": "Keine Bewerbungen für dieses Turnier gefunden.",
+      "managePatrols": "Patrouillen verwalten",
+      "fetchError": "Bewerbungen konnten nicht geladen werden",
+      "fetchTournamentsError": "Turniere konnten nicht geladen werden",
+      "statsTotal": "Gesamt",
+      "statsPending": "Ausstehend",
+      "statsApproved": "Genehmigt",
+      "statsRejected": "Abgelehnt",
+      "table": {
+        "avatar": "Avatar",
+        "applicant": "Bewerber",
+        "gender": "Geschlecht",
+        "category": "Kategorie",
+        "division": "Altersgruppe",
+        "equipment": "Ausrüstung",
+        "status": "Status",
+        "applied": "Beworben",
+        "actions": "Aktionen"
+      },
+      "actions": {
+        "view": "Ansehen",
+        "approve": "Genehmigen",
+        "reject": "Ablehnen",
+        "approving": "Wird genehmigt...",
+        "rejecting": "Wird abgelehnt..."
+      },
+      "status": {
+        "pending": "Ausstehend",
+        "approved": "Genehmigt",
+        "rejected": "Abgelehnt",
+        "withdrawn": "Zurückgezogen"
+      },
+      "dialog": {
+        "title": "Bewerbungsdetails - {{name}}",
+        "titleFallback": "Bewerbungsdetails",
+        "tournament": "Turnier",
+        "category": "Kategorie",
+        "division": "Altersgruppe",
+        "equipment": "Ausrüstung",
+        "notes": "Notizen",
+        "noNotes": "Keine Notizen angegeben",
+        "statusLabel": "Status",
+        "rejectionReason": "Ablehnungsgrund",
+        "rejectionReasonPlaceholder": "Bitte geben Sie einen Grund für die Ablehnung an...",
+        "cancel": "Abbrechen",
+        "updateStatus": "Status aktualisieren"
+      },
+      "notifications": {
+        "approvedSuccess": "{{name}}s Bewerbung erfolgreich genehmigt",
+        "rejectedSuccess": "{{name}}s Bewerbung erfolgreich abgelehnt",
+        "updateSuccess": "Bewerbungsstatus erfolgreich aktualisiert",
+        "approveFailed": "{{name}}s Bewerbung konnte nicht genehmigt werden",
+        "rejectFailed": "{{name}}s Bewerbung konnte nicht abgelehnt werden",
+        "updateFailed": "Bewerbungsstatus konnte nicht aktualisiert werden",
+        "approveFailedGeneric": "Bewerbung konnte nicht genehmigt werden",
+        "rejectFailedGeneric": "Bewerbung konnte nicht abgelehnt werden"
+      },
+      "tournament": {
+        "startDate": "Startdatum",
+        "endDate": "Enddatum",
+        "applicationDeadline": "Bewerbungsfrist"
+      }
+    }
+  },
+  "trainings": {
+    "title": "Meine Trainings",
+    "info": "Das Kapitel \"Meine Trainings\" ermöglicht es, beliebig viele persönliche Trainings zu erstellen, Ziel, Distanz, Pfeilanzahl usw. auszuwählen.\nFür jedes Training sind detaillierte Statistiken verfügbar. Der Benutzer kann seine Statistiken teilen.\nWICHTIG: Die Trainingsinformationen werden nirgendwohin gesendet und nur auf Ihrem Gerät gespeichert (zumindest jetzt)",
+    "deleteQ": "Training löschen?",
+    "deleteHint": "Alle Ergebnisse dieses Trainings werden gelöscht",
+    "add": "Training hinzufügen",
+    "empty": "Noch keine Trainingseinheiten. Fügen Sie Ihre erste hinzu!",
+    "emptyState": {
+      "intro": "Beginnen Sie mit einer üblichen Einheit oder fügen Sie Ihre eigene hinzu.",
+      "orBlank": "Oder fügen Sie eine leere Sitzung hinzu",
+      "templates": {
+        "indoor18m": "18m indoor · 60 Pfeile",
+        "outdoor70m": "70m outdoor · 72 Pfeile",
+        "quickLog": "Schnelles Protokoll"
+      }
+    },
+    "session": "Trainingseinheit",
+    "date": "Datum",
+    "shotsCount": "Anzahl der Schüsse",
+    "distance": "Distanz",
+    "targetType": "Zieltyp",
+    "equipmentSet": "Ausrüstungsset",
+    "noEquipment": "Keine Ausrüstung ausgewählt",
+    "customFields": "Zusätzliche Felder",
+    "addCustomField": "Feld hinzufügen",
+    "moreDetails": "Mehr Details",
+    "fieldKey": "Feldname",
+    "fieldValue": "Wert",
+    "deleteConfirm": "Sind Sie sicher, dass Sie diese Trainingseinheit löschen möchten?",
+    "saveError": "Trainingseinheit konnte nicht gespeichert werden",
+    "deleteError": "Trainingseinheit konnte nicht gelöscht werden",
+    "syncing": "Wird synchronisiert...",
+    "syncSuccess": "Daten erfolgreich synchronisiert",
+    "syncError": "Synchronisation fehlgeschlagen",
+    "inProgress": "In Bearbeitung",
+    "addShot": "Schuss hinzufügen",
+    "addSet": "Satz hinzufügen",
+    "finishSession": "Beenden",
+    "arrowsPerSet": "Pfeile pro Satz",
+    "scoreTotal": "Gesamtpunktzahl",
+    "notes": "Notizen",
+    "mood": "Wie fühlte es sich an?",
+    "moodOptions": {
+      "bad": "Schlecht",
+      "normal": "Normal",
+      "good": "Gut",
+      "amazing": "Fantastisch"
+    },
+    "equipment": {
+      "optionalHint": "Noch keine Bogeneinrichtung (optional — Sie können später eine hinzufügen, wenn Sie bearbeiten)",
+      "createSetup": "Einrichtung erstellen",
+      "addFullDetails": "Vollständige Details hinzufügen",
+      "goToEquipment": "Meine Ausrüstung",
+      "unspecified": "Nicht spezifiziert"
+    }
+  },
+  "equipment": {
+    "title": "Meine Ausrüstung",
+    "empty": "Noch keine Ausrüstungssets. Fügen Sie Ihr erstes Bogen-/Armbrustset hinzu!",
+    "emptyState": {
+      "intro": "Verfolgen Sie Bogenspezifikationen und Pfeile, um die Leistung in Statistiken zu vergleichen.",
+      "logSessionLink": "Oder fügen Sie eine schnelle Einrichtung beim Protokollieren einer Sitzung hinzu"
+    },
+    "addSet": "Set hinzufügen",
+    "editSet": "Set bearbeiten",
+    "setName": "Set-Name",
+    "bowType": "Typ",
+    "bow": "Bogen",
+    "crossbow": "Armbrust",
+    "manufacturer": "Hersteller",
+    "model": "Modell",
+    "drawWeight": "Zugkraft (lbs)",
+    "arrowGroup": "Pfeil",
+    "arrowLength": "Pfeillänge",
+    "arrowSpine": "Spine",
+    "arrowWeight": "Pfeilgewicht",
+    "arrowMaterial": "Pfeilmaterial",
+    "arrowMaterials": {
+      "wood": "Holz",
+      "carbon": "Kohlenstoff",
+      "fiberglass": "Glasfaser",
+      "aluminium": "Aluminium",
+      "mix": "Mischung",
+      "custom": "Benutzerdefiniert"
+    },
+    "length": "Länge",
+    "weight": "Gewicht",
+    "material": "Material",
+    "customFields": "Zusätzliche Felder",
+    "addCustomField": "Feld hinzufügen",
+    "fieldKey": "Feldname",
+    "fieldValue": "Wert",
+    "deleteConfirm": "Sind Sie sicher, dass Sie dieses Ausrüstungsset löschen möchten?",
+    "saveError": "Ausrüstungsset konnte nicht gespeichert werden",
+    "deleteError": "Ausrüstungsset konnte nicht gelöscht werden",
+    "nameRequired": "Set-Name ist erforderlich",
+    "default": "Standard",
+    "setDefault": "Als Standard festlegen"
+  },
+  "onboarding": {
+    "title": "Willkommen bei Sokil",
+    "skip": "Überspringen",
+    "continue": "Weiter",
+    "finish": "Beenden",
+    "stepProgress": "Schritt {{current}} von {{total}}",
+    "aboutYou": "Über Sie",
+    "equipmentAdded": "Lieblingsausrüstung gespeichert",
+    "addAnotherSetup": "Weitere Einrichtung hinzufügen",
+    "readyForFirstSession": "Alles ist bereit — jetzt können Sie Ihre erste Trainingseinheit protokollieren.",
+    "createFirstTrainingSession": "Meine erste Trainingseinheit erstellen",
+    "preferences": "Einstellungen",
+    "syncHelper": "Sichert Ihre Trainingseinheiten und Ausrüstung über Geräte hinweg, wenn Sie online sind.",
+    "syncPrivacyNote": "Nur Trainings und Ausrüstung werden mit Ihrem Konto synchronisiert. Sie können dies jederzeit in den Einstellungen deaktivieren. Die Profilsichtbarkeit steuert, wer Ihren geteilten Fortschritt sehen kann.",
+    "steps": {
+      "profile": "Ihr Profil",
+      "equipment": "Lieblingsausrüstung",
+      "getStarted": "Loslegen",
+      "profileExplanation": "Helfen Sie Freunden, Sie zu erkennen. Sie können dies jederzeit im Profil ändern.",
+      "equipmentExplanation": "Ihre Standard-Bogeneinrichtung wird vorausgewählt, wenn Sie Trainingseinheiten protokollieren. Fügen Sie weitere Sets später in Meine Ausrüstung hinzu.",
+      "getStartedExplanation": "Wählen Sie Ihre Synchronisationseinstellungen und wer Ihr Profil sehen kann, wenn Sie Fortschritt teilen."
+    }
+  },
+  "privacy": {
+    "visibility": {
+      "title": "Profilsichtbarkeit",
+      "personal": {
+        "label": "Persönlich",
+        "helper": "Nur Sie können Ihren geteilten Profil-Link sehen. Teilen-Buttons erinnern Sie daran, diese Einstellung zu ändern."
+      },
+      "limited": {
+        "label": "Eingeschränkt",
+        "helper": "Vereinsmitglieder und Verbands-Admins können Ihr Profil sehen, wenn sie angemeldet sind."
+      },
+      "public": {
+        "label": "Öffentlich",
+        "helper": "Jeder mit dem Link kann Ihr Profil und Ihre Erfolgsfreigaben sehen."
+      }
+    }
+  },
+  "sharing": {
+    "privacyPersonalTitle": "Freigabe ist auf Persönlich eingestellt",
+    "privacyPersonalMessage": "Ihre Datenschutzeinstellung ist {{visibility}}. Um dies zu teilen, öffnen Sie Ihr Profil und ändern Sie die Sichtbarkeit auf Eingeschränkt oder Öffentlich.",
+    "goToProfileSettings": "Profileinstellungen öffnen",
+    "notEarnedTitle": "Erfolg noch nicht erreicht",
+    "notEarnedMessage": "Sie können diesen Erfolg teilen, nachdem Sie ihn freigeschaltet haben."
+  },
+  "publicProfile": {
+    "notFoundTitle": "Profil nicht verfügbar",
+    "notFoundMessage": "Dieses Profil ist privat oder existiert nicht.",
+    "progressTitle": "Fortschritts-Snapshot",
+    "weeklyArrows": "Pfeile diese Woche",
+    "streak": "Trainingsserie",
+    "streakWeeks": "{{count}} Wochen",
+    "totalArrows": "Gesamte Pfeile",
+    "shareText": "{{name}} auf Sokil"
+  },
+  "achievementShare": {
+    "notFoundTitle": "Erfolg nicht verfügbar",
+    "notFoundMessage": "Dieser Erfolgs-Link ist privat oder existiert nicht.",
+    "badge": "Erfolg",
+    "earnedBy": "Bogenschütze"
+  },
+  "localData": {
+    "localStorageBadge": "Lokale Daten auf dem Gerät",
+    "syncButton": "Synchronisieren",
+    "syncDialogTitle": "Datenspeicherung",
+    "syncDialogText": "Ihre Daten werden NUR sicher auf diesem Gerät gespeichert. Um sie zu speichern und über Geräte zu synchronisieren, müssen Sie sich anmelden.",
+    "syncDialogAction": "Anmelden zum Synchronisieren",
+    "syncToggleLabel": "Trainings und Ausrüstung synchronisieren",
+    "syncToggleDescription": "Wenn aktiviert, werden Ihre Trainingseinheiten und Ausrüstungssets automatisch mit Ihrem Konto synchronisiert, wenn Sie online sind.",
+    "syncOffBanner": "Ihre Sitzungen und Ausrüstung werden nur auf diesem Gerät gespeichert. Aktivieren Sie die Synchronisation, um sie über Geräte zu sichern.",
+    "pendingSyncBanner": "{{count}} Element wartet auf Synchronisation",
+    "pendingSyncBanner_other": "{{count}} Elemente warten auf Synchronisation",
+    "syncNow": "Jetzt synchronisieren"
+  },
+  "units": {
+    "inch": "Zoll",
+    "centimeter": "Zentimeter",
+    "pound": "Pfund",
+    "kilogram": "Kilogramm",
+    "grain": "Grain",
+    "gram": "Gramm",
+    "yard": "Yard",
+    "meter": "Meter"
+  },
+  "converter": {
+    "inchCm": {
+      "short": "Zoll - cm",
+      "long": "Zoll - Zentimeter",
+      "desc": "Zur Messung von Bogen- und Pfeillänge usw."
+    },
+    "poundKg": {
+      "short": "Pfund - kg",
+      "long": "Pfund - Kilogramm",
+      "desc": "Zur Messung der Bogenzugkraft"
+    },
+    "grainG": {
+      "short": "Grain - g",
+      "long": "Grain - Gramm",
+      "desc": "Zur Messung des Pfeil-/Breitspitzgewichts usw."
+    },
+    "yardM": {
+      "short": "Yard - m",
+      "long": "Yard - Meter",
+      "desc": "Distanzumrechnungen"
+    }
+  },
+  "common": {
+    "or": "oder",
+    "cancel": "Abbrechen",
+    "update": "Aktualisieren",
+    "create": "Erstellen",
+    "back": "Zurück",
+    "download": "Herunterladen",
+    "backToList": "Zurück zur Liste",
+    "save": "Speichern",
+    "saving": "Wird gespeichert...",
+    "delete": "Löschen",
+    "deleting": "Wird gelöscht..."
+  },
+  "forms": {
+    "email": "E-Mail",
+    "password": "Passwort",
+    "firstName": "Vorname",
+    "lastName": "Nachname",
+    "currentPassword": "Aktuelles Passwort",
+    "newPassword": "Neues Passwort",
+    "confirmPassword": "Neues Passwort bestätigen",
+    "bio": "Bio",
+    "location": "Standort",
+    "country": "Land",
+    "countryNotSet": "Nicht festgelegt",
+    "website": "Webseite",
+    "profilePictureUrl": "Profilbild-URL",
+    "federationNumber": "Verbandsnummer",
+    "categories": "Lieblingskategorien",
+    "selectCategories": "Lieblingskategorien auswählen",
+    "preferredDivision": "Bevorzugte Altersgruppe",
+    "selectDivision": "Altersgruppe auswählen",
+    "applicationLanguage": "Anwendungssprache",
+    "role": "Rolle"
+  },
+  "reset": {
+    "invalidLink": "Ungültiger Zurücksetzungslink. Bitte fordern Sie ein neues Passwort-Zurücksetzen an.",
+    "minLength": "Passwort muss mindestens 8 Zeichen lang sein",
+    "mismatch": "Passwörter stimmen nicht überein",
+    "requirements": "Passwort muss mindestens einen Großbuchstaben, einen Kleinbuchstaben und eine Zahl enthalten",
+    "success": "Passwort wurde erfolgreich zurückgesetzt! Weiterleitung zur Anmeldung...",
+    "failed": "Passwort konnte nicht zurückgesetzt werden",
+    "title": "Passwort zurücksetzen",
+    "subtitle": "Geben Sie unten Ihr neues Passwort ein",
+    "new": "Neues Passwort",
+    "confirm": "Neues Passwort bestätigen",
+    "strength": "Passwortstärke",
+    "submit": "Passwort zurücksetzen",
+    "submitLoading": "Passwort wird zurückgesetzt..."
+  },
+  "profile": {
+    "joined": "Beigetreten",
+    "recentlyJoined": "Kürzlich beigetreten",
+    "accountInfo": "Konto",
+    "signInMethod": "Anmeldemethode",
+    "signedInWithGoogle": "Mit Google angemeldet",
+    "signedInWithFacebook": "Mit Facebook angemeldet",
+    "signedInWithEmail": "Mit E-Mail angemeldet",
+    "personalInfo": "Persönliche Informationen",
+    "federationNumber": "Verbandsnummer",
+    "nationality": "Nationalität",
+    "gender": "Geschlecht",
+    "club": "Verein",
+    "bowCategories": "Lieblingskategorien",
+    "preferredDivision": "Bevorzugte Altersgruppe",
+    "aboutMe": "Über mich",
+    "location": "Standort",
+    "editProfile": "Profil bearbeiten",
+    "setPassword": "Passwort festlegen",
+    "changePassword": "Passwort ändern",
+    "setPasswordSubtitle": "Legen Sie ein Passwort fest, um die E-Mail/Passwort-Anmeldung zu aktivieren",
+    "changePasswordSubtitle": "Aktualisieren Sie Ihr Passwort, um Ihr Konto sicher zu halten",
+    "setPasswordSuccess": "Passwort erfolgreich festgelegt! Sie können sich jetzt mit E-Mail/Passwort anmelden.",
+    "changePasswordSuccess": "Passwort erfolgreich geändert!",
+    "settingPassword": "Passwort wird festgelegt...",
+    "changingPassword": "Passwort wird geändert...",
+    "emailImmutable": "E-Mail kann nicht geändert werden",
+    "bioPlaceholder": "Erzählen Sie uns etwas über sich...",
+    "locationPlaceholder": "Stadt, Land",
+    "websitePlaceholder": "https://example.com",
+    "avatarPlaceholder": "https://example.com/avatar.jpg",
+    "fedNumberPlaceholder": "Geben Sie Ihre Verbandsnummer ein",
+    "changeUserRole": "Benutzerrolle ändern",
+    "saving": "Wird gespeichert...",
+    "saveProfile": "Profil speichern",
+    "avatar": "Avatar",
+    "uploadPhoto": "Foto hochladen",
+    "changePhoto": "Foto ändern",
+    "cropAndSave": "Zuschneiden und speichern",
+    "avatarSaved": "Avatar erfolgreich gespeichert",
+    "avatarSaveFailed": "Avatar konnte nicht gespeichert werden",
+    "removePhoto": "Foto entfernen",
+    "unsupportedType": "Nicht unterstützter Dateityp. Erlaubt: PNG, JPG, JPEG",
+    "imageTooLarge": "Bild ist zu groß (max. 3MB).",
+    "dragToReposition": "Wählen Sie ein Bild aus und ziehen Sie es dann neu positionieren",
+    "zoom": "Zoom",
+    "avatarSubheader": "Wählen Sie ein Bild aus und ziehen Sie es dann neu positionieren (PNG, JPG bis zu 3MB)",
+    "userIdRequired": "Benutzer-ID ist für den Avatar-Upload erforderlich",
+    "profileSaved": "Profil erfolgreich gespeichert!"
+  },
+  "role": {
+    "user": "Benutzer",
+    "admin": "Admin"
+  },
+  "notFound": {
+    "title": "Seite nicht gefunden",
+    "subtitle": "Die gesuchte Seite wurde möglicherweise entfernt oder ist vorübergehend nicht verfügbar.",
+    "goHome": "Zur Startseite",
+    "tournament": {
+      "title": "Turnier nicht gefunden",
+      "subtitle": "Dieses Turnier wurde möglicherweise entfernt oder der Link ist falsch.",
+      "goToList": "Turniere durchsuchen"
+    }
+  },
+  "auth": {
+    "logout": "Abmelden",
+    "signIn": "Anmelden",
+    "signUp": "Registrieren",
+    "forgotPassword": "Passwort vergessen?",
+    "noAccount": "Noch kein Konto?",
+    "signingIn": "Wird angemeldet...",
+    "signInWithGoogle": "Mit Google anmelden",
+    "alreadyAccount": "Bereits ein Konto?",
+    "signUpWithGoogle": "Mit Google registrieren",
+    "signingUp": "Wird registriert...",
+    "backToSignIn": "Zurück zur Anmeldung",
+    "validationEmail": "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+    "validationPasswordMin": "Passwort muss mindestens 6 Zeichen lang sein.",
+    "validationFirstNameRequired": "Vorname ist erforderlich.",
+    "validationLastNameRequired": "Nachname ist erforderlich.",
+    "signInSubtitle": "Verfolgen Sie Ihr Training, verdienen Sie Erfolge und synchronisieren Sie sicher. Sie entscheiden, was Sie teilen.",
+    "signUpSubtitle": "Treten Sie der Gemeinschaft bei — protokollieren Sie Sitzungen, synchronisieren Sie sicher über Geräte und teilen Sie Fortschritt Ihren Bedingungen nach.",
+    "signUpSyncNote": "Sokil funktioniert offline auf diesem Gerät. Nachdem Sie ein Konto erstellt haben, entscheiden Sie, ob Sie Trainings und Ausrüstung für die Verwendung auf anderen Geräten sichern möchten."
+  },
+  "dialog": {
+    "yes": "Ja",
+    "no": "Nein"
+  },
+  "errorBoundary": {
+    "title": "Etwas ist schiefgelaufen",
+    "reload": "Seite neu laden"
+  },
+  "clubs": {
+    "clubLogo": "Vereinslogo",
+    "logoSubheader": "Wählen Sie ein Bild aus und ziehen Sie es dann neu positionieren (PNG, JPG bis zu 10MB)",
+    "logoSaved": "Vereinslogo erfolgreich gespeichert"
+  },
+  "pwa": {
+    "workingOffline": "Arbeitet offline",
+    "showingCachedData": "Zeigt zuletzt gespeicherte Daten",
+    "installPrompt": "Installieren Sie Sokil als App für ein besseres Erlebnis und Offline-Nutzung.",
+    "install": "Installieren",
+    "installing": "Wird installiert…",
+    "dismiss": "Jetzt nicht",
+    "installAria": "App-Installationsaufforderung"
+  },
+  "payments": {
+    "title": "Meine Zahlungen (Demo)",
+    "demoNotice": "Dies ist eine Demo-Seite. Zahlungen werden in Zukunft mit Ihrem echten Konto verknüpft.",
+    "paymentMethods": "Zahlungsmethoden",
+    "subscriptions": "Abonnements",
+    "paymentHistory": "Zahlungshistorie",
+    "expires": "Läuft ab",
+    "default": "Standard",
+    "monthlyClubFee": "Monatlicher Vereinsbeitrag",
+    "premium": "Premium",
+    "activatedByFederation": "Aktiviert durch Ihren Verband",
+    "premiumHint": "Premium-Mitgliedschaft eröffnet zusätzliche Funktionen der Anwendung. Sie kann individuell erworben oder vom Verein/Verband bereitgestellt werden",
+    "month": "Monat",
+    "active": "Aktiv",
+    "startDate": "Startdatum",
+    "nextBillingDate": "Nächstes Abrechnungsdatum",
+    "date": "Datum",
+    "description": "Beschreibung",
+    "amount": "Betrag",
+    "status": "Status",
+    "paid": "Bezahlt"
+  },
+  "statistics": {
+    "title": "Meine Statistiken",
+    "signInBanner": {
+      "title": "Melden Sie sich an, um Ihre vollständigen Statistiken zu sehen",
+      "subtitle": "Verfolgen Sie Ihre abgeschossenen Pfeile, Trainingseinheiten und Turnieraktivität",
+      "signIn": "Anmelden",
+      "createAccount": "Konto erstellen"
+    },
+    "sections": {
+      "activity": "Aktivität",
+      "arrows": "Abgeschossene Pfeile",
+      "distance": "Zurückgelegte Distanz",
+      "habits": "Trainingsgewohnheiten",
+      "tournaments": "Turniere",
+      "equipment": "Leistung nach Ausrüstung",
+      "scoring": "Wertung"
+    },
+    "memberSince": "Mitglied seit",
+    "totalSessions": "Gesamte Sitzungen",
+    "currentStreak": "Aktuelle Serie",
+    "weeks": "Wochen hintereinander",
+    "thisWeek": "Diese Woche",
+    "thisMonth": "Diesen Monat",
+    "thisYear": "Dieses Jahr",
+    "total": "Gesamtzeit",
+    "meters": "Meter",
+    "avgShotsPerSession": "Ø Schüsse / Sitzung",
+    "topDistance": "Meist trainierte Distanz",
+    "topTargetType": "Meistbenutztes Ziel",
+    "mostUsedEquipment": "Meistbenutzte Einrichtung",
+    "byEquipment": {
+      "sessions": "Sitzungen",
+      "arrows": "Pfeile",
+      "avgShots": "Ø Pfeile / Sitzung",
+      "empty": "Protokollieren Sie Sitzungen mit einer Bogeneinrichtung, um die Leistung Ihres Materials zu vergleichen."
+    },
+    "applied": "Beworben",
+    "approved": "Genehmigt",
+    "rejected": "Abgelehnt",
+    "shotsByMonth": "Pfeile nach Monat",
+    "sessionsByMonth": "Sitzungen nach Monat",
+    "arrows": "Pfeile",
+    "sessions": "Sitzungen",
+    "loadError": "Statistiken konnten nicht geladen werden",
+    "avgScore": "Durchschnittliche Punktzahl",
+    "bestSession": "Beste Sitzung",
+    "scoreByDistance": "Durchschnittliche Punktzahl nach Distanz",
+    "noScoringData": "Beenden Sie Sitzungen mit einer Punktzahl, um Wertungstrends zu sehen.",
+    "emptyState": {
+      "chartsIntro": "Protokollieren Sie Trainingseinheiten, um Ihre Monatstrends freizuschalten.",
+      "ghostTitle": "Ihre Diagramme werden hier erscheinen",
+      "ghostSubtitle": "Verfolgen Sie Pfeile und Sitzungen über die Zeit, sobald Sie mit der Protokollierung beginnen.",
+      "logSession": "Sitzung protokollieren"
+    }
+  },
+  "dashboard": {
+    "title": "Startseite",
+    "thisWeekArrows": "Pfeile dieser Woche",
+    "currentStreak": "Aktuelle Serie",
+    "lastSession": "Letzte Sitzung",
+    "recentSessions": "Letzte Sitzungen",
+    "noSessions": "Noch keine Trainingseinheiten. Protokollieren Sie Ihre erste Sitzung!",
+    "logTraining": "Training protokollieren",
+    "logTodaysSession": "Heutige Sitzung protokollieren",
+    "sameAsLastTime": "Gleich wie beim letzten Mal",
+    "upcomingTournaments": "Kommende Turniere",
+    "discoveryDisclaimer": "Basierend auf Ihren Profileinstellungen und Ihrer Aktivität könnten Sie sich für diese kommenden Turniere interessieren.",
+    "browseAllTournaments": "Alle Turniere durchsuchen",
+    "viewAllApplications": "Alle Bewerbungen ansehen",
+    "viewAllTrainings": "Alle Trainings ansehen",
+    "viewStatistics": "Vollständige Statistiken ansehen",
+    "bowSetupPrompt": {
+      "title": "Fügen Sie Ihre Bogeneinrichtung hinzu",
+      "subtitle": "Die Verknüpfung von Sitzungen mit Ihrem Material hilft, die Leistung zu verfolgen. Sie können jederzeit eine Einrichtung hinzufügen — auch beim Bearbeiten einer Sitzung.",
+      "logSession": "Sitzung protokollieren",
+      "dismiss": "Morgen erinnern"
+    },
+    "streakAtRisk": {
+      "title": "Halten Sie Ihre {{count}}-Wochen-Serie aufrecht",
+      "subtitle": "Protokollieren Sie diese Woche eine Sitzung, bevor die Woche endet.",
+      "logSession": "Heutige Sitzung protokollieren",
+      "dismiss": "Morgen erinnern",
+      "statSubtitle": "in Gefahr"
+    },
+    "monthlySummary": {
+      "title": "Ihr {{month}} im Rückblick",
+      "sessions": "{{count}} Sitzungen",
+      "arrows": "{{count}} Pfeile",
+      "viewStatistics": "Vollständige Statistiken ansehen",
+      "dismiss": "Verstanden"
+    },
+    "tournamentFeedback": {
+      "title": "Wie war {{title}}?",
+      "subtitle": "Bitte helfen Sie uns, uns zu verbessern",
+      "leaveFeedback": "Feedback hinterlassen",
+      "dismiss": "Jetzt nicht"
+    },
+    "lastAchievement": {
+      "title": "Letzter Erfolg",
+      "earnedOn": "Erreicht am {{date}}",
+      "viewAll": "Alle ansehen"
+    }
+  },
+  "fieldGuide": {
+    "title": "Feldführer",
+    "glossary": "Glossar",
+    "glossaryDesc": "Häufige Begriffe und Abkürzungen im Bogenschießen"
+  }
+}

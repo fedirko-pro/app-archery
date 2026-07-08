@@ -1,3 +1,5 @@
+import type { AppLanguage } from '../../utils/i18n-lang';
+
 export interface ProfileData {
   firstName: string;
   lastName: string;
@@ -14,7 +16,7 @@ export interface ProfileData {
   divisionId?: string;
   division?: { id: string; name: string };
   role?: string;
-  appLanguage?: 'pt' | 'en' | 'it' | 'ua' | 'es';
+  appLanguage?: AppLanguage;
   syncTrainingsAndEquipment?: boolean;
   profileVisibility?: 'personal' | 'limited' | 'public';
   onboardingCompletedAt?: string | null;

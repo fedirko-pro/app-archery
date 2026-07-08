@@ -184,6 +184,7 @@ export interface BowCategory {
   descriptionIt?: string;
   descriptionUk?: string;
   descriptionEs?: string;
+  descriptionDe?: string;
   ruleReference?: string;
   ruleCitation?: string;
   rule?: RuleDto;
@@ -199,6 +200,7 @@ export interface CreateBowCategoryDto {
   descriptionIt?: string;
   descriptionUk?: string;
   descriptionEs?: string;
+  descriptionDe?: string;
   ruleReference?: string;
   ruleCitation?: string;
   ruleId: string;
@@ -212,6 +214,7 @@ export interface UpdateBowCategoryDto {
   descriptionIt?: string;
   descriptionUk?: string;
   descriptionEs?: string;
+  descriptionDe?: string;
   ruleReference?: string;
   ruleCitation?: string;
   ruleId?: string;
@@ -227,6 +230,7 @@ export interface RuleDto {
   descriptionIt?: string;
   descriptionUk?: string;
   descriptionEs?: string;
+  descriptionDe?: string;
   link?: string;
   downloadLink?: string;
   sortOrder?: number;

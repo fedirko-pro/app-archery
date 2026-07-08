@@ -31,6 +31,10 @@ export class CreateBowCategoryDto {
 
   @IsString()
   @IsOptional()
+  descriptionDe?: string;
+
+  @IsString()
+  @IsOptional()
   ruleReference?: string;
 
   @IsString()

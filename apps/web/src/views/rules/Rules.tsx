@@ -187,6 +187,7 @@ const Rules: React.FC = () => {
       descriptionIt: '',
       descriptionUk: '',
       descriptionEs: '',
+      descriptionDe: '',
       link: '',
       downloadLink: '',
     });
@@ -204,6 +205,7 @@ const Rules: React.FC = () => {
       descriptionIt: rule.descriptionIt || '',
       descriptionUk: rule.descriptionUk || '',
       descriptionEs: rule.descriptionEs || '',
+      descriptionDe: rule.descriptionDe || '',
       link: rule.link || '',
       downloadLink: rule.downloadLink || '',
     });
@@ -242,6 +244,7 @@ const Rules: React.FC = () => {
           descriptionIt: formData.descriptionIt,
           descriptionUk: formData.descriptionUk,
           descriptionEs: formData.descriptionEs,
+          descriptionDe: formData.descriptionDe,
           link: formData.link,
           downloadLink: formData.downloadLink,
         };
@@ -468,6 +471,14 @@ const Rules: React.FC = () => {
                 label={t('pages.rules.descriptionEs') || 'Description (Spanish)'}
                 value={formData.descriptionEs}
                 onChange={(e) => handleFormChange('descriptionEs', e.target.value)}
+                multiline
+                rows={3}
+                fullWidth
+              />
+              <TextField
+                label={t('pages.rules.descriptionDe') || 'Description (German)'}
+                value={formData.descriptionDe}
+                onChange={(e) => handleFormChange('descriptionDe', e.target.value)}
                 multiline
                 rows={3}
                 fullWidth

@@ -2,6 +2,7 @@ import i18n from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import { initReactI18next } from 'react-i18next';
 
+import deCommon from './locales/de/common.json';
 import enCommon from './locales/en/common.json';
 import esCommon from './locales/es/common.json';
 import itCommon from './locales/it/common.json';
@@ -15,6 +16,7 @@ const resources = {
   it: { common: itCommon },
   uk: { common: ukCommon },
   es: { common: esCommon },
+  de: { common: deCommon },
 };
 
 const isBrowser = typeof window !== 'undefined';

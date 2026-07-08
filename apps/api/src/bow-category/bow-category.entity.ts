@@ -29,6 +29,9 @@ export class BowCategory {
   @Property({ nullable: true, columnType: 'text' })
   descriptionEs?: string;
 
+  @Property({ nullable: true, columnType: 'text' })
+  descriptionDe?: string;
+
   @Property({ nullable: true })
   ruleReference?: string; // Reference to specific rule section
 

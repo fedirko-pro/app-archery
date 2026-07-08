@@ -277,6 +277,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
               <MenuItem value="en">English (EN)</MenuItem>
               <MenuItem value="it">Italiano (IT)</MenuItem>
               <MenuItem value="es">Español (ES)</MenuItem>
+              <MenuItem value="de">Deutsch (DE)</MenuItem>
               <MenuItem value="ua">Українська (UA)</MenuItem>
             </TextField>
           </Box>

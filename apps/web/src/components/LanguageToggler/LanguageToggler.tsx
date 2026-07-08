@@ -11,6 +11,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import { useAuth } from '../../contexts/auth-context';
 import type { AppLanguageCode } from '../../contexts/types';
+import flagDe from '../../img/flags/de.svg';
 import flagEn from '../../img/flags/en.svg';
 import flagEs from '../../img/flags/es.svg';
 import flagIt from '../../img/flags/it.svg';
@@ -29,6 +30,7 @@ const options: Array<{ value: string; code: string; flagSrc: string }> = [
   { value: 'en', code: 'EN', flagSrc: assetUrl(flagEn) },
   { value: 'it', code: 'IT', flagSrc: assetUrl(flagIt) },
   { value: 'es', code: 'ES', flagSrc: assetUrl(flagEs) },
+  { value: 'de', code: 'DE', flagSrc: assetUrl(flagDe) },
   { value: 'ua', code: 'UA', flagSrc: assetUrl(flagUa) },
 ];
 

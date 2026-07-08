@@ -1,4 +1,4 @@
-export type AppLanguageCode = 'pt' | 'en' | 'it' | 'ua' | 'es';
+export type AppLanguageCode = 'pt' | 'en' | 'it' | 'ua' | 'es' | 'de';
 
 export interface CustomFieldDto {
   key: string;

@@ -36,6 +36,9 @@ export default function AchievementMedallion({
             : style.bgGradient,
           borderRadius: '50%',
           p: 0.5,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
           boxShadow: showGlow && !locked ? `0 0 24px ${style.glow}` : 2,
         }}
       >
