@@ -133,4 +133,29 @@ export interface EmailI18n {
     greeting: string; // supports {{federationName}}
     body: string; // supports {{clubName}}, {{federationName}}, {{removedBy}}
   };
+
+  clubJoinRequestNotification: {
+    subject: string;
+    heading: string;
+    greeting: string; // supports {{clubName}}
+    body: string; // supports {{requesterName}}, {{requesterEmail}}, {{clubName}}
+    messageLabel: string;
+    reviewNote: string; // supports {{reviewUrl}}
+  };
+
+  clubJoinRequestApproved: {
+    subject: string;
+    heading: string;
+    greeting: string; // supports {{name}}
+    body: string; // supports {{clubName}}
+    profileNote: string; // supports {{profileUrl}}
+  };
+
+  clubJoinRequestRejected: {
+    subject: string;
+    heading: string;
+    greeting: string; // supports {{name}}
+    body: string; // supports {{clubName}}
+    note: string;
+  };
 }

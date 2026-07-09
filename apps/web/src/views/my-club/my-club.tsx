@@ -18,45 +18,79 @@ import {
 } from '@mui/material';
 import React, { useEffect, useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link, useParams } from 'react-router-dom';
 
 import { useNotification } from '../../contexts/error-feedback-context';
 import apiService from '../../services/api';
-import type { ClubMembershipDto } from '../../services/types';
+import type { ClubDto, ClubJoinRequestDto, ClubMembershipDto } from '../../services/types';
 
 const MyClub: React.FC = () => {
   const { t } = useTranslation('common');
+  const { lang } = useParams();
   const { showSuccess, showError } = useNotification();
-  const [memberships, setMemberships] = useState<ClubMembershipDto[]>([]);
+  const [adminClub, setAdminClub] = useState<ClubDto | null>(null);
+  const [members, setMembers] = useState<ClubMembershipDto[]>([]);
+  const [joinRequests, setJoinRequests] = useState<ClubJoinRequestDto[]>([]);
   const [loading, setLoading] = useState(true);
   const [inviteEmail, setInviteEmail] = useState('');
   const [inviting, setInviting] = useState(false);
 
-  const fetchMemberships = useCallback(async () => {
+  const fetchClubData = useCallback(async () => {
     try {
       setLoading(true);
-      const data = await apiService.getMyClubMemberships();
-      setMemberships(data || []);
+      const club = await apiService.getMyAdminClub();
+      setAdminClub(club);
+
+      if (!club?.id) {
+        setMembers([]);
+        setJoinRequests([]);
+        return;
+      }
+
+      const [memberData, requestData] = await Promise.all([
+        apiService.getClubMembers(club.id),
+        apiService.getClubJoinRequests(club.id),
+      ]);
+      setMembers(memberData || []);
+      setJoinRequests((requestData || []).filter((r) => r.status === 'pending'));
     } catch (error) {
-      console.error('Failed to load memberships:', error);
+      console.error('Failed to load club admin data:', error);
+      setAdminClub(null);
+      setMembers([]);
+      setJoinRequests([]);
     } finally {
       setLoading(false);
     }
   }, []);
 
   useEffect(() => {
-    void fetchMemberships();
-  }, [fetchMemberships]);
+    void fetchClubData();
+  }, [fetchClubData]);
 
-  const handleApprove = async (membershipId: string) => {
+  const handleApproveJoinRequest = async (requestId: string) => {
     try {
-      await apiService.approveClubMembership(membershipId);
-      showSuccess(t('pages.myClub.memberApproved', 'Member approved'));
-      void fetchMemberships();
+      await apiService.approveClubJoinRequest(requestId);
+      showSuccess(t('pages.myClub.joinRequestApproved', 'Join request approved'));
+      void fetchClubData();
     } catch (error) {
       showError(
         error instanceof Error
           ? error.message
-          : t('pages.myClub.approveError', 'Failed to approve member'),
+          : t('pages.myClub.joinRequestApproveError', 'Failed to approve join request'),
+      );
+    }
+  };
+
+  const handleRejectJoinRequest = async (requestId: string) => {
+    try {
+      await apiService.rejectClubJoinRequest(requestId);
+      showSuccess(t('pages.myClub.joinRequestRejected', 'Join request rejected'));
+      void fetchClubData();
+    } catch (error) {
+      showError(
+        error instanceof Error
+          ? error.message
+          : t('pages.myClub.joinRequestRejectError', 'Failed to reject join request'),
       );
     }
   };
@@ -72,7 +106,7 @@ const MyClub: React.FC = () => {
     try {
       await apiService.removeClubMembership(membershipId);
       showSuccess(t('pages.myClub.memberRemoved', 'Member removed'));
-      void fetchMemberships();
+      void fetchClubData();
     } catch (error) {
       showError(
         error instanceof Error
@@ -83,13 +117,11 @@ const MyClub: React.FC = () => {
   };
 
   const handleInvite = async () => {
-    if (!inviteEmail.trim()) return;
-    const adminClub = memberships.find((m) => m.role === 'admin' && m.status === 'approved');
-    if (!adminClub) return;
+    if (!inviteEmail.trim() || !adminClub?.id) return;
 
     try {
       setInviting(true);
-      await apiService.inviteClubMember(adminClub.club.id!, inviteEmail.trim());
+      await apiService.inviteClubMember(adminClub.id, inviteEmail.trim());
       showSuccess(t('pages.myClub.inviteSent', 'Invitation sent'));
       setInviteEmail('');
     } catch (error) {
@@ -111,12 +143,7 @@ const MyClub: React.FC = () => {
     );
   }
 
-  const adminMembership = memberships.find((m) => m.role === 'admin' && m.status === 'approved');
-  const club = adminMembership?.club;
-  const pendingMembers = memberships.filter((m) => m.status === 'pending');
-  const approvedMembers = memberships.filter((m) => m.status === 'approved');
-
-  if (!club) {
+  if (!adminClub) {
     return (
       <Box sx={{ p: 3 }}>
         <Typography variant="h4" gutterBottom>
@@ -132,42 +159,66 @@ const MyClub: React.FC = () => {
     );
   }
 
+  const approvedMembers = members.filter((m) => m.status === 'approved');
+
   return (
     <Box sx={{ p: 3 }}>
       <Typography variant="h4" gutterBottom>
-        {t('pages.myClub.title', 'My Club')} — {club.name}
+        {t('pages.myClub.title', 'My Club')} — {adminClub.name}
       </Typography>
+
+      <Button component={Link} to={`/${lang}/my-club/edit`} variant="outlined" sx={{ mb: 3 }}>
+        {t('pages.myClub.editClubProfile', 'Edit club profile')}
+      </Button>
 
       <Card sx={{ mb: 3 }}>
         <CardContent>
           <Typography variant="h6" gutterBottom>
-            {t('pages.myClub.pendingRequests', 'Pending Requests')} ({pendingMembers.length})
+            {t('pages.myClub.joinRequests', 'Join Requests')} ({joinRequests.length})
           </Typography>
-          {pendingMembers.length === 0 ? (
+          {joinRequests.length === 0 ? (
             <Typography color="text.secondary">
-              {t('pages.myClub.noPending', 'No pending requests')}
+              {t('pages.myClub.noJoinRequests', 'No pending join requests')}
             </Typography>
           ) : (
             <List>
-              {pendingMembers.map((m) => (
+              {joinRequests.map((request) => (
                 <ListItem
-                  key={m.id}
+                  key={request.id}
+                  alignItems="flex-start"
                   secondaryAction={
                     <Box sx={{ display: 'flex', gap: 0.5 }}>
-                      <IconButton size="small" color="primary" onClick={() => handleApprove(m.id)}>
+                      <IconButton
+                        size="small"
+                        color="primary"
+                        onClick={() => handleApproveJoinRequest(request.id)}
+                      >
                         <CheckIcon />
                       </IconButton>
-                      <IconButton size="small" color="error" onClick={() => handleRemove(m.id)}>
+                      <IconButton
+                        size="small"
+                        color="error"
+                        onClick={() => handleRejectJoinRequest(request.id)}
+                      >
                         <CloseIcon />
                       </IconButton>
                     </Box>
                   }
                 >
                   <ListItemText
-                    primary={
-                      `${m.user.firstName || ''} ${m.user.lastName || ''}`.trim() || m.user.email
+                    primary={request.name}
+                    secondary={
+                      <>
+                        <Typography component="span" variant="body2" display="block">
+                          {request.email}
+                        </Typography>
+                        {request.message && (
+                          <Typography component="span" variant="body2" color="text.secondary">
+                            {request.message}
+                          </Typography>
+                        )}
+                      </>
                     }
-                    secondary={m.user.email}
                   />
                 </ListItem>
               ))}
@@ -191,9 +242,11 @@ const MyClub: React.FC = () => {
                 <ListItem
                   key={m.id}
                   secondaryAction={
-                    <IconButton size="small" color="error" onClick={() => handleRemove(m.id)}>
-                      <DeleteIcon />
-                    </IconButton>
+                    m.role !== 'admin' ? (
+                      <IconButton size="small" color="error" onClick={() => handleRemove(m.id)}>
+                        <DeleteIcon />
+                      </IconButton>
+                    ) : undefined
                   }
                 >
                   <ListItemText

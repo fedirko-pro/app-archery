@@ -247,6 +247,11 @@ export type CreateRuleDto = Omit<
 
 export type UpdateRuleDto = Partial<CreateRuleDto>;
 
+export interface ClubLinkDto {
+  label: string;
+  url: string;
+}
+
 export interface ClubDto {
   id?: string;
   name: string;
@@ -257,7 +262,25 @@ export interface ClubDto {
   city?: string;
   clubLogo?: string;
   visibility?: 'public' | 'private';
+  contactPerson?: string;
+  contactEmail?: string;
+  contactPhone?: string;
+  address?: string;
+  otherInfo?: string;
+  links?: ClubLinkDto[];
   createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface ClubJoinRequestDto {
+  id: string;
+  name: string;
+  email: string;
+  message?: string;
+  status: 'pending' | 'approved' | 'rejected';
+  user?: { id: string; firstName?: string; lastName?: string; email: string };
+  reviewedBy?: { id: string; firstName?: string; email: string };
+  createdAt: string;
   updatedAt?: string;
 }
 

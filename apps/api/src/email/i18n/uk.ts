@@ -175,4 +175,29 @@ export const uk: EmailI18n = {
     greeting: 'Клуб було видалено з {{federationName}}.',
     body: '{{clubName}} було видалено з {{federationName}} користувачем {{removedBy}}.',
   },
+
+  clubJoinRequestNotification: {
+    subject: 'Новий запит на вступ до {{clubName}}',
+    heading: 'Новий запит на вступ до клубу',
+    greeting: 'Хтось хоче вступити до {{clubName}}.',
+    body: '{{requesterName}} ({{requesterEmail}}) подав запит на вступ до {{clubName}}.',
+    messageLabel: 'Повідомлення:',
+    reviewNote: 'Перегляньте та відповідь у Мій клуб: {{reviewUrl}}',
+  },
+
+  clubJoinRequestApproved: {
+    subject: 'Ласкаво просимо до {{clubName}}',
+    heading: 'Запит на вступ схвалено',
+    greeting: 'Вітаємо, {{name}},',
+    body: 'Ваш запит на вступ до {{clubName}} схвалено.',
+    profileNote: 'Переглянути профіль: {{profileUrl}}',
+  },
+
+  clubJoinRequestRejected: {
+    subject: 'Оновлення щодо запиту на вступ до {{clubName}}',
+    heading: 'Оновлення запиту на вступ',
+    greeting: 'Вітаємо, {{name}},',
+    body: 'Ваш запит на вступ до {{clubName}} наразі не схвалено.',
+    note: 'Якщо у вас є питання, зверніться до клубу безпосередньо.',
+  },
 };

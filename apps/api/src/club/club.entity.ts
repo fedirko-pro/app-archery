@@ -1,6 +1,8 @@
 import { Entity, PrimaryKey, Property } from '@mikro-orm/core';
 import { v4 as uuid } from 'uuid';
 
+import type { ClubLink } from './club-link.type';
+
 export enum ClubVisibility {
   PUBLIC = 'public',
   PRIVATE = 'private',
@@ -32,6 +34,24 @@ export class Club {
 
   @Property({ default: ClubVisibility.PUBLIC })
   visibility: ClubVisibility = ClubVisibility.PUBLIC;
+
+  @Property({ nullable: true })
+  contactPerson?: string;
+
+  @Property({ nullable: true })
+  contactEmail?: string;
+
+  @Property({ nullable: true })
+  contactPhone?: string;
+
+  @Property({ nullable: true })
+  address?: string;
+
+  @Property({ nullable: true, columnType: 'text' })
+  otherInfo?: string;
+
+  @Property({ type: 'json', nullable: true })
+  links?: ClubLink[];
 
   @Property({ onCreate: () => new Date() })
   createdAt?: Date = new Date();

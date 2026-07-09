@@ -178,4 +178,29 @@ export const it: EmailI18n = {
     greeting: 'Un club è stato rimosso da {{federationName}}.',
     body: '{{clubName}} è stato rimosso da {{federationName}} da {{removedBy}}.',
   },
+
+  clubJoinRequestNotification: {
+    subject: 'Nuova richiesta di iscrizione a {{clubName}}',
+    heading: 'Nuova richiesta di iscrizione al club',
+    greeting: 'Qualcuno vuole iscriversi a {{clubName}}.',
+    body: '{{requesterName}} ({{requesterEmail}}) ha richiesto di iscriversi a {{clubName}}.',
+    messageLabel: 'Messaggio:',
+    reviewNote: 'Rivedi e rispondi in Il mio club: {{reviewUrl}}',
+  },
+
+  clubJoinRequestApproved: {
+    subject: 'Benvenuto in {{clubName}}',
+    heading: 'Richiesta di iscrizione approvata',
+    greeting: 'Ciao {{name}},',
+    body: 'La tua richiesta di iscrizione a {{clubName}} è stata approvata.',
+    profileNote: 'Vedi il tuo profilo: {{profileUrl}}',
+  },
+
+  clubJoinRequestRejected: {
+    subject: 'Aggiornamento sulla richiesta per {{clubName}}',
+    heading: 'Aggiornamento richiesta di iscrizione',
+    greeting: 'Ciao {{name}},',
+    body: 'La tua richiesta di iscrizione a {{clubName}} non è stata approvata in questo momento.',
+    note: 'Se hai domande, contatta direttamente il club.',
+  },
 };

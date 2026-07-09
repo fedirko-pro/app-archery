@@ -22,6 +22,7 @@ import type {
   BowCategory,
   CategoryDto,
   ClubDto,
+  ClubJoinRequestDto,
   ClubMembershipDto,
   CreateBowCategoryDto,
   CreateRuleDto,
@@ -870,7 +871,50 @@ class ApiService {
   }
 
   /**
+   * Submit a join request for a club.
+   */
+  async submitClubJoinRequest(
+    clubId: string,
+    payload: { name: string; email: string; message?: string },
+  ): Promise<ClubJoinRequestDto> {
+    return this.post<ClubJoinRequestDto>(`/clubs/${clubId}/join-requests`, payload);
+  }
+
+  /**
+   * List join requests for a club (club admin only).
+   */
+  async getClubJoinRequests(clubId: string): Promise<ClubJoinRequestDto[]> {
+    return this.get<ClubJoinRequestDto[]>(`/clubs/${clubId}/join-requests`);
+  }
+
+  /**
+   * Approve a club join request (club admin only).
+   */
+  async approveClubJoinRequest(requestId: string): Promise<ClubJoinRequestDto> {
+    return this.patch<ClubJoinRequestDto>(`/clubs/join-requests/${requestId}/approve`);
+  }
+
+  /**
+   * Reject a club join request (club admin only).
+   */
+  async rejectClubJoinRequest(requestId: string): Promise<ClubJoinRequestDto> {
+    return this.patch<ClubJoinRequestDto>(`/clubs/join-requests/${requestId}/reject`);
+  }
+
+  /**
+   * Get the club the current user admins, if any.
+   */
+  async getMyAdminClub(): Promise<ClubDto | null> {
+    try {
+      return await this.get<ClubDto>('/clubs/my-admin-club');
+    } catch {
+      return null;
+    }
+  }
+
+  /**
    * Request membership in a club.
+   * @deprecated Use submitClubJoinRequest instead.
    */
   async requestClubMembership(clubId: string): Promise<ClubMembershipDto> {
     return this.post<ClubMembershipDto>(`/clubs/${clubId}/join`);

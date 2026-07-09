@@ -18,6 +18,9 @@ import {
   getFederationInvitationContent,
   getFederationClubJoinedContent,
   getFederationClubRemovedContent,
+  getClubJoinRequestNotificationContent,
+  getClubJoinRequestApprovedContent,
+  getClubJoinRequestRejectedContent,
 } from './templates';
 
 export interface EmailOptions {
@@ -334,6 +337,52 @@ export class EmailService {
     const content = getFederationClubRemovedContent({ federationName, clubName, removedBy }, t);
     const { html, text } = wrapEmail(content.html, content.text, t.footer);
     const subject = interpolate(t.federationClubRemoved.subject, { federationName });
+    await this.sendEmail({ to: email, subject, html, text });
+  }
+
+  async sendClubJoinRequestNotificationEmail(
+    email: string,
+    clubName: string,
+    requesterName: string,
+    requesterEmail: string,
+    message: string | undefined,
+    reviewUrl: string,
+    locale?: string,
+  ): Promise<void> {
+    const t = getEmailI18n(locale);
+    const content = getClubJoinRequestNotificationContent(
+      { clubName, requesterName, requesterEmail, message, reviewUrl },
+      t,
+    );
+    const { html, text } = wrapEmail(content.html, content.text, t.footer);
+    const subject = interpolate(t.clubJoinRequestNotification.subject, { clubName });
+    await this.sendEmail({ to: email, subject, html, text });
+  }
+
+  async sendClubJoinRequestApprovedEmail(
+    email: string,
+    name: string,
+    clubName: string,
+    profileUrl: string,
+    locale?: string,
+  ): Promise<void> {
+    const t = getEmailI18n(locale);
+    const content = getClubJoinRequestApprovedContent({ name, clubName, profileUrl }, t);
+    const { html, text } = wrapEmail(content.html, content.text, t.footer);
+    const subject = interpolate(t.clubJoinRequestApproved.subject, { clubName });
+    await this.sendEmail({ to: email, subject, html, text });
+  }
+
+  async sendClubJoinRequestRejectedEmail(
+    email: string,
+    name: string,
+    clubName: string,
+    locale?: string,
+  ): Promise<void> {
+    const t = getEmailI18n(locale);
+    const content = getClubJoinRequestRejectedContent({ name, clubName }, t);
+    const { html, text } = wrapEmail(content.html, content.text, t.footer);
+    const subject = interpolate(t.clubJoinRequestRejected.subject, { clubName });
     await this.sendEmail({ to: email, subject, html, text });
   }
 

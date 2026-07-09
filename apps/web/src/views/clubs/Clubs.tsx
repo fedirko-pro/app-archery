@@ -2,6 +2,7 @@ import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import LockIcon from '@mui/icons-material/Lock';
+import Visibility from '@mui/icons-material/Visibility';
 import {
   Box,
   Button,
@@ -18,7 +19,7 @@ import {
 } from '@mui/material';
 import { useEffect, useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 
 import { ALL_COUNTRIES_FILTER, COUNTRIES, getCountryName } from '../../config/countries';
 import { canManageReferenceData } from '../../config/roles';
@@ -172,9 +173,10 @@ const Clubs: React.FC = () => {
           sx={{
             display: 'flex',
             flexWrap: 'wrap',
+            justifyContent: 'center',
             gap: 3,
             '& > *': {
-              flex: '1 1 calc(33.333% - 16px)',
+              flex: '0 1 calc(33.333% - 16px)',
               minWidth: '280px',
               maxWidth: 'calc(33.333% - 16px)',
             },
@@ -248,6 +250,17 @@ const Clubs: React.FC = () => {
                       {t('pages.clubs.contactAdmin', 'Contact club admin for access')}
                     </Typography>
                   )}
+                  <Box sx={{ mt: 2 }}>
+                    <Button
+                      size="small"
+                      variant="outlined"
+                      startIcon={<Visibility />}
+                      component={Link}
+                      to={`/${lang}/clubs/${club.id}`}
+                    >
+                      {t('pages.clubs.viewDetails', 'View Details')}
+                    </Button>
+                  </Box>
                   {isAdmin && (
                     <Box sx={{ mt: 2, display: 'flex', gap: 1 }}>
                       <Button

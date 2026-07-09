@@ -176,4 +176,29 @@ export const en: EmailI18n = {
     greeting: 'A club has been removed from {{federationName}}.',
     body: '{{clubName}} has been removed from {{federationName}} by {{removedBy}}.',
   },
+
+  clubJoinRequestNotification: {
+    subject: 'New join request for {{clubName}}',
+    heading: 'New Club Join Request',
+    greeting: 'Someone wants to join {{clubName}}.',
+    body: '{{requesterName}} ({{requesterEmail}}) has requested to join {{clubName}}.',
+    messageLabel: 'Message:',
+    reviewNote: 'Review and respond in My Club: {{reviewUrl}}',
+  },
+
+  clubJoinRequestApproved: {
+    subject: 'Welcome to {{clubName}}',
+    heading: 'Club Join Request Approved',
+    greeting: 'Hello {{name}},',
+    body: 'Your request to join {{clubName}} has been approved.',
+    profileNote: 'View your profile: {{profileUrl}}',
+  },
+
+  clubJoinRequestRejected: {
+    subject: 'Update on your {{clubName}} join request',
+    heading: 'Club Join Request Update',
+    greeting: 'Hello {{name}},',
+    body: 'Your request to join {{clubName}} was not approved at this time.',
+    note: 'If you have questions, please contact the club directly.',
+  },
 };

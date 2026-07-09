@@ -7,7 +7,6 @@ import {
   Delete,
   UseGuards,
   Request,
-  Query,
   Patch,
 } from '@nestjs/common';
 import { ClubMembershipService } from './club-membership.service';
@@ -31,16 +30,17 @@ export class ClubMembershipController {
     return this.membershipService.findUserMemberships(req.user.sub);
   }
 
-  @Get(':id/members')
+  @Get('my-admin-club')
   @UseGuards(JwtAuthGuard)
-  findMembers(@Param('id') id: string) {
-    return this.membershipService.findMemberships(id);
+  async findMyAdminClub(@Request() req: { user: RequestUser }) {
+    return this.membershipService.getAdminClub(req.user.sub);
   }
 
-  @Post(':id/join')
+  @Get(':id/members')
   @UseGuards(JwtAuthGuard)
-  requestMembership(@Param('id') id: string, @Request() req: { user: RequestUser }) {
-    return this.membershipService.requestMembership(req.user.sub, id);
+  async findMembers(@Param('id') id: string, @Request() req: { user: RequestUser }) {
+    await this.membershipService.assertCanManageClub(req.user.sub, id, req.user.role);
+    return this.membershipService.findMemberships(id);
   }
 
   @Post(':id/join-custom')
@@ -61,6 +61,7 @@ export class ClubMembershipController {
     @Body('email') email: string,
     @Request() req: { user: RequestUser },
   ) {
+    await this.membershipService.assertCanManageClub(req.user.sub, id, req.user.role);
     return this.invitationService.sendInvitation(id, email, req.user.sub);
   }
 
@@ -73,7 +74,7 @@ export class ClubMembershipController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRoles.ClubAdmin, UserRoles.GeneralAdmin)
   approveMembership(@Param('id') id: string, @Request() req: { user: RequestUser }) {
-    return this.membershipService.approveMembership(id, req.user.sub);
+    return this.membershipService.approveMembership(id, req.user.sub, req.user.role);
   }
 
   @Delete('membership/:id')
@@ -81,6 +82,13 @@ export class ClubMembershipController {
   async removeMembership(@Param('id') id: string, @Request() req: { user: RequestUser }) {
     const membership = await this.membershipService.findOne(id);
     const isSelfRemoval = membership.user.id === req.user.sub;
+    if (!isSelfRemoval) {
+      await this.membershipService.assertCanManageClub(
+        req.user.sub,
+        membership.club.id,
+        req.user.role,
+      );
+    }
     return this.membershipService.removeMembership(id, req.user.sub, isSelfRemoval);
   }
 }

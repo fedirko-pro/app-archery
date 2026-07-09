@@ -21,6 +21,7 @@ import UserProfileView from '../../views/admin/user-profile-view/user-profile-vi
 import CategoryEdit from '../../views/categories/admin/category-edit';
 import Categories from '../../views/categories/Categories';
 import ClubEdit from '../../views/clubs/admin/club-edit';
+import ClubDetail from '../../views/clubs/club-detail';
 import Clubs from '../../views/clubs/Clubs';
 import UserPage from '../../views/competition/user-page/user-page';
 import ConverterPage from '../../views/ConverterPage';
@@ -148,6 +149,7 @@ function Content() {
           <Route path="about" element={<About />} />
           <Route path="categories" element={<Categories />} />
           <Route path="clubs" element={<Clubs />} />
+          <Route path="clubs/:clubId" element={<ClubDetail />} />
           <Route
             path="accept-club-invitation/:token"
             element={
@@ -169,6 +171,14 @@ function Content() {
             element={
               <ProtectedRoute>
                 <MyClub />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="my-club/edit"
+            element={
+              <ProtectedRoute>
+                <ClubEdit />
               </ProtectedRoute>
             }
           />

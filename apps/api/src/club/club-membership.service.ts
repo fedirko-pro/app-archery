@@ -5,6 +5,7 @@ import {
   ForbiddenException,
   Logger,
 } from '@nestjs/common';
+import { ROLES } from '@sokil/shared-types';
 import { EntityManager, FilterQuery } from '@mikro-orm/core';
 import { ClubMembership, ClubMembershipStatus, ClubMembershipRole } from './club-membership.entity';
 import { Club } from './club.entity';
@@ -100,8 +101,14 @@ export class ClubMembershipService {
     return membership;
   }
 
-  async approveMembership(membershipId: string, adminId: string): Promise<ClubMembership> {
+  async approveMembership(
+    membershipId: string,
+    adminId: string,
+    adminRole: string,
+  ): Promise<ClubMembership> {
     const membership = await this.findOne(membershipId);
+    await this.assertCanManageClub(adminId, membership.club.id, adminRole);
+
     if (membership.status === ClubMembershipStatus.APPROVED) {
       throw new ConflictException('Membership is already approved');
     }
@@ -207,6 +214,29 @@ export class ClubMembershipService {
           });
       }
     }
+  }
+
+  async assertCanManageClub(userId: string, clubId: string, userRole: string): Promise<void> {
+    if (userRole === ROLES.GeneralAdmin) {
+      return;
+    }
+    const isAdmin = await this.isClubAdmin(userId, clubId);
+    if (!isAdmin) {
+      throw new ForbiddenException('You can only manage your own club');
+    }
+  }
+
+  async getClubAdminEmails(clubId: string): Promise<string[]> {
+    const admins = await this.em.find(
+      ClubMembership,
+      {
+        club: { id: clubId },
+        role: ClubMembershipRole.ADMIN,
+        status: ClubMembershipStatus.APPROVED,
+      },
+      { populate: ['user'] },
+    );
+    return admins.map((admin) => admin.user.email).filter(Boolean);
   }
 
   async isClubAdmin(userId: string, clubId: string): Promise<boolean> {

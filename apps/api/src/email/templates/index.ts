@@ -25,3 +25,9 @@ export { getFederationClubJoinedContent } from './federation-club-joined.templat
 export type { FederationClubJoinedContentParams } from './federation-club-joined.template';
 export { getFederationClubRemovedContent } from './federation-club-removed.template';
 export type { FederationClubRemovedContentParams } from './federation-club-removed.template';
+export { getClubJoinRequestNotificationContent } from './club-join-request-notification.template';
+export type { ClubJoinRequestNotificationParams } from './club-join-request-notification.template';
+export { getClubJoinRequestApprovedContent } from './club-join-request-approved.template';
+export type { ClubJoinRequestApprovedParams } from './club-join-request-approved.template';
+export { getClubJoinRequestRejectedContent } from './club-join-request-rejected.template';
+export type { ClubJoinRequestRejectedParams } from './club-join-request-rejected.template';
