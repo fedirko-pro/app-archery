@@ -209,6 +209,38 @@
     "personalBest": {
       "title": "Persönliche Bestleistung",
       "description": "Erzielen Sie einen neuen persönlichen Bestwert im Wettkampf"
+    },
+    "distance10km": {
+      "title": "Platzgeher",
+      "description": "Legen Sie 10 km zu Ihren Zielen und zurück zu Fuß zurück"
+    },
+    "distanceMarathon": {
+      "title": "Marathonläufer",
+      "description": "Legen Sie einen Marathon (42,195 km) zu Ihren Zielen und zurück zurück"
+    },
+    "distance250km": {
+      "title": "Wegbereiter",
+      "description": "Legen Sie 250 km zu Ihren Zielen und zurück zu Fuß zurück"
+    },
+    "distanceThereAndBack": {
+      "title": "Hin und wieder zurück",
+      "description": "Legen Sie 3.000 km zurück — Bilbos Hin- und Rückweg zum Einsamen Berg"
+    },
+    "lift1t": {
+      "title": "Eiserne Arme",
+      "description": "Ziehen Sie insgesamt 1.000 kg (1 Tonne)"
+    },
+    "liftElephant": {
+      "title": "Heb den Elefanten",
+      "description": "Ziehen Sie insgesamt 6.000 kg — das Gewicht eines afrikanischen Elefanten"
+    },
+    "liftBlueWhale": {
+      "title": "Heb den Blauwal",
+      "description": "Ziehen Sie insgesamt 150.000 kg — das Gewicht eines Blauwals"
+    },
+    "liftKiloton": {
+      "title": "Kilotonnen-Schütze",
+      "description": "Ziehen Sie insgesamt 1.000.000 kg (1.000 Tonnen)"
     }
   },
   "progressShare": {
@@ -704,7 +736,14 @@
     "streak": "Trainingsserie",
     "streakWeeks": "{{count}} Wochen",
     "totalArrows": "Gesamte Pfeile",
+    "latestAchievement": "Neuester Erfolg",
+    "viewAchievements": "Erfolge anzeigen",
     "shareText": "{{name}} auf Sokil"
+  },
+  "userAchievements": {
+    "title": "Erfolge von {{name}}",
+    "backToProfile": "Zurück zum Profil",
+    "archer": "Bogenschütze"
   },
   "achievementShare": {
     "notFoundTitle": "Erfolg nicht verfügbar",
@@ -810,6 +849,10 @@
   "profile": {
     "joined": "Beigetreten",
     "recentlyJoined": "Kürzlich beigetreten",
+    "progressTitle": "Ihr Fortschritt",
+    "latestAchievement": "Neuester Erfolg",
+    "viewAllAchievements": "Alle Erfolge anzeigen ({{earned}}/{{total}})",
+    "noAchievementsYet": "Noch keine Erfolge freigeschaltet",
     "accountInfo": "Konto",
     "signInMethod": "Anmeldemethode",
     "signedInWithGoogle": "Mit Google angemeldet",
@@ -947,6 +990,7 @@
       "activity": "Aktivität",
       "arrows": "Abgeschossene Pfeile",
       "distance": "Zurückgelegte Distanz",
+      "lifted": "Gehobenes Gewicht",
       "habits": "Trainingsgewohnheiten",
       "tournaments": "Turniere",
       "equipment": "Leistung nach Ausrüstung",
@@ -961,6 +1005,8 @@
     "thisYear": "Dieses Jahr",
     "total": "Gesamtzeit",
     "meters": "Meter",
+    "totalLifted": "Insgesamt gehoben",
+    "kilograms": "Kilogramm",
     "avgShotsPerSession": "Ø Schüsse / Sitzung",
     "topDistance": "Meist trainierte Distanz",
     "topTargetType": "Meistbenutztes Ziel",

@@ -454,6 +454,10 @@
   "profile": {
     "joined": "Iscritto",
     "recentlyJoined": "Iscritto di recente",
+    "progressTitle": "I tuoi progressi",
+    "latestAchievement": "Ultimo traguardo",
+    "viewAllAchievements": "Vedi tutti i traguardi ({{earned}}/{{total}})",
+    "noAchievementsYet": "Nessun traguardo sbloccato",
     "accountInfo": "Account",
     "signInMethod": "Metodo di accesso",
     "signedInWithGoogle": "Accedi con Google",
@@ -656,6 +660,7 @@
       "activity": "Attività",
       "arrows": "Frecce Sparate",
       "distance": "Distanza Percorsa",
+      "lifted": "Peso Sollevato",
       "habits": "Abitudini di Allenamento",
       "tournaments": "Tornei",
       "equipment": "Prestazioni per attrezzatura"
@@ -669,6 +674,8 @@
     "thisYear": "Quest'anno",
     "total": "Totale",
     "meters": "metri",
+    "totalLifted": "Totale sollevato",
+    "kilograms": "chilogrammi",
     "avgShotsPerSession": "Media frecce / sessione",
     "topDistance": "Distanza più allenata",
     "topTargetType": "Bersaglio più usato",

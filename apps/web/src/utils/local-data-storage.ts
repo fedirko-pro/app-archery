@@ -21,7 +21,7 @@ export interface LocalEquipmentSet {
   bowType?: string;
   manufacturer?: string;
   model?: string;
-  drawWeight?: string;
+  drawWeight?: number;
   arrowLength?: string;
   arrowSpine?: string;
   arrowWeight?: string;
@@ -57,6 +57,22 @@ function generateId(): string {
   return `local_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
 }
 
+/**
+ * Draw weight is stored as a number in pounds. Older records may hold a string
+ * such as "40 lbs"; this best-effort extracts the leading number from those.
+ */
+export function coerceDrawWeightLbs(raw: unknown): number | undefined {
+  if (typeof raw === 'number') return Number.isFinite(raw) ? raw : undefined;
+  if (typeof raw === 'string') {
+    const match = raw.replace(',', '.').match(/-?\d+(\.\d+)?/);
+    if (match) {
+      const value = Number.parseFloat(match[0]);
+      return Number.isFinite(value) ? value : undefined;
+    }
+  }
+  return undefined;
+}
+
 function readStorage<T>(key: string): T[] {
   try {
     const raw = localStorage.getItem(key);
@@ -78,7 +94,10 @@ function writeStorage<T>(key: string, data: T[]): void {
 // Equipment Sets
 
 export function getEquipmentSets(): LocalEquipmentSet[] {
-  return readStorage<LocalEquipmentSet>(STORAGE_KEYS.EQUIPMENT_SETS);
+  return readStorage<LocalEquipmentSet>(STORAGE_KEYS.EQUIPMENT_SETS).map((set) => ({
+    ...set,
+    drawWeight: coerceDrawWeightLbs(set.drawWeight),
+  }));
 }
 
 export function saveEquipmentSet(
@@ -182,7 +201,7 @@ export function mergeServerEquipmentSets(
     bowType?: string;
     manufacturer?: string;
     model?: string;
-    drawWeight?: string;
+    drawWeight?: number | string;
     arrowLength?: string;
     arrowSpine?: string;
     arrowWeight?: string;
@@ -210,7 +229,7 @@ export function mergeServerEquipmentSets(
         bowType: serverSet.bowType,
         manufacturer: serverSet.manufacturer,
         model: serverSet.model,
-        drawWeight: serverSet.drawWeight,
+        drawWeight: coerceDrawWeightLbs(serverSet.drawWeight),
         arrowLength: serverSet.arrowLength,
         arrowSpine: serverSet.arrowSpine,
         arrowWeight: serverSet.arrowWeight,

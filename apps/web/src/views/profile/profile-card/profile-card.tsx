@@ -33,6 +33,7 @@ import {
   getAvatarInitials,
 } from '../../../utils/placeholder-images';
 import { getOrigin } from '../../../utils/user-display';
+import ProfileProgressSnapshot from '../profile-progress-snapshot';
 import type { ProfileData } from '../types';
 import PrivacyAwareShareMenu from '@/components/share/PrivacyAwareShareMenu';
 
@@ -157,6 +158,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
             />
           </div>
         </Box>
+        {!isAdminView && <ProfileProgressSnapshot user={user} />}
         {!isEditing ? (
           <Paper variant="outlined" sx={{ mt: 2, width: '100%', overflow: 'hidden' }}>
             <Typography

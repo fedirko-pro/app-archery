@@ -62,6 +62,8 @@ function buildLocalSnapshot(
     scoredSessions,
     equipmentSetsUsed: equipmentCount,
     profileComplete,
+    metersTraveledTotal: stats.metersTraveled.total,
+    kilogramsLifted: stats.kilogramsLifted,
   };
 }
 

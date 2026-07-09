@@ -277,4 +277,37 @@ describe('computeLocalStats', () => {
     expect(stats.byEquipment[0].shots).toBe(100);
     expect(stats.mostUsedEquipment).toBe('My Bow');
   });
+
+  it('computes kilograms lifted from draw weight (pounds -> kg)', () => {
+    const s1 = { ...session('2026-06-15'), equipmentSetId: 'eq1', shotsCount: 100 };
+    const equipmentSets = [
+      {
+        id: 'eq1',
+        isSynced: false,
+        name: '40lb Recurve',
+        drawWeight: 40,
+        createdAt: '2026-01-01',
+        updatedAt: '2026-01-01',
+      },
+    ];
+    // 100 shots * 40 lbs * 0.45359237 kg/lb = 1814.37 -> 1814
+    const stats = computeLocalStats([s1], equipmentSets);
+    expect(stats.kilogramsLifted).toBe(1814);
+  });
+
+  it('counts zero kilograms lifted without an equipment set or draw weight', () => {
+    const noSet = { ...session('2026-06-15'), shotsCount: 100 };
+    const setNoWeight = { ...session('2026-06-16'), equipmentSetId: 'eq1', shotsCount: 100 };
+    const equipmentSets = [
+      {
+        id: 'eq1',
+        isSynced: false,
+        name: 'No weight set',
+        createdAt: '2026-01-01',
+        updatedAt: '2026-01-01',
+      },
+    ];
+    expect(computeLocalStats([noSet], equipmentSets).kilogramsLifted).toBe(0);
+    expect(computeLocalStats([setNoWeight], equipmentSets).kilogramsLifted).toBe(0);
+  });
 });

@@ -199,7 +199,7 @@ const MyEquipmentPage: React.FC = () => {
                       </Box>
                     )}
 
-                    {(set.model || set.drawWeight) && (
+                    {(set.model || set.drawWeight != null) && (
                       <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
                         {set.model && (
                           <Typography variant="body2" color="text.secondary">
@@ -209,11 +209,11 @@ const MyEquipmentPage: React.FC = () => {
                             </Box>
                           </Typography>
                         )}
-                        {set.drawWeight && (
+                        {set.drawWeight != null && (
                           <Typography variant="body2" color="text.secondary">
                             {t('equipment.drawWeight')}:{' '}
                             <Box component="span" fontWeight="bold">
-                              {withUnit(set.drawWeight, 'lbs')}
+                              {`${set.drawWeight} lbs`}
                             </Box>
                           </Typography>
                         )}

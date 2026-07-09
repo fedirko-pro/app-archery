@@ -15,6 +15,7 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 
+import ProfileAchievementsPreview from '../profile/profile-achievements-preview';
 import ShareMenu from '@/components/share/ShareMenu';
 import { useAuth } from '@/contexts/auth-context';
 import apiService from '@/services/api';
@@ -153,6 +154,8 @@ const PublicProfilePage: React.FC = () => {
               </Stack>
             </Box>
           )}
+
+          <ProfileAchievementsPreview mode="public" userId={profile.id} />
         </CardContent>
       </Card>
     </Container>

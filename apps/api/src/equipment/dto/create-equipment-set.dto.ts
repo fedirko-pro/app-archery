@@ -3,6 +3,8 @@ import {
   IsNotEmpty,
   IsOptional,
   IsArray,
+  IsNumber,
+  Min,
   ValidateNested,
 } from 'class-validator';
 import { Type } from 'class-transformer';
@@ -33,9 +35,10 @@ export class CreateEquipmentSetDto {
   @IsOptional()
   model?: string;
 
-  @IsString()
+  @IsNumber()
+  @Min(0)
   @IsOptional()
-  drawWeight?: string;
+  drawWeight?: number;
 
   @IsString()
   @IsOptional()

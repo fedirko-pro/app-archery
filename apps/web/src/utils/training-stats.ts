@@ -1,3 +1,5 @@
+import { lbsToKg } from '@sokil/shared-types';
+
 import type { MonthlyDataPoint } from '../services/types';
 import { resolveEquipmentSet } from './equipment-utils';
 import type { LocalEquipmentSet, LocalTrainingSession } from './local-data-storage';
@@ -35,6 +37,7 @@ export interface LocalTrainingStats {
   bestStreakWeeks: number;
   shots: { total: number; thisWeek: number; thisMonth: number; thisYear: number };
   metersTraveled: { total: number; thisMonth: number; thisYear: number };
+  kilogramsLifted: number;
   avgShotsPerSession: number;
   mostUsedDistance: string | null;
   mostUsedTargetType: string | null;
@@ -278,6 +281,26 @@ function computeEquipmentStats(
   return { byEquipment, mostUsedEquipment };
 }
 
+/**
+ * Total kilograms drawn: each shot lifts the bow's draw weight once.
+ * Draw weight is stored in pounds; converted to kg. Sessions with no equipment
+ * set or no draw weight contribute 0.
+ */
+function computeKilogramsLifted(
+  sessions: LocalTrainingSession[],
+  equipmentSets: LocalEquipmentSet[],
+): number {
+  let total = 0;
+  for (const session of sessions) {
+    const shots = session.shotsCount ?? 0;
+    if (shots <= 0) continue;
+    const set = resolveEquipmentSet(session.equipmentSetId, equipmentSets);
+    const kg = lbsToKg(set?.drawWeight);
+    if (kg > 0) total += shots * kg;
+  }
+  return Math.round(total);
+}
+
 function computeScoringStats(sessions: LocalTrainingSession[]): ScoringStats {
   const scored = sessions.filter((s) => s.scoreTotal !== undefined && s.scoreTotal !== null);
   if (scored.length === 0) {
@@ -362,6 +385,7 @@ export function computeLocalStats(
       thisMonth: Math.round(acc.metersMonth),
       thisYear: Math.round(acc.metersYear),
     },
+    kilogramsLifted: computeKilogramsLifted(finishedSessions, equipmentSets),
     avgShotsPerSession:
       finishedSessions.length > 0 ? Math.round(acc.totalShots / finishedSessions.length) : 0,
     mostUsedDistance: getMostFrequent(acc.distanceCount),

@@ -44,7 +44,24 @@ export interface UseAchievementsResult {
   isNewAchievement: (id: string, earnedAt?: string | null) => boolean;
 }
 
-export function useAchievements(): UseAchievementsResult {
+export interface UseAchievementsOptions {
+  /** When false, returns an inert result without fetching or computing. Default true. */
+  enabled?: boolean;
+  /** When false, uses locally computed achievements only (no API call). Default true. */
+  serverFetch?: boolean;
+}
+
+const EMPTY_ACHIEVEMENTS: AchievementsListDto = {
+  achievements: [],
+  earnedCount: 0,
+  totalCount: 0,
+  percent: 0,
+  byRarity: { common: 0, rare: 0, epic: 0, legendary: 0 },
+};
+
+export function useAchievements(options?: UseAchievementsOptions): UseAchievementsResult {
+  const enabled = options?.enabled ?? true;
+  const serverFetch = options?.serverFetch ?? true;
   const { isAuthenticated, user } = useAuth();
   const { trainingSessions, equipmentSets } = useLocalData();
   const [serverData, setServerData] = useState<AchievementsListDto | null>(null);
@@ -67,7 +84,7 @@ export function useAchievements(): UseAchievementsResult {
   );
 
   const fetchServer = useCallback(async () => {
-    if (!isAuthenticated) return;
+    if (!enabled || !serverFetch || !isAuthenticated) return;
     setLoading(true);
     setError(null);
     try {
@@ -78,17 +95,22 @@ export function useAchievements(): UseAchievementsResult {
     } finally {
       setLoading(false);
     }
-  }, [isAuthenticated]);
+  }, [enabled, serverFetch, isAuthenticated]);
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (!enabled || !serverFetch || !isAuthenticated) {
       setServerData(null);
+      setLoading(false);
       return;
     }
     void fetchServer();
-  }, [isAuthenticated, fetchServer]);
+  }, [enabled, serverFetch, isAuthenticated, fetchServer]);
 
-  const data = isAuthenticated && serverData ? serverData : localData;
+  const data = !enabled
+    ? EMPTY_ACHIEVEMENTS
+    : isAuthenticated && serverFetch && serverData
+      ? serverData
+      : localData;
 
   const earned = useMemo(() => data.achievements.filter((a) => a.earned), [data.achievements]);
 

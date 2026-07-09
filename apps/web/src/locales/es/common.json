@@ -453,6 +453,10 @@
   "profile": {
     "joined": "Se unió",
     "recentlyJoined": "Se unió recientemente",
+    "progressTitle": "Tu progreso",
+    "latestAchievement": "Último logro",
+    "viewAllAchievements": "Ver todos los logros ({{earned}}/{{total}})",
+    "noAchievementsYet": "Aún no hay logros desbloqueados",
     "accountInfo": "Cuenta",
     "signInMethod": "Método de inicio de sesión",
     "signedInWithGoogle": "Inició sesión con Google",
@@ -655,6 +659,7 @@
       "activity": "Actividad",
       "arrows": "Flechas Disparadas",
       "distance": "Distancia Recorrida",
+      "lifted": "Peso Levantado",
       "habits": "Hábitos de Entrenamiento",
       "tournaments": "Torneos"
     },
@@ -667,6 +672,8 @@
     "thisYear": "Este año",
     "total": "Total",
     "meters": "metros",
+    "totalLifted": "Total levantado",
+    "kilograms": "kilogramos",
     "avgShotsPerSession": "Media de flechas / sesión",
     "topDistance": "Distancia más entrenada",
     "topTargetType": "Diana más usada",

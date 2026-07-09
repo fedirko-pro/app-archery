@@ -209,6 +209,38 @@
     "personalBest": {
       "title": "Personal Best",
       "description": "Set a new personal best score in competition"
+    },
+    "distance10km": {
+      "title": "Range Walker",
+      "description": "Walk 10 km to and from your targets"
+    },
+    "distanceMarathon": {
+      "title": "Marathoner",
+      "description": "Walk a marathon (42.195 km) to and from your targets"
+    },
+    "distance250km": {
+      "title": "Trailblazer",
+      "description": "Walk 250 km to and from your targets"
+    },
+    "distanceThereAndBack": {
+      "title": "There and Back Again",
+      "description": "Walk 3,000 km — Bilbo's round trip to the Lonely Mountain and back"
+    },
+    "lift1t": {
+      "title": "Iron Arms",
+      "description": "Draw a cumulative 1,000 kg (1 tonne)"
+    },
+    "liftElephant": {
+      "title": "Lift the Elephant",
+      "description": "Draw a cumulative 6,000 kg — the weight of an African elephant"
+    },
+    "liftBlueWhale": {
+      "title": "Lift the Blue Whale",
+      "description": "Draw a cumulative 150,000 kg — the weight of a blue whale"
+    },
+    "liftKiloton": {
+      "title": "Kiloton Archer",
+      "description": "Draw a cumulative 1,000,000 kg (1,000 tonnes)"
     }
   },
   "progressShare": {
@@ -704,7 +736,14 @@
     "streak": "Training streak",
     "streakWeeks": "{{count}} weeks",
     "totalArrows": "Total arrows",
+    "latestAchievement": "Latest achievement",
+    "viewAchievements": "View achievements",
     "shareText": "{{name}} on Sokil"
+  },
+  "userAchievements": {
+    "title": "{{name}}'s achievements",
+    "backToProfile": "Back to profile",
+    "archer": "Archer"
   },
   "achievementShare": {
     "notFoundTitle": "Achievement not available",
@@ -810,6 +849,10 @@
   "profile": {
     "joined": "Joined",
     "recentlyJoined": "Recently joined",
+    "progressTitle": "Your progress",
+    "latestAchievement": "Latest achievement",
+    "viewAllAchievements": "View all achievements ({{earned}}/{{total}})",
+    "noAchievementsYet": "No achievements unlocked yet",
     "accountInfo": "Account",
     "signInMethod": "Sign-in method",
     "signedInWithGoogle": "Signed in with Google",
@@ -947,6 +990,7 @@
       "activity": "Activity",
       "arrows": "Arrows Fired",
       "distance": "Distance Traveled",
+      "lifted": "Weight Lifted",
       "habits": "Training Habits",
       "tournaments": "Tournaments",
       "equipment": "Performance by Equipment",
@@ -961,6 +1005,8 @@
     "thisYear": "This year",
     "total": "All time",
     "meters": "meters",
+    "totalLifted": "Total lifted",
+    "kilograms": "kilograms",
     "avgShotsPerSession": "Avg shots / session",
     "topDistance": "Most trained distance",
     "topTargetType": "Most used target",

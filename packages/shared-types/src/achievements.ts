@@ -13,7 +13,17 @@ export type AchievementMetric =
   | 'applicationsApproved'
   | 'scoredSessions'
   | 'equipmentSetsUsed'
-  | 'profileComplete';
+  | 'profileComplete'
+  | 'metersTraveledTotal'
+  | 'kilogramsLifted';
+
+/** Pounds to kilograms conversion factor. */
+export const LB_TO_KG = 0.45359237;
+
+/** Convert a draw weight in pounds to kilograms. Returns 0 when undefined. */
+export function lbsToKg(lbs?: number | null): number {
+  return typeof lbs === 'number' && Number.isFinite(lbs) ? lbs * LB_TO_KG : 0;
+}
 
 export interface AchievementCriteria {
   metric: AchievementMetric;
@@ -42,6 +52,8 @@ export interface AchievementStatsSnapshot {
   scoredSessions: number;
   equipmentSetsUsed: number;
   profileComplete: boolean;
+  metersTraveledTotal: number;
+  kilogramsLifted: number;
 }
 
 export const ACHIEVEMENT_CATALOG: AchievementDef[] = [
@@ -289,6 +301,88 @@ export const ACHIEVEMENT_CATALOG: AchievementDef[] = [
     descriptionKey: 'achievements.personalBest.description',
     type: 'event',
   },
+  // Volume — meters traveled (walking to targets and back)
+  {
+    id: 'distance-10km',
+    category: 'volume',
+    rarity: 'common',
+    icon: '🥾',
+    titleKey: 'achievements.distance10km.title',
+    descriptionKey: 'achievements.distance10km.description',
+    type: 'computed',
+    criteria: { metric: 'metersTraveledTotal', threshold: 10_000 },
+  },
+  {
+    id: 'distance-marathon',
+    category: 'volume',
+    rarity: 'rare',
+    icon: '🥾',
+    titleKey: 'achievements.distanceMarathon.title',
+    descriptionKey: 'achievements.distanceMarathon.description',
+    type: 'computed',
+    criteria: { metric: 'metersTraveledTotal', threshold: 42_195 },
+  },
+  {
+    id: 'distance-250km',
+    category: 'volume',
+    rarity: 'epic',
+    icon: '🥾',
+    titleKey: 'achievements.distance250km.title',
+    descriptionKey: 'achievements.distance250km.description',
+    type: 'computed',
+    criteria: { metric: 'metersTraveledTotal', threshold: 250_000 },
+  },
+  {
+    id: 'distance-there-and-back',
+    category: 'volume',
+    rarity: 'legendary',
+    icon: '🗺️',
+    titleKey: 'achievements.distanceThereAndBack.title',
+    descriptionKey: 'achievements.distanceThereAndBack.description',
+    type: 'computed',
+    criteria: { metric: 'metersTraveledTotal', threshold: 3_000_000 },
+  },
+  // Volume — kilograms lifted (draw weight per shot)
+  {
+    id: 'lift-1t',
+    category: 'volume',
+    rarity: 'common',
+    icon: '🏋️',
+    titleKey: 'achievements.lift1t.title',
+    descriptionKey: 'achievements.lift1t.description',
+    type: 'computed',
+    criteria: { metric: 'kilogramsLifted', threshold: 1_000 },
+  },
+  {
+    id: 'lift-elephant',
+    category: 'volume',
+    rarity: 'rare',
+    icon: '🐘',
+    titleKey: 'achievements.liftElephant.title',
+    descriptionKey: 'achievements.liftElephant.description',
+    type: 'computed',
+    criteria: { metric: 'kilogramsLifted', threshold: 6_000 },
+  },
+  {
+    id: 'lift-blue-whale',
+    category: 'volume',
+    rarity: 'epic',
+    icon: '🐋',
+    titleKey: 'achievements.liftBlueWhale.title',
+    descriptionKey: 'achievements.liftBlueWhale.description',
+    type: 'computed',
+    criteria: { metric: 'kilogramsLifted', threshold: 150_000 },
+  },
+  {
+    id: 'lift-kiloton',
+    category: 'volume',
+    rarity: 'legendary',
+    icon: '🏋️',
+    titleKey: 'achievements.liftKiloton.title',
+    descriptionKey: 'achievements.liftKiloton.description',
+    type: 'computed',
+    criteria: { metric: 'kilogramsLifted', threshold: 1_000_000 },
+  },
 ];
 
 export const ACHIEVEMENT_CATALOG_BY_ID: Record<string, AchievementDef> = Object.fromEntries(
@@ -328,6 +422,10 @@ function getMetricValue(snapshot: AchievementStatsSnapshot, metric: AchievementM
       return snapshot.equipmentSetsUsed;
     case 'profileComplete':
       return snapshot.profileComplete ? 1 : 0;
+    case 'metersTraveledTotal':
+      return snapshot.metersTraveledTotal;
+    case 'kilogramsLifted':
+      return snapshot.kilogramsLifted;
     default:
       return 0;
   }

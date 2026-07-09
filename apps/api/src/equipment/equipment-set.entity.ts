@@ -22,8 +22,8 @@ export class EquipmentSet {
   @Property({ nullable: true })
   model?: string;
 
-  @Property({ nullable: true })
-  drawWeight?: string;
+  @Property({ columnType: 'numeric', nullable: true })
+  drawWeight?: number;
 
   @Property({ nullable: true })
   arrowLength?: string;

@@ -57,6 +57,7 @@ import TournamentFeedback from '../../views/tournament/tournament-feedback/tourn
 import TournamentList from '../../views/tournament/tournament-list/tournament-list';
 import UserApplications from '../../views/tournament/user-applications/user-applications';
 import Training from '../../views/Trainings';
+import UserAchievementsPage from '../../views/user-achievements/user-achievements';
 
 function DefaultLandingRedirect() {
   const { user, loading } = useAuth();
@@ -103,6 +104,7 @@ function Content() {
           />
           <Route path="achievements" element={<Achievements />} />
           <Route path="archers/:userId" element={<PublicProfilePage />} />
+          <Route path="archers/:userId/achievements" element={<UserAchievementsPage />} />
           <Route
             path="archers/:userId/achievements/:achievementId"
             element={<AchievementSharePage />}

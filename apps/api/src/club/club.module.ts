@@ -17,7 +17,7 @@ import { EmailModule } from '../email/email.module';
     UploadModule,
     EmailModule,
   ],
-  controllers: [ClubController, ClubMembershipController],
+  controllers: [ClubMembershipController, ClubController],
   providers: [ClubService, ClubMembershipService, ClubInvitationService],
   exports: [ClubService, ClubMembershipService],
 })

@@ -4,6 +4,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
@@ -32,7 +33,9 @@ const EquipmentSetForm: React.FC<EquipmentSetFormProps> = ({
   const [bowType, setBowType] = useState(initial.bowType ?? '');
   const [manufacturer, setManufacturer] = useState(initial.manufacturer ?? '');
   const [model, setModel] = useState(initial.model ?? '');
-  const [drawWeight, setDrawWeight] = useState(initial.drawWeight ?? '');
+  const [drawWeight, setDrawWeight] = useState(
+    initial.drawWeight == null ? '' : String(initial.drawWeight),
+  );
   const [arrowLength, setArrowLength] = useState(initial.arrowLength ?? '');
   const [arrowSpine, setArrowSpine] = useState(initial.arrowSpine ?? '');
   const [arrowWeight, setArrowWeight] = useState(initial.arrowWeight ?? '');
@@ -67,7 +70,7 @@ const EquipmentSetForm: React.FC<EquipmentSetFormProps> = ({
       bowType: bowType || undefined,
       manufacturer: manufacturer.trim() || undefined,
       model: model.trim() || undefined,
-      drawWeight: drawWeight.trim() || undefined,
+      drawWeight: drawWeight.trim() ? Number.parseFloat(drawWeight) : undefined,
       arrowLength: arrowLength.trim() || undefined,
       arrowSpine: arrowSpine.trim() || undefined,
       arrowWeight: arrowWeight.trim() || undefined,
@@ -128,9 +131,16 @@ const EquipmentSetForm: React.FC<EquipmentSetFormProps> = ({
         label={t('equipment.drawWeight')}
         value={drawWeight}
         onChange={(e) => setDrawWeight(e.target.value)}
+        type="number"
         fullWidth
         sx={{ mb: 2 }}
-        placeholder="e.g. 40 lbs"
+        placeholder="e.g. 40"
+        slotProps={{
+          input: {
+            endAdornment: <InputAdornment position="end">lbs</InputAdornment>,
+          },
+          htmlInput: { min: 0, step: 1, inputMode: 'decimal' },
+        }}
       />
 
       <Divider sx={{ my: 2 }} />

@@ -5,6 +5,7 @@ import {
   AchievementStatsSnapshot,
   evaluateComputedProgress,
   isValidAchievementId,
+  lbsToKg,
   summarizeCompletion,
 } from '@sokil/shared-types';
 import { UserAchievement } from './entity/user-achievement.entity';
@@ -48,6 +49,17 @@ export class AchievementsService {
     const equipmentSets = await this.equipmentService.findAllForUser(userId);
     const equipmentCount = Math.max(equipmentSets.length, equipmentSetIds.size);
 
+    const drawWeightById = new Map(equipmentSets.map((set) => [set.id, set.drawWeight]));
+    let kilogramsLifted = 0;
+    for (const s of finishedSessions) {
+      const shots = s.shotsCount ?? 0;
+      if (shots <= 0 || !s.equipmentSetId) continue;
+      // numeric columns may be returned as strings by the driver
+      const rawWeight = drawWeightById.get(s.equipmentSetId);
+      const kg = lbsToKg(rawWeight == null ? undefined : Number(rawWeight));
+      if (kg > 0) kilogramsLifted += shots * kg;
+    }
+
     const profileComplete =
       !!user.onboardingCompletedAt ||
       (!!user.firstName && (!!user.location || !!user.club || !!user.bio || !!user.picture));
@@ -63,6 +75,8 @@ export class AchievementsService {
       scoredSessions,
       equipmentSetsUsed: equipmentCount,
       profileComplete,
+      metersTraveledTotal: stats.metersTraveled.total,
+      kilogramsLifted: Math.round(kilogramsLifted),
     };
   }
 

@@ -46,7 +46,7 @@ export interface EquipmentSetDto {
   bowType?: string;
   manufacturer?: string;
   model?: string;
-  drawWeight?: string;
+  drawWeight?: number;
   arrowLength?: string;
   arrowSpine?: string;
   arrowWeight?: string;
@@ -61,7 +61,7 @@ export interface CreateEquipmentSetDto {
   bowType?: string;
   manufacturer?: string;
   model?: string;
-  drawWeight?: string;
+  drawWeight?: number;
   arrowLength?: string;
   arrowSpine?: string;
   arrowWeight?: string;

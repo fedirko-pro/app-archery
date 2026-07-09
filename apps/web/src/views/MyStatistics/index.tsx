@@ -292,6 +292,18 @@ const MyStatisticsPage: React.FC = () => {
         ))}
       </Grid>
 
+      {/* Weight lifted */}
+      <SectionTitle>{t('statistics.sections.lifted')}</SectionTitle>
+      <Grid container spacing={2}>
+        <Grid size={{ xs: 12, sm: 4 }}>
+          <StatCard
+            label={t('statistics.totalLifted')}
+            value={val(stats.kilogramsLifted)}
+            subtitle={t('statistics.kilograms')}
+          />
+        </Grid>
+      </Grid>
+
       {/* Habits + Tournaments */}
       <Grid container spacing={2} sx={{ mt: 0 }}>
         {/* Training habits */}

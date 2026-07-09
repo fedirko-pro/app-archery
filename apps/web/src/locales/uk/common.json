@@ -494,6 +494,10 @@
     "editProfile": "Редагувати профіль",
     "joined": "Приєднався",
     "recentlyJoined": "Нещодавно приєднався",
+    "progressTitle": "Ваш прогрес",
+    "latestAchievement": "Останнє досягнення",
+    "viewAllAchievements": "Усі досягнення ({{earned}}/{{total}})",
+    "noAchievementsYet": "Ще немає розблокованих досягнень",
     "emailImmutable": "Email не можна змінити",
     "bioPlaceholder": "Розкажіть про себе...",
     "locationPlaceholder": "Місто, Країна",
@@ -585,7 +589,7 @@
     "crossbow": "Арбалет",
     "manufacturer": "Виробник",
     "model": "Модель",
-    "drawWeight": "Сила натягу",
+    "drawWeight": "Сила натягу (lbs)",
     "arrowGroup": "Стріла",
     "arrowLength": "Довжина стріли",
     "arrowSpine": "Жорсткість (spine)",
@@ -659,7 +663,14 @@
     "streak": "Серія тренувань",
     "streakWeeks": "{{count}} тиж.",
     "totalArrows": "Усього стріл",
+    "latestAchievement": "Останнє досягнення",
+    "viewAchievements": "Переглянути досягнення",
     "shareText": "{{name}} у Sokil"
+  },
+  "userAchievements": {
+    "title": "Досягнення {{name}}",
+    "backToProfile": "Назад до профілю",
+    "archer": "Лучник"
   },
   "achievementShare": {
     "notFoundTitle": "Досягнення недоступне",
@@ -802,6 +813,7 @@
       "activity": "Активність",
       "arrows": "Випущені стріли",
       "distance": "Пройдена відстань",
+      "lifted": "Піднята вага",
       "habits": "Звички тренувань",
       "tournaments": "Турніри",
       "equipment": "Результати за спорядженням"
@@ -815,6 +827,8 @@
     "thisYear": "Цей рік",
     "total": "Всього",
     "meters": "метрів",
+    "totalLifted": "Всього піднято",
+    "kilograms": "кілограмів",
     "avgShotsPerSession": "Сер. стріл / тренування",
     "topDistance": "Основна дистанція",
     "topTargetType": "Основний тип мішені",
