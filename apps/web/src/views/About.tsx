@@ -2,31 +2,75 @@ import './About.scss';
 
 import { useTranslation } from 'react-i18next';
 
+const FeatureItem = ({ emoji, label }: { emoji?: string; label: string }) => {
+  const dashIdx = label.indexOf(' - ');
+  const prefix = emoji ? `${emoji} ` : '';
+  if (dashIdx === -1)
+    return (
+      <strong>
+        {prefix}
+        {label}
+      </strong>
+    );
+  return (
+    <>
+      <strong>
+        {prefix}
+        {label.slice(0, dashIdx)}
+      </strong>
+      {label.slice(dashIdx)}
+    </>
+  );
+};
+
 const About = () => {
   const { t } = useTranslation('common');
+  const introParagraphs = t('pages.about.intro').split('\n\n');
   return (
     <section className="about-page">
       <div className="container">
         <h2>{t('pages.about.title')}</h2>
-        <p className="about-intro">{t('pages.about.intro')}</p>
+        <div className="about-intro">
+          {introParagraphs.map((para, i) =>
+            i === introParagraphs.length - 1 ? (
+              <p key={i}>
+                <strong>{para}</strong>
+              </p>
+            ) : (
+              <p key={i}>{para}</p>
+            ),
+          )}
+        </div>
 
         <div className="features-section">
           <h3>{t('pages.about.archerTitle')}</h3>
           <ul className="features-list">
             <li>
-              <strong>🏋️ {t('pages.about.current.trainingLog')}</strong>
+              <FeatureItem emoji="🏠" label={t('pages.about.current.home')} />
             </li>
             <li>
-              <strong>🎽 {t('pages.about.current.equipment')}</strong>
+              <FeatureItem emoji="🏋️" label={t('pages.about.current.trainingLog')} />
             </li>
             <li>
-              <strong>📈 {t('pages.about.current.statistics')}</strong>
+              <FeatureItem emoji="🎽" label={t('pages.about.current.equipment')} />
             </li>
             <li>
-              <strong>🏆 {t('pages.about.current.achievements')}</strong>
+              <FeatureItem emoji="📈" label={t('pages.about.current.statistics')} />
             </li>
             <li>
-              <strong>👤 {t('pages.about.current.profiles')}</strong>
+              <FeatureItem emoji="🏆" label={t('pages.about.current.achievements')} />
+            </li>
+            <li>
+              <FeatureItem emoji="🎮" label={t('pages.about.current.gamification')} />
+            </li>
+            <li>
+              <FeatureItem emoji="👤" label={t('pages.about.current.profiles')} />
+            </li>
+            <li>
+              <FeatureItem emoji="🔗" label={t('pages.about.current.publicProfiles')} />
+            </li>
+            <li>
+              <FeatureItem emoji="📊" label={t('pages.about.current.progressSnapshot')} />
             </li>
           </ul>
         </div>
@@ -35,28 +79,31 @@ const About = () => {
           <h3>{t('pages.about.federationTitle')}</h3>
           <ul className="features-list">
             <li>
-              <strong>🏹 {t('pages.about.current.tournaments')}</strong>
+              <FeatureItem emoji="🏹" label={t('pages.about.current.tournaments')} />
             </li>
             <li>
-              <strong>📝 {t('pages.about.current.applications')}</strong>
+              <FeatureItem emoji="📝" label={t('pages.about.current.applications')} />
             </li>
             <li>
-              <strong>👥 {t('pages.about.current.patrols')}</strong>
+              <FeatureItem emoji="👥" label={t('pages.about.current.patrols')} />
             </li>
             <li>
-              <strong>⚙️ {t('pages.about.current.admin')}</strong>
+              <FeatureItem emoji="⭐" label={t('pages.about.current.tournamentFeedback')} />
             </li>
             <li>
-              <strong>🎯 {t('pages.about.current.categories')}</strong>
+              <FeatureItem emoji="⚙️" label={t('pages.about.current.admin')} />
             </li>
             <li>
-              <strong>🏢 {t('pages.about.current.clubs')}</strong>
+              <FeatureItem emoji="🎯" label={t('pages.about.current.categories')} />
             </li>
             <li>
-              <strong>📊 {t('pages.about.current.divisions')}</strong>
+              <FeatureItem emoji="🏢" label={t('pages.about.current.clubs')} />
             </li>
             <li>
-              <strong>📜 {t('pages.about.current.rules')}</strong>
+              <FeatureItem emoji="📋" label={t('pages.about.current.divisions')} />
+            </li>
+            <li>
+              <FeatureItem emoji="📜" label={t('pages.about.current.rules')} />
             </li>
           </ul>
         </div>
@@ -65,22 +112,25 @@ const About = () => {
           <h3>{t('pages.about.platformTitle')}</h3>
           <ul className="features-list">
             <li>
-              <strong>🔐 {t('pages.about.current.auth')}</strong>
+              <FeatureItem emoji="🔐" label={t('pages.about.current.auth')} />
             </li>
             <li>
-              <strong>🛡️ {t('pages.about.current.security')}</strong>
+              <FeatureItem emoji="🛡️" label={t('pages.about.current.security')} />
             </li>
             <li>
-              <strong>📱 {t('pages.about.current.pwa')}</strong>
+              <FeatureItem emoji="🚀" label={t('pages.about.current.onboarding')} />
             </li>
             <li>
-              <strong>🌍 {t('pages.about.current.multilang')}</strong>
+              <FeatureItem emoji="📱" label={t('pages.about.current.pwa')} />
             </li>
             <li>
-              <strong>🔄 {t('pages.about.current.converter')}</strong>
+              <FeatureItem emoji="🌍" label={t('pages.about.current.multilang')} />
             </li>
             <li>
-              <strong>📎 {t('pages.about.current.uploads')}</strong>
+              <FeatureItem emoji="🔄" label={t('pages.about.current.converter')} />
+            </li>
+            <li>
+              <FeatureItem emoji="📎" label={t('pages.about.current.uploads')} />
             </li>
           </ul>
         </div>
@@ -88,14 +138,30 @@ const About = () => {
         <div className="features-section">
           <h3>{t('pages.about.plannedTitle')}</h3>
           <ul className="features-list">
-            <li>{t('pages.about.planned.socialSharing')}</li>
-            <li>{t('pages.about.planned.duels')}</li>
-            <li>{t('pages.about.planned.knowledgeBase')}</li>
-            <li>{t('pages.about.planned.payments')}</li>
-            <li>{t('pages.about.planned.competitions')}</li>
-            <li>{t('pages.about.planned.news')}</li>
-            <li>{t('pages.about.planned.calendar')}</li>
-            <li>{t('pages.about.planned.more')}</li>
+            <li>
+              <FeatureItem label={t('pages.about.planned.socialSharing')} />
+            </li>
+            <li>
+              <FeatureItem label={t('pages.about.planned.duels')} />
+            </li>
+            <li>
+              <FeatureItem label={t('pages.about.planned.knowledgeBase')} />
+            </li>
+            <li>
+              <FeatureItem label={t('pages.about.planned.payments')} />
+            </li>
+            <li>
+              <FeatureItem label={t('pages.about.planned.competitions')} />
+            </li>
+            <li>
+              <FeatureItem label={t('pages.about.planned.news')} />
+            </li>
+            <li>
+              <FeatureItem label={t('pages.about.planned.calendar')} />
+            </li>
+            <li>
+              <FeatureItem label={t('pages.about.planned.more')} />
+            </li>
           </ul>
         </div>
 
@@ -126,6 +192,10 @@ const About = () => {
             </li>
           </ul>
         </div>
+        <p className="copyright">
+          © {new Date().getFullYear()}
+          {t('pages.about.copyrightSuffix')}
+        </p>
       </div>
     </section>
   );
