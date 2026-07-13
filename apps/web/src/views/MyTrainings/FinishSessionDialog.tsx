@@ -69,7 +69,7 @@ const FinishSessionDialog: React.FC<FinishSessionDialogProps> = ({ open, session
   return (
     <Dialog open={open} onClose={onClose} fullScreen={fullScreen} maxWidth="sm" fullWidth>
       <DialogTitle>{t('trainings.finishSession')}</DialogTitle>
-      <DialogContent>
+      <DialogContent sx={{ pb: fullScreen ? 0 : undefined }}>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, pt: 1 }}>
           <TextField
             label={t('trainings.scoreTotal')}
@@ -103,7 +103,19 @@ const FinishSessionDialog: React.FC<FinishSessionDialogProps> = ({ open, session
           </TextField>
         </Box>
       </DialogContent>
-      <DialogActions>
+      <DialogActions
+        sx={{
+          px: 3,
+          py: 2,
+          ...(fullScreen && {
+            position: 'sticky',
+            bottom: 0,
+            bgcolor: 'background.paper',
+            borderTop: 1,
+            borderColor: 'divider',
+          }),
+        }}
+      >
         <Button onClick={onClose} disabled={submitting}>
           {t('common.cancel')}
         </Button>

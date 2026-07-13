@@ -19,6 +19,7 @@ interface PatrolCardProps {
   patrol: Patrol;
   participants: Map<string, Participant>;
   warnings: Warning[];
+  allPatrols: Array<{ id: string; targetNumber: number }>;
   onMemberDrop: (memberId: string, sourcePatrolId: string, targetPatrolId: string) => void;
   onRoleChange: (patrolId: string, memberId: string, role: string) => void;
   onDeleteAndRedistribute?: (patrolId: string) => void;
@@ -28,6 +29,7 @@ const PatrolCard: React.FC<PatrolCardProps> = ({
   patrol,
   participants,
   warnings,
+  allPatrols,
   onMemberDrop,
   onRoleChange,
   onDeleteAndRedistribute,
@@ -59,6 +61,7 @@ const PatrolCard: React.FC<PatrolCardProps> = ({
 
   const errorWarnings = warnings.filter((w) => w.severity === 'error');
   const otherWarnings = warnings.filter((w) => w.severity !== 'error');
+  const otherPatrols = allPatrols.filter((p) => p.id !== patrol.id);
 
   return (
     <Card
@@ -162,7 +165,9 @@ const PatrolCard: React.FC<PatrolCardProps> = ({
                   patrolId={patrol.id}
                   isLeader={patrol.leaderId === memberId}
                   isJudge={patrol.judgeIds.includes(memberId)}
+                  otherPatrols={otherPatrols}
                   onRoleChange={onRoleChange}
+                  onMoveToPatrol={onMemberDrop}
                 />
               );
             })}

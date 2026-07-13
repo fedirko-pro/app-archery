@@ -1,11 +1,17 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ConflictException, BadRequestException, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import {
+  ConflictException,
+  BadRequestException,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { EntityManager } from '@mikro-orm/core';
 import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcryptjs';
 import { UserService } from './user.service';
 import { EmailService } from '../email/email.service';
 import { UploadService } from '../upload/upload.service';
+import { ClubMembershipService } from '../club/club-membership.service';
 
 jest.mock('bcryptjs');
 
@@ -71,6 +77,12 @@ describe('UserService', () => {
         {
           provide: ConfigService,
           useValue: { get: jest.fn().mockReturnValue('http://localhost:3000') },
+        },
+        {
+          provide: ClubMembershipService,
+          useValue: {
+            getAdminClub: jest.fn().mockResolvedValue({ id: 'club-1', name: 'Test Club' }),
+          },
         },
       ],
     }).compile();
@@ -171,7 +183,7 @@ describe('UserService', () => {
       expect(em.findOne).toHaveBeenCalledWith(
         expect.any(Function),
         { id: 'user-1' },
-        { populate: ['club', 'division'] },
+        { populate: ['club', 'division', 'managedFederation'] },
       );
     });
   });
@@ -186,7 +198,7 @@ describe('UserService', () => {
     it('should change password successfully', async () => {
       em.findOne.mockResolvedValue(mockUser as any);
       (bcrypt.compare as jest.Mock)
-        .mockResolvedValueOnce(true)  // currentPassword match
+        .mockResolvedValueOnce(true) // currentPassword match
         .mockResolvedValueOnce(false); // newPassword !== currentPassword
       (bcrypt.hash as jest.Mock).mockResolvedValue('new-hashed-password');
 
@@ -212,19 +224,18 @@ describe('UserService', () => {
     });
   });
 
-  describe('getAllUsers', () => {
-    it('should return all users with club info', async () => {
+  describe('getUsersForAdmin', () => {
+    it('should return all users for general admin', async () => {
       const forkEm = {
         find: jest.fn().mockResolvedValue([mockUser]),
       };
       em.fork.mockReturnValue(forkEm as any);
 
-      // First call to forkEm.find returns users, second returns clubs
       forkEm.find
         .mockResolvedValueOnce([mockUser])
         .mockResolvedValueOnce([{ id: 'club-1', name: 'Test Club' }]);
 
-      const result = await userService.getAllUsers();
+      const result = await userService.getUsersForAdmin('admin-1', 'general_admin');
       expect(result).toHaveLength(1);
       expect(result[0].email).toBe('test@example.com');
       expect(result[0].club).toEqual({ id: 'club-1', name: 'Test Club' });

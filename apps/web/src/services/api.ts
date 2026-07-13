@@ -7,6 +7,8 @@ import type {
   ChangePasswordData,
 } from '../contexts/types';
 import categoriesData from '../data/categories';
+import { FRESH_DATA_EVENT } from '../hooks/use-stale-cache-hint';
+import { fetchWithTimeout } from '../utils/fetch-with-timeout';
 import { getCurrentI18nLang } from '../utils/i18n-lang';
 import {
   getOfflineCache,
@@ -52,7 +54,12 @@ import type {
 
 interface RequestOptions extends RequestInit {
   headers?: Record<string, string>;
+  signal?: AbortSignal;
+  timeoutMs?: number;
+  skipCsrf?: boolean;
 }
+
+const MUTATING_METHODS = new Set(['POST', 'PUT', 'PATCH', 'DELETE']);
 
 /**
  * Centralized API client for backend integration.
@@ -60,22 +67,56 @@ interface RequestOptions extends RequestInit {
  */
 class ApiService {
   private baseURL: string;
+  private csrfToken: string | null = null;
+  private csrfFetchPromise: Promise<string | null> | null = null;
 
   constructor() {
     this.baseURL = env.API_BASE_URL;
   }
 
-  private getToken(): string | null {
-    if (typeof window === 'undefined') return null;
-    return localStorage.getItem('authToken');
+  private dispatchFreshDataEvent(): void {
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent(FRESH_DATA_EVENT));
+    }
   }
 
-  private setToken(token: string): void {
-    if (typeof window === 'undefined') return;
-    localStorage.setItem('authToken', token);
+  private async ensureCsrfToken(): Promise<string | null> {
+    if (this.csrfToken) return this.csrfToken;
+    if (this.csrfFetchPromise) return this.csrfFetchPromise;
+
+    this.csrfFetchPromise = (async () => {
+      try {
+        const response = await fetchWithTimeout(
+          `${this.baseURL}/auth/csrf`,
+          {
+            method: 'GET',
+            credentials: 'include',
+            headers: {
+              Accept: 'application/json',
+              'Accept-Language': getCurrentI18nLang(),
+            },
+          },
+          { timeoutMs: 10_000 },
+        );
+        if (!response.ok) return null;
+        const data = (await response.json()) as { csrfToken?: string };
+        this.csrfToken = data.csrfToken ?? null;
+        return this.csrfToken;
+      } catch {
+        return null;
+      } finally {
+        this.csrfFetchPromise = null;
+      }
+    })();
+
+    return this.csrfFetchPromise;
   }
 
-  private removeToken(): void {
+  clearCsrfToken(): void {
+    this.csrfToken = null;
+  }
+
+  private clearLegacyToken(): void {
     if (typeof window === 'undefined') return;
     localStorage.removeItem('authToken');
   }
@@ -85,20 +126,34 @@ class ApiService {
    */
   private async request<T>(endpoint: string, options: RequestOptions = {}): Promise<T> {
     const url = `${this.baseURL}${endpoint}`;
-    const token = this.getToken();
+    const method = (options.method ?? 'GET').toUpperCase();
+    const { signal, timeoutMs, skipCsrf, headers: extraHeaders, ...fetchOptions } = options;
 
-    const config: RequestInit = {
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept-Language': getCurrentI18nLang(),
-        ...(token && { Authorization: `Bearer ${token}` }),
-        ...options.headers,
-      },
-      ...options,
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+      'Accept-Language': getCurrentI18nLang(),
+      ...extraHeaders,
     };
 
+    if (!skipCsrf && MUTATING_METHODS.has(method)) {
+      const csrfToken = await this.ensureCsrfToken();
+      if (csrfToken) {
+        headers['X-CSRF-Token'] = csrfToken;
+      }
+    }
+
     try {
-      const response = await fetch(url, config);
+      const response = await fetchWithTimeout(
+        url,
+        {
+          ...fetchOptions,
+          method,
+          headers,
+          credentials: 'include',
+          signal,
+        },
+        { timeoutMs, signal },
+      );
 
       if (!response.ok) {
         const errorData = (await response.json().catch(() => ({}))) as ApiError;
@@ -146,6 +201,7 @@ class ApiService {
       const data = await this.get<T>(endpoint);
       setOfflineCache(cacheKey, data);
       setLastServedFromCache(false);
+      this.dispatchFreshDataEvent();
       return data;
     } catch (error) {
       if (isNetworkError(error)) {
@@ -187,15 +243,24 @@ class ApiService {
   }
 
   async login(email: string, password: string): Promise<AuthResponse> {
+    this.clearLegacyToken();
     const response = await this.request<AuthResponse>('/auth/login', {
       method: 'POST',
       body: JSON.stringify({ email, password } as LoginCredentials),
+      skipCsrf: true,
     });
+    await this.ensureCsrfToken();
+    return response;
+  }
 
-    if (response.access_token) {
-      this.setToken(response.access_token);
-    }
-
+  async exchangeOAuthCode(code: string): Promise<AuthResponse> {
+    this.clearLegacyToken();
+    const response = await this.request<AuthResponse>('/auth/oauth/exchange', {
+      method: 'POST',
+      body: JSON.stringify({ code }),
+      skipCsrf: true,
+    });
+    await this.ensureCsrfToken();
     return response;
   }
 
@@ -383,6 +448,7 @@ class ApiService {
     try {
       const data = await this.get<TournamentDto[]>(endpoint);
       setLastServedFromCache(false);
+      this.dispatchFreshDataEvent();
       return data;
     } catch (error) {
       if (isNetworkError(error)) {
@@ -520,40 +586,31 @@ class ApiService {
   /**
    * Generate and save patrols for a tournament
    */
-  async generateAndSavePatrols(tournamentId: string): Promise<{
+  async generateAndSavePatrols(
+    tournamentId: string,
+    force = false,
+  ): Promise<{
     patrols: PatrolDto[];
     stats: unknown;
   }> {
+    const query = force ? '?force=true' : '';
     return await this.request<{ patrols: PatrolDto[]; stats: unknown }>(
-      `/patrols/tournaments/${tournamentId}/generate-and-save`,
+      `/patrols/tournaments/${tournamentId}/generate-and-save${query}`,
       { method: 'POST' },
     );
   }
 
   /**
-   * Get or generate patrols for a tournament.
-   * If patrols exist, returns them. If not, generates and saves new ones.
+   * Batch-save patrol member layout for a tournament.
    */
-  async getOrGeneratePatrols(tournamentId: string): Promise<{
-    patrols: PatrolDto[];
-    stats?: unknown;
-    isNewlyGenerated: boolean;
-  }> {
-    const existingPatrols = await this.getPatrolsByTournament(tournamentId);
-
-    if (existingPatrols && existingPatrols.length > 0) {
-      return {
-        patrols: existingPatrols,
-        isNewlyGenerated: false,
-      };
-    }
-
-    const result = await this.generateAndSavePatrols(tournamentId);
-    return {
-      patrols: result.patrols,
-      stats: result.stats,
-      isNewlyGenerated: true,
-    };
+  async batchSavePatrols(
+    tournamentId: string,
+    patrols: Array<{ id: string; members: Array<{ userId: string; role: string }> }>,
+  ): Promise<PatrolDto[]> {
+    return await this.request<PatrolDto[]>(`/patrols/tournaments/${tournamentId}/batch`, {
+      method: 'PUT',
+      body: JSON.stringify({ patrols }),
+    });
   }
 
   /**
@@ -563,12 +620,7 @@ class ApiService {
     patrols: PatrolDto[];
     stats: unknown;
   }> {
-    const existingPatrols = await this.getPatrolsByTournament(tournamentId);
-    for (const patrol of existingPatrols) {
-      await this.deletePatrol(patrol.id);
-    }
-
-    return await this.generateAndSavePatrols(tournamentId);
+    return await this.generateAndSavePatrols(tournamentId, true);
   }
 
   async createTournamentApplication(
@@ -644,11 +696,17 @@ class ApiService {
   }
 
   isAuthenticated(): boolean {
-    return !!this.getToken();
+    return false;
   }
 
-  logout(): void {
-    this.removeToken();
+  async logout(): Promise<void> {
+    try {
+      await this.request<{ message: string }>('/auth/logout', { method: 'POST' });
+    } catch {
+      // Session may already be invalid
+    }
+    this.clearLegacyToken();
+    this.clearCsrfToken();
   }
 
   /**
@@ -1147,13 +1205,13 @@ class ApiService {
     }
 
     const url = `${this.baseURL}/upload/image`;
-    const token = this.getToken();
-
-    const response = await fetch(url, {
+    const csrfToken = await this.ensureCsrfToken();
+    const response = await fetchWithTimeout(url, {
       method: 'POST',
+      credentials: 'include',
       headers: {
         'Accept-Language': getCurrentI18nLang(),
-        ...(token && { Authorization: `Bearer ${token}` }),
+        ...(csrfToken && { 'X-CSRF-Token': csrfToken }),
       },
       body: formData,
     });
@@ -1186,13 +1244,13 @@ class ApiService {
     formData.append('tournamentId', tournamentId);
 
     const url = `${this.baseURL}/upload/attachment`;
-    const token = this.getToken();
-
-    const response = await fetch(url, {
+    const csrfToken = await this.ensureCsrfToken();
+    const response = await fetchWithTimeout(url, {
       method: 'POST',
+      credentials: 'include',
       headers: {
         'Accept-Language': getCurrentI18nLang(),
-        ...(token && { Authorization: `Bearer ${token}` }),
+        ...(csrfToken && { 'X-CSRF-Token': csrfToken }),
       },
       body: formData,
     });

@@ -13,25 +13,23 @@ import {
   PUBLIC_DEMO_NAV_ITEMS,
 } from '../../config/roles';
 import { useAuth } from '../../contexts/auth-context';
+import { useBodyScrollLock } from '../../hooks/use-body-scroll-lock';
 import Menu from '../Menu/Menu';
 import type { MenuSection } from '../Menu/types';
 
 function NavMenu() {
   const { t } = useTranslation('common');
   const [active, setActive] = useState(false);
-  const { user, loading } = useAuth();
+  const { user, initializing } = useAuth();
 
-  if (loading) {
+  useBodyScrollLock(active);
+
+  if (initializing) {
     return null;
   }
 
   const clickHandler = () => {
     setActive(!active);
-    if (!active) {
-      document.body.classList.add('lock');
-    } else {
-      document.body.classList.remove('lock');
-    }
   };
 
   const mainMenuItems = [

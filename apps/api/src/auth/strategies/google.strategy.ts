@@ -1,17 +1,16 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, VerifyCallback, Profile } from 'passport-google-oauth20';
 import { ConfigService } from '@nestjs/config';
 import { UserService } from '../../user/user.service';
-import { JwtService } from '@nestjs/jwt';
 import { AuthProviders, Roles } from '../../user/types';
+import { UpdateUserDto } from '../../user/dto/update-user.dto';
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
   constructor(
     private readonly configService: ConfigService,
     private readonly userService: UserService,
-    private readonly jwtService: JwtService,
   ) {
     super({
       clientID: configService.get<string>('GOOGLE_CLIENT_ID'),
@@ -27,7 +26,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     profile: Profile,
     done: VerifyCallback,
   ): Promise<void> {
-    const { emails, name, photos } = profile;
+    const { emails, name, photos, id: googleId } = profile;
 
     if (!emails || !emails.length || !emails[0]?.value) {
       return done(new Error('Email is required for authentication'), false);
@@ -44,19 +43,29 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
         firstName: name?.givenName || email.split('@')[0],
         lastName: name?.familyName || '',
         picture: photos?.[0]?.value,
+        googleId,
       });
     } else if (user.authProvider === AuthProviders.Google) {
       const googlePicture = photos?.[0]?.value;
+      const updates: Pick<UpdateUserDto, 'picture' | 'googleId'> = {};
       if (googlePicture && user.picture !== googlePicture) {
-        user = await this.userService.update(user.id, {
-          picture: googlePicture,
-        });
+        updates.picture = googlePicture;
       }
+      if (googleId && user.googleId !== googleId) {
+        updates.googleId = googleId;
+      }
+      if (Object.keys(updates).length > 0) {
+        user = await this.userService.update(user.id, updates);
+      }
+    } else {
+      return done(
+        new ConflictException(
+          'An account with this email already exists. Please sign in with your password.',
+        ),
+        false,
+      );
     }
 
-    const payload = { sub: user.id, email: user.email, role: user.role };
-    const jwt = this.jwtService.sign(payload);
-
-    done(null, { user, jwt });
+    done(null, { user });
   }
 }

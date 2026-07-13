@@ -1,11 +1,4 @@
-import {
-  IsEmail,
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-  IsUrl,
-  ValidateIf,
-} from 'class-validator';
+import { IsEmail, IsNotEmpty, IsOptional, IsString, IsUrl, ValidateIf } from 'class-validator';
 import { AuthProvider } from '../types';
 
 export class CreateUserDto {
@@ -26,9 +19,7 @@ export class CreateUserDto {
   lastName: string;
 
   // Only validate URL format if picture is provided and not empty
-  @ValidateIf(
-    (o) => o.picture !== undefined && o.picture !== null && o.picture !== '',
-  )
+  @ValidateIf((o) => o.picture !== undefined && o.picture !== null && o.picture !== '')
   @IsUrl()
   @IsOptional()
   picture?: string;
@@ -46,4 +37,8 @@ export class CreateUserDto {
 
   @IsString()
   authProvider: AuthProvider;
+
+  @IsString()
+  @IsOptional()
+  googleId?: string;
 }

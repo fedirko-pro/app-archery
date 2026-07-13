@@ -53,6 +53,18 @@ export interface LocalTrainingSession {
   updatedAt: string;
 }
 
+export type StorageWriteFailureReason = 'quota' | 'disabled' | 'unknown';
+
+export class StorageWriteError extends Error {
+  readonly reason: StorageWriteFailureReason;
+
+  constructor(reason: StorageWriteFailureReason) {
+    super(`Storage write failed: ${reason}`);
+    this.name = 'StorageWriteError';
+    this.reason = reason;
+  }
+}
+
 function generateId(): string {
   return `local_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
 }
@@ -73,6 +85,14 @@ export function coerceDrawWeightLbs(raw: unknown): number | undefined {
   return undefined;
 }
 
+function classifyStorageError(error: unknown): StorageWriteFailureReason {
+  if (error instanceof DOMException) {
+    if (error.name === 'QuotaExceededError' || error.code === 22) return 'quota';
+    if (error.name === 'SecurityError') return 'disabled';
+  }
+  return 'unknown';
+}
+
 function readStorage<T>(key: string): T[] {
   try {
     const raw = localStorage.getItem(key);
@@ -86,9 +106,17 @@ function readStorage<T>(key: string): T[] {
 function writeStorage<T>(key: string, data: T[]): void {
   try {
     localStorage.setItem(key, JSON.stringify(data));
-  } catch {
-    // quota exceeded or disabled localStorage
+  } catch (error) {
+    throw new StorageWriteError(classifyStorageError(error));
   }
+}
+
+export function writeEquipmentSets(sets: LocalEquipmentSet[]): void {
+  writeStorage(STORAGE_KEYS.EQUIPMENT_SETS, sets);
+}
+
+export function writeTrainingSessions(sessions: LocalTrainingSession[]): void {
+  writeStorage(STORAGE_KEYS.TRAININGS, sessions);
 }
 
 // Equipment Sets
@@ -185,6 +213,28 @@ export function updateTrainingSession(
   return updated;
 }
 
+export function incrementTrainingSessionShots(
+  id: string,
+  delta: number,
+  options?: { arrowsPerSet?: number },
+): LocalTrainingSession | null {
+  const sessions = getTrainingSessions();
+  const index = sessions.findIndex((s) => s.id === id);
+  if (index === -1) return null;
+
+  const current = sessions[index];
+  const updated: LocalTrainingSession = {
+    ...current,
+    shotsCount: (current.shotsCount ?? 0) + delta,
+    ...(options?.arrowsPerSet !== undefined ? { arrowsPerSet: options.arrowsPerSet } : {}),
+    updatedAt: new Date().toISOString(),
+    isSynced: false,
+  };
+  sessions[index] = updated;
+  writeStorage(STORAGE_KEYS.TRAININGS, sessions);
+  return updated;
+}
+
 export function deleteTrainingSession(id: string): void {
   const sessions = getTrainingSessions().filter((s) => s.id !== id);
   writeStorage(STORAGE_KEYS.TRAININGS, sessions);
@@ -192,104 +242,4 @@ export function deleteTrainingSession(id: string): void {
 
 export function markTrainingSessionSynced(id: string, serverId: string): void {
   updateTrainingSession(id, { serverId, isSynced: true });
-}
-
-export function mergeServerEquipmentSets(
-  serverSets: Array<{
-    id: string;
-    name: string;
-    bowType?: string;
-    manufacturer?: string;
-    model?: string;
-    drawWeight?: number | string;
-    arrowLength?: string;
-    arrowSpine?: string;
-    arrowWeight?: string;
-    arrowMaterial?: string;
-    customFields?: CustomField[];
-    createdAt: string;
-    updatedAt: string;
-  }>,
-): void {
-  const local = getEquipmentSets();
-  const serverIds = new Set(serverSets.map((s) => s.id));
-
-  // Remove local items that have a serverId not in server list (deleted server-side)
-  const filtered = local.filter((l) => !l.serverId || serverIds.has(l.serverId));
-
-  // Upsert server items
-  for (const serverSet of serverSets) {
-    const existing = filtered.find((l) => l.serverId === serverSet.id);
-    if (!existing) {
-      filtered.push({
-        id: `server_${serverSet.id}`,
-        serverId: serverSet.id,
-        isSynced: true,
-        name: serverSet.name,
-        bowType: serverSet.bowType,
-        manufacturer: serverSet.manufacturer,
-        model: serverSet.model,
-        drawWeight: coerceDrawWeightLbs(serverSet.drawWeight),
-        arrowLength: serverSet.arrowLength,
-        arrowSpine: serverSet.arrowSpine,
-        arrowWeight: serverSet.arrowWeight,
-        arrowMaterial: serverSet.arrowMaterial,
-        customFields: serverSet.customFields,
-        createdAt: serverSet.createdAt,
-        updatedAt: serverSet.updatedAt,
-      });
-    }
-  }
-
-  writeStorage(STORAGE_KEYS.EQUIPMENT_SETS, filtered);
-}
-
-export function mergeServerTrainingSessions(
-  serverSessions: Array<{
-    id: string;
-    date: string;
-    status?: string;
-    shotsCount?: number;
-    arrowsPerSet?: number;
-    distance?: string;
-    targetType?: string;
-    equipmentSetId?: string;
-    scoreTotal?: number;
-    notes?: string;
-    mood?: string;
-    customFields?: CustomField[];
-    createdAt: string;
-    updatedAt: string;
-  }>,
-): void {
-  const local = getTrainingSessions();
-  const serverIds = new Set(serverSessions.map((s) => s.id));
-
-  const filtered = local.filter((l) => !l.serverId || serverIds.has(l.serverId));
-
-  for (const serverSession of serverSessions) {
-    const existing = filtered.find((l) => l.serverId === serverSession.id);
-    if (!existing) {
-      filtered.push({
-        id: `server_${serverSession.id}`,
-        serverId: serverSession.id,
-        isSynced: true,
-        date: serverSession.date,
-        status: (serverSession.status as TrainingSessionStatus) ?? 'finished',
-        shotsCount: serverSession.shotsCount,
-        arrowsPerSet: serverSession.arrowsPerSet,
-        distance: serverSession.distance,
-        targetType: serverSession.targetType,
-        equipmentSetId: serverSession.equipmentSetId,
-        scoreTotal: serverSession.scoreTotal,
-        notes: serverSession.notes,
-        mood: serverSession.mood as TrainingMood | undefined,
-        customFields: serverSession.customFields,
-        createdAt: serverSession.createdAt,
-        updatedAt: serverSession.updatedAt,
-      });
-    }
-  }
-
-  writeStorage(STORAGE_KEYS.TRAININGS, filtered);
 }

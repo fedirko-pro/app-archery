@@ -20,13 +20,22 @@ export const metadata: Metadata = {
   ...(siteUrl ? { metadataBase: new URL(siteUrl) } : {}),
   title: 'Sokil APP',
   description: 'Sokil APP',
+  manifest: '/manifest.webmanifest',
+  icons: {
+    icon: '/favicon.png',
+    apple: '/logo192.png',
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: 'black-translucent',
+    title: 'Sokil',
   },
 };
 
 export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover',
   themeColor: '#000080',
 };
 

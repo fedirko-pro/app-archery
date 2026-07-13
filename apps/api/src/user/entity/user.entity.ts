@@ -1,13 +1,9 @@
 import { Entity, PrimaryKey, Property, ManyToOne } from '@mikro-orm/core';
 import { v4 as uuid } from 'uuid';
-import {
-  AuthProvider,
-  AuthProviders,
-  ProfileVisibility,
-  ProfileVisibilities,
-} from '../types';
+import { AuthProvider, AuthProviders, ProfileVisibility, ProfileVisibilities } from '../types';
 import { Club } from '../../club/club.entity';
 import { Division } from '../../division/division.entity';
+import { Federation } from '../../federation/federation.entity';
 
 @Entity()
 export class User {
@@ -31,6 +27,9 @@ export class User {
 
   @Property({ nullable: true })
   lastName?: string;
+
+  @Property({ nullable: true, unique: true })
+  googleId?: string;
 
   @Property({ nullable: true })
   picture?: string;
@@ -79,6 +78,9 @@ export class User {
 
   @ManyToOne(() => Division, { nullable: true })
   division?: Division;
+
+  @ManyToOne(() => Federation, { nullable: true })
+  managedFederation?: Federation;
 
   // @OneToMany(() => Tournament, (tournament) => tournament.createdBy)
   // tournaments = [];

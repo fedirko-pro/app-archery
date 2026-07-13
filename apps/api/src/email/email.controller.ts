@@ -5,15 +5,16 @@ import {
   HttpCode,
   HttpStatus,
   Get,
+  UseGuards,
+  NotFoundException,
 } from '@nestjs/common';
 import { EmailService } from './email.service';
 import { ConfigService } from '@nestjs/config';
-import {
-  styleContainer,
-  styleHeading,
-  styleHr,
-  styleFooter,
-} from './templates/theme';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { Roles as UserRoles } from '../user/types';
+import { styleContainer, styleHeading, styleHr, styleFooter } from './templates/theme';
 
 interface TestEmailDto {
   to: string;
@@ -28,22 +29,32 @@ export class EmailController {
     private readonly configService: ConfigService,
   ) {}
 
+  private assertDevOnly(): void {
+    if (this.configService.get<string>('NODE_ENV') === 'production') {
+      throw new NotFoundException();
+    }
+  }
+
   @Get('config')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRoles.GeneralAdmin)
   @HttpCode(HttpStatus.OK)
   getEmailConfig() {
+    this.assertDevOnly();
     return {
       host: this.configService.get<string>('SMTP_HOST'),
       port: this.configService.get<number>('SMTP_PORT'),
-      user: this.configService.get<string>('SMTP_USER'),
       from: `"${this.configService.get<string>('SMTP_FROM_NAME')}" <${this.configService.get<string>('SMTP_FROM_EMAIL')}>`,
-      // Don't expose password for security
       passwordConfigured: !!this.configService.get<string>('SMTP_PASSWORD'),
     };
   }
 
   @Post('test')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRoles.GeneralAdmin)
   @HttpCode(HttpStatus.OK)
   async sendTestEmail(@Body() testEmailDto: TestEmailDto) {
+    this.assertDevOnly();
     const {
       to,
       subject = 'Test Email',

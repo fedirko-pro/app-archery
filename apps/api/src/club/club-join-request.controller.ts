@@ -1,6 +1,5 @@
 import { Controller, Get, Post, Body, Param, Patch, UseGuards, Request } from '@nestjs/common';
 
-import { OptionalJwtAuthGuard } from '../auth/guards/optional-jwt-auth.guard';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RequestUser } from '../auth/permissions';
 import { ClubJoinRequestService } from './club-join-request.service';
@@ -11,13 +10,13 @@ export class ClubJoinRequestController {
   constructor(private readonly joinRequestService: ClubJoinRequestService) {}
 
   @Post(':clubId/join-requests')
-  @UseGuards(OptionalJwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   create(
     @Param('clubId') clubId: string,
     @Body() dto: CreateClubJoinRequestDto,
-    @Request() req: { user?: RequestUser | null },
+    @Request() req: { user: RequestUser },
   ) {
-    return this.joinRequestService.create(clubId, dto, req.user?.sub);
+    return this.joinRequestService.create(clubId, dto, req.user.sub);
   }
 
   @Get(':clubId/join-requests')

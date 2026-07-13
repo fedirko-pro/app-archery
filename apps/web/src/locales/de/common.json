@@ -1013,7 +1013,7 @@
   "pwa": {
     "workingOffline": "Arbeitet offline",
     "showingCachedData": "Zeigt zuletzt gespeicherte Daten",
-    "installPrompt": "Installieren Sie Sokil als App für ein besseres Erlebnis und Offline-Nutzung.",
+    "installPrompt": "Installieren Sie Sokil auf Ihrem Startbildschirm für schnellen Zugriff und ein app-ähnliches Erlebnis.",
     "install": "Installieren",
     "installing": "Wird installiert…",
     "dismiss": "Jetzt nicht",

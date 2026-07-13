@@ -20,6 +20,30 @@ import { Roles as UserRoles } from '../user/types';
 import { PermissionsService } from '../auth/permissions.service';
 import { RequestUser } from '../auth/permissions';
 
+function serializeCreatedBy(
+  createdBy:
+    | {
+        id: string;
+        firstName?: string;
+        lastName?: string;
+        picture?: string;
+        role: string;
+      }
+    | null
+    | undefined,
+) {
+  if (!createdBy) {
+    return null;
+  }
+  return {
+    id: createdBy.id,
+    firstName: createdBy.firstName,
+    lastName: createdBy.lastName,
+    picture: createdBy.picture,
+    role: createdBy.role,
+  };
+}
+
 @Controller('tournaments')
 export class TournamentController {
   constructor(
@@ -34,16 +58,15 @@ export class TournamentController {
     if (!this.permissionsService.canCreateTournament(req.user)) {
       throw new ForbiddenException();
     }
-    return this.tournamentService.create({ ...data, createdBy: req.user.sub } as unknown as Parameters<typeof this.tournamentService.create>[0]);
+    return this.tournamentService.create({
+      ...data,
+      createdBy: req.user.sub,
+    } as unknown as Parameters<typeof this.tournamentService.create>[0]);
   }
 
   @Get()
-  async findAll(
-    @Query('country') country?: string,
-    @Query('upcoming') upcoming?: string,
-  ) {
-    const upcomingFilter =
-      upcoming === 'true' ? true : upcoming === 'false' ? false : undefined;
+  async findAll(@Query('country') country?: string, @Query('upcoming') upcoming?: string) {
+    const upcomingFilter = upcoming === 'true' ? true : upcoming === 'false' ? false : undefined;
     const tournaments = await this.tournamentService.findAll({
       country: country || undefined,
       upcoming: upcomingFilter,
@@ -61,16 +84,7 @@ export class TournamentController {
               ruleName: t.rule.ruleName,
             }
           : null,
-        createdBy: t.createdBy
-          ? {
-              id: t.createdBy.id,
-              email: t.createdBy.email,
-              firstName: t.createdBy.firstName,
-              lastName: t.createdBy.lastName,
-              picture: t.createdBy.picture,
-              role: t.createdBy.role,
-            }
-          : null,
+        createdBy: serializeCreatedBy(t.createdBy),
       };
     });
   }
@@ -78,10 +92,9 @@ export class TournamentController {
   @Get(':id')
   async findOne(@Param('id') id: string) {
     const tournament = await this.tournamentService.findById(id);
-    // Serialize to plain JSON to avoid class-transformer issues
     const json: Record<string, unknown> = wrap(tournament).toJSON() as Record<string, unknown>;
-    // Add ruleCode for convenience
     json.ruleCode = tournament.rule?.ruleCode || null;
+    json.createdBy = serializeCreatedBy(tournament.createdBy);
     return json;
   }
 

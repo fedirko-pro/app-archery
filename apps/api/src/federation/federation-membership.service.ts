@@ -253,4 +253,14 @@ export class FederationMembershipService {
     );
     return membership?.federation ?? null;
   }
+
+  async findClubMembership(
+    federationId: string,
+    clubId: string,
+  ): Promise<FederationMembership | null> {
+    return this.em.findOne(FederationMembership, {
+      federation: { id: federationId },
+      club: { id: clubId },
+    });
+  }
 }

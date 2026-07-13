@@ -30,6 +30,8 @@ header {
     opacity: 1;
     transition: all 0.3s;
     padding: 16px;
+    min-width: 44px;
+    min-height: 44px;
     cursor: pointer;
 
     span {

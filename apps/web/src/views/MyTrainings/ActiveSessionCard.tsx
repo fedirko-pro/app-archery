@@ -24,7 +24,8 @@ interface ActiveSessionCardProps {
 
 const ActiveSessionCard: React.FC<ActiveSessionCardProps> = ({ session, onFinish }) => {
   const { t } = useTranslation('common');
-  const { equipmentSets, editTrainingSession } = useLocalData();
+  const { equipmentSets, editTrainingSession, incrementSessionShots, isSessionPersisting } =
+    useLocalData();
 
   const [arrowsPerSet, setArrowsPerSet] = useState(
     String(session.arrowsPerSet ?? DEFAULT_ARROWS_PER_SET),
@@ -33,12 +34,14 @@ const ActiveSessionCard: React.FC<ActiveSessionCardProps> = ({ session, onFinish
   const shots = session.shotsCount ?? 0;
   const setSize = Number.parseInt(arrowsPerSet, 10) || DEFAULT_ARROWS_PER_SET;
 
+  const isPersisting = isSessionPersisting(session.id);
+
   const handleAddShot = () => {
-    void editTrainingSession(session.id, { shotsCount: shots + 1 });
+    void incrementSessionShots(session.id, 1);
   };
 
   const handleAddSet = () => {
-    void editTrainingSession(session.id, { shotsCount: shots + setSize, arrowsPerSet: setSize });
+    void incrementSessionShots(session.id, setSize, { arrowsPerSet: setSize });
   };
 
   const handleFieldChange = (field: keyof LocalTrainingSession, value: string) => {
@@ -100,10 +103,10 @@ const ActiveSessionCard: React.FC<ActiveSessionCardProps> = ({ session, onFinish
         </Box>
 
         <Box sx={{ display: 'flex', gap: 1, mb: 2 }}>
-          <Button variant="outlined" fullWidth onClick={handleAddShot}>
+          <Button variant="outlined" fullWidth onClick={handleAddShot} disabled={isPersisting}>
             {t('trainings.addShot')}
           </Button>
-          <Button variant="contained" fullWidth onClick={handleAddSet}>
+          <Button variant="contained" fullWidth onClick={handleAddSet} disabled={isPersisting}>
             {t('trainings.addSet')} (+{setSize})
           </Button>
         </Box>

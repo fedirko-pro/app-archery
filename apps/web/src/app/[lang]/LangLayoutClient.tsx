@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
+import { AppShellSkeleton } from '@/components/AppShellSkeleton';
 import { ClientOnly } from '@/components/ClientOnly/ClientOnly';
 import { RouterShell } from '@/components/providers/AppProviders';
 import { LangProvider } from '@/contexts/lang-context';
@@ -28,7 +29,7 @@ export default function LangLayoutClient({ lang, children }: LangLayoutClientPro
 
   return (
     <LangProvider lang={appLang}>
-      <ClientOnly>
+      <ClientOnly fallback={<AppShellSkeleton />}>
         <BrowserRouter>
           <RouterShell>{children}</RouterShell>
         </BrowserRouter>

@@ -59,6 +59,8 @@ export function isNetworkError(error: unknown): boolean {
   }
   if (error instanceof Error) {
     return (
+      error.name === 'ApiTimeoutError' ||
+      error.message.includes('Request timed out') ||
       error.message.includes('Failed to fetch') ||
       error.message.includes('Load failed') ||
       error.message.includes('network')

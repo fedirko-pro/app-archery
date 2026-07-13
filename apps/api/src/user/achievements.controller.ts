@@ -57,12 +57,8 @@ export class AchievementsController {
       throw new NotFoundException('Achievements not found');
     }
 
-    const viewerUser = await this.userService.findById(req.user.sub);
-    const level = this.visibilityService.resolveViewLevel(user, {
-      sub: req.user.sub,
-      role: req.user.role,
-      clubId: viewerUser?.club?.id ?? null,
-    });
+    const viewer = await this.userService.buildProfileViewer(req.user.sub, req.user.role);
+    const level = this.visibilityService.resolveViewLevel(user, viewer);
 
     if (level === 'none') {
       throw new NotFoundException('Achievements not found');
@@ -88,12 +84,8 @@ export class AchievementsController {
       throw new NotFoundException('Progress not found');
     }
 
-    const viewerUser = await this.userService.findById(req.user.sub);
-    const level = this.visibilityService.resolveViewLevel(user, {
-      sub: req.user.sub,
-      role: req.user.role,
-      clubId: viewerUser?.club?.id ?? null,
-    });
+    const viewer = await this.userService.buildProfileViewer(req.user.sub, req.user.role);
+    const level = this.visibilityService.resolveViewLevel(user, viewer);
 
     if (level === 'none') {
       throw new NotFoundException('Progress not found');

@@ -1003,7 +1003,10 @@
   },
   "errorBoundary": {
     "title": "Something went wrong",
-    "reload": "Reload page"
+    "reload": "Reload page",
+    "routeTitle": "This page failed to load",
+    "routeSubtitle": "An unexpected error occurred while loading this page.",
+    "retry": "Try again"
   },
   "clubs": {
     "clubLogo": "Club Logo",
@@ -1013,7 +1016,7 @@
   "pwa": {
     "workingOffline": "Working offline",
     "showingCachedData": "Showing last saved data",
-    "installPrompt": "Install Sokil as an app for a better experience and offline use.",
+    "installPrompt": "Install Sokil on your home screen for quick access and an app-like experience.",
     "install": "Install",
     "installing": "Installing…",
     "dismiss": "Not now",

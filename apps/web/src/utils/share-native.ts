@@ -40,7 +40,7 @@ export async function shareTournamentNative(payload: TournamentSharePayload): Pr
     return true;
   } catch (err) {
     if ((err as Error).name === 'AbortError') {
-      return true;
+      return false;
     }
     console.error('Native share failed:', err);
     return false;

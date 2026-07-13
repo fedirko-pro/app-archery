@@ -1,7 +1,7 @@
 import { Injectable, BadRequestException, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { promises as fs } from 'fs';
-import { join } from 'path';
+import { join, resolve, sep } from 'path';
 import sharp from 'sharp';
 import { v4 as uuidV4 } from 'uuid';
 import {
@@ -12,10 +12,20 @@ import {
 
 @Injectable()
 export class UploadService {
+  static readonly multerImageLimits = {
+    fileSize: 10 * 1024 * 1024,
+    files: 1,
+  };
+
+  static readonly multerAttachmentLimits = {
+    fileSize: 50 * 1024 * 1024,
+    files: 1,
+  };
+
   private readonly logger = new Logger(UploadService.name);
   private readonly uploadPath = 'uploads';
-  private readonly maxImageSize = 10 * 1024 * 1024; // 10MB
-  private readonly maxAttachmentSize = 50 * 1024 * 1024; // 50MB
+  private readonly maxImageSize = UploadService.multerImageLimits.fileSize;
+  private readonly maxAttachmentSize = UploadService.multerAttachmentLimits.fileSize;
   private readonly backendUrl: string;
 
   private readonly imageDimensions = {
@@ -24,11 +34,7 @@ export class UploadService {
     logo: { width: 1200, height: 1200 }, // Max 1200px, will resize proportionally
   };
 
-  private readonly allowedImageTypes = [
-    'image/jpeg',
-    'image/png',
-    'image/webp',
-  ];
+  private readonly allowedImageTypes = ['image/jpeg', 'image/png', 'image/webp'];
   private readonly allowedAttachmentTypes = [
     'image/jpeg',
     'image/png',
@@ -39,8 +45,7 @@ export class UploadService {
 
   constructor(private readonly configService: ConfigService) {
     // Get backend URL from environment, fallback to localhost for development
-    this.backendUrl =
-      this.configService.get<string>('BACKEND_URL') || 'http://localhost:3000';
+    this.backendUrl = this.configService.get<string>('BACKEND_URL') || 'http://localhost:3000';
     this.ensureUploadDirectories();
   }
 
@@ -60,6 +65,37 @@ export class UploadService {
         this.logger.log(`Created directory: ${dir}`);
       }
     }
+  }
+
+  assertSafePathSegment(segment: string, label: string): void {
+    if (!segment || segment === '.' || segment === '..') {
+      throw new BadRequestException(`Invalid ${label}`);
+    }
+
+    if (segment.includes('..') || segment.includes('/') || segment.includes('\\')) {
+      throw new BadRequestException(`Invalid ${label}`);
+    }
+
+    if (!/^[a-zA-Z0-9._-]+$/.test(segment)) {
+      throw new BadRequestException(`Invalid ${label}`);
+    }
+  }
+
+  private resolveWithinUploadDir(...segments: string[]): string {
+    const resolvedBase = resolve(this.uploadPath);
+    const resolvedPath = resolve(resolvedBase, ...segments);
+
+    if (resolvedPath !== resolvedBase && !resolvedPath.startsWith(resolvedBase + sep)) {
+      throw new BadRequestException('Invalid file path');
+    }
+
+    return resolvedPath;
+  }
+
+  private resolveAttachmentPath(tournamentId: string, filename: string): string {
+    this.assertSafePathSegment(tournamentId, 'tournament ID');
+    this.assertSafePathSegment(filename, 'filename');
+    return this.resolveWithinUploadDir('attachments', tournamentId, filename);
   }
 
   async processAndSaveImage(
@@ -90,18 +126,14 @@ export class UploadService {
         quality = 90,
       } = options;
       const entityId = providedEntityId ?? uuidV4();
+      this.assertSafePathSegment(entityId, 'entity ID');
       const dimensions = this.imageDimensions[type];
 
       // Process image with sharp
       let image = sharp(file.buffer);
 
       // Apply crop if provided
-      if (
-        cropX !== undefined &&
-        cropY !== undefined &&
-        cropWidth &&
-        cropHeight
-      ) {
+      if (cropX !== undefined && cropY !== undefined && cropWidth && cropHeight) {
         image = image.extract({
           left: Math.round(cropX),
           top: Math.round(cropY),
@@ -131,7 +163,7 @@ export class UploadService {
 
       // Use entityId as filename - this ensures we always overwrite the old file
       const filename = `${entityId}.webp`;
-      const filepath = join(this.uploadPath, 'images', `${type}s`, filename);
+      const filepath = this.resolveWithinUploadDir('images', `${type}s`, filename);
 
       // Delete old file if it exists (though writeFile will overwrite anyway)
       try {
@@ -158,10 +190,11 @@ export class UploadService {
         dimensions,
       };
     } catch (error) {
-      this.logger.error(
-        `Error processing image: ${error.message}`,
-        error.stack,
-      );
+      if (error instanceof BadRequestException) {
+        throw error;
+      }
+
+      this.logger.error(`Error processing image: ${error.message}`, error.stack);
       throw new BadRequestException('Failed to process image');
     }
   }
@@ -170,6 +203,8 @@ export class UploadService {
     file: Express.Multer.File,
     tournamentId: string,
   ): Promise<AttachmentMetadata> {
+    this.assertSafePathSegment(tournamentId, 'tournament ID');
+
     // Validate file
     if (!this.allowedAttachmentTypes.includes(file.mimetype)) {
       throw new BadRequestException(
@@ -185,7 +220,7 @@ export class UploadService {
 
     try {
       // Create tournament-specific directory
-      const tournamentDir = join(this.uploadPath, 'attachments', tournamentId);
+      const tournamentDir = this.resolveWithinUploadDir('attachments', tournamentId);
       try {
         await fs.access(tournamentDir);
       } catch {
@@ -215,32 +250,26 @@ export class UploadService {
         uploadedAt: new Date(),
       };
     } catch (error) {
-      this.logger.error(
-        `Error saving attachment: ${error.message}`,
-        error.stack,
-      );
+      if (error instanceof BadRequestException) {
+        throw error;
+      }
+
+      this.logger.error(`Error saving attachment: ${error.message}`, error.stack);
       throw new BadRequestException('Failed to save attachment');
     }
   }
 
-  async deleteAttachment(
-    tournamentId: string,
-    filename: string,
-  ): Promise<void> {
+  async deleteAttachment(tournamentId: string, filename: string): Promise<void> {
     try {
-      const filepath = join(
-        this.uploadPath,
-        'attachments',
-        tournamentId,
-        filename,
-      );
+      const filepath = this.resolveAttachmentPath(tournamentId, filename);
       await fs.unlink(filepath);
       this.logger.log(`Deleted attachment: ${filepath}`);
     } catch (error) {
-      this.logger.error(
-        `Error deleting attachment: ${error.message}`,
-        error.stack,
-      );
+      if (error instanceof BadRequestException) {
+        throw error;
+      }
+
+      this.logger.error(`Error deleting attachment: ${error.message}`, error.stack);
       // Don't throw error if file doesn't exist
       if (error.code !== 'ENOENT') {
         throw new BadRequestException('Failed to delete attachment');
@@ -250,33 +279,34 @@ export class UploadService {
 
   async cleanupTournamentAttachments(tournamentId: string): Promise<void> {
     try {
-      const tournamentDir = join(this.uploadPath, 'attachments', tournamentId);
+      this.assertSafePathSegment(tournamentId, 'tournament ID');
+      const tournamentDir = this.resolveWithinUploadDir('attachments', tournamentId);
       await fs.rm(tournamentDir, { recursive: true, force: true });
       this.logger.log(`Cleaned up tournament attachments: ${tournamentId}`);
     } catch (error) {
-      this.logger.error(
-        `Error cleaning up attachments: ${error.message}`,
-        error.stack,
-      );
+      if (error instanceof BadRequestException) {
+        throw error;
+      }
+
+      this.logger.error(`Error cleaning up attachments: ${error.message}`, error.stack);
     }
   }
 
-  async deleteImage(
-    entityId: string,
-    type: 'avatar' | 'banner' | 'logo',
-  ): Promise<void> {
+  async deleteImage(entityId: string, type: 'avatar' | 'banner' | 'logo'): Promise<void> {
     try {
+      this.assertSafePathSegment(entityId, 'entity ID');
       const filename = `${entityId}.webp`;
-      const filepath = join(this.uploadPath, 'images', `${type}s`, filename);
+      const filepath = this.resolveWithinUploadDir('images', `${type}s`, filename);
       await fs.unlink(filepath);
       this.logger.log(`Deleted ${type} image for entity ${entityId}`);
     } catch (error) {
+      if (error instanceof BadRequestException) {
+        throw error;
+      }
+
       // Don't throw error if file doesn't exist
       if (error.code !== 'ENOENT') {
-        this.logger.error(
-          `Error deleting ${type} image: ${error.message}`,
-          error.stack,
-        );
+        this.logger.error(`Error deleting ${type} image: ${error.message}`, error.stack);
       }
     }
   }

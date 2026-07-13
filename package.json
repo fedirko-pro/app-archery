@@ -12,6 +12,7 @@
     "test": "pnpm -r test",
     "test:run": "pnpm -r test:run",
     "typecheck": "pnpm --filter @sokil/web typecheck && pnpm --filter @sokil/api typecheck",
+    "audit:ci": "pnpm audit --audit-level=high",
     "docker:up": "docker compose up -d --build",
     "docker:down": "docker compose down",
     "prepare": "husky"

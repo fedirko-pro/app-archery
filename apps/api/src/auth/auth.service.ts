@@ -4,7 +4,6 @@ import {
   NotFoundException,
   BadRequestException,
 } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
 import { EmailService } from '../email/email.service';
 import { UserLoginDto } from './dto/user-login.dto';
@@ -13,62 +12,70 @@ import { ResetPasswordDto } from './dto/reset-password.dto';
 import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcryptjs';
 import { randomBytes } from 'crypto';
+import type { Response } from 'express';
+import { SessionService } from './session.service';
+import { OAuthExchangeService } from './oauth-exchange.service';
+import { User } from '../user/entity/user.entity';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly userService: UserService,
-    private readonly jwtService: JwtService,
     private readonly emailService: EmailService,
     private readonly configService: ConfigService,
+    private readonly sessionService: SessionService,
+    private readonly oauthExchangeService: OAuthExchangeService,
   ) {}
 
   async validateUser(email: string, password: string) {
     const user = await this.userService.findByEmail(email, true);
-    if (
-      user &&
-      user.password &&
-      (await bcrypt.compare(password, user.password))
-    ) {
+    if (user && user.password && (await bcrypt.compare(password, user.password))) {
       return user;
     }
     throw new UnauthorizedException('Invalid email or password');
   }
 
-  async login(loginDto: UserLoginDto): Promise<{ access_token: string }> {
+  async login(
+    loginDto: UserLoginDto,
+    res: Response,
+    meta?: { userAgent?: string; ipAddress?: string },
+  ): Promise<{ user: User }> {
     const user = await this.validateUser(loginDto.email, loginDto.password);
-
-    const payload = {
-      sub: user.id,
-      email: user.email,
-      role: user.role,
-    };
-
-    return {
-      access_token: this.jwtService.sign(payload),
-    };
+    await this.sessionService.createSession(user, res, meta);
+    return { user };
   }
 
-  async forgotPassword(
-    forgotPasswordDto: ForgotPasswordDto,
-  ): Promise<{ message: string }> {
+  async logout(res: Response, sessionToken?: string): Promise<{ message: string }> {
+    if (sessionToken) {
+      await this.sessionService.revokeSession(sessionToken);
+    }
+    this.sessionService.clearSessionCookie(res);
+    return { message: 'Logged out successfully' };
+  }
+
+  async exchangeOAuthCode(
+    code: string,
+    res: Response,
+    meta?: { userAgent?: string; ipAddress?: string },
+  ): Promise<{ user: User }> {
+    const user = await this.oauthExchangeService.consumeExchangeCode(code);
+    await this.sessionService.createSession(user, res, meta);
+    return { user };
+  }
+
+  async forgotPassword(forgotPasswordDto: ForgotPasswordDto): Promise<{ message: string }> {
     const user = await this.userService.findByEmail(forgotPasswordDto.email);
 
     if (!user) {
       return {
-        message:
-          'If an account with that email exists, a password reset link has been sent.',
+        message: 'If an account with that email exists, a password reset link has been sent.',
       };
     }
 
     const resetToken = randomBytes(32).toString('hex');
-    const resetPasswordExpires = new Date(Date.now() + 3600000); // 1 hour
+    const resetPasswordExpires = new Date(Date.now() + 3600000);
 
-    await this.userService.setResetPasswordToken(
-      user.id,
-      resetToken,
-      resetPasswordExpires,
-    );
+    await this.userService.setResetPasswordToken(user.id, resetToken, resetPasswordExpires);
 
     const resetUrl = `${this.configService.get<string>('FRONTEND_URL')}/reset-password?token=${resetToken}`;
 
@@ -81,23 +88,16 @@ export class AuthService {
       );
     } catch {
       await this.userService.clearResetPasswordToken(user.id);
-      throw new Error(
-        'Failed to send password reset email. Please try again later.',
-      );
+      throw new Error('Failed to send password reset email. Please try again later.');
     }
 
     return {
-      message:
-        'If an account with that email exists, a password reset link has been sent.',
+      message: 'If an account with that email exists, a password reset link has been sent.',
     };
   }
 
-  async resetPassword(
-    resetPasswordDto: ResetPasswordDto,
-  ): Promise<{ message: string }> {
-    const user = await this.userService.findByResetToken(
-      resetPasswordDto.token,
-    );
+  async resetPassword(resetPasswordDto: ResetPasswordDto): Promise<{ message: string }> {
+    const user = await this.userService.findByResetToken(resetPasswordDto.token);
 
     if (!user) {
       throw new BadRequestException('Invalid or expired reset token');
@@ -112,11 +112,7 @@ export class AuthService {
       throw new BadRequestException('Passwords do not match');
     }
 
-    // Update password and clear reset token
-    await this.userService.updatePasswordAndClearResetToken(
-      user.id,
-      resetPasswordDto.password,
-    );
+    await this.userService.updatePasswordAndClearResetToken(user.id, resetPasswordDto.password);
 
     return { message: 'Password has been reset successfully' };
   }
@@ -144,15 +140,10 @@ export class AuthService {
     }
 
     if (passwordData.password.length < 8) {
-      throw new BadRequestException(
-        'Password must be at least 8 characters long',
-      );
+      throw new BadRequestException('Password must be at least 8 characters long');
     }
 
-    await this.userService.setPasswordForOAuthUser(
-      userId,
-      passwordData.password,
-    );
+    await this.userService.setPasswordForOAuthUser(userId, passwordData.password);
 
     return { message: 'Password has been set successfully' };
   }
@@ -165,13 +156,9 @@ export class AuthService {
     }
 
     const resetToken = randomBytes(32).toString('hex');
-    const resetPasswordExpires = new Date(Date.now() + 3600000); // 1 hour
+    const resetPasswordExpires = new Date(Date.now() + 3600000);
 
-    await this.userService.setResetPasswordToken(
-      user.id,
-      resetToken,
-      resetPasswordExpires,
-    );
+    await this.userService.setResetPasswordToken(user.id, resetToken, resetPasswordExpires);
 
     const resetUrl = `${this.configService.get<string>('FRONTEND_URL')}/reset-password?token=${resetToken}`;
 
@@ -184,9 +171,7 @@ export class AuthService {
       );
     } catch {
       await this.userService.clearResetPasswordToken(user.id);
-      throw new Error(
-        'Failed to send password reset email. Please try again later.',
-      );
+      throw new Error('Failed to send password reset email. Please try again later.');
     }
 
     return {

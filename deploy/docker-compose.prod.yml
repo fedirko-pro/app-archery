@@ -48,7 +48,7 @@ services:
       - 'traefik.http.routers.archery-api.tls.certresolver=le'
       - 'traefik.http.services.archery-api.loadbalancer.server.port=3000'
     command: >
-      sh -c "./node_modules/.bin/mikro-orm migration:up && ./node_modules/.bin/mikro-orm seeder:run && node dist/src/main.js"
+      sh -c "./node_modules/.bin/mikro-orm migration:up && node dist/src/main.js"
 
   frontend:
     build:

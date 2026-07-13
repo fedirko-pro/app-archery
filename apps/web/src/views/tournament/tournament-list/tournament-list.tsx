@@ -139,8 +139,39 @@ const TournamentList: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    void fetchTournaments();
-  }, [fetchTournaments]);
+    if (!filterReady || countryFilter === null) return;
+    let cancelled = false;
+
+    const loadTournaments = async () => {
+      try {
+        setLoading(true);
+        const params: { country?: string; upcoming?: boolean } = {
+          upcoming: activeTab === 0,
+        };
+        if (countryFilter !== ALL_COUNTRIES_FILTER) {
+          params.country = countryFilter;
+        }
+        const data = await apiService.getAllTournaments(params);
+        if (!cancelled) {
+          setTournaments(data);
+        }
+      } catch (fetchError) {
+        if (!cancelled) {
+          setError(t('pages.tournaments.fetchError'));
+          console.error('Error fetching tournaments:', fetchError);
+        }
+      } finally {
+        if (!cancelled) {
+          setLoading(false);
+        }
+      }
+    };
+
+    void loadTournaments();
+    return () => {
+      cancelled = true;
+    };
+  }, [t, activeTab, countryFilter, filterReady]);
 
   useEffect(() => {
     if (user) {

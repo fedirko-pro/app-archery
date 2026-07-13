@@ -21,21 +21,14 @@ export class PublicProfileController {
     @Param('userId') userId: string,
     @Param('achievementId') achievementId: string,
   ) {
-    return this.publicProfileService.getPublicAchievementShare(
-      userId,
-      achievementId,
-    );
+    return this.publicProfileService.getPublicAchievementShare(userId, achievementId);
   }
 
   @Get(':userId/shared-profile')
   @UseGuards(JwtAuthGuard)
   async getSharedProfile(@Param('userId') userId: string, @Request() req: { user: RequestUser }) {
-    const viewerUser = await this.userService.findById(req.user.sub);
-    return this.publicProfileService.getSharedProfile(userId, {
-      sub: req.user.sub,
-      role: req.user.role,
-      clubId: viewerUser?.club?.id ?? null,
-    });
+    const viewer = await this.userService.buildProfileViewer(req.user.sub, req.user.role);
+    return this.publicProfileService.getSharedProfile(userId, viewer);
   }
 
   @Get(':userId/shared-profile/achievements/:achievementId')
@@ -45,15 +38,7 @@ export class PublicProfileController {
     @Param('achievementId') achievementId: string,
     @Request() req: { user: RequestUser },
   ) {
-    const viewerUser = await this.userService.findById(req.user.sub);
-    return this.publicProfileService.getSharedAchievement(
-      userId,
-      achievementId,
-      {
-        sub: req.user.sub,
-        role: req.user.role,
-        clubId: viewerUser?.club?.id ?? null,
-      },
-    );
+    const viewer = await this.userService.buildProfileViewer(req.user.sub, req.user.role);
+    return this.publicProfileService.getSharedAchievement(userId, achievementId, viewer);
   }
 }

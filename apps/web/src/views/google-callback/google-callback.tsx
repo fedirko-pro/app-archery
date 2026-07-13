@@ -2,12 +2,12 @@ import { Box, CircularProgress, Typography } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
-import { useAuth } from '../../contexts/auth-context';
+import apiService from '../../services/api';
 import { getDefaultAppLang } from '../../utils/i18n-lang';
+import { resolvePostAuthPath } from '../../utils/post-auth-redirect';
 
 const GoogleCallback = () => {
   const [searchParams] = useSearchParams();
-  const { handleGoogleAuth } = useAuth();
   const [error, setError] = useState<string | null>(null);
   const startedRef = useRef(false);
   const signInPath = `/${getDefaultAppLang()}/signin`;
@@ -20,7 +20,7 @@ const GoogleCallback = () => {
 
     const handleGoogleCallback = async () => {
       try {
-        const token = searchParams.get('token');
+        const code = searchParams.get('code');
         const authError = searchParams.get('error');
 
         if (authError) {
@@ -31,12 +31,14 @@ const GoogleCallback = () => {
           return;
         }
 
-        if (token) {
-          localStorage.setItem('authToken', token);
+        if (!code) {
+          window.location.href = signInPath;
+          return;
         }
 
-        // Proceed regardless of token to support cookie-based auth
-        await handleGoogleAuth();
+        await apiService.exchangeOAuthCode(code);
+        const userData = await apiService.getProfile();
+        window.location.href = resolvePostAuthPath(getDefaultAppLang(), userData);
       } catch {
         setError('Authentication failed');
         setTimeout(() => {
@@ -46,7 +48,7 @@ const GoogleCallback = () => {
     };
 
     void handleGoogleCallback();
-  }, [handleGoogleAuth, searchParams, signInPath]);
+  }, [searchParams, signInPath]);
 
   if (error) {
     return (
@@ -55,7 +57,7 @@ const GoogleCallback = () => {
         flexDirection="column"
         alignItems="center"
         justifyContent="center"
-        minHeight="100vh"
+        minHeight="100dvh"
         gap={2}
       >
         <Typography color="error" variant="h6">
@@ -72,7 +74,7 @@ const GoogleCallback = () => {
       flexDirection="column"
       alignItems="center"
       justifyContent="center"
-      minHeight="100vh"
+      minHeight="100dvh"
       gap={2}
     >
       <CircularProgress />

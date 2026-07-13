@@ -7,11 +7,17 @@ import { Federation } from './federation.entity';
 import { FederationMembership } from './federation-membership.entity';
 import { FederationInvitation } from './federation-invitation.entity';
 import { EmailModule } from '../email/email.module';
+import { ClubModule } from '../club/club.module';
+import { UserModule } from '../user/user.module';
+import { RolePermissionsModule } from '../auth/role-permissions.module';
 
 @Module({
   imports: [
     MikroOrmModule.forFeature([Federation, FederationMembership, FederationInvitation]),
     EmailModule,
+    ClubModule,
+    UserModule,
+    RolePermissionsModule,
   ],
   controllers: [FederationController],
   providers: [FederationService, FederationMembershipService],

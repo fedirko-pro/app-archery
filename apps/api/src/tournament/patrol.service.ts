@@ -1,18 +1,10 @@
-import {
-  Injectable,
-  BadRequestException,
-  NotFoundException,
-  Logger,
-} from '@nestjs/common';
+import { Injectable, BadRequestException, NotFoundException, Logger } from '@nestjs/common';
 import { EntityManager, type RequiredEntityData } from '@mikro-orm/core';
 import { Patrol } from './patrol.entity';
 import { PatrolMember } from './patrol-member.entity';
 import { PatrolRole } from './patrol-member.entity';
 import { Tournament } from './tournament.entity';
-import {
-  TournamentApplication,
-  ApplicationStatus,
-} from './tournament-application.entity';
+import { TournamentApplication, ApplicationStatus } from './tournament-application.entity';
 import { User } from '../user/entity/user.entity';
 import { PatrolGenerationService } from './patrol-generation.service';
 import { PatrolPdfService } from './patrol-pdf.service';
@@ -36,9 +28,7 @@ export class PatrolService {
 
   async create(data: Partial<Patrol>): Promise<Patrol> {
     if (!data.name || !data.tournament || !data.leader) {
-      throw new BadRequestException(
-        'Name, tournament, and leader are required',
-      );
+      throw new BadRequestException('Name, tournament, and leader are required');
     }
 
     const patrol = this.em.create(Patrol, data as RequiredEntityData<Patrol>);
@@ -65,8 +55,7 @@ export class PatrolService {
     return patrols.map((patrol) => {
       const members = allMembers
         .filter((m) => {
-          const patrolId =
-            typeof m.patrol === 'string' ? m.patrol : m.patrol.id;
+          const patrolId = typeof m.patrol === 'string' ? m.patrol : m.patrol.id;
           return patrolId === patrol.id;
         })
         .map((m) => ({
@@ -78,9 +67,7 @@ export class PatrolService {
             lastName: m.user.lastName,
             email: m.user.email,
             gender: m.user.gender || 'Other',
-            club: m.user.club
-              ? { id: m.user.club.id, name: m.user.club.name }
-              : null,
+            club: m.user.club ? { id: m.user.club.id, name: m.user.club.name } : null,
           },
         }));
 
@@ -156,9 +143,7 @@ export class PatrolService {
           lastName: m.user.lastName,
           email: m.user.email,
           gender: m.user.gender || 'Other',
-          club: m.user.club
-            ? { id: m.user.club.id, name: m.user.club.name }
-            : null,
+          club: m.user.club ? { id: m.user.club.id, name: m.user.club.name } : null,
         },
       })),
       createdAt: patrol.createdAt,
@@ -212,8 +197,7 @@ export class PatrolService {
     return patrols.map((patrol) => {
       const members = allMembers
         .filter((m) => {
-          const patrolId =
-            typeof m.patrol === 'string' ? m.patrol : m.patrol.id;
+          const patrolId = typeof m.patrol === 'string' ? m.patrol : m.patrol.id;
           return patrolId === patrol.id;
         })
         .map((m) => ({
@@ -227,9 +211,7 @@ export class PatrolService {
             gender: m.user.gender || 'Other',
             division: userDivisionMap.get(m.user.id) || 'Unknown',
             bowCategory: userBowCategoryMap.get(m.user.id) || 'Unknown',
-            club: m.user.club
-              ? { id: m.user.club.id, name: m.user.club.name }
-              : null,
+            club: m.user.club ? { id: m.user.club.id, name: m.user.club.name } : null,
           },
         }));
 
@@ -303,9 +285,7 @@ export class PatrolService {
     }
 
     const tournamentId =
-      typeof patrol.tournament === 'string'
-        ? patrol.tournament
-        : patrol.tournament.id;
+      typeof patrol.tournament === 'string' ? patrol.tournament : patrol.tournament.id;
 
     const membersToRedistribute = await this.em.find(
       PatrolMember,
@@ -314,9 +294,7 @@ export class PatrolService {
     );
     const userIdsToRedistribute = [
       ...new Set(
-        membersToRedistribute.map((m) =>
-          typeof m.user === 'string' ? m.user : m.user.id,
-        ),
+        membersToRedistribute.map((m) => (typeof m.user === 'string' ? m.user : m.user.id)),
       ),
     ];
 
@@ -329,9 +307,7 @@ export class PatrolService {
       tournament: tournamentId,
       id: { $ne: patrolId },
     });
-    remainingPatrols.sort(
-      (a, b) => extractTargetNumber(a.name) - extractTargetNumber(b.name),
-    );
+    remainingPatrols.sort((a, b) => extractTargetNumber(a.name) - extractTargetNumber(b.name));
 
     if (remainingPatrols.length === 0) {
       throw new BadRequestException(
@@ -365,9 +341,7 @@ export class PatrolService {
     const patrolsToRenumber = await this.em.find(Patrol, {
       tournament: tournamentId,
     });
-    patrolsToRenumber.sort(
-      (a, b) => extractTargetNumber(a.name) - extractTargetNumber(b.name),
-    );
+    patrolsToRenumber.sort((a, b) => extractTargetNumber(a.name) - extractTargetNumber(b.name));
     for (let i = 0; i < patrolsToRenumber.length; i++) {
       const n = i + 1;
       patrolsToRenumber[i].name = `Target ${n}`;
@@ -379,11 +353,7 @@ export class PatrolService {
     return this.findByTournament(tournamentId);
   }
 
-  async addMember(
-    patrolId: string,
-    userId: string,
-    role: PatrolRole,
-  ): Promise<PatrolMember> {
+  async addMember(patrolId: string, userId: string, role: PatrolRole): Promise<PatrolMember> {
     const member = this.em.create(PatrolMember, {
       patrol: patrolId,
       user: userId,
@@ -402,17 +372,72 @@ export class PatrolService {
   }
 
   /**
+   * Replace patrol member layout for multiple patrols in one transaction.
+   */
+  async batchUpdatePatrolLayout(
+    tournamentId: string,
+    patrolUpdates: Array<{
+      id: string;
+      members: Array<{ userId: string; role: PatrolRole }>;
+    }>,
+  ): Promise<Record<string, unknown>[]> {
+    const tournament = await this.em.findOne(Tournament, { id: tournamentId });
+    if (!tournament) {
+      throw new NotFoundException(`Tournament with ID ${tournamentId} not found`);
+    }
+
+    for (const update of patrolUpdates) {
+      const patrol = await this.em.findOne(Patrol, { id: update.id });
+      if (!patrol) {
+        throw new NotFoundException(`Patrol with ID ${update.id} not found`);
+      }
+
+      const patrolTournamentId =
+        typeof patrol.tournament === 'string' ? patrol.tournament : patrol.tournament.id;
+      if (patrolTournamentId !== tournamentId) {
+        throw new BadRequestException(
+          `Patrol ${update.id} does not belong to tournament ${tournamentId}`,
+        );
+      }
+
+      const leaderMember = update.members.find((member) => member.role === PatrolRole.LEADER);
+      if (!leaderMember) {
+        throw new BadRequestException(`Patrol ${update.id} must have a leader`);
+      }
+
+      const leader = await this.em.findOne(User, { id: leaderMember.userId });
+      if (!leader) {
+        throw new NotFoundException(`Leader with ID ${leaderMember.userId} not found`);
+      }
+
+      await this.em.nativeDelete(PatrolMember, { patrol: update.id });
+
+      patrol.leader = leader;
+      patrol.updatedAt = new Date();
+
+      for (const member of update.members) {
+        const memberEntity = this.em.create(PatrolMember, {
+          patrol: update.id,
+          user: member.userId,
+          role: member.role,
+          createdAt: new Date(),
+        });
+        this.em.persist(memberEntity);
+      }
+    }
+
+    await this.em.flush();
+    return this.findByTournament(tournamentId);
+  }
+
+  /**
    * Generate patrols for a tournament based on all approved applications
    */
-  async generatePatrolsForTournament(
-    tournamentId: string,
-  ): Promise<PatrolGenerationResult> {
+  async generatePatrolsForTournament(tournamentId: string): Promise<PatrolGenerationResult> {
     // 1. Fetch tournament
     const tournament = await this.em.findOne(Tournament, { id: tournamentId });
     if (!tournament) {
-      throw new NotFoundException(
-        `Tournament with ID ${tournamentId} not found`,
-      );
+      throw new NotFoundException(`Tournament with ID ${tournamentId} not found`);
     }
 
     // 2. Fetch ALL approved applications for this tournament (no category filter)
@@ -428,9 +453,7 @@ export class PatrolService {
     );
 
     if (applications.length === 0) {
-      throw new BadRequestException(
-        'No approved applications found for this tournament',
-      );
+      throw new BadRequestException('No approved applications found for this tournament');
     }
 
     // 3. Validate and transform applications to PatrolEntry format
@@ -455,18 +478,13 @@ export class PatrolService {
 
       const user = app.applicant;
       const gender = user.gender?.toLowerCase() || 'other';
-      const normalizedGender: 'm' | 'f' | 'other' = [
-        'm',
-        'f',
-        'other',
-      ].includes(gender)
+      const normalizedGender: 'm' | 'f' | 'other' = ['m', 'f', 'other'].includes(gender)
         ? (gender as 'm' | 'f' | 'other')
         : 'other';
 
       entries.push({
         participantId: user.id,
-        name:
-          `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.email,
+        name: `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.email,
         club: user.club?.name || 'No Club',
         clubShortCode: user.club?.shortCode ?? undefined,
         bowCategory: app.bowCategory.code, // Use code, not name
@@ -509,17 +527,12 @@ export class PatrolService {
 
     // 5. Generate patrols using the algorithm
     try {
-      const result = this.patrolGenerationService.generatePatrols(
-        entries,
-        config,
-      );
+      const result = this.patrolGenerationService.generatePatrols(entries, config);
 
       this.logger.log(
         `Successfully generated ${result.patrols.length} patrols for tournament ${tournamentId}`,
       );
-      this.logger.debug(
-        `Patrol generation stats: ${JSON.stringify(result.stats)}`,
-      );
+      this.logger.debug(`Patrol generation stats: ${JSON.stringify(result.stats)}`);
 
       return result;
     } catch (error) {
@@ -527,9 +540,7 @@ export class PatrolService {
         `Failed to generate patrols for tournament ${tournamentId}: ${error.message}`,
         error.stack,
       );
-      throw new BadRequestException(
-        `Failed to generate patrols: ${error.message}`,
-      );
+      throw new BadRequestException(`Failed to generate patrols: ${error.message}`);
     }
   }
 
@@ -542,9 +553,7 @@ export class PatrolService {
   ): Promise<Record<string, unknown>[]> {
     const tournament = await this.em.findOne(Tournament, { id: tournamentId });
     if (!tournament) {
-      throw new NotFoundException(
-        `Tournament with ID ${tournamentId} not found`,
-      );
+      throw new NotFoundException(`Tournament with ID ${tournamentId} not found`);
     }
 
     const savedPatrolIds: string[] = [];
@@ -559,9 +568,7 @@ export class PatrolService {
         { populate: ['club'] },
       );
       if (!leader) {
-        throw new NotFoundException(
-          `Leader with ID ${generatedPatrol.leaderId} not found`,
-        );
+        throw new NotFoundException(`Leader with ID ${generatedPatrol.leaderId} not found`);
       }
 
       // Create patrol
@@ -614,9 +621,7 @@ export class PatrolService {
       },
     );
     if (!tournament) {
-      throw new NotFoundException(
-        `Tournament with ID ${tournamentId} not found`,
-      );
+      throw new NotFoundException(`Tournament with ID ${tournamentId} not found`);
     }
 
     // 2. Fetch all patrols for this tournament
@@ -643,8 +648,7 @@ export class PatrolService {
     const generatedPatrols = patrols.map((patrol) => {
       // Get members for this patrol
       const members = allPatrolMembers.filter((m) => {
-        const patrolId =
-          typeof m.patrol === 'string' ? m.patrol : (m.patrol as Patrol).id;
+        const patrolId = typeof m.patrol === 'string' ? m.patrol : (m.patrol as Patrol).id;
         return patrolId === patrol.id;
       });
 
@@ -655,9 +659,7 @@ export class PatrolService {
 
       // Extract target number from patrol name (e.g., "Target 1" -> 1)
       const targetMatch = patrol.name.match(/\d+/);
-      const targetNumber = targetMatch
-        ? parseInt(targetMatch[0], 10)
-        : patrols.indexOf(patrol) + 1;
+      const targetNumber = targetMatch ? parseInt(targetMatch[0], 10) : patrols.indexOf(patrol) + 1;
 
       return {
         id: patrol.id,
@@ -667,10 +669,7 @@ export class PatrolService {
         judgeIds:
           judges.length === 2
             ? judges
-            : ([members[0]?.user.id || '', members[1]?.user.id || ''] as [
-                string,
-                string,
-              ]),
+            : ([members[0]?.user.id || '', members[1]?.user.id || ''] as [string, string]),
       };
     });
 
@@ -700,18 +699,13 @@ export class PatrolService {
     const entries: PatrolEntry[] = users.map((user) => {
       const app = applications.find((a) => a.applicant.id === user.id);
       const gender = user.gender?.toLowerCase() || 'other';
-      const normalizedGender: 'm' | 'f' | 'other' = [
-        'm',
-        'f',
-        'other',
-      ].includes(gender)
+      const normalizedGender: 'm' | 'f' | 'other' = ['m', 'f', 'other'].includes(gender)
         ? (gender as 'm' | 'f' | 'other')
         : 'other';
 
       return {
         participantId: user.id,
-        name:
-          `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.email,
+        name: `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.email,
         club: user.club?.name || 'No Club',
         clubShortCode: user.club?.shortCode ?? undefined,
         bowCategory: app?.bowCategory?.code || app?.bowCategory?.name || '-',
@@ -752,9 +746,7 @@ export class PatrolService {
     // Reuse same data fetching as patrol list PDF
     const tournament = await this.em.findOne(Tournament, { id: tournamentId });
     if (!tournament) {
-      throw new NotFoundException(
-        `Tournament with ID ${tournamentId} not found`,
-      );
+      throw new NotFoundException(`Tournament with ID ${tournamentId} not found`);
     }
 
     const patrols = await this.em.find(
@@ -775,8 +767,7 @@ export class PatrolService {
 
     const generatedPatrols = patrols.map((patrol) => {
       const members = allPatrolMembers.filter((m) => {
-        const patrolId =
-          typeof m.patrol === 'string' ? m.patrol : (m.patrol as Patrol).id;
+        const patrolId = typeof m.patrol === 'string' ? m.patrol : (m.patrol as Patrol).id;
         return patrolId === patrol.id;
       });
 
@@ -786,9 +777,7 @@ export class PatrolService {
         .slice(0, 2) as [string, string];
 
       const targetMatch = patrol.name.match(/\d+/);
-      const targetNumber = targetMatch
-        ? parseInt(targetMatch[0], 10)
-        : patrols.indexOf(patrol) + 1;
+      const targetNumber = targetMatch ? parseInt(targetMatch[0], 10) : patrols.indexOf(patrol) + 1;
 
       return {
         id: patrol.id,
@@ -798,10 +787,7 @@ export class PatrolService {
         judgeIds:
           judges.length === 2
             ? judges
-            : ([members[0]?.user.id || '', members[1]?.user.id || ''] as [
-                string,
-                string,
-              ]),
+            : ([members[0]?.user.id || '', members[1]?.user.id || ''] as [string, string]),
       };
     });
 
@@ -823,18 +809,13 @@ export class PatrolService {
       const app = applications.find((a) => a.applicant.id === userId);
       const user = member.user;
       const gender = user.gender?.toLowerCase() || 'other';
-      const normalizedGender: 'm' | 'f' | 'other' = [
-        'm',
-        'f',
-        'other',
-      ].includes(gender)
+      const normalizedGender: 'm' | 'f' | 'other' = ['m', 'f', 'other'].includes(gender)
         ? (gender as 'm' | 'f' | 'other')
         : 'other';
 
       return {
         participantId: user.id,
-        name:
-          `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.email,
+        name: `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.email,
         club: user.club?.name || 'No Club',
         clubShortCode: user.club?.shortCode ?? undefined,
         bowCategory: app?.bowCategory?.code || app?.bowCategory?.name || '-',

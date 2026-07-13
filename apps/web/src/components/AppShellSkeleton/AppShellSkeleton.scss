@@ -1,0 +1,43 @@
+@use '../../sass/helpers/variables' as *;
+
+.app-shell-skeleton {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+
+  &__header {
+    height: 72px;
+    flex-shrink: 0;
+    border-bottom: 3px solid $blue;
+    background: linear-gradient(90deg, #f0f0f0 0%, #e8e8e8 50%, #f0f0f0 100%);
+    background-size: 200% 100%;
+    animation: app-shell-shimmer 1.4s ease-in-out infinite;
+  }
+
+  &__main {
+    flex: 1;
+    min-height: calc(100vh - 72px - 50px);
+    min-height: calc(100dvh - 72px - 50px);
+    background: #fafafa;
+  }
+
+  &__footer {
+    height: 50px;
+    flex-shrink: 0;
+    border-top: 4px solid $yellow;
+    background: linear-gradient(90deg, #f0f0f0 0%, #e8e8e8 50%, #f0f0f0 100%);
+    background-size: 200% 100%;
+    animation: app-shell-shimmer 1.4s ease-in-out infinite;
+    padding-bottom: env(safe-area-inset-bottom, 0);
+  }
+}
+
+@keyframes app-shell-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}

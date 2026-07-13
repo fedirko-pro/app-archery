@@ -24,15 +24,15 @@ function generateFederationNumber(): string {
 
 export class DatabaseSeeder extends Seeder {
   async run(em: EntityManager): Promise<void> {
+    if (process.env.NODE_ENV === 'production') {
+      console.log('Skipping database seeding in production');
+      return;
+    }
+
     console.log('🌱 Starting database seeding...');
 
     // Seed clubs, rules, divisions, bow categories, and FABP-ROTA data
-    await this.call(em, [
-      ClubSeeder,
-      RuleSeeder,
-      DivisionSeeder,
-      BowCategorySeeder,
-    ]);
+    await this.call(em, [ClubSeeder, RuleSeeder, DivisionSeeder, BowCategorySeeder]);
 
     // Fetch clubs for user assignment
     const clubs = await em.find(Club, {});
@@ -313,9 +313,7 @@ export class DatabaseSeeder extends Seeder {
         const lastName = lastNames[i % lastNames.length];
         const gender = femaleNames.includes(firstName) ? 'F' : 'M';
         const club =
-          Math.random() < 0.05
-            ? undefined
-            : clubs[Math.floor(Math.random() * clubs.length)];
+          Math.random() < 0.05 ? undefined : clubs[Math.floor(Math.random() * clubs.length)];
 
         user = em.create(User, {
           email,
@@ -439,34 +437,19 @@ export class DatabaseSeeder extends Seeder {
       const numApplications = 40 + Math.floor(Math.random() * 31);
       const applicants = new Set<User>();
 
-      while (
-        applicants.size < numApplications &&
-        applicants.size < users.length - 1
-      ) {
+      while (applicants.size < numApplications && applicants.size < users.length - 1) {
         const randomUser = users[1 + Math.floor(Math.random() * 90)];
         applicants.add(randomUser);
       }
 
       for (const user of applicants) {
-        const status =
-          Math.random() < 0.9
-            ? ApplicationStatus.APPROVED
-            : ApplicationStatus.PENDING;
+        const status = Math.random() < 0.9 ? ApplicationStatus.APPROVED : ApplicationStatus.PENDING;
         const rand = Math.random();
         const divisionName =
-          rand < 0.7
-            ? 'Adult'
-            : rand < 0.9
-              ? 'Junior'
-              : rand < 0.95
-                ? 'Cub'
-                : 'Veteran';
+          rand < 0.7 ? 'Adult' : rand < 0.9 ? 'Junior' : rand < 0.95 ? 'Cub' : 'Veteran';
 
-        const applicableDivisions =
-          user.gender === 'F' ? femaleDivisions : maleDivisions;
-        const division = applicableDivisions.find((d) =>
-          d.name.startsWith(divisionName),
-        );
+        const applicableDivisions = user.gender === 'F' ? femaleDivisions : maleDivisions;
+        const division = applicableDivisions.find((d) => d.name.startsWith(divisionName));
         const bowCategory =
           bowCategories.length > 0
             ? bowCategories[Math.floor(Math.random() * bowCategories.length)]
@@ -478,8 +461,7 @@ export class DatabaseSeeder extends Seeder {
           status,
           division,
           bowCategory,
-          notes:
-            Math.random() > 0.7 ? 'Looking forward to this event!' : undefined,
+          notes: Math.random() > 0.7 ? 'Looking forward to this event!' : undefined,
         });
         em.persist(application);
         newAppsCount++;

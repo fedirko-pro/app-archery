@@ -19,6 +19,10 @@ describe('isNetworkError', () => {
     expect(isNetworkError(new Error('network timeout'))).toBe(true);
   });
 
+  it('returns true for ApiTimeoutError', () => {
+    expect(isNetworkError(new Error('Request timed out'))).toBe(true);
+  });
+
   it('returns true for Error with "Failed to fetch" (exact case)', () => {
     expect(isNetworkError(new Error('Failed to fetch'))).toBe(true);
   });

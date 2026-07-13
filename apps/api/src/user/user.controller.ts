@@ -103,16 +103,9 @@ export class UserController {
 
   @Patch('profile')
   @UseGuards(JwtAuthGuard)
-  async updateProfile(
-    @Request() req: { user: RequestUser },
-    @Body() updateUserDto: UpdateUserDto,
-  ) {
+  async updateProfile(@Request() req: { user: RequestUser }, @Body() updateUserDto: UpdateUserDto) {
     const isAdmin = this.permissionsService.canManageUsers(req.user);
-    const user = await this.userService.update(
-      req.user.sub,
-      updateUserDto,
-      isAdmin,
-    );
+    const user = await this.userService.update(req.user.sub, updateUserDto, isAdmin);
     return serializeUserProfile(user as unknown as Record<string, unknown>);
   }
 
@@ -128,10 +121,7 @@ export class UserController {
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
   remove(@Param('id') id: string, @Request() req: { user: RequestUser }) {
-    if (
-      req.user.sub !== id &&
-      !this.permissionsService.canDeleteUser(req.user)
-    ) {
+    if (req.user.sub !== id && !this.permissionsService.canDeleteUser(req.user)) {
       throw new ForbiddenException();
     }
     return this.userService.remove(id);
@@ -140,8 +130,8 @@ export class UserController {
   @Get('admin/all')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRoles.GeneralAdmin, UserRoles.ClubAdmin, UserRoles.FederationAdmin)
-  getAllUsers() {
-    return this.userService.getAllUsers();
+  getAllUsers(@Request() req: { user: RequestUser }) {
+    return this.userService.getUsersForAdmin(req.user.sub, req.user.role);
   }
 
   /**
@@ -154,15 +144,12 @@ export class UserController {
   @Roles(UserRoles.GeneralAdmin, UserRoles.FederationAdmin)
   async adminCreateUser(
     @Body() createUserDto: AdminCreateUserDto,
-    @Request() req: { user: RequestUser & { firstName?: string; lastName?: string; email: string } },
+    @Request()
+    req: { user: RequestUser & { firstName?: string; lastName?: string; email: string } },
   ) {
     const creatorName =
-      `${req.user.firstName || ''} ${req.user.lastName || ''}`.trim() ||
-      req.user.email;
-    const user = await this.userService.adminCreateUser(
-      createUserDto,
-      creatorName,
-    );
+      `${req.user.firstName || ''} ${req.user.lastName || ''}`.trim() || req.user.email;
+    const user = await this.userService.adminCreateUser(createUserDto, creatorName);
     return {
       id: user.id,
       email: user.email,
@@ -177,9 +164,13 @@ export class UserController {
   @Get('admin/:userId')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRoles.GeneralAdmin, UserRoles.ClubAdmin, UserRoles.FederationAdmin)
-  async getUserById(@Param('userId') userId: string) {
+  async getUserById(@Param('userId') userId: string, @Request() req: { user: RequestUser }) {
     const user = await this.userService.findById(userId);
     if (!user) return null;
+    const scope = await this.userService.getAdminScope(req.user.sub, req.user.role);
+    if (!this.permissionsService.canViewUserAsAdmin(req.user, user, scope)) {
+      throw new ForbiddenException();
+    }
     const userRecord = user as unknown as Record<string, unknown>;
     const club = userRecord.club as { id: string; name: string } | undefined;
     const division = userRecord.division as { id: string; name: string } | undefined;
@@ -210,21 +201,27 @@ export class UserController {
   @Patch('admin/:id')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRoles.GeneralAdmin, UserRoles.ClubAdmin, UserRoles.FederationAdmin)
-  adminUpdateUser(
+  async adminUpdateUser(
     @Param('id') id: string,
     @Body() updateUserDto: AdminUpdateUserDto,
-    @Request() req: { user: RequestUser & { firstName?: string; lastName?: string; email: string } },
+    @Request()
+    req: { user: RequestUser & { firstName?: string; lastName?: string; email: string } },
   ) {
+    const targetUser = await this.userService.findById(id);
+    if (!targetUser) {
+      throw new ForbiddenException();
+    }
+    const scope = await this.userService.getAdminScope(req.user.sub, req.user.role);
+    if (!this.permissionsService.canViewUserAsAdmin(req.user, targetUser, scope)) {
+      throw new ForbiddenException();
+    }
+
     const dto = { ...updateUserDto };
-    if (
-      !this.permissionsService.canChangeRole(req.user) &&
-      dto.role !== undefined
-    ) {
+    if (!this.permissionsService.canChangeRole(req.user) && dto.role !== undefined) {
       delete dto.role;
     }
     const adminName =
-      `${req.user.firstName || ''} ${req.user.lastName || ''}`.trim() ||
-      req.user.email;
+      `${req.user.firstName || ''} ${req.user.lastName || ''}`.trim() || req.user.email;
     return this.userService.adminUpdateUser(id, dto, adminName);
   }
 }

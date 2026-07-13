@@ -28,7 +28,7 @@ const OnboardingPage: React.FC = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const navigate = useNavigate();
   const { lang } = useParams();
-  const { user, loading, updateUser } = useAuth();
+  const { user, initializing, updateUser } = useAuth();
   const { syncNow } = useLocalData();
 
   const [activeStep, setActiveStep] = useState(0);
@@ -64,10 +64,10 @@ const OnboardingPage: React.FC = () => {
 
   useEffect(() => {
     if (leavingRef.current) return;
-    if (!loading && user && !needsOnboarding(user)) {
+    if (!initializing && user && !needsOnboarding(user)) {
       navigate(`/${lang}/home`, { replace: true });
     }
-  }, [user, loading, lang, navigate]);
+  }, [user, initializing, lang, navigate]);
 
   const stepLabels = useMemo(
     () => [
@@ -146,7 +146,7 @@ const OnboardingPage: React.FC = () => {
     await finishOnboarding();
   };
 
-  if (loading || !user) {
+  if (initializing || !user) {
     return <RouteLoadingSpinner />;
   }
 

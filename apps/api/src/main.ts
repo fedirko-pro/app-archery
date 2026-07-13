@@ -5,11 +5,15 @@ import { ValidationPipe, ClassSerializerInterceptor } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
 import { join } from 'path';
+import cookieParser from 'cookie-parser';
+import helmet from 'helmet';
 import './config/env.validation';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const configService = app.get(ConfigService);
+
+  app.set('trust proxy', 1);
 
   const frontendUrl = configService.get<string>('FRONTEND_URL') as string;
 
@@ -17,6 +21,9 @@ async function bootstrap() {
     origin: [frontendUrl],
     credentials: true,
   });
+
+  app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
+  app.use(cookieParser());
 
   // Serve static files from uploads directory
   // From dist/src/main.js: go up 4 levels to reach project root

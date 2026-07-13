@@ -1,20 +1,24 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UnauthorizedException, BadRequestException, NotFoundException } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import type { Response } from 'express';
 import * as bcrypt from 'bcryptjs';
 import { AuthService } from './auth.service';
 import { UserService } from '../user/user.service';
 import { EmailService } from '../email/email.service';
+import { SessionService } from './session.service';
+import { OAuthExchangeService } from './oauth-exchange.service';
 
 jest.mock('bcryptjs');
 
 describe('AuthService', () => {
   let authService: AuthService;
   let userService: jest.Mocked<UserService>;
-  let jwtService: jest.Mocked<JwtService>;
+  let sessionService: jest.Mocked<SessionService>;
   let emailService: jest.Mocked<EmailService>;
   let configService: jest.Mocked<ConfigService>;
+
+  const mockRes = { cookie: jest.fn() } as unknown as Response;
 
   const mockUser = {
     id: 'user-1',
@@ -44,8 +48,19 @@ describe('AuthService', () => {
           },
         },
         {
-          provide: JwtService,
-          useValue: { sign: jest.fn().mockReturnValue('jwt-token') },
+          provide: SessionService,
+          useValue: {
+            createSession: jest.fn().mockResolvedValue(undefined),
+            revokeSession: jest.fn().mockResolvedValue(undefined),
+            clearSessionCookie: jest.fn(),
+          },
+        },
+        {
+          provide: OAuthExchangeService,
+          useValue: {
+            createExchangeCode: jest.fn(),
+            consumeExchangeCode: jest.fn(),
+          },
         },
         {
           provide: EmailService,
@@ -65,29 +80,27 @@ describe('AuthService', () => {
 
     authService = module.get<AuthService>(AuthService);
     userService = module.get(UserService) as jest.Mocked<UserService>;
-    jwtService = module.get(JwtService) as jest.Mocked<JwtService>;
+    sessionService = module.get(SessionService) as jest.Mocked<SessionService>;
     emailService = module.get(EmailService) as jest.Mocked<EmailService>;
     configService = module.get(ConfigService) as jest.Mocked<ConfigService>;
   });
 
   describe('login', () => {
-    it('should return access token for valid credentials', async () => {
+    it('should create a session for valid credentials', async () => {
       userService.findByEmail.mockResolvedValue(mockUser as any);
       (bcrypt.compare as jest.Mock).mockResolvedValue(true);
-      jwtService.sign.mockReturnValue('jwt-token');
 
-      const result = await authService.login({
-        email: 'test@example.com',
-        password: 'correct-password',
-      });
+      const result = await authService.login(
+        {
+          email: 'test@example.com',
+          password: 'correct-password',
+        },
+        mockRes,
+      );
 
-      expect(result).toEqual({ access_token: 'jwt-token' });
+      expect(result).toEqual({ user: mockUser });
       expect(userService.findByEmail).toHaveBeenCalledWith('test@example.com', true);
-      expect(jwtService.sign).toHaveBeenCalledWith({
-        sub: 'user-1',
-        email: 'test@example.com',
-        role: 'user',
-      });
+      expect(sessionService.createSession).toHaveBeenCalledWith(mockUser, mockRes, undefined);
     });
 
     it('should throw UnauthorizedException for invalid password', async () => {
@@ -95,7 +108,7 @@ describe('AuthService', () => {
       (bcrypt.compare as jest.Mock).mockResolvedValue(false);
 
       await expect(
-        authService.login({ email: 'test@example.com', password: 'wrong-password' }),
+        authService.login({ email: 'test@example.com', password: 'wrong-password' }, mockRes),
       ).rejects.toThrow(UnauthorizedException);
     });
 
@@ -103,8 +116,40 @@ describe('AuthService', () => {
       userService.findByEmail.mockResolvedValue(null);
 
       await expect(
-        authService.login({ email: 'nonexistent@example.com', password: 'any' }),
+        authService.login({ email: 'nonexistent@example.com', password: 'any' }, mockRes),
       ).rejects.toThrow(UnauthorizedException);
+    });
+
+    it('should pass request metadata to session creation', async () => {
+      userService.findByEmail.mockResolvedValue(mockUser as any);
+      (bcrypt.compare as jest.Mock).mockResolvedValue(true);
+      const meta = { userAgent: 'jest-agent', ipAddress: '127.0.0.1' };
+
+      await authService.login(
+        { email: 'test@example.com', password: 'correct-password' },
+        mockRes,
+        meta,
+      );
+
+      expect(sessionService.createSession).toHaveBeenCalledWith(mockUser, mockRes, meta);
+    });
+  });
+
+  describe('logout', () => {
+    it('should revoke session and clear cookie when token is provided', async () => {
+      const result = await authService.logout(mockRes, 'session-token');
+
+      expect(result).toEqual({ message: 'Logged out successfully' });
+      expect(sessionService.revokeSession).toHaveBeenCalledWith('session-token');
+      expect(sessionService.clearSessionCookie).toHaveBeenCalledWith(mockRes);
+    });
+
+    it('should clear cookie without revoking when token is missing', async () => {
+      const result = await authService.logout(mockRes);
+
+      expect(result).toEqual({ message: 'Logged out successfully' });
+      expect(sessionService.revokeSession).not.toHaveBeenCalled();
+      expect(sessionService.clearSessionCookie).toHaveBeenCalledWith(mockRes);
     });
   });
 
@@ -194,9 +239,9 @@ describe('AuthService', () => {
       userService.findByEmail.mockResolvedValue(mockUser as any);
       emailService.sendPasswordResetEmail.mockRejectedValue(new Error('Email failed'));
 
-      await expect(
-        authService.forgotPassword({ email: 'test@example.com' }),
-      ).rejects.toThrow('Failed to send password reset email');
+      await expect(authService.forgotPassword({ email: 'test@example.com' })).rejects.toThrow(
+        'Failed to send password reset email',
+      );
       expect(userService.clearResetPasswordToken).toHaveBeenCalledWith('user-1');
     });
   });
@@ -215,7 +260,10 @@ describe('AuthService', () => {
       });
 
       expect(result).toEqual({ message: 'Password has been set successfully' });
-      expect(userService.setPasswordForOAuthUser).toHaveBeenCalledWith('user-1', 'new-password-1234');
+      expect(userService.setPasswordForOAuthUser).toHaveBeenCalledWith(
+        'user-1',
+        'new-password-1234',
+      );
     });
 
     it('should throw BadRequestException for non-OAuth user', async () => {

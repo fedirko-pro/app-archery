@@ -6,6 +6,7 @@ footer {
   height: 50px;
   width: 100%;
   padding: 0;
+  padding-bottom: env(safe-area-inset-bottom, 0);
   display: flex;
   align-items: center;
   justify-content: space-around;
@@ -17,6 +18,11 @@ footer {
     font-weight: bold;
     width: 33%;
     text-align: center;
+    min-width: 44px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     &:hover,
     &:active {
       text-decoration: none;
@@ -27,8 +33,10 @@ footer {
     background: white url('../../../src/img/sokil.svg') center no-repeat;
     background-size: contain;
     border-radius: 50%;
-    width: 32px;
-    height: 32px;
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
   }
 }
 

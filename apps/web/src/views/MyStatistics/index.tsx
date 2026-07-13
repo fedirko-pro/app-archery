@@ -10,6 +10,7 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import { alpha, useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import { format, parseISO } from 'date-fns';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -54,6 +55,7 @@ interface ChartCardProps {
   ghostSubtitle?: string;
   ghostCtaLabel?: string;
   onGhostCta?: () => void;
+  disableAnimation?: boolean;
 }
 
 const ChartCard: React.FC<ChartCardProps> = ({
@@ -66,6 +68,7 @@ const ChartCard: React.FC<ChartCardProps> = ({
   ghostSubtitle,
   ghostCtaLabel,
   onGhostCta,
+  disableAnimation = false,
 }) => (
   <Card variant="outlined" sx={{ mb: 2 }}>
     <CardContent sx={{ position: 'relative' }}>
@@ -101,7 +104,7 @@ const ChartCard: React.FC<ChartCardProps> = ({
               fill={ghost ? alpha(color, 0.2) : color}
               radius={[4, 4, 0, 0]}
               maxBarSize={40}
-              isAnimationActive={!ghost}
+              isAnimationActive={!ghost && !disableAnimation}
             />
           </BarChart>
         </ResponsiveContainer>
@@ -156,6 +159,9 @@ const MyStatisticsPage: React.FC = () => {
   const navigate = useNavigate();
   const { lang } = useParams();
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)');
+  const disableChartAnimation = isMobile || prefersReducedMotion;
 
   const [appStats, setAppStats] = useState<ApplicationStatsForUser | null>(null);
   const [appsLoading, setAppsLoading] = useState(false);
@@ -491,6 +497,7 @@ const MyStatisticsPage: React.FC = () => {
         ghostSubtitle={t('statistics.emptyState.ghostSubtitle')}
         ghostCtaLabel={t('statistics.emptyState.logSession')}
         onGhostCta={handleLogSession}
+        disableAnimation={disableChartAnimation}
       />
 
       <SectionTitle>{t('statistics.sessionsByMonth')}</SectionTitle>
@@ -504,6 +511,7 @@ const MyStatisticsPage: React.FC = () => {
         ghostSubtitle={t('statistics.emptyState.ghostSubtitle')}
         ghostCtaLabel={t('statistics.emptyState.logSession')}
         onGhostCta={handleLogSession}
+        disableAnimation={disableChartAnimation}
       />
     </Box>
   );

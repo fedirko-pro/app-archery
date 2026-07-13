@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { ClientOnly } from '@/components/ClientOnly/ClientOnly';
 import apiService from '@/services/api';
 import { getDefaultAppLang } from '@/utils/i18n-lang';
-import { needsOnboarding } from '@/utils/onboarding-utils';
+import { resolvePostAuthPath } from '@/utils/post-auth-redirect';
 
 export default function GoogleCallbackClient() {
   return (
@@ -26,7 +26,7 @@ function GoogleCallbackInner() {
     const run = async () => {
       try {
         const params = new URLSearchParams(window.location.search);
-        const token = params.get('token');
+        const code = params.get('code');
         const authError = params.get('error');
 
         if (authError) {
@@ -37,28 +37,14 @@ function GoogleCallbackInner() {
           return;
         }
 
-        if (token) {
-          localStorage.setItem('authToken', token);
-        }
-
-        if (!apiService.isAuthenticated()) {
+        if (!code) {
           window.location.href = signInPath;
           return;
         }
 
+        await apiService.exchangeOAuthCode(code);
         const userData = await apiService.getProfile();
-
-        if (needsOnboarding(userData)) {
-          window.location.href = `/${lang}/onboarding`;
-          return;
-        }
-
-        if (userData.role === 'general_admin' || userData.role === 'federation_admin') {
-          window.location.href = `/${lang}/tournaments`;
-          return;
-        }
-
-        window.location.href = `/${lang}/home`;
+        window.location.href = resolvePostAuthPath(lang, userData);
       } catch {
         setError('Authentication failed');
         setTimeout(() => {
@@ -77,7 +63,7 @@ function GoogleCallbackInner() {
         flexDirection="column"
         alignItems="center"
         justifyContent="center"
-        minHeight="100vh"
+        minHeight="100dvh"
         gap={2}
       >
         <Typography color="error" variant="h6">
@@ -94,7 +80,7 @@ function GoogleCallbackInner() {
       flexDirection="column"
       alignItems="center"
       justifyContent="center"
-      minHeight="100vh"
+      minHeight="100dvh"
       gap={2}
     >
       <CircularProgress />

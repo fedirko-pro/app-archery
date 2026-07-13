@@ -15,6 +15,7 @@ export class UpdateUserDto {
   @IsEmail()
   @IsOptional()
   email?: string;
+
   @IsString()
   @IsOptional()
   firstName?: string;
@@ -22,6 +23,10 @@ export class UpdateUserDto {
   @IsString()
   @IsOptional()
   lastName?: string;
+
+  @IsString()
+  @IsOptional()
+  googleId?: string;
 
   @IsString()
   @IsOptional()
@@ -35,11 +40,7 @@ export class UpdateUserDto {
   @IsOptional()
   country?: string;
 
-  // Allow localhost URLs for development and any valid URL format
-  // Only validate URL format if picture is provided and not empty
-  @ValidateIf(
-    (o) => o.picture !== undefined && o.picture !== null && o.picture !== '',
-  )
+  @ValidateIf((o) => o.picture !== undefined && o.picture !== null && o.picture !== '')
   @IsUrl({
     require_tld: false,
     require_protocol: false,

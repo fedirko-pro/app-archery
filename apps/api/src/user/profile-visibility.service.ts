@@ -8,14 +8,13 @@ export interface ProfileViewer {
   sub: string;
   role: string;
   clubId?: string | null;
+  managedFederationId?: string | null;
+  federationClubIds?: string[];
 }
 
 @Injectable()
 export class ProfileVisibilityService {
-  resolveViewLevel(
-    target: User,
-    viewer?: ProfileViewer | null,
-  ): ProfileViewLevel {
+  resolveViewLevel(target: User, viewer?: ProfileViewer | null): ProfileViewLevel {
     if (viewer?.sub === target.id) {
       return 'full';
     }
@@ -35,7 +34,11 @@ export class ProfileVisibilityService {
     }
 
     if (viewer.role === Roles.FederationAdmin) {
-      return 'limited';
+      const targetClubId = target.club?.id;
+      if (targetClubId && viewer.federationClubIds?.includes(targetClubId)) {
+        return 'limited';
+      }
+      return 'none';
     }
 
     const targetClubId = target.club?.id;
@@ -48,8 +51,7 @@ export class ProfileVisibilityService {
 
   canViewPublicUnauthenticated(target: User): boolean {
     return (
-      (target.profileVisibility ?? ProfileVisibilities.Personal) ===
-      ProfileVisibilities.Public
+      (target.profileVisibility ?? ProfileVisibilities.Personal) === ProfileVisibilities.Public
     );
   }
 }

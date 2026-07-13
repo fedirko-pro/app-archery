@@ -1,16 +1,32 @@
 import { draggable } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { Box, Chip, IconButton, Menu, MenuItem, Paper } from '@mui/material';
+import {
+  Box,
+  Chip,
+  Divider,
+  IconButton,
+  ListSubheader,
+  Menu,
+  MenuItem,
+  Paper,
+} from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
 
 import type { Participant } from './types';
+
+interface PatrolOption {
+  id: string;
+  targetNumber: number;
+}
 
 interface MemberCardProps {
   participant: Participant;
   patrolId: string;
   isLeader: boolean;
   isJudge: boolean;
+  otherPatrols: PatrolOption[];
   onRoleChange: (patrolId: string, memberId: string, role: string) => void;
+  onMoveToPatrol: (memberId: string, sourcePatrolId: string, targetPatrolId: string) => void;
 }
 
 const MemberCard: React.FC<MemberCardProps> = ({
@@ -18,7 +34,9 @@ const MemberCard: React.FC<MemberCardProps> = ({
   patrolId,
   isLeader,
   isJudge,
+  otherPatrols,
   onRoleChange,
+  onMoveToPatrol,
 }) => {
   const dragRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -61,6 +79,11 @@ const MemberCard: React.FC<MemberCardProps> = ({
 
   const handleRemoveRole = () => {
     onRoleChange(patrolId, participant.id, 'remove');
+    handleMenuClose();
+  };
+
+  const handleMoveToPatrol = (targetPatrolId: string) => {
+    onMoveToPatrol(participant.id, patrolId, targetPatrolId);
     handleMenuClose();
   };
 
@@ -138,7 +161,12 @@ const MemberCard: React.FC<MemberCardProps> = ({
           sx={{ fontSize: '0.7rem', height: 22 }}
         />
 
-        <IconButton size="small" onClick={handleMenuClick}>
+        <IconButton
+          size="small"
+          onClick={handleMenuClick}
+          aria-label="Member actions"
+          sx={{ minWidth: 44, minHeight: 44 }}
+        >
           <MoreVertIcon fontSize="small" />
         </IconButton>
       </Box>
@@ -147,6 +175,19 @@ const MemberCard: React.FC<MemberCardProps> = ({
         {!isLeader && <MenuItem onClick={handleMakeLeader}>Make Leader</MenuItem>}
         {!isJudge && <MenuItem onClick={handleMakeJudge}>Make Judge</MenuItem>}
         {(isLeader || isJudge) && <MenuItem onClick={handleRemoveRole}>Remove Role</MenuItem>}
+        {otherPatrols.length > 0 && (
+          <>
+            <Divider />
+            <ListSubheader component="div" disableSticky>
+              Move to patrol
+            </ListSubheader>
+            {otherPatrols.map((patrol) => (
+              <MenuItem key={patrol.id} onClick={() => handleMoveToPatrol(patrol.id)}>
+                Patrol {patrol.targetNumber}
+              </MenuItem>
+            ))}
+          </>
+        )}
       </Menu>
     </Paper>
   );

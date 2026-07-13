@@ -78,10 +78,13 @@ export class TournamentApplicationController {
     },
     @Request() req: ReqWithUser,
   ) {
+    if (!this.permissionsService.canApplyOtherUsers(req.user)) {
+      throw new ForbiddenException();
+    }
+
     // Build the notes with admin attribution
     const adminName =
-      `${req.user.firstName || ''} ${req.user.lastName || ''}`.trim() ||
-      req.user.email;
+      `${req.user.firstName || ''} ${req.user.lastName || ''}`.trim() || req.user.email;
     const adminNote = `Application submitted by admin ${adminName}`;
     const finalNotes = data.notes ? `${adminNote}\n\n${data.notes}` : adminNote;
 
@@ -101,9 +104,7 @@ export class TournamentApplicationController {
     const applications =
       req.user.role === UserRoles.GeneralAdmin
         ? await this.applicationService.findAll()
-        : await this.applicationService.findAllByTournamentCreator(
-            req.user.sub,
-          );
+        : await this.applicationService.findAllByTournamentCreator(req.user.sub);
     // Serialize to plain JSON to avoid class-transformer issues
     return applications.map((app) => {
       const json: Record<string, unknown> = wrap(app).toJSON() as Record<string, unknown>;
@@ -137,26 +138,17 @@ export class TournamentApplicationController {
   @Get('tournament/:tournamentId')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRoles.GeneralAdmin, UserRoles.ClubAdmin, UserRoles.FederationAdmin)
-  async findByTournament(
-    @Param('tournamentId') tournamentId: string,
-    @Request() req: ReqWithUser,
-  ) {
+  async findByTournament(@Param('tournamentId') tournamentId: string, @Request() req: ReqWithUser) {
     let tournament: Tournament;
     try {
       tournament = await this.tournamentService.findById(tournamentId);
     } catch {
       throw new NotFoundException('Tournament not found');
     }
-    if (
-      !this.permissionsService.canViewTournamentApplications(
-        req.user,
-        tournament,
-      )
-    ) {
+    if (!this.permissionsService.canViewTournamentApplications(req.user, tournament)) {
       throw new ForbiddenException();
     }
-    const applications =
-      await this.applicationService.findByTournament(tournamentId);
+    const applications = await this.applicationService.findByTournament(tournamentId);
     // Serialize to plain JSON to avoid class-transformer issues
     return applications.map((app) => {
       const json: Record<string, unknown> = wrap(app).toJSON() as Record<string, unknown>;
@@ -200,12 +192,7 @@ export class TournamentApplicationController {
     } catch {
       throw new NotFoundException('Tournament not found');
     }
-    if (
-      !this.permissionsService.canViewTournamentApplications(
-        req.user,
-        tournament,
-      )
-    ) {
+    if (!this.permissionsService.canViewTournamentApplications(req.user, tournament)) {
       throw new ForbiddenException();
     }
     return this.applicationService.getApplicationStats(tournamentId);
@@ -219,8 +206,39 @@ export class TournamentApplicationController {
 
   @Get(':id')
   @UseGuards(JwtAuthGuard)
-  async findOne(@Param('id') id: string) {
-    return this.applicationService.findById(id);
+  async findOne(@Param('id') id: string, @Request() req: ReqWithUser) {
+    const application = await this.applicationService.findById(id);
+    const tournament = application.tournament;
+    if (
+      !this.permissionsService.canViewApplication(req.user, application.applicant.id, tournament)
+    ) {
+      throw new ForbiddenException();
+    }
+    const json: Record<string, unknown> = wrap(application).toJSON() as Record<string, unknown>;
+    return {
+      ...json,
+      applicant: {
+        id: application.applicant.id,
+        firstName: application.applicant.firstName,
+        lastName: application.applicant.lastName,
+        email: application.applicant.email,
+        picture: application.applicant.picture,
+        gender: application.applicant.gender,
+      },
+      division: application.division
+        ? {
+            id: application.division.id,
+            name: application.division.name,
+          }
+        : null,
+      bowCategory: application.bowCategory
+        ? {
+            id: application.bowCategory.id,
+            name: application.bowCategory.name,
+            code: application.bowCategory.code,
+          }
+        : null,
+    };
   }
 
   @Put(':id/status')

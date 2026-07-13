@@ -20,6 +20,13 @@ import { UploadService } from '../upload/upload.service';
 import { Club } from '../club/club.entity';
 import { Division } from '../division/division.entity';
 import { EmailService } from '../email/email.service';
+import { ClubMembershipService } from '../club/club-membership.service';
+import {
+  FederationMembership,
+  FederationMembershipStatus,
+} from '../federation/federation-membership.entity';
+import type { AdminScope } from '../auth/permissions.service';
+import type { ProfileViewer } from './profile-visibility.service';
 
 @Injectable()
 export class UserService {
@@ -30,6 +37,7 @@ export class UserService {
     private readonly uploadService: UploadService,
     private readonly emailService: EmailService,
     private readonly configService: ConfigService,
+    private readonly clubMembershipService: ClubMembershipService,
   ) {}
 
   async create(userData: CreateUserDto): Promise<User> {
@@ -58,25 +66,15 @@ export class UserService {
 
     // Send welcome email — fire-and-forget, never block or fail the signup
     this.emailService
-      .sendWelcomeEmail(
-        user.email,
-        user.firstName ?? user.email.split('@')[0],
-        user.appLanguage,
-      )
+      .sendWelcomeEmail(user.email, user.firstName ?? user.email.split('@')[0], user.appLanguage)
       .catch((err) => {
-        this.logger.error(
-          `Failed to send welcome email to ${user.email}:`,
-          err.message,
-        );
+        this.logger.error(`Failed to send welcome email to ${user.email}:`, err.message);
       });
 
     return user;
   }
 
-  async findByEmail(
-    email: string,
-    includePassword = false,
-  ): Promise<User | null> {
+  async findByEmail(email: string, includePassword = false): Promise<User | null> {
     if (includePassword) {
       // Use getConnection().execute() with proper parameter binding for PostgreSQL
       const connection = this.entityManager.getConnection();
@@ -95,15 +93,11 @@ export class UserService {
     return this.entityManager.findOne(
       User,
       { id },
-      { populate: ['club', 'division'] },
+      { populate: ['club', 'division', 'managedFederation'] },
     );
   }
 
-  async update(
-    id: string,
-    updateData: UpdateUserDto,
-    isAdmin: boolean = false,
-  ): Promise<User> {
+  async update(id: string, updateData: UpdateUserDto, isAdmin: boolean = false): Promise<User> {
     const user = await this.findById(id);
     if (!user) {
       throw new NotFoundException('User not found');
@@ -125,9 +119,7 @@ export class UserService {
       'onboardingCompletedAt' in safeUpdate &&
       typeof safeUpdate.onboardingCompletedAt === 'string'
     ) {
-      safeUpdate.onboardingCompletedAt = new Date(
-        safeUpdate.onboardingCompletedAt as string,
-      );
+      safeUpdate.onboardingCompletedAt = new Date(safeUpdate.onboardingCompletedAt as string);
     }
 
     // Handle clubId separately
@@ -156,9 +148,7 @@ export class UserService {
           id: divisionId,
         });
         if (!division) {
-          throw new NotFoundException(
-            `Division with id ${divisionId} not found`,
-          );
+          throw new NotFoundException(`Division with id ${divisionId} not found`);
         }
         user.division = division;
       } else {
@@ -173,19 +163,14 @@ export class UserService {
     return user;
   }
 
-  async changePassword(
-    id: string,
-    passwordData: ChangePasswordDto,
-  ): Promise<{ message: string }> {
+  async changePassword(id: string, passwordData: ChangePasswordDto): Promise<{ message: string }> {
     const user = await this.findById(id);
     if (!user) {
       throw new NotFoundException('User not found');
     }
 
     if (!user.password) {
-      throw new UnauthorizedException(
-        'User does not have a password set (OAuth user)',
-      );
+      throw new UnauthorizedException('User does not have a password set (OAuth user)');
     }
 
     const isCurrentPasswordValid = await bcrypt.compare(
@@ -198,25 +183,16 @@ export class UserService {
     }
 
     if (passwordData.newPassword !== passwordData.confirmPassword) {
-      throw new BadRequestException(
-        'New password and confirmation do not match',
-      );
+      throw new BadRequestException('New password and confirmation do not match');
     }
 
     if (passwordData.newPassword.length < 8) {
-      throw new BadRequestException(
-        'New password must be at least 8 characters long',
-      );
+      throw new BadRequestException('New password must be at least 8 characters long');
     }
 
-    const isSamePassword = await bcrypt.compare(
-      passwordData.newPassword,
-      user.password,
-    );
+    const isSamePassword = await bcrypt.compare(passwordData.newPassword, user.password);
     if (isSamePassword) {
-      throw new BadRequestException(
-        'New password must be different from current password',
-      );
+      throw new BadRequestException('New password must be different from current password');
     }
 
     const hashedNewPassword = await bcrypt.hash(passwordData.newPassword, 10);
@@ -229,11 +205,7 @@ export class UserService {
     return { message: 'Password changed successfully' };
   }
 
-  async setResetPasswordToken(
-    userId: string,
-    token: string,
-    expires: Date,
-  ): Promise<void> {
+  async setResetPasswordToken(userId: string, token: string, expires: Date): Promise<void> {
     const user = await this.findById(userId);
     if (!user) {
       throw new NotFoundException('User not found');
@@ -263,10 +235,7 @@ export class UserService {
     await this.entityManager.persistAndFlush(user);
   }
 
-  async updatePasswordAndClearResetToken(
-    userId: string,
-    newPassword: string,
-  ): Promise<void> {
+  async updatePasswordAndClearResetToken(userId: string, newPassword: string): Promise<void> {
     const user = await this.findById(userId);
     if (!user) {
       throw new NotFoundException('User not found');
@@ -281,10 +250,7 @@ export class UserService {
     await this.entityManager.persistAndFlush(user);
   }
 
-  async setPasswordForOAuthUser(
-    userId: string,
-    newPassword: string,
-  ): Promise<void> {
+  async setPasswordForOAuthUser(userId: string, newPassword: string): Promise<void> {
     const user = await this.findById(userId);
     if (!user) {
       throw new NotFoundException('User not found');
@@ -305,34 +271,111 @@ export class UserService {
     await this.entityManager.persistAndFlush(user);
   }
 
-  async getAllUsers(): Promise<Record<string, unknown>[]> {
-    const em = this.entityManager.fork();
-
-    // Load users and clubs separately to avoid lazy loading issues
-    const users = await em.find(
-      User,
-      {},
+  async getFederationClubIds(federationId: string): Promise<string[]> {
+    const memberships = await this.entityManager.find(
+      FederationMembership,
       {
-        orderBy: { firstName: 'ASC', lastName: 'ASC' },
-        populate: ['club', 'division'],
+        federation: { id: federationId },
+        status: FederationMembershipStatus.APPROVED,
       },
+      { populate: ['club'] },
     );
+    return memberships.map((membership) => membership.club.id);
+  }
 
-    // Get all unique club IDs (filter out undefined)
+  async getAdminScope(viewerId: string, viewerRole: string): Promise<AdminScope> {
+    if (viewerRole === Roles.GeneralAdmin) {
+      return {};
+    }
+
+    if (viewerRole === Roles.ClubAdmin) {
+      const adminClub = await this.clubMembershipService.getAdminClub(viewerId);
+      return { adminClubId: adminClub?.id ?? null };
+    }
+
+    if (viewerRole === Roles.FederationAdmin) {
+      const viewer = await this.findById(viewerId);
+      const managedFederationId = viewer?.managedFederation?.id ?? null;
+      const federationClubIds = managedFederationId
+        ? await this.getFederationClubIds(managedFederationId)
+        : [];
+      return { managedFederationId, federationClubIds };
+    }
+
+    return {};
+  }
+
+  async buildProfileViewer(sub: string, role: string): Promise<ProfileViewer> {
+    const user = await this.findById(sub);
+    const viewer: ProfileViewer = {
+      sub,
+      role,
+      clubId: user?.club?.id ?? null,
+    };
+
+    if (role === Roles.FederationAdmin && user?.managedFederation?.id) {
+      viewer.managedFederationId = user.managedFederation.id;
+      viewer.federationClubIds = await this.getFederationClubIds(user.managedFederation.id);
+    }
+
+    return viewer;
+  }
+
+  async getUsersForAdmin(viewerId: string, viewerRole: string): Promise<Record<string, unknown>[]> {
+    const em = this.entityManager.fork();
+    let users: User[];
+
+    if (viewerRole === Roles.GeneralAdmin) {
+      users = await em.find(
+        User,
+        {},
+        {
+          orderBy: { firstName: 'ASC', lastName: 'ASC' },
+          populate: ['club', 'division'],
+        },
+      );
+    } else if (viewerRole === Roles.ClubAdmin) {
+      const adminClub = await this.clubMembershipService.getAdminClub(viewerId);
+      if (!adminClub) {
+        return [];
+      }
+      users = await em.find(
+        User,
+        { club: { id: adminClub.id } },
+        {
+          orderBy: { firstName: 'ASC', lastName: 'ASC' },
+          populate: ['club', 'division'],
+        },
+      );
+    } else if (viewerRole === Roles.FederationAdmin) {
+      const viewer = await this.findById(viewerId);
+      const federationId = viewer?.managedFederation?.id;
+      if (!federationId) {
+        return [];
+      }
+      const clubIds = await this.getFederationClubIds(federationId);
+      if (clubIds.length === 0) {
+        return [];
+      }
+      users = await em.find(
+        User,
+        { club: { id: { $in: clubIds } } },
+        {
+          orderBy: { firstName: 'ASC', lastName: 'ASC' },
+          populate: ['club', 'division'],
+        },
+      );
+    } else {
+      return [];
+    }
+
     const clubIds = [
-      ...new Set(
-        users.map((u) => u.club?.id).filter((id): id is string => !!id),
-      ),
+      ...new Set(users.map((user) => user.club?.id).filter((id): id is string => !!id)),
     ];
 
-    // Load all clubs at once
-    const clubs =
-      clubIds.length > 0 ? await em.find(Club, { id: { $in: clubIds } }) : [];
+    const clubs = clubIds.length > 0 ? await em.find(Club, { id: { $in: clubIds } }) : [];
+    const clubMap = new Map(clubs.map((club) => [club.id, club]));
 
-    // Create club lookup map
-    const clubMap = new Map(clubs.map((c) => [c.id, c]));
-
-    // Transform to plain objects with club data
     return users.map((user) => {
       const club = user.club ? clubMap.get(user.club.id) : null;
       return {
@@ -352,12 +395,14 @@ export class UserService {
         createdAt: user.createdAt,
         categories: user.categories || [],
         divisionId: user.division?.id ?? null,
-        division: user.division
-          ? { id: user.division.id, name: user.division.name }
-          : null,
+        division: user.division ? { id: user.division.id, name: user.division.name } : null,
         club: club ? { id: club.id, name: club.name } : null,
       };
     });
+  }
+
+  async getAllUsers(): Promise<Record<string, unknown>[]> {
+    return this.getUsersForAdmin('', Roles.GeneralAdmin);
   }
 
   async adminUpdateUser(
@@ -414,9 +459,7 @@ export class UserService {
           id: divisionId,
         });
         if (!division) {
-          throw new NotFoundException(
-            `Division with id ${divisionId} not found`,
-          );
+          throw new NotFoundException(`Division with id ${divisionId} not found`);
         }
         user.division = division;
       } else {
@@ -432,8 +475,7 @@ export class UserService {
     // Send role-change notification if role was updated
     const newRole = user.role;
     if (updateData.role && newRole !== oldRole && adminName) {
-      const recipientName =
-        [user.firstName, user.lastName].filter(Boolean).join(' ') || user.email;
+      const recipientName = [user.firstName, user.lastName].filter(Boolean).join(' ') || user.email;
       this.emailService
         .sendRoleChangedEmail(
           user.email,
@@ -444,10 +486,7 @@ export class UserService {
           user.appLanguage,
         )
         .catch((err) => {
-          this.logger.error(
-            `Failed to send role-change email to ${user.email}:`,
-            err.message,
-          );
+          this.logger.error(`Failed to send role-change email to ${user.email}:`, err.message);
         });
     }
 
@@ -470,10 +509,7 @@ export class UserService {
    * Create a new user by an administrator and send an invitation email
    * with a set-password link (valid for 24 hours).
    */
-  async adminCreateUser(
-    data: AdminCreateUserDto,
-    creatorName: string,
-  ): Promise<User> {
+  async adminCreateUser(data: AdminCreateUserDto, creatorName: string): Promise<User> {
     const existing = await this.findByEmail(data.email);
     if (existing) {
       throw new ConflictException('User with this email already exists');
@@ -509,18 +545,9 @@ export class UserService {
     const recipientName = fullName || data.email;
 
     this.emailService
-      .sendInvitationEmail(
-        user.email,
-        recipientName,
-        creatorName,
-        setPasswordUrl,
-        data.appLanguage,
-      )
+      .sendInvitationEmail(user.email, recipientName, creatorName, setPasswordUrl, data.appLanguage)
       .catch((err) => {
-        this.logger.error(
-          `Failed to send invitation email to ${user.email}:`,
-          err.message,
-        );
+        this.logger.error(`Failed to send invitation email to ${user.email}:`, err.message);
       });
 
     return user;

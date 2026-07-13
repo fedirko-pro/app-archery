@@ -690,7 +690,7 @@
   "pwa": {
     "workingOffline": "Trabajando sin conexión",
     "showingCachedData": "Mostrando últimos datos guardados",
-    "installPrompt": "Instala Sokil como aplicación para mejor experiencia y uso sin conexión.",
+    "installPrompt": "Instala Sokil en tu pantalla de inicio para acceso rápido y una experiencia similar a una app.",
     "install": "Instalar",
     "installing": "Instalando…",
     "dismiss": "Ahora no",

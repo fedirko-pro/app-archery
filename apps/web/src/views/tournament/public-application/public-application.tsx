@@ -7,6 +7,7 @@ import { useAuth } from '../../../contexts/auth-context';
 import apiService from '../../../services/api';
 import type { TournamentDto } from '../../../services/types';
 import { getDefaultAppLang, normalizeAppLang } from '../../../utils/i18n-lang';
+import { removeSessionItem, setPendingApplication } from '../../../utils/safe-session-json';
 import TournamentApplicationForm from '../tournament-application-form/tournament-application-form';
 
 const PublicApplication: React.FC = () => {
@@ -15,7 +16,7 @@ const PublicApplication: React.FC = () => {
   const appLang = normalizeAppLang(lang || getDefaultAppLang());
   const { t } = useTranslation('common');
 
-  const { user, loading: authLoading } = useAuth();
+  const { user, initializing: authInitializing } = useAuth();
 
   const [tournament, setTournament] = useState<TournamentDto | null>(null);
   const [loading, setLoading] = useState(true);
@@ -41,20 +42,21 @@ const PublicApplication: React.FC = () => {
   };
 
   const handleSignUp = () => {
-    const pendingData = {
+    if (!tournamentId) return;
+    setPendingApplication({
       tournamentId,
       redirectTo: `/${appLang}/apply/${tournamentId}`,
-    };
-    sessionStorage.setItem('pendingApplication', JSON.stringify(pendingData));
+    });
     navigate(`/${appLang}/signup`);
   };
 
   const handleSignIn = () => {
+    if (!tournamentId) return;
     const pendingData = {
       tournamentId,
       redirectTo: `/${appLang}/apply/${tournamentId}`,
     };
-    sessionStorage.setItem('pendingApplication', JSON.stringify(pendingData));
+    setPendingApplication(pendingData);
 
     navigate(`/${appLang}/signin`, {
       state: { fromApplication: true, tournamentId, pendingData },
@@ -62,13 +64,13 @@ const PublicApplication: React.FC = () => {
   };
 
   const handleApplicationSuccess = () => {
-    sessionStorage.removeItem('pendingApplication');
+    removeSessionItem('pendingApplication');
     navigate(`/${appLang}/applications`, {
       state: { message: t('pages.publicApplication.applicationSubmitted') },
     });
   };
 
-  if (authLoading || loading) {
+  if (authInitializing || loading) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" minHeight="400px">
         <CircularProgress />

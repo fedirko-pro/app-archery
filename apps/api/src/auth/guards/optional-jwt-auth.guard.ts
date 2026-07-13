@@ -1,12 +1,13 @@
 import { ExecutionContext, Injectable } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { SESSION_COOKIE_NAME } from '../utils/cookie-options';
 
 @Injectable()
-export class OptionalJwtAuthGuard extends AuthGuard('jwt') {
+export class OptionalJwtAuthGuard extends AuthGuard('session') {
   override canActivate(context: ExecutionContext) {
     const request = context.switchToHttp().getRequest();
-    const authHeader = request.headers?.authorization;
-    if (!authHeader) {
+    const hasSession = Boolean(request.cookies?.[SESSION_COOKIE_NAME]);
+    if (!hasSession) {
       return true;
     }
     return super.canActivate(context) as boolean | Promise<boolean>;

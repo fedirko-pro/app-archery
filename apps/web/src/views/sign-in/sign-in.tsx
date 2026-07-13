@@ -17,6 +17,11 @@ import { useLocation, useParams } from 'react-router-dom';
 import { GoogleIcon } from '../../components/custom-icons';
 import env from '../../config/env';
 import { useAuth } from '../../contexts/auth-context';
+import {
+  getPendingApplication,
+  isPendingApplication,
+  setPendingApplication,
+} from '../../utils/safe-session-json';
 import ForgotPassword from './forgot-password';
 
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -131,12 +136,14 @@ const SignIn: React.FC = () => {
   };
 
   const handleGoogleSignIn = (): void => {
-    const pendingData = location.state?.pendingData || sessionStorage.getItem('pendingApplication');
-
-    if (pendingData) {
-      const pendingApplication =
-        typeof pendingData === 'string' ? JSON.parse(pendingData) : pendingData;
-      sessionStorage.setItem('pendingApplication', JSON.stringify(pendingApplication));
+    const pendingData = location.state?.pendingData;
+    if (pendingData && isPendingApplication(pendingData)) {
+      setPendingApplication(pendingData);
+    } else {
+      const stored = getPendingApplication();
+      if (stored) {
+        setPendingApplication(stored);
+      }
     }
 
     window.location.href = env.GOOGLE_AUTH_URL;

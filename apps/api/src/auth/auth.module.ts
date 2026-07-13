@@ -1,15 +1,21 @@
 import { Module } from '@nestjs/common';
-import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
+import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { UserModule } from '../user/user.module';
 import { EmailModule } from '../email/email.module';
 import { AuthService } from './auth.service';
-import { JwtStrategy } from './strategies/jwt.strategy';
 import { AuthController } from './auth.controller';
-import { ConfigModule, ConfigService } from '@nestjs/config';
 import { GoogleStrategy } from './strategies/google.strategy';
+import { SessionStrategy } from './strategies/session.strategy';
 import { RolesGuard } from './guards/roles.guard';
+import { CsrfGuard } from './guards/csrf.guard';
 import { RolePermissionsModule } from './role-permissions.module';
+import { AuthSession } from './entity/auth-session.entity';
+import { OAuthExchangeCode } from './entity/oauth-exchange-code.entity';
+import { SessionService } from './session.service';
+import { OAuthExchangeService } from './oauth-exchange.service';
+import { CsrfService } from './csrf.service';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -17,18 +23,22 @@ import { RolePermissionsModule } from './role-permissions.module';
     EmailModule,
     PassportModule,
     RolePermissionsModule,
-    JwtModule.registerAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: async (configService: ConfigService) => {
-        return {
-          secret: configService.get<string>('JWT_SECRET'),
-          signOptions: { expiresIn: '1h' },
-        };
-      },
-    }),
+    MikroOrmModule.forFeature([AuthSession, OAuthExchangeCode]),
   ],
-  providers: [AuthService, JwtStrategy, GoogleStrategy, RolesGuard],
+  providers: [
+    AuthService,
+    SessionStrategy,
+    GoogleStrategy,
+    RolesGuard,
+    SessionService,
+    OAuthExchangeService,
+    CsrfService,
+    {
+      provide: APP_GUARD,
+      useClass: CsrfGuard,
+    },
+  ],
   controllers: [AuthController],
+  exports: [SessionService, CsrfService],
 })
 export class AuthModule {}

@@ -15,6 +15,7 @@ import { useTranslation } from 'react-i18next';
 
 import { useNotification } from '../../contexts/error-feedback-context';
 import { apiService } from '../../services/api';
+import { downscaleImageFile } from '../../utils/image-resize';
 import { isExternalPlaceholderUrl } from '../../utils/placeholder-images';
 
 interface AvatarUploaderProps {
@@ -72,7 +73,7 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({
     img.src = imageSrc;
   }, [imageSrc, size]);
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
     if (!ACCEPTED_TYPES.includes(file.type)) {
@@ -84,12 +85,13 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({
       return;
     }
     setError(null);
-    currentFileRef.current = file;
-    const reader = new FileReader();
-    reader.onload = () => {
-      setImageSrc(String(reader.result));
-    };
-    reader.readAsDataURL(file);
+    try {
+      const { file: resizedFile, dataUrl } = await downscaleImageFile(file);
+      currentFileRef.current = resizedFile;
+      setImageSrc(dataUrl);
+    } catch {
+      setError(t('pages.tournaments.uploadFailed', 'Upload failed. Please try again.'));
+    }
   };
 
   const clampOffset = (nx: number, ny: number) => {

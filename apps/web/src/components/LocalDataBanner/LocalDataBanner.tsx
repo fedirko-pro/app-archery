@@ -18,6 +18,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../../contexts/auth-context';
 import { useLocalData } from '../../contexts/local-data-context';
 import { useEnableSync } from '../../hooks/use-enable-sync';
+import { useStaleCacheHint } from '../../hooks/use-stale-cache-hint';
 
 interface LocalDataBannerProps {
   /** When true, shows sync-in-progress state for authenticated users */
@@ -29,20 +30,18 @@ const LocalDataBanner: React.FC<LocalDataBannerProps> = ({ showSyncStatus = fals
   const { lang } = useParams();
   const navigate = useNavigate();
   const { isAuthenticated, user } = useAuth();
-  const { isSyncing, lastSyncError, syncNow, hasPendingSync, unsyncedCount } = useLocalData();
+  const { isSyncing, lastSyncError, lastStorageError, syncNow, hasPendingSync, unsyncedCount } =
+    useLocalData();
   const { enableSyncAndSync, enabling } = useEnableSync();
+  const { showStaleHint, dismiss: dismissStaleHint } = useStaleCacheHint();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [isOffline, setIsOffline] = useState(false);
-  const [cachedDismissed, setCachedDismissed] = useState(false);
 
   useEffect(() => {
     setIsOffline(!navigator.onLine);
 
     const handleOnline = () => setIsOffline(false);
-    const handleOffline = () => {
-      setIsOffline(true);
-      setCachedDismissed(false);
-    };
+    const handleOffline = () => setIsOffline(true);
     window.addEventListener('online', handleOnline);
     window.addEventListener('offline', handleOffline);
     return () => {
@@ -53,12 +52,18 @@ const LocalDataBanner: React.FC<LocalDataBannerProps> = ({ showSyncStatus = fals
 
   const isSyncEnabled = user?.syncTrainingsAndEquipment === true;
 
-  // Dismissable "Showing last saved data" hint — shown only when offline and not yet dismissed
-  const showCachedHint = isOffline && !cachedDismissed;
+  // Stale cache hint — shown when API served cached data, even if browser reports online
+  const showCachedHint = showStaleHint || isOffline;
 
   const cachedHint = showCachedHint ? (
-    <Alert severity="warning" sx={{ mb: 1 }} onClose={() => setCachedDismissed(true)}>
+    <Alert severity="warning" sx={{ mb: 1 }} onClose={dismissStaleHint}>
       {t('pwa.showingCachedData')}
+    </Alert>
+  ) : null;
+
+  const storageErrorAlert = lastStorageError ? (
+    <Alert severity="error" icon={<StorageIcon />} sx={{ mb: 2 }}>
+      {lastStorageError}
     </Alert>
   ) : null;
 
@@ -67,6 +72,7 @@ const LocalDataBanner: React.FC<LocalDataBannerProps> = ({ showSyncStatus = fals
     return (
       <>
         {cachedHint}
+        {storageErrorAlert}
         {lastSyncError && (
           <Alert
             severity="error"
@@ -109,6 +115,7 @@ const LocalDataBanner: React.FC<LocalDataBannerProps> = ({ showSyncStatus = fals
     return (
       <>
         {cachedHint}
+        {storageErrorAlert}
 
         <Alert
           severity="info"
@@ -158,6 +165,7 @@ const LocalDataBanner: React.FC<LocalDataBannerProps> = ({ showSyncStatus = fals
     return (
       <>
         {cachedHint}
+        {storageErrorAlert}
         <Alert severity="info" icon={<StorageIcon />} sx={{ mb: 2 }}>
           <Typography variant="body2" sx={{ mb: 1 }}>
             {t('localData.syncOffBanner')}
@@ -184,11 +192,16 @@ const LocalDataBanner: React.FC<LocalDataBannerProps> = ({ showSyncStatus = fals
     );
   }
 
-  if (showCachedHint) {
+  if (showStaleHint || lastStorageError) {
     return (
-      <Alert severity="warning" sx={{ mb: 2 }} onClose={() => setCachedDismissed(true)}>
-        {t('pwa.showingCachedData')}
-      </Alert>
+      <>
+        {showStaleHint ? (
+          <Alert severity="warning" sx={{ mb: 2 }} onClose={dismissStaleHint}>
+            {t('pwa.showingCachedData')}
+          </Alert>
+        ) : null}
+        {storageErrorAlert}
+      </>
     );
   }
 

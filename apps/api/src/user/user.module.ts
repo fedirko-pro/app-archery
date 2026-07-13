@@ -11,15 +11,18 @@ import { RolePermissionsModule } from '../auth/role-permissions.module';
 import { EmailModule } from '../email/email.module';
 import { TrainingModule } from '../training/training.module';
 import { AchievementsModule } from '../achievements/achievements.module';
+import { ClubModule } from '../club/club.module';
+import { FederationMembership } from '../federation/federation-membership.entity';
 
 @Module({
   imports: [
-    MikroOrmModule.forFeature([User]),
+    MikroOrmModule.forFeature([User, FederationMembership]),
     UploadModule,
     RolePermissionsModule,
     EmailModule,
     TrainingModule,
     AchievementsModule,
+    ClubModule,
   ],
   providers: [UserService, PublicProfileService, ProfileVisibilityService],
   controllers: [UserController, PublicProfileController],

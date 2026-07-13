@@ -19,12 +19,12 @@ const ProtectedAdminRoute: React.FC<ProtectedAdminRouteProps> = ({
   children,
   allowedRoles = ADMIN_CAPABLE_ROLES,
 }) => {
-  const { user, loading } = useAuth();
+  const { user, initializing } = useAuth();
   const { lang } = useParams();
   const defaultLang = getDefaultAppLang();
   const currentLang = lang || defaultLang;
 
-  if (loading) {
+  if (initializing) {
     return <RouteLoadingSpinner />;
   }
 

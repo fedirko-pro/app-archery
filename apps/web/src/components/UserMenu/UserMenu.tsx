@@ -9,6 +9,7 @@ import { useParams } from 'react-router-dom';
 import { isDev } from '../../config/env';
 import { USER_DEMO_NAV_ITEMS, isClubAdmin, isFederationAdmin } from '../../config/roles';
 import { useAuth } from '../../contexts/auth-context';
+import { useBodyScrollLock } from '../../hooks/use-body-scroll-lock';
 import { normalizeAppLang } from '../../utils/i18n-lang';
 import { resolveUserAvatarWithCacheBust, getAvatarInitials } from '../../utils/placeholder-images';
 import LanguageToggler from '../LanguageToggler/LanguageToggler';
@@ -20,33 +21,25 @@ const UserMenu: React.FC = () => {
   const { lang } = useParams();
   normalizeAppLang(lang);
   const [active, setActive] = useState<boolean>(false);
-  // Reserved for future integration with app-wide i18n if needed
-  // const [language, setLanguage] = useState<string>('en');
 
-  const { user, isAuthenticated, logout, loading } = useAuth();
+  const { user, isAuthenticated, logout, initializing } = useAuth();
 
-  if (loading) {
+  useBodyScrollLock(active);
+
+  if (initializing) {
     return null;
   }
 
   const menuClick = (): void => {
     setActive(!active);
-    if (!active) {
-      document.body.classList.add('lock');
-    } else {
-      document.body.classList.remove('lock');
-    }
   };
 
   const handleLogout = (): void => {
     logout();
     setTimeout(() => {
       setActive(false);
-      document.body.classList.remove('lock');
     }, 100);
   };
-
-  // const handleLanguageChange = (_lang: string) => setLanguage(_lang);
 
   const demoMenuItems = USER_DEMO_NAV_ITEMS.map((item) => ({
     link: item.link,
@@ -115,6 +108,8 @@ const UserMenu: React.FC = () => {
         sx={{
           marginRight: '16px',
           cursor: 'pointer',
+          width: 44,
+          height: 44,
         }}
         src={avatarSrc}
         alt={user?.firstName || 'User'}

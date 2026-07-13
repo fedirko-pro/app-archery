@@ -59,15 +59,16 @@ import TournamentList from '../../views/tournament/tournament-list/tournament-li
 import UserApplications from '../../views/tournament/user-applications/user-applications';
 import Training from '../../views/Trainings';
 import UserAchievementsPage from '../../views/user-achievements/user-achievements';
+import { RouteErrorBoundary } from '../RouteErrorBoundary';
 
 function DefaultLandingRedirect() {
-  const { user, loading } = useAuth();
+  const { user, initializing } = useAuth();
   const { lang } = useParams();
   const currentLang = normalizeAppLang(lang);
   const landingPath = getDefaultLandingPath(currentLang, user);
   const segment = landingPath.split('/').pop() ?? 'tournaments';
 
-  if (loading) {
+  if (initializing) {
     return null;
   }
 
@@ -75,7 +76,11 @@ function DefaultLandingRedirect() {
 }
 
 function LangLayout() {
-  return <Outlet />;
+  return (
+    <RouteErrorBoundary>
+      <Outlet />
+    </RouteErrorBoundary>
+  );
 }
 
 function Content() {

@@ -10,9 +10,8 @@ import React, {
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import apiService from '../services/api';
-import { getDefaultLandingPath } from '../utils/default-landing';
 import { fromI18nLang, getCurrentI18nLang, normalizeAppLang } from '../utils/i18n-lang';
-import { needsOnboarding } from '../utils/onboarding-utils';
+import { resolvePostAuthPath } from '../utils/post-auth-redirect';
 import type {
   User,
   RegisterData,
@@ -37,7 +36,8 @@ interface AuthProviderProps {
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [initializing, setInitializing] = useState<boolean>(true);
+  const [actionLoading, setActionLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const pendingApplicationProcessedRef = useRef(false);
   const authCheckExecutedRef = useRef(false);
@@ -55,14 +55,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       authCheckExecutedRef.current = true;
 
       try {
-        if (apiService.isAuthenticated()) {
-          const userData = await apiService.getProfile();
-          setUser(userData);
-        }
+        const userData = await apiService.getProfile();
+        setUser(userData);
       } catch {
-        apiService.logout();
+        await apiService.logout();
       } finally {
-        setLoading(false);
+        setInitializing(false);
       }
     };
 
@@ -70,35 +68,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, []);
 
   const handlePostAuthRedirect = (authenticatedUser?: User | null) => {
-    // First priority: check for a stored return URL from protected route
-    const returnUrl = sessionStorage.getItem('returnUrl');
-    if (returnUrl) {
-      sessionStorage.removeItem('returnUrl');
-      navigate(returnUrl);
-      return;
-    }
-
-    // Second priority: check for pending application (tournament application flow)
-    const pendingApplication = sessionStorage.getItem('pendingApplication');
-    if (pendingApplication) {
-      const { redirectTo } = JSON.parse(pendingApplication);
-      sessionStorage.removeItem('pendingApplication');
-      navigate(redirectTo);
-      return;
-    }
-
     const landingUser = authenticatedUser !== undefined ? authenticatedUser : user;
-    if (needsOnboarding(landingUser)) {
-      navigate(`/${currentLang}/onboarding`);
-      return;
-    }
-    navigate(getDefaultLandingPath(currentLang, landingUser));
+    navigate(resolvePostAuthPath(currentLang, landingUser));
   };
 
   const login = async (email: string, password: string): Promise<AuthResponse> => {
     try {
       setError(null);
-      setLoading(true);
+      setActionLoading(true);
 
       const response = await apiService.login(email, password);
       const userData = await apiService.getProfile();
@@ -112,14 +89,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setError(errorMessage);
       throw error;
     } finally {
-      setLoading(false);
+      setActionLoading(false);
     }
   };
 
   const register = async (userData: RegisterData): Promise<User> => {
     try {
       setError(null);
-      setLoading(true);
+      setActionLoading(true);
 
       const response = await apiService.register(userData);
 
@@ -136,12 +113,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setError(errorMessage);
       throw error;
     } finally {
-      setLoading(false);
+      setActionLoading(false);
     }
   };
 
   const logout = (): void => {
-    apiService.logout();
+    void apiService.logout();
     setUser(null);
     setError(null);
     pendingApplicationProcessedRef.current = false;
@@ -155,17 +132,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const handleGoogleAuth = useCallback(async (): Promise<void> => {
     try {
-      setLoading(true);
-
-      if (!apiService.isAuthenticated()) {
-        navigate(`/${currentLang}/signin`);
-        return;
-      }
+      setActionLoading(true);
 
       const userData = await apiService.getProfile();
       setUser(userData);
 
-      // Prevent processing twice
       if (pendingApplicationProcessedRef.current) {
         return;
       }
@@ -179,14 +150,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setUser(null);
       navigate(`/${currentLang}/signin`);
     } finally {
-      setLoading(false);
+      setActionLoading(false);
     }
   }, [currentLang, navigate]);
 
   const changePassword = async (passwordData: ChangePasswordData): Promise<void> => {
     try {
       setError(null);
-      setLoading(true);
+      setActionLoading(true);
 
       await apiService.changePassword(passwordData);
 
@@ -196,14 +167,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setError(errorMessage);
       throw error;
     } finally {
-      setLoading(false);
+      setActionLoading(false);
     }
   };
 
   const setPassword = async (password: string, confirmPassword: string): Promise<void> => {
     try {
       setError(null);
-      setLoading(true);
+      setActionLoading(true);
 
       await apiService.setPassword(password, confirmPassword);
 
@@ -217,7 +188,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setError(errorMessage);
       throw error;
     } finally {
-      setLoading(false);
+      setActionLoading(false);
     }
   };
 
@@ -227,7 +198,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const value: AuthContextType = {
     user,
-    loading,
+    initializing,
+    actionLoading,
+    loading: initializing || actionLoading,
     error,
     login,
     register,

@@ -4,10 +4,11 @@ import { useEffect, useState, type ReactNode } from 'react';
 
 interface ClientOnlyProps {
   children: ReactNode;
+  fallback?: ReactNode;
 }
 
 /** Renders children only after mount — avoids SSR access to window/document. */
-export function ClientOnly({ children }: ClientOnlyProps) {
+export function ClientOnly({ children, fallback = null }: ClientOnlyProps) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -15,7 +16,7 @@ export function ClientOnly({ children }: ClientOnlyProps) {
   }, []);
 
   if (!mounted) {
-    return null;
+    return <>{fallback}</>;
   }
 
   return <>{children}</>;

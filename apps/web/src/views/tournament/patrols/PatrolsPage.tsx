@@ -1,5 +1,6 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import AssignmentIcon from '@mui/icons-material/Assignment';
+import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import SaveIcon from '@mui/icons-material/Save';
@@ -39,6 +40,7 @@ const PatrolsPage: React.FC = () => {
     startDate?: string;
     endDate?: string;
   } | null>(null);
+  const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [snackbar, setSnackbar] = useState<{
     open: boolean;
@@ -59,15 +61,120 @@ const PatrolsPage: React.FC = () => {
     setWarnings(newWarnings);
   }, [patrols, participants]);
 
+  /** Transform backend patrol list to component format (shared helper shape) */
+  const transformBackendPatrols = (
+    backendPatrols: Array<{
+      id: string;
+      name?: string;
+      members?: Array<{
+        user?: {
+          id: string;
+          firstName?: string;
+          lastName?: string;
+          email?: string;
+          club?: { name: string };
+          division?: string;
+          bowCategory?: string;
+          gender?: string;
+        };
+        role: string;
+      }>;
+    }>,
+  ) => {
+    const participantsMap = new Map<string, Participant>();
+    const transformedPatrols: Patrol[] = [];
+
+    for (const bp of backendPatrols) {
+      const memberIds: string[] = [];
+      const judgeIds: string[] = [];
+      let leaderId: string | null = null;
+
+      if (bp.members && Array.isArray(bp.members)) {
+        for (const member of bp.members) {
+          const user = member.user;
+          if (!user) continue;
+
+          participantsMap.set(user.id, {
+            id: user.id,
+            name:
+              `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.email || 'Unknown',
+            club: user.club?.name || 'No Club',
+            division: user.division || 'Unknown',
+            bowCategory: user.bowCategory || 'Unknown',
+            gender: user.gender || 'Other',
+          });
+
+          memberIds.push(user.id);
+
+          if (member.role === 'leader') {
+            leaderId = user.id;
+          } else if (member.role === 'judge') {
+            judgeIds.push(user.id);
+          }
+        }
+      }
+
+      const targetMatch = bp.name?.match(/\d+/);
+      const targetNumber = targetMatch
+        ? parseInt(targetMatch[0], 10)
+        : transformedPatrols.length + 1;
+
+      transformedPatrols.push({
+        id: bp.id,
+        targetNumber,
+        members: memberIds,
+        leaderId,
+        judgeIds,
+      });
+    }
+
+    return { participantsMap, transformedPatrols };
+  };
+
+  const applyPatrolData = (
+    backendPatrols: Array<{
+      id: string;
+      name?: string;
+      members?: Array<{
+        user?: {
+          id: string;
+          firstName?: string;
+          lastName?: string;
+          email?: string;
+          club?: { name: string };
+          division?: string;
+          bowCategory?: string;
+          gender?: string;
+        };
+        role: string;
+      }>;
+    }>,
+    backendStats?: unknown,
+  ) => {
+    const { participantsMap, transformedPatrols } = transformBackendPatrols(backendPatrols);
+    setPatrols(transformedPatrols);
+    setParticipants(participantsMap);
+
+    if (backendStats && typeof backendStats === 'object' && 'totalParticipants' in backendStats) {
+      setStats(backendStats as PatrolStats);
+    } else {
+      const totalParticipants = participantsMap.size;
+      const averagePatrolSize =
+        transformedPatrols.length > 0 ? totalParticipants / transformedPatrols.length : 0;
+      setStats({
+        totalParticipants,
+        averagePatrolSize,
+        clubDiversityScore: 0,
+        homogeneityScores: { category: 0, division: 0, gender: 0 },
+      });
+    }
+  };
+
   const loadPatrols = async () => {
     setIsLoading(true);
     setError(null);
     try {
-      // Get existing patrols or auto-generate if none exist
-      const response = await apiService.getOrGeneratePatrols(tournamentId!);
-
-      // Transform backend data to component format
-      const { patrols: backendPatrols, stats: backendStats, isNewlyGenerated } = response;
+      const backendPatrols = await apiService.getPatrolsByTournament(tournamentId!);
 
       if (tournamentId) {
         const tournament = await apiService.getTournament(tournamentId);
@@ -79,115 +186,37 @@ const PatrolsPage: React.FC = () => {
         });
       }
 
-      // Build participants map from patrol members
-      const participantsMap = new Map<string, Participant>();
-      const transformedPatrols: Patrol[] = [];
-
-      for (const bp of backendPatrols) {
-        const memberIds: string[] = [];
-        const judgeIds: string[] = [];
-        let leaderId: string | null = null;
-
-        // Process members
-        if (bp.members && Array.isArray(bp.members)) {
-          for (const member of bp.members) {
-            const user = member.user;
-            if (!user) continue;
-
-            // Add to participants map
-            participantsMap.set(user.id, {
-              id: user.id,
-              name:
-                `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.email || 'Unknown',
-              club: user.club?.name || 'No Club',
-              division: user.division || 'Unknown',
-              bowCategory: user.bowCategory || 'Unknown',
-              gender: user.gender || 'Other',
-            });
-
-            memberIds.push(user.id);
-
-            // Track roles
-            if (member.role === 'leader') {
-              leaderId = user.id;
-            } else if (member.role === 'judge') {
-              judgeIds.push(user.id);
-            }
-          }
-        }
-
-        // Extract target number from name (e.g., "Target 1" -> 1)
-        const targetMatch = bp.name?.match(/\d+/);
-        const targetNumber = targetMatch
-          ? parseInt(targetMatch[0], 10)
-          : transformedPatrols.length + 1;
-
-        transformedPatrols.push({
-          id: bp.id,
-          targetNumber,
-          members: memberIds,
-          leaderId,
-          judgeIds,
-        });
-      }
-
-      setPatrols(transformedPatrols);
-      setParticipants(participantsMap);
-
-      // Set stats if available (API returns compatible shape)
-      if (backendStats && typeof backendStats === 'object' && 'totalParticipants' in backendStats) {
-        setStats(backendStats as PatrolStats);
-      } else {
-        // Calculate basic stats from patrols
-        const totalParticipants = participantsMap.size;
-        const averagePatrolSize =
-          transformedPatrols.length > 0 ? totalParticipants / transformedPatrols.length : 0;
-        setStats({
-          totalParticipants,
-          averagePatrolSize,
-          clubDiversityScore: 0,
-          homogeneityScores: { category: 0, division: 0, gender: 0 },
-        });
-      }
-
-      if (isNewlyGenerated) {
-        setSnackbar({
-          open: true,
-          message: 'Patrols generated automatically from approved applications',
-          severity: 'success',
-        });
-      }
+      applyPatrolData(backendPatrols);
+      setIsDirty(false);
     } catch (error: unknown) {
       console.error('Failed to load patrols:', error);
-      setError(error instanceof Error ? error.message : 'Failed to load patrols. Please try again.');
+      setError(
+        error instanceof Error ? error.message : 'Failed to load patrols. Please try again.',
+      );
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleSave = async () => {
+    if (!tournamentId) return;
+
     setIsSaving(true);
     try {
-      // Update each patrol's members and roles on the backend
-      for (const patrol of patrols) {
-        // Update patrol members - this would need a batch update endpoint
-        // For now, we'll update role assignments
-        for (const memberId of patrol.members) {
+      const payload = patrols.map((patrol) => ({
+        id: patrol.id,
+        members: patrol.members.map((memberId) => {
           let role = 'member';
           if (memberId === patrol.leaderId) {
             role = 'leader';
           } else if (patrol.judgeIds.includes(memberId)) {
             role = 'judge';
           }
+          return { userId: memberId, role };
+        }),
+      }));
 
-          // Update member role
-          try {
-            await apiService.addPatrolMember(patrol.id, memberId, role);
-          } catch {
-            // Member might already exist, continue
-          }
-        }
-      }
+      await apiService.batchSavePatrols(tournamentId, payload);
 
       setIsDirty(false);
       setSnackbar({
@@ -199,7 +228,8 @@ const PatrolsPage: React.FC = () => {
       console.error('Failed to save:', error);
       setSnackbar({
         open: true,
-        message: error instanceof Error ? error.message : 'Failed to save patrols. Please try again.',
+        message:
+          error instanceof Error ? error.message : 'Failed to save patrols. Please try again.',
         severity: 'error',
       });
     } finally {
@@ -289,6 +319,40 @@ const PatrolsPage: React.FC = () => {
     setIsDirty(true);
   };
 
+  const handleGeneratePatrols = async () => {
+    if (!tournamentId) return;
+
+    if (
+      !confirm(
+        'Generate patrols from approved applications? This will create new patrol assignments.',
+      )
+    ) {
+      return;
+    }
+
+    setIsGenerating(true);
+    try {
+      const response = await apiService.generateAndSavePatrols(tournamentId);
+      applyPatrolData(response.patrols, response.stats);
+      setIsDirty(false);
+      setSnackbar({
+        open: true,
+        message: 'Patrols generated from approved applications',
+        severity: 'success',
+      });
+    } catch (error: unknown) {
+      console.error('Failed to generate patrols:', error);
+      setSnackbar({
+        open: true,
+        message:
+          error instanceof Error ? error.message : 'Failed to generate patrols. Please try again.',
+        severity: 'error',
+      });
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
   const handleGeneratePatrolsList = async () => {
     if (!tournamentId) return;
 
@@ -331,76 +395,6 @@ const PatrolsPage: React.FC = () => {
     }
   };
 
-  /** Transform backend patrol list to component format (shared helper shape) */
-  const transformBackendPatrols = (
-    backendPatrols: Array<{
-      id: string;
-      name?: string;
-      members?: Array<{
-        user?: {
-          id: string;
-          firstName?: string;
-          lastName?: string;
-          email?: string;
-          club?: { name: string };
-          division?: string;
-          bowCategory?: string;
-          gender?: string;
-        };
-        role: string;
-      }>;
-    }>,
-  ) => {
-    const participantsMap = new Map<string, Participant>();
-    const transformedPatrols: Patrol[] = [];
-
-    for (const bp of backendPatrols) {
-      const memberIds: string[] = [];
-      const judgeIds: string[] = [];
-      let leaderId: string | null = null;
-
-      if (bp.members && Array.isArray(bp.members)) {
-        for (const member of bp.members) {
-          const user = member.user;
-          if (!user) continue;
-
-          participantsMap.set(user.id, {
-            id: user.id,
-            name:
-              `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.email || 'Unknown',
-            club: user.club?.name || 'No Club',
-            division: user.division || 'Unknown',
-            bowCategory: user.bowCategory || 'Unknown',
-            gender: user.gender || 'Other',
-          });
-
-          memberIds.push(user.id);
-
-          if (member.role === 'leader') {
-            leaderId = user.id;
-          } else if (member.role === 'judge') {
-            judgeIds.push(user.id);
-          }
-        }
-      }
-
-      const targetMatch = bp.name?.match(/\d+/);
-      const targetNumber = targetMatch
-        ? parseInt(targetMatch[0], 10)
-        : transformedPatrols.length + 1;
-
-      transformedPatrols.push({
-        id: bp.id,
-        targetNumber,
-        members: memberIds,
-        leaderId,
-        judgeIds,
-      });
-    }
-
-    return { participantsMap, transformedPatrols };
-  };
-
   const handleDeleteAndRedistribute = async (patrolId: string) => {
     if (!confirm('Видалити патруль і перерозпреділити людей?')) {
       return;
@@ -434,7 +428,8 @@ const PatrolsPage: React.FC = () => {
       console.error('Failed to delete and redistribute:', error);
       setSnackbar({
         open: true,
-        message: error instanceof Error ? error.message : 'Не вдалося видалити патруль і перерозподілити.',
+        message:
+          error instanceof Error ? error.message : 'Не вдалося видалити патруль і перерозподілити.',
         severity: 'error',
       });
     } finally {
@@ -453,64 +448,8 @@ const PatrolsPage: React.FC = () => {
 
     setIsLoading(true);
     try {
-      // Delete existing and generate new patrols
       const response = await apiService.regeneratePatrols(tournamentId!);
-
-      // Transform backend data to component format (same as loadPatrols)
-      const { patrols: backendPatrols, stats: backendStats } = response;
-
-      const participantsMap = new Map<string, Participant>();
-      const transformedPatrols: Patrol[] = [];
-
-      for (const bp of backendPatrols) {
-        const memberIds: string[] = [];
-        const judgeIds: string[] = [];
-        let leaderId: string | null = null;
-
-        if (bp.members && Array.isArray(bp.members)) {
-          for (const member of bp.members) {
-            const user = member.user;
-            if (!user) continue;
-
-            participantsMap.set(user.id, {
-              id: user.id,
-              name:
-                `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.email || 'Unknown',
-              club: user.club?.name || 'No Club',
-              division: user.division || 'Unknown',
-              bowCategory: user.bowCategory || 'Unknown',
-              gender: user.gender || 'Other',
-            });
-
-            memberIds.push(user.id);
-
-            if (member.role === 'leader') {
-              leaderId = user.id;
-            } else if (member.role === 'judge') {
-              judgeIds.push(user.id);
-            }
-          }
-        }
-
-        const targetMatch = bp.name?.match(/\d+/);
-        const targetNumber = targetMatch
-          ? parseInt(targetMatch[0], 10)
-          : transformedPatrols.length + 1;
-
-        transformedPatrols.push({
-          id: bp.id,
-          targetNumber,
-          members: memberIds,
-          leaderId,
-          judgeIds,
-        });
-      }
-
-      setPatrols(transformedPatrols);
-      setParticipants(participantsMap);
-      if (backendStats && typeof backendStats === 'object' && 'totalParticipants' in backendStats) {
-        setStats(backendStats as PatrolStats);
-      }
+      applyPatrolData(response.patrols, response.stats);
       setIsDirty(false);
 
       setSnackbar({
@@ -635,6 +574,7 @@ const PatrolsPage: React.FC = () => {
             color="warning"
             startIcon={<RefreshIcon />}
             onClick={handleRegenerate}
+            disabled={patrols.length === 0 || isLoading || isGenerating}
           >
             Regenerate
           </Button>
@@ -652,6 +592,7 @@ const PatrolsPage: React.FC = () => {
                 patrol={patrol}
                 participants={participants}
                 warnings={warnings.filter((w) => w.patrolId === patrol.id)}
+                allPatrols={patrols.map((p) => ({ id: p.id, targetNumber: p.targetNumber }))}
                 onMemberDrop={handleMemberDrop}
                 onRoleChange={handleRoleChange}
                 onDeleteAndRedistribute={handleDeleteAndRedistribute}
@@ -662,9 +603,17 @@ const PatrolsPage: React.FC = () => {
 
       {patrols.length === 0 && (
         <Box sx={{ textAlign: 'center', py: 4 }}>
-          <Typography variant="body1" color="text.secondary">
-            No patrols found. Click "Regenerate" to create patrols.
+          <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
+            No patrols yet. Generate patrols from approved applications when you are ready.
           </Typography>
+          <Button
+            variant="contained"
+            startIcon={<AutoFixHighIcon />}
+            onClick={handleGeneratePatrols}
+            disabled={isGenerating || isLoading}
+          >
+            {isGenerating ? 'Generating...' : 'Generate patrols'}
+          </Button>
         </Box>
       )}
 
