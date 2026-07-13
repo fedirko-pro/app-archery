@@ -30,7 +30,7 @@ export class CookieSessionPassportStrategy extends PassportStrategyBase {
         return;
       }
       if (!user) {
-        this.pass();
+        this.fail();
         return;
       }
       this.success(user);

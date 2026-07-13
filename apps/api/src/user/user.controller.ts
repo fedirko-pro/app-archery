@@ -16,6 +16,7 @@ import { AdminCreateUserDto } from './dto/admin-create-user.dto';
 import { UpdateUserDto, AdminUpdateUserDto } from './dto/update-user.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { OptionalJwtAuthGuard } from '../auth/guards/optional-jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { Roles as UserRoles, ProfileVisibilities } from './types';
@@ -93,8 +94,10 @@ export class UserController {
   }
 
   @Get('profile')
-  @UseGuards(JwtAuthGuard)
-  getProfile(@Request() req: { user: RequestUser }) {
+  @UseGuards(OptionalJwtAuthGuard)
+  getProfile(@Request() req: { user?: RequestUser | null }) {
+    if (!req.user) return null;
+
     return this.userService.findById(req.user.sub).then((user) => {
       if (!user) return null;
       return serializeUserProfile(user as unknown as Record<string, unknown>);

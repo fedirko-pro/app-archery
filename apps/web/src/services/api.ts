@@ -299,8 +299,8 @@ class ApiService {
     });
   }
 
-  async getProfile(): Promise<User> {
-    return await this.request<User>('/users/profile');
+  async getProfile(): Promise<User | null> {
+    return await this.request<User | null>('/users/profile');
   }
 
   async updateProfile(profileData: Partial<ProfileData>): Promise<User> {

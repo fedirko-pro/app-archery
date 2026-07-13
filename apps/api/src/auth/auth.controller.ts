@@ -55,7 +55,6 @@ export class AuthController {
   }
 
   @Post('logout')
-  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
   async logout(@Request() req: ExpressRequest, @Res({ passthrough: true }) res: Response) {
     const sessionToken = req.cookies?.[SESSION_COOKIE_NAME] as string | undefined;
