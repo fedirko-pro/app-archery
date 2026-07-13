@@ -2,18 +2,12 @@ FROM node:22-alpine AS base
 
 RUN corepack enable && corepack prepare pnpm@10.20.0 --activate
 
-FROM base AS deps
+FROM base AS build
 WORKDIR /app
 COPY pnpm-lock.yaml pnpm-workspace.yaml package.json ./
 COPY apps/web/package.json ./apps/web/
 COPY packages ./packages
-RUN pnpm install  --filter @sokil/web...
-
-FROM base AS build
-WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
-COPY --from=deps /app/apps/web/node_modules ./apps/web/node_modules
-COPY . .
+COPY apps/web ./apps/web
 
 ARG NEXT_PUBLIC_API_BASE_URL
 ARG NEXT_PUBLIC_GOOGLE_AUTH_URL
@@ -21,6 +15,8 @@ ARG NEXT_PUBLIC_GOOGLE_AUTH_URL
 ENV NEXT_PUBLIC_API_BASE_URL=${NEXT_PUBLIC_API_BASE_URL}
 ENV NEXT_PUBLIC_GOOGLE_AUTH_URL=${NEXT_PUBLIC_GOOGLE_AUTH_URL}
 
+RUN pnpm install --frozen-lockfile --filter @sokil/web...
+RUN pnpm --filter @sokil/shared-types build
 RUN pnpm --filter @sokil/web build
 
 FROM base AS runner

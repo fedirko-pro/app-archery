@@ -1,0 +1,29 @@
+# Monorepo root — used by deploy/docker-compose.prod.yml build context
+.git
+.gitignore
+**/.git
+
+**/node_modules
+**/.next
+**/dist
+**/coverage
+
+.env
+.env.*
+!.env.example
+
+**/*.md
+!apps/web/src/**/*.md
+
+apps/api/uploads
+apps/api/pdf
+apps/api/test
+
+**/.DS_Store
+**/*.log
+**/npm-debug.log*
+**/.turbo
+**/.husky
+
+# Local docker dev stack (not production)
+docker-compose.yml
