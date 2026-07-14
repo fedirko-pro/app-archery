@@ -713,7 +713,9 @@
     "install": "Instalar",
     "installing": "Instalando…",
     "dismiss": "Agora não",
-    "installAria": "Aviso para instalar o aplicativo"
+    "installAria": "Aviso para instalar o aplicativo",
+    "updateAvailable": "Uma nova versão está disponível.",
+    "updateReload": "Recarregar"
   },
   "payments": {
     "title": "Meus Pagamentos (Demo)",

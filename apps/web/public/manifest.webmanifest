@@ -3,6 +3,7 @@
   "short_name": "Sokil",
   "description": "Sokil archery tournament and training app",
   "start_url": "/",
+  "id": "/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#000080",

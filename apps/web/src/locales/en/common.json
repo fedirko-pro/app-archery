@@ -1020,7 +1020,9 @@
     "install": "Install",
     "installing": "Installing…",
     "dismiss": "Not now",
-    "installAria": "Install app prompt"
+    "installAria": "Install app prompt",
+    "updateAvailable": "A new version is available.",
+    "updateReload": "Reload"
   },
   "payments": {
     "title": "My Payments (Demo)",

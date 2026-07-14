@@ -11,6 +11,7 @@ import { AuthProvider } from '../../contexts/auth-context';
 import { ErrorFeedbackProvider } from '../../contexts/error-feedback-context';
 import { LocalDataProvider } from '../../contexts/local-data-context';
 import { COLORS } from '../../theme/colors';
+import { AppUpdatePrompt } from '../AppUpdatePrompt';
 import I18nDevOverlay from '../dev/I18nDevOverlay';
 import EnvError from '../env-error/env-error';
 import { ErrorBoundary } from '../ErrorBoundary';
@@ -48,6 +49,7 @@ export function RootProviders({ children }: RootProvidersProps) {
           <ErrorFeedbackProvider>
             <EnvError />
             <OfflineBanner />
+            <AppUpdatePrompt />
             <InstallPrompt />
             {children}
           </ErrorFeedbackProvider>

@@ -1017,7 +1017,9 @@
     "install": "Installieren",
     "installing": "Wird installiert…",
     "dismiss": "Jetzt nicht",
-    "installAria": "App-Installationsaufforderung"
+    "installAria": "App-Installationsaufforderung",
+    "updateAvailable": "Eine neue Version ist verfügbar.",
+    "updateReload": "Neu laden"
   },
   "payments": {
     "title": "Meine Zahlungen (Demo)",

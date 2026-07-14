@@ -5,6 +5,12 @@ import { getDefaultAppLang, normalizeAppLang, SUPPORTED_APP_LANGS } from './src/
 
 const LANG_PATTERN = new RegExp(`^/(${SUPPORTED_APP_LANGS.join('|')})(/|$)`);
 
+function withNoStoreHeaders(response: NextResponse): NextResponse {
+  response.headers.set('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+  response.headers.set('Pragma', 'no-cache');
+  return response;
+}
+
 function getDefaultLang(request: NextRequest): string {
   const cookieLang = request.cookies.get('i18nextLng')?.value;
   if (cookieLang) {
@@ -30,7 +36,7 @@ export function middleware(request: NextRequest) {
   }
 
   if (LANG_PATTERN.test(pathname)) {
-    const response = NextResponse.next();
+    const response = withNoStoreHeaders(NextResponse.next());
     const lang = pathname.split('/')[1];
     if (lang) {
       response.cookies.set('appLang', lang, {
@@ -45,21 +51,29 @@ export function middleware(request: NextRequest) {
   const defaultLang = getDefaultLang(request);
 
   if (pathname === '/') {
-    return NextResponse.redirect(new URL(`/${defaultLang}/tournaments`, request.url));
+    return withNoStoreHeaders(
+      NextResponse.redirect(new URL(`/${defaultLang}/tournaments`, request.url)),
+    );
   }
 
   const langAgnosticPaths = ['signin', 'signup', 'reset-password'];
   const barePath = pathname.replace(/^\//, '');
 
   if (langAgnosticPaths.includes(barePath)) {
-    return NextResponse.redirect(new URL(`/${defaultLang}/${barePath}${search}`, request.url));
+    return withNoStoreHeaders(
+      NextResponse.redirect(new URL(`/${defaultLang}/${barePath}${search}`, request.url)),
+    );
   }
 
   if (barePath.startsWith('apply/')) {
-    return NextResponse.redirect(new URL(`/${defaultLang}/${barePath}${search}`, request.url));
+    return withNoStoreHeaders(
+      NextResponse.redirect(new URL(`/${defaultLang}/${barePath}${search}`, request.url)),
+    );
   }
 
-  return NextResponse.redirect(new URL(`/${defaultLang}${pathname}${search}`, request.url));
+  return withNoStoreHeaders(
+    NextResponse.redirect(new URL(`/${defaultLang}${pathname}${search}`, request.url)),
+  );
 }
 
 export const config = {

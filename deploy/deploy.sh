@@ -22,6 +22,9 @@ cd "$REPO_DIR"
 echo "==> Pulling latest code..."
 git pull origin main
 
+export APP_BUILD_ID="$(git rev-parse --short HEAD)"
+echo "==> Frontend build id: ${APP_BUILD_ID}"
+
 for svc in "${SERVICES[@]}"; do
   echo ""
   echo "==> Building ${svc}..."
