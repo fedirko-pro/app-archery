@@ -16,7 +16,10 @@ import { useTranslation } from 'react-i18next';
 import { useNotification } from '../../contexts/error-feedback-context';
 import { apiService } from '../../services/api';
 import { downscaleImageFile } from '../../utils/image-resize';
-import { isExternalPlaceholderUrl } from '../../utils/placeholder-images';
+import {
+  isExternalPlaceholderUrl,
+  requiresCrossOriginForCanvas,
+} from '../../utils/placeholder-images';
 
 interface AvatarUploaderProps {
   value?: string;
@@ -60,7 +63,9 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({
   useEffect(() => {
     if (!imageSrc || isExternalPlaceholderUrl(imageSrc)) return;
     const img = new Image();
-    img.crossOrigin = 'anonymous';
+    if (requiresCrossOriginForCanvas(imageSrc)) {
+      img.crossOrigin = 'anonymous';
+    }
     img.onload = () => {
       setImageEl(img);
       setNaturalSize({ w: img.naturalWidth, h: img.naturalHeight });

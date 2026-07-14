@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import {
   getAvatarInitials,
   isExternalPlaceholderUrl,
+  requiresCrossOriginForCanvas,
   resolveClubLogo,
   resolveTournamentBanner,
   resolveUserAvatar,
@@ -41,6 +42,22 @@ describe('isExternalPlaceholderUrl', () => {
 
   it('returns false for invalid URLs', () => {
     expect(isExternalPlaceholderUrl('not-a-url')).toBe(false);
+  });
+});
+
+describe('requiresCrossOriginForCanvas', () => {
+  it('returns true for data URLs', () => {
+    expect(requiresCrossOriginForCanvas('data:image/png;base64,abc')).toBe(true);
+  });
+
+  it('returns false for Google avatar URLs', () => {
+    expect(requiresCrossOriginForCanvas('https://lh3.googleusercontent.com/a-/photo=s96-c')).toBe(
+      false,
+    );
+  });
+
+  it('returns true for same-origin relative URLs', () => {
+    expect(requiresCrossOriginForCanvas('/uploads/avatar.jpg')).toBe(true);
   });
 });
 

@@ -25,6 +25,32 @@ export function isExternalPlaceholderUrl(url?: string | null): boolean {
   }
 }
 
+/** crossOrigin=anonymous only for origins that allow canvas export (same-origin, blob, our API). */
+export function requiresCrossOriginForCanvas(url: string): boolean {
+  if (url.startsWith('data:') || url.startsWith('blob:')) {
+    return true;
+  }
+
+  try {
+    const parsed = new URL(url, typeof window !== 'undefined' ? window.location.origin : undefined);
+    if (typeof window !== 'undefined' && parsed.origin === window.location.origin) {
+      return true;
+    }
+
+    const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL;
+    if (apiBase) {
+      const apiOrigin = new URL(apiBase).origin;
+      if (parsed.origin === apiOrigin) {
+        return true;
+      }
+    }
+  } catch {
+    return false;
+  }
+
+  return false;
+}
+
 /** Returns a usable avatar URL, or undefined so Avatar can fall back to initials. */
 export function resolveUserAvatar(url?: string | null): string | undefined {
   if (!url || isExternalPlaceholderUrl(url)) {

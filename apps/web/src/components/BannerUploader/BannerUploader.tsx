@@ -1,11 +1,21 @@
 import './BannerUploader.scss';
 
-import { Box, Button, Card, CardContent, CardHeader, Slider, Typography, CircularProgress } from '@mui/material';
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  Slider,
+  Typography,
+  CircularProgress,
+} from '@mui/material';
 import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useNotification } from '../../contexts/error-feedback-context';
 import { apiService } from '../../services/api';
+import { requiresCrossOriginForCanvas } from '../../utils/placeholder-images';
 
 interface BannerUploaderProps {
   value?: string;
@@ -51,7 +61,9 @@ const BannerUploader: React.FC<BannerUploaderProps> = ({
   useEffect(() => {
     if (!imageSrc) return;
     const img = new Image();
-    img.crossOrigin = 'anonymous';
+    if (requiresCrossOriginForCanvas(imageSrc)) {
+      img.crossOrigin = 'anonymous';
+    }
     img.onload = () => {
       setImageEl(img);
       setNaturalSize({ w: img.naturalWidth, h: img.naturalHeight });
@@ -184,17 +196,13 @@ const BannerUploader: React.FC<BannerUploaderProps> = ({
       const sHeight = height / scale;
 
       // Upload to backend with crop parameters
-      const result = await apiService.uploadImage(
-        currentFileRef.current,
-        'banner',
-        {
-          cropX: Math.round(sx),
-          cropY: Math.round(sy),
-          cropWidth: Math.round(sWidth),
-          cropHeight: Math.round(sHeight),
-          quality: 85,
-        }
-      );
+      const result = await apiService.uploadImage(currentFileRef.current, 'banner', {
+        cropX: Math.round(sx),
+        cropY: Math.round(sy),
+        cropWidth: Math.round(sWidth),
+        cropHeight: Math.round(sHeight),
+        quality: 85,
+      });
 
       // Update with the uploaded image URL
       onChange(result.url);
@@ -230,68 +238,82 @@ const BannerUploader: React.FC<BannerUploaderProps> = ({
     <Card className="banner-uploader">
       <CardHeader
         title={t('pages.tournaments.banner', 'Tournament Banner')}
-        subheader={t('pages.tournaments.bannerSubheader', 'Select an image, then drag to reposition (PNG, JPG up to 3MB)')}
+        subheader={t(
+          'pages.tournaments.bannerSubheader',
+          'Select an image, then drag to reposition (PNG, JPG up to 3MB)',
+        )}
       />
       <CardContent>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, alignItems: 'center' }}>
-            <div
-                ref={containerRef}
-                onMouseDown={handleMouseDown}
-                onMouseMove={handleMouseMove}
-                onMouseUp={handleMouseUp}
-                onMouseLeave={handleMouseUp}
-                onTouchStart={handleTouchStart}
-                onTouchMove={handleTouchMove}
-                onTouchEnd={handleTouchEnd}
-                className="banner-uploader__viewport"
-                style={
-                  {
-                    ['--banner-width' as string]: `${width}px`,
-                    ['--banner-height' as string]: `${height}px`,
-                  } as React.CSSProperties
-                }
-            >
-                {imageEl ? (
-                <img
-                    src={imageSrc}
-                    alt="banner-crop"
-                    draggable={false}
-                    className="banner-uploader__image"
-                    style={{
-                      transform: `translate(${offset.x}px, ${offset.y}px) scale(${getBaseScale() * zoom})`
-                    }}
-                />
-                ) : (
-                <div className="banner-uploader__placeholder">
-                    {t('pages.tournaments.dragToReposition', 'Select an image, then drag to reposition')}
-                </div>
+          <div
+            ref={containerRef}
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
+            onMouseLeave={handleMouseUp}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+            className="banner-uploader__viewport"
+            style={
+              {
+                ['--banner-width' as string]: `${width}px`,
+                ['--banner-height' as string]: `${height}px`,
+              } as React.CSSProperties
+            }
+          >
+            {imageEl ? (
+              <img
+                src={imageSrc}
+                alt="banner-crop"
+                draggable={false}
+                className="banner-uploader__image"
+                style={{
+                  transform: `translate(${offset.x}px, ${offset.y}px) scale(${getBaseScale() * zoom})`,
+                }}
+              />
+            ) : (
+              <div className="banner-uploader__placeholder">
+                {t(
+                  'pages.tournaments.dragToReposition',
+                  'Select an image, then drag to reposition',
                 )}
-            </div>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, width: '100%', maxWidth: width }}>
-                <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-                {t('profile.zoom', 'Zoom')}
-                </Typography>
-                <Slider
-                value={zoom}
-                onChange={handleZoomChange}
-                min={1}
-                max={3}
-                step={0.01}
-                sx={{ flex: 1 }}
-                disabled={!imageEl}
-                />
-            </Box>
-
-            <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', justifyContent: 'center' }}>
-            <input
-                type="file"
-                accept={ACCEPTED_TYPES.join(',')}
-                onChange={handleFileChange}
-                ref={fileInputRef}
-                className="banner-uploader__file-input"
+              </div>
+            )}
+          </div>
+          <Box
+            sx={{ display: 'flex', alignItems: 'center', gap: 2, width: '100%', maxWidth: width }}
+          >
+            <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+              {t('profile.zoom', 'Zoom')}
+            </Typography>
+            <Slider
+              value={zoom}
+              onChange={handleZoomChange}
+              min={1}
+              max={3}
+              step={0.01}
+              sx={{ flex: 1 }}
+              disabled={!imageEl}
             />
-            <Button variant="outlined" onClick={() => fileInputRef.current?.click()} disabled={uploading}>
-                {imageEl ? t('profile.changePhoto', 'Change Photo') : t('profile.uploadPhoto', 'Upload Photo')}
+          </Box>
+
+          <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', justifyContent: 'center' }}>
+            <input
+              type="file"
+              accept={ACCEPTED_TYPES.join(',')}
+              onChange={handleFileChange}
+              ref={fileInputRef}
+              className="banner-uploader__file-input"
+            />
+            <Button
+              variant="outlined"
+              onClick={() => fileInputRef.current?.click()}
+              disabled={uploading}
+            >
+              {imageEl
+                ? t('profile.changePhoto', 'Change Photo')
+                : t('profile.uploadPhoto', 'Upload Photo')}
             </Button>
             <Button
               variant="contained"
@@ -299,17 +321,25 @@ const BannerUploader: React.FC<BannerUploaderProps> = ({
               disabled={!imageEl || uploading}
               startIcon={uploading ? <CircularProgress size={16} /> : null}
             >
-                {uploading ? t('pages.tournaments.uploading', 'Uploading...') : t('profile.cropAndSave', 'Crop and Save')}
+              {uploading
+                ? t('pages.tournaments.uploading', 'Uploading...')
+                : t('profile.cropAndSave', 'Crop and Save')}
             </Button>
             <Button color="error" onClick={handleRemove} disabled={!imageEl || uploading}>
-                {t('profile.removePhoto', 'Remove Photo')}
+              {t('profile.removePhoto', 'Remove Photo')}
             </Button>
             {error && (
-                <Typography variant="caption" color="error" sx={{ width: '100%', textAlign: 'center' }}>{error}</Typography>
+              <Typography
+                variant="caption"
+                color="error"
+                sx={{ width: '100%', textAlign: 'center' }}
+              >
+                {error}
+              </Typography>
             )}
-            </Box>
+          </Box>
         </Box>
-        </CardContent>
+      </CardContent>
     </Card>
   );
 };

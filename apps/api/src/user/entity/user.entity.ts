@@ -31,7 +31,7 @@ export class User {
   @Property({ nullable: true, unique: true })
   googleId?: string;
 
-  @Property({ nullable: true })
+  @Property({ nullable: true, type: 'text' })
   picture?: string;
 
   @Property({ nullable: true })

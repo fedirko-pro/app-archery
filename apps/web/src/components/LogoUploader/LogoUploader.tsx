@@ -1,11 +1,21 @@
 import './LogoUploader.scss';
 
-import { Box, Button, Card, CardContent, CardHeader, Slider, Typography, CircularProgress } from '@mui/material';
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  Slider,
+  Typography,
+  CircularProgress,
+} from '@mui/material';
 import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useNotification } from '../../contexts/error-feedback-context';
 import { apiService } from '../../services/api';
+import { requiresCrossOriginForCanvas } from '../../utils/placeholder-images';
 
 interface LogoUploaderProps {
   value?: string;
@@ -49,7 +59,9 @@ const LogoUploader: React.FC<LogoUploaderProps> = ({
   useEffect(() => {
     if (!imageSrc) return;
     const img = new Image();
-    img.crossOrigin = 'anonymous';
+    if (requiresCrossOriginForCanvas(imageSrc)) {
+      img.crossOrigin = 'anonymous';
+    }
     img.onload = () => {
       setImageEl(img);
       setNaturalSize({ w: img.naturalWidth, h: img.naturalHeight });
@@ -183,26 +195,32 @@ const LogoUploader: React.FC<LogoUploaderProps> = ({
       const cropWidth = Math.round(sSize);
       const cropHeight = Math.round(sSize);
 
-      if (isNaN(cropX) || isNaN(cropY) || isNaN(cropWidth) || isNaN(cropHeight) ||
-          cropX < 0 || cropY < 0 || cropWidth <= 0 || cropHeight <= 0) {
-        setError(t('profile.invalidCrop', 'Invalid crop parameters. Please try adjusting the image.'));
+      if (
+        isNaN(cropX) ||
+        isNaN(cropY) ||
+        isNaN(cropWidth) ||
+        isNaN(cropHeight) ||
+        cropX < 0 ||
+        cropY < 0 ||
+        cropWidth <= 0 ||
+        cropHeight <= 0
+      ) {
+        setError(
+          t('profile.invalidCrop', 'Invalid crop parameters. Please try adjusting the image.'),
+        );
         setUploading(false);
         return;
       }
 
       // Upload to backend with crop parameters
-      const result = await apiService.uploadImage(
-        currentFileRef.current,
-        'logo',
-        {
-          cropX,
-          cropY,
-          cropWidth,
-          cropHeight,
-          quality: 85,
-          entityId,
-        }
-      );
+      const result = await apiService.uploadImage(currentFileRef.current, 'logo', {
+        cropX,
+        cropY,
+        cropWidth,
+        cropHeight,
+        quality: 85,
+        entityId,
+      });
 
       // Backend returns full URL, so we can use it directly
       onChange(result.url);
@@ -231,74 +249,91 @@ const LogoUploader: React.FC<LogoUploaderProps> = ({
     <Card className="logo-uploader">
       <CardHeader
         title={t('clubs.clubLogo', 'Club Logo')}
-        subheader={t('clubs.logoSubheader', 'Select an image, then drag to reposition (PNG, JPG up to 10MB)')}
+        subheader={t(
+          'clubs.logoSubheader',
+          'Select an image, then drag to reposition (PNG, JPG up to 10MB)',
+        )}
       />
       <CardContent>
-        <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap' }}>
-            {value && !imageEl && (
-              <Box sx={{ mb: 2, p: 2, bgcolor: 'info.light', borderRadius: 1, width: '100%' }}>
-                <Typography variant="body2" color="info.contrastText">
-                  Current logo: {value}
-                  <br />
-                  <Typography variant="caption" color="info.contrastText">
-                    (Preview unavailable - CORS restriction. Upload a new image to edit.)
-                  </Typography>
+        <Box
+          sx={{
+            display: 'flex',
+            gap: 2,
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexWrap: 'wrap',
+          }}
+        >
+          {value && !imageEl && (
+            <Box sx={{ mb: 2, p: 2, bgcolor: 'info.light', borderRadius: 1, width: '100%' }}>
+              <Typography variant="body2" color="info.contrastText">
+                Current logo: {value}
+                <br />
+                <Typography variant="caption" color="info.contrastText">
+                  (Preview unavailable - CORS restriction. Upload a new image to edit.)
                 </Typography>
-              </Box>
-            )}
-            <div
-                ref={containerRef}
-                onMouseDown={handleMouseDown}
-                onMouseMove={handleMouseMove}
-                onMouseUp={handleMouseUp}
-                onMouseLeave={handleMouseUp}
-                onTouchStart={handleTouchStart}
-                onTouchMove={handleTouchMove}
-                onTouchEnd={handleTouchEnd}
-                className="logo-uploader__viewport"
-                style={{ '--logo-size': `${size}px` } as React.CSSProperties}
-            >
-                {imageEl ? (
-                <img
-                    src={imageSrc}
-                    alt="logo-crop"
-                    draggable={false}
-                    className="logo-uploader__image"
-                    style={{
-                    transform: `translate(${offset.x}px, ${offset.y}px) scale(${Math.max(size / (naturalSize?.w || 1), size / (naturalSize?.h || 1)) * zoom})`
-                    }}
-                />
-                ) : (
-                <div className="logo-uploader__placeholder">
-                    {t('profile.dragToReposition', 'Select an image, then drag to reposition')}
-                </div>
-                )}
-            </div>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mt: 1 }}>
-                <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-                {t('profile.zoom', 'Zoom')}
-                </Typography>
-                <Slider
-                value={zoom}
-                onChange={handleZoomChange}
-                min={1}
-                max={3}
-                step={0.01}
-                sx={{ width: size - 80 }}
-                disabled={!imageEl}
-                />
+              </Typography>
             </Box>
-
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-            <input
-                type="file"
-                accept={ACCEPTED_TYPES.join(',')}
-                onChange={handleFileChange}
-                ref={fileInputRef}
-                className="logo-uploader__file-input"
+          )}
+          <div
+            ref={containerRef}
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
+            onMouseLeave={handleMouseUp}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+            className="logo-uploader__viewport"
+            style={{ '--logo-size': `${size}px` } as React.CSSProperties}
+          >
+            {imageEl ? (
+              <img
+                src={imageSrc}
+                alt="logo-crop"
+                draggable={false}
+                className="logo-uploader__image"
+                style={{
+                  transform: `translate(${offset.x}px, ${offset.y}px) scale(${Math.max(size / (naturalSize?.w || 1), size / (naturalSize?.h || 1)) * zoom})`,
+                }}
+              />
+            ) : (
+              <div className="logo-uploader__placeholder">
+                {t('profile.dragToReposition', 'Select an image, then drag to reposition')}
+              </div>
+            )}
+          </div>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mt: 1 }}>
+            <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+              {t('profile.zoom', 'Zoom')}
+            </Typography>
+            <Slider
+              value={zoom}
+              onChange={handleZoomChange}
+              min={1}
+              max={3}
+              step={0.01}
+              sx={{ width: size - 80 }}
+              disabled={!imageEl}
             />
-            <Button variant="outlined" onClick={() => fileInputRef.current?.click()} disabled={uploading}>
-                {imageEl ? t('profile.changePhoto', 'Change Photo') : t('profile.uploadPhoto', 'Upload Photo')}
+          </Box>
+
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+            <input
+              type="file"
+              accept={ACCEPTED_TYPES.join(',')}
+              onChange={handleFileChange}
+              ref={fileInputRef}
+              className="logo-uploader__file-input"
+            />
+            <Button
+              variant="outlined"
+              onClick={() => fileInputRef.current?.click()}
+              disabled={uploading}
+            >
+              {imageEl
+                ? t('profile.changePhoto', 'Change Photo')
+                : t('profile.uploadPhoto', 'Upload Photo')}
             </Button>
             <Button
               variant="contained"
@@ -306,17 +341,21 @@ const LogoUploader: React.FC<LogoUploaderProps> = ({
               disabled={!imageEl || uploading}
               startIcon={uploading ? <CircularProgress size={16} /> : null}
             >
-                {uploading ? t('pages.tournaments.uploading', 'Uploading...') : t('profile.cropAndSave', 'Crop and Save')}
+              {uploading
+                ? t('pages.tournaments.uploading', 'Uploading...')
+                : t('profile.cropAndSave', 'Crop and Save')}
             </Button>
             <Button color="error" onClick={handleRemove} disabled={!imageEl || uploading}>
-                {t('profile.removePhoto', 'Remove Photo')}
+              {t('profile.removePhoto', 'Remove Photo')}
             </Button>
             {error && (
-                <Typography variant="caption" color="error">{error}</Typography>
+              <Typography variant="caption" color="error">
+                {error}
+              </Typography>
             )}
-            </Box>
+          </Box>
         </Box>
-        </CardContent>
+      </CardContent>
     </Card>
   );
 };
