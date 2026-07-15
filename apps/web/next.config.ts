@@ -27,7 +27,9 @@ const nextConfig: NextConfig = {
     NEXT_PUBLIC_GOOGLE_AUTH_URL: process.env.NEXT_PUBLIC_GOOGLE_AUTH_URL ?? '',
     NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL ?? '',
     NEXT_PUBLIC_APP_BUILD_ID: appBuildId,
-  },  sassOptions: {
+    NEXT_PUBLIC_APP_VERSION: webPackage.version,
+  },
+  sassOptions: {
     includePaths: [path.join(__dirname, 'src/sass'), path.join(__dirname, 'src')],
     additionalData: "@use 'helpers/mixins' as mx;\n",
   },

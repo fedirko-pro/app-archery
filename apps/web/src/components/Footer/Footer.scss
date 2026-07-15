@@ -10,7 +10,8 @@ footer {
   display: flex;
   align-items: center;
   justify-content: space-around;
-  a {
+  > a,
+  .footer_side {
     text-decoration: none;
     text-transform: uppercase;
     color: $blue;
@@ -26,6 +27,20 @@ footer {
     &:hover,
     &:active {
       text-decoration: none;
+    }
+  }
+  .footer_side a {
+    color: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    text-transform: inherit;
+    width: auto;
+    min-width: 0;
+    min-height: 0;
+    display: inline;
+    &:hover,
+    &:active {
+      text-decoration: underline;
     }
   }
   .central_button {

@@ -5,13 +5,22 @@ import { Link, NavLink, useParams } from 'react-router-dom';
 
 import { normalizeAppLang } from '../../utils/i18n-lang';
 
+const appBuildId = process.env.NEXT_PUBLIC_APP_BUILD_ID ?? 'unknown';
+const appVersion = process.env.NEXT_PUBLIC_APP_VERSION ?? 'unknown';
+const displayVersion = appBuildId === 'dev' ? appVersion : appBuildId;
+
 const Footer = () => {
   const { t } = useTranslation('common');
   const { lang } = useParams();
   const currentLang = normalizeAppLang(lang);
   return (
     <footer>
-      <NavLink to={`/${currentLang}/converter`}>v.1.0.2 &copy; FEDIRKO.PRO</NavLink>
+      <span className="footer_side">
+        v.{displayVersion} ©{' '}
+        <a href="https://fedirko.pro" target="_blank" rel="noopener noreferrer">
+          FEDIRKO.PRO
+        </a>
+      </span>
       <Link to={`/${currentLang}`} target="_self" className="central_button" />
       <NavLink to={`/${currentLang}/about`}>{t('footer.about')}</NavLink>
     </footer>
