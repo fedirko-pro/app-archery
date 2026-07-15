@@ -131,7 +131,7 @@ const UserMenu: React.FC = () => {
         position={'right'}
         clickHandle={menuClick}
         onLogout={isAuthenticated ? handleLogout : null}
-        footer={<LanguageToggler />}
+        footer={<LanguageToggler onLanguageChange={() => setActive(false)} />}
       />
     </>
   );

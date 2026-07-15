@@ -34,7 +34,11 @@ const options: Array<{ value: string; code: string; flagSrc: string }> = [
   { value: 'ua', code: 'UA', flagSrc: assetUrl(flagUa) },
 ];
 
-const LanguageToggler: React.FC = () => {
+interface LanguageTogglerProps {
+  onLanguageChange?: () => void;
+}
+
+const LanguageToggler: React.FC<LanguageTogglerProps> = ({ onLanguageChange }) => {
   const params = useParams();
   const navigate = useNavigate();
   const location = useLocation();
@@ -50,7 +54,10 @@ const LanguageToggler: React.FC = () => {
 
   const handleChange = async (event: SelectChangeEvent<string>) => {
     const value = event.target.value as string;
-    if (!value) return;
+    if (!value || value === currentLang) return;
+
+    onLanguageChange?.();
+
     // Preserve current subpath when switching language
     const segments = location.pathname.split('/');
     if (segments.length > 1) {
@@ -80,6 +87,7 @@ const LanguageToggler: React.FC = () => {
           );
         }}
         MenuProps={{
+          disableScrollLock: true,
           PaperProps: { className: 'language_select__menuPaper' },
           MenuListProps: { className: 'language_select__menuList' },
         }}

@@ -1,30 +1,45 @@
 import { useEffect } from 'react';
 
-/** Lock body scroll while overlays/menus are open (iOS-safe). */
+let lockCount = 0;
+let savedScrollY = 0;
+
+function applyBodyScrollLock(): void {
+  const body = document.body;
+  savedScrollY = window.scrollY;
+  body.classList.add('lock');
+  body.style.overflow = 'hidden';
+  body.style.position = 'fixed';
+  body.style.top = `-${savedScrollY}px`;
+  body.style.width = '100%';
+}
+
+function releaseBodyScrollLock(): void {
+  const body = document.body;
+  body.classList.remove('lock');
+  body.style.removeProperty('overflow');
+  body.style.removeProperty('position');
+  body.style.removeProperty('top');
+  body.style.removeProperty('width');
+  body.style.removeProperty('padding-right');
+  window.scrollTo(0, savedScrollY);
+}
+
+/** Lock body scroll while overlays/menus are open (iOS-safe). Supports nested locks. */
 export function useBodyScrollLock(locked: boolean): void {
   useEffect(() => {
     if (!locked || typeof document === 'undefined') return;
 
-    const body = document.body;
-    const scrollY = window.scrollY;
-    const prevOverflow = body.style.overflow;
-    const prevPosition = body.style.position;
-    const prevTop = body.style.top;
-    const prevWidth = body.style.width;
-
-    body.classList.add('lock');
-    body.style.overflow = 'hidden';
-    body.style.position = 'fixed';
-    body.style.top = `-${scrollY}px`;
-    body.style.width = '100%';
+    if (lockCount === 0) {
+      applyBodyScrollLock();
+    }
+    lockCount += 1;
 
     return () => {
-      body.classList.remove('lock');
-      body.style.overflow = prevOverflow;
-      body.style.position = prevPosition;
-      body.style.top = prevTop;
-      body.style.width = prevWidth;
-      window.scrollTo(0, scrollY);
+      lockCount -= 1;
+      if (lockCount <= 0) {
+        lockCount = 0;
+        releaseBodyScrollLock();
+      }
     };
   }, [locked]);
 }
