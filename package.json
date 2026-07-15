@@ -2,7 +2,7 @@
   "name": "sokil",
   "version": "0.1.10",
   "private": true,
-  "packageManager": "pnpm@10.20.0",
+  "packageManager": "pnpm@11.13.0",
   "scripts": {
     "dev": "pnpm --filter @sokil/shared-types build && pnpm --parallel --filter @sokil/web --filter @sokil/api dev",
     "dev:web": "pnpm --filter @sokil/web dev",
