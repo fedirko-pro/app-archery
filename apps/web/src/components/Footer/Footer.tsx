@@ -14,7 +14,7 @@ const Footer = () => {
   const { lang } = useParams();
   const currentLang = normalizeAppLang(lang);
   return (
-    <footer>
+    <footer className="app-footer">
       <span className="footer_side">
         v.{displayVersion} ©{' '}
         <a href="https://fedirko.pro" target="_blank" rel="noopener noreferrer">

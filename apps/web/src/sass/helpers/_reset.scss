@@ -68,8 +68,6 @@ figure,
 .figure,
 figcaption,
 .figcaption,
-footer,
-header,
 hgroup,
 menu,
 nav,
@@ -84,6 +82,14 @@ video {
   margin: 0;
   padding: 0;
   border: 0;
+  vertical-align: baseline;
+}
+
+/* Keep margin/padding reset, but do not zero borders — app chrome draws them. */
+header,
+footer {
+  margin: 0;
+  padding: 0;
   vertical-align: baseline;
 }
 

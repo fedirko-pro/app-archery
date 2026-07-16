@@ -4,9 +4,9 @@ import './AppShellSkeleton.scss';
 export function AppShellSkeleton() {
   return (
     <div className="app-shell-skeleton" aria-hidden="true">
-      <header className="app-shell-skeleton__header" />
+      <header className="app-header app-shell-skeleton__header" />
       <main className="app-shell-skeleton__main" />
-      <footer className="app-shell-skeleton__footer" />
+      <footer className="app-footer app-shell-skeleton__footer" />
     </div>
   );
 }

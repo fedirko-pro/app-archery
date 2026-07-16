@@ -1,9 +1,10 @@
 @use '../../sass/helpers/variables' as *;
 @use '../../sass/helpers/mixins';
 
-footer {
+footer.app-footer {
   border-top: 4px solid $yellow;
-  height: 50px;
+  min-height: 50px;
+  height: auto;
   width: 100%;
   padding: 0;
   padding-bottom: env(safe-area-inset-bottom, 0);

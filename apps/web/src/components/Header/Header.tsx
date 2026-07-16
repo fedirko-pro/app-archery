@@ -14,7 +14,7 @@ const Header: React.FC = () => {
   const inferredLang = fromI18nLang(getCurrentI18nLang());
   const currentLang = normalizeAppLang(lang || location.pathname.split('/')[1] || inferredLang);
   return (
-    <header>
+    <header className="app-header">
       <NavMenu />
 
       <div className="header_logo">

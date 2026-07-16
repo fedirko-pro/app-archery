@@ -1,7 +1,7 @@
 @use '../../sass/helpers/variables' as *;
 @use '../../sass/helpers/mixins';
 
-header {
+header.app-header {
   padding: 0;
   height: 72px;
   width: 100%;
