@@ -15,11 +15,18 @@ ARG NEXT_PUBLIC_APP_BUILD_ID
 
 ENV NEXT_PUBLIC_API_BASE_URL=${NEXT_PUBLIC_API_BASE_URL}
 ENV NEXT_PUBLIC_GOOGLE_AUTH_URL=${NEXT_PUBLIC_GOOGLE_AUTH_URL}
-ENV NEXT_PUBLIC_APP_BUILD_ID=${NEXT_PUBLIC_APP_BUILD_ID}
 
 RUN pnpm install --frozen-lockfile --filter @sokil/web...
 RUN pnpm --filter @sokil/shared-types build
-RUN pnpm --filter @sokil/web build
+
+# Bake commit/build id at build time (ARG > apps/web/.build-id > unknown).
+# Do not fall back to package.json version — that hid missing deploy wiring.
+RUN BID="${NEXT_PUBLIC_APP_BUILD_ID:-}" \
+  && if [ -z "$BID" ] && [ -f apps/web/.build-id ]; then BID="$(tr -d '[:space:]' < apps/web/.build-id)"; fi \
+  && if [ -z "$BID" ]; then BID="unknown"; fi \
+  && export NEXT_PUBLIC_APP_BUILD_ID="$BID" \
+  && echo "==> NEXT_PUBLIC_APP_BUILD_ID=${BID}" \
+  && pnpm --filter @sokil/web build
 
 FROM base AS runner
 WORKDIR /app

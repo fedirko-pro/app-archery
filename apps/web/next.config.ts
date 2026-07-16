@@ -1,5 +1,6 @@
 import path from 'node:path';
-import { readFileSync } from 'node:fs';
+import { execSync } from 'node:child_process';
+import { readFileSync, existsSync } from 'node:fs';
 import { loadEnvConfig } from '@next/env';
 import type { NextConfig } from 'next';
 
@@ -14,9 +15,31 @@ const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3000';
 const proxyTarget = apiBase.startsWith('http') ? apiBase : 'http://localhost:3000';
 
 const isWindows = process.platform === 'win32';
-const appBuildId =
-  process.env.NEXT_PUBLIC_APP_BUILD_ID?.trim() ||
-  (process.env.NODE_ENV === 'development' ? 'dev' : webPackage.version);
+
+function resolveAppBuildId(): string {
+  const fromEnv = process.env.NEXT_PUBLIC_APP_BUILD_ID?.trim();
+  if (fromEnv) return fromEnv;
+
+  if (process.env.NODE_ENV === 'development') return 'dev';
+
+  const buildIdFile = path.join(__dirname, '.build-id');
+  if (existsSync(buildIdFile)) {
+    const fromFile = readFileSync(buildIdFile, 'utf8').trim();
+    if (fromFile) return fromFile;
+  }
+
+  try {
+    return execSync('git rev-parse --short HEAD', {
+      cwd: monorepoRoot,
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'ignore'],
+    }).trim();
+  } catch {
+    return 'unknown';
+  }
+}
+
+const appBuildId = resolveAppBuildId();
 
 const nextConfig: NextConfig = {
   output: isWindows ? undefined : 'standalone',

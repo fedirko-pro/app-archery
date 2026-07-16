@@ -35,8 +35,8 @@ services:
       db:
         condition: service_healthy
     volumes:
-      - ./apps/api/uploads:/app/apps/api/uploads
-      - ./apps/api/pdf:/app/apps/api/pdf
+      - ./src/uploads:/app/uploads
+      - ./src/apps/api/uploads:/app/apps/api/uploads
     networks:
       - archery_network
       - traefik-public

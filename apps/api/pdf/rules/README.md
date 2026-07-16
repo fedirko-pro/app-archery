@@ -1,8 +1,15 @@
-# Rule PDFs
+# Rule PDFs (legacy folder)
 
-PDF files for rules are **not** stored in the database. The `Rule` entity has a `downloadLink` field (path or filename); the actual files are served from this directory.
+PDFs are served from the repo-root `uploads/rules/` directory, not this folder.
 
-- **In DB:** `Rule.downloadLink` — string, e.g. `2021-Book-of-Rules.pdf` or `/mnt/data/2021-Book-of-Rules.pdf` (frontend uses filename only).
-- **On disk:** Place PDF files here; they are served at `GET /pdf/rules/<filename>`.
+- **In DB:** `Rule.downloadLink` — e.g. `/uploads/rules/FABP_QC2025.pdf`
+- **On disk:** `uploads/rules/<filename>.pdf` at the monorepo root
+- **URL:** `GET /uploads/rules/<filename>` (API static assets)
 
-Copy PDFs from the frontend repo: `app-archery/public/pdf/rules/*.pdf` → this folder.
+This `apps/api/pdf/rules/` directory is leftover from an older layout. Prefer placing new rule PDFs under `uploads/rules/` and pointing `downloadLink` there.
+
+After changing seeder paths, re-run:
+
+```bash
+pnpm --filter @sokil/api mikro-orm seeder:run --class=RuleSeeder
+```

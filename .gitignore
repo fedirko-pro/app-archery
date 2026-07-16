@@ -10,6 +10,7 @@ build/
 out/
 coverage/
 *.tsbuildinfo
+apps/web/.build-id
 
 # secrets — single root .env only; never commit real env files
 .env

@@ -68,13 +68,21 @@ Build logs are saved to `/tmp/build-api.log` and `/tmp/build-frontend.log`.
 ```bash
 cd /srv/test-archery/src
 git pull origin main
+cp deploy/docker-compose.prod.yml /srv/test-archery/docker-compose.prod.yml
 
-docker compose -f /srv/test-archery/docker-compose.prod.yml build api
-docker compose -f /srv/test-archery/docker-compose.prod.yml up -d --force-recreate api
+export APP_BUILD_ID="$(git rev-parse --short HEAD)"
+printf '%s\n' "$APP_BUILD_ID" > apps/web/.build-id
 
-docker compose -f /srv/test-archery/docker-compose.prod.yml build frontend
-docker compose -f /srv/test-archery/docker-compose.prod.yml up -d --force-recreate frontend
+docker compose -f /srv/test-archery/docker-compose.prod.yml --env-file /srv/test-archery/.env build api
+docker compose -f /srv/test-archery/docker-compose.prod.yml --env-file /srv/test-archery/.env up -d --force-recreate api
+
+docker compose -f /srv/test-archery/docker-compose.prod.yml --env-file /srv/test-archery/.env \
+  build --build-arg "NEXT_PUBLIC_APP_BUILD_ID=${APP_BUILD_ID}" frontend
+docker compose -f /srv/test-archery/docker-compose.prod.yml --env-file /srv/test-archery/.env \
+  up -d --force-recreate frontend
 ```
+
+The footer shows this short git SHA (not `package.json` version). If you skip `APP_BUILD_ID`, the image falls back to `unknown` / `local`.
 
 **Avoid** on this VPS:
 
@@ -131,6 +139,7 @@ NEXT_PUBLIC_GOOGLE_AUTH_URL=https://api-archery.fedirko.pro/auth/google
 
 - `JWT_SECRET` must be **at least 32 characters** or the API crash-loops.
 - `NEXT_PUBLIC_*` are baked into the frontend at **build** time.
+- Footer version comes from `APP_BUILD_ID` / `NEXT_PUBLIC_APP_BUILD_ID` (git short SHA via `deploy.sh`), not from `package.json`.
 - `GOOGLE_CALLBACK_URL` must match Google Cloud Console redirect URI exactly.
 
 ## Troubleshooting
