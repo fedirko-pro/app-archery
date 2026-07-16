@@ -1,5 +1,5 @@
 @use '../../sass/helpers/variables' as *;
-@use '../../sass/helpers/mixins';
+@use '../../sass/helpers/mixins' as *;
 
 .menu_icon {
   width: 20px;
@@ -33,6 +33,11 @@ header.app-header {
     min-width: 44px;
     min-height: 44px;
     cursor: pointer;
+    flex-shrink: 0;
+
+    @include mobile {
+      padding: 12px;
+    }
 
     span {
       display: block;

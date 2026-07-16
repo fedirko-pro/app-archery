@@ -16,10 +16,13 @@ const Footer = () => {
   return (
     <footer className="app-footer">
       <span className="footer_side">
-        v.{displayVersion} ©{' '}
-        <a href="https://fedirko.pro" target="_blank" rel="noopener noreferrer">
-          FEDIRKO.PRO
-        </a>
+        <span className="footer_side__version">v.{displayVersion}</span>
+        <span className="footer_side__credit">
+          ©{' '}
+          <a href="https://fedirko.pro" target="_blank" rel="noopener noreferrer">
+            FEDIRKO.PRO
+          </a>
+        </span>
       </span>
       <Link to={`/${currentLang}`} target="_self" className="central_button" />
       <NavLink to={`/${currentLang}/about`}>{t('footer.about')}</NavLink>

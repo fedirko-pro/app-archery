@@ -1,4 +1,5 @@
 @use '../../sass/helpers/variables' as *;
+@use '../../sass/helpers/mixins' as *;
 
 .install-prompt {
   display: flex;
@@ -15,6 +16,7 @@
   &__text {
     flex: 1;
     margin: 0;
+    min-width: 0;
   }
 
   &__actions {
@@ -35,8 +37,10 @@
       opacity 0.2s,
       transform 0.1s;
 
-    &:hover {
-      opacity: 0.95;
+    @media (hover: hover) {
+      &:hover {
+        opacity: 0.95;
+      }
     }
 
     &:active {
@@ -52,9 +56,26 @@
       background: rgba(255, 255, 255, 0.2);
       color: $white;
 
-      &:hover {
-        background: rgba(255, 255, 255, 0.3);
+      @media (hover: hover) {
+        &:hover {
+          background: rgba(255, 255, 255, 0.3);
+        }
       }
+    }
+  }
+
+  @include mobile {
+    flex-wrap: wrap;
+    align-items: flex-start;
+
+    &__text {
+      flex: 1 1 100%;
+    }
+
+    &__actions {
+      flex: 1 1 auto;
+      justify-content: flex-end;
+      margin-left: auto;
     }
   }
 }

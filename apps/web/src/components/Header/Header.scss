@@ -1,5 +1,5 @@
 @use '../../sass/helpers/variables' as *;
-@use '../../sass/helpers/mixins';
+@use '../../sass/helpers/mixins' as *;
 
 header.app-header {
   padding: 0;
@@ -11,12 +11,14 @@ header.app-header {
   justify-content: space-between;
   align-items: center;
   flex-direction: row;
+  background: $white;
 
   .header_logo {
     display: flex;
     align-items: center;
     width: 100%;
     padding: 0;
+    min-width: 0;
     a {
       display: block;
       width: 215px;
@@ -70,22 +72,43 @@ header.app-header {
         display: block;
       }
     }
-    &:hover,
+    @media (hover: hover) {
+      &:hover,
+      &.active {
+        background: $blue;
+        .menu_icon {
+          background: url('../../../src/img/icons/search_yellow.svg') center no-repeat;
+          background-size: cover;
+        }
+        .menu_title {
+          color: $yellow;
+        }
+      }
+    }
     &.active {
       background: $blue;
       .menu_icon {
-        background: url('../../../src/img/icons/search_yellow.svg') center no-repeat;
+        background: url('../../../src/img/icons/cross_yellow.svg') center no-repeat;
         background-size: cover;
       }
       .menu_title {
         color: $yellow;
       }
     }
-    &.active {
-      .menu_icon {
-        background: url('../../../src/img/icons/cross_yellow.svg') center no-repeat;
-        background-size: cover;
-      }
+  }
+
+  @include mobile {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    height: auto;
+    min-height: calc(56px + env(safe-area-inset-top, 0px));
+    padding-top: env(safe-area-inset-top, 0px);
+
+    .header_logo a {
+      width: 140px;
+      height: 40px;
+      max-width: 100%;
     }
   }
 }

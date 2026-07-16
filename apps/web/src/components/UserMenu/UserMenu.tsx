@@ -106,10 +106,11 @@ const UserMenu: React.FC = () => {
       <Avatar
         onClick={menuClick}
         sx={{
-          marginRight: '16px',
+          marginRight: { xs: '8px', sm: '16px' },
           cursor: 'pointer',
           width: 44,
           height: 44,
+          flexShrink: 0,
         }}
         src={avatarSrc}
         alt={user?.firstName || 'User'}

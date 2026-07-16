@@ -1,5 +1,5 @@
 @use '../../sass/helpers/variables' as *;
-@use '../../sass/helpers/mixins';
+@use '../../sass/helpers/mixins' as *;
 
 main {
   position: relative;
@@ -34,6 +34,13 @@ main {
       }
     }
   }
+
+  @include mobile {
+    /* 56px header bar + top inset; 50px footer + bottom inset */
+    min-height: calc(
+      100dvh - 56px - env(safe-area-inset-top, 0px) - 50px - env(safe-area-inset-bottom, 0px)
+    );
+  }
 }
 
 h1,
@@ -48,6 +55,10 @@ h1 {
   font-family: 'Montserrat', Arial, Helvetica, sans-serif;
   font-weight: bold;
   font-size: 32px;
+
+  @include mobile {
+    font-size: 24px;
+  }
 }
 h2 {
   font-size: 20px;

@@ -49,6 +49,8 @@ body {
   background: $white;
   color: $text-body;
   font-size: 16px;
+  overflow-x: clip;
+  -webkit-tap-highlight-color: transparent;
   &.lock {
     overflow: hidden;
   }

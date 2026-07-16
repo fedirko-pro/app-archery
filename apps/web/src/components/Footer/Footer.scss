@@ -1,5 +1,5 @@
 @use '../../sass/helpers/variables' as *;
-@use '../../sass/helpers/mixins';
+@use '../../sass/helpers/mixins' as *;
 
 footer.app-footer {
   border-top: 4px solid $yellow;
@@ -11,6 +11,8 @@ footer.app-footer {
   display: flex;
   align-items: center;
   justify-content: space-around;
+  background: $white;
+
   > a,
   .footer_side {
     text-decoration: none;
@@ -30,6 +32,11 @@ footer.app-footer {
       text-decoration: none;
     }
   }
+  .footer_side {
+    flex-direction: column;
+    gap: 2px;
+    line-height: 1.2;
+  }
   .footer_side a {
     color: inherit;
     font-size: inherit;
@@ -39,7 +46,11 @@ footer.app-footer {
     min-width: 0;
     min-height: 0;
     display: inline;
-    &:hover,
+    @media (hover: hover) {
+      &:hover {
+        text-decoration: underline;
+      }
+    }
     &:active {
       text-decoration: underline;
     }
@@ -53,21 +64,15 @@ footer.app-footer {
     height: 44px;
     min-width: 44px;
     min-height: 44px;
+    margin: 4px;
   }
-}
 
-@media screen and (max-width: 1440px) {
-  // max-width: 1440px
-}
+  @include mobile {
+    min-height: calc(50px + env(safe-area-inset-bottom, 0px));
 
-@media screen and (max-width: 1024px) {
-  // max-width: 1024px
-}
-
-@media screen and (max-width: 768px) {
-  // max-width: 768px
-}
-
-@media screen and (max-width: 590px) {
-  // max-width: 590px
+    > a,
+    .footer_side {
+      font-size: 12px;
+    }
+  }
 }

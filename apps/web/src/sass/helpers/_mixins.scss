@@ -1,5 +1,12 @@
 @use 'variables';
 
+/// Phone / small-tablet shell breakpoint. Desktop chrome stays unchanged above this.
+@mixin mobile {
+  @media (max-width: 767.98px) {
+    @content;
+  }
+}
+
 @mixin filter-gray() {
   filter: grayscale(100%);
   transition: all 0.3s;
