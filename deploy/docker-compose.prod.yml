@@ -1,5 +1,12 @@
 # Production stack: PostgreSQL + API + Frontend (Traefik)
-# Run from monorepo root: docker compose -f deploy/docker-compose.prod.yml up -d --build
+#
+# VPS layout (compose lives next to .env, repo is in ./src):
+#   /srv/test-archery/
+#   +-- .env
+#   +-- docker-compose.prod.yml   # copy of this file
+#   +-- src/                      # git repo
+#
+# Deploy: bash /srv/test-archery/src/deploy/deploy.sh
 
 services:
   db:
@@ -22,7 +29,7 @@ services:
 
   api:
     build:
-      context: .
+      context: ./src
       dockerfile: apps/api/Dockerfile
     container_name: archery_api
     restart: unless-stopped
@@ -52,7 +59,7 @@ services:
 
   frontend:
     build:
-      context: .
+      context: ./src
       dockerfile: apps/web/Dockerfile
       args:
         NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL}

@@ -9,9 +9,10 @@
 #
 set -euo pipefail
 
-REPO_DIR="/srv/test-archery/src"
-ENV_FILE="${ENV_FILE:-/srv/test-archery/.env}"
-COMPOSE_DEST="${COMPOSE_FILE:-/srv/test-archery/docker-compose.prod.yml}"
+DEPLOY_ROOT="${DEPLOY_ROOT:-/srv/test-archery}"
+REPO_DIR="${REPO_DIR:-${DEPLOY_ROOT}/src}"
+ENV_FILE="${ENV_FILE:-${DEPLOY_ROOT}/.env}"
+COMPOSE_DEST="${COMPOSE_FILE:-${DEPLOY_ROOT}/docker-compose.prod.yml}"
 COMPOSE_SRC="${REPO_DIR}/deploy/docker-compose.prod.yml"
 
 if [[ $# -gt 0 ]]; then
@@ -24,14 +25,14 @@ cd "$REPO_DIR"
 echo "==> Pulling latest code..."
 git pull origin main
 
-# Keep the VPS compose file in sync with the repo (it lives outside git).
+# Keep the VPS compose file in sync with the repo (paths assume DEPLOY_ROOT + ./src).
 cp "$COMPOSE_SRC" "$COMPOSE_DEST"
 
 export APP_BUILD_ID="$(git rev-parse --short HEAD)"
 echo "==> Frontend build id: ${APP_BUILD_ID}"
-printf '%s\n' "${APP_BUILD_ID}" > apps/web/.build-id
+printf '%s\n' "${APP_BUILD_ID}" > "${REPO_DIR}/apps/web/.build-id"
 
-COMPOSE_ARGS=(-f "$COMPOSE_DEST")
+COMPOSE_ARGS=(--project-directory "$DEPLOY_ROOT" -f "$COMPOSE_DEST")
 if [[ -f "$ENV_FILE" ]]; then
   COMPOSE_ARGS+=(--env-file "$ENV_FILE")
 fi
@@ -40,12 +41,11 @@ for svc in "${SERVICES[@]}"; do
   echo ""
   echo "==> Building ${svc}..."
   if [[ "$svc" == "frontend" ]]; then
-    docker compose "${COMPOSE_ARGS[@]}" build \
+    docker compose --progress=plain "${COMPOSE_ARGS[@]}" build \
       --build-arg "NEXT_PUBLIC_APP_BUILD_ID=${APP_BUILD_ID}" \
-      --progress=plain \
       "$svc" 2>&1 | tee "/tmp/build-${svc}.log"
   else
-    docker compose "${COMPOSE_ARGS[@]}" build --progress=plain "$svc" 2>&1 | tee "/tmp/build-${svc}.log"
+    docker compose --progress=plain "${COMPOSE_ARGS[@]}" build "$svc" 2>&1 | tee "/tmp/build-${svc}.log"
   fi
 
   echo "==> Starting ${svc}..."

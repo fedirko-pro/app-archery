@@ -73,13 +73,14 @@ cp deploy/docker-compose.prod.yml /srv/test-archery/docker-compose.prod.yml
 export APP_BUILD_ID="$(git rev-parse --short HEAD)"
 printf '%s\n' "$APP_BUILD_ID" > apps/web/.build-id
 
-docker compose -f /srv/test-archery/docker-compose.prod.yml --env-file /srv/test-archery/.env build api
-docker compose -f /srv/test-archery/docker-compose.prod.yml --env-file /srv/test-archery/.env up -d --force-recreate api
+COMPOSE=(--project-directory /srv/test-archery -f /srv/test-archery/docker-compose.prod.yml --env-file /srv/test-archery/.env)
 
-docker compose -f /srv/test-archery/docker-compose.prod.yml --env-file /srv/test-archery/.env \
+docker compose "${COMPOSE[@]}" build api
+docker compose "${COMPOSE[@]}" up -d --force-recreate api
+
+docker compose --progress=plain "${COMPOSE[@]}" \
   build --build-arg "NEXT_PUBLIC_APP_BUILD_ID=${APP_BUILD_ID}" frontend
-docker compose -f /srv/test-archery/docker-compose.prod.yml --env-file /srv/test-archery/.env \
-  up -d --force-recreate frontend
+docker compose "${COMPOSE[@]}" up -d --force-recreate frontend
 ```
 
 The footer shows this short git SHA (not `package.json` version). If you skip `APP_BUILD_ID`, the image falls back to `unknown` / `local`.
