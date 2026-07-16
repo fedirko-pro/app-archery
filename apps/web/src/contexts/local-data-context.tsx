@@ -209,16 +209,21 @@ export const LocalDataProvider: React.FC<Props> = ({ children }) => {
     [shouldSync, pushSession, refresh, setSessionPersisting],
   );
 
+  // In-progress sessions sync quietly in the background; don't flash the pending-sync banner
+  // on every shot increment.
   const unsyncedCount = useMemo(
     () =>
       equipmentSets.filter((s) => !s.isSynced).length +
-      trainingSessions.filter((s) => !s.isSynced).length,
+      trainingSessions.filter((s) => !s.isSynced && s.status !== 'started').length,
     [equipmentSets, trainingSessions],
   );
 
-  const hasUnsyncedData = unsyncedCount > 0;
+  const hasUnsyncedData = useMemo(
+    () => equipmentSets.some((s) => !s.isSynced) || trainingSessions.some((s) => !s.isSynced),
+    [equipmentSets, trainingSessions],
+  );
 
-  const hasPendingSync = shouldSync && hasUnsyncedData && !isSyncing && !lastSyncError;
+  const hasPendingSync = shouldSync && unsyncedCount > 0 && !isSyncing && !lastSyncError;
 
   const syncNow = useCallback(async () => {
     if (!shouldSync || syncInProgress.current) return;

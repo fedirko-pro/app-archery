@@ -1,17 +1,18 @@
 import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Chip from '@mui/material/Chip';
+import IconButton from '@mui/material/IconButton';
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import LocalSyncChip from '../../components/LocalSyncChip/LocalSyncChip';
 import { useLocalData, type LocalTrainingSession } from '../../contexts/local-data-context';
 import { DEFAULT_ARROWS_PER_SET } from '../../utils/training-session-utils';
 
@@ -38,6 +39,11 @@ const ActiveSessionCard: React.FC<ActiveSessionCardProps> = ({ session, onFinish
 
   const handleAddShot = () => {
     void incrementSessionShots(session.id, 1);
+  };
+
+  const handleRemoveShot = () => {
+    if (shots <= 0) return;
+    void incrementSessionShots(session.id, -1);
   };
 
   const handleAddSet = () => {
@@ -74,12 +80,31 @@ const ActiveSessionCard: React.FC<ActiveSessionCardProps> = ({ session, onFinish
           <Typography variant="h6" sx={{ flex: 1 }}>
             {formatDate(session.date)}
           </Typography>
-          {!session.isSynced && <LocalSyncChip />}
         </Box>
 
-        <Typography variant="h3" fontWeight={700} textAlign="center" sx={{ my: 2 }}>
-          {shots}
-        </Typography>
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: '1fr auto 1fr',
+            alignItems: 'center',
+            my: 2,
+          }}
+        >
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end', pr: 1 }}>
+            <IconButton
+              aria-label={t('trainings.removeShot')}
+              onClick={handleRemoveShot}
+              disabled={isPersisting || shots <= 0}
+              size="large"
+            >
+              <RemoveIcon fontSize="inherit" />
+            </IconButton>
+          </Box>
+          <Typography variant="h3" fontWeight={700} textAlign="center">
+            {shots}
+          </Typography>
+          <Box />
+        </Box>
         <Typography variant="body2" color="text.secondary" textAlign="center" sx={{ mb: 2 }}>
           {t('trainings.shotsCount')}
         </Typography>

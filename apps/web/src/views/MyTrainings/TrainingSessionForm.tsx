@@ -20,8 +20,8 @@ import type {
   CustomField,
   TrainingMood,
 } from '../../utils/local-data-storage';
-import { TRAINING_MOODS } from '../../utils/training-session-utils';
 import EquipmentSetMiniForm from '../MyEquipment/EquipmentSetMiniForm';
+import MoodPicker from './MoodPicker';
 
 interface TrainingSessionFormProps {
   initial?: Partial<LocalTrainingSession>;
@@ -228,21 +228,9 @@ const TrainingSessionForm: React.FC<TrainingSessionFormProps> = ({
             minRows={2}
             sx={{ mb: 2 }}
           />
-          <TextField
-            select
-            label={t('trainings.mood')}
-            value={mood}
-            onChange={(e) => setMood(e.target.value as TrainingMood | '')}
-            fullWidth
-            sx={{ mb: 2 }}
-          >
-            <MenuItem value="">&mdash;</MenuItem>
-            {TRAINING_MOODS.map((m) => (
-              <MenuItem key={m} value={m}>
-                {t(`trainings.moodOptions.${m}`)}
-              </MenuItem>
-            ))}
-          </TextField>
+          <Box sx={{ mb: 2 }}>
+            <MoodPicker value={mood} onChange={setMood} />
+          </Box>
           {customFields.map((field, index) => (
             <Box key={index} sx={{ display: 'flex', gap: 1, mb: 1 }}>
               <TextField

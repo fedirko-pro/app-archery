@@ -4,7 +4,6 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import MenuItem from '@mui/material/MenuItem';
 import { useTheme } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -15,7 +14,7 @@ import { useAuth } from '../../contexts/auth-context';
 import { useLocalData, type LocalTrainingSession } from '../../contexts/local-data-context';
 import apiService from '../../services/api';
 import type { TrainingMood } from '../../utils/local-data-storage';
-import { TRAINING_MOODS } from '../../utils/training-session-utils';
+import MoodPicker from './MoodPicker';
 
 interface FinishSessionDialogProps {
   open: boolean;
@@ -87,20 +86,7 @@ const FinishSessionDialog: React.FC<FinishSessionDialogProps> = ({ open, session
             multiline
             minRows={2}
           />
-          <TextField
-            select
-            label={t('trainings.mood')}
-            value={mood}
-            onChange={(e) => setMood(e.target.value as TrainingMood | '')}
-            fullWidth
-          >
-            <MenuItem value="">&mdash;</MenuItem>
-            {TRAINING_MOODS.map((m) => (
-              <MenuItem key={m} value={m}>
-                {t(`trainings.moodOptions.${m}`)}
-              </MenuItem>
-            ))}
-          </TextField>
+          <MoodPicker value={mood} onChange={setMood} />
         </Box>
       </DialogContent>
       <DialogActions

@@ -16,9 +16,9 @@ import DialogTitle from '@mui/material/DialogTitle';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useSearchParams } from 'react-router-dom';
 
 import LocalDataBanner from '../../components/LocalDataBanner/LocalDataBanner';
 import LocalSyncChip from '../../components/LocalSyncChip/LocalSyncChip';
@@ -31,6 +31,7 @@ const withUnit = (val: string, unit: string) => (isNumericOnly(val) ? `${val} ${
 const MyEquipmentPage: React.FC = () => {
   const { t } = useTranslation('common');
   const { lang } = useParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const {
     equipmentSets,
     addEquipmentSet,
@@ -49,6 +50,14 @@ const MyEquipmentPage: React.FC = () => {
     setEditTarget(null);
     setFormOpen(true);
   };
+
+  useEffect(() => {
+    if (searchParams.get('add') !== '1') return;
+    handleOpenAdd();
+    const next = new URLSearchParams(searchParams);
+    next.delete('add');
+    setSearchParams(next, { replace: true });
+  }, [searchParams, setSearchParams]);
 
   const handleOpenEdit = (set: LocalEquipmentSet) => {
     setEditTarget(set);

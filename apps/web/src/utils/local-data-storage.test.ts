@@ -58,6 +58,15 @@ describe('incrementTrainingSessionShots', () => {
   it('returns null for unknown session id', () => {
     expect(incrementTrainingSessionShots('missing', 1)).toBeNull();
   });
+
+  it('clamps shot count at zero when decrementing', () => {
+    const session = getTrainingSessions()[0];
+    incrementTrainingSessionShots(session.id, 2);
+    incrementTrainingSessionShots(session.id, -1);
+    expect(getTrainingSessions()[0].shotsCount).toBe(1);
+    incrementTrainingSessionShots(session.id, -5);
+    expect(getTrainingSessions()[0].shotsCount).toBe(0);
+  });
 });
 
 describe('writeStorage failures', () => {

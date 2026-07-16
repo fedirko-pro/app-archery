@@ -11,31 +11,35 @@ import CardContent from '@mui/material/CardContent';
 import Chip from '@mui/material/Chip';
 import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLocation, useSearchParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 
 import LocalDataBanner from '../../components/LocalDataBanner/LocalDataBanner';
 import LocalSyncChip from '../../components/LocalSyncChip/LocalSyncChip';
 import { useLocalData, type LocalTrainingSession } from '../../contexts/local-data-context';
+import { useGuardedStartTraining } from '../../hooks/use-guarded-start-training';
 import { getEquipmentSetName, isBowSetupPromptDismissed } from '../../utils/equipment-utils';
 import { getSessionCardTint } from '../../utils/session-card-tints';
 import { getStartedSession } from '../../utils/training-session-utils';
 import { getLastLoggedSession, toSessionFormDefaults } from '../../utils/training-stats';
 import { TRAINING_TEMPLATES, type TrainingTemplate } from '../../utils/training-templates';
 import ActiveSessionCard from './ActiveSessionCard';
+import ConfirmReplaceActiveSessionDialog from './ConfirmReplaceActiveSessionDialog';
 import FinishSessionDialog from './FinishSessionDialog';
+import { MoodIcon } from './MoodPicker';
 import TrainingSessionDialog from './TrainingSessionDialog';
 
 const MyTrainingsPage: React.FC = () => {
   const { t } = useTranslation('common');
   const theme = useTheme();
+  const { lang } = useParams();
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const location = useLocation();
   const {
     trainingSessions,
     equipmentSets,
-    startTrainingSession,
     editTrainingSession,
     removeTrainingSession,
     defaultEquipmentSetId,
@@ -56,25 +60,32 @@ const MyTrainingsPage: React.FC = () => {
 
   const lastLogged = useMemo(() => getLastLoggedSession(finishedSessions), [finishedSessions]);
 
-  const buildStartDefaults = (
-    template?: Partial<LocalTrainingSession>,
-  ): Partial<LocalTrainingSession> => {
-    const fromLast = lastLogged
-      ? toSessionFormDefaults(lastLogged, defaultEquipmentSetId)
-      : defaultEquipmentSetId
-        ? { equipmentSetId: defaultEquipmentSetId }
-        : {};
-    return { ...fromLast, ...template };
-  };
+  const buildStartDefaults = useCallback(
+    (template?: Partial<LocalTrainingSession>): Partial<LocalTrainingSession> => {
+      const fromLast = lastLogged
+        ? toSessionFormDefaults(lastLogged, defaultEquipmentSetId)
+        : defaultEquipmentSetId
+          ? { equipmentSetId: defaultEquipmentSetId }
+          : {};
+      return { ...fromLast, ...template };
+    },
+    [lastLogged, defaultEquipmentSetId],
+  );
 
-  const handleStartTraining = async (template?: Partial<LocalTrainingSession>) => {
-    setSubmitting(true);
-    try {
-      await startTrainingSession(buildStartDefaults(template));
-    } finally {
-      setSubmitting(false);
-    }
-  };
+  const {
+    requestStart,
+    confirmStartNew,
+    editCurrent,
+    dialogOpen: replaceDialogOpen,
+    submitting: startSubmitting,
+  } = useGuardedStartTraining();
+
+  const handleStartTraining = useCallback(
+    async (template?: Partial<LocalTrainingSession>) => {
+      await requestStart(buildStartDefaults(template));
+    },
+    [requestStart, buildStartDefaults],
+  );
 
   const handleOpenAdd = () => {
     void handleStartTraining();
@@ -101,7 +112,7 @@ const MyTrainingsPage: React.FC = () => {
       next.delete('add');
       setSearchParams(next, { replace: true });
     }
-  }, [location.state, searchParams, setSearchParams]);
+  }, [location.state, searchParams, setSearchParams, handleStartTraining]);
 
   const handleOpenEdit = (session: LocalTrainingSession) => {
     setEditTarget(session);
@@ -171,7 +182,7 @@ const MyTrainingsPage: React.FC = () => {
           variant="contained"
           startIcon={<AddIcon />}
           onClick={handleOpenAdd}
-          disabled={submitting}
+          disabled={submitting || startSubmitting}
         >
           {t('trainings.add')}
         </Button>
@@ -184,8 +195,12 @@ const MyTrainingsPage: React.FC = () => {
           severity="info"
           sx={{ mb: 2 }}
           action={
-            <Button variant="contained" size="small" onClick={handleOpenAdd}>
-              {t('dashboard.bowSetupPrompt.logSession')}
+            <Button
+              variant="contained"
+              size="small"
+              onClick={() => navigate(`/${lang}/equipment?add=1`)}
+            >
+              {t('equipment.addSet')}
             </Button>
           }
         >
@@ -237,7 +252,7 @@ const MyTrainingsPage: React.FC = () => {
                 size="small"
                 startIcon={<AddIcon />}
                 onClick={handleOpenAdd}
-                disabled={submitting}
+                disabled={submitting || startSubmitting}
               >
                 {t('trainings.emptyState.orBlank')}
               </Button>
@@ -257,8 +272,11 @@ const MyTrainingsPage: React.FC = () => {
                 <CardContent>
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
                     <TrackChangesIcon color="primary" />
-                    <Typography variant="h6">{formatDate(session.date)}</Typography>
+                    <Typography variant="h6" sx={{ flex: 1 }}>
+                      {formatDate(session.date)}
+                    </Typography>
                     {!session.isSynced && <LocalSyncChip />}
+                    {session.mood && <MoodIcon mood={session.mood} />}
                   </Box>
 
                   <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
@@ -300,14 +318,6 @@ const MyTrainingsPage: React.FC = () => {
                         <Box component="span" fontWeight="bold">
                           {getEquipmentSetName(session.equipmentSetId, equipmentSets) ??
                             session.equipmentSetId}
-                        </Box>
-                      </Typography>
-                    )}
-                    {session.mood && (
-                      <Typography variant="body2" color="text.secondary">
-                        {t('trainings.mood')}:{' '}
-                        <Box component="span" fontWeight="bold">
-                          {t(`trainings.moodOptions.${session.mood}`)}
                         </Box>
                       </Typography>
                     )}
@@ -361,6 +371,13 @@ const MyTrainingsPage: React.FC = () => {
         open={finishOpen}
         session={activeSession}
         onClose={() => setFinishOpen(false)}
+      />
+
+      <ConfirmReplaceActiveSessionDialog
+        open={replaceDialogOpen}
+        submitting={startSubmitting}
+        onEditCurrent={editCurrent}
+        onStartNew={() => void confirmStartNew()}
       />
 
       <TrainingSessionDialog

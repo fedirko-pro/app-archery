@@ -680,7 +680,14 @@
     "syncSuccess": "Daten erfolgreich synchronisiert",
     "syncError": "Synchronisation fehlgeschlagen",
     "inProgress": "In Bearbeitung",
+    "replaceActiveSession": {
+      "title": "Bereits eine Einheit aktiv",
+      "message": "Möchten Sie die vorherige Trainingseinheit beenden und eine neue starten?",
+      "editCurrent": "Nein, aktuelle bearbeiten",
+      "startNew": "Ja, neue starten"
+    },
     "addShot": "Schuss hinzufügen",
+    "removeShot": "Schuss entfernen",
     "addSet": "Satz hinzufügen",
     "finishSession": "Beenden",
     "arrowsPerSet": "Pfeile pro Satz",

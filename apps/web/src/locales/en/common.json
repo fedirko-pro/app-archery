@@ -680,7 +680,14 @@
     "syncSuccess": "Data synchronized successfully",
     "syncError": "Synchronization failed",
     "inProgress": "In progress",
+    "replaceActiveSession": {
+      "title": "Session already in progress",
+      "message": "Do you want to finish the previous training session and start a new one?",
+      "editCurrent": "No, edit current",
+      "startNew": "Yes, start new"
+    },
     "addShot": "Add shot",
+    "removeShot": "Remove shot",
     "addSet": "Add set",
     "finishSession": "Finish",
     "arrowsPerSet": "Arrows per set",

@@ -27,6 +27,7 @@ import StatCard from '../../components/StatCard/StatCard';
 import { useAuth } from '../../contexts/auth-context';
 import { useLocalData, type LocalTrainingSession } from '../../contexts/local-data-context';
 import { useAchievements } from '../../hooks/use-achievements';
+import { useGuardedStartTraining } from '../../hooks/use-guarded-start-training';
 import apiService from '../../services/api';
 import type {
   ApplicationStatus,
@@ -61,6 +62,7 @@ import {
   getStreakAtRiskState,
   toSessionFormDefaults,
 } from '../../utils/training-stats';
+import ConfirmReplaceActiveSessionDialog from '../MyTrainings/ConfirmReplaceActiveSessionDialog';
 
 interface MergedTournamentCard {
   tournament: TournamentDto;
@@ -70,13 +72,10 @@ interface MergedTournamentCard {
 const HomePage: React.FC = () => {
   const { t } = useTranslation('common');
   const { isAuthenticated, user } = useAuth();
-  const { trainingSessions, equipmentSets, startTrainingSession, defaultEquipmentSetId } =
-    useLocalData();
+  const { trainingSessions, equipmentSets, defaultEquipmentSetId } = useLocalData();
   const theme = useTheme();
   const navigate = useNavigate();
   const { lang } = useParams();
-
-  const [submitting, setSubmitting] = useState(false);
   const [mergedTournaments, setMergedTournaments] = useState<MergedTournamentCard[]>([]);
   const [tournamentsLoading, setTournamentsLoading] = useState(true);
   const [tournamentsError, setTournamentsError] = useState<string | null>(null);
@@ -228,14 +227,19 @@ const HomePage: React.FC = () => {
     };
   }, [isAuthenticated]);
 
-  const handleOpenAdd = async () => {
-    setSubmitting(true);
-    try {
-      await startTrainingSession(sessionDefaults);
-      navigate(`/${lang}/trainings`);
-    } finally {
-      setSubmitting(false);
-    }
+  const {
+    requestStart,
+    confirmStartNew,
+    editCurrent,
+    dialogOpen: replaceDialogOpen,
+    submitting,
+  } = useGuardedStartTraining({
+    afterStart: () => navigate(`/${lang}/trainings`),
+    onEditCurrent: () => navigate(`/${lang}/trainings`),
+  });
+
+  const handleOpenAdd = () => {
+    void requestStart(sessionDefaults);
   };
 
   const formatSessionDateTime = (session: LocalTrainingSession): string => {
@@ -314,8 +318,12 @@ const HomePage: React.FC = () => {
             </Typography>
           </Box>
           <Box sx={{ display: 'flex', gap: 1, flexShrink: 0 }}>
-            <Button variant="contained" size="small" onClick={handleOpenAdd}>
-              {t('dashboard.bowSetupPrompt.logSession')}
+            <Button
+              variant="contained"
+              size="small"
+              onClick={() => navigate(`/${lang}/equipment?add=1`)}
+            >
+              {t('equipment.addSet')}
             </Button>
             <Button variant="text" size="small" onClick={handleDismissBowPrompt}>
               {t('dashboard.bowSetupPrompt.dismiss')}
@@ -744,6 +752,13 @@ const HomePage: React.FC = () => {
           {t('dashboard.viewStatistics')}
         </Button>
       </Box>
+
+      <ConfirmReplaceActiveSessionDialog
+        open={replaceDialogOpen}
+        submitting={submitting}
+        onEditCurrent={editCurrent}
+        onStartNew={() => void confirmStartNew()}
+      />
     </Box>
   );
 };

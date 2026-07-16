@@ -225,7 +225,7 @@ export function incrementTrainingSessionShots(
   const current = sessions[index];
   const updated: LocalTrainingSession = {
     ...current,
-    shotsCount: (current.shotsCount ?? 0) + delta,
+    shotsCount: Math.max(0, (current.shotsCount ?? 0) + delta),
     ...(options?.arrowsPerSet !== undefined ? { arrowsPerSet: options.arrowsPerSet } : {}),
     updatedAt: new Date().toISOString(),
     isSynced: false,
