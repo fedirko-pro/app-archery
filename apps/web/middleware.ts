@@ -31,6 +31,11 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
+  // Service-worker navigation fallback shell (must not be lang-prefixed).
+  if (pathname === '/~offline') {
+    return withNoStoreHeaders(NextResponse.next());
+  }
+
   if (pathname === '/auth/google/callback') {
     return NextResponse.next();
   }

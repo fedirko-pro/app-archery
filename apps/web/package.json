@@ -10,6 +10,7 @@
     "@mui/icons-material": "^7.3.9",
     "@mui/material": "^7.3.9",
     "@mui/material-nextjs": "^9.1.1",
+    "@serwist/next": "^9.5.11",
     "@sokil/shared-configs": "workspace:*",
     "@sokil/shared-types": "workspace:*",
     "canvas-confetti": "^1.9.4",
@@ -53,6 +54,7 @@
     "jsdom": "^25.0.1",
     "lint-staged": "^16.4.0",
     "prettier": "^3.8.1",
+    "serwist": "^9.5.11",
     "typescript": "^5.9.3",
     "vite": "^6.4.3",
     "vitest": "^3.2.6"

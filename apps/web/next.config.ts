@@ -2,6 +2,7 @@ import path from 'node:path';
 import { execSync } from 'node:child_process';
 import { readFileSync, existsSync } from 'node:fs';
 import { loadEnvConfig } from '@next/env';
+import withSerwistInit from '@serwist/next';
 import type { NextConfig } from 'next';
 
 const monorepoRoot = path.join(__dirname, '../..');
@@ -41,6 +42,15 @@ function resolveAppBuildId(): string {
 
 const appBuildId = resolveAppBuildId();
 
+const withSerwist = withSerwistInit({
+  swSrc: 'src/app/sw.ts',
+  swDest: 'public/sw.js',
+  disable: process.env.NODE_ENV === 'development',
+  cacheOnNavigation: true,
+  reloadOnOnline: false,
+  additionalPrecacheEntries: [{ url: '/~offline', revision: appBuildId }],
+});
+
 const nextConfig: NextConfig = {
   output: isWindows ? undefined : 'standalone',
   outputFileTracingRoot: isWindows ? undefined : monorepoRoot,
@@ -76,4 +86,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+export default withSerwist(nextConfig);

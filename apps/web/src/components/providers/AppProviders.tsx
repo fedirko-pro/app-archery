@@ -19,7 +19,6 @@ import Footer from '../Footer/Footer';
 import Header from '../Header/Header';
 import InstallPrompt from '../InstallPrompt';
 import OfflineBanner from '../OfflineBanner';
-import { ServiceWorkerCleanup } from '../ServiceWorkerCleanup/ServiceWorkerCleanup';
 
 const theme = createTheme({
   typography: {
@@ -45,7 +44,6 @@ export function RootProviders({ children }: RootProvidersProps) {
     <ErrorBoundary>
       <AppRouterCacheProvider>
         <ThemeProvider theme={theme}>
-          <ServiceWorkerCleanup />
           <ErrorFeedbackProvider>
             <EnvError />
             <OfflineBanner />

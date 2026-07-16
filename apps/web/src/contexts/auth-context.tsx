@@ -10,7 +10,9 @@ import React, {
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import apiService from '../services/api';
+import { getCachedUser, setCachedUser } from '../utils/cached-user';
 import { fromI18nLang, getCurrentI18nLang, normalizeAppLang } from '../utils/i18n-lang';
+import { isNetworkError } from '../utils/offline-cache';
 import { resolvePostAuthPath } from '../utils/post-auth-redirect';
 import type {
   User,
@@ -57,7 +59,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       try {
         const userData = await apiService.getProfile();
         setUser(userData);
-      } catch {
+        setCachedUser(userData);
+      } catch (error) {
+        // Keep the last known session when offline so local-first features still work.
+        if (isNetworkError(error) || (typeof navigator !== 'undefined' && !navigator.onLine)) {
+          const cachedUser = getCachedUser();
+          if (cachedUser) {
+            setUser(cachedUser);
+            return;
+          }
+        }
+        setCachedUser(null);
         await apiService.logout();
       } finally {
         setInitializing(false);
@@ -81,6 +93,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const userData = await apiService.getProfile();
 
       setUser(userData);
+      setCachedUser(userData);
       handlePostAuthRedirect(userData);
 
       return response;
@@ -105,6 +118,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const userProfile = await apiService.getProfile();
 
       setUser(userProfile);
+      setCachedUser(userProfile);
       handlePostAuthRedirect(userProfile);
 
       return response;
@@ -119,6 +133,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const logout = (): void => {
     void apiService.logout();
+    setCachedUser(null);
     setUser(null);
     setError(null);
     pendingApplicationProcessedRef.current = false;
@@ -128,6 +143,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const updateUser = (userData: User): void => {
     setUser(userData);
+    setCachedUser(userData);
   };
 
   const handleGoogleAuth = useCallback(async (): Promise<void> => {
@@ -136,6 +152,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
       const userData = await apiService.getProfile();
       setUser(userData);
+      setCachedUser(userData);
 
       if (pendingApplicationProcessedRef.current) {
         return;
@@ -146,6 +163,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       // Use the same redirect logic as normal login
       handlePostAuthRedirect(userData);
     } catch {
+      setCachedUser(null);
       apiService.logout();
       setUser(null);
       navigate(`/${currentLang}/signin`);
@@ -181,6 +199,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       // Refresh user data to update the password status
       const userData = await apiService.getProfile();
       setUser(userData);
+      setCachedUser(userData);
 
       navigate(`/${currentLang}/profile`);
     } catch (error) {
