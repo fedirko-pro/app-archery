@@ -1,4 +1,5 @@
 import { Box, Button, Dialog, DialogActions, DialogContent, Typography } from '@mui/material';
+import type { AchievementRarity } from '@sokil/shared-types';
 import confetti from 'canvas-confetti';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -8,7 +9,7 @@ import AchievementMedallion from '@/components/achievements/AchievementMedallion
 import PrivacyAwareShareMenu from '@/components/share/PrivacyAwareShareMenu';
 import { useAuth } from '@/contexts/auth-context';
 import type { AchievementProgressDto } from '@/services/types';
-import { getRarityStyle } from '@/theme/achievementTokens';
+import { getRarityStyle, RARITY_COLORS } from '@/theme/achievementTokens';
 
 interface AchievementUnlockedDialogProps {
   achievement: AchievementProgressDto | null;
@@ -16,16 +17,32 @@ interface AchievementUnlockedDialogProps {
   onClose: () => void;
 }
 
-function fireConfetti(rarity: AchievementProgressDto['rarity']): void {
-  if (rarity !== 'epic' && rarity !== 'legendary') return;
+const CONFETTI_BY_RARITY: Record<AchievementRarity, { particleCount: number; colors: string[] }> = {
+  common: {
+    particleCount: 40,
+    colors: [RARITY_COLORS.common.color, '#BDBDBD', '#FFF'],
+  },
+  rare: {
+    particleCount: 55,
+    colors: [RARITY_COLORS.rare.color, '#03A9F4', '#FFF'],
+  },
+  epic: {
+    particleCount: 80,
+    colors: [RARITY_COLORS.epic.color, '#E040FB', '#FFF'],
+  },
+  legendary: {
+    particleCount: 120,
+    colors: [RARITY_COLORS.legendary.color, '#FF9800', '#FFF'],
+  },
+};
 
-  const particleCount = rarity === 'legendary' ? 120 : 60;
+function fireConfetti(rarity: AchievementProgressDto['rarity']): void {
+  const { particleCount, colors } = CONFETTI_BY_RARITY[rarity] ?? CONFETTI_BY_RARITY.common;
   void confetti({
     particleCount,
     spread: 70,
     origin: { y: 0.6 },
-    colors:
-      rarity === 'legendary' ? ['#FFD700', '#FF9800', '#FFF'] : ['#9C27B0', '#E040FB', '#FFF'],
+    colors,
   });
 }
 
@@ -47,10 +64,10 @@ export default function AchievementUnlockedDialog({
   if (!achievement) return null;
 
   const style = getRarityStyle(achievement.rarity);
-  const shareUrl =
-    user && typeof window !== 'undefined'
-      ? `${window.location.origin}/${lang}/archers/${user.id}/achievements/${achievement.id}`
-      : '';
+  const origin = typeof window !== 'undefined' ? window.location.origin : '';
+  const shareUrl = user
+    ? `${origin}/${lang}/archers/${user.id}/achievements/${achievement.id}`
+    : `${origin}/${lang}/achievements`;
 
   return (
     <Dialog
@@ -103,17 +120,15 @@ export default function AchievementUnlockedDialog({
         </Typography>
       </DialogContent>
       <DialogActions sx={{ justifyContent: 'center', pb: 3, gap: 1 }}>
-        {user && shareUrl && (
-          <PrivacyAwareShareMenu
-            url={shareUrl}
-            title={t(achievement.titleKey)}
-            text={t(achievement.descriptionKey)}
-            buttonLabel={t('achievements.share')}
-            variant="button"
-            size="small"
-            canShare
-          />
-        )}
+        <PrivacyAwareShareMenu
+          url={shareUrl}
+          title={t(achievement.titleKey)}
+          text={t(achievement.descriptionKey)}
+          buttonLabel={t('achievements.share')}
+          variant="button"
+          size="small"
+          canShare
+        />
         <Button variant="contained" onClick={onClose}>
           {t('achievements.unlocked.nice')}
         </Button>

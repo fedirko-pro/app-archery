@@ -241,18 +241,24 @@ const ClubDetail: React.FC = () => {
 
             <Divider sx={{ my: 3 }} />
 
-            <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
-              <ShareMenu
-                url={shareUrl}
-                title={shareTitle}
-                text={shareText}
-                imageUrl={!isPrivate ? resolveClubLogo(club.clubLogo) : undefined}
-              />
+            <Box sx={{ display: 'flex', gap: 2, width: '100%' }}>
+              <Box sx={{ flex: 1, minWidth: 0 }}>
+                <ShareMenu
+                  url={shareUrl}
+                  title={shareTitle}
+                  text={shareText}
+                  imageUrl={!isPrivate ? resolveClubLogo(club.clubLogo) : undefined}
+                  fullWidth
+                  sx={{ justifyContent: 'center' }}
+                />
+              </Box>
               {!isPrivate && (
                 <Button
                   variant="contained"
+                  size="large"
                   startIcon={<Send />}
                   onClick={() => setJoinDialogOpen(true)}
+                  sx={{ flex: 1, minWidth: 0, justifyContent: 'center' }}
                 >
                   {t('pages.clubs.joinClub', 'Join club')}
                 </Button>

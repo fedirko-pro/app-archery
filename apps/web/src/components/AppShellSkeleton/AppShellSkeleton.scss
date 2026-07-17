@@ -33,7 +33,7 @@
 
     @include mobile {
       min-height: calc(
-        100dvh - 56px - env(safe-area-inset-top, 0px) - 50px - env(safe-area-inset-bottom, 0px)
+        100dvh - 56px - env(safe-area-inset-top, 0px) - 56px - env(safe-area-inset-bottom, 0px)
       );
     }
   }
@@ -48,8 +48,10 @@
     padding-bottom: env(safe-area-inset-bottom, 0);
 
     @include mobile {
+      /* Match BottomTabBar chrome height on athlete shell */
       height: auto;
-      min-height: calc(50px + env(safe-area-inset-bottom, 0px));
+      min-height: calc(56px + env(safe-area-inset-bottom, 0px));
+      border-top: 1px solid $border;
     }
   }
 }

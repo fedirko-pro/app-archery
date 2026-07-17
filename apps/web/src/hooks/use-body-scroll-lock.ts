@@ -2,10 +2,12 @@ import { useEffect } from 'react';
 
 let lockCount = 0;
 let savedScrollY = 0;
+let lockedPathname = '';
 
 function applyBodyScrollLock(): void {
   const body = document.body;
   savedScrollY = window.scrollY;
+  lockedPathname = window.location.pathname;
   body.classList.add('lock');
   body.style.overflow = 'hidden';
   body.style.position = 'fixed';
@@ -21,7 +23,9 @@ function releaseBodyScrollLock(): void {
   body.style.removeProperty('top');
   body.style.removeProperty('width');
   body.style.removeProperty('padding-right');
-  window.scrollTo(0, savedScrollY);
+  // After a route change, land at the top of the new page instead of the previous scroll offset.
+  const scrollY = window.location.pathname !== lockedPathname ? 0 : savedScrollY;
+  window.scrollTo(0, scrollY);
 }
 
 /** Lock body scroll while overlays/menus are open (iOS-safe). Supports nested locks. */

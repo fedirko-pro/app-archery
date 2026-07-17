@@ -341,7 +341,18 @@ const TournamentList: React.FC = () => {
                   sx={{ objectFit: 'cover' }}
                 />
                 <CardContent>
-                  <Typography variant="h6" gutterBottom>
+                  <Typography
+                    variant="h6"
+                    gutterBottom
+                    component={Link}
+                    to={`/${lang}/tournaments/${tournament.id}`}
+                    sx={{
+                      color: 'inherit',
+                      textDecoration: 'none',
+                      display: 'block',
+                      '&:hover': { textDecoration: 'underline' },
+                    }}
+                  >
                     {tournament.title}
                   </Typography>
                   {tournament.description && (
@@ -382,45 +393,50 @@ const TournamentList: React.FC = () => {
                       {getCountryName(tournament.country)}
                     </Typography>
                   )}
-                  <Box sx={{ mt: 2, display: 'flex', gap: 1, flexWrap: 'wrap' }}>
-                    <Button
-                      size="small"
-                      variant="outlined"
-                      startIcon={<Visibility />}
-                      component={Link}
-                      to={`/${lang}/tournaments/${tournament.id}`}
-                    >
-                      {t('pages.tournaments.viewDetails', 'View Details')}
-                    </Button>
-                    {hasApplicationForTournament(tournament.id) && (
+                  <Box sx={{ mt: 2, display: 'flex', flexDirection: 'column', gap: 1 }}>
+                    <Box sx={{ display: 'flex', gap: 1, width: '100%' }}>
                       <Button
                         size="small"
-                        variant="contained"
-                        color="success"
+                        variant="outlined"
+                        startIcon={<Visibility />}
                         component={Link}
-                        to={`/${lang}/applications`}
+                        to={`/${lang}/tournaments/${tournament.id}`}
+                        sx={{ flex: 1, minWidth: 0, justifyContent: 'center' }}
                       >
-                        {t('pages.tournaments.viewApplications')} (
-                        {getApplicationCountForTournament(tournament.id)})
+                        {t('pages.tournaments.viewDetails', 'View Details')}
                       </Button>
-                    )}
-                    {!isPast &&
-                      (tournament.allowMultipleApplications ||
-                        !hasApplicationForTournament(tournament.id)) && (
+                      {hasApplicationForTournament(tournament.id) && (
                         <Button
                           size="small"
                           variant="contained"
-                          startIcon={<Send />}
+                          color="success"
                           component={Link}
-                          to={`/${lang}/apply/${tournament.id}`}
+                          to={`/${lang}/applications`}
+                          sx={{ flex: 1, minWidth: 0, justifyContent: 'center' }}
                         >
-                          {t('pages.tournaments.apply')}
+                          {t('pages.tournaments.viewApplications')} (
+                          {getApplicationCountForTournament(tournament.id)})
                         </Button>
                       )}
+                      {!isPast &&
+                        (tournament.allowMultipleApplications ||
+                          !hasApplicationForTournament(tournament.id)) && (
+                          <Button
+                            size="small"
+                            variant="contained"
+                            startIcon={<Send />}
+                            component={Link}
+                            to={`/${lang}/apply/${tournament.id}`}
+                            sx={{ flex: 1, minWidth: 0, justifyContent: 'center' }}
+                          >
+                            {t('pages.tournaments.apply')}
+                          </Button>
+                        )}
+                    </Box>
                     {user &&
                       (canEditTournament(user.role, tournament.createdBy?.id ?? '', user.id) ||
                         canDeleteTournament(user.role)) && (
-                        <>
+                        <Box sx={{ display: 'flex', gap: 1, width: '100%' }}>
                           {canEditTournament(
                             user.role,
                             tournament.createdBy?.id ?? '',
@@ -432,6 +448,7 @@ const TournamentList: React.FC = () => {
                               startIcon={<Edit />}
                               component={Link}
                               to={`/${lang}/tournaments/${tournament.id}/edit`}
+                              sx={{ flex: 1, minWidth: 0, justifyContent: 'center' }}
                             >
                               {t('pages.tournaments.edit')}
                             </Button>
@@ -443,11 +460,12 @@ const TournamentList: React.FC = () => {
                               color="error"
                               startIcon={<Delete />}
                               onClick={() => void handleDeleteTournament(tournament.id)}
+                              sx={{ flex: 1, minWidth: 0, justifyContent: 'center' }}
                             >
                               {t('pages.tournaments.delete')}
                             </Button>
                           )}
-                        </>
+                        </Box>
                       )}
                   </Box>
                 </CardContent>

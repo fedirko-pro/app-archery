@@ -15,7 +15,9 @@
     "myTrainings": "Treinos",
     "myEquipment": "Equipamento",
     "myStatistics": "Estatísticas",
+    "athleteTabs": "Navegação principal",
     "converter": "Conversor",
+    "calculator": "Calculadora",
     "categories": "Categorias",
     "rules": "Regras",
     "about": "Sobre o app",
@@ -23,7 +25,7 @@
     "userApplications": "Inscrições de usuários",
     "accessControl": "Controle de Acesso",
     "divisions": "Divisões",
-    "scoringDemo": "Cartão de Pontuação (Demo)",
+    "scoringDemo": "Cartão de Pontuação (demo sem papel)",
     "glossary": "Glossário",
     "fieldGuide": "Guia de Campo"
   },
@@ -154,6 +156,28 @@
       "title": "Conversor de tiro com arco",
       "description": "Converter entre polegadas/cm, libras/kg, grãos/gramas, jardas/metros"
     },
+    "calculator": {
+      "title": "Calculadora de tiro com arco",
+      "description": "FOC, peso da flecha, energia cinética, comprimento de puxo, sugestão de spine e grãos por libra"
+    },
+    "scoringDemo": {
+      "title": "Cartão de pontuação (demo sem papel)",
+      "description": "Demo interativa de um cartão de pontuação de torneio. As pontuações são de exemplo e não são guardadas.",
+      "division": "Divisão",
+      "gender": "Género",
+      "category": "Categoria",
+      "patrol": "Patrulha nº",
+      "date": "Data",
+      "set": "Série",
+      "sum": "Soma",
+      "total": "Total",
+      "totalScores": "Pontuação total",
+      "submit": "Submeter",
+      "submitted": "Submetido",
+      "confirmTitle": "Resultados submetidos",
+      "confirmMessage": "Obrigado por submeter as pontuações! Os dados foram enviados para o servidor (ou serão enviados quando voltar a estar online) e serão processados automaticamente. Os vencedores serão determinados assim que as outras patrulhas tiverem submetido os seus resultados.",
+      "confirmClose": "OK"
+    },
     "divisions": {
       "title": "Divisões",
       "description": "Divisões de competição agrupadas por regras"
@@ -245,6 +269,7 @@
         "divisions": "Gerenciamento de divisões - Gerenciamento de grupos etários e divisões vinculadas a regras",
         "rules": "Gerenciamento de regras - Regras oficiais de tiro com arco com descrições multilíngues e downloads PDF (WA, NFAA, IBO, FITARCO, RFETA, AGB, FPTA, FSLU, FABP e mais)",
         "converter": "Conversor de unidades - Converter entre medidas comuns de tiro com arco (polegadas/cm, libras/kg, grãos/gramas, jardas/metros)",
+        "calculator": "Calculadora de tiro com arco - FOC, peso total da flecha (GPI), energia cinética e momento, estimativa de comprimento de puxo, sugestão aproximada de spine e grãos por libra (GPP)",
         "uploads": "Sistema de upload de arquivos - Processamento de imagens para avatares e banners, gerenciamento de anexos para torneios",
         "multilang": "Suporte multilíngue - Disponível em 6 idiomas: inglês, ucraniano, espanhol, italiano, português e alemão",
         "pwa": "Aplicativo web progressivo - PWA instalável com capacidades offline",
@@ -660,6 +685,70 @@
       "desc": "Conversões de distância de tiro"
     }
   },
+  "calculator": {
+    "enterValues": "Introduza valores para calcular",
+    "foc": {
+      "short": "FOC",
+      "title": "Front of Center",
+      "desc": "Meça o comprimento da flecha e o ponto de equilíbrio a partir da garganta do nock. FOC típico de alvo ≈ 7–12%; caça muitas vezes 10–18%.",
+      "arrowLength": "Comprimento da flecha (pol)",
+      "balancePoint": "Ponto de equilíbrio (pol)",
+      "balanceHint": "Da garganta do nock ao ponto de equilíbrio",
+      "hintLow": "Um pouco baixo — comum em alguns setups de alvo",
+      "hintTarget": "Intervalo típico de alvo / indoor",
+      "hintHunting": "FOC típico de caça / exterior",
+      "hintHigh": "FOC alto — verifique voo e clearance"
+    },
+    "arrowWeight": {
+      "short": "GPI",
+      "title": "Peso da flecha",
+      "desc": "Peso total a partir do GPI do tubo mais ponta, insert, nock e penas.",
+      "gpi": "GPI do tubo (gr/pol)",
+      "shaftLength": "Comprimento do tubo (pol)",
+      "point": "Ponta (grãos)",
+      "insert": "Insert (grãos)",
+      "nock": "Nock (grãos)",
+      "fletching": "Penas (grãos)"
+    },
+    "ke": {
+      "short": "KE",
+      "title": "Energia cinética e momento",
+      "desc": "Estima energia cinética (ft·lb) e momento a partir do peso e da velocidade da flecha.",
+      "arrowWeight": "Peso da flecha (grãos)",
+      "speed": "Velocidade (fps)",
+      "resultHint": "Cronografe o arco para maior precisão"
+    },
+    "drawLength": {
+      "short": "Puxo",
+      "title": "Estimativa de comprimento de puxo",
+      "desc": "Estimativa estilo AMO: envergadura (ponta do dedo a ponta do dedo) ÷ 2,5. Confirme com uma medição correta.",
+      "wingspan": "Envergadura (pol)",
+      "wingspanHint": "Braços abertos, ponta do dedo a ponta do dedo",
+      "resultHint": "Apenas estimativa — verifique na mesa de puxo ou com um treinador"
+    },
+    "spine": {
+      "short": "Spine",
+      "title": "Sugestão de spine",
+      "desc": "Faixa aproximada de spine de carbono a partir das libras, comprimento da flecha e peso da ponta. Consulte sempre a tabela do fabricante.",
+      "drawWeight": "Libras (lb)",
+      "arrowLength": "Comprimento da flecha (pol)",
+      "pointWeight": "Peso da ponta (grãos)",
+      "result": "Cerca de {{low}}–{{high}} spine",
+      "resultHint": "Libras efetivas usadas: {{dw}} lb · apenas orientação",
+      "consultManual": "Consulte sempre o manual e a tabela de spine do fabricante antes de escolher flechas."
+    },
+    "gpp": {
+      "short": "GPP",
+      "title": "Grãos por libra",
+      "desc": "Peso da flecha dividido pelas libras. Muitas vezes usado como verificação rápida do setup.",
+      "arrowWeight": "Peso da flecha (grãos)",
+      "drawWeight": "Libras (lb)",
+      "hintLight": "Leve para muitos setups de caça — ok para alguns arcos de alvo",
+      "hintTarget": "Intervalo habitual de alvo / velocidade",
+      "hintHunting": "Intervalo habitual de caça",
+      "hintHeavy": "Setup pesado — mais lento, mais momento"
+    }
+  },
   "common": {
     "or": "ou",
     "cancel": "Cancelar",
@@ -672,6 +761,10 @@
     "saving": "Salvando...",
     "delete": "Excluir",
     "deleting": "Excluindo..."
+  },
+  "sharing": {
+    "authRequiredTitle": "Entre para partilhar",
+    "authRequiredMessage": "Partilhar conquistas e progresso está disponível apenas para utilizadores registados. Entre ou crie uma conta para partilhar."
   },
   "auth": {
     "logout": "Sair",
@@ -714,6 +807,8 @@
     "installing": "Instalando…",
     "dismiss": "Agora não",
     "installAria": "Aviso para instalar o aplicativo",
+    "iosInstallPrompt": "Adicione o Sokil ao ecrã inicial: toque em Partilhar e depois em Adicionar ao ecrã inicial.",
+    "iosInstallAria": "Dica: adicionar ao ecrã inicial",
     "updateAvailable": "Uma nova versão está disponível.",
     "updateReload": "Recarregar"
   },
@@ -754,9 +849,21 @@
       "lifted": "Peso Levantado",
       "habits": "Hábitos de Treino",
       "tournaments": "Torneios",
-      "equipment": "Desempenho por equipamento"
+      "equipment": "Desempenho por equipamento",
+      "scoring": "Pontuação",
+      "info": {
+        "activity": "Resumo da atividade da tua conta: quando te juntaste, quantas sessões registaste e a tua sequência de treino atual.",
+        "arrows": "Aqui contamos todas as sessões de treino e torneios confirmados.",
+        "distance": "Calculamos a distância até ao alvo e de volta a partir da posição de tiro.",
+        "lifted": "Calculamos com base na configuração do arco usada durante sessões de treino e torneios.",
+        "habits": "Os teus padrões de treino mais comuns: média de flechas por sessão, distância preferida, tipo de alvo e equipamento.",
+        "tournaments": "Contagem das candidaturas a torneios que enviaste, incluindo aprovadas e rejeitadas.",
+        "scoring": "Pontuações de sessões de treino concluídas em que registaste um resultado.",
+        "equipment": "Desempenho por configuração de arco usada nas tuas sessões registadas."
+      }
     },
     "memberSince": "Membro desde",
+    "memberSinceEmpty": "Ainda não? Regista-te!",
     "totalSessions": "Total de sessões",
     "currentStreak": "Sequência atual",
     "weeks": "semanas seguidas",
@@ -800,10 +907,16 @@
     "recentSessions": "Sessões recentes",
     "noSessions": "Ainda sem sessões de treino. Registe a primeira!",
     "logTraining": "Registar treino",
+    "logTrainingTitle": "Pronto para treinar?",
+    "logTrainingSubtitle": "Registe flechas, distância e equipamento.",
+    "continueSession": "Continuar sessão",
+    "continueSessionTitle": "Sessão em curso",
+    "offlineNetworkHint": "Disponível quando estiver online",
     "logTodaysSession": "Registar sessão de hoje",
     "sameAsLastTime": "Igual à última vez",
     "upcomingTournaments": "Próximos torneios",
     "discoveryDisclaimer": "Com base nas suas definições de perfil e atividade, estes torneios podem interessar-lhe.",
+    "appliedTournamentsDisclaimer": "Próximos eventos a que se candidatou.",
     "browseAllTournaments": "Ver todos os torneios",
     "viewAllApplications": "Ver todas as candidaturas",
     "viewAllTrainings": "Ver todos os treinos",
@@ -835,7 +948,7 @@
       "dismiss": "Agora não"
     },
     "lastAchievement": {
-      "title": "Última conquista",
+      "title": "Conquista mais recente",
       "earnedOn": "Conquistada em {{date}}",
       "viewAll": "Ver todas"
     }

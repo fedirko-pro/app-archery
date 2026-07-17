@@ -21,6 +21,13 @@ const resources = {
 
 const isBrowser = typeof window !== 'undefined';
 
+// Suppress i18next Locize promo in local/dev consoles (auto-hidden in production).
+if (typeof globalThis !== 'undefined') {
+  (
+    globalThis as typeof globalThis & { __i18next_supportNoticeShown?: boolean }
+  ).__i18next_supportNoticeShown = true;
+}
+
 if (isBrowser) {
   i18n.use(LanguageDetector);
 }

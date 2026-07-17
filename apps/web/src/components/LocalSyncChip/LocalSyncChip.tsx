@@ -2,7 +2,6 @@ import SyncIcon from '@mui/icons-material/Sync';
 import Button from '@mui/material/Button';
 import Chip from '@mui/material/Chip';
 import CircularProgress from '@mui/material/CircularProgress';
-import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -14,6 +13,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import { useAuth } from '../../contexts/auth-context';
 import { useEnableSync } from '../../hooks/use-enable-sync';
+import SafeDialog from '../SafeDialog/SafeDialog';
 
 /**
  * Shows a "Local data on device" chip plus a small sync icon button.
@@ -67,7 +67,7 @@ const LocalSyncChip: React.FC = () => {
       </Tooltip>
 
       {/* Dialog for unauthenticated users */}
-      <Dialog
+      <SafeDialog
         open={dialogOpen}
         onClose={() => setDialogOpen(false)}
         maxWidth="xs"
@@ -92,7 +92,7 @@ const LocalSyncChip: React.FC = () => {
             {t('localData.syncDialogAction')}
           </Button>
         </DialogActions>
-      </Dialog>
+      </SafeDialog>
     </>
   );
 };

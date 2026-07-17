@@ -14,7 +14,9 @@
     "myTrainings": "Entrenamientos",
     "myEquipment": "Equipamiento",
     "myStatistics": "Estadísticas",
+    "athleteTabs": "Navegación principal",
     "converter": "Conversor",
+    "calculator": "Calculadora",
     "categories": "Categorías",
     "rules": "Reglas",
     "about": "Acerca de la app",
@@ -22,7 +24,7 @@
     "userApplications": "Solicitudes de usuarios",
     "accessControl": "Control de acceso",
     "divisions": "Divisiones",
-    "scoringDemo": "Tarjeta de Puntuación (Demo)",
+    "scoringDemo": "Tarjeta de Puntuación (demo sin papel)",
     "glossary": "Glosario",
     "fieldGuide": "Guía de Campo"
   },
@@ -153,6 +155,28 @@
       "title": "Conversor de tiro con arco",
       "description": "Convertir entre pulgadas/cm, libras/kg, granos/gramos, yardas/metros"
     },
+    "calculator": {
+      "title": "Calculadora de tiro con arco",
+      "description": "FOC, peso de flecha, energía cinética, longitud de tiro, sugerencia de spine y granos por libra"
+    },
+    "scoringDemo": {
+      "title": "Tarjeta de puntuación (demo sin papel)",
+      "description": "Demo interactiva de una tarjeta de puntuación de torneo. Las puntuaciones son de ejemplo y no se guardan.",
+      "division": "División",
+      "gender": "Género",
+      "category": "Categoría",
+      "patrol": "Patrulla nº",
+      "date": "Fecha",
+      "set": "Serie",
+      "sum": "Suma",
+      "total": "Total",
+      "totalScores": "Puntuación total",
+      "submit": "Enviar",
+      "submitted": "Enviado",
+      "confirmTitle": "Resultados enviados",
+      "confirmMessage": "¡Gracias por enviar tus puntuaciones! Los datos se han enviado al servidor (o se enviarán cuando vuelvas a estar en línea) y se procesarán automáticamente. Los ganadores se determinarán en cuanto el resto de patrullas hayan enviado sus resultados.",
+      "confirmClose": "Aceptar"
+    },
     "divisions": {
       "title": "Divisiones",
       "description": "Divisiones de competición agrupadas por reglas"
@@ -244,6 +268,7 @@
         "divisions": "Gestión de divisiones - Gestión de grupos de edad y divisiones vinculadas a reglas",
         "rules": "Gestión de reglas - Reglas oficiales de tiro con arco con descripciones multilingües y descargas PDF (WA, NFAA, IBO, FITARCO, RFETA, AGB, FPTA, FSLU, FABP y más)",
         "converter": "Conversor de unidades - Convertir entre medidas comunes de tiro con arco (pulgadas/cm, libras/kg, granos/gramos, yardas/metros)",
+        "calculator": "Calculadora de tiro con arco - FOC, peso total de flecha (GPI), energía cinética e impulso, estimación de longitud de tiro, sugerencia aproximada de spine y granos por libra (GPP)",
         "uploads": "Sistema de carga de archivos - Procesamiento de imágenes para avatares y banners, gestión de adjuntos para torneos",
         "multilang": "Soporte multiidioma - Disponible en 6 idiomas: inglés, ucraniano, español, italiano, portugués y alemán",
         "pwa": "Aplicación web progresiva - PWA instalable con capacidades offline",
@@ -598,6 +623,10 @@
     "delete": "Eliminar",
     "deleting": "Eliminando..."
   },
+  "sharing": {
+    "authRequiredTitle": "Inicia sesión para compartir",
+    "authRequiredMessage": "Compartir logros y progreso está disponible solo para usuarios registrados. Inicia sesión o crea una cuenta para compartir."
+  },
   "auth": {
     "logout": "Cerrar sesión",
     "signIn": "Iniciar sesión",
@@ -682,6 +711,70 @@
       "desc": "Conversiones de distancia de tiro"
     }
   },
+  "calculator": {
+    "enterValues": "Introduce valores para calcular",
+    "foc": {
+      "short": "FOC",
+      "title": "Front of Center",
+      "desc": "Mide la longitud de la flecha y el punto de equilibrio desde la garganta del nock. FOC típico de diana ≈ 7–12%; caza a menudo 10–18%.",
+      "arrowLength": "Longitud de flecha (pulg)",
+      "balancePoint": "Punto de equilibrio (pulg)",
+      "balanceHint": "Desde la garganta del nock al punto de equilibrio",
+      "hintLow": "Algo bajo — habitual en algunos setups de diana",
+      "hintTarget": "Rango típico de diana / sala",
+      "hintHunting": "FOC típico de caza / exterior",
+      "hintHigh": "FOC alto — comprueba vuelo y clearance"
+    },
+    "arrowWeight": {
+      "short": "GPI",
+      "title": "Peso de flecha",
+      "desc": "Peso total desde el GPI del tubo más punta, insert, nock y plumas.",
+      "gpi": "GPI del tubo (gr/pulg)",
+      "shaftLength": "Longitud del tubo (pulg)",
+      "point": "Punta (granos)",
+      "insert": "Insert (granos)",
+      "nock": "Nock (granos)",
+      "fletching": "Plumas (granos)"
+    },
+    "ke": {
+      "short": "KE",
+      "title": "Energía cinética e impulso",
+      "desc": "Estima energía cinética (ft·lb) e impulso a partir del peso y la velocidad de la flecha.",
+      "arrowWeight": "Peso de flecha (granos)",
+      "speed": "Velocidad (fps)",
+      "resultHint": "Cronografa el arco para mayor precisión"
+    },
+    "drawLength": {
+      "short": "Tiro",
+      "title": "Estimación de longitud de tiro",
+      "desc": "Estimación estilo AMO: envergadura (punta de dedo a punta de dedo) ÷ 2,5. Confirma con una medición correcta.",
+      "wingspan": "Envergadura (pulg)",
+      "wingspanHint": "Brazos extendidos, punta de dedo a punta de dedo",
+      "resultHint": "Solo estimación — verifica en tabla de tiro o con un entrenador"
+    },
+    "spine": {
+      "short": "Spine",
+      "title": "Sugerencia de spine",
+      "desc": "Banda aproximada de spine de carbono según libras, longitud de flecha y peso de punta. Consulta siempre la tabla del fabricante.",
+      "drawWeight": "Libras (lb)",
+      "arrowLength": "Longitud de flecha (pulg)",
+      "pointWeight": "Peso de punta (granos)",
+      "result": "Sobre {{low}}–{{high}} spine",
+      "resultHint": "Libras efectivas usadas: {{dw}} lb · solo orientación",
+      "consultManual": "Consulta siempre el manual y la tabla de spine del fabricante antes de elegir flechas."
+    },
+    "gpp": {
+      "short": "GPP",
+      "title": "Granos por libra",
+      "desc": "Peso de flecha dividido por libras. Se usa a menudo como comprobación rápida del setup.",
+      "arrowWeight": "Peso de flecha (granos)",
+      "drawWeight": "Libras (lb)",
+      "hintLight": "Ligero para muchos setups de caza — bien para algunos arcos de diana",
+      "hintTarget": "Rango habitual de diana / velocidad",
+      "hintHunting": "Rango habitual de caza",
+      "hintHeavy": "Setup pesado — más lento, más impulso"
+    }
+  },
   "clubs": {
     "clubLogo": "Logo del Club",
     "logoSaved": "Logo del club guardado correctamente",
@@ -695,6 +788,8 @@
     "installing": "Instalando…",
     "dismiss": "Ahora no",
     "installAria": "Aviso para instalar la aplicación",
+    "iosInstallPrompt": "Añade Sokil a la pantalla de inicio: toca Compartir y luego Añadir a pantalla de inicio.",
+    "iosInstallAria": "Consejo: añadir a pantalla de inicio",
     "updateAvailable": "Hay una nueva versión disponible.",
     "updateReload": "Recargar"
   },
@@ -734,9 +829,22 @@
       "distance": "Distancia Recorrida",
       "lifted": "Peso Levantado",
       "habits": "Hábitos de Entrenamiento",
-      "tournaments": "Torneos"
+      "tournaments": "Torneos",
+      "equipment": "Rendimiento por equipo",
+      "scoring": "Puntuación",
+      "info": {
+        "activity": "Resumen de la actividad de tu cuenta: cuándo te uniste, cuántas sesiones has registrado y tu racha de entrenamiento actual.",
+        "arrows": "Aquí contamos todas las sesiones de entrenamiento y los torneos confirmados.",
+        "distance": "Calculamos la distancia hasta la diana y de vuelta desde la posición de tiro.",
+        "lifted": "Calculamos esto según la configuración de arco usada en sesiones de entrenamiento y torneos.",
+        "habits": "Tus patrones de entrenamiento más habituales: media de flechas por sesión, distancia preferida, tipo de diana y equipo.",
+        "tournaments": "Recuento de solicitudes a torneos que has enviado, incluidas las aprobadas y rechazadas.",
+        "scoring": "Puntuaciones de sesiones de entrenamiento finalizadas en las que registraste un resultado.",
+        "equipment": "Desglose del rendimiento por configuración de arco usada en tus sesiones registradas."
+      }
     },
     "memberSince": "Miembro desde",
+    "memberSinceEmpty": "¿Aún no? ¡Regístrate!",
     "totalSessions": "Sesiones totales",
     "currentStreak": "Racha actual",
     "weeks": "semanas seguidas",
@@ -773,9 +881,17 @@
     "recentSessions": "Sesiones recientes",
     "noSessions": "Aún no hay sesiones de entrenamiento. ¡Registra la primera!",
     "logTraining": "Registrar entrenamiento",
+    "logTrainingTitle": "¿Listo para entrenar?",
+    "logTrainingSubtitle": "Registra flechas, distancia y equipo.",
+    "continueSession": "Continuar sesión",
+    "continueSessionTitle": "Sesión en curso",
+    "offlineNetworkHint": "Disponible cuando vuelvas a estar en línea",
     "logTodaysSession": "Registrar sesión de hoy",
     "sameAsLastTime": "Igual que la última vez",
     "upcomingTournaments": "Próximos torneos",
+    "discoveryDisclaimer": "Según tu perfil y actividad, estos próximos torneos pueden interesarte.",
+    "appliedTournamentsDisclaimer": "Próximos eventos a los que te has inscrito.",
+    "browseAllTournaments": "Ver todos los torneos",
     "viewAllApplications": "Ver todas las solicitudes",
     "viewAllTrainings": "Ver todos los entrenamientos",
     "viewStatistics": "Ver estadísticas completas",
@@ -806,7 +922,7 @@
       "dismiss": "Ahora no"
     },
     "lastAchievement": {
-      "title": "Último logro",
+      "title": "Logro más reciente",
       "earnedOn": "Obtenido el {{date}}",
       "viewAll": "Ver todos"
     }

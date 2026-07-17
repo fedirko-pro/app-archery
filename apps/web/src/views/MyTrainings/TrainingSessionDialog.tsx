@@ -1,6 +1,5 @@
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -9,6 +8,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
+import SafeDialog from '../../components/SafeDialog/SafeDialog';
 import type { LocalTrainingSession } from '../../utils/local-data-storage';
 import TrainingSessionForm from './TrainingSessionForm';
 
@@ -42,7 +42,7 @@ const TrainingSessionDialog: React.FC<TrainingSessionDialogProps> = ({
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
-    <Dialog open={open} onClose={onClose} fullScreen={fullScreen} maxWidth="sm" fullWidth>
+    <SafeDialog open={open} onClose={onClose} fullScreen={fullScreen} maxWidth="sm" fullWidth>
       <DialogTitle>{title}</DialogTitle>
       <DialogContent sx={{ pb: fullScreen ? 0 : undefined }}>
         <Box sx={{ pt: 1 }}>
@@ -68,17 +68,25 @@ const TrainingSessionDialog: React.FC<TrainingSessionDialogProps> = ({
             bgcolor: 'background.paper',
             borderTop: 1,
             borderColor: 'divider',
+            gap: 1,
           }),
         }}
       >
-        <Button onClick={onClose} disabled={submitting}>
+        <Button onClick={onClose} disabled={submitting} size={fullScreen ? 'large' : 'medium'}>
           {t('common.cancel')}
         </Button>
-        <Button type="submit" form={FORM_ID} variant="contained" disabled={submitting}>
+        <Button
+          type="submit"
+          form={FORM_ID}
+          variant="contained"
+          disabled={submitting}
+          size={fullScreen ? 'large' : 'medium'}
+          sx={fullScreen ? { minHeight: 48 } : undefined}
+        >
           {submitting ? t('common.saving') : t('common.save')}
         </Button>
       </DialogActions>
-    </Dialog>
+    </SafeDialog>
   );
 };
 

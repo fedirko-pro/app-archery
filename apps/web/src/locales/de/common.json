@@ -16,7 +16,9 @@
     "myTrainings": "Trainings",
     "myEquipment": "Ausrüstung",
     "myStatistics": "Statistiken",
+    "athleteTabs": "Hauptnavigation",
     "converter": "Konverter",
+    "calculator": "Rechner",
     "categories": "Kategorien",
     "rules": "Regeln",
     "about": "Über die App",
@@ -24,7 +26,7 @@
     "userApplications": "Benutzerbewerbungen",
     "accessControl": "Zugriffskontrolle",
     "divisions": "Altersgruppen",
-    "scoringDemo": "Punktekarte (Demo)",
+    "scoringDemo": "Punktekarte (papierloses Demo)",
     "glossary": "Glossar",
     "fieldGuide": "Feldführer"
   },
@@ -367,6 +369,28 @@
       "title": "Bogensport-Konverter",
       "description": "Zwischen Zoll/cm, Pfund/kg, Grain/Gramm, Yards/Meter umrechnen"
     },
+    "calculator": {
+      "title": "Bogensport-Rechner",
+      "description": "FOC, Pfeilgewicht, kinetische Energie, Auszugslänge, Spine-Empfehlung und Grains pro Pfund"
+    },
+    "scoringDemo": {
+      "title": "Wertungskarte (papierloses Demo)",
+      "description": "Interaktive Demo einer Turnier-Wertungskarte. Punkte sind Beispieldaten und werden nicht gespeichert.",
+      "division": "Division",
+      "gender": "Geschlecht",
+      "category": "Kategorie",
+      "patrol": "Patrouille Nr.",
+      "date": "Datum",
+      "set": "Satz",
+      "sum": "Summe",
+      "total": "Gesamt",
+      "totalScores": "Gesamtpunkte",
+      "submit": "Absenden",
+      "submitted": "Gesendet",
+      "confirmTitle": "Ergebnisse gesendet",
+      "confirmMessage": "Vielen Dank für Ihre Ergebnisse! Die Daten wurden an den Server gesendet (oder werden gesendet, sobald Sie wieder online sind) und automatisch verarbeitet. Die Sieger werden ermittelt, sobald alle anderen Patrouillen ihre Ergebnisse übermittelt haben.",
+      "confirmClose": "OK"
+    },
     "about": {
       "title": "Über diese App",
       "intro": "Sokil hilft Bogenschützen, Trainingseinheiten zu protokollieren, Fortschritte zu verfolgen, Erfolge freizuschalten und Ausrüstung zu verwalten – mit Offline-Unterstützung und automatischer Synchronisation.\n\nGamification macht das Hobby spannend.\n\nIhre Daten werden sicher gespeichert und Sie entscheiden, was Sie teilen. Verbände und Vereine können Turniere veranstalten, Bewerbungen verwalten und Events organisieren.\n\nStärkung von Bogenschießgemeinschaften mit moderner Technologie.",
@@ -387,6 +411,7 @@
         "divisions": "Altersgruppen-Verwaltung - Altersgruppen- und Gruppenverwaltung, die mit Regeln verknüpft ist",
         "rules": "Regelverwaltung - Offizielle Bogenschießregeln mit mehrsprachigen Beschreibungen und PDF-Downloads (WA, NFAA, IBO, FITARCO, RFETA, AGB, FPTA, FSLU, FABP und mehr)",
         "converter": "Einheitenkonverter - Umrechnung zwischen gängigen Bogenschießmaßen (Zoll/cm, Pfund/kg, Grain/Gramm, Yards/Meter)",
+        "calculator": "Bogensport-Rechner - FOC, Gesamt-Pfeilgewicht (GPI), kinetische Energie & Impuls, Auszugslängen-Schätzung, ungefähre Spine-Empfehlung und Grains pro Pfund (GPP)",
         "uploads": "Datei-Upload-System - Bildverarbeitung für Avatare und Banner, Anhangsverwaltung für Turniere",
         "multilang": "Mehrsprachige Unterstützung - Verfügbar in 6 Sprachen: Englisch, Ukrainisch, Spanisch, Italienisch, Portugiesisch und Deutsch",
         "pwa": "Progressive Web App - Installierbare PWA mit Offline-Funktionen",
@@ -796,7 +821,9 @@
     "privacyPersonalMessage": "Ihre Datenschutzeinstellung ist {{visibility}}. Um dies zu teilen, öffnen Sie Ihr Profil und ändern Sie die Sichtbarkeit auf Eingeschränkt oder Öffentlich.",
     "goToProfileSettings": "Profileinstellungen öffnen",
     "notEarnedTitle": "Erfolg noch nicht erreicht",
-    "notEarnedMessage": "Sie können diesen Erfolg teilen, nachdem Sie ihn freigeschaltet haben."
+    "notEarnedMessage": "Sie können diesen Erfolg teilen, nachdem Sie ihn freigeschaltet haben.",
+    "authRequiredTitle": "Zum Teilen anmelden",
+    "authRequiredMessage": "Das Teilen von Erfolgen und Fortschritt ist registrierten Nutzern vorbehalten. Melden Sie sich an oder erstellen Sie ein Konto, um zu teilen."
   },
   "publicProfile": {
     "notFoundTitle": "Profil nicht verfügbar",
@@ -864,6 +891,70 @@
       "short": "Yard - m",
       "long": "Yard - Meter",
       "desc": "Distanzumrechnungen"
+    }
+  },
+  "calculator": {
+    "enterValues": "Werte eingeben zum Berechnen",
+    "foc": {
+      "short": "FOC",
+      "title": "Front of Center",
+      "desc": "Pfeillänge und Balancepunkt ab Nockkehle messen. Typisches Ziel-FOC ca. 7–12%; Jagd oft 10–18%.",
+      "arrowLength": "Pfeillänge (Zoll)",
+      "balancePoint": "Balancepunkt (Zoll)",
+      "balanceHint": "Von der Nockkehle zum Balancepunkt",
+      "hintLow": "Eher niedrig — üblich bei manchen Ziel-Setups",
+      "hintTarget": "Typischer Ziel- / Hallenbereich",
+      "hintHunting": "Typisches Jagd- / Outdoor-FOC",
+      "hintHigh": "Hohes FOC — Flug und Clearance prüfen"
+    },
+    "arrowWeight": {
+      "short": "GPI",
+      "title": "Pfeilgewicht",
+      "desc": "Gesamtgewicht aus Shaft-GPI plus Spitze, Insert, Nock und Befiederung.",
+      "gpi": "Shaft-GPI (gr/Zoll)",
+      "shaftLength": "Shaft-Länge (Zoll)",
+      "point": "Spitze (Grain)",
+      "insert": "Insert (Grain)",
+      "nock": "Nock (Grain)",
+      "fletching": "Befiederung (Grain)"
+    },
+    "ke": {
+      "short": "KE",
+      "title": "Kinetische Energie & Impuls",
+      "desc": "Schätzung von kinetischer Energie (ft·lb) und Impuls aus Pfeilgewicht und Geschwindigkeit.",
+      "arrowWeight": "Pfeilgewicht (Grain)",
+      "speed": "Geschwindigkeit (fps)",
+      "resultHint": "Für beste Genauigkeit den Bogen chronographieren"
+    },
+    "drawLength": {
+      "short": "Auszug",
+      "title": "Auszugslängen-Schätzung",
+      "desc": "AMO-Schätzung: Armspannweite (Fingerspitze zu Fingerspitze) ÷ 2,5. Mit korrekter Messung bestätigen.",
+      "wingspan": "Armspannweite (Zoll)",
+      "wingspanHint": "Arme ausgestreckt, Fingerspitze zu Fingerspitze",
+      "resultHint": "Nur Schätzung — auf dem Auszugsbrett oder mit Trainer prüfen"
+    },
+    "spine": {
+      "short": "Spine",
+      "title": "Spine-Empfehlung",
+      "desc": "Ungefährer Carbon-Spine-Bereich aus Zuggewicht, Pfeillänge und Spitzengewicht. Immer die Hersteller-Tabelle prüfen.",
+      "drawWeight": "Zuggewicht (lb)",
+      "arrowLength": "Pfeillänge (Zoll)",
+      "pointWeight": "Spitzengewicht (Grain)",
+      "result": "Etwa {{low}}–{{high}} Spine",
+      "resultHint": "Effektives Zuggewicht: {{dw}} lb · nur Orientierung",
+      "consultManual": "Konsultieren Sie immer das Herstellerhandbuch und die Spine-Tabelle, bevor Sie Pfeile wählen."
+    },
+    "gpp": {
+      "short": "GPP",
+      "title": "Grains pro Pfund",
+      "desc": "Pfeilgewicht geteilt durch Zuggewicht. Oft als schneller Setup-Check genutzt.",
+      "arrowWeight": "Pfeilgewicht (Grain)",
+      "drawWeight": "Zuggewicht (lb)",
+      "hintLight": "Leicht für viele Jagd-Setups — ok für manche Zielbögen",
+      "hintTarget": "Üblicher Ziel- / Speed-Bereich",
+      "hintHunting": "Üblicher Jagd-Bereich",
+      "hintHeavy": "Schweres Setup — langsamer, mehr Impuls"
     }
   },
   "common": {
@@ -1025,6 +1116,8 @@
     "installing": "Wird installiert…",
     "dismiss": "Jetzt nicht",
     "installAria": "App-Installationsaufforderung",
+    "iosInstallPrompt": "Sokil zum Home-Bildschirm hinzufügen: Tippen Sie auf Teilen, dann auf Zum Home-Bildschirm.",
+    "iosInstallAria": "Tipp: Zum Home-Bildschirm hinzufügen",
     "updateAvailable": "Eine neue Version ist verfügbar.",
     "updateReload": "Neu laden"
   },
@@ -1066,9 +1159,20 @@
       "habits": "Trainingsgewohnheiten",
       "tournaments": "Turniere",
       "equipment": "Leistung nach Ausrüstung",
-      "scoring": "Wertung"
+      "scoring": "Wertung",
+      "info": {
+        "activity": "Überblick über deine Kontoaktivität: Beitrittsdatum, Anzahl der geloggten Einheiten und aktuelle Trainingsserie.",
+        "arrows": "Wir zählen hier alle Trainingseinheiten und bestätigten Turniere.",
+        "distance": "Wir berechnen die Distanz zum Ziel und zurück von der Schießposition.",
+        "lifted": "Wir berechnen dies anhand deines Bogen-Setups, das in Trainingseinheiten und Turnieren verwendet wurde.",
+        "habits": "Deine häufigsten Trainingsmuster: durchschnittliche Pfeile pro Einheit, bevorzugte Distanz, Zieltyp und Ausrüstung.",
+        "tournaments": "Anzahl der von dir eingereichten Turnieranmeldungen, einschließlich genehmigter und abgelehnter.",
+        "scoring": "Ergebnisse aus abgeschlossenen Trainingseinheiten, in denen du ein Resultat erfasst hast.",
+        "equipment": "Leistungsübersicht nach Bogen-Setup aus deinen geloggten Einheiten."
+      }
     },
     "memberSince": "Mitglied seit",
+    "memberSinceEmpty": "Noch nicht? Registrieren!",
     "totalSessions": "Gesamte Sitzungen",
     "currentStreak": "Aktuelle Serie",
     "weeks": "Wochen hintereinander",
@@ -1116,11 +1220,17 @@
     "recentSessions": "Letzte Sitzungen",
     "noSessions": "Noch keine Trainingseinheiten. Protokollieren Sie Ihre erste Sitzung!",
     "logTraining": "Training protokollieren",
+    "logTrainingTitle": "Bereit zum Training?",
+    "logTrainingSubtitle": "Pfeile, Distanz und Ausrüstung protokollieren.",
+    "continueSession": "Sitzung fortsetzen",
+    "continueSessionTitle": "Sitzung läuft",
+    "offlineNetworkHint": "Verfügbar, wenn Sie wieder online sind",
     "logTodaysSession": "Heutige Sitzung protokollieren",
     "sameAsLastTime": "Gleich wie beim letzten Mal",
     "upcomingTournaments": "Kommende Turniere",
     "discoveryDisclaimer": "Basierend auf Ihren Profileinstellungen und Ihrer Aktivität könnten Sie sich für diese kommenden Turniere interessieren.",
-    "browseAllTournaments": "Alle Turniere durchsuchen",
+    "appliedTournamentsDisclaimer": "Kommende Veranstaltungen, für die Sie sich beworben haben.",
+    "browseAllTournaments": "Alle Turniere ansehen",
     "viewAllApplications": "Alle Bewerbungen ansehen",
     "viewAllTrainings": "Alle Trainings ansehen",
     "viewStatistics": "Vollständige Statistiken ansehen",
@@ -1151,7 +1261,7 @@
       "dismiss": "Jetzt nicht"
     },
     "lastAchievement": {
-      "title": "Letzter Erfolg",
+      "title": "Neuester Erfolg",
       "earnedOn": "Erreicht am {{date}}",
       "viewAll": "Alle ansehen"
     }

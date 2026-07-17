@@ -1,0 +1,99 @@
+@use '../../sass/helpers/variables' as *;
+@use '../../sass/helpers/mixins' as *;
+
+.app-status-bar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  &--offline {
+    background: $gray;
+    color: $white;
+  }
+
+  &--install {
+    justify-content: space-between;
+    background: linear-gradient(135deg, $blue 0%, $blue-dark 100%);
+    color: $white;
+    text-align: left;
+    font-weight: 400;
+  }
+
+  &__text {
+    flex: 1;
+    margin: 0;
+    min-width: 0;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  &__btn {
+    padding: 6px 14px;
+    border: none;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+      opacity 0.2s,
+      transform 0.1s;
+
+    @media (hover: hover) {
+      &:hover {
+        opacity: 0.95;
+      }
+    }
+
+    &:active {
+      transform: scale(0.98);
+    }
+
+    &--primary {
+      background: $yellow;
+      color: $black;
+    }
+
+    &--dismiss {
+      background: rgba(255, 255, 255, 0.2);
+      color: $white;
+
+      @media (hover: hover) {
+        &:hover {
+          background: rgba(255, 255, 255, 0.3);
+        }
+      }
+    }
+  }
+
+  @include mobile {
+    &--install {
+      flex-wrap: wrap;
+      align-items: flex-start;
+
+      .app-status-bar__text {
+        flex: 1 1 100%;
+      }
+
+      .app-status-bar__actions {
+        flex: 1 1 auto;
+        justify-content: flex-end;
+        margin-left: auto;
+      }
+    }
+  }
+}

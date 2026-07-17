@@ -7,18 +7,19 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import type { ReactNode } from 'react';
 
 import { isProd } from '../../config/env';
+import { AchievementCelebrationProvider } from '../../contexts/achievement-celebration-context';
 import { AuthProvider } from '../../contexts/auth-context';
 import { ErrorFeedbackProvider } from '../../contexts/error-feedback-context';
 import { LocalDataProvider } from '../../contexts/local-data-context';
 import { COLORS } from '../../theme/colors';
+import AppBottomChrome from '../AppBottomChrome/AppBottomChrome';
+import AppStatusBar from '../AppStatusBar';
 import { AppUpdatePrompt } from '../AppUpdatePrompt';
 import I18nDevOverlay from '../dev/I18nDevOverlay';
 import EnvError from '../env-error/env-error';
 import { ErrorBoundary } from '../ErrorBoundary';
-import Footer from '../Footer/Footer';
 import Header from '../Header/Header';
-import InstallPrompt from '../InstallPrompt';
-import OfflineBanner from '../OfflineBanner';
+import { ScrollToTop } from '../ScrollToTop/ScrollToTop';
 
 const theme = createTheme({
   typography: {
@@ -46,9 +47,8 @@ export function RootProviders({ children }: RootProvidersProps) {
         <ThemeProvider theme={theme}>
           <ErrorFeedbackProvider>
             <EnvError />
-            <OfflineBanner />
+            <AppStatusBar />
             <AppUpdatePrompt />
-            <InstallPrompt />
             {children}
           </ErrorFeedbackProvider>
         </ThemeProvider>
@@ -65,10 +65,13 @@ export function RouterShell({ children }: RouterShellProps) {
   return (
     <AuthProvider>
       <LocalDataProvider>
-        <Header />
-        {children}
-        {!isProd && <I18nDevOverlay />}
-        <Footer />
+        <AchievementCelebrationProvider>
+          <ScrollToTop />
+          <Header />
+          {children}
+          {!isProd && <I18nDevOverlay />}
+          <AppBottomChrome />
+        </AchievementCelebrationProvider>
       </LocalDataProvider>
     </AuthProvider>
   );

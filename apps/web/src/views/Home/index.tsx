@@ -10,6 +10,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
+import Chip from '@mui/material/Chip';
 import CircularProgress from '@mui/material/CircularProgress';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
@@ -32,15 +33,16 @@ import apiService from '../../services/api';
 import type {
   ApplicationStatus,
   PendingTournamentFeedbackDto,
-  TournamentApplicationDto,
   TournamentDto,
 } from '../../services/types';
 import { resolveDefaultCountryCode } from '../../utils/country-default';
+import { formatDate } from '../../utils/date-utils';
 import {
   dismissBowSetupPrompt,
   getEquipmentSetName,
   isBowSetupPromptDismissed,
 } from '../../utils/equipment-utils';
+import { resolveTournamentBanner } from '../../utils/placeholder-images';
 import {
   dismissMonthlySummary,
   dismissStreakAtRisk,
@@ -65,8 +67,29 @@ import {
 import ConfirmReplaceActiveSessionDialog from '../MyTrainings/ConfirmReplaceActiveSessionDialog';
 
 interface MergedTournamentCard {
-  tournament: TournamentDto;
+  tournament: Pick<
+    TournamentDto,
+    | 'id'
+    | 'title'
+    | 'startDate'
+    | 'endDate'
+    | 'address'
+    | 'banner'
+    | 'applicationDeadline'
+    | 'ruleCode'
+    | 'rule'
+  >;
   applicationStatus?: ApplicationStatus;
+}
+
+const UPCOMING_TOURNAMENTS_LIMIT = 3;
+
+function isUpcomingTournamentDate(endDate: string, startDate: string): boolean {
+  const endMs = parseISO(endDate || startDate).getTime();
+  if (Number.isNaN(endMs)) return false;
+  const startOfToday = new Date();
+  startOfToday.setHours(0, 0, 0, 0);
+  return endMs >= startOfToday.getTime();
 }
 
 const HomePage: React.FC = () => {
@@ -77,6 +100,7 @@ const HomePage: React.FC = () => {
   const navigate = useNavigate();
   const { lang } = useParams();
   const [mergedTournaments, setMergedTournaments] = useState<MergedTournamentCard[]>([]);
+  const [tournamentsSource, setTournamentsSource] = useState<'applied' | 'proposed'>('proposed');
   const [tournamentsLoading, setTournamentsLoading] = useState(true);
   const [tournamentsError, setTournamentsError] = useState<string | null>(null);
   const [defaultCountry, setDefaultCountry] = useState('PT');
@@ -169,24 +193,69 @@ const HomePage: React.FC = () => {
           isAuthenticated ? apiService.getMyApplications() : Promise.resolve([]),
         ]);
 
-        const appByTournamentId = new Map<string, TournamentApplicationDto>();
-        for (const app of applications) {
-          if (!appByTournamentId.has(app.tournament.id)) {
-            appByTournamentId.set(app.tournament.id, app);
-          }
-        }
+        const tournamentById = new Map(
+          tournaments.map((tournament) => [tournament.id, tournament]),
+        );
 
-        const merged: MergedTournamentCard[] = tournaments
-          .sort((a, b) => parseISO(a.startDate).getTime() - parseISO(b.startDate).getTime())
-          .map((tournament) => {
-            const app = appByTournamentId.get(tournament.id);
+        const appliedUpcoming: MergedTournamentCard[] = applications
+          .filter(
+            (app) =>
+              app.status !== 'withdrawn' &&
+              app.status !== 'rejected' &&
+              isUpcomingTournamentDate(app.tournament.endDate, app.tournament.startDate),
+          )
+          .sort(
+            (a, b) =>
+              parseISO(a.tournament.startDate).getTime() -
+              parseISO(b.tournament.startDate).getTime(),
+          )
+          .map((app) => {
+            const full = tournamentById.get(app.tournament.id);
             return {
-              tournament,
-              applicationStatus: app?.status,
+              tournament: {
+                id: app.tournament.id,
+                title: app.tournament.title,
+                startDate: app.tournament.startDate,
+                endDate: app.tournament.endDate,
+                address: full?.address,
+                banner: full?.banner,
+                applicationDeadline:
+                  app.tournament.applicationDeadline || full?.applicationDeadline,
+                ruleCode: full?.ruleCode,
+                rule: full?.rule,
+              },
+              applicationStatus: app.status,
             };
           });
 
-        if (!cancelled) setMergedTournaments(merged);
+        if (appliedUpcoming.length > 0) {
+          if (!cancelled) {
+            setTournamentsSource('applied');
+            setMergedTournaments(appliedUpcoming.slice(0, UPCOMING_TOURNAMENTS_LIMIT));
+          }
+        } else {
+          const proposed: MergedTournamentCard[] = tournaments
+            .sort((a, b) => parseISO(a.startDate).getTime() - parseISO(b.startDate).getTime())
+            .slice(0, UPCOMING_TOURNAMENTS_LIMIT)
+            .map((tournament) => ({
+              tournament: {
+                id: tournament.id,
+                title: tournament.title,
+                startDate: tournament.startDate,
+                endDate: tournament.endDate,
+                address: tournament.address,
+                banner: tournament.banner,
+                applicationDeadline: tournament.applicationDeadline,
+                ruleCode: tournament.ruleCode,
+                rule: tournament.rule,
+              },
+            }));
+
+          if (!cancelled) {
+            setTournamentsSource('proposed');
+            setMergedTournaments(proposed);
+          }
+        }
       } catch (err: unknown) {
         if (!cancelled) {
           setTournamentsError(
@@ -228,6 +297,7 @@ const HomePage: React.FC = () => {
   }, [isAuthenticated]);
 
   const {
+    activeSession,
     requestStart,
     confirmStartNew,
     editCurrent,
@@ -238,8 +308,30 @@ const HomePage: React.FC = () => {
     onEditCurrent: () => navigate(`/${lang}/trainings`),
   });
 
+  const [isOffline, setIsOffline] = useState(false);
+
+  useEffect(() => {
+    setIsOffline(!navigator.onLine);
+    const handleOnline = () => setIsOffline(false);
+    const handleOffline = () => setIsOffline(true);
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
+
   const handleOpenAdd = () => {
     void requestStart(sessionDefaults);
+  };
+
+  const handlePrimaryTrainingCta = () => {
+    if (activeSession) {
+      navigate(`/${lang}/trainings`);
+      return;
+    }
+    handleOpenAdd();
   };
 
   const formatSessionDateTime = (session: LocalTrainingSession): string => {
@@ -249,16 +341,6 @@ const HomePage: React.FC = () => {
       return `${datePart}, ${timePart}`;
     } catch {
       return session.date;
-    }
-  };
-
-  const formatTournamentDates = (startDate: string, endDate?: string): string => {
-    try {
-      const start = format(parseISO(startDate), 'dd MMM yyyy');
-      if (!endDate || endDate === startDate) return start;
-      return `${start} – ${format(parseISO(endDate), 'dd MMM yyyy')}`;
-    } catch {
-      return startDate;
     }
   };
 
@@ -291,6 +373,47 @@ const HomePage: React.FC = () => {
       </Typography>
 
       <LocalDataBanner showSyncStatus />
+
+      <Paper
+        elevation={0}
+        sx={{
+          p: 2,
+          mt: 2,
+          mb: 1,
+          border: `2px solid ${theme.palette.primary.main}`,
+          borderRadius: 2,
+          bgcolor: alpha(theme.palette.primary.main, 0.04),
+          display: 'flex',
+          flexDirection: { xs: 'column', sm: 'row' },
+          alignItems: { xs: 'stretch', sm: 'center' },
+          gap: 1.5,
+        }}
+      >
+        <Box sx={{ flex: 1, minWidth: 0 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <TrackChangesIcon sx={{ fontSize: 28, color: 'primary.main', flexShrink: 0 }} />
+            <Typography variant="subtitle1" fontWeight={700}>
+              {activeSession
+                ? t('dashboard.continueSessionTitle')
+                : t('dashboard.logTrainingTitle')}
+            </Typography>
+          </Box>
+          <Typography variant="body2" color="text.secondary" sx={{ mt: 0.25, pl: '36px' }}>
+            {activeSession
+              ? `${t('trainings.inProgress')} · ${activeSession.shotsCount ?? 0} ${t('trainings.shotsCount').toLowerCase()}`
+              : t('dashboard.logTrainingSubtitle')}
+          </Typography>
+        </Box>
+        <Button
+          variant="contained"
+          size="large"
+          onClick={handlePrimaryTrainingCta}
+          disabled={submitting}
+          sx={{ minHeight: 48, flexShrink: 0 }}
+        >
+          {activeSession ? t('dashboard.continueSession') : t('dashboard.logTraining')}
+        </Button>
+      </Paper>
 
       {showBowSetupPrompt && (
         <Paper
@@ -389,6 +512,8 @@ const HomePage: React.FC = () => {
             flexDirection: { xs: 'column', sm: 'row' },
             alignItems: { xs: 'flex-start', sm: 'center' },
             gap: 2,
+            opacity: isOffline ? 0.55 : 1,
+            pointerEvents: isOffline ? 'none' : 'auto',
           }}
         >
           <RateReviewOutlinedIcon sx={{ fontSize: 40, color: 'info.main', flexShrink: 0 }} />
@@ -422,10 +547,10 @@ const HomePage: React.FC = () => {
       ))}
 
       <Grid container spacing={2} sx={{ mt: 1 }}>
-        <Grid size={{ xs: 6, sm: 4 }}>
+        <Grid size={{ xs: 6, sm: 6 }}>
           <StatCard label={t('dashboard.thisWeekArrows')} value={fmt(stats.shots.thisWeek)} />
         </Grid>
-        <Grid size={{ xs: 6, sm: 4 }}>
+        <Grid size={{ xs: 6, sm: 6 }}>
           <StatCard
             label={t('dashboard.currentStreak')}
             value={fmt(
@@ -439,21 +564,6 @@ const HomePage: React.FC = () => {
             valueColor={streakAtRisk.isAtRisk ? 'warning.main' : undefined}
           />
         </Grid>
-        <Grid size={{ xs: 12, sm: 4 }}>
-          <Card variant="outlined" sx={{ height: '100%', display: 'flex', alignItems: 'center' }}>
-            <CardContent sx={{ width: '100%' }}>
-              <Button
-                variant="contained"
-                fullWidth
-                startIcon={<AddIcon />}
-                onClick={() => void handleOpenAdd()}
-                disabled={submitting}
-              >
-                {t('dashboard.logTodaysSession')}
-              </Button>
-            </CardContent>
-          </Card>
-        </Grid>
       </Grid>
 
       {lastAchievement && (
@@ -463,31 +573,26 @@ const HomePage: React.FC = () => {
             width: { xs: '100%', md: '50%' },
           }}
         >
-          <Card
-            variant="outlined"
-            component={Link}
-            to={`/${lang}/achievements`}
-            sx={{
-              display: 'block',
-              textDecoration: 'none',
-              color: 'inherit',
-              transition: 'border-color 0.2s, box-shadow 0.2s',
-              '&:hover': {
-                textDecoration: 'none',
-                borderColor: 'primary.main',
-                boxShadow: 2,
-              },
-            }}
-          >
+          <Card variant="outlined">
             <CardContent sx={{ py: 2, '&:last-child': { pb: 2 } }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                <AchievementMedallion
-                  icon={lastAchievement.icon}
-                  rarity={lastAchievement.rarity as 'common' | 'rare' | 'epic' | 'legendary'}
-                  size={48}
-                  showGlow
-                />
-                <Box sx={{ flex: 1, minWidth: 0 }}>
+              <Box sx={{ display: 'flex', alignItems: 'stretch', gap: 2 }}>
+                <Box
+                  sx={{
+                    width: '33.333%',
+                    flexShrink: 0,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <AchievementMedallion
+                    icon={lastAchievement.icon}
+                    rarity={lastAchievement.rarity as 'common' | 'rare' | 'epic' | 'legendary'}
+                    size={72}
+                    showGlow
+                  />
+                </Box>
+                <Box sx={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column' }}>
                   <Typography
                     variant="caption"
                     color="text.secondary"
@@ -507,10 +612,17 @@ const HomePage: React.FC = () => {
                       date: format(parseISO(lastAchievement.earnedAt!), 'dd MMM yyyy'),
                     })}
                   </Typography>
+                  <Box sx={{ mt: 'auto', pt: 1, display: 'flex', justifyContent: 'flex-end' }}>
+                    <Button
+                      component={Link}
+                      to={`/${lang}/achievements`}
+                      size="small"
+                      variant="outlined"
+                    >
+                      {t('dashboard.lastAchievement.viewAll')}
+                    </Button>
+                  </Box>
                 </Box>
-                <Typography variant="caption" color="primary" sx={{ flexShrink: 0 }}>
-                  {t('dashboard.lastAchievement.viewAll')}
-                </Typography>
               </Box>
             </CardContent>
           </Card>
@@ -566,7 +678,12 @@ const HomePage: React.FC = () => {
           {t('dashboard.recentSessions')}
         </Typography>
         {recentSessions.length > 0 && (
-          <Button size="small" sx={{ px: 0 }} onClick={() => navigate(`/${lang}/trainings`)}>
+          <Button
+            size="small"
+            endIcon={<ChevronRightIcon fontSize="small" />}
+            onClick={() => navigate(`/${lang}/trainings`)}
+            sx={{ px: 0, '& .MuiButton-endIcon': { ml: 0.25 } }}
+          >
             {t('dashboard.viewAllTrainings')}
           </Button>
         )}
@@ -666,36 +783,59 @@ const HomePage: React.FC = () => {
       )}
 
       {(tournamentsLoading || tournamentsError || mergedTournaments.length > 0) && (
-        <>
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'flex-start',
-              mt: 2,
-              mb: 1,
-              gap: 1,
-            }}
-          >
-            <Box>
+        <Box
+          sx={{
+            opacity: isOffline ? 0.55 : 1,
+            pointerEvents: isOffline ? 'none' : 'auto',
+            transition: 'opacity 0.2s',
+          }}
+          aria-disabled={isOffline || undefined}
+        >
+          {isOffline && (
+            <Typography
+              variant="caption"
+              color="text.secondary"
+              display="block"
+              sx={{ mt: 2, mb: 0.5 }}
+            >
+              {t('dashboard.offlineNetworkHint')}
+            </Typography>
+          )}
+          <Box sx={{ mt: isOffline ? 0 : 2, mb: 1 }}>
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                gap: 1,
+              }}
+            >
               <Typography variant="subtitle1" fontWeight={600} color="text.secondary">
                 {t('dashboard.upcomingTournaments')}
               </Typography>
-              <Typography variant="caption" color="text.secondary" display="block" sx={{ mt: 0.5 }}>
-                {t('dashboard.discoveryDisclaimer')}
-              </Typography>
+              {mergedTournaments.length > 0 && (
+                <Button
+                  component={Link}
+                  to={
+                    tournamentsSource === 'applied'
+                      ? `/${lang}/applications`
+                      : `/${lang}/tournaments?country=${defaultCountry}`
+                  }
+                  size="small"
+                  endIcon={<ChevronRightIcon fontSize="small" />}
+                  sx={{ flexShrink: 0, px: 0, '& .MuiButton-endIcon': { ml: 0.25 } }}
+                >
+                  {tournamentsSource === 'applied'
+                    ? t('dashboard.viewAllApplications')
+                    : t('dashboard.browseAllTournaments')}
+                </Button>
+              )}
             </Box>
-            {mergedTournaments.length > 0 && (
-              <Button
-                component={Link}
-                to={`/${lang}/tournaments?country=${defaultCountry}`}
-                size="small"
-                endIcon={<ChevronRightIcon />}
-                sx={{ flexShrink: 0 }}
-              >
-                {t('dashboard.browseAllTournaments')}
-              </Button>
-            )}
+            <Typography variant="caption" color="text.secondary" display="block" sx={{ mt: 0.5 }}>
+              {tournamentsSource === 'applied'
+                ? t('dashboard.appliedTournamentsDisclaimer')
+                : t('dashboard.discoveryDisclaimer')}
+            </Typography>
           </Box>
 
           {tournamentsError && (
@@ -710,28 +850,89 @@ const HomePage: React.FC = () => {
             </Box>
           ) : (
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
-              {mergedTournaments.slice(0, 5).map(({ tournament, applicationStatus }) => (
+              {mergedTournaments.map(({ tournament, applicationStatus }) => (
                 <Card
                   key={tournament.id}
                   variant="outlined"
                   component={Link}
                   to={`/${lang}/tournaments/${tournament.id}`}
                   sx={{
+                    display: 'flex',
+                    overflow: 'hidden',
                     textDecoration: 'none',
                     color: 'inherit',
                     transition: 'border-color 0.2s',
-                    '&:hover': { borderColor: 'primary.main' },
+                    '&:hover': { borderColor: 'primary.main', textDecoration: 'none' },
+                    '&:active': { textDecoration: 'none' },
                   }}
                 >
-                  <CardContent sx={{ py: 1.5, '&:last-child': { pb: 1.5 } }}>
+                  <Box
+                    sx={{
+                      width: '33.333%',
+                      flexShrink: 0,
+                      alignSelf: 'stretch',
+                      minHeight: 96,
+                    }}
+                  >
+                    <Box
+                      component="img"
+                      src={resolveTournamentBanner(tournament.banner)}
+                      alt=""
+                      sx={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        display: 'block',
+                      }}
+                    />
+                  </Box>
+                  <CardContent
+                    sx={{
+                      flex: 1,
+                      minWidth: 0,
+                      py: 1.5,
+                      '&:last-child': { pb: 1.5 },
+                    }}
+                  >
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: 1 }}>
-                      <Box>
+                      <Box sx={{ minWidth: 0 }}>
                         <Typography variant="subtitle2" fontWeight={600}>
                           {tournament.title}
                         </Typography>
-                        <Typography variant="caption" color="text.secondary">
-                          {formatTournamentDates(tournament.startDate, tournament.endDate)}
+                        <Typography
+                          variant="caption"
+                          color="text.secondary"
+                          display="block"
+                          sx={{ mt: 0.5 }}
+                        >
+                          <Box component="strong" fontWeight={600}>
+                            {t('pages.tournaments.start')}:
+                          </Box>{' '}
+                          {formatDate(tournament.startDate)}
                         </Typography>
+                        {tournament.applicationDeadline && (
+                          <Typography variant="caption" color="text.secondary" display="block">
+                            <Box component="strong" fontWeight={600}>
+                              {t('pages.tournaments.applicationDeadline', 'Application Deadline')}:
+                            </Box>{' '}
+                            {formatDate(tournament.applicationDeadline)}
+                          </Typography>
+                        )}
+                        {tournament.address && (
+                          <Typography variant="caption" color="text.secondary" display="block">
+                            <Box component="strong" fontWeight={600}>
+                              {t('pages.tournaments.location')}:
+                            </Box>{' '}
+                            {tournament.address}
+                          </Typography>
+                        )}
+                        {(tournament.ruleCode || tournament.rule?.ruleCode) && (
+                          <Chip
+                            size="small"
+                            label={tournament.rule?.ruleCode || tournament.ruleCode}
+                            sx={{ mt: 0.75, height: 22, fontSize: '0.7rem' }}
+                          />
+                        )}
                       </Box>
                       {applicationStatus && (
                         <Typography variant="caption" color="text.secondary" sx={{ flexShrink: 0 }}>
@@ -744,14 +945,8 @@ const HomePage: React.FC = () => {
               ))}
             </Box>
           )}
-        </>
+        </Box>
       )}
-
-      <Box sx={{ mt: 3, textAlign: 'center' }}>
-        <Button component={Link} to={`/${lang}/statistics`} size="small">
-          {t('dashboard.viewStatistics')}
-        </Button>
-      </Box>
 
       <ConfirmReplaceActiveSessionDialog
         open={replaceDialogOpen}

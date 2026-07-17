@@ -1,11 +1,12 @@
 import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+
+import SafeDialog from '../../components/SafeDialog/SafeDialog';
 
 interface ConfirmReplaceActiveSessionDialogProps {
   open: boolean;
@@ -23,7 +24,7 @@ const ConfirmReplaceActiveSessionDialog: React.FC<ConfirmReplaceActiveSessionDia
   const { t } = useTranslation('common');
 
   return (
-    <Dialog open={open} onClose={onEditCurrent} maxWidth="xs" fullWidth>
+    <SafeDialog open={open} onClose={onEditCurrent} maxWidth="xs" fullWidth>
       <DialogTitle>{t('trainings.replaceActiveSession.title')}</DialogTitle>
       <DialogContent>
         <DialogContentText>{t('trainings.replaceActiveSession.message')}</DialogContentText>
@@ -36,7 +37,7 @@ const ConfirmReplaceActiveSessionDialog: React.FC<ConfirmReplaceActiveSessionDia
           {t('trainings.replaceActiveSession.startNew')}
         </Button>
       </DialogActions>
-    </Dialog>
+    </SafeDialog>
   );
 };
 

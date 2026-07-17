@@ -11,13 +11,12 @@ import {
   LinearProgress,
   Typography,
 } from '@mui/material';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 
 import AchievementLockedDialog from '@/components/achievements/AchievementLockedDialog';
 import AchievementMedallion from '@/components/achievements/AchievementMedallion';
-import AchievementUnlockedDialog from '@/components/achievements/AchievementUnlockedDialog';
 import PrivacyAwareShareMenu from '@/components/share/PrivacyAwareShareMenu';
 import { useAuth } from '@/contexts/auth-context';
 import { useAchievements } from '@/hooks/use-achievements';
@@ -53,24 +52,11 @@ const Achievements = () => {
     loading,
     error,
     isGuest,
-    syncAndCelebrate,
-    markSeen,
     isNewAchievement,
   } = useAchievements();
 
   const [categoryFilter, setCategoryFilter] = useState<CategoryFilter>('all');
   const [lockedDialog, setLockedDialog] = useState<AchievementProgressDto | null>(null);
-  const [celebrationQueue, setCelebrationQueue] = useState<string[]>([]);
-  const [celebrationIndex, setCelebrationIndex] = useState(0);
-
-  useEffect(() => {
-    void syncAndCelebrate().then((ids) => {
-      if (ids.length > 0) {
-        setCelebrationQueue(ids);
-        setCelebrationIndex(0);
-      }
-    });
-  }, [syncAndCelebrate]);
 
   const filterByCategory = useCallback(
     (items: AchievementProgressDto[]) =>
@@ -91,22 +77,6 @@ const Achievements = () => {
     [filteredEarned],
   );
 
-  const currentCelebration = celebrationQueue[celebrationIndex]
-    ? (earned.find((a) => a.id === celebrationQueue[celebrationIndex]) ?? null)
-    : null;
-
-  const handleCelebrationClose = () => {
-    if (currentCelebration) {
-      markSeen([currentCelebration.id]);
-    }
-    if (celebrationIndex < celebrationQueue.length - 1) {
-      setCelebrationIndex((i) => i + 1);
-    } else {
-      setCelebrationQueue([]);
-      setCelebrationIndex(0);
-    }
-  };
-
   const rarityBreakdown = (['legendary', 'epic', 'rare', 'common'] as const)
     .filter((r) => byRarity[r] > 0)
     .map((r) => `${byRarity[r]} ${t(`achievements.rarity.${r}`).toLowerCase()}`)
@@ -122,10 +92,10 @@ const Achievements = () => {
     'mastery',
   ];
 
-  const progressShareUrl =
-    user && typeof window !== 'undefined'
-      ? `${window.location.origin}/${lang}/archers/${user.id}/progress`
-      : '';
+  const origin = typeof window !== 'undefined' ? window.location.origin : '';
+  const progressShareUrl = user
+    ? `${origin}/${lang}/archers/${user.id}/progress`
+    : `${origin}/${lang}/achievements`;
 
   if (loading && earnedCount === 0 && locked.length === 0) {
     return (
@@ -182,22 +152,20 @@ const Achievements = () => {
               size="small"
             />
           ))}
-          {user && progressShareUrl && (
-            <Box sx={{ ml: 'auto' }}>
-              <PrivacyAwareShareMenu
-                url={progressShareUrl}
-                title={t('achievements.shareProgressTitle')}
-                text={t('achievements.shareProgressText', {
-                  earned: earnedCount,
-                  total: totalCount,
-                })}
-                buttonLabel={t('achievements.shareProgress')}
-                variant="button"
-                size="small"
-                canShare={earnedCount > 0}
-              />
-            </Box>
-          )}
+          <Box sx={{ ml: 'auto' }}>
+            <PrivacyAwareShareMenu
+              url={progressShareUrl}
+              title={t('achievements.shareProgressTitle')}
+              text={t('achievements.shareProgressText', {
+                earned: earnedCount,
+                total: totalCount,
+              })}
+              buttonLabel={t('achievements.shareProgress')}
+              variant="button"
+              size="small"
+              canShare={earnedCount > 0}
+            />
+          </Box>
         </Box>
 
         {isGuest && (
@@ -256,16 +224,18 @@ const Achievements = () => {
                     </Typography>
                   )}
                   <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 1 }}>
-                    {user && (
-                      <PrivacyAwareShareMenu
-                        url={`${typeof window !== 'undefined' ? window.location.origin : ''}/${lang}/archers/${user.id}/achievements/${achievement.id}`}
-                        title={t(achievement.titleKey)}
-                        text={t(achievement.descriptionKey)}
-                        variant="icon"
-                        size="small"
-                        canShare
-                      />
-                    )}
+                    <PrivacyAwareShareMenu
+                      url={
+                        user
+                          ? `${origin}/${lang}/archers/${user.id}/achievements/${achievement.id}`
+                          : `${origin}/${lang}/achievements`
+                      }
+                      title={t(achievement.titleKey)}
+                      text={t(achievement.descriptionKey)}
+                      variant="icon"
+                      size="small"
+                      canShare
+                    />
                   </Box>
                 </CardContent>
               </Card>
@@ -306,11 +276,6 @@ const Achievements = () => {
         </>
       )}
 
-      <AchievementUnlockedDialog
-        achievement={currentCelebration}
-        open={!!currentCelebration}
-        onClose={handleCelebrationClose}
-      />
       <AchievementLockedDialog
         achievement={lockedDialog}
         open={!!lockedDialog}

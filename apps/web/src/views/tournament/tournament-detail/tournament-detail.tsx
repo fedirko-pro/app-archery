@@ -290,67 +290,81 @@ const TournamentDetail: React.FC = () => {
 
           <Divider sx={{ my: 3 }} />
 
-          <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
-            <ShareMenu
-              url={shareUrl}
-              title={tournament.title}
-              text={tournament.description}
-              imageUrl={resolveTournamentBanner(tournament.banner)}
-            />
-            {!isPastTournament(tournament) && (
-              <Button
-                variant="contained"
-                size="large"
-                startIcon={<Send />}
-                component={Link}
-                to={`/${lang}/apply/${tournament.id}`}
-              >
-                {t('pages.tournaments.apply', 'Apply to tournament')}
-              </Button>
-            )}
-            {user && canEditTournament(user.role, tournament.createdBy?.id ?? '', user.id) && (
-              <>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+            <Box sx={{ display: 'flex', gap: 2, width: '100%' }}>
+              <Box sx={{ flex: 1, minWidth: 0 }}>
+                <ShareMenu
+                  url={shareUrl}
+                  title={tournament.title}
+                  text={tournament.description}
+                  imageUrl={resolveTournamentBanner(tournament.banner)}
+                  fullWidth
+                  sx={{ justifyContent: 'center' }}
+                />
+              </Box>
+              {!isPastTournament(tournament) && (
                 <Button
-                  variant="outlined"
+                  variant="contained"
                   size="large"
-                  startIcon={<Edit />}
+                  startIcon={<Send />}
                   component={Link}
-                  to={`/${lang}/tournaments/${tournament.id}/edit`}
+                  to={`/${lang}/apply/${tournament.id}`}
+                  sx={{ flex: 1, minWidth: 0, justifyContent: 'center' }}
                 >
-                  {t('pages.tournaments.edit', 'Edit')}
+                  {t('pages.tournaments.apply', 'Apply to tournament')}
                 </Button>
-                <Button
-                  variant="outlined"
-                  size="large"
-                  startIcon={<Assignment />}
-                  component={Link}
-                  to={`/${lang}/admin/applications/${tournament.id}`}
-                >
-                  {t('pages.tournaments.checkApplications', 'Check Applications')}
-                </Button>
-                {tournament.collectFeedback && (
-                  <Button
-                    variant="outlined"
-                    size="large"
-                    startIcon={<RateReview />}
-                    component={Link}
-                    to={`/${lang}/tournaments/${tournament.id}/feedback/admin`}
-                  >
-                    {t('pages.tournaments.viewFeedback')}
-                  </Button>
-                )}
-              </>
-            )}
-            {user && canApplyOtherUsers(user.role) && !isPastTournament(tournament) && (
-              <Button
-                variant="outlined"
-                size="large"
-                startIcon={<PersonAdd />}
-                onClick={() => setApplyUserDialogOpen(true)}
-              >
-                {t('pages.tournaments.applyOtherUser', 'Apply Other User')}
-              </Button>
-            )}
+              )}
+            </Box>
+            {user &&
+              (canEditTournament(user.role, tournament.createdBy?.id ?? '', user.id) ||
+                (canApplyOtherUsers(user.role) && !isPastTournament(tournament))) && (
+                <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+                  {user &&
+                    canEditTournament(user.role, tournament.createdBy?.id ?? '', user.id) && (
+                      <>
+                        <Button
+                          variant="outlined"
+                          size="large"
+                          startIcon={<Edit />}
+                          component={Link}
+                          to={`/${lang}/tournaments/${tournament.id}/edit`}
+                        >
+                          {t('pages.tournaments.edit', 'Edit')}
+                        </Button>
+                        <Button
+                          variant="outlined"
+                          size="large"
+                          startIcon={<Assignment />}
+                          component={Link}
+                          to={`/${lang}/admin/applications/${tournament.id}`}
+                        >
+                          {t('pages.tournaments.checkApplications', 'Check Applications')}
+                        </Button>
+                        {tournament.collectFeedback && (
+                          <Button
+                            variant="outlined"
+                            size="large"
+                            startIcon={<RateReview />}
+                            component={Link}
+                            to={`/${lang}/tournaments/${tournament.id}/feedback/admin`}
+                          >
+                            {t('pages.tournaments.viewFeedback')}
+                          </Button>
+                        )}
+                      </>
+                    )}
+                  {user && canApplyOtherUsers(user.role) && !isPastTournament(tournament) && (
+                    <Button
+                      variant="outlined"
+                      size="large"
+                      startIcon={<PersonAdd />}
+                      onClick={() => setApplyUserDialogOpen(true)}
+                    >
+                      {t('pages.tournaments.applyOtherUser', 'Apply Other User')}
+                    </Button>
+                  )}
+                </Box>
+              )}
           </Box>
         </CardContent>
       </Card>

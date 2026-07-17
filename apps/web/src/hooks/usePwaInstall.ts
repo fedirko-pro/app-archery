@@ -31,6 +31,36 @@ export function setInstallDismissed(): void {
   } catch {
     /* ignore */
   }
+  // Drop the captured prompt so Chrome stops waiting for prompt().
+  setSharedDeferredPrompt(null);
+}
+
+/** Shared across hook instances so only one listener captures the install event. */
+let sharedDeferredPrompt: BeforeInstallPromptEvent | null = null;
+const deferredPromptListeners = new Set<(event: BeforeInstallPromptEvent | null) => void>();
+
+function setSharedDeferredPrompt(event: BeforeInstallPromptEvent | null): void {
+  sharedDeferredPrompt = event;
+  for (const listener of deferredPromptListeners) {
+    listener(event);
+  }
+}
+
+function ensureBeforeInstallListener(): void {
+  if (typeof window === 'undefined') return;
+  const w = window as Window & { __pwaBeforeInstallBound?: boolean };
+  if (w.__pwaBeforeInstallBound) return;
+  w.__pwaBeforeInstallBound = true;
+
+  window.addEventListener('beforeinstallprompt', (e: Event) => {
+    // Skip custom UI if already installed or user dismissed recently — let the
+    // browser keep its default handling instead of capturing a prompt we won't show.
+    if (isStandalone() || wasDismissedRecently()) {
+      return;
+    }
+    e.preventDefault();
+    setSharedDeferredPrompt(e as BeforeInstallPromptEvent);
+  });
 }
 
 export function usePWAInstall(): {
@@ -39,18 +69,24 @@ export function usePWAInstall(): {
   dismissedRecently: boolean;
   prompt: () => Promise<boolean>;
 } {
-  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
-  const [installed, setInstalled] = useState(isStandalone());
-  const [dismissedRecently, setDismissedRecently] = useState(wasDismissedRecently());
+  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(
+    () => sharedDeferredPrompt,
+  );
+  // Defer browser-only checks to useEffect so SSR and first client paint match.
+  const [installed, setInstalled] = useState(false);
+  const [dismissedRecently, setDismissedRecently] = useState(false);
 
   useEffect(() => {
-    const handleBeforeInstall = (e: Event) => {
-      e.preventDefault();
-      setDeferredPrompt(e as BeforeInstallPromptEvent);
-    };
+    ensureBeforeInstallListener();
+    setDeferredPrompt(sharedDeferredPrompt);
 
-    window.addEventListener('beforeinstallprompt', handleBeforeInstall);
-    return () => window.removeEventListener('beforeinstallprompt', handleBeforeInstall);
+    const onChange = (event: BeforeInstallPromptEvent | null) => {
+      setDeferredPrompt(event);
+    };
+    deferredPromptListeners.add(onChange);
+    return () => {
+      deferredPromptListeners.delete(onChange);
+    };
   }, []);
 
   useEffect(() => {
@@ -59,15 +95,18 @@ export function usePWAInstall(): {
   }, []);
 
   const prompt = useCallback(async (): Promise<boolean> => {
-    if (!deferredPrompt) return false;
+    const current = sharedDeferredPrompt;
+    if (!current) return false;
     try {
-      await deferredPrompt.prompt();
-      const { outcome } = await deferredPrompt.userChoice;
+      await current.prompt();
+      const { outcome } = await current.userChoice;
+      setSharedDeferredPrompt(null);
       return outcome === 'accepted';
     } catch {
+      setSharedDeferredPrompt(null);
       return false;
     }
-  }, [deferredPrompt]);
+  }, []);
 
   return {
     canInstall: !!deferredPrompt,

@@ -1,6 +1,5 @@
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -10,9 +9,9 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { useAuth } from '../../contexts/auth-context';
+import SafeDialog from '../../components/SafeDialog/SafeDialog';
+import { useAchievementCelebration } from '../../contexts/achievement-celebration-context';
 import { useLocalData, type LocalTrainingSession } from '../../contexts/local-data-context';
-import apiService from '../../services/api';
 import type { TrainingMood } from '../../utils/local-data-storage';
 import MoodPicker from './MoodPicker';
 
@@ -27,7 +26,7 @@ const FinishSessionDialog: React.FC<FinishSessionDialogProps> = ({ open, session
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const { editTrainingSession } = useLocalData();
-  const { isAuthenticated } = useAuth();
+  const { celebrateAfterSync } = useAchievementCelebration();
 
   const [scoreTotal, setScoreTotal] = useState('');
   const [notes, setNotes] = useState('');
@@ -54,11 +53,9 @@ const FinishSessionDialog: React.FC<FinishSessionDialogProps> = ({ open, session
         notes: notes.trim() || undefined,
         mood: mood || undefined,
       });
-      if (isAuthenticated) {
-        void apiService.syncAchievements().catch(() => {
-          /* non-blocking */
-        });
-      }
+      await celebrateAfterSync().catch(() => {
+        /* non-blocking */
+      });
       onClose();
     } finally {
       setSubmitting(false);
@@ -66,7 +63,7 @@ const FinishSessionDialog: React.FC<FinishSessionDialogProps> = ({ open, session
   };
 
   return (
-    <Dialog open={open} onClose={onClose} fullScreen={fullScreen} maxWidth="sm" fullWidth>
+    <SafeDialog open={open} onClose={onClose} fullScreen={fullScreen} maxWidth="sm" fullWidth>
       <DialogTitle>{t('trainings.finishSession')}</DialogTitle>
       <DialogContent sx={{ pb: fullScreen ? 0 : undefined }}>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, pt: 1 }}>
@@ -99,17 +96,24 @@ const FinishSessionDialog: React.FC<FinishSessionDialogProps> = ({ open, session
             bgcolor: 'background.paper',
             borderTop: 1,
             borderColor: 'divider',
+            gap: 1,
           }),
         }}
       >
-        <Button onClick={onClose} disabled={submitting}>
+        <Button onClick={onClose} disabled={submitting} size={fullScreen ? 'large' : 'medium'}>
           {t('common.cancel')}
         </Button>
-        <Button variant="contained" onClick={() => void handleFinish()} disabled={submitting}>
+        <Button
+          variant="contained"
+          onClick={() => void handleFinish()}
+          disabled={submitting}
+          size={fullScreen ? 'large' : 'medium'}
+          sx={fullScreen ? { minHeight: 48 } : undefined}
+        >
           {submitting ? t('common.saving') : t('trainings.finishSession')}
         </Button>
       </DialogActions>
-    </Dialog>
+    </SafeDialog>
   );
 };
 

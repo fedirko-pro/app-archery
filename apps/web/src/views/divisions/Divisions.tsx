@@ -138,23 +138,9 @@ const Divisions: React.FC = () => {
             onChange={(_, isExpanded) => setExpanded(isExpanded ? group.name : false)}
           >
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Box display="flex" alignItems="center" width="100%" gap={2} flexWrap="wrap">
-                <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-                  {group.name}
-                </Typography>
-                {group.items.map(
-                  (item) =>
-                    item.rule_code && (
-                      <Chip
-                        key={item.id}
-                        label={item.rule_code}
-                        size="small"
-                        color="primary"
-                        variant="outlined"
-                      />
-                    ),
-                )}
-              </Box>
+              <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
+                {group.name}
+              </Typography>
             </AccordionSummary>
             <AccordionDetails>
               {(() => {
@@ -163,11 +149,25 @@ const Divisions: React.FC = () => {
 
                 if (allSame) {
                   return (
-                    <Box display="flex" alignItems="center" gap={1} sx={{ py: 0.5 }}>
+                    <Box sx={{ py: 0.5 }}>
                       <Typography variant="body2" color="text.secondary">
                         {group.items[0]?.description || 'No description available'}
                       </Typography>
-                      <Box sx={{ ml: 'auto' }}>
+                      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mt: 1.5 }}>
+                        {group.items.map(
+                          (item) =>
+                            item.rule_code && (
+                              <Chip
+                                key={item.id}
+                                label={item.rule_code}
+                                size="small"
+                                color="primary"
+                                variant="outlined"
+                              />
+                            ),
+                        )}
+                      </Box>
+                      <Box sx={{ mt: 1 }}>
                         {group.items.map((item) => (
                           <span key={item.id}>
                             <AdminActions
@@ -185,13 +185,22 @@ const Divisions: React.FC = () => {
                 }
 
                 return group.items.map((item) => (
-                  <Box key={item.id} display="flex" alignItems="center" gap={1} sx={{ py: 0.5 }}>
+                  <Box key={item.id} sx={{ py: 0.5 }}>
                     <Typography variant="body2" color="text.secondary">
-                      {item.rule_code && `${item.rule_code}: `}
                       {item.description || 'No description available'}
                     </Typography>
+                    {item.rule_code && (
+                      <Box sx={{ mt: 1 }}>
+                        <Chip
+                          label={item.rule_code}
+                          size="small"
+                          color="primary"
+                          variant="outlined"
+                        />
+                      </Box>
+                    )}
                     {isAdmin && (
-                      <Box sx={{ ml: 'auto', whiteSpace: 'nowrap' }}>
+                      <Box sx={{ mt: 0.5 }}>
                         <IconButton
                           size="small"
                           onClick={() => navigate(`/${lang}/admin/divisions/${item.id}/edit`)}

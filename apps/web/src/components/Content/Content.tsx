@@ -18,6 +18,7 @@ import AdminPanel from '../../views/admin/admin-panel';
 import ProtectedAdminRoute from '../../views/admin/protected-admin-route';
 import UserEdit from '../../views/admin/user-edit/user-edit';
 import UserProfileView from '../../views/admin/user-profile-view/user-profile-view';
+import ArcheryCalculatorPage from '../../views/ArcheryCalculatorPage';
 import CategoryEdit from '../../views/categories/admin/category-edit';
 import Categories from '../../views/categories/Categories';
 import ClubEdit from '../../views/clubs/admin/club-edit';
@@ -149,6 +150,7 @@ function Content() {
             }
           />
           <Route path="converter" element={<ConverterPage />} />
+          <Route path="calculator" element={<ArcheryCalculatorPage />} />
           <Route path="glossary" element={<Glossary />} />
           <Route path="competition/user" element={<UserPage />} />
           <Route path="about" element={<About />} />

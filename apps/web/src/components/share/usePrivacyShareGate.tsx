@@ -2,7 +2,6 @@
 
 import {
   Button,
-  Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
@@ -12,6 +11,7 @@ import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 
+import SafeDialog from '@/components/SafeDialog/SafeDialog';
 import { useAuth } from '@/contexts/auth-context';
 import type { ProfileVisibility } from '@/types/profile-visibility';
 
@@ -20,6 +20,7 @@ export function usePrivacyShareGate(canShare = true) {
   const { user } = useAuth();
   const navigate = useNavigate();
   const { lang } = useParams();
+  const [authDialogOpen, setAuthDialogOpen] = useState(false);
   const [privacyDialogOpen, setPrivacyDialogOpen] = useState(false);
   const [notEarnedDialogOpen, setNotEarnedDialogOpen] = useState(false);
 
@@ -27,6 +28,10 @@ export function usePrivacyShareGate(canShare = true) {
   const visibilityLabel = t(`privacy.visibility.${visibility}.label`);
 
   const checkCanShare = useCallback((): boolean => {
+    if (!user) {
+      setAuthDialogOpen(true);
+      return false;
+    }
     if (!canShare) {
       setNotEarnedDialogOpen(true);
       return false;
@@ -36,16 +41,47 @@ export function usePrivacyShareGate(canShare = true) {
       return false;
     }
     return true;
-  }, [canShare, visibility]);
+  }, [user, canShare, visibility]);
 
   const goToProfileSettings = () => {
     setPrivacyDialogOpen(false);
     navigate(`/${lang}/profile/edit`);
   };
 
+  const goToSignIn = () => {
+    setAuthDialogOpen(false);
+    navigate(`/${lang}/signin`);
+  };
+
+  const goToSignUp = () => {
+    setAuthDialogOpen(false);
+    navigate(`/${lang}/signup`);
+  };
+
   const PrivacyShareDialogs = (
     <>
-      <Dialog open={privacyDialogOpen} onClose={() => setPrivacyDialogOpen(false)}>
+      <SafeDialog
+        open={authDialogOpen}
+        onClose={() => setAuthDialogOpen(false)}
+        maxWidth="xs"
+        fullWidth
+      >
+        <DialogTitle>{t('sharing.authRequiredTitle')}</DialogTitle>
+        <DialogContent>
+          <DialogContentText>{t('sharing.authRequiredMessage')}</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setAuthDialogOpen(false)}>{t('common.cancel')}</Button>
+          <Button variant="outlined" onClick={goToSignUp}>
+            {t('auth.signUp')}
+          </Button>
+          <Button variant="contained" onClick={goToSignIn}>
+            {t('auth.signIn')}
+          </Button>
+        </DialogActions>
+      </SafeDialog>
+
+      <SafeDialog open={privacyDialogOpen} onClose={() => setPrivacyDialogOpen(false)}>
         <DialogTitle>{t('sharing.privacyPersonalTitle')}</DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -53,16 +89,14 @@ export function usePrivacyShareGate(canShare = true) {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setPrivacyDialogOpen(false)}>
-            {t('buttons.cancel', 'Cancel')}
-          </Button>
+          <Button onClick={() => setPrivacyDialogOpen(false)}>{t('common.cancel')}</Button>
           <Button variant="contained" onClick={goToProfileSettings}>
             {t('sharing.goToProfileSettings')}
           </Button>
         </DialogActions>
-      </Dialog>
+      </SafeDialog>
 
-      <Dialog open={notEarnedDialogOpen} onClose={() => setNotEarnedDialogOpen(false)}>
+      <SafeDialog open={notEarnedDialogOpen} onClose={() => setNotEarnedDialogOpen(false)}>
         <DialogTitle>{t('sharing.notEarnedTitle')}</DialogTitle>
         <DialogContent>
           <DialogContentText>{t('sharing.notEarnedMessage')}</DialogContentText>
@@ -70,7 +104,7 @@ export function usePrivacyShareGate(canShare = true) {
         <DialogActions>
           <Button onClick={() => setNotEarnedDialogOpen(false)}>{t('buttons.ok', 'OK')}</Button>
         </DialogActions>
-      </Dialog>
+      </SafeDialog>
     </>
   );
 

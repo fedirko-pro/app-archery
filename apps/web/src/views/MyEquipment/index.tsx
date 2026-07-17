@@ -10,7 +10,6 @@ import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import IconButton from '@mui/material/IconButton';
@@ -22,6 +21,7 @@ import { Link, useParams, useSearchParams } from 'react-router-dom';
 
 import LocalDataBanner from '../../components/LocalDataBanner/LocalDataBanner';
 import LocalSyncChip from '../../components/LocalSyncChip/LocalSyncChip';
+import SafeDialog from '../../components/SafeDialog/SafeDialog';
 import { useLocalData, type LocalEquipmentSet } from '../../contexts/local-data-context';
 import EquipmentSetForm from './EquipmentSetForm';
 
@@ -311,7 +311,7 @@ const MyEquipmentPage: React.FC = () => {
         </Box>
       )}
 
-      <Dialog open={formOpen} onClose={handleClose} maxWidth="sm" fullWidth>
+      <SafeDialog open={formOpen} onClose={handleClose} maxWidth="sm" fullWidth>
         <DialogTitle>{editTarget ? t('equipment.editSet') : t('equipment.addSet')}</DialogTitle>
         <DialogContent>
           <Box sx={{ pt: 1 }}>
@@ -323,7 +323,7 @@ const MyEquipmentPage: React.FC = () => {
             />
           </Box>
         </DialogContent>
-      </Dialog>
+      </SafeDialog>
     </Box>
   );
 };

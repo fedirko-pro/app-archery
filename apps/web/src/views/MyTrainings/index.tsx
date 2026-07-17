@@ -215,7 +215,7 @@ const MyTrainingsPage: React.FC = () => {
       )}
 
       {activeSession && (
-        <Box sx={{ mb: 2 }}>
+        <Box sx={{ mb: 1.5 }}>
           <ActiveSessionCard session={activeSession} onFinish={() => setFinishOpen(true)} />
         </Box>
       )}

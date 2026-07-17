@@ -18,6 +18,8 @@ import {
   ListItemText,
   Menu,
   MenuItem,
+  type SxProps,
+  type Theme,
 } from '@mui/material';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -34,6 +36,8 @@ interface ShareMenuProps {
   buttonLabel?: string;
   size?: 'small' | 'medium' | 'large';
   variant?: 'button' | 'icon';
+  fullWidth?: boolean;
+  sx?: SxProps<Theme>;
   onBeforeOpen?: () => boolean;
 }
 
@@ -45,6 +49,8 @@ export default function ShareMenu({
   buttonLabel,
   size = 'large',
   variant = 'button',
+  fullWidth,
+  sx,
   onBeforeOpen,
 }: ShareMenuProps) {
   const { t } = useTranslation('common');
@@ -130,6 +136,8 @@ export default function ShareMenu({
           startIcon={<Share />}
           onClick={handleOpen}
           disabled={sharing}
+          fullWidth={fullWidth}
+          sx={sx}
         >
           {buttonLabel ?? t('pages.tournaments.share', 'Share')}
         </Button>

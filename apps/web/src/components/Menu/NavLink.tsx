@@ -20,17 +20,14 @@ const NavLink: React.FC<NavLinkProps> = ({ to, children, clickHandle, onClick, c
     }
 
     navigate(`/${currentLang}${to}`);
-
-    setTimeout(() => {
-      if (clickHandle) {
-        clickHandle();
-      }
-    }, 300);
+    // Close immediately (setActive(false)), not a delayed toggle — avoids reopening the menu
+    // and leaving the overlay covering the newly navigated page.
+    clickHandle?.();
   };
 
   return (
     <li className={match ? 'current-menu-item' : ''}>
-      <button onClick={handleClick} className={className}>
+      <button type="button" onClick={handleClick} className={className}>
         {children}
       </button>
     </li>

@@ -150,23 +150,16 @@ const Categories: React.FC = () => {
                 onChange={(_, isExpanded) => setExpanded(isExpanded ? group.code : false)}
               >
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                  <Box display="flex" alignItems="center" width="100%" gap={2} flexWrap="wrap">
-                    <Typography variant="subtitle1" sx={{ fontWeight: 700, minWidth: 64 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', gap: 1 }}>
+                    <Typography
+                      variant="subtitle1"
+                      sx={{ fontWeight: 700, minWidth: 64, flexShrink: 0 }}
+                    >
                       {group.code}
                     </Typography>
-                    <Typography variant="subtitle1">{group.items[0]?.name}</Typography>
-                    {group.items.map(
-                      (item) =>
-                        item.rule?.ruleCode && (
-                          <Chip
-                            key={item.id}
-                            label={item.rule.ruleCode}
-                            size="small"
-                            color="primary"
-                            variant="outlined"
-                          />
-                        ),
-                    )}
+                    <Typography variant="subtitle1" sx={{ flex: 1, minWidth: 0 }}>
+                      {group.items[0]?.name}
+                    </Typography>
                   </Box>
                 </AccordionSummary>
                 <AccordionDetails>
@@ -198,6 +191,20 @@ const Categories: React.FC = () => {
                             ))}
                         </Typography>
                       )}
+                      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mt: 1.5 }}>
+                        {group.items.map(
+                          (item) =>
+                            item.rule?.ruleCode && (
+                              <Chip
+                                key={item.id}
+                                label={item.rule.ruleCode}
+                                size="small"
+                                color="primary"
+                                variant="outlined"
+                              />
+                            ),
+                        )}
+                      </Box>
                       <Box sx={{ mt: 1 }}>
                         {group.items.map((item) => (
                           <span key={item.id}>
@@ -225,15 +232,6 @@ const Categories: React.FC = () => {
                             color="text.secondary"
                             sx={{ whiteSpace: 'pre-wrap' }}
                           >
-                            {item.rule?.ruleCode && (
-                              <Typography
-                                component="span"
-                                variant="body2"
-                                sx={{ fontWeight: 600, mr: 0.5 }}
-                              >
-                                {item.rule.ruleCode}:
-                              </Typography>
-                            )}
                             {desc || ''}
                           </Typography>
                           {(item.ruleReference || item.ruleCitation) && (
@@ -251,6 +249,16 @@ const Categories: React.FC = () => {
                                 </>
                               )}
                             </Typography>
+                          )}
+                          {item.rule?.ruleCode && (
+                            <Box sx={{ mt: 1 }}>
+                              <Chip
+                                label={item.rule.ruleCode}
+                                size="small"
+                                color="primary"
+                                variant="outlined"
+                              />
+                            </Box>
                           )}
                           <Box sx={{ mt: 0.5 }}>
                             <AdminActions

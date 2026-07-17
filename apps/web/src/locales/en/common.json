@@ -16,7 +16,9 @@
     "myTrainings": "Trainings",
     "myEquipment": "Equipment",
     "myStatistics": "Statistics",
+    "athleteTabs": "Main navigation",
     "converter": "Converter",
+    "calculator": "Calculator",
     "categories": "Categories",
     "rules": "Rules",
     "about": "About app",
@@ -24,7 +26,7 @@
     "userApplications": "User applications",
     "accessControl": "Access Control",
     "divisions": "Divisions",
-    "scoringDemo": "Scoring Card (Demo)",
+    "scoringDemo": "Scoring Card (paperless demo)",
     "glossary": "Glossary",
     "fieldGuide": "Field Guide"
   },
@@ -367,6 +369,28 @@
       "title": "Archery converter",
       "description": "Convert between inches/cm, pounds/kg, grains/grams, yards/meters"
     },
+    "calculator": {
+      "title": "Archery calculator",
+      "description": "FOC, arrow weight, kinetic energy, draw length, spine suggestion, and grains per pound"
+    },
+    "scoringDemo": {
+      "title": "Scoring card (paperless demo)",
+      "description": "Interactive demo of a tournament scoring card. Scores are sample data and are not saved.",
+      "division": "Division",
+      "gender": "Gender",
+      "category": "Category",
+      "patrol": "Patrol №",
+      "date": "Date",
+      "set": "Set",
+      "sum": "Sum",
+      "total": "Total",
+      "totalScores": "Total scores",
+      "submit": "Submit",
+      "submitted": "Submitted",
+      "confirmTitle": "Results submitted",
+      "confirmMessage": "Thank you for submitting your scores! The data has been sent to the server (or will be sent when you are back online) and will be processed automatically. Winners will be determined as soon as all other patrols have submitted their results.",
+      "confirmClose": "OK"
+    },
     "about": {
       "title": "About this App",
       "intro": "Sokil helps archers log training sessions, track progress, unlock achievements, and manage equipment — with offline support and automatic sync.\n\nGamification keeps the hobby engaging.\n\nYour data is stored securely and you choose what to share. Federations and clubs can run tournaments, manage applications, and organize events.\n\nEmpowering archery communities with modern technology.",
@@ -387,6 +411,7 @@
         "divisions": "Divisions Management - Age group and division management linked to rules",
         "rules": "Rules Management - Official archery rules with multi-language descriptions and PDF downloads (WA, NFAA, IBO, FITARCO, RFETA, AGB, FPTA, FSLU, FABP and more)",
         "converter": "Unit Converter - Convert between common archery measurements (inches/cm, pounds/kg, grains/grams, yards/meters)",
+        "calculator": "Archery Calculator - FOC, total arrow weight (GPI), kinetic energy & momentum, draw-length estimate, approximate spine suggestion, and grains per pound (GPP)",
         "uploads": "File Upload System - Image processing for avatars and banners, attachment management for tournaments",
         "multilang": "Multi-language Support - Available in 6 languages: English, Ukrainian, Spanish, Italian, Portuguese, and German",
         "pwa": "Progressive Web App - Installable PWA with offline capabilities",
@@ -796,7 +821,9 @@
     "privacyPersonalMessage": "Your privacy setting is {{visibility}}. To share this, open your profile and change visibility to Limited or Public.",
     "goToProfileSettings": "Open profile settings",
     "notEarnedTitle": "Achievement not earned yet",
-    "notEarnedMessage": "You can share this achievement after you unlock it."
+    "notEarnedMessage": "You can share this achievement after you unlock it.",
+    "authRequiredTitle": "Sign in to share",
+    "authRequiredMessage": "Sharing achievements and progress is available to registered users. Sign in or create an account to share."
   },
   "publicProfile": {
     "notFoundTitle": "Profile not available",
@@ -864,6 +891,70 @@
       "short": "Yard - m",
       "long": "Yard - Meter",
       "desc": "Range distance conversions"
+    }
+  },
+  "calculator": {
+    "enterValues": "Enter values to calculate",
+    "foc": {
+      "short": "FOC",
+      "title": "Front of Center",
+      "desc": "Measure arrow length and the balance point from the nock throat. Typical target FOC is about 7–12%; hunting often 10–18%.",
+      "arrowLength": "Arrow length (in)",
+      "balancePoint": "Balance point (in)",
+      "balanceHint": "From nock throat to balance point",
+      "hintLow": "On the low side — common for some target setups",
+      "hintTarget": "Typical target / indoor range",
+      "hintHunting": "Typical hunting / outdoor FOC",
+      "hintHigh": "High FOC — check flight and clearance"
+    },
+    "arrowWeight": {
+      "short": "GPI",
+      "title": "Arrow weight",
+      "desc": "Total arrow weight from shaft GPI plus tip, insert, nock, and fletching.",
+      "gpi": "Shaft GPI (gr/in)",
+      "shaftLength": "Shaft length (in)",
+      "point": "Point / tip (gr)",
+      "insert": "Insert (gr)",
+      "nock": "Nock (gr)",
+      "fletching": "Fletching (gr)"
+    },
+    "ke": {
+      "short": "KE",
+      "title": "Kinetic energy & momentum",
+      "desc": "Estimate kinetic energy (ft·lb) and momentum from arrow weight and speed.",
+      "arrowWeight": "Arrow weight (gr)",
+      "speed": "Speed (fps)",
+      "resultHint": "Chronograph your bow for best accuracy"
+    },
+    "drawLength": {
+      "short": "Draw",
+      "title": "Draw length estimate",
+      "desc": "AMO-style estimate: wingspan (fingertip to fingertip, arms out) ÷ 2.5. Confirm with a proper draw-length measurement.",
+      "wingspan": "Wingspan (in)",
+      "wingspanHint": "Arms out, fingertip to fingertip",
+      "resultHint": "Estimate only — verify on a draw board or with a coach"
+    },
+    "spine": {
+      "short": "Spine",
+      "title": "Spine suggestion",
+      "desc": "Approximate carbon spine band from draw weight, arrow length, and point weight. Always check your shaft manufacturer's chart.",
+      "drawWeight": "Draw weight (lb)",
+      "arrowLength": "Arrow length (in)",
+      "pointWeight": "Point weight (gr)",
+      "result": "About {{low}}–{{high}} spine",
+      "resultHint": "Effective draw weight used: {{dw}} lb · guidance only",
+      "consultManual": "Always consult the manufacturer's manual and spine chart before choosing arrows."
+    },
+    "gpp": {
+      "short": "GPP",
+      "title": "Grains per pound",
+      "desc": "Arrow weight divided by draw weight. Often used as a quick hunting / setup check.",
+      "arrowWeight": "Arrow weight (gr)",
+      "drawWeight": "Draw weight (lb)",
+      "hintLight": "Light for many hunting setups — fine for some target bows",
+      "hintTarget": "Common target / speed-oriented range",
+      "hintHunting": "Common hunting / ethical kinetic range",
+      "hintHeavy": "Heavy setup — slower but more momentum"
     }
   },
   "common": {
@@ -1028,6 +1119,8 @@
     "installing": "Installing…",
     "dismiss": "Not now",
     "installAria": "Install app prompt",
+    "iosInstallPrompt": "Add Sokil to your Home Screen: tap Share, then Add to Home Screen.",
+    "iosInstallAria": "Add to Home Screen tip",
     "updateAvailable": "A new version is available.",
     "updateReload": "Reload"
   },
@@ -1069,9 +1162,20 @@
       "habits": "Training Habits",
       "tournaments": "Tournaments",
       "equipment": "Performance by Equipment",
-      "scoring": "Scoring"
+      "scoring": "Scoring",
+      "info": {
+        "activity": "Overview of your account activity: when you joined, how many sessions you've logged, and your current training streak.",
+        "arrows": "We're counting all training sessions and confirmed tournaments here.",
+        "distance": "We're calculating distance to the target and back on position.",
+        "lifted": "We're calculating based on your bow-setup used during training sessions and tournaments.",
+        "habits": "Your most common training patterns: average arrows per session, preferred distance, target type, and equipment.",
+        "tournaments": "Counts of tournament applications you've submitted, including approved and rejected ones.",
+        "scoring": "Scores from finished training sessions where you recorded a result.",
+        "equipment": "Performance breakdown by bow setup used in your logged sessions."
+      }
     },
     "memberSince": "Member since",
+    "memberSinceEmpty": "Not yet? Sign up!",
     "totalSessions": "Total sessions",
     "currentStreak": "Current streak",
     "weeks": "weeks in a row",
@@ -1119,11 +1223,17 @@
     "recentSessions": "Recent sessions",
     "noSessions": "No training sessions yet. Log your first session!",
     "logTraining": "Log training",
+    "logTrainingTitle": "Ready to train?",
+    "logTrainingSubtitle": "Log arrows, distance, and gear.",
+    "continueSession": "Continue session",
+    "continueSessionTitle": "Session in progress",
+    "offlineNetworkHint": "Available when you're back online",
     "logTodaysSession": "Log today's session",
     "sameAsLastTime": "Same as last time",
     "upcomingTournaments": "Upcoming tournaments",
     "discoveryDisclaimer": "Based on your profile settings and activity, these upcoming tournaments may interest you.",
-    "browseAllTournaments": "Browse all tournaments",
+    "appliedTournamentsDisclaimer": "Upcoming events you've applied to.",
+    "browseAllTournaments": "View all tournaments",
     "viewAllApplications": "View all applications",
     "viewAllTrainings": "View all trainings",
     "viewStatistics": "View full statistics",
@@ -1154,7 +1264,7 @@
       "dismiss": "Not now"
     },
     "lastAchievement": {
-      "title": "Last achievement",
+      "title": "Latest achievement",
       "earnedOn": "Earned on {{date}}",
       "viewAll": "View all"
     }

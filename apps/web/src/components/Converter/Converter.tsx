@@ -10,117 +10,81 @@ import { useTranslation } from 'react-i18next';
 
 import ConverterInputs from './ConverterInputs';
 
+const PANELS = [
+  {
+    id: 'inchCm',
+    shortKey: 'converter.inchCm.short',
+    longKey: 'converter.inchCm.long',
+    descKey: 'converter.inchCm.desc',
+    labelFirstKey: 'units.inch',
+    labelSecondKey: 'units.centimeter',
+    coef: 2.54,
+  },
+  {
+    id: 'poundKg',
+    shortKey: 'converter.poundKg.short',
+    longKey: 'converter.poundKg.long',
+    descKey: 'converter.poundKg.desc',
+    labelFirstKey: 'units.pound',
+    labelSecondKey: 'units.kilogram',
+    coef: 0.453592,
+  },
+  {
+    id: 'grainG',
+    shortKey: 'converter.grainG.short',
+    longKey: 'converter.grainG.long',
+    descKey: 'converter.grainG.desc',
+    labelFirstKey: 'units.grain',
+    labelSecondKey: 'units.gram',
+    coef: 0.0647989,
+  },
+  {
+    id: 'yardM',
+    shortKey: 'converter.yardM.short',
+    longKey: 'converter.yardM.long',
+    descKey: 'converter.yardM.desc',
+    labelFirstKey: 'units.yard',
+    labelSecondKey: 'units.meter',
+    coef: 0.9144,
+  },
+] as const;
+
 export default function Converter() {
   const { t } = useTranslation('common');
-  const [expanded, setExpanded] = useState<string | false>('false');
-
-  const handleChange =
-    (panel: string) => (_event: React.SyntheticEvent, isExpanded: boolean) => {
-      setExpanded(isExpanded ? panel : 'false');
-    };
+  const [expanded, setExpanded] = useState<string | false>('inchCm');
 
   return (
-    <>
-      <Accordion
-        expanded={expanded === 'panel1'}
-        onChange={handleChange('panel1')}
-      >
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1bh-content"
-          id="panel1bh-header"
+    <div className="converter">
+      {PANELS.map((panel) => (
+        <Accordion
+          key={panel.id}
+          expanded={expanded === panel.id}
+          onChange={(_e, isExpanded) => setExpanded(isExpanded ? panel.id : false)}
+          sx={{ mb: 1 }}
         >
-          <Typography sx={{ width: '33%', flexShrink: 0 }}>
-            {t('converter.inchCm.short')}
-          </Typography>
-          <Typography sx={{ color: 'text.secondary' }}>
-            {t('converter.inchCm.long')}
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <div>{t('converter.inchCm.desc')}</div>
-          <ConverterInputs
-            labelFirst={t('units.inch')}
-            labelSecond={t('units.centimeter')}
-            coef={2.56}
-          />
-        </AccordionDetails>
-      </Accordion>
-      <Accordion
-        expanded={expanded === 'panel2'}
-        onChange={handleChange('panel2')}
-      >
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel2bh-content"
-          id="panel2bh-header"
-        >
-          <Typography sx={{ width: '33%', flexShrink: 0 }}>
-            {t('converter.poundKg.short')}
-          </Typography>
-          <Typography sx={{ color: 'text.secondary' }}>
-            {t('converter.poundKg.long')}
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <div>{t('converter.poundKg.desc')}</div>
-          <ConverterInputs
-            labelFirst={t('units.pound')}
-            labelSecond={t('units.kilogram')}
-            coef={0.453592}
-          />
-        </AccordionDetails>
-      </Accordion>
-      <Accordion
-        expanded={expanded === 'panel3'}
-        onChange={handleChange('panel3')}
-      >
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel3bh-content"
-          id="panel3bh-header"
-        >
-          <Typography sx={{ width: '33%', flexShrink: 0 }}>
-            {t('converter.grainG.short')}
-          </Typography>
-          <Typography sx={{ color: 'text.secondary' }}>
-            {t('converter.grainG.long')}
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <div>{t('converter.grainG.desc')}</div>
-          <ConverterInputs
-            labelFirst={t('units.grain')}
-            labelSecond={t('units.gram')}
-            coef={0.0647989}
-          />
-        </AccordionDetails>
-      </Accordion>
-      <Accordion
-        expanded={expanded === 'panel4'}
-        onChange={handleChange('panel4')}
-      >
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel4bh-content"
-          id="panel4bh-header"
-        >
-          <Typography sx={{ width: '33%', flexShrink: 0 }}>
-            {t('converter.yardM.short')}
-          </Typography>
-          <Typography sx={{ color: 'text.secondary' }}>
-            {t('converter.yardM.long')}
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <div>{t('converter.yardM.desc')}</div>
-          <ConverterInputs
-            labelFirst={t('units.yard')}
-            labelSecond={t('units.meter')}
-            coef={0.9144}
-          />
-        </AccordionDetails>
-      </Accordion>
-    </>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography
+              variant="subtitle1"
+              sx={{ width: { xs: '40%', sm: '33%' }, flexShrink: 0, fontWeight: 700 }}
+            >
+              {t(panel.shortKey)}
+            </Typography>
+            <Typography variant="body2" color="text.secondary" sx={{ alignSelf: 'center' }}>
+              {t(panel.longKey)}
+            </Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+              {t(panel.descKey)}
+            </Typography>
+            <ConverterInputs
+              labelFirst={t(panel.labelFirstKey)}
+              labelSecond={t(panel.labelSecondKey)}
+              coef={panel.coef}
+            />
+          </AccordionDetails>
+        </Accordion>
+      ))}
+    </div>
   );
 }

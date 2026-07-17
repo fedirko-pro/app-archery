@@ -1,13 +1,16 @@
-.converter_inputs {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 8px;
+.converter {
+  .converter_inputs {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    margin-top: 4px;
 
-  .equal {
-    display: block;
-    font-size: 20px;
-    font-weight: bold;
-    color: gray;
+    .equal {
+      font-size: 1.25rem;
+      font-weight: 700;
+      line-height: 1;
+      padding: 0 4px;
+    }
   }
 }

@@ -1,5 +1,6 @@
 import AddIcon from '@mui/icons-material/Add';
 import EmojiEventsOutlinedIcon from '@mui/icons-material/EmojiEventsOutlined';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -9,6 +10,7 @@ import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import { alpha, useTheme } from '@mui/material/styles';
+import MuiTooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { format, parseISO } from 'date-fns';
@@ -142,10 +144,23 @@ const ChartCard: React.FC<ChartCardProps> = ({
   </Card>
 );
 
-const SectionTitle: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <Typography variant="subtitle1" fontWeight={600} color="text.secondary" sx={{ mt: 3, mb: 1 }}>
-    {children}
-  </Typography>
+const SectionTitle: React.FC<{
+  children: React.ReactNode;
+  info?: string;
+}> = ({ children, info }) => (
+  <Box sx={{ mt: 3, mb: 1, display: 'flex', alignItems: 'center', gap: 0.5 }}>
+    <Typography variant="subtitle1" fontWeight={600} color="text.secondary">
+      {children}
+    </Typography>
+    {info && (
+      <MuiTooltip title={info} arrow placement="top" enterTouchDelay={0}>
+        <InfoOutlinedIcon
+          sx={{ fontSize: 18, color: 'text.secondary', cursor: 'help' }}
+          aria-label={info}
+        />
+      </MuiTooltip>
+    )}
+  </Box>
 );
 
 const DASH = '—';
@@ -201,8 +216,10 @@ const MyStatisticsPage: React.FC = () => {
       .finally(() => setAppsLoading(false));
   }, [isAuthenticated]);
 
+  const hasMemberSince = Boolean(isAuthenticated && user?.createdAt);
+
   const regDate = (): string => {
-    if (!isAuthenticated || !user?.createdAt) return DASH;
+    if (!user?.createdAt) return DASH;
     try {
       return format(parseISO(user.createdAt), 'dd MMM yyyy');
     } catch {
@@ -236,12 +253,16 @@ const MyStatisticsPage: React.FC = () => {
             gap: 2,
           }}
         >
-          <EmojiEventsOutlinedIcon sx={{ fontSize: 40, color: 'primary.main', flexShrink: 0 }} />
-          <Box sx={{ flex: 1 }}>
-            <Typography variant="subtitle1" fontWeight={700}>
-              {t('statistics.signInBanner.title')}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
+          <Box sx={{ flex: 1, minWidth: 0 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+              <EmojiEventsOutlinedIcon
+                sx={{ fontSize: 40, color: 'primary.main', flexShrink: 0 }}
+              />
+              <Typography variant="subtitle1" fontWeight={700}>
+                {t('statistics.signInBanner.title')}
+              </Typography>
+            </Box>
+            <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
               {t('statistics.signInBanner.subtitle')}
             </Typography>
           </Box>
@@ -257,10 +278,31 @@ const MyStatisticsPage: React.FC = () => {
       )}
 
       {/* Activity overview */}
-      <SectionTitle>{t('statistics.sections.activity')}</SectionTitle>
+      <SectionTitle info={t('statistics.sections.info.activity')}>
+        {t('statistics.sections.activity')}
+      </SectionTitle>
       <Grid container spacing={2}>
         <Grid size={{ xs: 12, sm: 4 }}>
-          <StatCard label={t('statistics.memberSince')} value={regDate()} />
+          <StatCard
+            label={t('statistics.memberSince')}
+            value={
+              hasMemberSince ? (
+                regDate()
+              ) : (
+                <Box
+                  component="span"
+                  sx={{
+                    fontSize: { xs: '1.1rem', sm: '1.25rem' },
+                    display: 'block',
+                    lineHeight: 1.3,
+                  }}
+                >
+                  {t('statistics.memberSinceEmpty')}
+                </Box>
+              )
+            }
+            valueColor={hasMemberSince ? undefined : 'primary.main'}
+          />
         </Grid>
         <Grid size={{ xs: 6, sm: 4 }}>
           <StatCard label={t('statistics.totalSessions')} value={fmt(stats.totalSessions)} />
@@ -275,7 +317,9 @@ const MyStatisticsPage: React.FC = () => {
       </Grid>
 
       {/* Arrows */}
-      <SectionTitle>{t('statistics.sections.arrows')}</SectionTitle>
+      <SectionTitle info={t('statistics.sections.info.arrows')}>
+        {t('statistics.sections.arrows')}
+      </SectionTitle>
       <Grid container spacing={2}>
         {(['thisWeek', 'thisMonth', 'thisYear', 'total'] as const).map((period) => (
           <Grid key={period} size={{ xs: 6, sm: 3 }}>
@@ -285,7 +329,9 @@ const MyStatisticsPage: React.FC = () => {
       </Grid>
 
       {/* Distance */}
-      <SectionTitle>{t('statistics.sections.distance')}</SectionTitle>
+      <SectionTitle info={t('statistics.sections.info.distance')}>
+        {t('statistics.sections.distance')}
+      </SectionTitle>
       <Grid container spacing={2}>
         {(['thisMonth', 'thisYear', 'total'] as const).map((period) => (
           <Grid key={period} size={{ xs: 6, sm: 4 }}>
@@ -299,7 +345,9 @@ const MyStatisticsPage: React.FC = () => {
       </Grid>
 
       {/* Weight lifted */}
-      <SectionTitle>{t('statistics.sections.lifted')}</SectionTitle>
+      <SectionTitle info={t('statistics.sections.info.lifted')}>
+        {t('statistics.sections.lifted')}
+      </SectionTitle>
       <Grid container spacing={2}>
         <Grid size={{ xs: 12, sm: 4 }}>
           <StatCard
@@ -314,7 +362,9 @@ const MyStatisticsPage: React.FC = () => {
       <Grid container spacing={2} sx={{ mt: 0 }}>
         {/* Training habits */}
         <Grid size={{ xs: 12, md: 6 }}>
-          <SectionTitle>{t('statistics.sections.habits')}</SectionTitle>
+          <SectionTitle info={t('statistics.sections.info.habits')}>
+            {t('statistics.sections.habits')}
+          </SectionTitle>
           <Card variant="outlined">
             <CardContent sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
               {[
@@ -343,7 +393,9 @@ const MyStatisticsPage: React.FC = () => {
 
         {/* Tournaments */}
         <Grid size={{ xs: 12, md: 6 }}>
-          <SectionTitle>{t('statistics.sections.tournaments')}</SectionTitle>
+          <SectionTitle info={t('statistics.sections.info.tournaments')}>
+            {t('statistics.sections.tournaments')}
+          </SectionTitle>
           {appsError && (
             <Alert severity="error" sx={{ mb: 1 }}>
               {t('statistics.loadError')}
@@ -363,7 +415,9 @@ const MyStatisticsPage: React.FC = () => {
         </Grid>
       </Grid>
 
-      <SectionTitle>{t('statistics.sections.scoring')}</SectionTitle>
+      <SectionTitle info={t('statistics.sections.info.scoring')}>
+        {t('statistics.sections.scoring')}
+      </SectionTitle>
       {stats.scoring.avgScore !== null ? (
         <>
           <Grid container spacing={2} sx={{ mb: 2 }}>
@@ -426,7 +480,9 @@ const MyStatisticsPage: React.FC = () => {
         </Typography>
       )}
 
-      <SectionTitle>{t('statistics.sections.equipment')}</SectionTitle>
+      <SectionTitle info={t('statistics.sections.info.equipment')}>
+        {t('statistics.sections.equipment')}
+      </SectionTitle>
       {hasNamedEquipmentStats ? (
         <Card variant="outlined" sx={{ mb: 2 }}>
           <CardContent sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>

@@ -36,9 +36,9 @@ main {
   }
 
   @include mobile {
-    /* 56px header bar + top inset; 50px footer + bottom inset */
+    /* 56px header + top inset; 56px bottom chrome (tabs or footer) + bottom inset */
     min-height: calc(
-      100dvh - 56px - env(safe-area-inset-top, 0px) - 50px - env(safe-area-inset-bottom, 0px)
+      100dvh - 56px - env(safe-area-inset-top, 0px) - 56px - env(safe-area-inset-bottom, 0px)
     );
   }
 }

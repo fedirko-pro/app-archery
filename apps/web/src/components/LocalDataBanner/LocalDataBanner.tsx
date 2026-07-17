@@ -4,7 +4,6 @@ import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
-import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -19,6 +18,7 @@ import { useAuth } from '../../contexts/auth-context';
 import { useLocalData } from '../../contexts/local-data-context';
 import { useEnableSync } from '../../hooks/use-enable-sync';
 import { useStaleCacheHint } from '../../hooks/use-stale-cache-hint';
+import SafeDialog from '../SafeDialog/SafeDialog';
 
 interface LocalDataBannerProps {
   /** When true, shows sync-in-progress state for authenticated users */
@@ -52,8 +52,9 @@ const LocalDataBanner: React.FC<LocalDataBannerProps> = ({ showSyncStatus = fals
 
   const isSyncEnabled = user?.syncTrainingsAndEquipment === true;
 
-  // Stale cache hint — shown when API served cached data, even if browser reports online
-  const showCachedHint = showStaleHint || isOffline;
+  // Stale cache hint — when online but API served cached data.
+  // When offline, AppStatusBar already shows "Working offline" globally.
+  const showCachedHint = showStaleHint && !isOffline;
 
   const cachedHint = showCachedHint ? (
     <Alert severity="warning" sx={{ mb: 1 }} onClose={dismissStaleHint}>
@@ -136,7 +137,7 @@ const LocalDataBanner: React.FC<LocalDataBannerProps> = ({ showSyncStatus = fals
           {t('localData.localStorageBadge')}
         </Alert>
 
-        <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)} maxWidth="xs" fullWidth>
+        <SafeDialog open={dialogOpen} onClose={() => setDialogOpen(false)} maxWidth="xs" fullWidth>
           <DialogTitle>{t('localData.syncDialogTitle')}</DialogTitle>
           <DialogContent>
             <Typography variant="body2" sx={{ whiteSpace: 'pre-line' }}>
@@ -155,7 +156,7 @@ const LocalDataBanner: React.FC<LocalDataBannerProps> = ({ showSyncStatus = fals
               {t('localData.syncDialogAction')}
             </Button>
           </DialogActions>
-        </Dialog>
+        </SafeDialog>
       </>
     );
   }

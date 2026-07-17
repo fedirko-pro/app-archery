@@ -3,9 +3,13 @@ import './user-page.scss';
 import { LockOpen } from '@mui/icons-material';
 import {
   Avatar,
-  Card,
-  CardContent,
+  Box,
+  Button,
   Chip,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   FormControl,
   MenuItem,
   Paper,
@@ -18,205 +22,66 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import Box from '@mui/material/Box';
 import type { SelectChangeEvent } from '@mui/material/Select';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
+import SafeDialog from '../../../components/SafeDialog/SafeDialog';
+
+type Arrow = { id: number; value: number };
+type ScoreRow = { id: number; targetNumber: number; arrows: Arrow[] };
+
+const INITIAL_ROWS: ScoreRow[] = Array.from({ length: 18 }, (_, i) => {
+  const presets: number[][] = [
+    [10, 8, 5],
+    [8, 8, 10],
+    [5, 0, 10],
+    [10, 10, 10],
+    [0, 5, 8],
+    [8, 8, 8],
+    [5, 5, 5],
+    [0, 0, 0],
+    [10, 5, 8],
+    [8, 0, 5],
+    [10, 10, 0],
+    [5, 8, 10],
+    [8, 8, 0],
+    [10, 5, 5],
+    [0, 10, 8],
+    [5, 10, 8],
+    [0, 5, 5],
+    [8, 10, 8],
+  ];
+  const values = presets[i] ?? [0, 0, 0];
+  return {
+    id: i + 1,
+    targetNumber: i + 1,
+    arrows: values.map((value, arrowIndex) => ({ id: arrowIndex + 1, value })),
+  };
+});
+
+const SCORE_OPTIONS = [10, 8, 5, 0] as const;
+
+const DEMO_USER = {
+  firstName: 'Robert',
+  lastName: 'Hood',
+  division: 'Adult Male',
+  gender: 'Male',
+  category: 'HLB',
+  patrolNumber: 13,
+  tournament: 'Test tournament 2024 (demo)',
+  date: '19.05.2024',
+};
 
 export default function UserPage() {
-  const [rows, setRows] = useState([
-    {
-      id: 1,
-      targetNumber: 1,
-      arrows: [
-        { id: 1, value: 10 },
-        { id: 2, value: 8 },
-        { id: 3, value: 5 },
-      ],
-      total: 23,
-    },
-    {
-      id: 2,
-      targetNumber: 2,
-      arrows: [
-        { id: 1, value: 8 },
-        { id: 2, value: 8 },
-        { id: 3, value: 10 },
-      ],
-      total: 26,
-    },
-    {
-      id: 3,
-      targetNumber: 3,
-      arrows: [
-        { id: 1, value: 5 },
-        { id: 2, value: 0 },
-        { id: 3, value: 10 },
-      ],
-      total: 15,
-    },
-    {
-      id: 4,
-      targetNumber: 4,
-      arrows: [
-        { id: 1, value: 10 },
-        { id: 2, value: 10 },
-        { id: 3, value: 10 },
-      ],
-      total: 30,
-    },
-    {
-      id: 5,
-      targetNumber: 5,
-      arrows: [
-        { id: 1, value: 0 },
-        { id: 2, value: 5 },
-        { id: 3, value: 8 },
-      ],
-      total: 13,
-    },
-    {
-      id: 6,
-      targetNumber: 6,
-      arrows: [
-        { id: 1, value: 8 },
-        { id: 2, value: 8 },
-        { id: 3, value: 8 },
-      ],
-      total: 24,
-    },
-    {
-      id: 7,
-      targetNumber: 7,
-      arrows: [
-        { id: 1, value: 5 },
-        { id: 2, value: 5 },
-        { id: 3, value: 5 },
-      ],
-      total: 15,
-    },
-    {
-      id: 8,
-      targetNumber: 8,
-      arrows: [
-        { id: 1, value: 0 },
-        { id: 2, value: 0 },
-        { id: 3, value: 0 },
-      ],
-      total: 0,
-    },
-    {
-      id: 9,
-      targetNumber: 9,
-      arrows: [
-        { id: 1, value: 10 },
-        { id: 2, value: 5 },
-        { id: 3, value: 8 },
-      ],
-      total: 23,
-    },
-    {
-      id: 10,
-      targetNumber: 10,
-      arrows: [
-        { id: 1, value: 8 },
-        { id: 2, value: 0 },
-        { id: 3, value: 5 },
-      ],
-      total: 13,
-    },
-    {
-      id: 11,
-      targetNumber: 11,
-      arrows: [
-        { id: 1, value: 10 },
-        { id: 2, value: 10 },
-        { id: 3, value: 0 },
-      ],
-      total: 20,
-    },
-    {
-      id: 12,
-      targetNumber: 12,
-      arrows: [
-        { id: 1, value: 5 },
-        { id: 2, value: 8 },
-        { id: 3, value: 10 },
-      ],
-      total: 23,
-    },
-    {
-      id: 13,
-      targetNumber: 13,
-      arrows: [
-        { id: 1, value: 8 },
-        { id: 2, value: 8 },
-        { id: 3, value: 0 },
-      ],
-      total: 16,
-    },
-    {
-      id: 14,
-      targetNumber: 14,
-      arrows: [
-        { id: 1, value: 10 },
-        { id: 2, value: 5 },
-        { id: 3, value: 5 },
-      ],
-      total: 20,
-    },
-    {
-      id: 15,
-      targetNumber: 15,
-      arrows: [
-        { id: 1, value: 0 },
-        { id: 2, value: 10 },
-        { id: 3, value: 8 },
-      ],
-      total: 18,
-    },
-    {
-      id: 16,
-      targetNumber: 16,
-      arrows: [
-        { id: 1, value: 5 },
-        { id: 2, value: 10 },
-        { id: 3, value: 8 },
-      ],
-      total: 23,
-    },
-    {
-      id: 17,
-      targetNumber: 17,
-      arrows: [
-        { id: 1, value: 0 },
-        { id: 2, value: 5 },
-        { id: 3, value: 5 },
-      ],
-      total: 10,
-    },
-    {
-      id: 18,
-      targetNumber: 18,
-      arrows: [
-        { id: 1, value: 8 },
-        { id: 2, value: 10 },
-        { id: 3, value: 8 },
-      ],
-      total: 26,
-    },
-  ]);
+  const { t } = useTranslation('common');
+  const [rows, setRows] = useState<ScoreRow[]>(INITIAL_ROWS);
   const [submitted, setSubmitted] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false);
 
-  // Demo user data
-  const demoUser = {
-    firstName: 'Robert',
-    lastName: 'Hood',
-    division: 'Adult Male',
-    gender: 'Male',
-    category: 'HLB',
-    patrolNumber: 13,
-    tournament: 'Test tournament 2024 (demo)',
-    date: '19.05.2024',
+  const handleSubmit = () => {
+    setSubmitted(true);
+    setConfirmOpen(true);
   };
 
   const handleArrowChange = (rowId: number, arrowId: number, value: number) => {
@@ -232,195 +97,206 @@ export default function UserPage() {
     );
   };
 
-  let sum = 0;
+  const { rowTotals, runningTotals, grandTotal } = useMemo(() => {
+    let running = 0;
+    const totals: number[] = [];
+    const runningList: number[] = [];
+    for (const row of rows) {
+      const rowTotal = row.arrows.reduce((acc, a) => acc + a.value, 0);
+      running += rowTotal;
+      totals.push(rowTotal);
+      runningList.push(running);
+    }
+    return { rowTotals: totals, runningTotals: runningList, grandTotal: running };
+  }, [rows]);
 
   return (
-    <section>
-      <div className="container user_page">
-        <Card sx={{ mb: 3 }}>
-          <CardContent>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
-              <Avatar
-                alt={`${demoUser.firstName} ${demoUser.lastName}`}
-                sx={{ width: 80, height: 80 }}
-              >
-                RH
-              </Avatar>
-              <Box sx={{ flex: 1 }}>
-                <Typography variant="h4" component="h1" gutterBottom>
-                  {demoUser.firstName} {demoUser.lastName}
-                  <LockOpen sx={{ ml: 1, verticalAlign: 'middle', color: 'success.main' }} />
-                </Typography>
-                <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
-                  <Chip
-                    label={`Division: ${demoUser.division}`}
-                    color="primary"
-                    variant="outlined"
-                  />
-                  <Chip label={`Gender: ${demoUser.gender}`} color="secondary" variant="outlined" />
-                  <Chip label={`Category: ${demoUser.category}`} variant="outlined" />
-                </Box>
-              </Box>
-            </Box>
-
-            <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
-              {demoUser.tournament}
-            </Typography>
-
-            <Box sx={{ display: 'flex', gap: 3, mt: 2 }}>
-              <Box>
-                <Typography variant="body2" color="text.secondary">
-                  Patrol №
-                </Typography>
-                <Typography variant="h6">{demoUser.patrolNumber}</Typography>
-              </Box>
-              <Box>
-                <Typography variant="body2" color="text.secondary">
-                  Date
-                </Typography>
-                <Typography variant="h6">{demoUser.date}</Typography>
-              </Box>
-            </Box>
-          </CardContent>
-        </Card>
-      </div>
+    <section className="scoring-demo">
       <div className="container">
-        <TableContainer component={Paper}>
-          <Table>
-            <TableHead>
-              <TableRow
-                sx={{
-                  '&:last-child td': { border: 0 },
-                  backgroundColor: 'lightgrey',
-                }}
+        <Box sx={{ mb: 2 }}>
+          <Typography variant="h4" component="h1" sx={{ mb: 0.5 }}>
+            {t('pages.scoringDemo.title')}
+          </Typography>
+          <Typography variant="body2" component="h2" color="text.secondary">
+            {t('pages.scoringDemo.description')}
+          </Typography>
+        </Box>
+
+        <Box
+          sx={{
+            mb: 2,
+            p: 2,
+            borderRadius: 1,
+            border: 1,
+            borderColor: 'divider',
+            bgcolor: 'background.paper',
+          }}
+        >
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 1.5 }}>
+            <Avatar
+              alt={`${DEMO_USER.firstName} ${DEMO_USER.lastName}`}
+              sx={{ width: 64, height: 64, bgcolor: 'primary.main' }}
+            >
+              RH
+            </Avatar>
+            <Box sx={{ flex: 1, minWidth: 0 }}>
+              <Typography
+                variant="h6"
+                component="h3"
+                sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}
               >
-                <TableCell
-                  align="center"
-                  sx={{
-                    borderRight: '1px solid lightgrey',
-                    padding: '4px',
-                  }}
-                >
-                  Set
+                {DEMO_USER.firstName} {DEMO_USER.lastName}
+                <LockOpen fontSize="small" color="success" />
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                {DEMO_USER.tournament}
+              </Typography>
+            </Box>
+          </Box>
+
+          <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', mb: 1.5 }}>
+            <Chip
+              size="small"
+              label={`${t('pages.scoringDemo.division')}: ${DEMO_USER.division}`}
+              color="primary"
+              variant="outlined"
+            />
+            <Chip
+              size="small"
+              label={`${t('pages.scoringDemo.gender')}: ${DEMO_USER.gender}`}
+              variant="outlined"
+            />
+            <Chip
+              size="small"
+              label={`${t('pages.scoringDemo.category')}: ${DEMO_USER.category}`}
+              variant="outlined"
+            />
+          </Box>
+
+          <Box sx={{ display: 'flex', gap: 3, flexWrap: 'wrap' }}>
+            <Box>
+              <Typography variant="body2" color="text.secondary">
+                {t('pages.scoringDemo.patrol')}
+              </Typography>
+              <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
+                {DEMO_USER.patrolNumber}
+              </Typography>
+            </Box>
+            <Box>
+              <Typography variant="body2" color="text.secondary">
+                {t('pages.scoringDemo.date')}
+              </Typography>
+              <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
+                {DEMO_USER.date}
+              </Typography>
+            </Box>
+          </Box>
+        </Box>
+
+        <TableContainer component={Paper} variant="outlined" sx={{ mb: 2 }}>
+          <Table size="small" className="scoring-demo__table">
+            <TableHead>
+              <TableRow sx={{ bgcolor: 'action.hover' }}>
+                <TableCell align="center" sx={{ fontWeight: 700 }}>
+                  {t('pages.scoringDemo.set')}
                 </TableCell>
                 {rows[0].arrows.map((arrow, index) => (
-                  <TableCell align="center" key={arrow.id}>
+                  <TableCell align="center" key={arrow.id} sx={{ fontWeight: 700 }}>
                     {index + 1}
                   </TableCell>
                 ))}
-                <TableCell
-                  align="center"
-                  sx={{
-                    backgroundColor: 'lightgrey',
-                    padding: '4px',
-                    textAlign: 'center',
-                  }}
-                >
-                  Sum
+                <TableCell align="center" sx={{ fontWeight: 700, bgcolor: 'action.selected' }}>
+                  {t('pages.scoringDemo.sum')}
                 </TableCell>
-                <TableCell
-                  align="center"
-                  sx={{
-                    padding: '4px',
-                  }}
-                >
-                  Total
+                <TableCell align="center" sx={{ fontWeight: 700 }}>
+                  {t('pages.scoringDemo.total')}
                 </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows.map((row) => {
-                const rowTotal = row.arrows.reduce((acc, a) => acc + a.value, 0);
-                const subSum = sum + rowTotal;
-                sum = sum + rowTotal;
-                return (
-                  <TableRow key={row.targetNumber} sx={{ '&:last-child td': { border: 0 } }}>
-                    <TableCell
-                      align="center"
-                      sx={{
-                        padding: '4px',
-                      }}
-                    >
-                      <b>{row.targetNumber}</b>
-                    </TableCell>
-                    {row.arrows.map((arrow) => (
-                      <TableCell
-                        key={arrow.id}
-                        sx={{
-                          padding: 0,
-                          textAlign: 'center',
-                        }}
-                      >
-                        {/*{arrow.value}*/}
-                        <FormControl fullWidth disabled={submitted}>
-                          <Select
-                            // labelId="demo-simple-select-label"
-                            // id="demo-simple-select"
-                            value={arrow.value}
-                            disabled={submitted}
-                            // label="Age"
-                            onChange={(e: SelectChangeEvent<number>) =>
-                              handleArrowChange(row.id, arrow.id, Number(e.target.value))
-                            }
-                          >
-                            <MenuItem value={10} sx={{ color: 'green' }}>
-                              10
+              {rows.map((row, rowIndex) => (
+                <TableRow key={row.targetNumber}>
+                  <TableCell align="center" sx={{ fontWeight: 700 }}>
+                    {row.targetNumber}
+                  </TableCell>
+                  {row.arrows.map((arrow) => (
+                    <TableCell key={arrow.id} align="center" sx={{ p: 0.5, minWidth: 64 }}>
+                      <FormControl fullWidth size="small" disabled={submitted}>
+                        <Select
+                          value={arrow.value}
+                          disabled={submitted}
+                          onChange={(e: SelectChangeEvent<number>) =>
+                            handleArrowChange(row.id, arrow.id, Number(e.target.value))
+                          }
+                        >
+                          {SCORE_OPTIONS.map((score) => (
+                            <MenuItem
+                              key={score}
+                              value={score}
+                              sx={
+                                score === 10
+                                  ? { color: 'success.main', fontWeight: 700 }
+                                  : undefined
+                              }
+                            >
+                              {score}
                             </MenuItem>
-                            <MenuItem value={8}>8</MenuItem>
-                            <MenuItem value={5}>5</MenuItem>
-                            <MenuItem value={0}>0</MenuItem>
-                          </Select>
-                        </FormControl>
-                      </TableCell>
-                    ))}
-                    <TableCell
-                      align="center"
-                      sx={{
-                        backgroundColor: 'lightgrey',
-                        padding: '4px',
-                      }}
-                    >
-                      {rowTotal}
+                          ))}
+                        </Select>
+                      </FormControl>
                     </TableCell>
-                    <TableCell
-                      align="center"
-                      sx={{
-                        padding: '4px',
-                      }}
-                    >
-                      {subSum}
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-              <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                <TableCell colSpan={5}>Total scores:</TableCell>
+                  ))}
+                  <TableCell align="center" sx={{ bgcolor: 'action.hover' }}>
+                    {rowTotals[rowIndex]}
+                  </TableCell>
+                  <TableCell align="center">{runningTotals[rowIndex]}</TableCell>
+                </TableRow>
+              ))}
+              <TableRow>
+                <TableCell colSpan={5} align="right" sx={{ fontWeight: 700 }}>
+                  {t('pages.scoringDemo.totalScores')}
+                </TableCell>
                 <TableCell
-                  sx={{
-                    backgroundColor: 'lightgreen',
-                  }}
+                  align="center"
+                  sx={{ fontWeight: 700, bgcolor: 'success.light', color: 'success.contrastText' }}
                 >
-                  <b>{sum}</b>
+                  {grandTotal}
                 </TableCell>
               </TableRow>
             </TableBody>
           </Table>
         </TableContainer>
-        <Box
-          className="right_wrapper"
-          sx={{
-            marginTop: '16px',
-          }}
-        >
-          <button
-            type="button"
-            className="button submit"
-            onClick={() => setSubmitted(true)}
+
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleSubmit}
             disabled={submitted}
+            sx={{ minWidth: 160 }}
           >
-            {submitted ? 'Submitted' : 'Submit'}
-          </button>
+            {submitted ? t('pages.scoringDemo.submitted') : t('pages.scoringDemo.submit')}
+          </Button>
         </Box>
+
+        <SafeDialog
+          open={confirmOpen}
+          onClose={() => setConfirmOpen(false)}
+          maxWidth="sm"
+          fullWidth
+        >
+          <DialogTitle>{t('pages.scoringDemo.confirmTitle')}</DialogTitle>
+          <DialogContent>
+            <DialogContentText sx={{ whiteSpace: 'pre-wrap' }}>
+              {t('pages.scoringDemo.confirmMessage')}
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions sx={{ px: 3, pb: 2 }}>
+            <Button variant="contained" color="primary" onClick={() => setConfirmOpen(false)}>
+              {t('pages.scoringDemo.confirmClose')}
+            </Button>
+          </DialogActions>
+        </SafeDialog>
       </div>
     </section>
   );

@@ -15,7 +15,9 @@
     "myTrainings": "Allenamenti",
     "myEquipment": "Equipaggiamento",
     "myStatistics": "Statistiche",
+    "athleteTabs": "Navigazione principale",
     "converter": "Convertitore",
+    "calculator": "Calcolatrice",
     "categories": "Categorie",
     "rules": "Regole",
     "about": "Informazioni sull'app",
@@ -23,7 +25,7 @@
     "userApplications": "Domande degli utenti",
     "accessControl": "Controllo accessi",
     "divisions": "Divisioni",
-    "scoringDemo": "Scheda Punteggio (Demo)",
+    "scoringDemo": "Scheda Punteggio (demo senza carta)",
     "glossary": "Glossario",
     "fieldGuide": "Guida da Campo"
   },
@@ -154,6 +156,28 @@
       "title": "Convertitore per tiro con l'arco",
       "description": "Convertire tra pollici/cm, libbre/kg, grani/grammi, iarde/metri"
     },
+    "calculator": {
+      "title": "Calcolatrice per tiro con l'arco",
+      "description": "FOC, peso freccia, energia cinetica, lunghezza di trazione, suggerimento spine e grani per libbra"
+    },
+    "scoringDemo": {
+      "title": "Scheda punteggi (demo senza carta)",
+      "description": "Demo interattiva di una scheda punteggi di torneo. I punteggi sono di esempio e non vengono salvati.",
+      "division": "Divisione",
+      "gender": "Genere",
+      "category": "Categoria",
+      "patrol": "Pattuglia n.",
+      "date": "Data",
+      "set": "Serie",
+      "sum": "Somma",
+      "total": "Totale",
+      "totalScores": "Punteggio totale",
+      "submit": "Invia",
+      "submitted": "Inviato",
+      "confirmTitle": "Risultati inviati",
+      "confirmMessage": "Grazie per aver inviato i punteggi! I dati sono stati inviati al server (o verranno inviati quando tornerai online) e verranno elaborati automaticamente. I vincitori saranno determinati non appena tutte le altre pattuglie avranno inviato i propri risultati.",
+      "confirmClose": "OK"
+    },
     "divisions": {
       "title": "Divisioni",
       "description": "Divisioni di gara raggruppate per regole"
@@ -245,6 +269,7 @@
         "divisions": "Gestione divisioni - Gestione di gruppi di età e divisioni collegate alle regole",
         "rules": "Gestione regole - Regole ufficiali di tiro con l'arco con descrizioni multilingue e download PDF (WA, NFAA, IBO, FITARCO, RFETA, AGB, FPTA, FSLU, FABP e altri)",
         "converter": "Convertitore unità - Convertire tra misure comuni di tiro con l'arco (pollici/cm, libbre/kg, grani/grammi, iarde/metri)",
+        "calculator": "Calcolatrice per tiro con l'arco - FOC, peso totale freccia (GPI), energia cinetica e quantità di moto, stima lunghezza di trazione, suggerimento spine approssimativo e grani per libbra (GPP)",
         "uploads": "Sistema caricamento file - Elaborazione immagini per avatar e banner, gestione allegati per tornei",
         "multilang": "Supporto multilingua - Disponibile in 6 lingue: inglese, ucraino, spagnolo, italiano, portoghese e tedesco",
         "pwa": "Applicazione web progressiva - PWA installabile con funzionalità offline",
@@ -642,6 +667,70 @@
       "desc": "Conversioni di distanza del campo"
     }
   },
+  "calculator": {
+    "enterValues": "Inserisci i valori per calcolare",
+    "foc": {
+      "short": "FOC",
+      "title": "Front of Center",
+      "desc": "Misura la lunghezza della freccia e il punto di equilibrio dalla gola del nock. FOC tipico da target ≈ 7–12%; caccia spesso 10–18%.",
+      "arrowLength": "Lunghezza freccia (pollici)",
+      "balancePoint": "Punto di equilibrio (pollici)",
+      "balanceHint": "Dalla gola del nock al punto di equilibrio",
+      "hintLow": "Un po' basso — comune in alcuni setup da target",
+      "hintTarget": "Intervallo tipico target / indoor",
+      "hintHunting": "FOC tipico caccia / outdoor",
+      "hintHigh": "FOC alto — controlla volo e clearance"
+    },
+    "arrowWeight": {
+      "short": "GPI",
+      "title": "Peso freccia",
+      "desc": "Peso totale da GPI dell'asta più punta, insert, nock e impennaggio.",
+      "gpi": "GPI asta (gr/pollice)",
+      "shaftLength": "Lunghezza asta (pollici)",
+      "point": "Punta (grani)",
+      "insert": "Insert (grani)",
+      "nock": "Nock (grani)",
+      "fletching": "Impennaggio (grani)"
+    },
+    "ke": {
+      "short": "KE",
+      "title": "Energia cinetica e quantità di moto",
+      "desc": "Stima energia cinetica (ft·lb) e quantità di moto da peso freccia e velocità.",
+      "arrowWeight": "Peso freccia (grani)",
+      "speed": "Velocità (fps)",
+      "resultHint": "Cronografa l'arco per maggiore precisione"
+    },
+    "drawLength": {
+      "short": "Trazione",
+      "title": "Stima lunghezza di trazione",
+      "desc": "Stima stile AMO: apertura braccia (punta dito a punta dito) ÷ 2,5. Conferma con una misura corretta.",
+      "wingspan": "Apertura braccia (pollici)",
+      "wingspanHint": "Braccia tese, punta dito a punta dito",
+      "resultHint": "Solo stima — verifica su tavola di trazione o con un coach"
+    },
+    "spine": {
+      "short": "Spine",
+      "title": "Suggerimento spine",
+      "desc": "Fascia spine carbonio approssimativa da libbraggio, lunghezza freccia e peso punta. Controlla sempre la tabella del produttore.",
+      "drawWeight": "Libbraggio (lb)",
+      "arrowLength": "Lunghezza freccia (pollici)",
+      "pointWeight": "Peso punta (grani)",
+      "result": "Circa {{low}}–{{high}} spine",
+      "resultHint": "Libbraggio effettivo usato: {{dw}} lb · solo orientamento",
+      "consultManual": "Consulta sempre il manuale e la tabella spine del produttore prima di scegliere le frecce."
+    },
+    "gpp": {
+      "short": "GPP",
+      "title": "Grani per libbra",
+      "desc": "Peso freccia diviso per libbraggio. Spesso usato come controllo rapido del setup.",
+      "arrowWeight": "Peso freccia (grani)",
+      "drawWeight": "Libbraggio (lb)",
+      "hintLight": "Leggero per molti setup da caccia — ok per alcuni archi da target",
+      "hintTarget": "Intervallo tipico target / velocità",
+      "hintHunting": "Intervallo tipico caccia",
+      "hintHeavy": "Setup pesante — più lento, più quantità di moto"
+    }
+  },
   "common": {
     "or": "oppure",
     "cancel": "Annulla",
@@ -654,6 +743,10 @@
     "saving": "Salvataggio...",
     "delete": "Elimina",
     "deleting": "Eliminazione..."
+  },
+  "sharing": {
+    "authRequiredTitle": "Accedi per condividere",
+    "authRequiredMessage": "La condivisione di traguardi e progressi è disponibile solo per gli utenti registrati. Accedi o crea un account per condividere."
   },
   "auth": {
     "logout": "Esci",
@@ -696,6 +789,8 @@
     "installing": "Installazione…",
     "dismiss": "Non ora",
     "installAria": "Avviso per installare l'app",
+    "iosInstallPrompt": "Aggiungi Sokil alla schermata Home: tocca Condividi, poi Aggiungi a Home.",
+    "iosInstallAria": "Suggerimento: aggiungi a Home",
     "updateAvailable": "È disponibile una nuova versione.",
     "updateReload": "Ricarica"
   },
@@ -736,9 +831,21 @@
       "lifted": "Peso Sollevato",
       "habits": "Abitudini di Allenamento",
       "tournaments": "Tornei",
-      "equipment": "Prestazioni per attrezzatura"
+      "equipment": "Prestazioni per attrezzatura",
+      "scoring": "Punteggio",
+      "info": {
+        "activity": "Panoramica dell'attività del tuo account: data di iscrizione, sessioni registrate e serie di allenamento attuale.",
+        "arrows": "Qui contiamo tutte le sessioni di allenamento e i tornei confermati.",
+        "distance": "Calcoliamo la distanza al bersaglio e ritorno dalla posizione di tiro.",
+        "lifted": "Calcoliamo in base al setup dell'arco usato durante le sessioni di allenamento e i tornei.",
+        "habits": "I tuoi schemi di allenamento più comuni: frecce medie per sessione, distanza preferita, tipo di bersaglio e attrezzatura.",
+        "tournaments": "Conteggio delle iscrizioni ai tornei che hai inviato, incluse quelle approvate e rifiutate.",
+        "scoring": "Punteggi delle sessioni di allenamento concluse in cui hai registrato un risultato.",
+        "equipment": "Ripartizione delle prestazioni per setup dell'arco usato nelle sessioni registrate."
+      }
     },
     "memberSince": "Membro dal",
+    "memberSinceEmpty": "Non ancora? Registrati!",
     "totalSessions": "Sessioni totali",
     "currentStreak": "Serie attuale",
     "weeks": "settimane di fila",
@@ -782,9 +889,17 @@
     "recentSessions": "Sessioni recenti",
     "noSessions": "Nessuna sessione di allenamento. Registra la prima!",
     "logTraining": "Registra allenamento",
+    "logTrainingTitle": "Pronto ad allenarti?",
+    "logTrainingSubtitle": "Registra frecce, distanza e attrezzatura.",
+    "continueSession": "Continua sessione",
+    "continueSessionTitle": "Sessione in corso",
+    "offlineNetworkHint": "Disponibile quando torni online",
     "logTodaysSession": "Registra la sessione di oggi",
     "sameAsLastTime": "Come l'ultima volta",
     "upcomingTournaments": "Prossimi tornei",
+    "discoveryDisclaimer": "In base al tuo profilo e alla tua attività, questi prossimi tornei potrebbero interessarti.",
+    "appliedTournamentsDisclaimer": "Prossimi eventi a cui ti sei iscritto.",
+    "browseAllTournaments": "Vedi tutti i tornei",
     "viewAllApplications": "Vedi tutte le candidature",
     "viewAllTrainings": "Vedi tutti gli allenamenti",
     "viewStatistics": "Vedi statistiche complete",
@@ -815,7 +930,7 @@
       "dismiss": "Non ora"
     },
     "lastAchievement": {
-      "title": "Ultimo traguardo",
+      "title": "Traguardo più recente",
       "earnedOn": "Ottenuto il {{date}}",
       "viewAll": "Vedi tutti"
     }

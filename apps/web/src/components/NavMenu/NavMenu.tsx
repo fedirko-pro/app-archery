@@ -28,9 +28,8 @@ function NavMenu() {
     return null;
   }
 
-  const clickHandler = () => {
-    setActive(!active);
-  };
+  const toggleMenu = () => setActive((prev) => !prev);
+  const closeMenu = () => setActive(false);
 
   const mainMenuItems = [
     { link: '/tournaments', label: t('nav.tournaments') },
@@ -91,12 +90,12 @@ function NavMenu() {
 
   return (
     <>
-      <div className={classNames('hamburger', { hidden_smooth: active })} onClick={clickHandler}>
+      <div className={classNames('hamburger', { hidden_smooth: active })} onClick={toggleMenu}>
         <span></span>
         <span></span>
         <span></span>
       </div>
-      <Menu active={active} sections={sections} position={'left'} clickHandle={clickHandler} />
+      <Menu active={active} sections={sections} position={'left'} clickHandle={closeMenu} />
     </>
   );
 }

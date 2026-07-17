@@ -1,7 +1,9 @@
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
+import DownloadIcon from '@mui/icons-material/Download';
 import EditIcon from '@mui/icons-material/Edit';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import {
   Accordion,
   AccordionDetails,
@@ -386,16 +388,35 @@ const Rules: React.FC = () => {
                 {pickLocalizedDescription(rule as unknown as Record<string, unknown>, appLang) ||
                   ''}
               </Box>
-              <Box sx={{ mt: 1, display: 'flex', gap: 2, alignItems: 'center', flexWrap: 'wrap' }}>
+              <Box
+                sx={{
+                  mt: 1.5,
+                  display: 'flex',
+                  gap: 1.5,
+                  alignItems: 'stretch',
+                  flexWrap: 'wrap',
+                }}
+              >
                 {rule.link && (
-                  <MuiLink href={rule.link} target="_blank" rel="noopener noreferrer">
+                  <Button
+                    component={MuiLink}
+                    href={rule.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    variant="outlined"
+                    startIcon={<OpenInNewIcon />}
+                    sx={{ flex: 1, minWidth: { xs: '100%', sm: 200 }, textDecoration: 'none' }}
+                  >
                     {t('pages.rules.openOfficialPage')}
-                  </MuiLink>
+                  </Button>
                 )}
                 {buildDownloadHref(rule.downloadLink) && (
                   <Button
-                    variant="outlined"
+                    variant="contained"
+                    color="primary"
+                    startIcon={<DownloadIcon />}
                     onClick={() => rule.downloadLink && handleDownloadPdf(rule.downloadLink)}
+                    sx={{ flex: 1, minWidth: { xs: '100%', sm: 200 } }}
                   >
                     {t('pages.rules.downloadPdf')}
                   </Button>

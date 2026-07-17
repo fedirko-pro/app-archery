@@ -1,4 +1,4 @@
-import AddIcon from '@mui/icons-material/Add';
+import CheckIcon from '@mui/icons-material/Check';
 import RemoveIcon from '@mui/icons-material/Remove';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -8,8 +8,10 @@ import CardContent from '@mui/material/CardContent';
 import Chip from '@mui/material/Chip';
 import IconButton from '@mui/material/IconButton';
 import MenuItem from '@mui/material/MenuItem';
+import { useTheme } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -25,6 +27,8 @@ interface ActiveSessionCardProps {
 
 const ActiveSessionCard: React.FC<ActiveSessionCardProps> = ({ session, onFinish }) => {
   const { t } = useTranslation('common');
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const { equipmentSets, editTrainingSession, incrementSessionShots, isSessionPersisting } =
     useLocalData();
 
@@ -73,9 +77,26 @@ const ActiveSessionCard: React.FC<ActiveSessionCardProps> = ({ session, onFinish
   };
 
   return (
-    <Card variant="outlined" sx={{ borderColor: 'primary.main', borderWidth: 2 }}>
-      <CardContent>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
+    <Card
+      variant="outlined"
+      sx={{
+        borderColor: 'primary.main',
+        borderWidth: 2,
+        ...(isMobile && {
+          mx: { xs: -1, sm: 0 },
+          borderRadius: { xs: 2, sm: 1 },
+        }),
+      }}
+    >
+      <CardContent
+        sx={{
+          pt: 2,
+          px: 2,
+          pb: 1,
+          '&:last-child': { pb: 1 },
+        }}
+      >
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1.5 }}>
           <Chip label={t('trainings.inProgress')} color="primary" size="small" />
           <Typography variant="h6" sx={{ flex: 1 }}>
             {formatDate(session.date)}
@@ -87,7 +108,7 @@ const ActiveSessionCard: React.FC<ActiveSessionCardProps> = ({ session, onFinish
             display: 'grid',
             gridTemplateColumns: '1fr auto 1fr',
             alignItems: 'center',
-            my: 2,
+            my: isMobile ? 2 : 1.5,
           }}
         >
           <Box sx={{ display: 'flex', justifyContent: 'flex-end', pr: 1 }}>
@@ -96,20 +117,29 @@ const ActiveSessionCard: React.FC<ActiveSessionCardProps> = ({ session, onFinish
               onClick={handleRemoveShot}
               disabled={isPersisting || shots <= 0}
               size="large"
+              sx={{
+                width: isMobile ? 56 : undefined,
+                height: isMobile ? 56 : undefined,
+              }}
             >
               <RemoveIcon fontSize="inherit" />
             </IconButton>
           </Box>
-          <Typography variant="h3" fontWeight={700} textAlign="center">
+          <Typography
+            variant={isMobile ? 'h2' : 'h3'}
+            fontWeight={700}
+            textAlign="center"
+            sx={{ lineHeight: 1.1 }}
+          >
             {shots}
           </Typography>
           <Box />
         </Box>
-        <Typography variant="body2" color="text.secondary" textAlign="center" sx={{ mb: 2 }}>
+        <Typography variant="body2" color="text.secondary" textAlign="center" sx={{ mb: 1.5 }}>
           {t('trainings.shotsCount')}
         </Typography>
 
-        <Box sx={{ display: 'flex', gap: 1, mb: 2, alignItems: 'center' }}>
+        <Box sx={{ display: 'flex', gap: 1, mb: 1.5, alignItems: 'center' }}>
           <TextField
             label={t('trainings.arrowsPerSet')}
             type="number"
@@ -127,11 +157,23 @@ const ActiveSessionCard: React.FC<ActiveSessionCardProps> = ({ session, onFinish
           />
         </Box>
 
-        <Box sx={{ display: 'flex', gap: 1, mb: 2 }}>
-          <Button variant="outlined" fullWidth onClick={handleAddShot} disabled={isPersisting}>
+        <Box sx={{ display: 'flex', gap: 1, mb: 1.5, flexDirection: isMobile ? 'column' : 'row' }}>
+          <Button
+            variant="outlined"
+            fullWidth
+            onClick={handleAddShot}
+            disabled={isPersisting}
+            sx={{ minHeight: isMobile ? 48 : undefined }}
+          >
             {t('trainings.addShot')}
           </Button>
-          <Button variant="contained" fullWidth onClick={handleAddSet} disabled={isPersisting}>
+          <Button
+            variant="contained"
+            fullWidth
+            onClick={handleAddSet}
+            disabled={isPersisting}
+            sx={{ minHeight: isMobile ? 48 : undefined }}
+          >
             {t('trainings.addSet')} (+{setSize})
           </Button>
         </Box>
@@ -180,8 +222,24 @@ const ActiveSessionCard: React.FC<ActiveSessionCardProps> = ({ session, onFinish
           )}
         </Box>
       </CardContent>
-      <CardActions sx={{ justifyContent: 'flex-end', px: 2, pb: 2 }}>
-        <Button variant="contained" color="success" startIcon={<AddIcon />} onClick={onFinish}>
+      <CardActions
+        sx={{
+          justifyContent: isMobile ? 'stretch' : 'flex-end',
+          px: 2,
+          pt: 0,
+          pb: 1.5,
+          gap: 0,
+        }}
+      >
+        <Button
+          variant="contained"
+          color="success"
+          startIcon={<CheckIcon />}
+          onClick={onFinish}
+          fullWidth={isMobile}
+          size={isMobile ? 'large' : 'medium'}
+          sx={{ minHeight: isMobile ? 48 : undefined, my: 2, mx: 0 }}
+        >
           {t('trainings.finishSession')}
         </Button>
       </CardActions>

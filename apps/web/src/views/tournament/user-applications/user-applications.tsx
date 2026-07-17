@@ -14,18 +14,21 @@ import {
   Snackbar,
   Typography,
 } from '@mui/material';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 
 import apiService from '../../../services/api';
-import type { TournamentApplicationDto } from '../../../services/types';
+import type { TournamentApplicationDto, TournamentDto } from '../../../services/types';
 import { formatDate } from '../../../utils/date-utils';
+import { resolveTournamentBanner } from '../../../utils/placeholder-images';
 
 const UserApplications: React.FC = () => {
   const location = useLocation();
+  const { lang } = useParams();
   const { t } = useTranslation('common');
   const [applications, setApplications] = useState<TournamentApplicationDto[]>([]);
+  const [tournamentsById, setTournamentsById] = useState<Map<string, TournamentDto>>(new Map());
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(
@@ -37,21 +40,33 @@ const UserApplications: React.FC = () => {
   }>({ open: false, applicationId: null });
 
   useEffect(() => {
-    fetchApplications();
+    void fetchApplications();
   }, []);
 
   const fetchApplications = async () => {
     try {
       setLoading(true);
-      const data = await apiService.getMyApplications();
-      setApplications(data);
-    } catch (error) {
+      const [apps, tournaments] = await Promise.all([
+        apiService.getMyApplications(),
+        apiService.getAllTournaments().catch(() => [] as TournamentDto[]),
+      ]);
+      setApplications(apps);
+      setTournamentsById(new Map(tournaments.map((tournament) => [tournament.id, tournament])));
+    } catch (err) {
       setError(t('pages.applications.fetchError'));
-      console.error('Error fetching applications:', error);
+      console.error('Error fetching applications:', err);
     } finally {
       setLoading(false);
     }
   };
+
+  const sortedApplications = useMemo(
+    () =>
+      [...applications].sort(
+        (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+      ),
+    [applications],
+  );
 
   const handleWithdraw = async () => {
     if (!withdrawDialog.applicationId) return;
@@ -59,10 +74,10 @@ const UserApplications: React.FC = () => {
     try {
       await apiService.withdrawApplication(withdrawDialog.applicationId);
       setWithdrawDialog({ open: false, applicationId: null });
-      fetchApplications();
-    } catch (error) {
+      void fetchApplications();
+    } catch (err) {
       setError('Failed to withdraw application');
-      console.error('Error withdrawing application:', error);
+      console.error('Error withdrawing application:', err);
     }
   };
 
@@ -79,19 +94,18 @@ const UserApplications: React.FC = () => {
     }
   };
 
-  const getStatusLabel = (status: string) => {
-    switch (status) {
-      case 'pending':
-        return 'Pending';
-      case 'approved':
-        return 'Approved';
-      case 'rejected':
-        return 'Rejected';
-      case 'withdrawn':
-        return 'Withdrawn';
-      default:
-        return status;
+  const categoryLabel = (application: TournamentApplicationDto) => {
+    if (application.bowCategory && typeof application.bowCategory === 'object') {
+      return application.bowCategory.name;
     }
+    return application.category;
+  };
+
+  const divisionLabel = (application: TournamentApplicationDto) => {
+    if (!application.division) return null;
+    return typeof application.division === 'object'
+      ? application.division.name
+      : application.division;
   };
 
   if (loading) {
@@ -125,8 +139,8 @@ const UserApplications: React.FC = () => {
         </Alert>
       </Snackbar>
 
-      {applications.length === 0 ? (
-        <Card>
+      {sortedApplications.length === 0 ? (
+        <Card variant="outlined">
           <CardContent>
             <Typography variant="body1" color="text.secondary" align="center">
               {t('pages.applications.empty')}
@@ -134,109 +148,155 @@ const UserApplications: React.FC = () => {
           </CardContent>
         </Card>
       ) : (
-        <Box
-          sx={{
-            display: 'grid',
-            gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' },
-            gap: 3,
-          }}
-        >
-          {applications.map((application) => (
-            <Box key={application.id}>
-              <Card>
-                <CardContent>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+          {sortedApplications.map((application) => {
+            const full = tournamentsById.get(application.tournament.id);
+            const banner = resolveTournamentBanner(full?.banner);
+            const address = full?.address;
+            const ruleCode = full?.rule?.ruleCode || full?.ruleCode;
+            const category = categoryLabel(application);
+            const division = divisionLabel(application);
+
+            return (
+              <Card
+                key={application.id}
+                variant="outlined"
+                component={Link}
+                to={`/${lang}/tournaments/${application.tournament.id}`}
+                sx={{
+                  display: 'flex',
+                  overflow: 'hidden',
+                  textDecoration: 'none',
+                  color: 'inherit',
+                  transition: 'border-color 0.2s',
+                  '&:hover': { borderColor: 'primary.main', textDecoration: 'none' },
+                  '&:active': { textDecoration: 'none' },
+                }}
+              >
+                <Box
+                  sx={{
+                    width: '33.333%',
+                    flexShrink: 0,
+                    alignSelf: 'stretch',
+                    minHeight: 96,
+                  }}
+                >
+                  <Box
+                    component="img"
+                    src={banner}
+                    alt=""
+                    sx={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      display: 'block',
+                    }}
+                  />
+                </Box>
+                <CardContent
+                  sx={{
+                    flex: 1,
+                    minWidth: 0,
+                    py: 1.5,
+                    '&:last-child': { pb: 1.5 },
+                  }}
+                >
                   <Box
                     sx={{
                       display: 'flex',
                       justifyContent: 'space-between',
                       alignItems: 'flex-start',
-                      mb: 2,
+                      gap: 1,
                     }}
                   >
-                    <Typography variant="h6" gutterBottom>
+                    <Typography variant="subtitle2" fontWeight={600} sx={{ minWidth: 0 }}>
                       {application.tournament.title}
                     </Typography>
                     <Chip
-                      label={getStatusLabel(application.status)}
+                      label={t(`pages.adminApplications.status.${application.status}`)}
                       color={getStatusColor(application.status)}
                       size="small"
+                      sx={{ flexShrink: 0 }}
                     />
                   </Box>
-
-                  <Typography variant="body2" color="text.secondary" gutterBottom>
-                    <strong>{t('pages.applications.dates')}:</strong>{' '}
-                    {formatDate(application.tournament.startDate)} -{' '}
-                    {formatDate(application.tournament.endDate)}
-                  </Typography>
-
-                  {(application.category || application.bowCategory) && (
-                    <Typography variant="body2" color="text.secondary" gutterBottom>
-                      <strong>{t('pages.applications.category')}:</strong>{' '}
-                      {application.bowCategory && typeof application.bowCategory === 'object'
-                        ? application.bowCategory.name
-                        : application.category}
+                  <Box sx={{ mt: 0.5 }}>
+                    <Typography variant="caption" color="text.secondary" display="block">
+                      <Box component="strong" fontWeight={600}>
+                        {t('pages.tournaments.start')}:
+                      </Box>{' '}
+                      {formatDate(application.tournament.startDate)}
                     </Typography>
-                  )}
-
-                  {application.division && (
-                    <Typography variant="body2" color="text.secondary" gutterBottom>
-                      <strong>{t('pages.applications.division')}:</strong>{' '}
-                      {typeof application.division === 'object'
-                        ? application.division.name
-                        : application.division}
+                    {address && (
+                      <Typography variant="caption" color="text.secondary" display="block">
+                        <Box component="strong" fontWeight={600}>
+                          {t('pages.tournaments.location')}:
+                        </Box>{' '}
+                        {address}
+                      </Typography>
+                    )}
+                    {category && (
+                      <Typography variant="caption" color="text.secondary" display="block">
+                        <Box component="strong" fontWeight={600}>
+                          {t('pages.applications.category')}:
+                        </Box>{' '}
+                        {category}
+                        {division ? ` · ${division}` : ''}
+                      </Typography>
+                    )}
+                    {!category && division && (
+                      <Typography variant="caption" color="text.secondary" display="block">
+                        <Box component="strong" fontWeight={600}>
+                          {t('pages.applications.division')}:
+                        </Box>{' '}
+                        {division}
+                      </Typography>
+                    )}
+                    <Typography variant="caption" color="text.secondary" display="block">
+                      <Box component="strong" fontWeight={600}>
+                        {t('pages.applications.appliedOn')}:
+                      </Box>{' '}
+                      {formatDate(application.createdAt)}
                     </Typography>
-                  )}
-
-                  {application.equipment && (
-                    <Typography variant="body2" color="text.secondary" gutterBottom>
-                      <strong>{t('pages.applications.equipment')}:</strong> {application.equipment}
-                    </Typography>
-                  )}
-
-                  {application.notes && (
-                    <Typography variant="body2" color="text.secondary" gutterBottom>
-                      <strong>{t('pages.applications.notes')}:</strong> {application.notes}
-                    </Typography>
-                  )}
-
-                  {application.rejectionReason && (
-                    <Alert severity="error" sx={{ mt: 1 }}>
-                      <strong>{t('pages.applications.rejectionReason')}:</strong>{' '}
-                      {application.rejectionReason}
-                    </Alert>
-                  )}
-
-                  <Typography
-                    variant="caption"
-                    color="text.secondary"
-                    display="block"
-                    sx={{ mt: 1 }}
-                  >
-                    {t('pages.applications.appliedOn')}: {formatDate(application.createdAt)}
-                  </Typography>
-
-                  {application.status === 'pending' && (
-                    <Box sx={{ mt: 2 }}>
-                      <Button
-                        variant="outlined"
-                        color="error"
+                    {ruleCode && (
+                      <Chip
                         size="small"
-                        startIcon={<Delete />}
-                        onClick={() =>
-                          setWithdrawDialog({
-                            open: true,
-                            applicationId: application.id,
-                          })
-                        }
+                        label={ruleCode}
+                        sx={{ mt: 0.75, height: 22, fontSize: '0.7rem' }}
+                      />
+                    )}
+                    {application.rejectionReason && (
+                      <Alert
+                        severity="error"
+                        sx={{ mt: 1, py: 0, '& .MuiAlert-message': { fontSize: '0.75rem' } }}
                       >
-                        {t('pages.applications.withdraw')}
-                      </Button>
-                    </Box>
-                  )}
+                        {application.rejectionReason}
+                      </Alert>
+                    )}
+                    {application.status === 'pending' && (
+                      <Box sx={{ mt: 1 }}>
+                        <Button
+                          variant="outlined"
+                          color="error"
+                          size="small"
+                          startIcon={<Delete />}
+                          onClick={(event) => {
+                            event.preventDefault();
+                            event.stopPropagation();
+                            setWithdrawDialog({
+                              open: true,
+                              applicationId: application.id,
+                            });
+                          }}
+                        >
+                          {t('pages.applications.withdraw')}
+                        </Button>
+                      </Box>
+                    )}
+                  </Box>
                 </CardContent>
               </Card>
-            </Box>
-          ))}
+            );
+          })}
         </Box>
       )}
 
@@ -252,7 +312,7 @@ const UserApplications: React.FC = () => {
           <Button onClick={() => setWithdrawDialog({ open: false, applicationId: null })}>
             {t('common.cancel')}
           </Button>
-          <Button onClick={handleWithdraw} color="error" variant="contained">
+          <Button onClick={() => void handleWithdraw()} color="error" variant="contained">
             {t('pages.applications.withdraw')}
           </Button>
         </DialogActions>

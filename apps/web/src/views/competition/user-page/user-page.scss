@@ -1,25 +1,7 @@
-.user_page {
-  .locked {
-    display: inline-block;
-    border-radius: 50%;
-    background: lightgrey;
-    padding: 2px;
-    margin-left: 16px;
-    width: 32px;
-    height: 32px;
-    text-align: center;
-  }
-}
-
-.button {
-  &.submit {
-    padding: 8px 16px;
-    border-radius: 8px;
-  }
-  &.submit:disabled {
-    background: lightgrey;
-    color: gray;
-    border-color: gray;
-    box-shadow: none;
+.scoring-demo {
+  .scoring-demo__table {
+    .MuiTableCell-root {
+      border-color: var(--mui-palette-divider, rgba(0, 0, 0, 0.12));
+    }
   }
 }

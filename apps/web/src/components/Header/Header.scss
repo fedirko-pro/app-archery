@@ -11,22 +11,29 @@ header.app-header {
   justify-content: space-between;
   align-items: center;
   flex-direction: row;
+  position: relative;
   background: $white;
 
   .header_logo {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
     display: flex;
     align-items: center;
-    width: 100%;
+    justify-content: center;
+    width: auto;
     padding: 0;
     min-width: 0;
+    z-index: 1;
     a {
       display: block;
       width: 215px;
       height: 50px;
-      background: url('../../../src/img/sokil_text.svg') top left no-repeat;
+      background: url('../../../src/img/sokil_text.svg') center center no-repeat;
       background-size: contain;
       text-decoration: none;
-      margin: auto;
+      margin: 0;
     }
   }
 
@@ -100,10 +107,17 @@ header.app-header {
   @include mobile {
     position: sticky;
     top: 0;
-    z-index: 10;
+    /* Must beat BottomTabBar (200). Menus live inside this stacking context,
+       so their own z-index alone cannot cover the tab bar. */
+    z-index: 250;
     height: auto;
     min-height: calc(56px + env(safe-area-inset-top, 0px));
     padding-top: env(safe-area-inset-top, 0px);
+
+    .header_logo {
+      /* Center in the bar below the safe-area inset, not the full sticky box. */
+      top: calc(50% + env(safe-area-inset-top, 0px) / 2);
+    }
 
     .header_logo a {
       width: 140px;

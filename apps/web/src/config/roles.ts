@@ -42,6 +42,7 @@ export const ADMIN_NAV_ITEMS: NavItemConfig[] = [
 
 export const FIELD_GUIDE_NAV_ITEMS: NavItemConfig[] = [
   { link: '/converter', labelKey: 'nav.converter' },
+  { link: '/calculator', labelKey: 'nav.calculator' },
   { link: '/glossary', labelKey: 'nav.glossary' },
   { link: '/rules', labelKey: 'nav.rules' },
   { link: '/divisions', labelKey: 'nav.divisions' },

@@ -171,15 +171,9 @@ const Clubs: React.FC = () => {
 
         <Box
           sx={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            justifyContent: 'center',
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
             gap: 3,
-            '& > *': {
-              flex: '0 1 calc(33.333% - 16px)',
-              minWidth: '280px',
-              maxWidth: 'calc(33.333% - 16px)',
-            },
           }}
         >
           {clubs.map((club) => {
@@ -215,7 +209,18 @@ const Clubs: React.FC = () => {
                   )}
                 </Box>
                 <CardContent sx={{ flexGrow: 1 }}>
-                  <Typography variant="h6" gutterBottom>
+                  <Typography
+                    variant="h6"
+                    gutterBottom
+                    component={Link}
+                    to={`/${lang}/clubs/${club.id}`}
+                    sx={{
+                      color: 'inherit',
+                      textDecoration: 'none',
+                      display: 'block',
+                      '&:hover': { textDecoration: 'underline' },
+                    }}
+                  >
                     {isPrivate ? (
                       <>
                         <LockIcon sx={{ fontSize: 18, verticalAlign: 'middle', mr: 0.5 }} />
@@ -250,36 +255,42 @@ const Clubs: React.FC = () => {
                       {t('pages.clubs.contactAdmin', 'Contact club admin for access')}
                     </Typography>
                   )}
-                  <Box sx={{ mt: 2 }}>
+                  <Box sx={{ mt: 2, display: 'flex', flexDirection: 'column', gap: 1 }}>
                     <Button
                       size="small"
                       variant="outlined"
                       startIcon={<Visibility />}
                       component={Link}
                       to={`/${lang}/clubs/${club.id}`}
+                      fullWidth
+                      sx={{ justifyContent: 'center' }}
                     >
                       {t('pages.clubs.viewDetails', 'View Details')}
                     </Button>
+                    {isAdmin && (
+                      <Box sx={{ display: 'flex', gap: 1, width: '100%' }}>
+                        <Button
+                          size="small"
+                          variant="outlined"
+                          startIcon={<EditIcon />}
+                          onClick={() => navigate(`/${lang}/admin/clubs/${club.id}/edit`)}
+                          sx={{ flex: 1, minWidth: 0, justifyContent: 'center' }}
+                        >
+                          {t('common.edit', 'Edit')}
+                        </Button>
+                        <Button
+                          size="small"
+                          variant="outlined"
+                          color="error"
+                          startIcon={<DeleteIcon />}
+                          onClick={() => handleDelete(club.id!)}
+                          sx={{ flex: 1, minWidth: 0, justifyContent: 'center' }}
+                        >
+                          {t('common.delete', 'Delete')}
+                        </Button>
+                      </Box>
+                    )}
                   </Box>
-                  {isAdmin && (
-                    <Box sx={{ mt: 2, display: 'flex', gap: 1 }}>
-                      <Button
-                        size="small"
-                        startIcon={<EditIcon />}
-                        onClick={() => navigate(`/${lang}/admin/clubs/${club.id}/edit`)}
-                      >
-                        {t('common.edit', 'Edit')}
-                      </Button>
-                      <Button
-                        size="small"
-                        color="error"
-                        startIcon={<DeleteIcon />}
-                        onClick={() => handleDelete(club.id!)}
-                      >
-                        {t('common.delete', 'Delete')}
-                      </Button>
-                    </Box>
-                  )}
                 </CardContent>
               </Card>
             );

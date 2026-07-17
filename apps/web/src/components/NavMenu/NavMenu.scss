@@ -54,6 +54,7 @@ header.app-header {
     &.hidden_smooth {
       transition: all 0.3s;
       opacity: 0;
+      pointer-events: none;
     }
   }
 }
