@@ -247,7 +247,7 @@ export default function SignUp() {
           {/* TODO: Implement email updates functionality */}
           {/* <FormControlLabel
             control={<Checkbox value="allowExtraEmails" color="primary" />}
-            label="I want to receive updates via email."
+            label={t('auth.receiveUpdates')}
           /> */}
           <Button type="submit" fullWidth variant="contained" disabled={isSubmitting}>
             {isSubmitting ? t('auth.signingUp') : t('auth.signUp')}

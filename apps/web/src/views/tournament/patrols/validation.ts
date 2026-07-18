@@ -9,7 +9,12 @@ export function canDropMember(
   targetPatrolId: string,
   patrols: Patrol[],
   participants: Map<string, Participant>,
-): { allowed: boolean; reason?: string; warnings?: string[] } {
+): {
+  allowed: boolean;
+  reason?: string;
+  reasonParams?: Record<string, string>;
+  warnings?: string[];
+} {
   const sourcePatrol = patrols.find((p) => p.id === sourcePatrolId);
   const targetPatrol = patrols.find((p) => p.id === targetPatrolId);
   const member = participants.get(memberId);
@@ -17,7 +22,7 @@ export function canDropMember(
   if (!sourcePatrol || !targetPatrol || !member) {
     return {
       allowed: false,
-      reason: 'Invalid patrol or member',
+      reason: 'pages.patrols.validation.invalid',
     };
   }
 
@@ -25,7 +30,7 @@ export function canDropMember(
   if (sourcePatrol.members.length <= 3) {
     return {
       allowed: false,
-      reason: 'Source patrol would be too small (minimum 3 members required)',
+      reason: 'pages.patrols.validation.sourceTooSmall',
     };
   }
 
@@ -39,9 +44,7 @@ export function canDropMember(
   const dominantDivision = getMostCommon(targetDivisions);
 
   if (dominantDivision && member.division !== dominantDivision) {
-    warnings.push(
-      `Member division (${member.division}) differs from patrol's dominant division (${dominantDivision})`,
-    );
+    warnings.push('pages.patrols.validation.divisionMismatch');
   }
 
   // Check gender homogeneity
@@ -51,10 +54,17 @@ export function canDropMember(
   const dominantGender = getMostCommon(targetGenders);
 
   if (dominantGender && member.gender !== dominantGender) {
-    warnings.push(`Member gender differs from patrol's dominant gender`);
+    warnings.push('pages.patrols.validation.genderMismatch');
   }
 
-  return { allowed: true, warnings };
+  return {
+    allowed: true,
+    warnings,
+    reasonParams:
+      dominantDivision && member.division !== dominantDivision
+        ? { member: member.division, dominant: dominantDivision }
+        : undefined,
+  };
 }
 
 /**

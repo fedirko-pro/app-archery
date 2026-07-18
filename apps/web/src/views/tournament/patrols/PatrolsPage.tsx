@@ -6,6 +6,7 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 import SaveIcon from '@mui/icons-material/Save';
 import { Alert, Box, Button, CircularProgress, Grid, Snackbar, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link, useParams } from 'react-router-dom';
 
 import env from '../../../config/env';
@@ -22,6 +23,7 @@ import { recalculateWarnings } from './warnings';
  * Allows drag-and-drop of participants between patrols.
  */
 const PatrolsPage: React.FC = () => {
+  const { t } = useTranslation('common');
   const { tournamentId, lang } = useParams<{
     tournamentId: string;
     lang?: string;
@@ -97,11 +99,13 @@ const PatrolsPage: React.FC = () => {
           participantsMap.set(user.id, {
             id: user.id,
             name:
-              `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.email || 'Unknown',
-            club: user.club?.name || 'No Club',
-            division: user.division || 'Unknown',
-            bowCategory: user.bowCategory || 'Unknown',
-            gender: user.gender || 'Other',
+              `${user.firstName || ''} ${user.lastName || ''}`.trim() ||
+              user.email ||
+              t('pages.patrols.unknown'),
+            club: user.club?.name || t('pages.patrols.noClub'),
+            division: user.division || t('pages.patrols.unknown'),
+            bowCategory: user.bowCategory || t('pages.patrols.unknown'),
+            gender: user.gender || t('forms.genderOther'),
           });
 
           memberIds.push(user.id);
@@ -190,9 +194,7 @@ const PatrolsPage: React.FC = () => {
       setIsDirty(false);
     } catch (error: unknown) {
       console.error('Failed to load patrols:', error);
-      setError(
-        error instanceof Error ? error.message : 'Failed to load patrols. Please try again.',
-      );
+      setError(error instanceof Error ? error.message : t('pages.patrols.loadError'));
     } finally {
       setIsLoading(false);
     }
@@ -221,15 +223,14 @@ const PatrolsPage: React.FC = () => {
       setIsDirty(false);
       setSnackbar({
         open: true,
-        message: 'Patrols saved successfully!',
+        message: t('pages.patrols.saveSuccess'),
         severity: 'success',
       });
     } catch (error: unknown) {
       console.error('Failed to save:', error);
       setSnackbar({
         open: true,
-        message:
-          error instanceof Error ? error.message : 'Failed to save patrols. Please try again.',
+        message: error instanceof Error ? error.message : t('pages.patrols.saveError'),
         severity: 'error',
       });
     } finally {
@@ -250,7 +251,9 @@ const PatrolsPage: React.FC = () => {
     if (!validation.allowed) {
       setSnackbar({
         open: true,
-        message: validation.reason || 'Cannot move member',
+        message: validation.reason
+          ? t(validation.reason, validation.reasonParams)
+          : t('pages.patrols.cannotMove'),
         severity: 'error',
       });
       return;
@@ -322,11 +325,7 @@ const PatrolsPage: React.FC = () => {
   const handleGeneratePatrols = async () => {
     if (!tournamentId) return;
 
-    if (
-      !confirm(
-        'Generate patrols from approved applications? This will create new patrol assignments.',
-      )
-    ) {
+    if (!confirm(t('pages.patrols.confirmGenerate'))) {
       return;
     }
 
@@ -337,15 +336,14 @@ const PatrolsPage: React.FC = () => {
       setIsDirty(false);
       setSnackbar({
         open: true,
-        message: 'Patrols generated from approved applications',
+        message: t('pages.patrols.generateSuccess'),
         severity: 'success',
       });
     } catch (error: unknown) {
       console.error('Failed to generate patrols:', error);
       setSnackbar({
         open: true,
-        message:
-          error instanceof Error ? error.message : 'Failed to generate patrols. Please try again.',
+        message: error instanceof Error ? error.message : t('pages.patrols.generateError'),
         severity: 'error',
       });
     } finally {
@@ -361,14 +359,14 @@ const PatrolsPage: React.FC = () => {
       window.open(url, '_blank');
       setSnackbar({
         open: true,
-        message: 'Opening patrols list PDF...',
+        message: t('pages.patrols.openingListPdf'),
         severity: 'success',
       });
     } catch (error) {
       console.error('Failed to generate patrols list:', error);
       setSnackbar({
         open: true,
-        message: 'Failed to generate patrols list. Please try again.',
+        message: t('pages.patrols.listPdfError'),
         severity: 'error',
       });
     }
@@ -382,21 +380,21 @@ const PatrolsPage: React.FC = () => {
       window.open(url, '_blank');
       setSnackbar({
         open: true,
-        message: 'Opening score cards PDF...',
+        message: t('pages.patrols.openingScoreCardsPdf'),
         severity: 'success',
       });
     } catch (error) {
       console.error('Failed to generate score cards:', error);
       setSnackbar({
         open: true,
-        message: 'Failed to generate score cards. Please try again.',
+        message: t('pages.patrols.scoreCardsPdfError'),
         severity: 'error',
       });
     }
   };
 
   const handleDeleteAndRedistribute = async (patrolId: string) => {
-    if (!confirm('Видалити патруль і перерозпреділити людей?')) {
+    if (!confirm(t('pages.patrols.confirmDeleteRedistribute'))) {
       return;
     }
 
@@ -421,7 +419,7 @@ const PatrolsPage: React.FC = () => {
 
       setSnackbar({
         open: true,
-        message: 'Патруль видалено, учасників перерозподілено.',
+        message: t('pages.patrols.deleteRedistributeSuccess'),
         severity: 'success',
       });
     } catch (error: unknown) {
@@ -429,7 +427,7 @@ const PatrolsPage: React.FC = () => {
       setSnackbar({
         open: true,
         message:
-          error instanceof Error ? error.message : 'Не вдалося видалити патруль і перерозподілити.',
+          error instanceof Error ? error.message : t('pages.patrols.deleteRedistributeError'),
         severity: 'error',
       });
     } finally {
@@ -438,11 +436,7 @@ const PatrolsPage: React.FC = () => {
   };
 
   const handleRegenerate = async () => {
-    if (
-      !confirm(
-        'This will DELETE all existing patrols and regenerate new ones from approved applications. Continue?',
-      )
-    ) {
+    if (!confirm(t('pages.patrols.confirmRegenerate'))) {
       return;
     }
 
@@ -454,14 +448,14 @@ const PatrolsPage: React.FC = () => {
 
       setSnackbar({
         open: true,
-        message: 'Patrols regenerated successfully!',
+        message: t('pages.patrols.regenerateSuccess'),
         severity: 'success',
       });
     } catch (error: unknown) {
       console.error('Failed to regenerate:', error);
       setSnackbar({
         open: true,
-        message: error instanceof Error ? error.message : 'Failed to regenerate patrols',
+        message: error instanceof Error ? error.message : t('pages.patrols.regenerateError'),
         severity: 'error',
       });
     } finally {
@@ -482,7 +476,7 @@ const PatrolsPage: React.FC = () => {
       <Box sx={{ p: 3 }}>
         <Alert severity="error">{error}</Alert>
         <Button onClick={loadPatrols} sx={{ mt: 2 }}>
-          Retry
+          {t('pages.patrols.retry')}
         </Button>
       </Box>
     );
@@ -513,7 +507,7 @@ const PatrolsPage: React.FC = () => {
         }}
       >
         <Box>
-          <Typography variant="h4">Patrol Management</Typography>
+          <Typography variant="h4">{t('pages.patrols.title')}</Typography>
           {tournamentInfo && (
             <>
               <Typography
@@ -552,7 +546,7 @@ const PatrolsPage: React.FC = () => {
             onClick={handleSave}
             disabled={!isDirty || isSaving}
           >
-            {isSaving ? 'Saving...' : 'Save Changes'}
+            {isSaving ? t('pages.patrols.saving') : t('pages.patrols.saveChanges')}
             {isDirty && ' *'}
           </Button>
           <Button
@@ -560,14 +554,14 @@ const PatrolsPage: React.FC = () => {
             startIcon={<PictureAsPdfIcon />}
             onClick={handleGeneratePatrolsList}
           >
-            Generate patrols list
+            {t('pages.patrols.generateList')}
           </Button>
           <Button
             variant="outlined"
             startIcon={<AssignmentIcon />}
             onClick={handleGenerateScoreCards}
           >
-            Generate score cards
+            {t('pages.patrols.generateScoreCards')}
           </Button>
           <Button
             variant="outlined"
@@ -576,7 +570,7 @@ const PatrolsPage: React.FC = () => {
             onClick={handleRegenerate}
             disabled={patrols.length === 0 || isLoading || isGenerating}
           >
-            Regenerate
+            {t('pages.patrols.regenerate')}
           </Button>
         </Box>
       </Box>
@@ -604,7 +598,7 @@ const PatrolsPage: React.FC = () => {
       {patrols.length === 0 && (
         <Box sx={{ textAlign: 'center', py: 4 }}>
           <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
-            No patrols yet. Generate patrols from approved applications when you are ready.
+            {t('pages.patrols.empty')}
           </Typography>
           <Button
             variant="contained"
@@ -612,7 +606,7 @@ const PatrolsPage: React.FC = () => {
             onClick={handleGeneratePatrols}
             disabled={isGenerating || isLoading}
           >
-            {isGenerating ? 'Generating...' : 'Generate patrols'}
+            {isGenerating ? t('pages.patrols.generating') : t('pages.patrols.generate')}
           </Button>
         </Box>
       )}

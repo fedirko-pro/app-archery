@@ -9,6 +9,7 @@ import {
   CircularProgress,
 } from '@mui/material';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export interface CreateUserDialogProps {
   open: boolean;
@@ -21,11 +22,8 @@ export interface CreateUserDialogProps {
   }) => Promise<void>;
 }
 
-const CreateUserDialog: React.FC<CreateUserDialogProps> = ({
-  open,
-  onClose,
-  onSubmit,
-}) => {
+const CreateUserDialog: React.FC<CreateUserDialogProps> = ({ open, onClose, onSubmit }) => {
+  const { t } = useTranslation('common');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -41,17 +39,17 @@ const CreateUserDialog: React.FC<CreateUserDialogProps> = ({
     const newErrors: typeof errors = {};
 
     if (!firstName.trim()) {
-      newErrors.firstName = 'First name is required';
+      newErrors.firstName = t('pages.admin.firstNameRequired');
     }
 
     if (!lastName.trim()) {
-      newErrors.lastName = 'Last name is required';
+      newErrors.lastName = t('pages.admin.lastNameRequired');
     }
 
     if (!email.trim()) {
-      newErrors.email = 'Email is required';
+      newErrors.email = t('pages.admin.emailRequired');
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      newErrors.email = 'Invalid email format';
+      newErrors.email = t('pages.admin.invalidEmail');
     }
 
     setErrors(newErrors);
@@ -88,11 +86,11 @@ const CreateUserDialog: React.FC<CreateUserDialogProps> = ({
 
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
-      <DialogTitle>Create New User</DialogTitle>
+      <DialogTitle>{t('pages.admin.createUserTitle')}</DialogTitle>
       <DialogContent>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 1 }}>
           <TextField
-            label="First Name"
+            label={t('pages.admin.firstName')}
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
             error={!!errors.firstName}
@@ -102,7 +100,7 @@ const CreateUserDialog: React.FC<CreateUserDialogProps> = ({
             autoFocus
           />
           <TextField
-            label="Last Name"
+            label={t('pages.admin.lastName')}
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
             error={!!errors.lastName}
@@ -111,7 +109,7 @@ const CreateUserDialog: React.FC<CreateUserDialogProps> = ({
             required
           />
           <TextField
-            label="Email"
+            label={t('pages.admin.email')}
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -121,19 +119,19 @@ const CreateUserDialog: React.FC<CreateUserDialogProps> = ({
             required
           />
           <TextField
-            label="Comment (optional)"
+            label={t('pages.admin.commentOptional')}
             value={comment}
             onChange={(e) => setComment(e.target.value)}
             fullWidth
             multiline
             rows={2}
-            placeholder="Add a note about this user..."
+            placeholder={t('pages.admin.commentPlaceholder')}
           />
         </Box>
       </DialogContent>
       <DialogActions sx={{ px: 3, pb: 2 }}>
         <Button onClick={handleClose} disabled={loading}>
-          Cancel
+          {t('common.cancel')}
         </Button>
         <Button
           onClick={handleSubmit}
@@ -141,7 +139,7 @@ const CreateUserDialog: React.FC<CreateUserDialogProps> = ({
           disabled={loading}
           startIcon={loading ? <CircularProgress size={16} /> : null}
         >
-          {loading ? 'Creating...' : 'Create & Invite'}
+          {loading ? t('pages.admin.creating') : t('pages.admin.createAndInvite')}
         </Button>
       </DialogActions>
     </Dialog>

@@ -10,6 +10,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import IconButton from '@mui/material/IconButton';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import apiService from '../../services/api';
 
@@ -19,6 +20,7 @@ interface ForgotPasswordProps {
 }
 
 export default function ForgotPassword({ open, handleClose }: ForgotPasswordProps) {
+  const { t } = useTranslation('common');
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -28,7 +30,7 @@ export default function ForgotPassword({ open, handleClose }: ForgotPasswordProp
     event.preventDefault();
 
     if (!email || !/\S+@\S+\.\S+/.test(email)) {
-      setError('Please enter a valid email address');
+      setError(t('auth.validationEmail'));
       return;
     }
 
@@ -38,10 +40,10 @@ export default function ForgotPassword({ open, handleClose }: ForgotPasswordProp
 
     try {
       await apiService.forgotPassword(email);
-      setSuccess('If an account with that email exists, a password reset link has been sent.');
+      setSuccess(t('forgotPassword.success'));
       setEmail('');
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Failed to send reset email';
+      const errorMessage = error instanceof Error ? error.message : t('forgotPassword.error');
       setError(errorMessage);
     } finally {
       setIsSubmitting(false);
@@ -67,9 +69,9 @@ export default function ForgotPassword({ open, handleClose }: ForgotPasswordProp
       fullWidth
     >
       <DialogTitle sx={{ pr: 6 }}>
-        Reset password
+        {t('forgotPassword.title')}
         <IconButton
-          aria-label="close"
+          aria-label={t('forgotPassword.close')}
           onClick={handleCloseDialog}
           disabled={isSubmitting}
           sx={{ position: 'absolute', right: 8, top: 8 }}
@@ -78,10 +80,7 @@ export default function ForgotPassword({ open, handleClose }: ForgotPasswordProp
         </IconButton>
       </DialogTitle>
       <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '100%' }}>
-        <DialogContentText>
-          Enter your account&apos;s email address, and we&apos;ll send you a link to reset your
-          password.
-        </DialogContentText>
+        <DialogContentText>{t('forgotPassword.body')}</DialogContentText>
 
         {error && (
           <Alert severity="error" onClose={() => setError(null)}>
@@ -101,8 +100,8 @@ export default function ForgotPassword({ open, handleClose }: ForgotPasswordProp
           margin="dense"
           id="email"
           name="email"
-          label="Email address"
-          placeholder="Email address"
+          label={t('forgotPassword.email')}
+          placeholder={t('forgotPassword.email')}
           type="email"
           fullWidth
           value={email}
@@ -112,7 +111,7 @@ export default function ForgotPassword({ open, handleClose }: ForgotPasswordProp
       </DialogContent>
       <DialogActions sx={{ pb: 3, px: 3 }}>
         <Button onClick={handleCloseDialog} disabled={isSubmitting}>
-          Cancel
+          {t('common.cancel')}
         </Button>
         <Button
           variant="contained"
@@ -120,7 +119,7 @@ export default function ForgotPassword({ open, handleClose }: ForgotPasswordProp
           disabled={isSubmitting}
           startIcon={isSubmitting ? <CircularProgress size={20} /> : null}
         >
-          {isSubmitting ? 'Sending...' : 'Continue'}
+          {isSubmitting ? t('forgotPassword.sending') : t('forgotPassword.continue')}
         </Button>
       </DialogActions>
     </Dialog>

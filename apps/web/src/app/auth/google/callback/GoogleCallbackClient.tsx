@@ -2,6 +2,7 @@
 
 import { Box, CircularProgress, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { ClientOnly } from '@/components/ClientOnly/ClientOnly';
 import apiService from '@/services/api';
@@ -17,6 +18,7 @@ export default function GoogleCallbackClient() {
 }
 
 function GoogleCallbackInner() {
+  const { t } = useTranslation('common');
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -30,7 +32,7 @@ function GoogleCallbackInner() {
         const authError = params.get('error');
 
         if (authError) {
-          setError('Google authentication failed');
+          setError(t('auth.googleFailed'));
           setTimeout(() => {
             window.location.href = signInPath;
           }, 3000);
@@ -46,7 +48,7 @@ function GoogleCallbackInner() {
         const userData = await apiService.getProfile();
         window.location.href = resolvePostAuthPath(lang, userData);
       } catch {
-        setError('Authentication failed');
+        setError(t('auth.googleAuthFailed'));
         setTimeout(() => {
           window.location.href = `/${getDefaultAppLang()}/signin`;
         }, 3000);
@@ -54,7 +56,7 @@ function GoogleCallbackInner() {
     };
 
     void run();
-  }, []);
+  }, [t]);
 
   if (error) {
     return (
@@ -69,7 +71,7 @@ function GoogleCallbackInner() {
         <Typography color="error" variant="h6">
           {error}
         </Typography>
-        <Typography variant="body2">Redirecting to sign in page...</Typography>
+        <Typography variant="body2">{t('auth.googleRedirecting')}</Typography>
       </Box>
     );
   }
@@ -84,7 +86,7 @@ function GoogleCallbackInner() {
       gap={2}
     >
       <CircularProgress />
-      <Typography variant="h6">Completing Google authentication...</Typography>
+      <Typography variant="h6">{t('auth.googleCompleting')}</Typography>
     </Box>
   );
 }

@@ -61,7 +61,7 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
       const usersData = await apiService.getAllUsers();
       setUsers(usersData);
     } catch (error) {
-      setError('Failed to fetch users');
+      setError(t('pages.admin.fetchUsersError'));
       console.error('Error fetching users:', error);
     } finally {
       setLoading(false);
@@ -75,10 +75,10 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
 
       await apiService.adminResetUserPassword(userId);
 
-      setSuccess(`Password reset email sent to ${userEmail}`);
+      setSuccess(t('pages.admin.resetEmailSent', { email: userEmail }));
       setTimeout(() => setSuccess(null), 5000);
     } catch (error) {
-      setError('Failed to send password reset email');
+      setError(t('pages.admin.resetEmailFailed'));
       console.error('Error resetting password:', error);
     } finally {
       setResettingPassword(null);
@@ -103,14 +103,14 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
       setError(null);
       await apiService.adminCreateUser(userData);
       setSuccess(
-        `User ${userData.firstName} ${userData.lastName} created successfully. They will receive an invitation email.`,
+        t('pages.admin.createUserSuccess', { name: `${userData.firstName} ${userData.lastName}` }),
       );
       setTimeout(() => setSuccess(null), 5000);
       setCreateDialogOpen(false);
       // Refresh the users list
       fetchUsers();
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Failed to create user');
+      setError(err instanceof Error ? err.message : t('pages.admin.createUserFailed'));
       throw err; // Re-throw to let dialog know about the error
     }
   };
@@ -171,13 +171,13 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
   return (
     <Box>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-        <Typography variant="h4">Users Management</Typography>
+        <Typography variant="h4">{t('pages.admin.usersTitle')}</Typography>
         <Button
           variant="contained"
           startIcon={<PersonAdd />}
           onClick={() => setCreateDialogOpen(true)}
         >
-          Create User
+          {t('pages.admin.createUser')}
         </Button>
       </Box>
 
@@ -214,7 +214,7 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
               >
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                   <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
-                    Name
+                    {t('pages.admin.table.name')}
                   </Typography>
                   {sortConfig.field === 'name' &&
                     (sortConfig.direction === 'asc' ? (
@@ -234,7 +234,7 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
               >
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                   <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
-                    Email
+                    {t('pages.admin.table.email')}
                   </Typography>
                   {sortConfig.field === 'email' &&
                     (sortConfig.direction === 'asc' ? (
@@ -257,7 +257,7 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
                   sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.5 }}
                 >
                   <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
-                    Gender
+                    {t('pages.admin.table.gender')}
                   </Typography>
                   {sortConfig.field === 'gender' &&
                     (sortConfig.direction === 'asc' ? (
@@ -277,7 +277,7 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
               >
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                   <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
-                    Club
+                    {t('pages.admin.table.club')}
                   </Typography>
                   {sortConfig.field === 'club' &&
                     (sortConfig.direction === 'asc' ? (
@@ -307,7 +307,7 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
                     ))}
                 </Box>
               </TableCell>
-              <TableCell align="center">Actions</TableCell>
+              <TableCell align="center">{t('pages.admin.table.actions')}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -328,7 +328,7 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
                     <Typography variant="body2" fontWeight={500}>
                       {user.firstName && user.lastName
                         ? `${user.firstName} ${user.lastName}`
-                        : 'Not set'}
+                        : t('pages.admin.notSet')}
                     </Typography>
                   </TableCell>
                   <TableCell>
@@ -373,7 +373,7 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
                   </TableCell>
                   <TableCell align="center">
                     <Box sx={{ display: 'flex', gap: 1, justifyContent: 'center' }}>
-                      <Tooltip title="View Profile">
+                      <Tooltip title={t('pages.admin.viewProfile')}>
                         <IconButton
                           size="small"
                           onClick={() => handleViewProfile(user.id)}
@@ -383,7 +383,7 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
                         </IconButton>
                       </Tooltip>
 
-                      <Tooltip title="Edit Profile">
+                      <Tooltip title={t('pages.admin.editProfile')}>
                         <IconButton
                           size="small"
                           onClick={() => handleEditUser(user)}
@@ -393,7 +393,7 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
                         </IconButton>
                       </Tooltip>
 
-                      <Tooltip title="Reset Password">
+                      <Tooltip title={t('pages.admin.resetPassword')}>
                         <IconButton
                           size="small"
                           onClick={() => handleResetPassword(user.id, user.email)}

@@ -4,6 +4,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import WarningIcon from '@mui/icons-material/Warning';
 import { Box, Card, CardContent, Grid, Typography } from '@mui/material';
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import type { Participant, Patrol, PatrolStats } from './types';
 
@@ -94,6 +95,8 @@ function calculateStats(patrols: Patrol[], participants: Map<string, Participant
 }
 
 const StatsPanel: React.FC<StatsPanelProps> = ({ stats: providedStats, patrols, participants }) => {
+  const { t } = useTranslation('common');
+
   // Calculate stats from actual data, using provided stats as fallback for some values
   const stats = useMemo(() => {
     const calculated = calculateStats(patrols, participants);
@@ -124,7 +127,7 @@ const StatsPanel: React.FC<StatsPanelProps> = ({ stats: providedStats, patrols, 
     <Card sx={{ mb: 3 }}>
       <CardContent>
         <Typography variant="h6" gutterBottom>
-          Statistics
+          {t('pages.patrols.statistics')}
         </Typography>
 
         <Grid container spacing={2}>
@@ -133,7 +136,7 @@ const StatsPanel: React.FC<StatsPanelProps> = ({ stats: providedStats, patrols, 
               <InfoIcon color="info" fontSize="small" />
               <Box>
                 <Typography variant="body2" color="text.secondary">
-                  Participants
+                  {t('pages.patrols.participants')}
                 </Typography>
                 <Typography variant="h6">{stats.totalParticipants}</Typography>
               </Box>
@@ -145,7 +148,7 @@ const StatsPanel: React.FC<StatsPanelProps> = ({ stats: providedStats, patrols, 
               <InfoIcon color="info" fontSize="small" />
               <Box>
                 <Typography variant="body2" color="text.secondary">
-                  Avg Size
+                  {t('pages.patrols.avgSize')}
                 </Typography>
                 <Typography variant="h6">{stats.averagePatrolSize.toFixed(1)}</Typography>
               </Box>
@@ -157,7 +160,7 @@ const StatsPanel: React.FC<StatsPanelProps> = ({ stats: providedStats, patrols, 
               {getStatusIcon(stats.homogeneityScores.category || 0, 70)}
               <Box>
                 <Typography variant="body2" color="text.secondary">
-                  Category Match
+                  {t('pages.patrols.categoryMatch')}
                 </Typography>
                 <Typography variant="h6">
                   {formatPercentage(stats.homogeneityScores.category || 0)}
@@ -171,7 +174,7 @@ const StatsPanel: React.FC<StatsPanelProps> = ({ stats: providedStats, patrols, 
               {getStatusIcon(stats.clubDiversityScore, 70)}
               <Box>
                 <Typography variant="body2" color="text.secondary">
-                  Club Diversity
+                  {t('pages.patrols.clubDiversity')}
                 </Typography>
                 <Typography variant="h6">{formatPercentage(stats.clubDiversityScore)}</Typography>
               </Box>
@@ -183,7 +186,7 @@ const StatsPanel: React.FC<StatsPanelProps> = ({ stats: providedStats, patrols, 
               {getStatusIcon(stats.homogeneityScores.division, 50)}
               <Box>
                 <Typography variant="body2" color="text.secondary">
-                  Division Match
+                  {t('pages.patrols.divisionMatch')}
                 </Typography>
                 <Typography variant="h6">
                   {formatPercentage(stats.homogeneityScores.division)}
@@ -197,7 +200,7 @@ const StatsPanel: React.FC<StatsPanelProps> = ({ stats: providedStats, patrols, 
               {getStatusIcon(stats.homogeneityScores.gender, 50)}
               <Box>
                 <Typography variant="body2" color="text.secondary">
-                  Gender Match
+                  {t('pages.patrols.genderMatch')}
                 </Typography>
                 <Typography variant="h6">
                   {formatPercentage(stats.homogeneityScores.gender)}

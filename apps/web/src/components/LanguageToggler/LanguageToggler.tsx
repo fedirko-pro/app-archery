@@ -43,7 +43,7 @@ const LanguageToggler: React.FC<LanguageTogglerProps> = ({ onLanguageChange }) =
   const navigate = useNavigate();
   const location = useLocation();
   const { user } = useAuth();
-  const { i18n: i18nInstance } = useTranslation();
+  const { t, i18n: i18nInstance } = useTranslation('common');
 
   // Always derive current language from URL, then i18n, then user prefs – no local state
   const currentLang = normalizeAppLang(
@@ -74,7 +74,7 @@ const LanguageToggler: React.FC<LanguageTogglerProps> = ({ onLanguageChange }) =
         value={currentLang}
         onChange={handleChange}
         size="small"
-        aria-label="language"
+        aria-label={t('languageToggler.label')}
         className="language_select__control"
         renderValue={(value) => {
           const opt = options.find((o) => o.value === value);

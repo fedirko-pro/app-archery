@@ -28,7 +28,9 @@
     "divisions": "Divisions",
     "scoringDemo": "Scoring Card (paperless demo)",
     "glossary": "Glossary",
-    "fieldGuide": "Field Guide"
+    "fieldGuide": "Field Guide",
+    "myClub": "My Club",
+    "myFederation": "My Federation"
   },
   "accessControl": {
     "title": "Access Control",
@@ -75,7 +77,9 @@
       "categoryRequired": "Please select a bow category",
       "submit": "Submit Application",
       "submitting": "Submitting...",
-      "submitError": "Failed to submit application"
+      "submitError": "Failed to submit application",
+      "notesPlaceholder": "Additional notes (optional)...",
+      "searchPlaceholder": "Search by name or email..."
     }
   },
   "achievements": {
@@ -277,7 +281,14 @@
       "downloadLink": "Download Link",
       "deleteConfirmTitle": "Delete Rule?",
       "deleteConfirmMessage": "Are you sure you want to delete this rule?",
-      "deleteWarning": "This rule cannot be deleted if it has related divisions or bow categories."
+      "deleteWarning": "This rule cannot be deleted if it has related divisions or bow categories.",
+      "codeNameRequired": "Rule code and name are required",
+      "saveSuccess": "Rule saved successfully",
+      "updateSuccess": "Rule updated successfully",
+      "createSuccess": "Rule created successfully",
+      "deleteSuccess": "Rule deleted successfully",
+      "saveError": "Failed to save rule",
+      "deleteError": "Failed to delete rule. It may have related divisions or bow categories."
     },
     "categories": {
       "title": "Bow categories",
@@ -285,18 +296,45 @@
       "ruleReference": "Rule reference",
       "confirmDelete": "Are you sure you want to delete this category?",
       "deleteSuccess": "Category deleted successfully",
-      "deleteError": "Failed to delete category"
+      "deleteError": "Failed to delete category",
+      "create": "Create Category",
+      "editTitle": "Edit category",
+      "createTitle": "Create category",
+      "code": "Code",
+      "name": "Name",
+      "rule": "Rule",
+      "descriptionEn": "Description (EN)",
+      "descriptionPt": "Description (PT)",
+      "descriptionIt": "Description (IT)",
+      "descriptionUk": "Description (UA)",
+      "descriptionEs": "Description (ES)",
+      "descriptionDe": "Description (DE)",
+      "ruleCitation": "Rule citation (link text)",
+      "loadError": "Failed to load category",
+      "requiredFields": "Code, name, and rule are required",
+      "saveError": "Failed to save category",
+      "empty": "No categories found. Click \"Create Category\" to add one."
     },
     "divisions": {
       "title": "Divisions",
-      "description": "Competition divisions grouped by rule set and age group",
+      "description": "Description",
       "deleteConfirm": "Are you sure you want to delete this division?",
       "deleteSuccess": "Division deleted successfully",
       "deleteError": "Failed to delete division",
       "nameRequired": "Division name is required",
       "ruleRequired": "Please select a rule",
       "saveSuccess": "Division saved successfully",
-      "saveError": "Failed to save division"
+      "saveError": "Failed to save division",
+      "create": "Create Division",
+      "createTitle": "Create Division",
+      "editTitle": "Edit Division",
+      "name": "Division Name",
+      "namePlaceholder": "e.g. Adult, Junior, Veteran",
+      "rule": "Rule",
+      "selectRule": "Select a rule",
+      "descriptionPlaceholder": "e.g. Adult archers...",
+      "empty": "No divisions found. Click \"Create Division\" to add one.",
+      "noDescription": "No description available"
     },
     "clubs": {
       "deleteConfirm": "Are you sure you want to delete this club?",
@@ -520,7 +558,11 @@
         "country": "Country",
         "allowMultipleLabel": "Allow multiple applications from one user (different categories only)",
         "collectFeedbackLabel": "Collect feedback from participants",
-        "basicInfo": "Basic Information"
+        "basicInfo": "Basic Information",
+        "rules": "Rules",
+        "selectRules": "Select Rules",
+        "targetCount": "Number of Targets",
+        "targetCountHelper": "Number of targets/patrols for the tournament"
       },
       "feedback": {
         "title": "How was {{title}}?",
@@ -552,7 +594,15 @@
           "noPermission": "You do not have permission to view feedback for this tournament.",
           "unknownUser": "Unknown user"
         }
-      }
+      },
+      "applicationDeadline": "Application Deadline",
+      "applicationSubmitted": "Application submitted successfully!",
+      "attachmentsReady": "{{count}} file(s) ready — they will upload when you save",
+      "bannerReady": "Banner ready — it will upload when you save",
+      "noRulesAssigned": "Not specified",
+      "notSpecified": "Not specified",
+      "preparing": "Preparing...",
+      "rules": "Rules"
     },
     "applications": {
       "title": "My Tournament Applications",
@@ -601,11 +651,53 @@
         "mixed": "Mixed",
         "olympic": "Olympic Recurve",
         "compoundBow": "Compound Bow",
-        "traditionalBow": "Traditional Bow"
-      }
+        "traditionalBow": "Traditional Bow",
+        "female": "Female",
+        "male": "Male",
+        "other": "Other"
+      },
+      "gender": "Gender",
+      "nationality": "Nationality"
     },
     "admin": {
-      "favoriteCategories": "Favorite Categories"
+      "favoriteCategories": "Favorite Categories",
+      "panelTitle": "Admin Panel",
+      "panelDescription": "Manage users, view profiles, and reset passwords. Only administrators can access this panel.",
+      "usersTitle": "Users Management",
+      "createUser": "Create User",
+      "createUserTitle": "Create New User",
+      "table": {
+        "name": "Name",
+        "email": "Email",
+        "gender": "Gender",
+        "club": "Club",
+        "actions": "Actions"
+      },
+      "notSet": "Not set",
+      "fetchUsersError": "Failed to fetch users",
+      "resetEmailSent": "Password reset email sent to {{email}}",
+      "resetEmailFailed": "Failed to send password reset email",
+      "createUserSuccess": "User {{name}} created successfully. They will receive an invitation email.",
+      "createUserFailed": "Failed to create user",
+      "viewProfile": "View Profile",
+      "editProfile": "Edit Profile",
+      "resetPassword": "Reset Password",
+      "backToPanel": "Back to Admin Panel",
+      "userNotFound": "User not found",
+      "fetchUserError": "Failed to fetch user data",
+      "updateUserError": "Failed to update user. Please try again.",
+      "updateUserSuccess": "User updated successfully!",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email",
+      "commentOptional": "Comment (optional)",
+      "commentPlaceholder": "Add a note about this user...",
+      "firstNameRequired": "First name is required",
+      "lastNameRequired": "Last name is required",
+      "emailRequired": "Email is required",
+      "invalidEmail": "Invalid email format",
+      "creating": "Creating...",
+      "createAndInvite": "Create & Invite"
     },
     "adminApplications": {
       "title": "Tournament Applications Management",
@@ -672,6 +764,70 @@
         "startDate": "Start Date",
         "endDate": "End Date",
         "applicationDeadline": "Application Deadline"
+      }
+    },
+    "patrols": {
+      "title": "Patrol Management",
+      "saveChanges": "Save Changes",
+      "saving": "Saving...",
+      "generateList": "Generate patrols list",
+      "generateScoreCards": "Generate score cards",
+      "regenerate": "Regenerate",
+      "retry": "Retry",
+      "generating": "Generating...",
+      "generate": "Generate patrols",
+      "empty": "No patrols yet. Generate patrols from approved applications when you are ready.",
+      "confirmGenerate": "Generate patrols from approved applications? This will create new patrol assignments.",
+      "confirmRegenerate": "This will DELETE all existing patrols and regenerate new ones from approved applications. Continue?",
+      "confirmDeleteRedistribute": "Delete this patrol and redistribute its members?",
+      "loadError": "Failed to load patrols. Please try again.",
+      "saveSuccess": "Patrols saved successfully!",
+      "saveError": "Failed to save patrols. Please try again.",
+      "cannotMove": "Cannot move member",
+      "generateSuccess": "Patrols generated from approved applications",
+      "generateError": "Failed to generate patrols. Please try again.",
+      "openingListPdf": "Opening patrols list PDF...",
+      "listPdfError": "Failed to generate patrols list. Please try again.",
+      "openingScoreCardsPdf": "Opening score cards PDF...",
+      "scoreCardsPdfError": "Failed to generate score cards. Please try again.",
+      "deleteRedistributeSuccess": "Patrol deleted and members redistributed.",
+      "deleteRedistributeError": "Failed to delete patrol and redistribute members.",
+      "regenerateSuccess": "Patrols regenerated successfully!",
+      "regenerateError": "Failed to regenerate patrols",
+      "leader": "Leader",
+      "judge": "Judge",
+      "memberActions": "Member actions",
+      "makeLeader": "Make Leader",
+      "makeJudge": "Make Judge",
+      "removeRole": "Remove Role",
+      "moveToPatrol": "Move to patrol",
+      "patrolN": "Patrol {{number}}",
+      "patrolTitle": "PATROL {{number}}",
+      "membersCount": "{{count}} members",
+      "delete": "Delete",
+      "deleteTooltip": "Delete patrol and redistribute members",
+      "statistics": "Statistics",
+      "participants": "Participants",
+      "avgSize": "Avg Size",
+      "categoryMatch": "Category Match",
+      "clubDiversity": "Club Diversity",
+      "divisionMatch": "Division Match",
+      "genderMatch": "Gender Match",
+      "unknown": "Unknown",
+      "noClub": "No Club",
+      "warnings": {
+        "sameClubJudges": "Judges are from the same club",
+        "missingJudges": "Only {{count}} judge(s) assigned",
+        "missingLeader": "No leader assigned",
+        "mixedDivisions": "Mixed divisions in patrol",
+        "mixedGenders": "Mixed genders in patrol",
+        "sizeImbalance": "Patrol size ({{count}}) differs significantly from average"
+      },
+      "validation": {
+        "invalid": "Invalid patrol or member",
+        "sourceTooSmall": "Source patrol would be too small (minimum 3 members required)",
+        "divisionMismatch": "Member division ({{member}}) differs from patrol's dominant division ({{dominant}})",
+        "genderMismatch": "Member gender differs from patrol's dominant gender"
       }
     }
   },
@@ -973,7 +1129,11 @@
     "save": "Save",
     "saving": "Saving...",
     "delete": "Delete",
-    "deleting": "Deleting..."
+    "deleting": "Deleting...",
+    "edit": "Edit",
+    "sending": "Sending...",
+    "loading": "Loading...",
+    "close": "Close"
   },
   "forms": {
     "email": "Email",
@@ -995,7 +1155,15 @@
     "preferredDivision": "Preferred division",
     "selectDivision": "Select division",
     "applicationLanguage": "Application language",
-    "role": "Role"
+    "role": "Role",
+    "club": "Club",
+    "gender": "Gender",
+    "genderFemale": "Female",
+    "genderMale": "Male",
+    "genderOther": "Other",
+    "nationality": "Nationality",
+    "noClub": "No Club",
+    "none": "None"
   },
   "reset": {
     "invalidLink": "Invalid reset link. Please request a new password reset.",
@@ -1010,7 +1178,11 @@
     "confirm": "Confirm New Password",
     "strength": "Password strength",
     "submit": "Reset Password",
-    "submitLoading": "Resetting Password..."
+    "submitLoading": "Resetting Password...",
+    "strengthWeak": "Weak",
+    "strengthFair": "Fair",
+    "strengthGood": "Good",
+    "strengthStrong": "Strong"
   },
   "profile": {
     "joined": "Joined",
@@ -1064,7 +1236,17 @@
     "zoom": "Zoom",
     "avatarSubheader": "Select an image, then drag to reposition (PNG, JPG up to 3MB)",
     "userIdRequired": "User ID is required for avatar upload",
-    "profileSaved": "Profile saved successfully!"
+    "profileSaved": "Profile saved successfully!",
+    "clubs": "Clubs",
+    "confirmLeaveClub": "Are you sure you want to leave this club?",
+    "cropAndUse": "Crop and Use",
+    "invalidCrop": "Invalid crop parameters. Please try adjusting the image.",
+    "leaveClub": "Leave club",
+    "pending": "pending",
+    "pendingInvitation": "Invitation pending",
+    "unverifiedClub": "Unverified",
+    "verifiedClubMember": "Verified club member",
+    "updateError": "Failed to update profile. Please try again."
   },
   "role": {
     "user": "User",
@@ -1098,7 +1280,12 @@
     "validationLastNameRequired": "Last name is required.",
     "signInSubtitle": "Track your training, earn achievements, and sync securely. You choose what to share.",
     "signUpSubtitle": "Join the community — log sessions, sync securely across devices, and share progress on your terms.",
-    "signUpSyncNote": "Sokil works offline on this device. After you create an account, you choose whether to back up trainings and equipment to your account for use on other devices."
+    "signUpSyncNote": "Sokil works offline on this device. After you create an account, you choose whether to back up trainings and equipment to your account for use on other devices.",
+    "receiveUpdates": "I want to receive updates via email.",
+    "googleFailed": "Google authentication failed",
+    "googleAuthFailed": "Authentication failed",
+    "googleRedirecting": "Redirecting to sign in page...",
+    "googleCompleting": "Completing Google authentication..."
   },
   "dialog": {
     "yes": "Yes",
@@ -1114,7 +1301,8 @@
   "clubs": {
     "clubLogo": "Club Logo",
     "logoSubheader": "Select an image, then drag to reposition (PNG, JPG up to 10MB)",
-    "logoSaved": "Club logo saved successfully"
+    "logoSaved": "Club logo saved successfully",
+    "logoReady": "Logo ready — it will upload when you save"
   },
   "pwa": {
     "workingOffline": "Working offline",
@@ -1278,5 +1466,44 @@
     "title": "Field Guide",
     "glossary": "Glossary",
     "glossaryDesc": "Common terms and abbreviations used in archery"
+  },
+  "buttons": {
+    "ok": "OK"
+  },
+  "invitations": {
+    "acceptError": "Failed to accept invitation",
+    "accepted": "You have joined the club!",
+    "federationAccepted": "Your club has joined the federation!",
+    "goToProfile": "Go to Profile",
+    "invalidToken": "Invalid invitation link",
+    "loginRequired": "Login Required",
+    "loginToAccept": "Please sign in to accept this club invitation.",
+    "loginToAcceptFederation": "Please sign in to accept this federation invitation."
+  },
+  "forgotPassword": {
+    "title": "Reset password",
+    "body": "Enter your account's email address, and we'll send you a link to reset your password.",
+    "email": "Email address",
+    "sending": "Sending...",
+    "continue": "Continue",
+    "success": "If an account exists for that email, a reset link has been sent.",
+    "error": "Failed to send reset email. Please try again.",
+    "close": "Close"
+  },
+  "header": {
+    "home": "Home"
+  },
+  "languageToggler": {
+    "label": "Language"
+  },
+  "fileAttachments": {
+    "delete": "Delete"
+  },
+  "myClub": {
+    "adminBadge": "Admin"
+  },
+  "logoUploader": {
+    "currentLogo": "Current logo: {{name}}",
+    "corsPreviewUnavailable": "Preview unavailable - CORS restriction. Upload a new image to edit."
   }
 }

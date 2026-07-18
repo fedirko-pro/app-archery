@@ -361,7 +361,16 @@ const ProfileEditPage: React.FC = () => {
                   variant="caption"
                   sx={{ color: passwordStrength.color, display: 'block', mt: 1 }}
                 >
-                  {t('reset.strength')}: {passwordStrength.strength}
+                  {t('reset.strength')}:{' '}
+                  {passwordStrength.strength === 'Weak'
+                    ? t('reset.strengthWeak')
+                    : passwordStrength.strength === 'Fair'
+                      ? t('reset.strengthFair')
+                      : passwordStrength.strength === 'Good'
+                        ? t('reset.strengthGood')
+                        : passwordStrength.strength === 'Strong'
+                          ? t('reset.strengthStrong')
+                          : passwordStrength.strength}
                 </Typography>
               )}
               <TextField

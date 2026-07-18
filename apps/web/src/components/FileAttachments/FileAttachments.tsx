@@ -297,7 +297,7 @@ const FileAttachments: React.FC<FileAttachmentsProps> = ({
                   <ListItemSecondaryAction>
                     <IconButton
                       edge="end"
-                      aria-label="delete"
+                      aria-label={t('fileAttachments.delete')}
                       onClick={() => handleRemovePending(index)}
                       color="error"
                       size="small"
@@ -325,7 +325,7 @@ const FileAttachments: React.FC<FileAttachmentsProps> = ({
                   <ListItemSecondaryAction>
                     <IconButton
                       edge="end"
-                      aria-label="delete"
+                      aria-label={t('fileAttachments.delete')}
                       onClick={() => handleRemoveUploaded(file.id, file.filename)}
                       color="error"
                       size="small"

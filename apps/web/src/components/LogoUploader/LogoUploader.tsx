@@ -350,10 +350,10 @@ const LogoUploader: React.FC<LogoUploaderProps> = ({
           {value && !imageEl && (
             <Box sx={{ mb: 2, p: 2, bgcolor: 'info.light', borderRadius: 1, width: '100%' }}>
               <Typography variant="body2" color="info.contrastText">
-                Current logo: {value}
+                {t('logoUploader.currentLogo', { name: value })}
                 <br />
                 <Typography variant="caption" color="info.contrastText">
-                  (Preview unavailable - CORS restriction. Upload a new image to edit.)
+                  {t('logoUploader.corsPreviewUnavailable')}
                 </Typography>
               </Typography>
             </Box>

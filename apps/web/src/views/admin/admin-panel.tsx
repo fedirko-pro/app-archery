@@ -2,12 +2,14 @@ import './admin-panel.scss';
 
 import { Box, Typography, Alert } from '@mui/material';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import type { User } from '../../contexts/types';
 import UsersList from './users-list/users-list';
 
 const AdminPanel: React.FC = () => {
+  const { t } = useTranslation('common');
   const navigate = useNavigate();
   const { lang } = useParams();
 
@@ -22,11 +24,11 @@ const AdminPanel: React.FC = () => {
   return (
     <Box className="admin-panel">
       <Typography variant="h3" gutterBottom>
-        Admin Panel
+        {t('pages.admin.panelTitle')}
       </Typography>
 
       <Alert severity="info" sx={{ mb: 3 }}>
-        Manage users, view profiles, and reset passwords. Only administrators can access this panel.
+        {t('pages.admin.panelDescription')}
       </Alert>
 
       <UsersList onEditUser={handleEditUser} onViewProfile={handleViewProfile} />

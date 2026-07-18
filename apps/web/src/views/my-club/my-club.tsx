@@ -254,7 +254,9 @@ const MyClub: React.FC = () => {
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                         {`${m.user.firstName || ''} ${m.user.lastName || ''}`.trim() ||
                           m.user.email}
-                        {m.role === 'admin' && <Chip label="Admin" size="small" color="primary" />}
+                        {m.role === 'admin' && (
+                          <Chip label={t('myClub.adminBadge')} size="small" color="primary" />
+                        )}
                       </Box>
                     }
                     secondary={m.user.email}

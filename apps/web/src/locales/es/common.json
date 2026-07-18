@@ -1,5 +1,7 @@
 {
-  "footer": { "about": "Acerca de la app" },
+  "footer": {
+    "about": "Acerca de la app"
+  },
   "menu": {
     "admin": "Admin",
     "organizerTools": "Herramientas de organizador",
@@ -26,7 +28,9 @@
     "divisions": "Divisiones",
     "scoringDemo": "Tarjeta de Puntuación (demo sin papel)",
     "glossary": "Glosario",
-    "fieldGuide": "Guía de Campo"
+    "fieldGuide": "Guía de Campo",
+    "myClub": "Mi club",
+    "myFederation": "Mi federación"
   },
   "accessControl": {
     "title": "Control de acceso",
@@ -73,7 +77,9 @@
       "categoryRequired": "Por favor seleccione una categoría de arco",
       "submit": "Enviar solicitud",
       "submitting": "Enviando...",
-      "submitError": "Error al enviar la solicitud"
+      "submitError": "Error al enviar la solicitud",
+      "notesPlaceholder": "Notas adicionales (opcional)...",
+      "searchPlaceholder": "Buscar por nombre o email..."
     }
   },
   "achievements": {
@@ -117,6 +123,159 @@
     "precisionMaster": {
       "title": "Maestro de la Precisión",
       "description": "Mantén una precisión del 95%+ durante 100 flechas consecutivas"
+    },
+    "arrows10000": {
+      "description": "Dispara 10 000 flechas en entrenamiento",
+      "title": "Veterano de flechas"
+    },
+    "arrows2500": {
+      "description": "Dispara 2500 flechas en entrenamiento",
+      "title": "Adepto de flechas"
+    },
+    "arrows25000": {
+      "description": "Dispara 25 000 flechas en entrenamiento",
+      "title": "Leyenda de flechas"
+    },
+    "arrows500": {
+      "description": "Dispara 500 flechas en entrenamiento",
+      "title": "Aprendiz de flechas"
+    },
+    "categories": {
+      "all": "Todos",
+      "consistency": "Constancia",
+      "exploration": "Exploración",
+      "mastery": "Maestría",
+      "onboarding": "Primeros pasos",
+      "tournaments": "Torneos",
+      "volume": "Volumen"
+    },
+    "competitor": {
+      "description": "Consigue la aprobación de tu primera solicitud de torneo",
+      "title": "Competidor"
+    },
+    "distance10km": {
+      "description": "Camina 10 km hacia y desde tus dianas",
+      "title": "Caminante del campo"
+    },
+    "distance250km": {
+      "description": "Camina 250 km hacia y desde tus dianas",
+      "title": "Pionero"
+    },
+    "distanceMarathon": {
+      "description": "Camina un maratón (42,195 km) hacia y desde tus dianas",
+      "title": "Maratoniano"
+    },
+    "distanceThereAndBack": {
+      "description": "Camina 3000 km — el viaje de ida y vuelta de Bilbo a la Montaña Solitaria",
+      "title": "Ida y vuelta"
+    },
+    "distances3": {
+      "description": "Entrena en 3 distancias diferentes",
+      "title": "Explorador de distancias"
+    },
+    "distances5": {
+      "description": "Entrena en 5 distancias diferentes",
+      "title": "Domador de distancias"
+    },
+    "firstApplication": {
+      "description": "Envía tu primera solicitud de torneo",
+      "title": "En la lista de salida"
+    },
+    "firstEquipment": {
+      "description": "Añade tu primer set de equipo",
+      "title": "Equípate"
+    },
+    "firstSession": {
+      "description": "Registra tu primera sesión de entrenamiento",
+      "title": "Primeros pasos"
+    },
+    "guestHint": "Inicia sesión para guardar tus logros y sincronizarlos entre dispositivos.",
+    "lift1t": {
+      "description": "Tira un total acumulado de 1000 kg (1 tonelada)",
+      "title": "Brazos de hierro"
+    },
+    "liftBlueWhale": {
+      "description": "Tira un total acumulado de 150 000 kg — el peso de una ballena azul",
+      "title": "Levanta la ballena azul"
+    },
+    "liftElephant": {
+      "description": "Tira un total acumulado de 6000 kg — el peso de un elefante africano",
+      "title": "Levanta el elefante"
+    },
+    "liftKiloton": {
+      "description": "Tira un total acumulado de 1 000 000 kg (1000 toneladas)",
+      "title": "Arquero kilotón"
+    },
+    "locked": {
+      "eventHint": "Este logro se otorga en eventos especiales o por resultados de torneo."
+    },
+    "new": "NUEVO",
+    "personalBest": {
+      "description": "Establece una nueva mejor marca personal en competición",
+      "title": "Mejor marca personal"
+    },
+    "profileComplete": {
+      "description": "Completa tu perfil de arquero",
+      "title": "Identidad lista"
+    },
+    "scoredSessions5": {
+      "description": "Registra puntuaciones en 5 sesiones de entrenamiento",
+      "title": "Seguimiento de puntuación"
+    },
+    "seasonedCompetitor": {
+      "description": "Consigue la aprobación de 5 solicitudes de torneo",
+      "title": "Competidor experimentado"
+    },
+    "sections": {
+      "locked": "Bloqueados",
+      "unlocked": "Desbloqueados"
+    },
+    "sessions10": {
+      "description": "Completa 10 sesiones de entrenamiento",
+      "title": "Práctica regular"
+    },
+    "sessions150": {
+      "description": "Completa 150 sesiones de entrenamiento",
+      "title": "Devoto del entrenamiento"
+    },
+    "sessions50": {
+      "description": "Completa 50 sesiones de entrenamiento",
+      "title": "Arquero dedicado"
+    },
+    "sessions500": {
+      "description": "Completa 500 sesiones de entrenamiento",
+      "title": "Habitual del campo"
+    },
+    "shareProgress": "Compartir mi progreso",
+    "shareProgressText": "{{earned}} de {{total}} logros desbloqueados en Sokil",
+    "shareProgressTitle": "Mis logros de tiro con arco",
+    "streak12Weeks": {
+      "description": "Mantén una racha de entrenamiento de 12 semanas",
+      "title": "Rutina de hierro"
+    },
+    "streak26Weeks": {
+      "description": "Mantén una racha de entrenamiento de 26 semanas",
+      "title": "Arquero todo el año"
+    },
+    "streak2Weeks": {
+      "description": "Entrena al menos una vez por semana durante 2 semanas seguidas",
+      "title": "Calentamiento"
+    },
+    "streak4Weeks": {
+      "description": "Mantén una racha de entrenamiento de 4 semanas",
+      "title": "Arquero constante"
+    },
+    "targetTypes3": {
+      "description": "Entrena con 3 tipos de diana diferentes",
+      "title": "Variedad de dianas"
+    },
+    "tournamentChampion": {
+      "description": "Gana el primer puesto en un torneo oficial",
+      "title": "Campeón del torneo"
+    },
+    "unlocked": {
+      "nice": "¡Genial!",
+      "title": "¡Logro desbloqueado!"
     }
   },
   "pages": {
@@ -141,7 +300,14 @@
       "downloadLink": "Enlace de Descarga",
       "deleteConfirmTitle": "¿Eliminar Regla?",
       "deleteConfirmMessage": "¿Está seguro de que desea eliminar esta regla?",
-      "deleteWarning": "Esta regla no puede eliminarse si tiene divisiones o categorías de arco relacionadas."
+      "deleteWarning": "Esta regla no puede eliminarse si tiene divisiones o categorías de arco relacionadas.",
+      "codeNameRequired": "El código y el nombre de la regla son obligatorios",
+      "createSuccess": "Regla creada con éxito",
+      "deleteError": "No se pudo eliminar la regla. Puede tener divisiones o categorías de arco relacionadas.",
+      "deleteSuccess": "Regla eliminada con éxito",
+      "saveError": "No se pudo guardar la regla",
+      "saveSuccess": "Regla guardada con éxito",
+      "updateSuccess": "Regla actualizada con éxito"
     },
     "categories": {
       "title": "Categorías de arco",
@@ -149,7 +315,24 @@
       "ruleReference": "Referencia de regla",
       "confirmDelete": "¿Estás seguro de que quieres eliminar esta categoría?",
       "deleteSuccess": "Categoría eliminada correctamente",
-      "deleteError": "Error al eliminar la categoría"
+      "deleteError": "Error al eliminar la categoría",
+      "code": "Código",
+      "create": "Crear categoría",
+      "createTitle": "Crear categoría",
+      "descriptionDe": "Descripción (DE)",
+      "descriptionEn": "Descripción (EN)",
+      "descriptionEs": "Descripción (ES)",
+      "descriptionIt": "Descripción (IT)",
+      "descriptionPt": "Descripción (PT)",
+      "descriptionUk": "Descripción (UA)",
+      "editTitle": "Editar categoría",
+      "empty": "No se encontraron categorías. Haz clic en «Crear categoría» para añadir una.",
+      "loadError": "No se pudo cargar la categoría",
+      "name": "Nombre",
+      "requiredFields": "Código, nombre y regla son obligatorios",
+      "rule": "Regla",
+      "ruleCitation": "Cita de la regla (texto del enlace)",
+      "saveError": "No se pudo guardar la categoría"
     },
     "converter": {
       "title": "Conversor de tiro con arco",
@@ -179,7 +362,24 @@
     },
     "divisions": {
       "title": "Divisiones",
-      "description": "Divisiones de competición agrupadas por reglas"
+      "description": "Divisiones de competición agrupadas por reglas",
+      "create": "Crear división",
+      "createTitle": "Crear división",
+      "deleteConfirm": "¿Seguro que quieres eliminar esta división?",
+      "deleteError": "No se pudo eliminar la división",
+      "deleteSuccess": "División eliminada con éxito",
+      "descriptionPlaceholder": "p. ej. Arqueros adultos...",
+      "editTitle": "Editar división",
+      "empty": "No se encontraron divisiones. Haz clic en «Crear división» para añadir una.",
+      "name": "Nombre de la división",
+      "namePlaceholder": "p. ej. Adulto, Junior, Veterano",
+      "nameRequired": "El nombre de la división es obligatorio",
+      "noDescription": "Sin descripción disponible",
+      "rule": "Regla",
+      "ruleRequired": "Selecciona una regla",
+      "saveError": "No se pudo guardar la división",
+      "saveSuccess": "División guardada con éxito",
+      "selectRule": "Seleccionar una regla"
     },
     "clubs": {
       "deleteConfirm": "¿Está seguro de que desea eliminar este club?",
@@ -358,7 +558,13 @@
         "applicationDeadlineHelper": "Déjalo vacío para establecer 5 días antes del inicio",
         "address": "Dirección",
         "allowMultipleLabel": "Permitir múltiples solicitudes por usuario (solo categorías diferentes)",
-        "collectFeedbackLabel": "Recopilar comentarios de los participantes"
+        "collectFeedbackLabel": "Recopilar comentarios de los participantes",
+        "basicInfo": "Información básica",
+        "country": "País",
+        "rules": "Reglas",
+        "selectRules": "Seleccionar reglas",
+        "targetCount": "Número de dianas",
+        "targetCountHelper": "Número de dianas/patrullas del torneo"
       },
       "feedback": {
         "title": "¿Qué tal fue {{title}}?",
@@ -390,7 +596,32 @@
           "noPermission": "No tienes permiso para ver los comentarios de este torneo.",
           "unknownUser": "Usuario desconocido"
         }
-      }
+      },
+      "addFiles": "Añadir archivos",
+      "applicationDeadline": "Fecha límite de inscripción",
+      "applicationSubmitted": "¡Solicitud enviada con éxito!",
+      "attachments": "Archivos adjuntos adicionales",
+      "attachmentsReady": "{{count}} archivo(s) listo(s) — se subirán al guardar",
+      "attachmentsSubheader": "Sube reglas personalizadas, imágenes o documentos (PNG, JPG, PDF, DOC, DOCX hasta {{maxSize}} cada uno, máx. {{maxFiles}} archivos)",
+      "banner": "Banner del torneo",
+      "bannerReady": "Banner listo — se subirá al guardar",
+      "bannerSubheader": "Selecciona una imagen y arrástrala para reposicionar (PNG, JPG hasta 3 MB)",
+      "creating": "Creando...",
+      "deleteFileFailed": "No se pudo eliminar el archivo. Inténtalo de nuevo.",
+      "dragToReposition": "Selecciona una imagen y arrástrala para reposicionar",
+      "fileReadError": "{{fileName}}: no se pudo leer el archivo",
+      "fileTooLarge": "{{fileName}}: el archivo es demasiado grande (máx. {{maxSize}})",
+      "filesCount": "{{count}}/{{max}} archivos",
+      "noAttachments": "Aún no hay archivos adjuntos",
+      "noRulesAssigned": "No especificado",
+      "notSpecified": "No especificado",
+      "preparing": "Preparando...",
+      "rules": "Reglas",
+      "tooManyFiles": "Máximo {{maxFiles}} archivos. Puedes subir {{remaining}} más.",
+      "unsupportedFileType": "{{fileName}}: tipo de archivo no compatible. Permitidos: PNG, JPG, PDF, DOC, DOCX",
+      "updating": "Actualizando...",
+      "uploadFailed": "Error al subir. Inténtalo de nuevo.",
+      "uploading": "Subiendo..."
     },
     "applications": {
       "title": "Mis solicitudes de torneos",
@@ -442,11 +673,53 @@
         "mixed": "Mixto",
         "olympic": "Recurvo Olímpico",
         "compoundBow": "Arco compuesto",
-        "traditionalBow": "Arco tradicional"
-      }
+        "traditionalBow": "Arco tradicional",
+        "female": "Femenino",
+        "male": "Masculino",
+        "other": "Otro"
+      },
+      "gender": "Género",
+      "nationality": "Nacionalidad"
     },
     "admin": {
-      "favoriteCategories": "Categorías Favoritas"
+      "favoriteCategories": "Categorías Favoritas",
+      "backToPanel": "Volver al panel de administración",
+      "commentOptional": "Comentario (opcional)",
+      "commentPlaceholder": "Añade una nota sobre este usuario...",
+      "createAndInvite": "Crear e invitar",
+      "createUser": "Crear usuario",
+      "createUserFailed": "No se pudo crear el usuario",
+      "createUserSuccess": "Usuario {{name}} creado con éxito. Recibirá un email de invitación.",
+      "createUserTitle": "Crear nuevo usuario",
+      "creating": "Creando...",
+      "editProfile": "Editar perfil",
+      "email": "Email",
+      "emailRequired": "El email es obligatorio",
+      "fetchUserError": "No se pudieron cargar los datos del usuario",
+      "fetchUsersError": "No se pudieron cargar los usuarios",
+      "firstName": "Nombre",
+      "firstNameRequired": "El nombre es obligatorio",
+      "invalidEmail": "Formato de email no válido",
+      "lastName": "Apellidos",
+      "lastNameRequired": "Los apellidos son obligatorios",
+      "notSet": "No establecido",
+      "panelDescription": "Gestiona usuarios, consulta perfiles y restablece contraseñas. Solo para administradores.",
+      "panelTitle": "Panel de administración",
+      "resetEmailFailed": "No se pudo enviar el email de restablecimiento",
+      "resetEmailSent": "Email de restablecimiento enviado a {{email}}",
+      "resetPassword": "Restablecer contraseña",
+      "table": {
+        "actions": "Acciones",
+        "club": "Club",
+        "email": "Email",
+        "gender": "Género",
+        "name": "Nombre"
+      },
+      "updateUserError": "No se pudo actualizar el usuario. Inténtalo de nuevo.",
+      "updateUserSuccess": "¡Usuario actualizado con éxito!",
+      "userNotFound": "Usuario no encontrado",
+      "usersTitle": "Gestión de usuarios",
+      "viewProfile": "Ver perfil"
     },
     "adminApplications": {
       "title": "Gestión de solicitudes de torneos",
@@ -514,6 +787,70 @@
         "endDate": "Fecha de finalización",
         "applicationDeadline": "Fecha límite de solicitud"
       }
+    },
+    "patrols": {
+      "avgSize": "Tamaño medio",
+      "cannotMove": "No se puede mover al miembro",
+      "categoryMatch": "Coincidencia de categoría",
+      "clubDiversity": "Diversidad de clubes",
+      "confirmDeleteRedistribute": "¿Eliminar esta patrulla y redistribuir a sus miembros?",
+      "confirmGenerate": "¿Generar patrullas a partir de las solicitudes aprobadas? Se crearán nuevas asignaciones.",
+      "confirmRegenerate": "Esto ELIMINARÁ todas las patrullas existentes y generará nuevas a partir de las solicitudes aprobadas. ¿Continuar?",
+      "delete": "Eliminar",
+      "deleteRedistributeError": "No se pudo eliminar la patrulla ni redistribuir a los miembros.",
+      "deleteRedistributeSuccess": "Patrulla eliminada y miembros redistribuidos.",
+      "deleteTooltip": "Eliminar patrulla y redistribuir miembros",
+      "divisionMatch": "Coincidencia de división",
+      "empty": "Aún no hay patrullas. Genéralas a partir de las solicitudes aprobadas cuando estés listo.",
+      "genderMatch": "Coincidencia de género",
+      "generate": "Generar patrullas",
+      "generateError": "No se pudieron generar las patrullas. Inténtalo de nuevo.",
+      "generateList": "Generar lista de patrullas",
+      "generateScoreCards": "Generar tarjetas de puntuación",
+      "generateSuccess": "Patrullas generadas a partir de las solicitudes aprobadas",
+      "generating": "Generando...",
+      "judge": "Juez",
+      "leader": "Líder",
+      "listPdfError": "No se pudo generar la lista de patrullas. Inténtalo de nuevo.",
+      "loadError": "No se pudieron cargar las patrullas. Inténtalo de nuevo.",
+      "makeJudge": "Hacer juez",
+      "makeLeader": "Hacer líder",
+      "memberActions": "Acciones del miembro",
+      "membersCount": "{{count}} miembros",
+      "moveToPatrol": "Mover a patrulla",
+      "noClub": "Sin club",
+      "openingListPdf": "Abriendo PDF de la lista de patrullas...",
+      "openingScoreCardsPdf": "Abriendo PDF de tarjetas de puntuación...",
+      "participants": "Participantes",
+      "patrolN": "Patrulla {{number}}",
+      "patrolTitle": "PATRULLA {{number}}",
+      "regenerate": "Regenerar",
+      "regenerateError": "No se pudieron regenerar las patrullas",
+      "regenerateSuccess": "¡Patrullas regeneradas con éxito!",
+      "removeRole": "Quitar rol",
+      "retry": "Reintentar",
+      "saveChanges": "Guardar cambios",
+      "saveError": "No se pudieron guardar las patrullas. Inténtalo de nuevo.",
+      "saveSuccess": "¡Patrullas guardadas con éxito!",
+      "saving": "Guardando...",
+      "scoreCardsPdfError": "No se pudieron generar las tarjetas de puntuación. Inténtalo de nuevo.",
+      "statistics": "Estadísticas",
+      "title": "Gestión de patrullas",
+      "unknown": "Desconocido",
+      "validation": {
+        "divisionMismatch": "La división del miembro ({{member}}) difiere de la división dominante de la patrulla ({{dominant}})",
+        "genderMismatch": "El género del miembro difiere del género dominante de la patrulla",
+        "invalid": "Patrulla o miembro no válido",
+        "sourceTooSmall": "La patrulla de origen quedaría demasiado pequeña (mínimo 3 miembros)"
+      },
+      "warnings": {
+        "missingJudges": "Solo {{count}} juez(es) asignado(s)",
+        "missingLeader": "No hay líder asignado",
+        "mixedDivisions": "Divisiones mixtas en la patrulla",
+        "mixedGenders": "Géneros mixtos en la patrulla",
+        "sameClubJudges": "Los jueces son del mismo club",
+        "sizeImbalance": "El tamaño de la patrulla ({{count}}) difiere significativamente del promedio"
+      }
     }
   },
   "forms": {
@@ -534,7 +871,17 @@
     "preferredDivision": "División preferida",
     "selectDivision": "Selecciona división",
     "applicationLanguage": "Idioma de la aplicación",
-    "role": "Rol"
+    "role": "Rol",
+    "club": "Club",
+    "country": "País",
+    "countryNotSet": "No establecido",
+    "gender": "Género",
+    "genderFemale": "Femenino",
+    "genderMale": "Masculino",
+    "genderOther": "Otro",
+    "nationality": "Nacionalidad",
+    "noClub": "Sin club",
+    "none": "Ninguno"
   },
   "reset": {
     "invalidLink": "Enlace de restablecimiento inválido. Solicita un nuevo restablecimiento de contraseña.",
@@ -549,7 +896,11 @@
     "confirm": "Confirmar nueva contraseña",
     "strength": "Fortaleza de la contraseña",
     "submit": "Restablecer contraseña",
-    "submitLoading": "Restableciendo contraseña..."
+    "submitLoading": "Restableciendo contraseña...",
+    "strengthFair": "Aceptable",
+    "strengthGood": "Buena",
+    "strengthStrong": "Fuerte",
+    "strengthWeak": "Débil"
   },
   "profile": {
     "joined": "Se unió",
@@ -602,9 +953,23 @@
     "zoom": "Zoom",
     "avatarSubheader": "Selecciona una imagen y arrástrala para reposicionarla (PNG, JPG hasta 3MB)",
     "userIdRequired": "Se requiere ID de usuario para subir avatar",
-    "profileSaved": "¡Perfil guardado correctamente!"
+    "profileSaved": "¡Perfil guardado correctamente!",
+    "avatarSaveFailed": "No se pudo guardar el avatar",
+    "clubs": "Clubes",
+    "confirmLeaveClub": "¿Seguro que quieres dejar este club?",
+    "cropAndUse": "Recortar y usar",
+    "invalidCrop": "Parámetros de recorte no válidos. Prueba a ajustar la imagen.",
+    "leaveClub": "Dejar club",
+    "pending": "pendiente",
+    "pendingInvitation": "Invitación pendiente",
+    "unverifiedClub": "No verificado",
+    "updateError": "No se pudo actualizar el perfil. Inténtalo de nuevo.",
+    "verifiedClubMember": "Miembro verificado del club"
   },
-  "role": { "user": "Usuario", "admin": "Admin" },
+  "role": {
+    "user": "Usuario",
+    "admin": "Admin"
+  },
   "notFound": {
     "title": "Página no encontrada",
     "subtitle": "La página que buscas puede haber sido eliminada o no estar disponible temporalmente.",
@@ -626,11 +991,20 @@
     "save": "Guardar",
     "saving": "Guardando...",
     "delete": "Eliminar",
-    "deleting": "Eliminando..."
+    "deleting": "Eliminando...",
+    "close": "Cerrar",
+    "edit": "Editar",
+    "loading": "Cargando...",
+    "sending": "Enviando..."
   },
   "sharing": {
     "authRequiredTitle": "Inicia sesión para compartir",
-    "authRequiredMessage": "Compartir logros y progreso está disponible solo para usuarios registrados. Inicia sesión o crea una cuenta para compartir."
+    "authRequiredMessage": "Compartir logros y progreso está disponible solo para usuarios registrados. Inicia sesión o crea una cuenta para compartir.",
+    "goToProfileSettings": "Abrir ajustes del perfil",
+    "notEarnedMessage": "Podrás compartir este logro cuando lo desbloquees.",
+    "notEarnedTitle": "Logro aún no conseguido",
+    "privacyPersonalMessage": "Tu ajuste de privacidad es {{visibility}}. Para compartir, cambia la visibilidad a Limitada o Pública.",
+    "privacyPersonalTitle": "La compartición está en Personal"
   },
   "auth": {
     "logout": "Cerrar sesión",
@@ -650,7 +1024,12 @@
     "validationLastNameRequired": "El apellido es obligatorio.",
     "signInSubtitle": "Sigue tu entrenamiento, gana logros y sincroniza de forma segura. Tú eliges qué compartir.",
     "signUpSubtitle": "Únete a la comunidad — registra sesiones, sincroniza de forma segura entre dispositivos y comparte tu progreso en tus términos.",
-    "signUpSyncNote": "Sokil funciona sin conexión en este dispositivo. Tras crear tu cuenta, eliges si respaldar entrenamientos y equipo en tu cuenta para usarlos en otros dispositivos."
+    "signUpSyncNote": "Sokil funciona sin conexión en este dispositivo. Tras crear tu cuenta, eliges si respaldar entrenamientos y equipo en tu cuenta para usarlos en otros dispositivos.",
+    "googleAuthFailed": "Autenticación fallida",
+    "googleCompleting": "Completando la autenticación de Google...",
+    "googleFailed": "Falló la autenticación de Google",
+    "googleRedirecting": "Redirigiendo a la página de inicio de sesión...",
+    "receiveUpdates": "Quiero recibir novedades por correo electrónico."
   },
   "dialog": {
     "yes": "Sí",
@@ -658,7 +1037,10 @@
   },
   "errorBoundary": {
     "title": "Algo salió mal",
-    "reload": "Recargar página"
+    "reload": "Recargar página",
+    "retry": "Reintentar",
+    "routeSubtitle": "Ocurrió un error inesperado al cargar esta página.",
+    "routeTitle": "Esta página no se pudo cargar"
   },
   "trainings": {
     "title": "Mis entrenamientos",
@@ -682,7 +1064,46 @@
       "addFullDetails": "Añadir detalles completos",
       "goToEquipment": "Mi equipo",
       "unspecified": "No especificado"
-    }
+    },
+    "addCustomField": "Añadir campo",
+    "addSet": "Añadir serie",
+    "addShot": "Añadir tiro",
+    "arrowsPerSet": "Flechas por serie",
+    "customFields": "Campos adicionales",
+    "date": "Fecha",
+    "deleteConfirm": "¿Seguro que quieres eliminar esta sesión de entrenamiento?",
+    "deleteError": "No se pudo eliminar la sesión de entrenamiento",
+    "distance": "Distancia",
+    "empty": "Aún no hay sesiones de entrenamiento. ¡Añade la primera!",
+    "equipmentSet": "Set de equipo",
+    "fieldKey": "Nombre del campo",
+    "fieldValue": "Valor",
+    "finishSession": "Terminar",
+    "inProgress": "En curso",
+    "mood": "¿Cómo te sentiste?",
+    "moodOptions": {
+      "amazing": "Increíble",
+      "bad": "Mal",
+      "good": "Bien",
+      "normal": "Normal"
+    },
+    "noEquipment": "Ningún equipo seleccionado",
+    "notes": "Notas",
+    "removeShot": "Eliminar tiro",
+    "replaceActiveSession": {
+      "editCurrent": "No, editar la actual",
+      "message": "¿Quieres terminar la sesión anterior y empezar una nueva?",
+      "startNew": "Sí, empezar nueva",
+      "title": "Sesión ya en curso"
+    },
+    "saveError": "No se pudo guardar la sesión de entrenamiento",
+    "scoreTotal": "Puntuación total",
+    "session": "Sesión de entrenamiento",
+    "shotsCount": "Número de tiros",
+    "syncError": "Error de sincronización",
+    "syncSuccess": "Datos sincronizados con éxito",
+    "syncing": "Sincronizando...",
+    "targetType": "Tipo de diana"
   },
   "units": {
     "inch": "Pulgada",
@@ -783,7 +1204,8 @@
   "clubs": {
     "clubLogo": "Logo del Club",
     "logoSaved": "Logo del club guardado correctamente",
-    "logoSubheader": "Selecciona una imagen y luego arrastra para reposicionar (PNG, JPG hasta 10MB)"
+    "logoSubheader": "Selecciona una imagen y luego arrastra para reposicionar (PNG, JPG hasta 10MB)",
+    "logoReady": "Logo listo — se subirá al guardar"
   },
   "pwa": {
     "workingOffline": "Trabajando sin conexión",
@@ -876,7 +1298,18 @@
       "ghostTitle": "Tus gráficos aparecerán aquí",
       "ghostSubtitle": "Sigue flechas y sesiones a lo largo del tiempo cuando empieces a registrar.",
       "logSession": "Registrar sesión"
-    }
+    },
+    "avgScore": "Puntuación media",
+    "bestSession": "Mejor sesión",
+    "byEquipment": {
+      "arrows": "Flechas",
+      "avgShots": "Media flechas / sesión",
+      "empty": "Registra sesiones con un setup de arco para comparar el rendimiento de tu equipo.",
+      "sessions": "Sesiones"
+    },
+    "mostUsedEquipment": "Setup más usado",
+    "noScoringData": "Termina sesiones con puntuación para ver tendencias.",
+    "scoreByDistance": "Puntuación media por distancia"
   },
   "dashboard": {
     "title": "Inicio",
@@ -954,11 +1387,157 @@
       "profileExplanation": "Ayuda a tus amigos a reconocerte. Puedes cambiarlo en cualquier momento en Perfil.",
       "equipmentExplanation": "Tu configuración de arco predeterminada se preselecciona al registrar sesiones de entrenamiento. Añade más sets después en Mi equipo.",
       "getStartedExplanation": "Elige tus preferencias de sincronización y compartir. La sincronización mantiene tus sesiones de entrenamiento y equipo respaldados en todos los dispositivos."
-    }
+    },
+    "stepProgress": "Paso {{current}} de {{total}}"
   },
   "fieldGuide": {
     "title": "Guía de Campo",
     "glossary": "Glosario",
     "glossaryDesc": "Términos y abreviaturas comunes usados en el tiro con arco"
+  },
+  "achievementShare": {
+    "badge": "Logro",
+    "earnedBy": "Arquero",
+    "notFoundMessage": "Este enlace de logro es privado o no existe.",
+    "notFoundTitle": "Logro no disponible"
+  },
+  "buttons": {
+    "ok": "OK"
+  },
+  "equipment": {
+    "addCustomField": "Añadir campo",
+    "addSet": "Añadir set",
+    "arrowGroup": "Flecha",
+    "arrowLength": "Longitud de flecha",
+    "arrowMaterial": "Material de flecha",
+    "arrowMaterials": {
+      "aluminium": "Aluminio",
+      "carbon": "Carbono",
+      "custom": "Personalizado",
+      "fiberglass": "Fibra de vidrio",
+      "mix": "Mix",
+      "wood": "Madera"
+    },
+    "arrowSpine": "Spine",
+    "arrowWeight": "Peso de flecha",
+    "bow": "Arco",
+    "bowType": "Tipo",
+    "crossbow": "Ballesta",
+    "customFields": "Campos adicionales",
+    "default": "Predeterminado",
+    "deleteConfirm": "¿Seguro que quieres eliminar este set de equipo?",
+    "deleteError": "No se pudo eliminar el set de equipo",
+    "drawWeight": "Peso de tiro (lbs)",
+    "editSet": "Editar set",
+    "empty": "Aún no hay sets de equipo. ¡Añade tu primer set de arco/ballesta!",
+    "emptyState": {
+      "intro": "Registra las especificaciones del arco y las flechas para comparar el rendimiento en estadísticas.",
+      "logSessionLink": "O añade una configuración rápida al registrar una sesión"
+    },
+    "fieldKey": "Nombre del campo",
+    "fieldValue": "Valor",
+    "length": "Longitud",
+    "manufacturer": "Fabricante",
+    "material": "Material",
+    "model": "Modelo",
+    "nameRequired": "El nombre del set es obligatorio",
+    "saveError": "No se pudo guardar el set de equipo",
+    "setDefault": "Establecer como predeterminado",
+    "setName": "Nombre del set",
+    "title": "Mi equipo",
+    "weight": "Peso"
+  },
+  "fileAttachments": {
+    "delete": "Eliminar"
+  },
+  "forgotPassword": {
+    "body": "Introduce el email de tu cuenta y te enviaremos un enlace para restablecer la contraseña.",
+    "close": "Cerrar",
+    "continue": "Continuar",
+    "email": "Dirección de email",
+    "error": "No se pudo enviar el email de restablecimiento. Inténtalo de nuevo.",
+    "sending": "Enviando...",
+    "success": "Si existe una cuenta con ese email, se ha enviado un enlace de restablecimiento.",
+    "title": "Restablecer contraseña"
+  },
+  "header": {
+    "home": "Inicio"
+  },
+  "invitations": {
+    "acceptError": "No se pudo aceptar la invitación",
+    "accepted": "¡Te has unido al club!",
+    "federationAccepted": "¡Tu club se ha unido a la federación!",
+    "goToProfile": "Ir al perfil",
+    "invalidToken": "Enlace de invitación no válido",
+    "loginRequired": "Inicio de sesión requerido",
+    "loginToAccept": "Inicia sesión para aceptar esta invitación al club.",
+    "loginToAcceptFederation": "Inicia sesión para aceptar esta invitación a la federación."
+  },
+  "languageToggler": {
+    "label": "Idioma"
+  },
+  "localData": {
+    "localStorageBadge": "Datos locales en el dispositivo",
+    "pendingSyncBanner": "{{count}} elemento esperando sincronización",
+    "pendingSyncBanner_other": "{{count}} elementos esperando sincronización",
+    "syncButton": "Sincronizar",
+    "syncDialogAction": "Inicia sesión para sincronizar",
+    "syncDialogText": "Tus datos se almacenan de forma SEGURA SOLO en este dispositivo. Para guardar y sincronizar entre dispositivos, debes iniciar sesión.",
+    "syncDialogTitle": "Almacenamiento de datos",
+    "syncNow": "Sincronizar ahora",
+    "syncOffBanner": "Tus sesiones y equipo se guardan solo en este dispositivo. Activa la sincronización para respaldarlos entre dispositivos.",
+    "syncToggleDescription": "Cuando está activado, tus sesiones de entrenamiento y equipos se sincronizan automáticamente con tu cuenta cuando estás en línea.",
+    "syncToggleLabel": "Sincronizar entrenamientos y equipo"
+  },
+  "logoUploader": {
+    "corsPreviewUnavailable": "Vista previa no disponible — restricción CORS. Sube una imagen nueva para editar.",
+    "currentLogo": "Logo actual: {{name}}"
+  },
+  "myClub": {
+    "adminBadge": "Admin"
+  },
+  "privacy": {
+    "visibility": {
+      "limited": {
+        "helper": "Los miembros del club y los administradores de la federación pueden ver tu perfil cuando han iniciado sesión.",
+        "label": "Limitada"
+      },
+      "personal": {
+        "helper": "Solo tú puedes ver el enlace de tu perfil compartido. Los botones para compartir te recordarán cambiar este ajuste.",
+        "label": "Personal"
+      },
+      "public": {
+        "helper": "Cualquiera con el enlace puede ver tu perfil y los logros compartidos.",
+        "label": "Público"
+      },
+      "title": "Visibilidad del perfil"
+    }
+  },
+  "progressShare": {
+    "badge": "Progreso de logros",
+    "by": "Arquero",
+    "notFoundMessage": "Este enlace de progreso es privado o no existe.",
+    "notFoundTitle": "Progreso no disponible",
+    "shareText": "{{earned}} de {{total}} logros desbloqueados",
+    "shareTitle": "Logros de {{name}} en Sokil",
+    "title": "Colección de logros",
+    "topBadges": "Mejores insignias"
+  },
+  "publicProfile": {
+    "latestAchievement": "Último logro",
+    "notFoundMessage": "Este perfil es privado o no existe.",
+    "notFoundTitle": "Perfil no disponible",
+    "progressTitle": "Resumen de progreso",
+    "shareText": "{{name}} en Sokil",
+    "streak": "Racha de entrenamiento",
+    "streakWeeks": "{{count}} semanas",
+    "totalArrows": "Flechas totales",
+    "viewAchievements": "Ver logros",
+    "weeklyArrows": "Flechas esta semana"
+  },
+  "userAchievements": {
+    "archer": "Arquero",
+    "backToProfile": "Volver al perfil",
+    "title": "Logros de {{name}}"
   }
 }

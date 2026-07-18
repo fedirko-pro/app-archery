@@ -3,6 +3,7 @@ import '../../profile/profile.scss';
 import { ArrowBack, LockReset } from '@mui/icons-material';
 import { Box, Button, Alert, CircularProgress } from '@mui/material';
 import React, { useState, useEffect, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useParams, useNavigate } from 'react-router-dom';
 
 import { canChangeRole } from '../../../config/roles';
@@ -17,6 +18,7 @@ import type { ProfileData } from '../../profile/types';
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const UserEdit: React.FC = () => {
+  const { t } = useTranslation('common');
   const { userId, lang } = useParams<{ userId: string; lang: string }>();
   const navigate = useNavigate();
   const { user: currentUser } = useAuth();
@@ -67,7 +69,7 @@ const UserEdit: React.FC = () => {
         appLanguage: getAppLanguageFromUser(foundUser),
       });
     } catch (error) {
-      setError('Failed to fetch user data');
+      setError(t('pages.admin.fetchUserError'));
       console.error('Error fetching user:', error);
     } finally {
       setLoading(false);
@@ -134,7 +136,7 @@ const UserEdit: React.FC = () => {
 
     try {
       const updatedUser = await apiService.adminUpdateUser(user.id, formData);
-      showSuccess('User updated successfully!');
+      showSuccess(t('pages.admin.updateUserSuccess'));
       setUser(updatedUser);
 
       // Navigate after showing success message
@@ -142,7 +144,7 @@ const UserEdit: React.FC = () => {
         navigate(`/${lang}/admin/users/${userId}/profile`);
       }, 1500);
     } catch (error) {
-      setError('Failed to update user. Please try again.');
+      setError(t('pages.admin.updateUserError'));
       console.error('Error updating user:', error);
     } finally {
       setSaving(false);
@@ -163,9 +165,9 @@ const UserEdit: React.FC = () => {
       setResettingPassword(true);
       setError(null);
       await apiService.adminResetUserPassword(user.id);
-      showSuccess(`Password reset email sent to ${user.email}`);
+      showSuccess(t('pages.admin.resetEmailSent', { email: user.email }));
     } catch {
-      setError('Failed to send password reset email');
+      setError(t('pages.admin.resetEmailFailed'));
     } finally {
       setResettingPassword(false);
     }
@@ -183,7 +185,7 @@ const UserEdit: React.FC = () => {
     return (
       <Box>
         <Button startIcon={<ArrowBack />} onClick={handleBack} sx={{ mb: 2 }}>
-          Back to Admin Panel
+          {t('pages.admin.backToPanel')}
         </Button>
         <Alert severity="error">{error}</Alert>
       </Box>
@@ -194,9 +196,9 @@ const UserEdit: React.FC = () => {
     return (
       <Box>
         <Button startIcon={<ArrowBack />} onClick={handleBack} sx={{ mb: 2 }}>
-          Back to Admin Panel
+          {t('pages.admin.backToPanel')}
         </Button>
-        <Alert severity="error">User not found</Alert>
+        <Alert severity="error">{t('pages.admin.userNotFound')}</Alert>
       </Box>
     );
   }
@@ -206,7 +208,7 @@ const UserEdit: React.FC = () => {
       <div className="container">
         <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Button startIcon={<ArrowBack />} onClick={handleBack} sx={{ minWidth: 0 }}>
-            Back to Admin Panel
+            {t('pages.admin.backToPanel')}
           </Button>
           <Button
             variant="outlined"
@@ -215,7 +217,7 @@ const UserEdit: React.FC = () => {
             onClick={handleResetPassword}
             disabled={resettingPassword}
           >
-            Reset Password
+            {t('pages.admin.resetPassword')}
           </Button>
         </Box>
         {error && (

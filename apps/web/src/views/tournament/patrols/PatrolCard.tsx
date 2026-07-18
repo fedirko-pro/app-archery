@@ -11,6 +11,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import MemberCard from './MemberCard';
 import type { Participant, Patrol, Warning } from './types';
@@ -25,6 +26,29 @@ interface PatrolCardProps {
   onDeleteAndRedistribute?: (patrolId: string) => void;
 }
 
+function warningText(
+  warning: Warning,
+  patrol: Patrol,
+  t: (key: string, options?: Record<string, unknown>) => string,
+): string {
+  switch (warning.type) {
+    case 'same-club-judges':
+      return t('pages.patrols.warnings.sameClubJudges');
+    case 'missing-judges':
+      return t('pages.patrols.warnings.missingJudges', { count: patrol.judgeIds.length });
+    case 'missing-leader':
+      return t('pages.patrols.warnings.missingLeader');
+    case 'mixed-divisions':
+      return t('pages.patrols.warnings.mixedDivisions');
+    case 'mixed-genders':
+      return t('pages.patrols.warnings.mixedGenders');
+    case 'size-imbalance':
+      return t('pages.patrols.warnings.sizeImbalance', { count: patrol.members.length });
+    default:
+      return warning.message;
+  }
+}
+
 const PatrolCard: React.FC<PatrolCardProps> = ({
   patrol,
   participants,
@@ -34,6 +58,7 @@ const PatrolCard: React.FC<PatrolCardProps> = ({
   onRoleChange,
   onDeleteAndRedistribute,
 }) => {
+  const { t } = useTranslation('common');
   const dropZoneRef = useRef<HTMLDivElement>(null);
   const [isOver, setIsOver] = useState(false);
 
@@ -88,16 +113,20 @@ const PatrolCard: React.FC<PatrolCardProps> = ({
           }}
         >
           <Typography variant="h6" component="div">
-            PATROL {patrol.targetNumber}
+            {t('pages.patrols.patrolTitle', { number: patrol.targetNumber })}
           </Typography>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-            <Chip label={`${patrol.members.length} members`} size="small" variant="outlined" />
+            <Chip
+              label={t('pages.patrols.membersCount', { count: patrol.members.length })}
+              size="small"
+              variant="outlined"
+            />
             {onDeleteAndRedistribute && (
-              <Tooltip title="Видалити">
+              <Tooltip title={t('pages.patrols.delete')}>
                 <IconButton
                   size="small"
                   color="error"
-                  aria-label="Видалити патруль і перерозпреділити людей"
+                  aria-label={t('pages.patrols.deleteTooltip')}
                   onClick={() => onDeleteAndRedistribute(patrol.id)}
                 >
                   <DeleteIcon fontSize="small" />
@@ -111,7 +140,7 @@ const PatrolCard: React.FC<PatrolCardProps> = ({
           <Box sx={{ mb: 1 }}>
             {errorWarnings.map((warning, idx) => (
               <Alert key={idx} severity="error" sx={{ mb: 0.5, py: 0.5 }}>
-                {warning.message}
+                {warningText(warning, patrol, t)}
               </Alert>
             ))}
           </Box>
@@ -121,7 +150,7 @@ const PatrolCard: React.FC<PatrolCardProps> = ({
           <Box sx={{ mb: 1 }}>
             {otherWarnings.map((warning, idx) => (
               <Alert key={idx} severity={warning.severity} sx={{ mb: 0.5, py: 0.5 }}>
-                {warning.message}
+                {warningText(warning, patrol, t)}
               </Alert>
             ))}
           </Box>

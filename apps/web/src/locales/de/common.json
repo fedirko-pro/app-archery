@@ -28,7 +28,9 @@
     "divisions": "Altersgruppen",
     "scoringDemo": "Punktekarte (papierloses Demo)",
     "glossary": "Glossar",
-    "fieldGuide": "Feldführer"
+    "fieldGuide": "Feldführer",
+    "myClub": "Mein Verein",
+    "myFederation": "Mein Verband"
   },
   "accessControl": {
     "title": "Zugriffskontrolle",
@@ -75,7 +77,9 @@
       "categoryRequired": "Bitte wählen Sie eine Bogenkategorie",
       "submit": "Bewerbung einreichen",
       "submitting": "Wird eingereicht...",
-      "submitError": "Bewerbung konnte nicht eingereicht werden"
+      "submitError": "Bewerbung konnte nicht eingereicht werden",
+      "notesPlaceholder": "Zusätzliche Notizen (optional)...",
+      "searchPlaceholder": "Nach Name oder E-Mail suchen..."
     }
   },
   "achievements": {
@@ -277,7 +281,14 @@
       "downloadLink": "Download-Link",
       "deleteConfirmTitle": "Regel löschen?",
       "deleteConfirmMessage": "Sind Sie sicher, dass Sie diese Regel löschen möchten?",
-      "deleteWarning": "Diese Regel kann nicht gelöscht werden, wenn sie zugeordnete Altersgruppen oder Bogenkategorien hat."
+      "deleteWarning": "Diese Regel kann nicht gelöscht werden, wenn sie zugeordnete Altersgruppen oder Bogenkategorien hat.",
+      "codeNameRequired": "Regelcode und Name sind erforderlich",
+      "createSuccess": "Regel erfolgreich erstellt",
+      "deleteError": "Regel konnte nicht gelöscht werden. Möglicherweise gibt es verknüpfte Divisionen oder Bogenkategorien.",
+      "deleteSuccess": "Regel erfolgreich gelöscht",
+      "saveError": "Regel konnte nicht gespeichert werden",
+      "saveSuccess": "Regel erfolgreich gespeichert",
+      "updateSuccess": "Regel erfolgreich aktualisiert"
     },
     "categories": {
       "title": "Bogenkategorien",
@@ -285,7 +296,24 @@
       "ruleReference": "Regelverweis",
       "confirmDelete": "Sind Sie sicher, dass Sie diese Kategorie löschen möchten?",
       "deleteSuccess": "Kategorie erfolgreich gelöscht",
-      "deleteError": "Kategorie konnte nicht gelöscht werden"
+      "deleteError": "Kategorie konnte nicht gelöscht werden",
+      "code": "Code",
+      "create": "Kategorie erstellen",
+      "createTitle": "Kategorie erstellen",
+      "descriptionDe": "Beschreibung (DE)",
+      "descriptionEn": "Beschreibung (EN)",
+      "descriptionEs": "Beschreibung (ES)",
+      "descriptionIt": "Beschreibung (IT)",
+      "descriptionPt": "Beschreibung (PT)",
+      "descriptionUk": "Beschreibung (UA)",
+      "editTitle": "Kategorie bearbeiten",
+      "empty": "Keine Kategorien gefunden. Klicken Sie auf „Kategorie erstellen“, um eine hinzuzufügen.",
+      "loadError": "Kategorie konnte nicht geladen werden",
+      "name": "Name",
+      "requiredFields": "Code, Name und Regel sind erforderlich",
+      "rule": "Regel",
+      "ruleCitation": "Regelzitat (Linktext)",
+      "saveError": "Kategorie konnte nicht gespeichert werden"
     },
     "divisions": {
       "title": "Altersgruppen",
@@ -296,7 +324,17 @@
       "nameRequired": "Name der Altersgruppe ist erforderlich",
       "ruleRequired": "Bitte wählen Sie eine Regel",
       "saveSuccess": "Altersgruppe erfolgreich gespeichert",
-      "saveError": "Altersgruppe konnte nicht gespeichert werden"
+      "saveError": "Altersgruppe konnte nicht gespeichert werden",
+      "create": "Division erstellen",
+      "createTitle": "Division erstellen",
+      "descriptionPlaceholder": "z. B. Erwachsene Bogenschützen...",
+      "editTitle": "Division bearbeiten",
+      "empty": "Keine Divisionen gefunden. Klicken Sie auf „Division erstellen“, um eine hinzuzufügen.",
+      "name": "Divisionsname",
+      "namePlaceholder": "z. B. Erwachsene, Junior, Veteran",
+      "noDescription": "Keine Beschreibung verfügbar",
+      "rule": "Regel",
+      "selectRule": "Regel auswählen"
     },
     "clubs": {
       "deleteConfirm": "Sind Sie sicher, dass Sie diesen Verein löschen möchten?",
@@ -520,7 +558,11 @@
         "country": "Land",
         "allowMultipleLabel": "Mehrere Bewerbungen von einem Benutzer erlauben (nur verschiedene Kategorien)",
         "collectFeedbackLabel": "Feedback von Teilnehmern sammeln",
-        "basicInfo": "Grundlegende Informationen"
+        "basicInfo": "Grundlegende Informationen",
+        "rules": "Regeln",
+        "selectRules": "Regeln auswählen",
+        "targetCount": "Anzahl der Scheiben",
+        "targetCountHelper": "Anzahl der Scheiben/Patrouillen für das Turnier"
       },
       "feedback": {
         "title": "Wie war {{title}}?",
@@ -552,7 +594,15 @@
           "noPermission": "Sie haben keine Berechtigung, Feedback für dieses Turnier anzuzeigen.",
           "unknownUser": "Unbekannter Benutzer"
         }
-      }
+      },
+      "applicationDeadline": "Anmeldefrist",
+      "applicationSubmitted": "Bewerbung erfolgreich eingereicht!",
+      "attachmentsReady": "{{count}} Datei(en) bereit — werden beim Speichern hochgeladen",
+      "bannerReady": "Banner bereit — wird beim Speichern hochgeladen",
+      "noRulesAssigned": "Nicht angegeben",
+      "notSpecified": "Nicht angegeben",
+      "preparing": "Vorbereitung...",
+      "rules": "Regeln"
     },
     "applications": {
       "title": "Meine Turnierbewerbungen",
@@ -601,11 +651,53 @@
         "mixed": "Gemischt",
         "olympic": "Olympischer Recurve",
         "compoundBow": "Compound-Bogen",
-        "traditionalBow": "Traditioneller Bogen"
-      }
+        "traditionalBow": "Traditioneller Bogen",
+        "female": "Weiblich",
+        "male": "Männlich",
+        "other": "Divers"
+      },
+      "gender": "Geschlecht",
+      "nationality": "Nationalität"
     },
     "admin": {
-      "favoriteCategories": "Lieblingskategorien"
+      "favoriteCategories": "Lieblingskategorien",
+      "backToPanel": "Zurück zum Admin-Panel",
+      "commentOptional": "Kommentar (optional)",
+      "commentPlaceholder": "Notiz zu diesem Benutzer hinzufügen...",
+      "createAndInvite": "Erstellen & einladen",
+      "createUser": "Benutzer erstellen",
+      "createUserFailed": "Benutzer konnte nicht erstellt werden",
+      "createUserSuccess": "Benutzer {{name}} erfolgreich erstellt. Eine Einladungs-E-Mail wird gesendet.",
+      "createUserTitle": "Neuen Benutzer erstellen",
+      "creating": "Erstellen...",
+      "editProfile": "Profil bearbeiten",
+      "email": "E-Mail",
+      "emailRequired": "E-Mail ist erforderlich",
+      "fetchUserError": "Benutzerdaten konnten nicht geladen werden",
+      "fetchUsersError": "Benutzer konnten nicht geladen werden",
+      "firstName": "Vorname",
+      "firstNameRequired": "Vorname ist erforderlich",
+      "invalidEmail": "Ungültiges E-Mail-Format",
+      "lastName": "Nachname",
+      "lastNameRequired": "Nachname ist erforderlich",
+      "notSet": "Nicht festgelegt",
+      "panelDescription": "Benutzer verwalten, Profile ansehen und Passwörter zurücksetzen. Nur für Administratoren.",
+      "panelTitle": "Admin-Panel",
+      "resetEmailFailed": "Passwort-Reset-E-Mail konnte nicht gesendet werden",
+      "resetEmailSent": "Passwort-Reset-E-Mail an {{email}} gesendet",
+      "resetPassword": "Passwort zurücksetzen",
+      "table": {
+        "actions": "Aktionen",
+        "club": "Verein",
+        "email": "E-Mail",
+        "gender": "Geschlecht",
+        "name": "Name"
+      },
+      "updateUserError": "Benutzer konnte nicht aktualisiert werden. Bitte versuchen Sie es erneut.",
+      "updateUserSuccess": "Benutzer erfolgreich aktualisiert!",
+      "userNotFound": "Benutzer nicht gefunden",
+      "usersTitle": "Benutzerverwaltung",
+      "viewProfile": "Profil ansehen"
     },
     "adminApplications": {
       "title": "Turnierbewerbungen Verwaltung",
@@ -672,6 +764,70 @@
         "startDate": "Startdatum",
         "endDate": "Enddatum",
         "applicationDeadline": "Bewerbungsfrist"
+      }
+    },
+    "patrols": {
+      "avgSize": "Ø Größe",
+      "cannotMove": "Mitglied kann nicht verschoben werden",
+      "categoryMatch": "Kategorie-Übereinstimmung",
+      "clubDiversity": "Vereinsvielfalt",
+      "confirmDeleteRedistribute": "Diese Patrouille löschen und die Mitglieder neu verteilen?",
+      "confirmGenerate": "Patrouillen aus genehmigten Bewerbungen generieren? Es werden neue Zuweisungen erstellt.",
+      "confirmRegenerate": "Dadurch werden alle vorhandenen Patrouillen GELÖSCHT und neu aus genehmigten Bewerbungen erzeugt. Fortfahren?",
+      "delete": "Löschen",
+      "deleteRedistributeError": "Patrouille konnte nicht gelöscht und Mitglieder nicht neu verteilt werden.",
+      "deleteRedistributeSuccess": "Patrouille gelöscht, Mitglieder neu verteilt.",
+      "deleteTooltip": "Patrouille löschen und Mitglieder neu verteilen",
+      "divisionMatch": "Divisions-Übereinstimmung",
+      "empty": "Noch keine Patrouillen. Generieren Sie sie aus genehmigten Bewerbungen, wenn Sie bereit sind.",
+      "genderMatch": "Geschlechter-Übereinstimmung",
+      "generate": "Patrouillen generieren",
+      "generateError": "Patrouillen konnten nicht generiert werden. Bitte versuchen Sie es erneut.",
+      "generateList": "Patrouillenliste erzeugen",
+      "generateScoreCards": "Scorekarten erzeugen",
+      "generateSuccess": "Patrouillen aus genehmigten Bewerbungen generiert",
+      "generating": "Generieren...",
+      "judge": "Kampfrichter",
+      "leader": "Leiter",
+      "listPdfError": "Patrouillenliste konnte nicht erzeugt werden. Bitte versuchen Sie es erneut.",
+      "loadError": "Patrouillen konnten nicht geladen werden. Bitte versuchen Sie es erneut.",
+      "makeJudge": "Zum Kampfrichter machen",
+      "makeLeader": "Zum Leiter machen",
+      "memberActions": "Mitgliederaktionen",
+      "membersCount": "{{count}} Mitglieder",
+      "moveToPatrol": "Zu Patrouille verschieben",
+      "noClub": "Kein Verein",
+      "openingListPdf": "Patrouillenliste-PDF wird geöffnet...",
+      "openingScoreCardsPdf": "Scorekarten-PDF wird geöffnet...",
+      "participants": "Teilnehmer",
+      "patrolN": "Patrouille {{number}}",
+      "patrolTitle": "PATROUILLE {{number}}",
+      "regenerate": "Neu generieren",
+      "regenerateError": "Patrouillen konnten nicht neu generiert werden",
+      "regenerateSuccess": "Patrouillen erfolgreich neu generiert!",
+      "removeRole": "Rolle entfernen",
+      "retry": "Erneut versuchen",
+      "saveChanges": "Änderungen speichern",
+      "saveError": "Patrouillen konnten nicht gespeichert werden. Bitte versuchen Sie es erneut.",
+      "saveSuccess": "Patrouillen erfolgreich gespeichert!",
+      "saving": "Speichern...",
+      "scoreCardsPdfError": "Scorekarten konnten nicht erzeugt werden. Bitte versuchen Sie es erneut.",
+      "statistics": "Statistik",
+      "title": "Patrouillenverwaltung",
+      "unknown": "Unbekannt",
+      "validation": {
+        "divisionMismatch": "Division des Mitglieds ({{member}}) weicht von der Haupt-Division der Patrouille ({{dominant}}) ab",
+        "genderMismatch": "Geschlecht des Mitglieds weicht vom vorherrschenden Geschlecht der Patrouille ab",
+        "invalid": "Ungültige Patrouille oder Mitglied",
+        "sourceTooSmall": "Quellpatrouille wäre zu klein (mindestens 3 Mitglieder erforderlich)"
+      },
+      "warnings": {
+        "missingJudges": "Nur {{count}} Kampfrichter zugewiesen",
+        "missingLeader": "Kein Leiter zugewiesen",
+        "mixedDivisions": "Gemischte Divisionen in der Patrouille",
+        "mixedGenders": "Gemischte Geschlechter in der Patrouille",
+        "sameClubJudges": "Kampfrichter kommen aus demselben Verein",
+        "sizeImbalance": "Patrouillengröße ({{count}}) weicht deutlich vom Durchschnitt ab"
       }
     }
   },
@@ -973,7 +1129,11 @@
     "save": "Speichern",
     "saving": "Wird gespeichert...",
     "delete": "Löschen",
-    "deleting": "Wird gelöscht..."
+    "deleting": "Wird gelöscht...",
+    "close": "Schließen",
+    "edit": "Bearbeiten",
+    "loading": "Laden...",
+    "sending": "Senden..."
   },
   "forms": {
     "email": "E-Mail",
@@ -995,7 +1155,15 @@
     "preferredDivision": "Bevorzugte Altersgruppe",
     "selectDivision": "Altersgruppe auswählen",
     "applicationLanguage": "Anwendungssprache",
-    "role": "Rolle"
+    "role": "Rolle",
+    "club": "Verein",
+    "gender": "Geschlecht",
+    "genderFemale": "Weiblich",
+    "genderMale": "Männlich",
+    "genderOther": "Divers",
+    "nationality": "Nationalität",
+    "noClub": "Kein Verein",
+    "none": "Keine"
   },
   "reset": {
     "invalidLink": "Ungültiger Zurücksetzungslink. Bitte fordern Sie ein neues Passwort-Zurücksetzen an.",
@@ -1010,7 +1178,11 @@
     "confirm": "Neues Passwort bestätigen",
     "strength": "Passwortstärke",
     "submit": "Passwort zurücksetzen",
-    "submitLoading": "Passwort wird zurückgesetzt..."
+    "submitLoading": "Passwort wird zurückgesetzt...",
+    "strengthFair": "Mittel",
+    "strengthGood": "Gut",
+    "strengthStrong": "Stark",
+    "strengthWeak": "Schwach"
   },
   "profile": {
     "joined": "Beigetreten",
@@ -1064,7 +1236,17 @@
     "zoom": "Zoom",
     "avatarSubheader": "Wählen Sie ein Bild aus und ziehen Sie es dann neu positionieren (PNG, JPG bis zu 3MB)",
     "userIdRequired": "Benutzer-ID ist für den Avatar-Upload erforderlich",
-    "profileSaved": "Profil erfolgreich gespeichert!"
+    "profileSaved": "Profil erfolgreich gespeichert!",
+    "clubs": "Vereine",
+    "confirmLeaveClub": "Möchten Sie diesen Verein wirklich verlassen?",
+    "cropAndUse": "Zuschneiden und verwenden",
+    "invalidCrop": "Ungültige Zuschnittparameter. Bitte passen Sie das Bild an.",
+    "leaveClub": "Verein verlassen",
+    "pending": "ausstehend",
+    "pendingInvitation": "Einladung ausstehend",
+    "unverifiedClub": "Unbestätigt",
+    "updateError": "Profil konnte nicht aktualisiert werden. Bitte versuchen Sie es erneut.",
+    "verifiedClubMember": "Bestätigtes Vereinsmitglied"
   },
   "role": {
     "user": "Benutzer",
@@ -1098,7 +1280,12 @@
     "validationLastNameRequired": "Nachname ist erforderlich.",
     "signInSubtitle": "Verfolgen Sie Ihr Training, verdienen Sie Erfolge und synchronisieren Sie sicher. Sie entscheiden, was Sie teilen.",
     "signUpSubtitle": "Treten Sie der Gemeinschaft bei — protokollieren Sie Sitzungen, synchronisieren Sie sicher über Geräte und teilen Sie Fortschritt Ihren Bedingungen nach.",
-    "signUpSyncNote": "Sokil funktioniert offline auf diesem Gerät. Nachdem Sie ein Konto erstellt haben, entscheiden Sie, ob Sie Trainings und Ausrüstung für die Verwendung auf anderen Geräten sichern möchten."
+    "signUpSyncNote": "Sokil funktioniert offline auf diesem Gerät. Nachdem Sie ein Konto erstellt haben, entscheiden Sie, ob Sie Trainings und Ausrüstung für die Verwendung auf anderen Geräten sichern möchten.",
+    "googleAuthFailed": "Authentifizierung fehlgeschlagen",
+    "googleCompleting": "Google-Authentifizierung wird abgeschlossen...",
+    "googleFailed": "Google-Authentifizierung fehlgeschlagen",
+    "googleRedirecting": "Weiterleitung zur Anmeldeseite...",
+    "receiveUpdates": "Ich möchte Updates per E-Mail erhalten."
   },
   "dialog": {
     "yes": "Ja",
@@ -1106,12 +1293,16 @@
   },
   "errorBoundary": {
     "title": "Etwas ist schiefgelaufen",
-    "reload": "Seite neu laden"
+    "reload": "Seite neu laden",
+    "retry": "Erneut versuchen",
+    "routeSubtitle": "Beim Laden dieser Seite ist ein unerwarteter Fehler aufgetreten.",
+    "routeTitle": "Diese Seite konnte nicht geladen werden"
   },
   "clubs": {
     "clubLogo": "Vereinslogo",
     "logoSubheader": "Wählen Sie ein Bild aus und ziehen Sie es dann neu positionieren (PNG, JPG bis zu 10MB)",
-    "logoSaved": "Vereinslogo erfolgreich gespeichert"
+    "logoSaved": "Vereinslogo erfolgreich gespeichert",
+    "logoReady": "Logo bereit — wird beim Speichern hochgeladen"
   },
   "pwa": {
     "workingOffline": "Arbeitet offline",
@@ -1275,5 +1466,44 @@
     "title": "Feldführer",
     "glossary": "Glossar",
     "glossaryDesc": "Häufige Begriffe und Abkürzungen im Bogenschießen"
+  },
+  "buttons": {
+    "ok": "OK"
+  },
+  "fileAttachments": {
+    "delete": "Löschen"
+  },
+  "forgotPassword": {
+    "body": "Geben Sie die E-Mail-Adresse Ihres Kontos ein. Wir senden Ihnen einen Link zum Zurücksetzen des Passworts.",
+    "close": "Schließen",
+    "continue": "Weiter",
+    "email": "E-Mail-Adresse",
+    "error": "Reset-E-Mail konnte nicht gesendet werden. Bitte versuchen Sie es erneut.",
+    "sending": "Senden...",
+    "success": "Falls ein Konto mit dieser E-Mail existiert, wurde ein Reset-Link gesendet.",
+    "title": "Passwort zurücksetzen"
+  },
+  "header": {
+    "home": "Startseite"
+  },
+  "invitations": {
+    "acceptError": "Einladung konnte nicht angenommen werden",
+    "accepted": "Sie sind dem Verein beigetreten!",
+    "federationAccepted": "Ihr Verein ist dem Verband beigetreten!",
+    "goToProfile": "Zum Profil",
+    "invalidToken": "Ungültiger Einladungslink",
+    "loginRequired": "Anmeldung erforderlich",
+    "loginToAccept": "Bitte melden Sie sich an, um diese Vereinseinladung anzunehmen.",
+    "loginToAcceptFederation": "Bitte melden Sie sich an, um diese Verbandseinladung anzunehmen."
+  },
+  "languageToggler": {
+    "label": "Sprache"
+  },
+  "logoUploader": {
+    "corsPreviewUnavailable": "Vorschau nicht verfügbar — CORS-Einschränkung. Laden Sie ein neues Bild zum Bearbeiten hoch.",
+    "currentLogo": "Aktuelles Logo: {{name}}"
+  },
+  "myClub": {
+    "adminBadge": "Admin"
   }
 }

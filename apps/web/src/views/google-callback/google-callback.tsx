@@ -1,5 +1,6 @@
 import { Box, CircularProgress, Typography } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useSearchParams } from 'react-router-dom';
 
 import apiService from '../../services/api';
@@ -7,6 +8,7 @@ import { getDefaultAppLang } from '../../utils/i18n-lang';
 import { resolvePostAuthPath } from '../../utils/post-auth-redirect';
 
 const GoogleCallback = () => {
+  const { t } = useTranslation('common');
   const [searchParams] = useSearchParams();
   const [error, setError] = useState<string | null>(null);
   const startedRef = useRef(false);
@@ -24,7 +26,7 @@ const GoogleCallback = () => {
         const authError = searchParams.get('error');
 
         if (authError) {
-          setError('Google authentication failed');
+          setError(t('auth.googleFailed'));
           setTimeout(() => {
             window.location.href = signInPath;
           }, 3000);
@@ -40,7 +42,7 @@ const GoogleCallback = () => {
         const userData = await apiService.getProfile();
         window.location.href = resolvePostAuthPath(getDefaultAppLang(), userData);
       } catch {
-        setError('Authentication failed');
+        setError(t('auth.googleAuthFailed'));
         setTimeout(() => {
           window.location.href = signInPath;
         }, 3000);
@@ -48,7 +50,7 @@ const GoogleCallback = () => {
     };
 
     void handleGoogleCallback();
-  }, [searchParams, signInPath]);
+  }, [searchParams, signInPath, t]);
 
   if (error) {
     return (
@@ -63,7 +65,7 @@ const GoogleCallback = () => {
         <Typography color="error" variant="h6">
           {error}
         </Typography>
-        <Typography variant="body2">Redirecting to sign in page...</Typography>
+        <Typography variant="body2">{t('auth.googleRedirecting')}</Typography>
       </Box>
     );
   }
@@ -78,7 +80,7 @@ const GoogleCallback = () => {
       gap={2}
     >
       <CircularProgress />
-      <Typography variant="h6">Completing Google authentication...</Typography>
+      <Typography variant="h6">{t('auth.googleCompleting')}</Typography>
     </Box>
   );
 };

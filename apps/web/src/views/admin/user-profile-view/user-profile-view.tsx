@@ -52,7 +52,7 @@ const UserProfileView: React.FC = () => {
       const foundUser = allUsers.find((u) => u.id === userId);
 
       if (!foundUser) {
-        setError('User not found');
+        setError(t('pages.admin.userNotFound'));
         return;
       }
 
@@ -68,7 +68,7 @@ const UserProfileView: React.FC = () => {
         divisionId: foundUser.divisionId || '',
       });
     } catch (error) {
-      setError('Failed to fetch user data');
+      setError(t('pages.admin.fetchUserError'));
       console.error('Error fetching user:', error);
     } finally {
       setLoading(false);
@@ -112,7 +112,7 @@ const UserProfileView: React.FC = () => {
       setIsEditing(false);
       showSuccess(t('profile.profileSaved', 'Profile saved successfully!'));
     } catch (err) {
-      setError('Failed to update user. Please try again.');
+      setError(t('pages.admin.updateUserError'));
       console.error('Error updating user:', err);
     } finally {
       setIsSaving(false);
@@ -185,7 +185,7 @@ const UserProfileView: React.FC = () => {
     return (
       <Box>
         <Button startIcon={<ArrowBack />} onClick={handleBack} sx={{ mb: 2 }}>
-          Back to Admin Panel
+          {t('pages.admin.backToPanel')}
         </Button>
         <Alert severity="error">{error}</Alert>
       </Box>
@@ -196,9 +196,9 @@ const UserProfileView: React.FC = () => {
     return (
       <Box>
         <Button startIcon={<ArrowBack />} onClick={handleBack} sx={{ mb: 2 }}>
-          Back to Admin Panel
+          {t('pages.admin.backToPanel')}
         </Button>
-        <Alert severity="error">User not found</Alert>
+        <Alert severity="error">{t('pages.admin.userNotFound')}</Alert>
       </Box>
     );
   }
@@ -208,7 +208,7 @@ const UserProfileView: React.FC = () => {
       <div className="container">
         <Box sx={{ mb: 2 }}>
           <Button startIcon={<ArrowBack />} onClick={handleBack} sx={{ minWidth: 0 }}>
-            Back to Admin Panel
+            {t('pages.admin.backToPanel')}
           </Button>
         </Box>
         {!isEditing ? (

@@ -11,6 +11,7 @@ import {
   Paper,
 } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import type { Participant } from './types';
 
@@ -38,6 +39,7 @@ const MemberCard: React.FC<MemberCardProps> = ({
   onRoleChange,
   onMoveToPatrol,
 }) => {
+  const { t } = useTranslation('common');
   const dragRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -123,7 +125,7 @@ const MemberCard: React.FC<MemberCardProps> = ({
           </Box>
           {isLeader && (
             <Chip
-              label="Leader"
+              label={t('pages.patrols.leader')}
               size="small"
               color="primary"
               sx={{ height: 24, fontSize: '0.75rem' }}
@@ -131,7 +133,7 @@ const MemberCard: React.FC<MemberCardProps> = ({
           )}
           {isJudge && (
             <Chip
-              label="Judge"
+              label={t('pages.patrols.judge')}
               size="small"
               color="secondary"
               sx={{ height: 24, fontSize: '0.75rem' }}
@@ -160,7 +162,7 @@ const MemberCard: React.FC<MemberCardProps> = ({
         <IconButton
           size="small"
           onClick={handleMenuClick}
-          aria-label="Member actions"
+          aria-label={t('pages.patrols.memberActions')}
           sx={{ minWidth: 44, minHeight: 44 }}
         >
           <MoreVertIcon fontSize="small" />
@@ -171,28 +173,28 @@ const MemberCard: React.FC<MemberCardProps> = ({
         {[
           !isLeader ? (
             <MenuItem key="make-leader" onClick={handleMakeLeader}>
-              Make Leader
+              {t('pages.patrols.makeLeader')}
             </MenuItem>
           ) : null,
           !isJudge ? (
             <MenuItem key="make-judge" onClick={handleMakeJudge}>
-              Make Judge
+              {t('pages.patrols.makeJudge')}
             </MenuItem>
           ) : null,
           isLeader || isJudge ? (
             <MenuItem key="remove-role" onClick={handleRemoveRole}>
-              Remove Role
+              {t('pages.patrols.removeRole')}
             </MenuItem>
           ) : null,
           ...(sortedOtherPatrols.length > 0
             ? [
                 <Divider key="move-divider" />,
                 <ListSubheader key="move-header" component="div" disableSticky>
-                  Move to patrol
+                  {t('pages.patrols.moveToPatrol')}
                 </ListSubheader>,
                 ...sortedOtherPatrols.map((patrol) => (
                   <MenuItem key={patrol.id} onClick={() => handleMoveToPatrol(patrol.id)}>
-                    Patrol {patrol.targetNumber}
+                    {t('pages.patrols.patrolN', { number: patrol.targetNumber })}
                   </MenuItem>
                 )),
               ]

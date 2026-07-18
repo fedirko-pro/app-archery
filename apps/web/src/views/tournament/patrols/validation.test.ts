@@ -35,19 +35,19 @@ describe('canDropMember', () => {
     it('returns disallowed when source patrol not found', () => {
       const result = canDropMember('p1', 'missing', 'patrol2', [patrol()], new Map());
       expect(result.allowed).toBe(false);
-      expect(result.reason).toBe('Invalid patrol or member');
+      expect(result.reason).toBe('pages.patrols.validation.invalid');
     });
 
     it('returns disallowed when target patrol not found', () => {
       const result = canDropMember('p1', 'patrol1', 'missing', [patrol()], new Map());
       expect(result.allowed).toBe(false);
-      expect(result.reason).toBe('Invalid patrol or member');
+      expect(result.reason).toBe('pages.patrols.validation.invalid');
     });
 
     it('returns disallowed when member not found', () => {
       const result = canDropMember('missing', 'patrol1', 'patrol2', [patrol()], new Map());
       expect(result.allowed).toBe(false);
-      expect(result.reason).toBe('Invalid patrol or member');
+      expect(result.reason).toBe('pages.patrols.validation.invalid');
     });
   });
 
@@ -65,7 +65,7 @@ describe('canDropMember', () => {
 
       const result = canDropMember('p1', 'src', 'tgt', [src, tgt], buildMap(members));
       expect(result.allowed).toBe(false);
-      expect(result.reason).toContain('too small');
+      expect(result.reason).toBe('pages.patrols.validation.sourceTooSmall');
     });
 
     it('allows move when source has more than 3 members', () => {

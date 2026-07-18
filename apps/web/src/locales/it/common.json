@@ -1,6 +1,7 @@
 {
-  "footer": { "about": "Informazioni sull'app" },
-
+  "footer": {
+    "about": "Informazioni sull'app"
+  },
   "menu": {
     "admin": "Admin",
     "organizerTools": "Strumenti organizzatore",
@@ -27,7 +28,9 @@
     "divisions": "Divisioni",
     "scoringDemo": "Scheda Punteggio (demo senza carta)",
     "glossary": "Glossario",
-    "fieldGuide": "Guida da Campo"
+    "fieldGuide": "Guida da Campo",
+    "myClub": "Il mio club",
+    "myFederation": "La mia federazione"
   },
   "accessControl": {
     "title": "Controllo accessi",
@@ -74,7 +77,9 @@
       "categoryRequired": "Seleziona una categoria di arco",
       "submit": "Invia domanda",
       "submitting": "Invio in corso...",
-      "submitError": "Impossibile inviare la domanda"
+      "submitError": "Impossibile inviare la domanda",
+      "notesPlaceholder": "Note aggiuntive (facoltativo)...",
+      "searchPlaceholder": "Cerca per nome o email..."
     }
   },
   "achievements": {
@@ -118,6 +123,159 @@
     "precisionMaster": {
       "title": "Maestro della Precisione",
       "description": "Mantieni una precisione del 95%+ per 100 frecce consecutive"
+    },
+    "arrows10000": {
+      "description": "Tira 10 000 frecce in allenamento",
+      "title": "Veterano freccia"
+    },
+    "arrows2500": {
+      "description": "Tira 2500 frecce in allenamento",
+      "title": "Adepto freccia"
+    },
+    "arrows25000": {
+      "description": "Tira 25 000 frecce in allenamento",
+      "title": "Leggenda freccia"
+    },
+    "arrows500": {
+      "description": "Tira 500 frecce in allenamento",
+      "title": "Apprendista freccia"
+    },
+    "categories": {
+      "all": "Tutti",
+      "consistency": "Costanza",
+      "exploration": "Esplorazione",
+      "mastery": "Maestria",
+      "onboarding": "Per iniziare",
+      "tournaments": "Tornei",
+      "volume": "Volume"
+    },
+    "competitor": {
+      "description": "Ottieni l'approvazione della tua prima domanda di torneo",
+      "title": "Competitore"
+    },
+    "distance10km": {
+      "description": "Cammina 10 km da e verso i bersagli",
+      "title": "Camminatore di poligono"
+    },
+    "distance250km": {
+      "description": "Cammina 250 km da e verso i bersagli",
+      "title": "Pioniere"
+    },
+    "distanceMarathon": {
+      "description": "Cammina una maratona (42,195 km) da e verso i bersagli",
+      "title": "Maratoneta"
+    },
+    "distanceThereAndBack": {
+      "description": "Cammina 3000 km — il viaggio di andata e ritorno di Bilbo alla Montagna Solitaria",
+      "title": "Andata e ritorno"
+    },
+    "distances3": {
+      "description": "Allenati a 3 distanze diverse",
+      "title": "Esploratore distanze"
+    },
+    "distances5": {
+      "description": "Allenati a 5 distanze diverse",
+      "title": "Esploratore di poligono"
+    },
+    "firstApplication": {
+      "description": "Invia la tua prima domanda di torneo",
+      "title": "In lista di partenza"
+    },
+    "firstEquipment": {
+      "description": "Aggiungi il tuo primo set di attrezzatura",
+      "title": "In assetto"
+    },
+    "firstSession": {
+      "description": "Registra la tua prima sessione di allenamento",
+      "title": "Primi passi"
+    },
+    "guestHint": "Accedi per salvare i tuoi achievement e sincronizzarli tra dispositivi.",
+    "lift1t": {
+      "description": "Tira un totale cumulativo di 1000 kg (1 tonnellata)",
+      "title": "Braccia di ferro"
+    },
+    "liftBlueWhale": {
+      "description": "Tira un totale cumulativo di 150 000 kg — il peso di una balena azzurra",
+      "title": "Solleva la balena azzurra"
+    },
+    "liftElephant": {
+      "description": "Tira un totale cumulativo di 6000 kg — il peso di un elefante africano",
+      "title": "Solleva l'elefante"
+    },
+    "liftKiloton": {
+      "description": "Tira un totale cumulativo di 1 000 000 kg (1000 tonnellate)",
+      "title": "Arciere chilotone"
+    },
+    "locked": {
+      "eventHint": "Questo achievement viene assegnato in eventi speciali o dai risultati di torneo."
+    },
+    "new": "NUOVO",
+    "personalBest": {
+      "description": "Stabilisci un nuovo record personale in gara",
+      "title": "Record personale"
+    },
+    "profileComplete": {
+      "description": "Completa il tuo profilo arciere",
+      "title": "Identità impostata"
+    },
+    "scoredSessions5": {
+      "description": "Registra punteggi in 5 sessioni di allenamento",
+      "title": "Tracciatore punteggio"
+    },
+    "seasonedCompetitor": {
+      "description": "Ottieni l'approvazione di 5 domande di torneo",
+      "title": "Competitore navigato"
+    },
+    "sections": {
+      "locked": "Bloccati",
+      "unlocked": "Sbloccati"
+    },
+    "sessions10": {
+      "description": "Completa 10 sessioni di allenamento",
+      "title": "Pratica regolare"
+    },
+    "sessions150": {
+      "description": "Completa 150 sessioni di allenamento",
+      "title": "Devoto dell'allenamento"
+    },
+    "sessions50": {
+      "description": "Completa 50 sessioni di allenamento",
+      "title": "Arciere dedicato"
+    },
+    "sessions500": {
+      "description": "Completa 500 sessioni di allenamento",
+      "title": "Fisso al poligono"
+    },
+    "shareProgress": "Condividi i miei progressi",
+    "shareProgressText": "{{earned}} di {{total}} achievement sbloccati su Sokil",
+    "shareProgressTitle": "I miei achievement di tiro con l'arco",
+    "streak12Weeks": {
+      "description": "Mantieni una serie di allenamenti di 12 settimane",
+      "title": "Routine di ferro"
+    },
+    "streak26Weeks": {
+      "description": "Mantieni una serie di allenamenti di 26 settimane",
+      "title": "Arciere tutto l'anno"
+    },
+    "streak2Weeks": {
+      "description": "Allenati almeno una volta a settimana per 2 settimane di fila",
+      "title": "Riscaldamento"
+    },
+    "streak4Weeks": {
+      "description": "Mantieni una serie di allenamenti di 4 settimane",
+      "title": "Arciere costante"
+    },
+    "targetTypes3": {
+      "description": "Allenati con 3 tipi di bersaglio diversi",
+      "title": "Varietà di bersagli"
+    },
+    "tournamentChampion": {
+      "description": "Vinci il primo posto in un torneo ufficiale",
+      "title": "Campione del torneo"
+    },
+    "unlocked": {
+      "nice": "Ottimo!",
+      "title": "Achievement sbloccato!"
     }
   },
   "pages": {
@@ -142,7 +300,14 @@
       "downloadLink": "Link per il Download",
       "deleteConfirmTitle": "Eliminare Regola?",
       "deleteConfirmMessage": "Sei sicuro di voler eliminare questa regola?",
-      "deleteWarning": "Questa regola non può essere eliminata se ha divisioni o categorie di arco collegate."
+      "deleteWarning": "Questa regola non può essere eliminata se ha divisioni o categorie di arco collegate.",
+      "codeNameRequired": "Codice e nome della regola sono obbligatori",
+      "createSuccess": "Regola creata con successo",
+      "deleteError": "Impossibile eliminare la regola. Potrebbe avere divisioni o categorie di arco collegate.",
+      "deleteSuccess": "Regola eliminata con successo",
+      "saveError": "Impossibile salvare la regola",
+      "saveSuccess": "Regola salvata con successo",
+      "updateSuccess": "Regola aggiornata con successo"
     },
     "categories": {
       "title": "Categorie dell'arco",
@@ -150,7 +315,24 @@
       "ruleReference": "Riferimento regola",
       "confirmDelete": "Sei sicuro di voler eliminare questa categoria?",
       "deleteSuccess": "Categoria eliminata con successo",
-      "deleteError": "Errore nell'eliminazione della categoria"
+      "deleteError": "Errore nell'eliminazione della categoria",
+      "code": "Codice",
+      "create": "Crea categoria",
+      "createTitle": "Crea categoria",
+      "descriptionDe": "Descrizione (DE)",
+      "descriptionEn": "Descrizione (EN)",
+      "descriptionEs": "Descrizione (ES)",
+      "descriptionIt": "Descrizione (IT)",
+      "descriptionPt": "Descrizione (PT)",
+      "descriptionUk": "Descrizione (UA)",
+      "editTitle": "Modifica categoria",
+      "empty": "Nessuna categoria trovata. Fai clic su «Crea categoria» per aggiungerne una.",
+      "loadError": "Impossibile caricare la categoria",
+      "name": "Nome",
+      "requiredFields": "Codice, nome e regola sono obbligatori",
+      "rule": "Regola",
+      "ruleCitation": "Citazione regola (testo del link)",
+      "saveError": "Impossibile salvare la categoria"
     },
     "converter": {
       "title": "Convertitore per tiro con l'arco",
@@ -180,7 +362,24 @@
     },
     "divisions": {
       "title": "Divisioni",
-      "description": "Divisioni di gara raggruppate per regole"
+      "description": "Divisioni di gara raggruppate per regole",
+      "create": "Crea divisione",
+      "createTitle": "Crea divisione",
+      "deleteConfirm": "Sei sicuro di voler eliminare questa divisione?",
+      "deleteError": "Impossibile eliminare la divisione",
+      "deleteSuccess": "Divisione eliminata con successo",
+      "descriptionPlaceholder": "es. Arcieri adulti...",
+      "editTitle": "Modifica divisione",
+      "empty": "Nessuna divisione trovata. Fai clic su «Crea divisione» per aggiungerne una.",
+      "name": "Nome della divisione",
+      "namePlaceholder": "es. Adulti, Junior, Veterani",
+      "nameRequired": "Il nome della divisione è obbligatorio",
+      "noDescription": "Nessuna descrizione disponibile",
+      "rule": "Regola",
+      "ruleRequired": "Seleziona una regola",
+      "saveError": "Impossibile salvare la divisione",
+      "saveSuccess": "Divisione salvata con successo",
+      "selectRule": "Seleziona una regola"
     },
     "clubs": {
       "deleteConfirm": "Sei sicuro di voler eliminare questo club?",
@@ -359,7 +558,13 @@
         "applicationDeadlineHelper": "Lascia vuoto per impostare 5 giorni prima della data di inizio",
         "address": "Indirizzo",
         "allowMultipleLabel": "Consenti domande multiple per utente (solo categorie diverse)",
-        "collectFeedbackLabel": "Raccogli feedback dai partecipanti"
+        "collectFeedbackLabel": "Raccogli feedback dai partecipanti",
+        "basicInfo": "Informazioni di base",
+        "country": "Paese",
+        "rules": "Regole",
+        "selectRules": "Seleziona regole",
+        "targetCount": "Numero di bersagli",
+        "targetCountHelper": "Numero di bersagli/pattuglie per il torneo"
       },
       "feedback": {
         "title": "Com'è stato {{title}}?",
@@ -391,7 +596,32 @@
           "noPermission": "Non hai il permesso di visualizzare i feedback per questo torneo.",
           "unknownUser": "Utente sconosciuto"
         }
-      }
+      },
+      "addFiles": "Aggiungi file",
+      "applicationDeadline": "Scadenza iscrizioni",
+      "applicationSubmitted": "Domanda inviata con successo!",
+      "attachments": "Allegati aggiuntivi",
+      "attachmentsReady": "{{count}} file pronti — verranno caricati al salvataggio",
+      "attachmentsSubheader": "Carica regolamenti personalizzati, immagini o documenti (PNG, JPG, PDF, DOC, DOCX fino a {{maxSize}} ciascuno, max {{maxFiles}} file)",
+      "banner": "Banner del torneo",
+      "bannerReady": "Banner pronto — verrà caricato al salvataggio",
+      "bannerSubheader": "Seleziona un'immagine, poi trascina per riposizionarla (PNG, JPG fino a 3 MB)",
+      "creating": "Creazione...",
+      "deleteFileFailed": "Impossibile eliminare il file. Riprova.",
+      "dragToReposition": "Seleziona un'immagine, poi trascina per riposizionarla",
+      "fileReadError": "{{fileName}}: impossibile leggere il file",
+      "fileTooLarge": "{{fileName}}: il file è troppo grande (max {{maxSize}})",
+      "filesCount": "{{count}}/{{max}} file",
+      "noAttachments": "Nessun allegato aggiunto",
+      "noRulesAssigned": "Non specificato",
+      "notSpecified": "Non specificato",
+      "preparing": "Preparazione...",
+      "rules": "Regole",
+      "tooManyFiles": "Massimo {{maxFiles}} file. Puoi caricarne ancora {{remaining}}.",
+      "unsupportedFileType": "{{fileName}}: tipo di file non supportato. Consentiti: PNG, JPG, PDF, DOC, DOCX",
+      "updating": "Aggiornamento...",
+      "uploadFailed": "Caricamento non riuscito. Riprova.",
+      "uploading": "Caricamento..."
     },
     "applications": {
       "title": "Le mie domande ai tornei",
@@ -443,11 +673,53 @@
         "mixed": "Misto",
         "olympic": "Ricurvo Olimpico",
         "compoundBow": "Arco Compound",
-        "traditionalBow": "Arco Tradizionale"
-      }
+        "traditionalBow": "Arco Tradizionale",
+        "female": "Femminile",
+        "male": "Maschile",
+        "other": "Altro"
+      },
+      "gender": "Genere",
+      "nationality": "Nazionalità"
     },
     "admin": {
-      "favoriteCategories": "Categorie Preferite"
+      "favoriteCategories": "Categorie Preferite",
+      "backToPanel": "Torna al pannello admin",
+      "commentOptional": "Commento (facoltativo)",
+      "commentPlaceholder": "Aggiungi una nota su questo utente...",
+      "createAndInvite": "Crea e invita",
+      "createUser": "Crea utente",
+      "createUserFailed": "Impossibile creare l'utente",
+      "createUserSuccess": "Utente {{name}} creato con successo. Riceverà un'email di invito.",
+      "createUserTitle": "Crea nuovo utente",
+      "creating": "Creazione...",
+      "editProfile": "Modifica profilo",
+      "email": "Email",
+      "emailRequired": "L'email è obbligatoria",
+      "fetchUserError": "Impossibile caricare i dati utente",
+      "fetchUsersError": "Impossibile caricare gli utenti",
+      "firstName": "Nome",
+      "firstNameRequired": "Il nome è obbligatorio",
+      "invalidEmail": "Formato email non valido",
+      "lastName": "Cognome",
+      "lastNameRequired": "Il cognome è obbligatorio",
+      "notSet": "Non impostato",
+      "panelDescription": "Gestisci utenti, visualizza profili e reimposta password. Solo per amministratori.",
+      "panelTitle": "Pannello admin",
+      "resetEmailFailed": "Impossibile inviare l'email di reimpostazione",
+      "resetEmailSent": "Email di reimpostazione inviata a {{email}}",
+      "resetPassword": "Reimposta password",
+      "table": {
+        "actions": "Azioni",
+        "club": "Club",
+        "email": "Email",
+        "gender": "Genere",
+        "name": "Nome"
+      },
+      "updateUserError": "Impossibile aggiornare l'utente. Riprova.",
+      "updateUserSuccess": "Utente aggiornato con successo!",
+      "userNotFound": "Utente non trovato",
+      "usersTitle": "Gestione utenti",
+      "viewProfile": "Vedi profilo"
     },
     "adminApplications": {
       "title": "Gestione domande di partecipazione ai tornei",
@@ -515,6 +787,70 @@
         "endDate": "Data di fine",
         "applicationDeadline": "Scadenza domanda"
       }
+    },
+    "patrols": {
+      "avgSize": "Dim. media",
+      "cannotMove": "Impossibile spostare il membro",
+      "categoryMatch": "Corrispondenza categoria",
+      "clubDiversity": "Diversità dei club",
+      "confirmDeleteRedistribute": "Eliminare questa pattuglia e ridistribuire i membri?",
+      "confirmGenerate": "Generare pattuglie dalle domande approvate? Verranno create nuove assegnazioni.",
+      "confirmRegenerate": "Questo ELIMINERÀ tutte le pattuglie esistenti e ne genererà di nuove dalle domande approvate. Continuare?",
+      "delete": "Elimina",
+      "deleteRedistributeError": "Impossibile eliminare la pattuglia e ridistribuire i membri.",
+      "deleteRedistributeSuccess": "Pattuglia eliminata e membri ridistribuiti.",
+      "deleteTooltip": "Elimina pattuglia e ridistribuisci membri",
+      "divisionMatch": "Corrispondenza divisione",
+      "empty": "Nessuna pattuglia ancora. Generale dalle domande approvate quando sei pronto.",
+      "genderMatch": "Corrispondenza genere",
+      "generate": "Genera pattuglie",
+      "generateError": "Impossibile generare le pattuglie. Riprova.",
+      "generateList": "Genera elenco pattuglie",
+      "generateScoreCards": "Genera schede punteggio",
+      "generateSuccess": "Pattuglie generate dalle domande approvate",
+      "generating": "Generazione...",
+      "judge": "Giudice",
+      "leader": "Caposquadra",
+      "listPdfError": "Impossibile generare l'elenco pattuglie. Riprova.",
+      "loadError": "Impossibile caricare le pattuglie. Riprova.",
+      "makeJudge": "Rendi giudice",
+      "makeLeader": "Rendi caposquadra",
+      "memberActions": "Azioni del membro",
+      "membersCount": "{{count}} membri",
+      "moveToPatrol": "Sposta in pattuglia",
+      "noClub": "Nessun club",
+      "openingListPdf": "Apertura PDF elenco pattuglie...",
+      "openingScoreCardsPdf": "Apertura PDF schede punteggio...",
+      "participants": "Partecipanti",
+      "patrolN": "Pattuglia {{number}}",
+      "patrolTitle": "PATTUGLIA {{number}}",
+      "regenerate": "Rigenera",
+      "regenerateError": "Impossibile rigenerare le pattuglie",
+      "regenerateSuccess": "Pattuglie rigenerate con successo!",
+      "removeRole": "Rimuovi ruolo",
+      "retry": "Riprova",
+      "saveChanges": "Salva modifiche",
+      "saveError": "Impossibile salvare le pattuglie. Riprova.",
+      "saveSuccess": "Pattuglie salvate con successo!",
+      "saving": "Salvataggio...",
+      "scoreCardsPdfError": "Impossibile generare le schede punteggio. Riprova.",
+      "statistics": "Statistiche",
+      "title": "Gestione pattuglie",
+      "unknown": "Sconosciuto",
+      "validation": {
+        "divisionMismatch": "La divisione del membro ({{member}}) differisce dalla divisione dominante della pattuglia ({{dominant}})",
+        "genderMismatch": "Il genere del membro differisce dal genere dominante della pattuglia",
+        "invalid": "Pattuglia o membro non valido",
+        "sourceTooSmall": "La pattuglia di origine sarebbe troppo piccola (minimo 3 membri)"
+      },
+      "warnings": {
+        "missingJudges": "Solo {{count}} giudice/i assegnato/i",
+        "missingLeader": "Nessun caposquadra assegnato",
+        "mixedDivisions": "Divisioni miste nella pattuglia",
+        "mixedGenders": "Generi misti nella pattuglia",
+        "sameClubJudges": "I giudici sono dello stesso club",
+        "sizeImbalance": "La dimensione della pattuglia ({{count}}) differisce significativamente dalla media"
+      }
     }
   },
   "forms": {
@@ -535,7 +871,17 @@
     "preferredDivision": "Divisione preferita",
     "selectDivision": "Seleziona divisione",
     "applicationLanguage": "Lingua dell'applicazione",
-    "role": "Ruolo"
+    "role": "Ruolo",
+    "club": "Club",
+    "country": "Paese",
+    "countryNotSet": "Non impostato",
+    "gender": "Genere",
+    "genderFemale": "Femminile",
+    "genderMale": "Maschile",
+    "genderOther": "Altro",
+    "nationality": "Nazionalità",
+    "noClub": "Nessun club",
+    "none": "Nessuno"
   },
   "reset": {
     "invalidLink": "Link di reimpostazione non valido. Richiedi una nuova reimpostazione della password.",
@@ -550,7 +896,11 @@
     "confirm": "Conferma nuova password",
     "strength": "Forza password",
     "submit": "Reimposta password",
-    "submitLoading": "Reimpostazione password..."
+    "submitLoading": "Reimpostazione password...",
+    "strengthFair": "Discreta",
+    "strengthGood": "Buona",
+    "strengthStrong": "Forte",
+    "strengthWeak": "Debole"
   },
   "profile": {
     "joined": "Iscritto",
@@ -603,9 +953,23 @@
     "zoom": "Zoom",
     "avatarSubheader": "Seleziona un'immagine, quindi trascinala per riposizionarla (PNG, JPG fino a 3MB)",
     "userIdRequired": "L'ID utente è richiesto per il caricamento dell'avatar",
-    "profileSaved": "Profilo salvato con successo!"
+    "profileSaved": "Profilo salvato con successo!",
+    "avatarSaveFailed": "Impossibile salvare l'avatar",
+    "clubs": "Club",
+    "confirmLeaveClub": "Sei sicuro di voler lasciare questo club?",
+    "cropAndUse": "Ritaglia e usa",
+    "invalidCrop": "Parametri di ritaglio non validi. Prova a regolare l'immagine.",
+    "leaveClub": "Lascia club",
+    "pending": "in attesa",
+    "pendingInvitation": "Invito in attesa",
+    "unverifiedClub": "Non verificato",
+    "updateError": "Impossibile aggiornare il profilo. Riprova.",
+    "verifiedClubMember": "Membro del club verificato"
   },
-  "role": { "user": "Utente", "admin": "Admin" },
+  "role": {
+    "user": "Utente",
+    "admin": "Admin"
+  },
   "notFound": {
     "title": "Pagina non trovata",
     "subtitle": "La pagina che stai cercando potrebbe essere stata rimossa o temporaneamente non disponibile.",
@@ -638,7 +1002,46 @@
       "addFullDetails": "Aggiungi dettagli completi",
       "goToEquipment": "La mia attrezzatura",
       "unspecified": "Non specificato"
-    }
+    },
+    "addCustomField": "Aggiungi campo",
+    "addSet": "Aggiungi serie",
+    "addShot": "Aggiungi tiro",
+    "arrowsPerSet": "Frecce per serie",
+    "customFields": "Campi aggiuntivi",
+    "date": "Data",
+    "deleteConfirm": "Sei sicuro di voler eliminare questa sessione di allenamento?",
+    "deleteError": "Impossibile eliminare la sessione di allenamento",
+    "distance": "Distanza",
+    "empty": "Nessuna sessione di allenamento ancora. Aggiungi la prima!",
+    "equipmentSet": "Set di attrezzatura",
+    "fieldKey": "Nome del campo",
+    "fieldValue": "Valore",
+    "finishSession": "Termina",
+    "inProgress": "In corso",
+    "mood": "Come ti sei sentito?",
+    "moodOptions": {
+      "amazing": "Fantastico",
+      "bad": "Male",
+      "good": "Bene",
+      "normal": "Normale"
+    },
+    "noEquipment": "Nessuna attrezzatura selezionata",
+    "notes": "Note",
+    "removeShot": "Rimuovi tiro",
+    "replaceActiveSession": {
+      "editCurrent": "No, modifica quella attuale",
+      "message": "Vuoi terminare la sessione precedente e iniziarne una nuova?",
+      "startNew": "Sì, inizia nuova",
+      "title": "Sessione già in corso"
+    },
+    "saveError": "Impossibile salvare la sessione di allenamento",
+    "scoreTotal": "Punteggio totale",
+    "session": "Sessione di allenamento",
+    "shotsCount": "Numero di tiri",
+    "syncError": "Sincronizzazione non riuscita",
+    "syncSuccess": "Dati sincronizzati con successo",
+    "syncing": "Sincronizzazione...",
+    "targetType": "Tipo di bersaglio"
   },
   "units": {
     "inch": "Pollice",
@@ -747,11 +1150,20 @@
     "save": "Salva",
     "saving": "Salvataggio...",
     "delete": "Elimina",
-    "deleting": "Eliminazione..."
+    "deleting": "Eliminazione...",
+    "close": "Chiudi",
+    "edit": "Modifica",
+    "loading": "Caricamento...",
+    "sending": "Invio..."
   },
   "sharing": {
     "authRequiredTitle": "Accedi per condividere",
-    "authRequiredMessage": "La condivisione di traguardi e progressi è disponibile solo per gli utenti registrati. Accedi o crea un account per condividere."
+    "authRequiredMessage": "La condivisione di traguardi e progressi è disponibile solo per gli utenti registrati. Accedi o crea un account per condividere.",
+    "goToProfileSettings": "Apri impostazioni profilo",
+    "notEarnedMessage": "Potrai condividere questo achievement dopo averlo sbloccato.",
+    "notEarnedTitle": "Achievement non ancora ottenuto",
+    "privacyPersonalMessage": "La tua impostazione privacy è {{visibility}}. Per condividere, imposta la visibilità su Limitata o Pubblica.",
+    "privacyPersonalTitle": "La condivisione è impostata su Personale"
   },
   "auth": {
     "logout": "Esci",
@@ -771,7 +1183,12 @@
     "backToSignIn": "Torna all'accesso",
     "signInSubtitle": "Monitora allenamenti, conquista traguardi e sincronizza in sicurezza. Tu scegli cosa condividere.",
     "signUpSubtitle": "Unisciti alla comunità — registra sessioni, sincronizza in sicurezza tra dispositivi e condividi i progressi alle tue condizioni.",
-    "signUpSyncNote": "Sokil funziona offline su questo dispositivo. Dopo aver creato l'account, scegli se salvare allenamenti e attrezzatura nel tuo account per usarli su altri dispositivi."
+    "signUpSyncNote": "Sokil funziona offline su questo dispositivo. Dopo aver creato l'account, scegli se salvare allenamenti e attrezzatura nel tuo account per usarli su altri dispositivi.",
+    "googleAuthFailed": "Autenticazione non riuscita",
+    "googleCompleting": "Completamento autenticazione Google...",
+    "googleFailed": "Autenticazione Google non riuscita",
+    "googleRedirecting": "Reindirizzamento alla pagina di accesso...",
+    "receiveUpdates": "Voglio ricevere aggiornamenti via email."
   },
   "dialog": {
     "yes": "Sì",
@@ -779,12 +1196,16 @@
   },
   "errorBoundary": {
     "title": "Qualcosa è andato storto",
-    "reload": "Ricarica pagina"
+    "reload": "Ricarica pagina",
+    "retry": "Riprova",
+    "routeSubtitle": "Si è verificato un errore imprevisto durante il caricamento di questa pagina.",
+    "routeTitle": "Questa pagina non è stata caricata"
   },
   "clubs": {
     "clubLogo": "Logo del Club",
     "logoSubheader": "Seleziona un'immagine, quindi trascina per riposizionare (PNG, JPG fino a 10MB)",
-    "logoSaved": "Logo del club salvato con successo"
+    "logoSaved": "Logo del club salvato con successo",
+    "logoReady": "Logo pronto — verrà caricato al salvataggio"
   },
   "pwa": {
     "workingOffline": "Funzionamento offline",
@@ -884,7 +1305,11 @@
       "ghostTitle": "I tuoi grafici appariranno qui",
       "ghostSubtitle": "Monitora frecce e sessioni nel tempo quando inizi a registrare.",
       "logSession": "Registra sessione"
-    }
+    },
+    "avgScore": "Punteggio medio",
+    "bestSession": "Miglior sessione",
+    "noScoringData": "Completa sessioni con punteggio per vedere le tendenze.",
+    "scoreByDistance": "Punteggio medio per distanza"
   },
   "dashboard": {
     "title": "Home",
@@ -962,11 +1387,157 @@
       "profileExplanation": "Aiuta gli amici a riconoscerti. Puoi modificarlo in qualsiasi momento nel Profilo.",
       "equipmentExplanation": "La tua configurazione arco predefinita è preselezionata quando registri sessioni di allenamento. Aggiungi altri set dopo in La mia attrezzatura.",
       "getStartedExplanation": "Scegli le preferenze di sincronizzazione e condivisione. La sincronizzazione mantiene sessioni di allenamento e attrezzatura su tutti i dispositivi."
-    }
+    },
+    "stepProgress": "Passo {{current}} di {{total}}"
   },
   "fieldGuide": {
     "title": "Guida da Campo",
     "glossary": "Glossario",
     "glossaryDesc": "Termini e abbreviazioni comuni usati nel tiro con l'arco"
+  },
+  "achievementShare": {
+    "badge": "Achievement",
+    "earnedBy": "Arciere",
+    "notFoundMessage": "Questo link achievement è privato o non esiste.",
+    "notFoundTitle": "Achievement non disponibile"
+  },
+  "buttons": {
+    "ok": "OK"
+  },
+  "equipment": {
+    "addCustomField": "Aggiungi campo",
+    "addSet": "Aggiungi set",
+    "arrowGroup": "Freccia",
+    "arrowLength": "Lunghezza freccia",
+    "arrowMaterial": "Materiale freccia",
+    "arrowMaterials": {
+      "aluminium": "Alluminio",
+      "carbon": "Carbonio",
+      "custom": "Personalizzato",
+      "fiberglass": "Fibra di vetro",
+      "mix": "Mix",
+      "wood": "Legno"
+    },
+    "arrowSpine": "Spine",
+    "arrowWeight": "Peso freccia",
+    "bow": "Arco",
+    "bowType": "Tipo",
+    "crossbow": "Balestra",
+    "customFields": "Campi aggiuntivi",
+    "default": "Predefinito",
+    "deleteConfirm": "Sei sicuro di voler eliminare questo set di attrezzatura?",
+    "deleteError": "Impossibile eliminare il set di attrezzatura",
+    "drawWeight": "Libbraggio (lbs)",
+    "editSet": "Modifica set",
+    "empty": "Nessun set di attrezzatura ancora. Aggiungi il tuo primo set arco/balestra!",
+    "emptyState": {
+      "intro": "Traccia le specifiche di arco e frecce per confrontare le prestazioni nelle statistiche.",
+      "logSessionLink": "Oppure aggiungi una configurazione rapida mentre registri una sessione"
+    },
+    "fieldKey": "Nome del campo",
+    "fieldValue": "Valore",
+    "length": "Lunghezza",
+    "manufacturer": "Produttore",
+    "material": "Materiale",
+    "model": "Modello",
+    "nameRequired": "Il nome del set è obbligatorio",
+    "saveError": "Impossibile salvare il set di attrezzatura",
+    "setDefault": "Imposta come predefinito",
+    "setName": "Nome del set",
+    "title": "La mia attrezzatura",
+    "weight": "Peso"
+  },
+  "fileAttachments": {
+    "delete": "Elimina"
+  },
+  "forgotPassword": {
+    "body": "Inserisci l'email del tuo account e ti invieremo un link per reimpostare la password.",
+    "close": "Chiudi",
+    "continue": "Continua",
+    "email": "Indirizzo email",
+    "error": "Impossibile inviare l'email di reimpostazione. Riprova.",
+    "sending": "Invio...",
+    "success": "Se esiste un account con questa email, è stato inviato un link di reimpostazione.",
+    "title": "Reimposta password"
+  },
+  "header": {
+    "home": "Home"
+  },
+  "invitations": {
+    "acceptError": "Impossibile accettare l'invito",
+    "accepted": "Ti sei unito al club!",
+    "federationAccepted": "Il tuo club si è unito alla federazione!",
+    "goToProfile": "Vai al profilo",
+    "invalidToken": "Link di invito non valido",
+    "loginRequired": "Accesso richiesto",
+    "loginToAccept": "Accedi per accettare questo invito al club.",
+    "loginToAcceptFederation": "Accedi per accettare questo invito alla federazione."
+  },
+  "languageToggler": {
+    "label": "Lingua"
+  },
+  "localData": {
+    "localStorageBadge": "Dati locali sul dispositivo",
+    "pendingSyncBanner": "{{count}} elemento in attesa di sincronizzazione",
+    "pendingSyncBanner_other": "{{count}} elementi in attesa di sincronizzazione",
+    "syncButton": "Sincronizza",
+    "syncDialogAction": "Accedi per sincronizzare",
+    "syncDialogText": "I tuoi dati sono archiviati in modo SICURO SOLO su questo dispositivo. Per salvare e sincronizzare tra dispositivi, devi accedere.",
+    "syncDialogTitle": "Archiviazione dati",
+    "syncNow": "Sincronizza ora",
+    "syncOffBanner": "Le sessioni e l'attrezzatura sono salvate solo su questo dispositivo. Attiva la sincronizzazione per il backup tra dispositivi.",
+    "syncToggleDescription": "Se abilitato, le sessioni di allenamento e i set di attrezzatura vengono sincronizzati automaticamente con l'account quando sei online.",
+    "syncToggleLabel": "Sincronizza allenamenti e attrezzatura"
+  },
+  "logoUploader": {
+    "corsPreviewUnavailable": "Anteprima non disponibile — restrizione CORS. Carica una nuova immagine per modificarla.",
+    "currentLogo": "Logo attuale: {{name}}"
+  },
+  "myClub": {
+    "adminBadge": "Admin"
+  },
+  "privacy": {
+    "visibility": {
+      "limited": {
+        "helper": "I membri del club e gli admin della federazione possono vedere il tuo profilo quando sono connessi.",
+        "label": "Limitata"
+      },
+      "personal": {
+        "helper": "Solo tu puoi vedere il link del profilo condiviso. I pulsanti di condivisione ti ricorderanno di cambiare questa impostazione.",
+        "label": "Personale"
+      },
+      "public": {
+        "helper": "Chiunque abbia il link può vedere il tuo profilo e gli achievement condivisi.",
+        "label": "Pubblico"
+      },
+      "title": "Visibilità del profilo"
+    }
+  },
+  "progressShare": {
+    "badge": "Progresso achievement",
+    "by": "Arciere",
+    "notFoundMessage": "Questo link di progresso è privato o non esiste.",
+    "notFoundTitle": "Progresso non disponibile",
+    "shareText": "{{earned}} di {{total}} achievement sbloccati",
+    "shareTitle": "Achievement di {{name}} su Sokil",
+    "title": "Collezione achievement",
+    "topBadges": "Top badge"
+  },
+  "publicProfile": {
+    "latestAchievement": "Ultimo achievement",
+    "notFoundMessage": "Questo profilo è privato o non esiste.",
+    "notFoundTitle": "Profilo non disponibile",
+    "progressTitle": "Istantanea dei progressi",
+    "shareText": "{{name}} su Sokil",
+    "streak": "Serie di allenamenti",
+    "streakWeeks": "{{count}} settimane",
+    "totalArrows": "Frecce totali",
+    "viewAchievements": "Vedi achievement",
+    "weeklyArrows": "Frecce questa settimana"
+  },
+  "userAchievements": {
+    "archer": "Arciere",
+    "backToProfile": "Torna al profilo",
+    "title": "Achievement di {{name}}"
   }
 }
