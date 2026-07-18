@@ -87,6 +87,8 @@ const MemberCard: React.FC<MemberCardProps> = ({
     handleMenuClose();
   };
 
+  const sortedOtherPatrols = [...otherPatrols].sort((a, b) => a.targetNumber - b.targetNumber);
+
   return (
     <Paper
       ref={dragRef}
@@ -154,12 +156,6 @@ const MemberCard: React.FC<MemberCardProps> = ({
           color="info"
           sx={{ fontSize: '0.7rem', height: 22 }}
         />
-        <Chip
-          label={participant.gender}
-          size="small"
-          variant="outlined"
-          sx={{ fontSize: '0.7rem', height: 22 }}
-        />
 
         <IconButton
           size="small"
@@ -172,22 +168,36 @@ const MemberCard: React.FC<MemberCardProps> = ({
       </Box>
 
       <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
-        {!isLeader && <MenuItem onClick={handleMakeLeader}>Make Leader</MenuItem>}
-        {!isJudge && <MenuItem onClick={handleMakeJudge}>Make Judge</MenuItem>}
-        {(isLeader || isJudge) && <MenuItem onClick={handleRemoveRole}>Remove Role</MenuItem>}
-        {otherPatrols.length > 0 && (
-          <>
-            <Divider />
-            <ListSubheader component="div" disableSticky>
-              Move to patrol
-            </ListSubheader>
-            {otherPatrols.map((patrol) => (
-              <MenuItem key={patrol.id} onClick={() => handleMoveToPatrol(patrol.id)}>
-                Patrol {patrol.targetNumber}
-              </MenuItem>
-            ))}
-          </>
-        )}
+        {[
+          !isLeader ? (
+            <MenuItem key="make-leader" onClick={handleMakeLeader}>
+              Make Leader
+            </MenuItem>
+          ) : null,
+          !isJudge ? (
+            <MenuItem key="make-judge" onClick={handleMakeJudge}>
+              Make Judge
+            </MenuItem>
+          ) : null,
+          isLeader || isJudge ? (
+            <MenuItem key="remove-role" onClick={handleRemoveRole}>
+              Remove Role
+            </MenuItem>
+          ) : null,
+          ...(sortedOtherPatrols.length > 0
+            ? [
+                <Divider key="move-divider" />,
+                <ListSubheader key="move-header" component="div" disableSticky>
+                  Move to patrol
+                </ListSubheader>,
+                ...sortedOtherPatrols.map((patrol) => (
+                  <MenuItem key={patrol.id} onClick={() => handleMoveToPatrol(patrol.id)}>
+                    Patrol {patrol.targetNumber}
+                  </MenuItem>
+                )),
+              ]
+            : []),
+        ]}
       </Menu>
     </Paper>
   );

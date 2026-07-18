@@ -23,7 +23,7 @@
     "rules": "Regeln",
     "about": "Über die App",
     "users": "Benutzer",
-    "userApplications": "Benutzerbewerbungen",
+    "userApplications": "Turnierbewerbungen",
     "accessControl": "Zugriffskontrolle",
     "divisions": "Altersgruppen",
     "scoringDemo": "Punktekarte (papierloses Demo)",
@@ -567,7 +567,11 @@
       "appliedOn": "Beworben am",
       "withdraw": "Zurückziehen",
       "withdrawTitle": "Bewerbung zurückziehen",
-      "withdrawConfirm": "Sind Sie sicher, dass Sie diese Bewerbung zurückziehen möchten? Dies kann nicht rückgängig gemacht werden."
+      "withdrawConfirm": "Sind Sie sicher, dass Sie diese Bewerbung zurückziehen möchten? Dies kann nicht rückgängig gemacht werden.",
+      "withdrawReason": "Rücktrittsgrund",
+      "withdrawReasonPlaceholder": "Bitte geben Sie einen Grund für den Rücktritt an...",
+      "withdrawReasonRequired": "Ein Rücktrittsgrund ist erforderlich",
+      "withdrawFailed": "Bewerbung konnte nicht zurückgezogen werden"
     },
     "publicApplication": {
       "notFound": "Turnier nicht gefunden",
@@ -650,6 +654,7 @@
         "statusLabel": "Status",
         "rejectionReason": "Ablehnungsgrund",
         "rejectionReasonPlaceholder": "Bitte geben Sie einen Grund für die Ablehnung an...",
+        "rejectionReasonRequired": "Ein Ablehnungsgrund ist erforderlich",
         "cancel": "Abbrechen",
         "updateStatus": "Status aktualisieren"
       },

@@ -14,15 +14,15 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useNotification } from '../../contexts/error-feedback-context';
-import { apiService } from '../../services/api';
 import { requiresCrossOriginForCanvas } from '../../utils/placeholder-images';
 
 interface LogoUploaderProps {
   value?: string;
   onChange: (url: string | null) => void;
+  /** Cropped logo file kept locally until the club form is saved. */
+  onPendingFileChange?: (file: File | null) => void;
   size?: number; // viewport size in px (square)
   outputSize?: number; // output canvas size (square)
-  entityId?: string; // ID of the entity (club, etc.) for the logo
 }
 
 const MAX_SIZE_BYTES = 10 * 1024 * 1024; // 10MB (API limit)
@@ -31,9 +31,9 @@ const ACCEPTED_TYPES = ['image/png', 'image/jpeg', 'image/jpg'];
 const LogoUploader: React.FC<LogoUploaderProps> = ({
   value,
   onChange,
+  onPendingFileChange,
   size = 240,
-  outputSize: _outputSize = 512,
-  entityId,
+  outputSize = 512,
 }) => {
   const { t } = useTranslation('common');
   const { showSuccess } = useNotification();
@@ -51,6 +51,14 @@ const LogoUploader: React.FC<LogoUploaderProps> = ({
   const [error, setError] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
   const currentFileRef = useRef<File | null>(null);
+  const autoPrepareAfterSelectRef = useRef(false);
+  const onPendingFileChangeRef = useRef(onPendingFileChange);
+  const onChangeRef = useRef(onChange);
+
+  useEffect(() => {
+    onPendingFileChangeRef.current = onPendingFileChange;
+    onChangeRef.current = onChange;
+  }, [onPendingFileChange, onChange]);
 
   useEffect(() => {
     setImageSrc(value);
@@ -73,7 +81,6 @@ const LogoUploader: React.FC<LogoUploaderProps> = ({
     };
     img.onerror = () => {
       console.warn('Failed to load logo image (possibly CORS issue):', imageSrc);
-      // Don't set error state, just don't show the preview
       setImageEl(null);
     };
     img.src = imageSrc;
@@ -92,6 +99,7 @@ const LogoUploader: React.FC<LogoUploaderProps> = ({
     }
     setError(null);
     currentFileRef.current = file;
+    autoPrepareAfterSelectRef.current = true;
     const reader = new FileReader();
     reader.onload = () => {
       setImageSrc(String(reader.result));
@@ -176,6 +184,114 @@ const LogoUploader: React.FC<LogoUploaderProps> = ({
     setOffset(clamped);
   };
 
+  const cropToLocalFile = async (
+    source: {
+      image: HTMLImageElement;
+      natural: { w: number; h: number };
+      zoomValue: number;
+      offsetValue: { x: number; y: number };
+    } = {
+      image: imageEl!,
+      natural: naturalSize!,
+      zoomValue: zoom,
+      offsetValue: offset,
+    },
+  ): Promise<{ file: File; previewUrl: string }> => {
+    const { image, natural, zoomValue, offsetValue } = source;
+    if (!image || !natural) {
+      throw new Error('Image not ready');
+    }
+
+    const baseScale = Math.max(size / natural.w, size / natural.h);
+    const scale = baseScale * zoomValue;
+    const sx = Math.max(0, Math.min(natural.w - size / scale, -offsetValue.x / scale));
+    const sy = Math.max(0, Math.min(natural.h - size / scale, -offsetValue.y / scale));
+    const sSize = size / scale;
+
+    const cropX = Math.round(sx);
+    const cropY = Math.round(sy);
+    const cropWidth = Math.round(sSize);
+    const cropHeight = Math.round(sSize);
+
+    if (
+      isNaN(cropX) ||
+      isNaN(cropY) ||
+      isNaN(cropWidth) ||
+      isNaN(cropHeight) ||
+      cropX < 0 ||
+      cropY < 0 ||
+      cropWidth <= 0 ||
+      cropHeight <= 0
+    ) {
+      throw new Error('Invalid crop parameters');
+    }
+
+    const canvas = document.createElement('canvas');
+    canvas.width = outputSize;
+    canvas.height = outputSize;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) {
+      throw new Error('Canvas unavailable');
+    }
+
+    ctx.drawImage(image, cropX, cropY, cropWidth, cropHeight, 0, 0, outputSize, outputSize);
+
+    const blob = await new Promise<Blob>((resolve, reject) => {
+      canvas.toBlob(
+        (result) => {
+          if (result) resolve(result);
+          else reject(new Error('Failed to encode logo'));
+        },
+        'image/jpeg',
+        0.85,
+      );
+    });
+
+    const file = new File([blob], 'logo.jpg', { type: 'image/jpeg' });
+    return { file, previewUrl: URL.createObjectURL(blob) };
+  };
+
+  // After selecting a file, auto-prepare a cropped logo so club Save uploads it
+  // even if the user never clicks "Crop and Use".
+  useEffect(() => {
+    if (!autoPrepareAfterSelectRef.current || !imageEl || !naturalSize) return;
+
+    let cancelled = false;
+    autoPrepareAfterSelectRef.current = false;
+
+    const baseScale = Math.max(size / naturalSize.w, size / naturalSize.h);
+    const scaledW = naturalSize.w * baseScale;
+    const scaledH = naturalSize.h * baseScale;
+    const defaultOffset = { x: (size - scaledW) / 2, y: (size - scaledH) / 2 };
+
+    void (async () => {
+      try {
+        const { file, previewUrl } = await cropToLocalFile({
+          image: imageEl,
+          natural: naturalSize,
+          zoomValue: 1,
+          offsetValue: defaultOffset,
+        });
+        if (cancelled) return;
+        onPendingFileChangeRef.current?.(file);
+        onChangeRef.current?.(previewUrl);
+        setImageSrc(previewUrl);
+      } catch (err) {
+        if (cancelled) return;
+        // Fallback: keep the original selected file pending so Save still uploads something.
+        if (currentFileRef.current) {
+          onPendingFileChangeRef.current?.(currentFileRef.current);
+          onChangeRef.current?.(imageSrc || null);
+        }
+        console.error('Auto-prepare logo failed:', err);
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [imageEl, naturalSize, size, outputSize]);
+
   const handleSave = async () => {
     if (!imageEl || !naturalSize || !currentFileRef.current) return;
 
@@ -183,52 +299,18 @@ const LogoUploader: React.FC<LogoUploaderProps> = ({
     setError(null);
 
     try {
-      const baseScale = Math.max(size / naturalSize.w, size / naturalSize.h);
-      const scale = baseScale * zoom;
-      const sx = Math.max(0, Math.min(naturalSize.w - size / scale, -offset.x / scale));
-      const sy = Math.max(0, Math.min(naturalSize.h - size / scale, -offset.y / scale));
-      const sSize = size / scale;
-
-      // Validate crop parameters
-      const cropX = Math.round(sx);
-      const cropY = Math.round(sy);
-      const cropWidth = Math.round(sSize);
-      const cropHeight = Math.round(sSize);
-
-      if (
-        isNaN(cropX) ||
-        isNaN(cropY) ||
-        isNaN(cropWidth) ||
-        isNaN(cropHeight) ||
-        cropX < 0 ||
-        cropY < 0 ||
-        cropWidth <= 0 ||
-        cropHeight <= 0
-      ) {
-        setError(
-          t('profile.invalidCrop', 'Invalid crop parameters. Please try adjusting the image.'),
-        );
-        setUploading(false);
-        return;
-      }
-
-      // Upload to backend with crop parameters
-      const result = await apiService.uploadImage(currentFileRef.current, 'logo', {
-        cropX,
-        cropY,
-        cropWidth,
-        cropHeight,
-        quality: 85,
-        entityId,
-      });
-
-      // Backend returns full URL, so we can use it directly
-      onChange(result.url);
-      setImageSrc(result.url);
-      showSuccess(t('clubs.logoSaved', 'Club logo saved successfully'));
+      const { file, previewUrl } = await cropToLocalFile();
+      onPendingFileChange?.(file);
+      onChange(previewUrl);
+      setImageSrc(previewUrl);
+      showSuccess(t('clubs.logoReady', 'Logo ready — it will upload when you save'));
     } catch (err) {
-      setError(t('pages.tournaments.uploadFailed', 'Upload failed. Please try again.'));
-      console.error('Upload failed:', err);
+      const message =
+        err instanceof Error && err.message === 'Invalid crop parameters'
+          ? t('profile.invalidCrop', 'Invalid crop parameters. Please try adjusting the image.')
+          : t('pages.tournaments.uploadFailed', 'Upload failed. Please try again.');
+      setError(message);
+      console.error('Logo prepare failed:', err);
     } finally {
       setUploading(false);
     }
@@ -240,6 +322,7 @@ const LogoUploader: React.FC<LogoUploaderProps> = ({
     setZoom(1);
     setOffset({ x: 0, y: 0 });
     currentFileRef.current = null;
+    onPendingFileChange?.(null);
     onChange(null);
     setError(null);
     if (fileInputRef.current) fileInputRef.current.value = '';
@@ -342,8 +425,8 @@ const LogoUploader: React.FC<LogoUploaderProps> = ({
               startIcon={uploading ? <CircularProgress size={16} /> : null}
             >
               {uploading
-                ? t('pages.tournaments.uploading', 'Uploading...')
-                : t('profile.cropAndSave', 'Crop and Save')}
+                ? t('pages.tournaments.preparing', 'Preparing...')
+                : t('profile.cropAndUse', 'Crop and Use')}
             </Button>
             <Button color="error" onClick={handleRemove} disabled={!imageEl || uploading}>
               {t('profile.removePhoto', 'Remove Photo')}

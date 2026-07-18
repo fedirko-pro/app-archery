@@ -1,8 +1,4 @@
-import {
-  Injectable,
-  BadRequestException,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
 import { EntityManager } from '@mikro-orm/core';
 import { Tournament } from './tournament.entity';
 import { Rule } from '../rule/rule.entity';
@@ -21,15 +17,11 @@ export class TournamentService {
     data: Partial<Tournament> & { ruleCode?: string; ruleId?: string },
   ): Promise<Tournament> {
     if (!data.title || !data.startDate || !data.createdBy) {
-      throw new BadRequestException(
-        'Title, startDate, and createdBy are required',
-      );
+      throw new BadRequestException('Title, startDate, and createdBy are required');
     }
 
     const startDate =
-      typeof data.startDate === 'string'
-        ? parseISO(data.startDate)
-        : data.startDate;
+      typeof data.startDate === 'string' ? parseISO(data.startDate) : data.startDate;
 
     const endDate = data.endDate
       ? typeof data.endDate === 'string'
@@ -53,13 +45,10 @@ export class TournamentService {
     } else if (data.ruleCode) {
       rule = await this.em.findOne(Rule, { ruleCode: data.ruleCode });
       if (!rule) {
-        throw new NotFoundException(
-          `Rule with code ${data.ruleCode} not found`,
-        );
+        throw new NotFoundException(`Rule with code ${data.ruleCode} not found`);
       }
     }
 
-     
     const { ruleCode: _ruleCode, ruleId: _ruleId, ...tournamentData } = data;
 
     const tournament = this.em.create(Tournament, {
@@ -68,17 +57,15 @@ export class TournamentService {
       startDate,
       endDate,
       applicationDeadline,
-      allowMultipleApplications: data.allowMultipleApplications ?? true,
+      allowMultipleApplications: data.allowMultipleApplications ?? false,
+      collectFeedback: data.collectFeedback ?? true,
     } as RequiredEntityData<Tournament>);
 
     await this.em.persistAndFlush(tournament);
     return tournament;
   }
 
-  async findAll(options?: {
-    country?: string;
-    upcoming?: boolean;
-  }): Promise<Tournament[]> {
+  async findAll(options?: { country?: string; upcoming?: boolean }): Promise<Tournament[]> {
     const where: FilterQuery<Tournament> = {};
 
     if (options?.country) {
@@ -88,15 +75,9 @@ export class TournamentService {
     if (options?.upcoming !== undefined) {
       const today = startOfDay(new Date());
       if (options.upcoming) {
-        where.$or = [
-          { endDate: { $gte: today } },
-          { endDate: null, startDate: { $gte: today } },
-        ];
+        where.$or = [{ endDate: { $gte: today } }, { endDate: null, startDate: { $gte: today } }];
       } else {
-        where.$or = [
-          { endDate: { $lt: today } },
-          { endDate: null, startDate: { $lt: today } },
-        ];
+        where.$or = [{ endDate: { $lt: today } }, { endDate: null, startDate: { $lt: today } }];
       }
     }
 
@@ -130,9 +111,7 @@ export class TournamentService {
 
     if (data.startDate) {
       const startDate =
-        typeof data.startDate === 'string'
-          ? parseISO(data.startDate)
-          : data.startDate;
+        typeof data.startDate === 'string' ? parseISO(data.startDate) : data.startDate;
 
       if (!data.endDate || data.endDate === data.startDate) {
         data.endDate = startDate;
@@ -157,16 +136,13 @@ export class TournamentService {
           ruleCode: data.ruleCode,
         });
         if (!foundRule) {
-          throw new NotFoundException(
-            `Rule with code ${data.ruleCode} not found`,
-          );
+          throw new NotFoundException(`Rule with code ${data.ruleCode} not found`);
         }
         rule = foundRule;
       }
       tournament.rule = rule;
     }
 
-     
     const { ruleCode: _rc, ruleId: _ri, ...updateData } = data;
     Object.assign(tournament, updateData);
     tournament.updatedAt = new Date();

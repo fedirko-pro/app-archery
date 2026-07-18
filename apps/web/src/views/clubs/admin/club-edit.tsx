@@ -12,7 +12,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
@@ -54,8 +54,16 @@ const ClubEdit: React.FC = () => {
     otherInfo: '',
     links: [],
   });
+  const [pendingLogoFile, setPendingLogoFile] = useState<File | null>(null);
+  const pendingLogoFileRef = useRef<File | null>(null);
+  const [savedLogoUrl, setSavedLogoUrl] = useState('');
   const [loading, setLoading] = useState(false);
   const [canEdit, setCanEdit] = useState(false);
+
+  const setPendingLogo = (file: File | null) => {
+    pendingLogoFileRef.current = file;
+    setPendingLogoFile(file);
+  };
 
   const isGeneralAdmin = user && canManageReferenceData(user.role);
 
@@ -106,6 +114,8 @@ const ClubEdit: React.FC = () => {
       try {
         const data = await apiService.getClubById(clubId);
         if (data) {
+          setPendingLogo(null);
+          setSavedLogoUrl(data.clubLogo || '');
           setForm({
             ...data,
             links: data.links || [],
@@ -128,12 +138,50 @@ const ClubEdit: React.FC = () => {
 
     try {
       setLoading(true);
-      const payload: ClubDto = {
+
+      const links = (form.links || []).filter((link) => link.label.trim() && link.url.trim());
+      const pendingFile = pendingLogoFileRef.current || pendingLogoFile;
+      const preview = form.clubLogo || '';
+      const isLocalPreview = preview.startsWith('blob:') || preview.startsWith('data:');
+
+      // Never send local preview URLs to the API.
+      let logoUrl = '';
+      if (pendingFile) {
+        logoUrl = '';
+      } else if (isLocalPreview) {
+        logoUrl = savedLogoUrl;
+      } else {
+        logoUrl = preview;
+      }
+
+      const saved = await apiService.upsertClub({
         ...form,
         id: clubId,
-        links: (form.links || []).filter((link) => link.label.trim() && link.url.trim()),
-      };
-      await apiService.upsertClub(payload);
+        clubLogo: logoUrl || undefined,
+        contactEmail: form.contactEmail?.trim() || undefined,
+        links,
+      });
+
+      const savedId = saved.id || clubId;
+      if (!savedId) {
+        throw new Error(t('pages.clubs.saveError', 'Failed to save club. Please try again.'));
+      }
+
+      if (pendingFile) {
+        const uploaded = await apiService.uploadImage(pendingFile, 'logo', {
+          entityId: savedId,
+          quality: 85,
+        });
+        // Patch only the logo URL — avoid re-sending the full club payload.
+        await apiService.upsertClub({
+          id: savedId,
+          name: saved.name || form.name,
+          clubLogo: uploaded.url,
+        });
+        setPendingLogo(null);
+        setSavedLogoUrl(uploaded.url);
+      }
+
       showSuccess(t('pages.clubs.saveSuccess', 'Club saved successfully'));
       navigate(isMyClubEdit ? `/${lang}/my-club` : `/${lang}/clubs`);
     } catch (error) {
@@ -291,8 +339,13 @@ const ClubEdit: React.FC = () => {
             {isGeneralAdmin && (
               <LogoUploader
                 value={form.clubLogo}
-                onChange={(url) => setForm({ ...form, clubLogo: url || '' })}
-                entityId={form.id}
+                onPendingFileChange={setPendingLogo}
+                onChange={(url) => {
+                  setForm((prev) => ({ ...prev, clubLogo: url || '' }));
+                  if (!url) {
+                    setSavedLogoUrl('');
+                  }
+                }}
               />
             )}
 

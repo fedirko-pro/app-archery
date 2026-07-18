@@ -262,8 +262,12 @@ export class TournamentApplicationController {
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
-  async withdraw(@Param('id') id: string, @Request() req: ReqWithUser) {
-    return this.applicationService.withdraw(id, req.user.sub);
+  async withdraw(
+    @Param('id') id: string,
+    @Body() data: { reason?: string },
+    @Request() req: ReqWithUser,
+  ) {
+    return this.applicationService.withdraw(id, req.user.sub, data?.reason);
   }
 
   @Delete(':id/admin')

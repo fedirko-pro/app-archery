@@ -21,7 +21,7 @@
     "rules": "Reglas",
     "about": "Acerca de la app",
     "users": "Usuarios",
-    "userApplications": "Solicitudes de usuarios",
+    "userApplications": "Solicitudes de torneos",
     "accessControl": "Control de acceso",
     "divisions": "Divisiones",
     "scoringDemo": "Tarjeta de Puntuación (demo sin papel)",
@@ -405,7 +405,11 @@
       "appliedOn": "Aplicado el",
       "withdraw": "Retirar",
       "withdrawTitle": "Retirar solicitud",
-      "withdrawConfirm": "¿Seguro que deseas retirar esta solicitud? Esta acción no se puede deshacer."
+      "withdrawConfirm": "¿Seguro que deseas retirar esta solicitud? Esta acción no se puede deshacer.",
+      "withdrawReason": "Motivo de retiro",
+      "withdrawReasonPlaceholder": "Indica el motivo del retiro...",
+      "withdrawReasonRequired": "El motivo de retiro es obligatorio",
+      "withdrawFailed": "No se pudo retirar la solicitud"
     },
     "publicApplication": {
       "notFound": "Torneo no encontrado",
@@ -491,6 +495,7 @@
         "statusLabel": "Estado",
         "rejectionReason": "Motivo del rechazo",
         "rejectionReasonPlaceholder": "Por favor, proporciona un motivo para el rechazo...",
+        "rejectionReasonRequired": "El motivo de rechazo es obligatorio",
         "cancel": "Cancelar",
         "updateStatus": "Actualizar estado"
       },

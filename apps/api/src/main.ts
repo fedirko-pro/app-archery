@@ -25,16 +25,21 @@ async function bootstrap() {
   app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
   app.use(cookieParser());
 
-  // Serve static files from uploads directory
-  // From dist/src/main.js: go up 4 levels to reach project root
-  const projectRoot = join(__dirname, '..', '..', '..', '..');
-  app.useStaticAssets(join(projectRoot, 'uploads'), {
-    prefix: '/uploads/',
-  });
+  // User uploads (avatars, banners, attachments) live under apps/api/uploads.
+  // From dist/src/main.js → apps/api.
+  const apiRoot = join(__dirname, '..', '..');
+  // Rule PDFs live at monorepo-root uploads/rules.
+  const monorepoRoot = join(__dirname, '..', '..', '..', '..');
 
-  // Rule PDFs: files in uploads/rules/ served at /uploads/rules/
-  app.useStaticAssets(join(projectRoot, 'uploads', 'rules'), {
+  app.useStaticAssets(join(monorepoRoot, 'uploads', 'rules'), {
+    prefix: '/uploads/rules/',
+  });
+  // Legacy alias used by some rule download links
+  app.useStaticAssets(join(monorepoRoot, 'uploads', 'rules'), {
     prefix: '/pdf/rules/',
+  });
+  app.useStaticAssets(join(apiRoot, 'uploads'), {
+    prefix: '/uploads/',
   });
 
   app.useGlobalPipes(

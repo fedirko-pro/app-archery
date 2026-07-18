@@ -38,6 +38,8 @@ const TournamentEdit: React.FC = () => {
   const [rules, setRules] = useState<RuleDto[]>([]);
   const [loadingRules, setLoadingRules] = useState(true);
 
+  const [pendingBannerFile, setPendingBannerFile] = useState<File | null>(null);
+
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -48,8 +50,8 @@ const TournamentEdit: React.FC = () => {
     country: DEFAULT_COUNTRY_CODE,
     ruleCode: '',
     targetCount: 18,
-    allowMultipleApplications: true,
-    collectFeedback: false,
+    allowMultipleApplications: false,
+    collectFeedback: true,
     banner: '',
     attachments: [] as FileAttachment[],
   });
@@ -76,6 +78,7 @@ const TournamentEdit: React.FC = () => {
         setLoading(true);
         const data = await apiService.getTournament(tournamentId);
         setTournament(data);
+        setPendingBannerFile(null);
         setFormData({
           title: data.title,
           description: data.description || '',
@@ -88,8 +91,8 @@ const TournamentEdit: React.FC = () => {
           country: data.country || DEFAULT_COUNTRY_CODE,
           ruleCode: data.ruleCode || '',
           targetCount: data.targetCount || 18,
-          allowMultipleApplications: data.allowMultipleApplications ?? true,
-          collectFeedback: data.collectFeedback ?? false,
+          allowMultipleApplications: data.allowMultipleApplications ?? false,
+          collectFeedback: data.collectFeedback ?? true,
           banner: data.banner || '',
           attachments: data.attachments || [],
         });
@@ -115,7 +118,24 @@ const TournamentEdit: React.FC = () => {
     try {
       setSubmitting(true);
       setError(null);
-      await apiService.updateTournament(tournamentId, formData);
+
+      let bannerUrl = formData.banner;
+      if (pendingBannerFile) {
+        const uploaded = await apiService.uploadImage(pendingBannerFile, 'banner', {
+          entityId: tournamentId,
+          quality: 85,
+        });
+        bannerUrl = uploaded.url;
+      } else if (bannerUrl.startsWith('blob:') || bannerUrl.startsWith('data:')) {
+        // Local preview without a pending file — keep the previously saved banner.
+        bannerUrl = tournament?.banner || '';
+      }
+
+      const { banner: _localBanner, ...tournamentPayload } = formData;
+      await apiService.updateTournament(tournamentId, {
+        ...tournamentPayload,
+        banner: bannerUrl,
+      });
       navigate(`/${lang}/tournaments/${tournamentId}`);
     } catch (error) {
       setError(t('pages.tournaments.updateError', 'Failed to update tournament'));
@@ -322,6 +342,7 @@ const TournamentEdit: React.FC = () => {
         <Box sx={{ mb: 2 }}>
           <BannerUploader
             value={formData.banner}
+            onPendingFileChange={setPendingBannerFile}
             onChange={(dataUrl) => {
               setFormData({ ...formData, banner: dataUrl || '' });
             }}

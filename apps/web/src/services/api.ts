@@ -680,11 +680,15 @@ class ApiService {
     );
   }
 
-  async withdrawApplication(applicationId: string): Promise<TournamentApplicationDto> {
+  async withdrawApplication(
+    applicationId: string,
+    reason: string,
+  ): Promise<TournamentApplicationDto> {
     return await this.request<TournamentApplicationDto>(
       `/tournament-applications/${applicationId}`,
       {
         method: 'DELETE',
+        body: JSON.stringify({ reason }),
       },
     );
   }

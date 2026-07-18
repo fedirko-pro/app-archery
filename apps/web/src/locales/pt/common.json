@@ -22,7 +22,7 @@
     "rules": "Regras",
     "about": "Sobre o app",
     "users": "Usuários",
-    "userApplications": "Inscrições de usuários",
+    "userApplications": "Inscrições em torneios",
     "accessControl": "Controle de Acesso",
     "divisions": "Divisões",
     "scoringDemo": "Cartão de Pontuação (demo sem papel)",
@@ -425,7 +425,11 @@
       "appliedOn": "Inscrito em",
       "withdraw": "Cancelar inscrição",
       "withdrawTitle": "Cancelar inscrição",
-      "withdrawConfirm": "Tem certeza que deseja cancelar esta inscrição? Esta ação não pode ser desfeita."
+      "withdrawConfirm": "Tem certeza que deseja cancelar esta inscrição? Esta ação não pode ser desfeita.",
+      "withdrawReason": "Motivo do cancelamento",
+      "withdrawReasonPlaceholder": "Indique o motivo do cancelamento...",
+      "withdrawReasonRequired": "O motivo do cancelamento é obrigatório",
+      "withdrawFailed": "Falha ao cancelar a inscrição"
     },
     "publicApplication": {
       "notFound": "Torneio não encontrado",
@@ -508,6 +512,7 @@
         "statusLabel": "Status",
         "rejectionReason": "Motivo da rejeição",
         "rejectionReasonPlaceholder": "Por favor, forneça um motivo para a rejeição...",
+        "rejectionReasonRequired": "O motivo da rejeição é obrigatório",
         "cancel": "Cancelar",
         "updateStatus": "Atualizar status"
       },

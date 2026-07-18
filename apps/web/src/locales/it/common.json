@@ -22,7 +22,7 @@
     "rules": "Regole",
     "about": "Informazioni sull'app",
     "users": "Utenti",
-    "userApplications": "Domande degli utenti",
+    "userApplications": "Iscrizioni ai tornei",
     "accessControl": "Controllo accessi",
     "divisions": "Divisioni",
     "scoringDemo": "Scheda Punteggio (demo senza carta)",
@@ -406,7 +406,11 @@
       "appliedOn": "Inviata il",
       "withdraw": "Ritira domanda",
       "withdrawTitle": "Ritira domanda",
-      "withdrawConfirm": "Sei sicuro di voler ritirare questa domanda? L'azione non può essere annullata."
+      "withdrawConfirm": "Sei sicuro di voler ritirare questa domanda? L'azione non può essere annullata.",
+      "withdrawReason": "Motivo del ritiro",
+      "withdrawReasonPlaceholder": "Indica il motivo del ritiro...",
+      "withdrawReasonRequired": "Il motivo del ritiro è obbligatorio",
+      "withdrawFailed": "Impossibile ritirare la domanda"
     },
     "publicApplication": {
       "notFound": "Torneo non trovato",
@@ -492,6 +496,7 @@
         "statusLabel": "Stato",
         "rejectionReason": "Motivo del rifiuto",
         "rejectionReasonPlaceholder": "Per favore, fornisci un motivo per il rifiuto...",
+        "rejectionReasonRequired": "Il motivo del rifiuto è obbligatorio",
         "cancel": "Annulla",
         "updateStatus": "Aggiorna stato"
       },

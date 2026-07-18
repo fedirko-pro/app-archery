@@ -22,7 +22,7 @@
     "rules": "Правила",
     "about": "Про додаток",
     "users": "Користувачі",
-    "userApplications": "Заявки користувачів",
+    "userApplications": "Заявки на турніри",
     "accessControl": "Контроль доступу",
     "divisions": "Дивізіони",
     "scoringDemo": "Картка підрахунку (безпаперове демо)",
@@ -413,7 +413,11 @@
       "appliedOn": "Подано",
       "withdraw": "Відкликати заявку",
       "withdrawTitle": "Відкликати заявку",
-      "withdrawConfirm": "Ви впевнені, що хочете відкликати цю заявку? Дію не можна скасувати."
+      "withdrawConfirm": "Ви впевнені, що хочете відкликати цю заявку? Дію не можна скасувати.",
+      "withdrawReason": "Причина відкликання",
+      "withdrawReasonPlaceholder": "Вкажіть причину відкликання...",
+      "withdrawReasonRequired": "Причина відкликання обовʼязкова",
+      "withdrawFailed": "Не вдалося відкликати заявку"
     },
     "publicApplication": {
       "notFound": "Турнір не знайдено",
@@ -500,6 +504,7 @@
         "statusLabel": "Статус",
         "rejectionReason": "Причина відхилення",
         "rejectionReasonPlaceholder": "Будь ласка, вкажіть причину відхилення...",
+        "rejectionReasonRequired": "Причина відхилення обовʼязкова",
         "cancel": "Скасувати",
         "updateStatus": "Оновити статус"
       },

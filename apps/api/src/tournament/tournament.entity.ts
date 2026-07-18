@@ -32,11 +32,11 @@ export class Tournament {
   @Property({ nullable: true })
   applicationDeadline?: Date;
 
-  @Property({ default: true })
-  allowMultipleApplications: boolean = true;
-
   @Property({ default: false })
-  collectFeedback: boolean = false;
+  allowMultipleApplications: boolean = false;
+
+  @Property({ default: true })
+  collectFeedback: boolean = true;
 
   @Property({ default: 18 })
   targetCount: number = 18; // Number of targets/patrols

@@ -14,12 +14,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useNotification } from '../../contexts/error-feedback-context';
-import { apiService } from '../../services/api';
 import { requiresCrossOriginForCanvas } from '../../utils/placeholder-images';
 
 interface BannerUploaderProps {
   value?: string;
   onChange: (url: string | null) => void;
+  /** Cropped banner file kept locally until the tournament form is saved. */
+  onPendingFileChange?: (file: File | null) => void;
   width?: number; // viewport width in px
   height?: number; // viewport height in px
   outputWidth?: number; // output canvas width
@@ -32,10 +33,11 @@ const ACCEPTED_TYPES = ['image/png', 'image/jpeg', 'image/jpg'];
 const BannerUploader: React.FC<BannerUploaderProps> = ({
   value,
   onChange,
+  onPendingFileChange,
   width = 600,
   height = 200,
-  outputWidth: _outputWidth = 1200,
-  outputHeight: _outputHeight = 400,
+  outputWidth = 1200,
+  outputHeight = 400,
 }) => {
   const { t } = useTranslation('common');
   const { showSuccess } = useNotification();
@@ -179,6 +181,66 @@ const BannerUploader: React.FC<BannerUploaderProps> = ({
     setOffset(clamped);
   };
 
+  const getCropSource = () => {
+    if (!naturalSize) return null;
+    const baseScaleW = width / naturalSize.w;
+    const baseScaleH = height / naturalSize.h;
+    const baseScale = Math.max(baseScaleW, baseScaleH);
+    const scale = baseScale * zoom;
+    const sx = Math.max(0, Math.min(naturalSize.w - width / scale, -offset.x / scale));
+    const sy = Math.max(0, Math.min(naturalSize.h - height / scale, -offset.y / scale));
+    return {
+      sx: Math.round(sx),
+      sy: Math.round(sy),
+      sWidth: Math.round(width / scale),
+      sHeight: Math.round(height / scale),
+    };
+  };
+
+  const cropToLocalFile = async (): Promise<{ file: File; previewUrl: string }> => {
+    if (!imageEl || !naturalSize) {
+      throw new Error('Image not ready');
+    }
+    const crop = getCropSource();
+    if (!crop) {
+      throw new Error('Crop not ready');
+    }
+
+    const canvas = document.createElement('canvas');
+    canvas.width = outputWidth;
+    canvas.height = outputHeight;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) {
+      throw new Error('Canvas unavailable');
+    }
+
+    ctx.drawImage(
+      imageEl,
+      crop.sx,
+      crop.sy,
+      crop.sWidth,
+      crop.sHeight,
+      0,
+      0,
+      outputWidth,
+      outputHeight,
+    );
+
+    const blob = await new Promise<Blob>((resolve, reject) => {
+      canvas.toBlob(
+        (result) => {
+          if (result) resolve(result);
+          else reject(new Error('Failed to encode banner'));
+        },
+        'image/jpeg',
+        0.85,
+      );
+    });
+
+    const file = new File([blob], 'banner.jpg', { type: 'image/jpeg' });
+    return { file, previewUrl: URL.createObjectURL(blob) };
+  };
+
   const handleSave = async () => {
     if (!imageEl || !naturalSize || !currentFileRef.current) return;
 
@@ -186,28 +248,14 @@ const BannerUploader: React.FC<BannerUploaderProps> = ({
     setError(null);
 
     try {
-      const baseScaleW = width / naturalSize.w;
-      const baseScaleH = height / naturalSize.h;
-      const baseScale = Math.max(baseScaleW, baseScaleH);
-      const scale = baseScale * zoom;
-      const sx = Math.max(0, Math.min(naturalSize.w - width / scale, -offset.x / scale));
-      const sy = Math.max(0, Math.min(naturalSize.h - height / scale, -offset.y / scale));
-      const sWidth = width / scale;
-      const sHeight = height / scale;
-
-      // Upload to backend with crop parameters
-      const result = await apiService.uploadImage(currentFileRef.current, 'banner', {
-        cropX: Math.round(sx),
-        cropY: Math.round(sy),
-        cropWidth: Math.round(sWidth),
-        cropHeight: Math.round(sHeight),
-        quality: 85,
-      });
-
-      // Update with the uploaded image URL
-      onChange(result.url);
-      setImageSrc(result.url);
-      showSuccess(t('pages.tournaments.bannerSaved', 'Banner saved successfully'));
+      // Keep cropped image local until the tournament form is saved.
+      const { file, previewUrl } = await cropToLocalFile();
+      onPendingFileChange?.(file);
+      onChange(previewUrl);
+      setImageSrc(previewUrl);
+      showSuccess(
+        t('pages.tournaments.bannerReady', 'Banner ready — it will upload when you save'),
+      );
     } catch (err) {
       setError(t('pages.tournaments.uploadFailed', 'Upload failed. Please try again.'));
       console.error('Upload failed:', err);
@@ -222,6 +270,7 @@ const BannerUploader: React.FC<BannerUploaderProps> = ({
     setZoom(1);
     setOffset({ x: 0, y: 0 });
     currentFileRef.current = null;
+    onPendingFileChange?.(null);
     onChange(null);
     setError(null);
     if (fileInputRef.current) fileInputRef.current.value = '';
@@ -322,8 +371,8 @@ const BannerUploader: React.FC<BannerUploaderProps> = ({
               startIcon={uploading ? <CircularProgress size={16} /> : null}
             >
               {uploading
-                ? t('pages.tournaments.uploading', 'Uploading...')
-                : t('profile.cropAndSave', 'Crop and Save')}
+                ? t('pages.tournaments.preparing', 'Preparing...')
+                : t('profile.cropAndUse', 'Crop and Use')}
             </Button>
             <Button color="error" onClick={handleRemove} disabled={!imageEl || uploading}>
               {t('profile.removePhoto', 'Remove Photo')}

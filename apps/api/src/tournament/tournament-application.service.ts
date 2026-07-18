@@ -254,10 +254,11 @@ export class TournamentApplicationService {
 
     // Handle rejection reason
     if (status === ApplicationStatus.REJECTED) {
-      // Set rejection reason if provided
-      if (rejectionReason) {
-        application.rejectionReason = rejectionReason;
+      const reason = rejectionReason?.trim();
+      if (!reason) {
+        throw new BadRequestException('A rejection reason is required');
       }
+      application.rejectionReason = reason;
     } else if (status === ApplicationStatus.APPROVED) {
       // Clear rejection reason when approving (even if previously rejected)
       application.rejectionReason = undefined;
@@ -325,7 +326,7 @@ export class TournamentApplicationService {
     return application;
   }
 
-  async withdraw(id: string, applicantId: string): Promise<TournamentApplication> {
+  async withdraw(id: string, applicantId: string, reason?: string): Promise<TournamentApplication> {
     const application = await this.findById(id);
 
     // Ensure the application belongs to the user
@@ -337,7 +338,13 @@ export class TournamentApplicationService {
       throw new BadRequestException('Can only withdraw pending applications');
     }
 
+    const withdrawReason = reason?.trim();
+    if (!withdrawReason) {
+      throw new BadRequestException('A withdrawal reason is required');
+    }
+
     application.status = ApplicationStatus.WITHDRAWN;
+    application.rejectionReason = withdrawReason;
     application.updatedAt = new Date();
 
     await this.em.persistAndFlush(application);

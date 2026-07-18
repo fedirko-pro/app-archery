@@ -23,7 +23,7 @@
     "rules": "Rules",
     "about": "About app",
     "users": "Users",
-    "userApplications": "User applications",
+    "userApplications": "Tournament Applications",
     "accessControl": "Access Control",
     "divisions": "Divisions",
     "scoringDemo": "Scoring Card (paperless demo)",
@@ -567,7 +567,11 @@
       "appliedOn": "Applied on",
       "withdraw": "Withdraw",
       "withdrawTitle": "Withdraw Application",
-      "withdrawConfirm": "Are you sure you want to withdraw this application? This action cannot be undone."
+      "withdrawConfirm": "Are you sure you want to withdraw this application? This action cannot be undone.",
+      "withdrawReason": "Withdrawal reason",
+      "withdrawReasonPlaceholder": "Please provide a reason for withdrawing...",
+      "withdrawReasonRequired": "A withdrawal reason is required",
+      "withdrawFailed": "Failed to withdraw application"
     },
     "publicApplication": {
       "notFound": "Tournament not found",
@@ -650,6 +654,7 @@
         "statusLabel": "Status",
         "rejectionReason": "Rejection Reason",
         "rejectionReasonPlaceholder": "Please provide a reason for rejection...",
+        "rejectionReasonRequired": "A rejection reason is required",
         "cancel": "Cancel",
         "updateStatus": "Update Status"
       },

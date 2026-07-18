@@ -34,6 +34,8 @@ const TournamentCreate: React.FC = () => {
   const [submitting, setSubmitting] = useState(false);
   const [rules, setRules] = useState<RuleDto[]>([]);
   const [loadingRules, setLoadingRules] = useState(true);
+  const [pendingBannerFile, setPendingBannerFile] = useState<File | null>(null);
+  const [pendingAttachmentFiles, setPendingAttachmentFiles] = useState<File[]>([]);
 
   const [formData, setFormData] = useState({
     title: '',
@@ -45,8 +47,8 @@ const TournamentCreate: React.FC = () => {
     country: DEFAULT_COUNTRY_CODE,
     ruleCode: '',
     targetCount: 18,
-    allowMultipleApplications: true,
-    collectFeedback: false,
+    allowMultipleApplications: false,
+    collectFeedback: true,
     banner: '',
     attachments: [] as FileAttachment[],
   });
@@ -77,7 +79,36 @@ const TournamentCreate: React.FC = () => {
     try {
       setSubmitting(true);
       setError(null);
-      await apiService.createTournament(formData);
+
+      const {
+        banner: _localBanner,
+        attachments: _localAttachments,
+        ...tournamentPayload
+      } = formData;
+      const created = await apiService.createTournament(tournamentPayload);
+
+      let bannerUrl: string | undefined;
+      if (pendingBannerFile) {
+        const uploaded = await apiService.uploadImage(pendingBannerFile, 'banner', {
+          entityId: created.id,
+          quality: 85,
+        });
+        bannerUrl = uploaded.url;
+      }
+
+      const uploadedAttachments: FileAttachment[] = [];
+      for (const file of pendingAttachmentFiles) {
+        const uploaded = await apiService.uploadAttachment(file, created.id);
+        uploadedAttachments.push(uploaded);
+      }
+
+      if (bannerUrl || uploadedAttachments.length > 0) {
+        await apiService.updateTournament(created.id, {
+          ...(bannerUrl ? { banner: bannerUrl } : {}),
+          ...(uploadedAttachments.length > 0 ? { attachments: uploadedAttachments } : {}),
+        });
+      }
+
       navigate(`/${lang}/tournaments`);
     } catch (error) {
       setError(t('pages.tournaments.createError', 'Failed to create tournament'));
@@ -261,6 +292,7 @@ const TournamentCreate: React.FC = () => {
         <Box sx={{ mb: 2 }}>
           <BannerUploader
             value={formData.banner}
+            onPendingFileChange={setPendingBannerFile}
             onChange={(dataUrl) => {
               setFormData({ ...formData, banner: dataUrl || '' });
             }}
@@ -274,6 +306,8 @@ const TournamentCreate: React.FC = () => {
         <Box sx={{ mb: 2 }}>
           <FileAttachments
             value={formData.attachments}
+            pendingFiles={pendingAttachmentFiles}
+            onPendingFilesChange={setPendingAttachmentFiles}
             onChange={(files) => {
               setFormData({ ...formData, attachments: files });
             }}

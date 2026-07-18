@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { NotFoundException, ConflictException } from '@nestjs/common';
+import { NotFoundException, ConflictException, BadRequestException } from '@nestjs/common';
 import { EntityManager } from '@mikro-orm/core';
 import { TournamentApplicationService } from './tournament-application.service';
 import { ApplicationStatus } from './tournament-application.entity';
@@ -133,15 +133,30 @@ describe('TournamentApplicationService', () => {
       };
       em.findOne.mockResolvedValue(mockApp as any);
 
-      const result = await service.withdraw('app-1', 'user-1');
+      const result = await service.withdraw('app-1', 'user-1', 'Cannot attend');
       expect(result.status).toBe('withdrawn');
+      expect(result.rejectionReason).toBe('Cannot attend');
       expect(em.persistAndFlush).toHaveBeenCalled();
+    });
+
+    it('should require a withdrawal reason', async () => {
+      const mockApp = {
+        id: 'app-1',
+        applicant: { id: 'user-1' },
+        status: 'pending',
+        tournament: mockTournament,
+      };
+      em.findOne.mockResolvedValue(mockApp as any);
+
+      await expect(service.withdraw('app-1', 'user-1', '  ')).rejects.toThrow(BadRequestException);
     });
 
     it('should throw NotFoundException for non-existent application', async () => {
       em.findOne.mockResolvedValue(null);
 
-      await expect(service.withdraw('bad-id', 'user-1')).rejects.toThrow(NotFoundException);
+      await expect(service.withdraw('bad-id', 'user-1', 'reason')).rejects.toThrow(
+        NotFoundException,
+      );
     });
   });
 
@@ -182,6 +197,20 @@ describe('TournamentApplicationService', () => {
       );
       expect(result.status).toBe(ApplicationStatus.REJECTED);
       expect(result.rejectionReason).toBe('Full');
+    });
+
+    it('should require a rejection reason', async () => {
+      const mockApp = {
+        id: 'app-1',
+        status: 'pending',
+        applicant: mockUser,
+        tournament: mockTournament,
+      };
+      em.findOne.mockResolvedValue(mockApp as any);
+
+      await expect(
+        service.updateStatus('app-1', ApplicationStatus.REJECTED, '  ', 'admin-1'),
+      ).rejects.toThrow(BadRequestException);
     });
   });
 });

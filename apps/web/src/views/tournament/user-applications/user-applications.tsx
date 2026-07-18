@@ -12,6 +12,7 @@ import {
   DialogContent,
   DialogTitle,
   Snackbar,
+  TextField,
   Typography,
 } from '@mui/material';
 import React, { useEffect, useMemo, useState } from 'react';
@@ -37,7 +38,8 @@ const UserApplications: React.FC = () => {
   const [withdrawDialog, setWithdrawDialog] = useState<{
     open: boolean;
     applicationId: string | null;
-  }>({ open: false, applicationId: null });
+    reason: string;
+  }>({ open: false, applicationId: null, reason: '' });
 
   useEffect(() => {
     void fetchApplications();
@@ -70,13 +72,18 @@ const UserApplications: React.FC = () => {
 
   const handleWithdraw = async () => {
     if (!withdrawDialog.applicationId) return;
+    const reason = withdrawDialog.reason.trim();
+    if (!reason) {
+      setError(t('pages.applications.withdrawReasonRequired', 'A withdrawal reason is required'));
+      return;
+    }
 
     try {
-      await apiService.withdrawApplication(withdrawDialog.applicationId);
-      setWithdrawDialog({ open: false, applicationId: null });
+      await apiService.withdrawApplication(withdrawDialog.applicationId, reason);
+      setWithdrawDialog({ open: false, applicationId: null, reason: '' });
       void fetchApplications();
     } catch (err) {
-      setError('Failed to withdraw application');
+      setError(t('pages.applications.withdrawFailed', 'Failed to withdraw application'));
       console.error('Error withdrawing application:', err);
     }
   };
@@ -266,9 +273,15 @@ const UserApplications: React.FC = () => {
                     )}
                     {application.rejectionReason && (
                       <Alert
-                        severity="error"
+                        severity={application.status === 'withdrawn' ? 'warning' : 'error'}
                         sx={{ mt: 1, py: 0, '& .MuiAlert-message': { fontSize: '0.75rem' } }}
                       >
+                        <Box component="strong" fontWeight={600}>
+                          {application.status === 'withdrawn'
+                            ? t('pages.applications.withdrawReason', 'Withdrawal reason')
+                            : t('pages.applications.rejectionReason')}
+                          :{' '}
+                        </Box>
                         {application.rejectionReason}
                       </Alert>
                     )}
@@ -285,6 +298,7 @@ const UserApplications: React.FC = () => {
                             setWithdrawDialog({
                               open: true,
                               applicationId: application.id,
+                              reason: '',
                             });
                           }}
                         >
@@ -302,17 +316,49 @@ const UserApplications: React.FC = () => {
 
       <Dialog
         open={withdrawDialog.open}
-        onClose={() => setWithdrawDialog({ open: false, applicationId: null })}
+        onClose={() => setWithdrawDialog({ open: false, applicationId: null, reason: '' })}
       >
         <DialogTitle>{t('pages.applications.withdrawTitle')}</DialogTitle>
         <DialogContent>
-          <Typography>{t('pages.applications.withdrawConfirm')}</Typography>
+          <Typography sx={{ mb: 2 }}>{t('pages.applications.withdrawConfirm')}</Typography>
+          <TextField
+            fullWidth
+            required
+            multiline
+            rows={3}
+            label={t('pages.applications.withdrawReason', 'Withdrawal reason')}
+            value={withdrawDialog.reason}
+            onChange={(e) =>
+              setWithdrawDialog((prev) => ({
+                ...prev,
+                reason: e.target.value,
+              }))
+            }
+            placeholder={t(
+              'pages.applications.withdrawReasonPlaceholder',
+              'Please provide a reason for withdrawing...',
+            )}
+            error={!withdrawDialog.reason.trim()}
+            helperText={
+              !withdrawDialog.reason.trim()
+                ? t('pages.applications.withdrawReasonRequired', 'A withdrawal reason is required')
+                : undefined
+            }
+            sx={{ mt: 1 }}
+          />
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setWithdrawDialog({ open: false, applicationId: null })}>
+          <Button
+            onClick={() => setWithdrawDialog({ open: false, applicationId: null, reason: '' })}
+          >
             {t('common.cancel')}
           </Button>
-          <Button onClick={() => void handleWithdraw()} color="error" variant="contained">
+          <Button
+            onClick={() => void handleWithdraw()}
+            color="error"
+            variant="contained"
+            disabled={!withdrawDialog.reason.trim()}
+          >
             {t('pages.applications.withdraw')}
           </Button>
         </DialogActions>

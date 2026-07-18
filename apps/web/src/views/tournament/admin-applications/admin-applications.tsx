@@ -147,11 +147,23 @@ const AdminApplications: React.FC = () => {
   const handleStatusUpdate = async () => {
     if (!statusDialog.application) return;
 
+    if (statusDialog.newStatus === 'rejected' && !statusDialog.rejectionReason.trim()) {
+      setSnackbar({
+        open: true,
+        message: t(
+          'pages.adminApplications.dialog.rejectionReasonRequired',
+          'A rejection reason is required',
+        ),
+        severity: 'error',
+      });
+      return;
+    }
+
     try {
       await apiService.updateApplicationStatus(
         statusDialog.application.id,
         statusDialog.newStatus,
-        statusDialog.rejectionReason || undefined,
+        statusDialog.rejectionReason.trim() || undefined,
       );
 
       // Update local state to keep position in list
@@ -190,10 +202,7 @@ const AdminApplications: React.FC = () => {
     }
   };
 
-  const handleQuickStatusUpdate = async (
-    applicationId: string,
-    newStatus: 'approved' | 'rejected',
-  ) => {
+  const handleQuickStatusUpdate = async (applicationId: string, newStatus: 'approved') => {
     const application = applications.find((app) => app.id === applicationId);
     const applicantName = application
       ? `${application.applicant?.firstName ?? ''} ${application.applicant?.lastName ?? ''}`
@@ -212,37 +221,39 @@ const AdminApplications: React.FC = () => {
 
       fetchStats();
 
-      const messageKey =
-        newStatus === 'approved'
-          ? 'pages.adminApplications.notifications.approvedSuccess'
-          : 'pages.adminApplications.notifications.rejectedSuccess';
-
       setSnackbar({
         open: true,
-        message: t(messageKey, { name: applicantName }),
+        message: t('pages.adminApplications.notifications.approvedSuccess', {
+          name: applicantName,
+        }),
         severity: 'success',
       });
     } catch (error) {
-      const errorMessageKey =
-        newStatus === 'approved'
-          ? 'pages.adminApplications.notifications.approveFailed'
-          : 'pages.adminApplications.notifications.rejectFailed';
-
-      const fallbackKey =
-        newStatus === 'approved'
-          ? 'pages.adminApplications.notifications.approveFailedGeneric'
-          : 'pages.adminApplications.notifications.rejectFailedGeneric';
-
-      setError(applicantName ? t(errorMessageKey, { name: applicantName }) : t(fallbackKey));
+      setError(
+        applicantName
+          ? t('pages.adminApplications.notifications.approveFailed', { name: applicantName })
+          : t('pages.adminApplications.notifications.approveFailedGeneric'),
+      );
       console.error('Error updating status:', error);
       setSnackbar({
         open: true,
-        message: applicantName ? t(errorMessageKey, { name: applicantName }) : t(fallbackKey),
+        message: applicantName
+          ? t('pages.adminApplications.notifications.approveFailed', { name: applicantName })
+          : t('pages.adminApplications.notifications.approveFailedGeneric'),
         severity: 'error',
       });
     } finally {
       setUpdatingApplicationId(null);
     }
+  };
+
+  const openRejectDialog = (application: TournamentApplicationDto) => {
+    setStatusDialog({
+      open: true,
+      application,
+      newStatus: 'rejected',
+      rejectionReason: '',
+    });
   };
 
   const handleCloseSnackbar = () => {
@@ -732,12 +743,10 @@ const AdminApplications: React.FC = () => {
                               size="small"
                               color="error"
                               startIcon={<Close />}
-                              onClick={() => handleQuickStatusUpdate(application.id, 'rejected')}
+                              onClick={() => openRejectDialog(application)}
                               disabled={updatingApplicationId === application.id}
                             >
-                              {updatingApplicationId === application.id
-                                ? t('pages.adminApplications.actions.rejecting')
-                                : t('pages.adminApplications.actions.reject')}
+                              {t('pages.adminApplications.actions.reject')}
                             </Button>
                           </>
                         )}
@@ -841,9 +850,6 @@ const AdminApplications: React.FC = () => {
                           <MenuItem value="rejected">
                             {t('pages.adminApplications.status.rejected')}
                           </MenuItem>
-                          <MenuItem value="withdrawn">
-                            {t('pages.adminApplications.status.withdrawn')}
-                          </MenuItem>
                         </Select>
                       </FormControl>
                     </Box>
@@ -851,6 +857,7 @@ const AdminApplications: React.FC = () => {
                       <Box>
                         <TextField
                           fullWidth
+                          required
                           label={t('pages.adminApplications.dialog.rejectionReason')}
                           multiline
                           rows={3}
@@ -864,6 +871,19 @@ const AdminApplications: React.FC = () => {
                           placeholder={t(
                             'pages.adminApplications.dialog.rejectionReasonPlaceholder',
                           )}
+                          error={
+                            statusDialog.newStatus === 'rejected' &&
+                            !statusDialog.rejectionReason.trim()
+                          }
+                          helperText={
+                            statusDialog.newStatus === 'rejected' &&
+                            !statusDialog.rejectionReason.trim()
+                              ? t(
+                                  'pages.adminApplications.dialog.rejectionReasonRequired',
+                                  'A rejection reason is required',
+                                )
+                              : undefined
+                          }
                         />
                       </Box>
                     )}
@@ -887,7 +907,13 @@ const AdminApplications: React.FC = () => {
             {t('pages.adminApplications.dialog.cancel')}
           </Button>
           {canEditApplications && (
-            <Button onClick={handleStatusUpdate} variant="contained">
+            <Button
+              onClick={() => void handleStatusUpdate()}
+              variant="contained"
+              disabled={
+                statusDialog.newStatus === 'rejected' && !statusDialog.rejectionReason.trim()
+              }
+            >
               {t('pages.adminApplications.dialog.updateStatus')}
             </Button>
           )}

@@ -35,6 +35,9 @@ interface FileAttachmentsProps {
   value: FileAttachment[];
   onChange: (files: FileAttachment[]) => void;
   tournamentId?: string;
+  /** Local files kept until tournament create (when tournamentId is missing). */
+  pendingFiles?: File[];
+  onPendingFilesChange?: (files: File[]) => void;
   maxFiles?: number;
   maxSizeBytes?: number;
 }
@@ -55,6 +58,8 @@ const FileAttachments: React.FC<FileAttachmentsProps> = ({
   value,
   onChange,
   tournamentId,
+  pendingFiles = [],
+  onPendingFilesChange,
   maxFiles = 10,
   maxSizeBytes = MAX_SIZE_BYTES,
 }) => {
@@ -63,6 +68,7 @@ const FileAttachments: React.FC<FileAttachmentsProps> = ({
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
+  const deferUpload = !tournamentId;
 
   const formatFileSize = (bytes: number): string => {
     if (bytes < 1024) return `${bytes} B`;
@@ -77,55 +83,95 @@ const FileAttachments: React.FC<FileAttachmentsProps> = ({
     return <AttachFile />;
   };
 
+  const totalCount = deferUpload ? pendingFiles.length : value.length;
+
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!tournamentId) {
-      setError('Tournament must be saved before adding attachments.');
-      return;
-    }
     const files = Array.from(e.target.files || []);
 
-    if (value.length + files.length > maxFiles) {
+    if (totalCount + files.length > maxFiles) {
       setError(
         t('pages.tournaments.tooManyFiles', {
           maxFiles,
-          remaining: maxFiles - value.length,
-          defaultValue: `Maximum ${maxFiles} files allowed. You can upload ${maxFiles - value.length} more file(s).`
-        })
+          remaining: maxFiles - totalCount,
+          defaultValue: `Maximum ${maxFiles} files allowed. You can upload ${maxFiles - totalCount} more file(s).`,
+        }),
       );
       return;
     }
 
-    setUploading(true);
     setError(null);
 
+    if (deferUpload) {
+      const accepted: File[] = [];
+      const errors: string[] = [];
+
+      for (const file of files) {
+        if (!ACCEPTED_TYPES.includes(file.type)) {
+          errors.push(
+            t('pages.tournaments.unsupportedFileType', {
+              fileName: file.name,
+              defaultValue: `${file.name}: Unsupported file type. Allowed: PNG, JPG, PDF, DOC, DOCX`,
+            }),
+          );
+          continue;
+        }
+        if (file.size > maxSizeBytes) {
+          errors.push(
+            t('pages.tournaments.fileTooLarge', {
+              fileName: file.name,
+              maxSize: formatFileSize(maxSizeBytes),
+              defaultValue: `${file.name}: File is too large (max ${formatFileSize(maxSizeBytes)})`,
+            }),
+          );
+          continue;
+        }
+        accepted.push(file);
+      }
+
+      if (errors.length > 0) {
+        setError(errors.join('; '));
+      }
+      if (accepted.length > 0) {
+        onPendingFilesChange?.([...pendingFiles, ...accepted]);
+        showSuccess(
+          t('pages.tournaments.attachmentsReady', {
+            count: accepted.length,
+            defaultValue: '{{count}} file(s) ready — they will upload when you save',
+          }),
+        );
+      }
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+      return;
+    }
+
+    setUploading(true);
     const uploadedFiles: FileAttachment[] = [];
     const errors: string[] = [];
 
     for (const file of files) {
-      // Check file type
       if (!ACCEPTED_TYPES.includes(file.type)) {
         errors.push(
           t('pages.tournaments.unsupportedFileType', {
             fileName: file.name,
-            defaultValue: `${file.name}: Unsupported file type. Allowed: PNG, JPG, PDF, DOC, DOCX`
-          })
+            defaultValue: `${file.name}: Unsupported file type. Allowed: PNG, JPG, PDF, DOC, DOCX`,
+          }),
         );
         continue;
       }
 
-      // Check file size
       if (file.size > maxSizeBytes) {
         errors.push(
           t('pages.tournaments.fileTooLarge', {
             fileName: file.name,
             maxSize: formatFileSize(maxSizeBytes),
-            defaultValue: `${file.name}: File is too large (max ${formatFileSize(maxSizeBytes)})`
-          })
+            defaultValue: `${file.name}: File is too large (max ${formatFileSize(maxSizeBytes)})`,
+          }),
         );
         continue;
       }
 
-      // Upload file to backend
       try {
         const result = await apiService.uploadAttachment(file, tournamentId);
         uploadedFiles.push(result);
@@ -133,8 +179,8 @@ const FileAttachments: React.FC<FileAttachmentsProps> = ({
         errors.push(
           t('pages.tournaments.uploadFailed', {
             fileName: file.name,
-            defaultValue: `${file.name}: Upload failed. Please try again.`
-          })
+            defaultValue: `${file.name}: Upload failed. Please try again.`,
+          }),
         );
         console.error(`Upload failed for ${file.name}:`, err);
       }
@@ -150,19 +196,18 @@ const FileAttachments: React.FC<FileAttachmentsProps> = ({
         t('pages.tournaments.attachmentsSaved', {
           count: uploadedFiles.length,
           defaultValue: '{{count}} file(s) uploaded successfully',
-        })
+        }),
       );
     }
 
     setUploading(false);
 
-    // Reset input
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
   };
 
-  const handleRemove = async (id: string, filename: string) => {
+  const handleRemoveUploaded = async (id: string, filename: string) => {
     if (!tournamentId) return;
     setError(null);
 
@@ -173,6 +218,11 @@ const FileAttachments: React.FC<FileAttachmentsProps> = ({
       setError(t('pages.tournaments.deleteFileFailed', 'Failed to delete file. Please try again.'));
       console.error('Delete failed:', err);
     }
+  };
+
+  const handleRemovePending = (index: number) => {
+    onPendingFilesChange?.(pendingFiles.filter((_, i) => i !== index));
+    setError(null);
   };
 
   const handleAddFiles = () => {
@@ -186,7 +236,7 @@ const FileAttachments: React.FC<FileAttachmentsProps> = ({
         subheader={t('pages.tournaments.attachmentsSubheader', {
           maxSize: formatFileSize(maxSizeBytes),
           maxFiles,
-          defaultValue: `Upload custom rules, images, or documents (PNG, JPG, PDF, DOC, DOCX up to ${formatFileSize(maxSizeBytes)} each, max ${maxFiles} files)`
+          defaultValue: `Upload custom rules, images, or documents (PNG, JPG, PDF, DOC, DOCX up to ${formatFileSize(maxSizeBytes)} each, max ${maxFiles} files)`,
         })}
       />
       <CardContent>
@@ -204,16 +254,18 @@ const FileAttachments: React.FC<FileAttachmentsProps> = ({
               variant="outlined"
               startIcon={uploading ? <CircularProgress size={16} /> : <AttachFile />}
               onClick={handleAddFiles}
-              disabled={value.length >= maxFiles || uploading}
+              disabled={totalCount >= maxFiles || uploading}
             >
-              {uploading ? t('pages.tournaments.uploading', 'Uploading...') : t('pages.tournaments.addFiles', 'Add Files')}
+              {uploading
+                ? t('pages.tournaments.uploading', 'Uploading...')
+                : t('pages.tournaments.addFiles', 'Add Files')}
             </Button>
-            {value.length > 0 && (
+            {totalCount > 0 && (
               <Chip
                 label={t('pages.tournaments.filesCount', {
-                  count: value.length,
+                  count: totalCount,
                   max: maxFiles,
-                  defaultValue: `${value.length}/${maxFiles} files`
+                  defaultValue: `${totalCount}/${maxFiles} files`,
                 })}
                 size="small"
                 sx={{ ml: 2 }}
@@ -227,7 +279,38 @@ const FileAttachments: React.FC<FileAttachmentsProps> = ({
             </Typography>
           )}
 
-          {value.length > 0 && (
+          {deferUpload && pendingFiles.length > 0 && (
+            <List className="file-attachments__list">
+              {pendingFiles.map((file, index) => (
+                <ListItem
+                  key={`${file.name}-${file.size}-${index}`}
+                  className="file-attachments__list-item"
+                >
+                  <Box sx={{ mr: 2, display: 'flex', alignItems: 'center', color: 'primary.main' }}>
+                    {getFileIcon(file.type)}
+                  </Box>
+                  <ListItemText
+                    primary={file.name}
+                    secondary={formatFileSize(file.size)}
+                    primaryTypographyProps={{ noWrap: true }}
+                  />
+                  <ListItemSecondaryAction>
+                    <IconButton
+                      edge="end"
+                      aria-label="delete"
+                      onClick={() => handleRemovePending(index)}
+                      color="error"
+                      size="small"
+                    >
+                      <Delete />
+                    </IconButton>
+                  </ListItemSecondaryAction>
+                </ListItem>
+              ))}
+            </List>
+          )}
+
+          {!deferUpload && value.length > 0 && (
             <List className="file-attachments__list">
               {value.map((file) => (
                 <ListItem key={file.id} className="file-attachments__list-item">
@@ -243,7 +326,7 @@ const FileAttachments: React.FC<FileAttachmentsProps> = ({
                     <IconButton
                       edge="end"
                       aria-label="delete"
-                      onClick={() => handleRemove(file.id, file.filename)}
+                      onClick={() => handleRemoveUploaded(file.id, file.filename)}
                       color="error"
                       size="small"
                       disabled={uploading}
@@ -256,7 +339,7 @@ const FileAttachments: React.FC<FileAttachmentsProps> = ({
             </List>
           )}
 
-          {value.length === 0 && (
+          {totalCount === 0 && (
             <Typography variant="body2" color="text.secondary" sx={{ fontStyle: 'italic' }}>
               {t('pages.tournaments.noAttachments', 'No attachments added yet')}
             </Typography>
