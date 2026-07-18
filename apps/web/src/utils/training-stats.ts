@@ -1,4 +1,5 @@
 import { lbsToKg } from '@sokil/shared-types';
+import { format, parseISO } from 'date-fns';
 
 import type { MonthlyDataPoint } from '../services/types';
 import { resolveEquipmentSet } from './equipment-utils';
@@ -405,17 +406,36 @@ export function getMostRecentSession(
   return getRecentTrainingSessions(sessions, 1)[0] ?? null;
 }
 
+/** Newest training date first; same-day sessions ordered by createdAt descending. */
+export function sortTrainingSessionsNewestFirst(
+  sessions: LocalTrainingSession[],
+): LocalTrainingSession[] {
+  return [...sessions].sort((a, b) => {
+    const dateCmp = b.date.localeCompare(a.date);
+    if (dateCmp !== 0) return dateCmp;
+    return b.createdAt.localeCompare(a.createdAt);
+  });
+}
+
 export function getRecentTrainingSessions(
   sessions: LocalTrainingSession[],
   limit = 3,
 ): LocalTrainingSession[] {
-  return [...sessions]
-    .sort((a, b) => {
-      const dateCmp = b.date.localeCompare(a.date);
-      if (dateCmp !== 0) return dateCmp;
-      return b.createdAt.localeCompare(a.createdAt);
-    })
-    .slice(0, limit);
+  return sortTrainingSessionsNewestFirst(sessions).slice(0, limit);
+}
+
+/** Training date plus logged time, e.g. "18 Jul 2026, 14:30". */
+export function formatTrainingSessionDateTime(session: {
+  date: string;
+  createdAt: string;
+}): string {
+  try {
+    const datePart = format(parseISO(session.date), 'dd MMM yyyy');
+    const timePart = format(parseISO(session.createdAt), 'HH:mm');
+    return `${datePart}, ${timePart}`;
+  } catch {
+    return session.date;
+  }
 }
 
 export function getLastLoggedSession(

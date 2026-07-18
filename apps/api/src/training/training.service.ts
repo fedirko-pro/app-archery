@@ -31,7 +31,11 @@ export class TrainingService {
   }
 
   async findAllForUser(userId: string): Promise<TrainingSession[]> {
-    return this.em.find(TrainingSession, { user: { id: userId } }, { orderBy: { date: 'DESC' } });
+    return this.em.find(
+      TrainingSession,
+      { user: { id: userId } },
+      { orderBy: { date: 'DESC', createdAt: 'DESC' } },
+    );
   }
 
   async findOne(id: string, userId: string): Promise<TrainingSession> {

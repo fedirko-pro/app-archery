@@ -200,6 +200,7 @@ const Achievements = () => {
                   <AchievementMedallion
                     icon={achievement.icon}
                     rarity={achievement.rarity}
+                    fluid
                     showGlow
                   />
                 </Box>
@@ -262,7 +263,7 @@ const Achievements = () => {
                     icon={achievement.icon}
                     rarity={achievement.rarity}
                     locked
-                    size={64}
+                    fluid
                   />
                 </Box>
                 <CardContent sx={{ textAlign: 'center', pt: 1 }}>

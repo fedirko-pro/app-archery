@@ -26,7 +26,7 @@ import LocalDataBanner from '../../components/LocalDataBanner/LocalDataBanner';
 import LocalSyncChip from '../../components/LocalSyncChip/LocalSyncChip';
 import StatCard from '../../components/StatCard/StatCard';
 import { useAuth } from '../../contexts/auth-context';
-import { useLocalData, type LocalTrainingSession } from '../../contexts/local-data-context';
+import { useLocalData } from '../../contexts/local-data-context';
 import { useAchievements } from '../../hooks/use-achievements';
 import { useGuardedStartTraining } from '../../hooks/use-guarded-start-training';
 import apiService from '../../services/api';
@@ -59,6 +59,7 @@ import {
   buildWeekSetFromSessions,
   computeLocalStats,
   computePriorMonthSummary,
+  formatTrainingSessionDateTime,
   getLastLoggedSession,
   getRecentTrainingSessions,
   getStreakAtRiskState,
@@ -332,16 +333,6 @@ const HomePage: React.FC = () => {
       return;
     }
     handleOpenAdd();
-  };
-
-  const formatSessionDateTime = (session: LocalTrainingSession): string => {
-    try {
-      const datePart = format(parseISO(session.date), 'dd MMM yyyy');
-      const timePart = format(parseISO(session.createdAt), 'HH:mm');
-      return `${datePart}, ${timePart}`;
-    } catch {
-      return session.date;
-    }
   };
 
   const handleDismissBowPrompt = () => {
@@ -722,7 +713,7 @@ const HomePage: React.FC = () => {
                     <TrackChangesIcon color="primary" sx={{ mt: 0.25, fontSize: 20 }} />
                     <Box sx={{ flex: 1, minWidth: 0 }}>
                       <Typography variant="subtitle2" fontWeight={600}>
-                        {formatSessionDateTime(session)}
+                        {formatTrainingSessionDateTime(session)}
                       </Typography>
                       <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mt: 0.5 }}>
                         {session.shotsCount !== undefined && (

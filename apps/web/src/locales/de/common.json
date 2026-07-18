@@ -608,6 +608,7 @@
       "title": "Meine Turnierbewerbungen",
       "fetchError": "Bewerbungen konnten nicht geladen werden",
       "empty": "Sie haben noch keine Turnierbewerbungen eingereicht.",
+      "findNextTournament": "Finden Sie Ihr nächstes Turnier",
       "dates": "Daten",
       "category": "Kategorie",
       "division": "Altersgruppe",

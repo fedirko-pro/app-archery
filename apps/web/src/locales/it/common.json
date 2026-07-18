@@ -627,6 +627,7 @@
       "title": "Le mie domande ai tornei",
       "fetchError": "Impossibile recuperare le domande",
       "empty": "Non hai ancora inviato domande ai tornei.",
+      "findNextTournament": "Trova il tuo prossimo torneo",
       "dates": "Date",
       "category": "Categoria",
       "division": "Divisione",

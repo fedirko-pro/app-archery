@@ -7,12 +7,14 @@ import {
   computePriorMonthSummary,
   computeStreakAsOf,
   getIsoWeekString,
+  formatTrainingSessionDateTime,
   getLastLoggedSession,
   getMostRecentSession,
   getRecentTrainingSessions,
   getStartOfWeek,
   getStreakAtRiskState,
   hasSessionInIsoWeek,
+  sortTrainingSessionsNewestFirst,
   toSessionFormDefaults,
 } from './training-stats';
 
@@ -137,9 +139,49 @@ describe('getMostRecentSession', () => {
   });
 
   it('breaks date ties by createdAt', () => {
-    const s1 = { ...session('2026-06-15'), createdAt: '2026-06-15T08:00:00.000Z' };
-    const s2 = { ...session('2026-06-15'), createdAt: '2026-06-15T14:00:00.000Z' };
-    expect(getMostRecentSession([s1, s2])!.id).toBe('2026-06-15');
+    const s1 = {
+      ...session('2026-06-15'),
+      id: 'morning',
+      createdAt: '2026-06-15T08:00:00.000Z',
+    };
+    const s2 = {
+      ...session('2026-06-15'),
+      id: 'evening',
+      createdAt: '2026-06-15T14:00:00.000Z',
+    };
+    expect(getMostRecentSession([s1, s2])!.id).toBe('evening');
+  });
+});
+
+describe('sortTrainingSessionsNewestFirst', () => {
+  it('orders by date desc then createdAt desc', () => {
+    const olderDay = session('2026-06-01');
+    const morning = {
+      ...session('2026-06-15'),
+      id: 'morning',
+      createdAt: '2026-06-15T08:00:00.000Z',
+    };
+    const evening = {
+      ...session('2026-06-15'),
+      id: 'evening',
+      createdAt: '2026-06-15T14:00:00.000Z',
+    };
+    expect(sortTrainingSessionsNewestFirst([olderDay, morning, evening]).map((s) => s.id)).toEqual([
+      'evening',
+      'morning',
+      '2026-06-01',
+    ]);
+  });
+});
+
+describe('formatTrainingSessionDateTime', () => {
+  it('includes date and time from createdAt', () => {
+    expect(
+      formatTrainingSessionDateTime({
+        date: '2026-06-15',
+        createdAt: '2026-06-15T14:30:00.000Z',
+      }),
+    ).toMatch(/^15 Jun 2026, \d{2}:\d{2}$/);
   });
 });
 

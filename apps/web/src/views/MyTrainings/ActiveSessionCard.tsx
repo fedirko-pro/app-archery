@@ -17,6 +17,7 @@ import { useTranslation } from 'react-i18next';
 
 import { useLocalData, type LocalTrainingSession } from '../../contexts/local-data-context';
 import { DEFAULT_ARROWS_PER_SET } from '../../utils/training-session-utils';
+import { formatTrainingSessionDateTime } from '../../utils/training-stats';
 
 const TARGET_TYPES = ['WA_5_ring', 'WA_10_ring', 'IFAA_Field', 'NFAA_Indoor', 'custom'];
 
@@ -64,18 +65,6 @@ const ActiveSessionCard: React.FC<ActiveSessionCardProps> = ({ session, onFinish
     }
   };
 
-  const formatDate = (dateStr: string): string => {
-    try {
-      return new Date(dateStr).toLocaleDateString(undefined, {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-      });
-    } catch {
-      return dateStr;
-    }
-  };
-
   return (
     <Card
       variant="outlined"
@@ -99,7 +88,7 @@ const ActiveSessionCard: React.FC<ActiveSessionCardProps> = ({ session, onFinish
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1.5 }}>
           <Chip label={t('trainings.inProgress')} color="primary" size="small" />
           <Typography variant="h6" sx={{ flex: 1 }}>
-            {formatDate(session.date)}
+            {formatTrainingSessionDateTime(session)}
           </Typography>
         </Box>
 

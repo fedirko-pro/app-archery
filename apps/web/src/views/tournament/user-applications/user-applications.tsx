@@ -149,9 +149,19 @@ const UserApplications: React.FC = () => {
       {sortedApplications.length === 0 ? (
         <Card variant="outlined">
           <CardContent>
-            <Typography variant="body1" color="text.secondary" align="center">
-              {t('pages.applications.empty')}
-            </Typography>
+            <Box sx={{ textAlign: 'center', py: 1 }}>
+              <Typography variant="body1" color="text.secondary" gutterBottom>
+                {t('pages.applications.empty')}
+              </Typography>
+              <Button
+                variant="contained"
+                component={Link}
+                to={`/${lang}/tournaments`}
+                sx={{ mt: 1.5 }}
+              >
+                {t('pages.applications.findNextTournament')}
+              </Button>
+            </Box>
           </CardContent>
         </Card>
       ) : (

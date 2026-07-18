@@ -652,6 +652,7 @@
       "title": "Minhas inscrições em torneios",
       "fetchError": "Falha ao buscar inscrições",
       "empty": "Você ainda não enviou nenhuma inscrição de torneio.",
+      "findNextTournament": "Encontre o seu próximo torneio",
       "dates": "Datas",
       "category": "Categoria",
       "division": "Divisão",

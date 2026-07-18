@@ -608,6 +608,7 @@
       "title": "My Tournament Applications",
       "fetchError": "Failed to fetch applications",
       "empty": "You haven't submitted any tournament applications yet.",
+      "findNextTournament": "Find your next tournament",
       "dates": "Dates",
       "category": "Category",
       "division": "Division",

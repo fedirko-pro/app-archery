@@ -64,13 +64,21 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 1.5rem;
-    min-height: 140px;
+    padding: 1.25rem 1rem 0.75rem;
     background: linear-gradient(180deg, rgba(0, 0, 0, 0.02) 0%, transparent 100%);
 
+    .achievement-medallion {
+      width: 50%;
+      min-width: 50%;
+    }
+
     &--compact {
-      min-height: 100px;
-      padding: 1rem;
+      padding: 1rem 0.75rem 0.5rem;
+
+      .achievement-medallion {
+        width: 50%;
+        min-width: 50%;
+      }
     }
   }
 }

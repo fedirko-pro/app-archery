@@ -627,6 +627,7 @@
       "title": "Mis solicitudes de torneos",
       "fetchError": "No se pudieron obtener las solicitudes",
       "empty": "Todavía no has enviado ninguna solicitud de torneo.",
+      "findNextTournament": "Encuentra tu próximo torneo",
       "dates": "Fechas",
       "category": "Categoría",
       "division": "División",

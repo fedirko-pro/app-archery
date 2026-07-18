@@ -22,7 +22,12 @@ import { useGuardedStartTraining } from '../../hooks/use-guarded-start-training'
 import { getEquipmentSetName, isBowSetupPromptDismissed } from '../../utils/equipment-utils';
 import { getSessionCardTint } from '../../utils/session-card-tints';
 import { getStartedSession } from '../../utils/training-session-utils';
-import { getLastLoggedSession, toSessionFormDefaults } from '../../utils/training-stats';
+import {
+  formatTrainingSessionDateTime,
+  getLastLoggedSession,
+  sortTrainingSessionsNewestFirst,
+  toSessionFormDefaults,
+} from '../../utils/training-stats';
 import { TRAINING_TEMPLATES, type TrainingTemplate } from '../../utils/training-templates';
 import ActiveSessionCard from './ActiveSessionCard';
 import ConfirmReplaceActiveSessionDialog from './ConfirmReplaceActiveSessionDialog';
@@ -149,20 +154,9 @@ const MyTrainingsPage: React.FC = () => {
 
   const showBowSetupAlert = equipmentSets.length === 0 && !isBowSetupPromptDismissed();
 
-  const formatDate = (dateStr: string): string => {
-    try {
-      return new Date(dateStr).toLocaleDateString(undefined, {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-      });
-    } catch {
-      return dateStr;
-    }
-  };
-
-  const sortedFinished = [...finishedSessions].sort(
-    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+  const sortedFinished = useMemo(
+    () => sortTrainingSessionsNewestFirst(finishedSessions),
+    [finishedSessions],
   );
 
   return (
@@ -273,7 +267,7 @@ const MyTrainingsPage: React.FC = () => {
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
                     <TrackChangesIcon color="primary" />
                     <Typography variant="h6" sx={{ flex: 1 }}>
-                      {formatDate(session.date)}
+                      {formatTrainingSessionDateTime(session)}
                     </Typography>
                     {!session.isSynced && <LocalSyncChip />}
                     {session.mood && <MoodIcon mood={session.mood} />}
