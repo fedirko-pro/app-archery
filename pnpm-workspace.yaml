@@ -11,6 +11,7 @@ allowBuilds:
 
 overrides:
   '@isaacs/brace-expansion': '>=5.0.1'
+  'brace-expansion@<1.1.16': '1.1.16'
   '@angular-devkit/core>ajv': '>=8.18.0'
   '@rushstack/node-core-library>ajv': '>=8.18.0'
   esbuild: '>=0.25.0'
