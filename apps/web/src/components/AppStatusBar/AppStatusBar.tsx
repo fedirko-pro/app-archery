@@ -8,15 +8,17 @@ import { setInstallDismissed, usePWAInstall } from '../../hooks/usePwaInstall';
 const IOS_A2HS_DISMISS_KEY = 'pwa-ios-a2hs-dismissed';
 const IOS_A2HS_DISMISS_DAYS = 7;
 
-function isIosSafari(): boolean {
+/**
+ * True on any iOS browser (Safari, Chrome, Firefox, Edge, etc.).
+ * None of them fire `beforeinstallprompt`; all use Share → Add to Home Screen.
+ */
+function isIos(): boolean {
   if (typeof navigator === 'undefined') return false;
   const ua = navigator.userAgent;
-  const isIOS =
+  return (
     /iPad|iPhone|iPod/.test(ua) ||
-    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-  const isWebkit = /WebKit/.test(ua);
-  const isChromeOrFirefox = /CriOS|FxiOS|EdgiOS|OPiOS/.test(ua);
-  return isIOS && isWebkit && !isChromeOrFirefox;
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
+  );
 }
 
 function wasIosTipDismissedRecently(): boolean {
@@ -58,7 +60,7 @@ const AppStatusBar: React.FC = () => {
   useEffect(() => {
     setMounted(true);
     setIsOffline(!navigator.onLine);
-    setShowIosTip(isIosSafari() && !wasIosTipDismissedRecently());
+    setShowIosTip(isIos() && !wasIosTipDismissedRecently());
 
     const handleOnline = () => setIsOffline(false);
     const handleOffline = () => setIsOffline(true);
