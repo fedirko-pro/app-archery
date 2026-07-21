@@ -20,6 +20,13 @@ import type {
   CustomField,
   TrainingMood,
 } from '../../utils/local-data-storage';
+import {
+  isNonNegativeDecimalInput,
+  isNonNegativeIntegerInput,
+  normalizePositiveDistance,
+  parseNonNegativeInt,
+  parsePositiveInt,
+} from '../../utils/non-negative-number';
 import EquipmentSetMiniForm from '../MyEquipment/EquipmentSetMiniForm';
 import MoodPicker from './MoodPicker';
 
@@ -87,17 +94,14 @@ const TrainingSessionForm: React.FC<TrainingSessionFormProps> = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const parsedShots = shotsCount ? parseInt(shotsCount, 10) : undefined;
-    const parsedScore = scoreTotal ? parseInt(scoreTotal, 10) : undefined;
-
     onSubmit({
       date,
       status: initial.status ?? 'finished',
-      shotsCount: parsedShots,
-      distance: distance.trim() || undefined,
+      shotsCount: parsePositiveInt(shotsCount),
+      distance: normalizePositiveDistance(distance),
       targetType: targetType || undefined,
       equipmentSetId: equipmentSetId || undefined,
-      scoreTotal: parsedScore !== undefined && !Number.isNaN(parsedScore) ? parsedScore : undefined,
+      scoreTotal: parseNonNegativeInt(scoreTotal),
       notes: notes.trim() || undefined,
       mood: mood || undefined,
       customFields: customFields.filter((f) => f.key.trim()),
@@ -122,10 +126,13 @@ const TrainingSessionForm: React.FC<TrainingSessionFormProps> = ({
           label={t('trainings.shotsCount')}
           type="number"
           value={shotsCount}
-          onChange={(e) => setShotsCount(e.target.value)}
+          onChange={(e) => {
+            const val = e.target.value;
+            if (isNonNegativeIntegerInput(val)) setShotsCount(val);
+          }}
           fullWidth
           autoFocus
-          inputProps={{ min: 1 }}
+          inputProps={{ min: 1, inputMode: 'numeric' }}
         />
         <TextField
           label={t('trainings.distance')}
@@ -133,10 +140,10 @@ const TrainingSessionForm: React.FC<TrainingSessionFormProps> = ({
           value={distance}
           onChange={(e) => {
             const val = e.target.value;
-            if (/^\d*(\.\d{0,2})?$/.test(val)) setDistance(val);
+            if (isNonNegativeDecimalInput(val)) setDistance(val);
           }}
           fullWidth
-          inputProps={{ min: 0, step: 0.01 }}
+          inputProps={{ min: 0.01, step: 0.01, inputMode: 'decimal' }}
           placeholder="18.5"
         />
       </Box>
@@ -214,10 +221,13 @@ const TrainingSessionForm: React.FC<TrainingSessionFormProps> = ({
             label={t('trainings.scoreTotal')}
             type="number"
             value={scoreTotal}
-            onChange={(e) => setScoreTotal(e.target.value)}
+            onChange={(e) => {
+              const val = e.target.value;
+              if (isNonNegativeIntegerInput(val)) setScoreTotal(val);
+            }}
             fullWidth
             sx={{ mb: 2 }}
-            inputProps={{ min: 0 }}
+            inputProps={{ min: 0, inputMode: 'numeric' }}
           />
           <TextField
             label={t('trainings.notes')}

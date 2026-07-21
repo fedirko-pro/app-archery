@@ -218,6 +218,8 @@ export function mergeServerEquipmentSets(serverSets: ServerEquipmentSet[]): void
     }
 
     const existing = filtered[index];
+    // Never clobber local edits that are still waiting to push.
+    if (!existing.isSynced) continue;
     if (serverSet.updatedAt > existing.updatedAt) {
       filtered[index] = applyServerEquipmentFields(existing, serverSet);
     }
@@ -302,6 +304,8 @@ export function mergeServerTrainingSessions(serverSessions: ServerTrainingSessio
     }
 
     const existing = filtered[index];
+    // Never clobber local edits (e.g. live shot counts) that are still waiting to push.
+    if (!existing.isSynced) continue;
     if (serverSession.updatedAt > existing.updatedAt) {
       filtered[index] = applyServerSessionFields(existing, serverSession);
     }

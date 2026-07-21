@@ -924,6 +924,8 @@
       "mix": "Mix",
       "custom": "Custom"
     },
+    "customArrowMaterial": "Custom material",
+    "customArrowMaterialPlaceholder": "e.g. bamboo",
     "length": "Length",
     "weight": "Weight",
     "material": "Material",

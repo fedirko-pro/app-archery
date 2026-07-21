@@ -1419,6 +1419,8 @@
       "mix": "Mix",
       "wood": "Madera"
     },
+    "customArrowMaterial": "Material personalizado",
+    "customArrowMaterialPlaceholder": "p. ej. bambú",
     "arrowSpine": "Spine",
     "arrowWeight": "Peso de flecha",
     "bow": "Arco",

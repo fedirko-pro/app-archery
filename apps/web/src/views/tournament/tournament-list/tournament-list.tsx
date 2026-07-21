@@ -394,14 +394,14 @@ const TournamentList: React.FC = () => {
                     </Typography>
                   )}
                   <Box sx={{ mt: 2, display: 'flex', flexDirection: 'column', gap: 1 }}>
-                    <Box sx={{ display: 'flex', gap: 1, width: '100%' }}>
+                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, width: '100%' }}>
                       <Button
                         size="small"
                         variant="outlined"
                         startIcon={<Visibility />}
                         component={Link}
                         to={`/${lang}/tournaments/${tournament.id}`}
-                        sx={{ flex: 1, minWidth: 0, justifyContent: 'center' }}
+                        sx={{ flex: '1 1 calc(50% - 4px)', minWidth: 0, justifyContent: 'center' }}
                       >
                         {t('pages.tournaments.viewDetails', 'View Details')}
                       </Button>
@@ -412,7 +412,11 @@ const TournamentList: React.FC = () => {
                           color="success"
                           component={Link}
                           to={`/${lang}/applications`}
-                          sx={{ flex: 1, minWidth: 0, justifyContent: 'center' }}
+                          sx={{
+                            flex: '1 1 calc(50% - 4px)',
+                            minWidth: 0,
+                            justifyContent: 'center',
+                          }}
                         >
                           {t('pages.tournaments.viewApplications')} (
                           {getApplicationCountForTournament(tournament.id)})
@@ -427,7 +431,13 @@ const TournamentList: React.FC = () => {
                             startIcon={<Send />}
                             component={Link}
                             to={`/${lang}/apply/${tournament.id}`}
-                            sx={{ flex: 1, minWidth: 0, justifyContent: 'center' }}
+                            sx={{
+                              flex: hasApplicationForTournament(tournament.id)
+                                ? '1 1 100%'
+                                : '1 1 calc(50% - 4px)',
+                              minWidth: 0,
+                              justifyContent: 'center',
+                            }}
                           >
                             {t('pages.tournaments.apply')}
                           </Button>

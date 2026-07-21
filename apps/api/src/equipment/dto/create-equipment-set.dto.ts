@@ -36,7 +36,7 @@ export class CreateEquipmentSetDto {
   model?: string;
 
   @IsNumber()
-  @Min(0)
+  @Min(0.01)
   @IsOptional()
   drawWeight?: number;
 

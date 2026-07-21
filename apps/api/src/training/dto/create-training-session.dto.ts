@@ -7,6 +7,7 @@ import {
   ValidateNested,
   Min,
   IsIn,
+  Matches,
 } from 'class-validator';
 import { Type } from 'class-transformer';
 
@@ -55,6 +56,9 @@ export class CreateTrainingSessionDto {
 
   @IsString()
   @IsOptional()
+  @Matches(/^(?!0+(?:\.0+)?$)\d+(\.\d+)?$/, {
+    message: 'distance must be a positive number',
+  })
   distance?: string;
 
   @IsString()

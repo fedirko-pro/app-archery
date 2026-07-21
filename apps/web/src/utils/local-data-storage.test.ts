@@ -67,6 +67,30 @@ describe('incrementTrainingSessionShots', () => {
     incrementTrainingSessionShots(session.id, -5);
     expect(getTrainingSessions()[0].shotsCount).toBe(0);
   });
+
+  it('rejects negative shots/score/distance on update', () => {
+    const session = getTrainingSessions()[0];
+    updateTrainingSession(session.id, {
+      shotsCount: -10,
+      scoreTotal: -5,
+      distance: '-18',
+    });
+    const stored = getTrainingSessions()[0];
+    expect(stored.shotsCount).toBe(0);
+    expect(stored.scoreTotal).toBe(0);
+    expect(stored.distance).toBeUndefined();
+  });
+
+  it('rejects zero distance and arrowsPerSet', () => {
+    const session = getTrainingSessions()[0];
+    updateTrainingSession(session.id, {
+      distance: '0',
+      arrowsPerSet: 0,
+    });
+    const stored = getTrainingSessions()[0];
+    expect(stored.distance).toBeUndefined();
+    expect(stored.arrowsPerSet).toBeUndefined();
+  });
 });
 
 describe('writeStorage failures', () => {

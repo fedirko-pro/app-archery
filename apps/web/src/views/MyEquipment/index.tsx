@@ -23,6 +23,7 @@ import LocalDataBanner from '../../components/LocalDataBanner/LocalDataBanner';
 import LocalSyncChip from '../../components/LocalSyncChip/LocalSyncChip';
 import SafeDialog from '../../components/SafeDialog/SafeDialog';
 import { useLocalData, type LocalEquipmentSet } from '../../contexts/local-data-context';
+import { isPresetArrowMaterial } from '../../utils/equipment-utils';
 import EquipmentSetForm from './EquipmentSetForm';
 
 const isNumericOnly = (val: string) => /^\d+(\.\d+)?$/.test(val.trim());
@@ -270,7 +271,9 @@ const MyEquipmentPage: React.FC = () => {
                             <Typography variant="body2" color="text.secondary">
                               {t('equipment.material')}:{' '}
                               <Box component="span" fontWeight="bold">
-                                {set.arrowMaterial}
+                                {isPresetArrowMaterial(set.arrowMaterial)
+                                  ? t(`equipment.arrowMaterials.${set.arrowMaterial}`)
+                                  : set.arrowMaterial}
                               </Box>
                             </Typography>
                           )}

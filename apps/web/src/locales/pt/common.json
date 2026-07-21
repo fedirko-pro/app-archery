@@ -1416,6 +1416,8 @@
       "mix": "Mistura",
       "wood": "Madeira"
     },
+    "customArrowMaterial": "Material personalizado",
+    "customArrowMaterialPlaceholder": "ex. bambu",
     "arrowSpine": "Spine",
     "arrowWeight": "Peso da seta",
     "bow": "Arco",

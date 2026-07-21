@@ -16,6 +16,10 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useLocalData, type LocalTrainingSession } from '../../contexts/local-data-context';
+import {
+  isNonNegativeDecimalInput,
+  isNonNegativeIntegerInput,
+} from '../../utils/non-negative-number';
 import { DEFAULT_ARROWS_PER_SET } from '../../utils/training-session-utils';
 import { formatTrainingSessionDateTime } from '../../utils/training-stats';
 
@@ -30,8 +34,7 @@ const ActiveSessionCard: React.FC<ActiveSessionCardProps> = ({ session, onFinish
   const { t } = useTranslation('common');
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const { equipmentSets, editTrainingSession, incrementSessionShots, isSessionPersisting } =
-    useLocalData();
+  const { equipmentSets, editTrainingSession, incrementSessionShots } = useLocalData();
 
   const [arrowsPerSet, setArrowsPerSet] = useState(
     String(session.arrowsPerSet ?? DEFAULT_ARROWS_PER_SET),
@@ -39,8 +42,6 @@ const ActiveSessionCard: React.FC<ActiveSessionCardProps> = ({ session, onFinish
 
   const shots = session.shotsCount ?? 0;
   const setSize = Number.parseInt(arrowsPerSet, 10) || DEFAULT_ARROWS_PER_SET;
-
-  const isPersisting = isSessionPersisting(session.id);
 
   const handleAddShot = () => {
     void incrementSessionShots(session.id, 1);
@@ -104,7 +105,7 @@ const ActiveSessionCard: React.FC<ActiveSessionCardProps> = ({ session, onFinish
             <IconButton
               aria-label={t('trainings.removeShot')}
               onClick={handleRemoveShot}
-              disabled={isPersisting || shots <= 0}
+              disabled={shots <= 0}
               size="large"
               sx={{
                 width: isMobile ? 56 : undefined,
@@ -134,14 +135,19 @@ const ActiveSessionCard: React.FC<ActiveSessionCardProps> = ({ session, onFinish
             type="number"
             size="small"
             value={arrowsPerSet}
-            onChange={(e) => setArrowsPerSet(e.target.value)}
+            onChange={(e) => {
+              const val = e.target.value;
+              if (isNonNegativeIntegerInput(val)) setArrowsPerSet(val);
+            }}
             onBlur={() => {
               const parsed = Number.parseInt(arrowsPerSet, 10);
               if (parsed >= 1 && parsed !== session.arrowsPerSet) {
                 void editTrainingSession(session.id, { arrowsPerSet: parsed });
+              } else if (!(parsed >= 1)) {
+                setArrowsPerSet(String(session.arrowsPerSet ?? DEFAULT_ARROWS_PER_SET));
               }
             }}
-            inputProps={{ min: 1 }}
+            inputProps={{ min: 1, inputMode: 'numeric' }}
             sx={{ width: 120 }}
           />
         </Box>
@@ -151,7 +157,6 @@ const ActiveSessionCard: React.FC<ActiveSessionCardProps> = ({ session, onFinish
             variant="outlined"
             fullWidth
             onClick={handleAddShot}
-            disabled={isPersisting}
             sx={{ minHeight: isMobile ? 48 : undefined }}
           >
             {t('trainings.addShot')}
@@ -160,7 +165,6 @@ const ActiveSessionCard: React.FC<ActiveSessionCardProps> = ({ session, onFinish
             variant="contained"
             fullWidth
             onClick={handleAddSet}
-            disabled={isPersisting}
             sx={{ minHeight: isMobile ? 48 : undefined }}
           >
             {t('trainings.addSet')} (+{setSize})
@@ -175,9 +179,9 @@ const ActiveSessionCard: React.FC<ActiveSessionCardProps> = ({ session, onFinish
             value={session.distance ?? ''}
             onChange={(e) => {
               const val = e.target.value;
-              if (/^\d*(\.\d{0,2})?$/.test(val)) handleFieldChange('distance', val);
+              if (isNonNegativeDecimalInput(val)) handleFieldChange('distance', val);
             }}
-            inputProps={{ min: 0, step: 0.01 }}
+            inputProps={{ min: 0.01, step: 0.01, inputMode: 'decimal' }}
           />
           <TextField
             select

@@ -2,8 +2,10 @@ import { describe, expect, it } from 'vitest';
 
 import {
   getEquipmentSetName,
+  resolveArrowMaterialFormState,
   resolveDefaultEquipmentSetId,
   resolveEquipmentSet,
+  serializeArrowMaterial,
 } from './equipment-utils';
 import type { LocalEquipmentSet } from './local-data-storage';
 
@@ -84,5 +86,23 @@ describe('resolveDefaultEquipmentSetId', () => {
     localStorage.setItem('sokil_default_equipment_set_id', 'server-1');
     const sets = [equipmentSet({ id: 'eq1', serverId: 'server-1' })];
     expect(resolveDefaultEquipmentSetId(sets)).toBe('eq1');
+  });
+});
+
+describe('arrow material form helpers', () => {
+  it('maps presets and free-text custom values', () => {
+    expect(resolveArrowMaterialFormState('carbon')).toEqual({ preset: 'carbon', custom: '' });
+    expect(resolveArrowMaterialFormState('bamboo')).toEqual({
+      preset: 'custom',
+      custom: 'bamboo',
+    });
+    expect(resolveArrowMaterialFormState(undefined)).toEqual({ preset: '', custom: '' });
+  });
+
+  it('serializes select + custom text', () => {
+    expect(serializeArrowMaterial('carbon', '')).toBe('carbon');
+    expect(serializeArrowMaterial('custom', 'bamboo')).toBe('bamboo');
+    expect(serializeArrowMaterial('custom', '  ')).toBeUndefined();
+    expect(serializeArrowMaterial('', '')).toBeUndefined();
   });
 });

@@ -3,6 +3,8 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 
+import { isNonNegativeDecimalInput } from '../../utils/non-negative-number';
+
 interface ConverterInputsProps {
   labelFirst: string;
   labelSecond: string;
@@ -21,10 +23,12 @@ export default function ConverterInputs(props: ConverterInputsProps) {
         value={firstValue.toString()}
         type="number"
         size="small"
-        inputProps={{ min: 0, max: 9999 }}
+        inputProps={{ min: 0, max: 9999, inputMode: 'decimal' }}
         InputLabelProps={{ shrink: true }}
         onChange={(e) => {
-          const val = e.target.value.length ? parseFloat(e.target.value) : 0;
+          const raw = e.target.value;
+          if (!isNonNegativeDecimalInput(raw, 6)) return;
+          const val = raw.length ? Math.max(0, parseFloat(raw) || 0) : 0;
           setFirstValue(round3(val));
           setSecondValue(round3(val * props.coef));
         }}
@@ -38,10 +42,12 @@ export default function ConverterInputs(props: ConverterInputsProps) {
         value={secondValue.toString()}
         type="number"
         size="small"
-        inputProps={{ min: 0, max: 9999 }}
+        inputProps={{ min: 0, max: 9999, inputMode: 'decimal' }}
         InputLabelProps={{ shrink: true }}
         onChange={(e) => {
-          const val = e.target.value.length ? parseFloat(e.target.value) : 0;
+          const raw = e.target.value;
+          if (!isNonNegativeDecimalInput(raw, 6)) return;
+          const val = raw.length ? Math.max(0, parseFloat(raw) || 0) : 0;
           setSecondValue(round3(val));
           setFirstValue(round3(val / props.coef));
         }}

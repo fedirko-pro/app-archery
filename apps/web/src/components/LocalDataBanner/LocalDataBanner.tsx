@@ -21,7 +21,7 @@ import { useStaleCacheHint } from '../../hooks/use-stale-cache-hint';
 import SafeDialog from '../SafeDialog/SafeDialog';
 
 interface LocalDataBannerProps {
-  /** When true, shows sync-in-progress state for authenticated users */
+  /** When true, shows sync enable / error state for authenticated users */
   showSyncStatus?: boolean;
 }
 
@@ -30,8 +30,7 @@ const LocalDataBanner: React.FC<LocalDataBannerProps> = ({ showSyncStatus = fals
   const { lang } = useParams();
   const navigate = useNavigate();
   const { isAuthenticated, user } = useAuth();
-  const { isSyncing, lastSyncError, lastStorageError, syncNow, hasPendingSync, unsyncedCount } =
-    useLocalData();
+  const { lastSyncError, lastStorageError, syncNow } = useLocalData();
   const { enableSyncAndSync, enabling } = useEnableSync();
   const { showStaleHint, dismiss: dismissStaleHint } = useStaleCacheHint();
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -68,8 +67,12 @@ const LocalDataBanner: React.FC<LocalDataBannerProps> = ({ showSyncStatus = fals
     </Alert>
   ) : null;
 
-  // For authenticated users with sync enabled: show sync status if requested
+  // Sync runs fully in the background — only surface hard failures, not progress/pending.
   if (isAuthenticated && isSyncEnabled && showSyncStatus) {
+    if (!cachedHint && !storageErrorAlert && !lastSyncError) {
+      return null;
+    }
+
     return (
       <>
         {cachedHint}
@@ -80,31 +83,12 @@ const LocalDataBanner: React.FC<LocalDataBannerProps> = ({ showSyncStatus = fals
             icon={<SyncIcon />}
             sx={{ mb: 2 }}
             action={
-              <Button size="small" onClick={syncNow}>
+              <Button size="small" onClick={() => void syncNow()}>
                 {t('localData.syncNow')}
               </Button>
             }
           >
             {lastSyncError}
-          </Alert>
-        )}
-        {!lastSyncError && isSyncing && (
-          <Alert severity="info" icon={<CircularProgress size={16} />} sx={{ mb: 2 }}>
-            {t('trainings.syncing')}
-          </Alert>
-        )}
-        {!lastSyncError && !isSyncing && hasPendingSync && (
-          <Alert
-            severity="warning"
-            icon={<SyncIcon />}
-            sx={{ mb: 2 }}
-            action={
-              <Button size="small" onClick={syncNow}>
-                {t('localData.syncNow')}
-              </Button>
-            }
-          >
-            {t('localData.pendingSyncBanner', { count: unsyncedCount })}
           </Alert>
         )}
       </>

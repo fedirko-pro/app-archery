@@ -1,5 +1,7 @@
 import TextField from '@mui/material/TextField';
 
+import { isNonNegativeDecimalInput } from '../../utils/non-negative-number';
+
 interface CalculatorNumberFieldProps {
   label: string;
   value: string;
@@ -26,9 +28,13 @@ export default function CalculatorNumberField({
       type="number"
       size="small"
       helperText={helperText}
-      inputProps={{ min, max, step }}
+      inputProps={{ min, max, step, inputMode: 'decimal' }}
       InputLabelProps={{ shrink: true }}
-      onChange={(e) => onChange(e.target.value)}
+      onChange={(e) => {
+        const next = e.target.value;
+        if (min >= 0 && !isNonNegativeDecimalInput(next, 6)) return;
+        onChange(next);
+      }}
       sx={{ m: 1, width: { xs: '100%', sm: '45%' }, minWidth: 140 }}
     />
   );
@@ -37,5 +43,6 @@ export default function CalculatorNumberField({
 export function parseOptionalNumber(value: string): number {
   if (value.trim() === '') return 0;
   const n = parseFloat(value);
-  return Number.isFinite(n) ? n : 0;
+  if (!Number.isFinite(n) || n < 0) return 0;
+  return n;
 }

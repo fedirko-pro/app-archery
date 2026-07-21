@@ -3,6 +3,8 @@
  * Data is stored in localStorage and optionally synced to the server.
  */
 
+import { clampNonNegative, clampPositive, normalizePositiveDistance } from './non-negative-number';
+
 const STORAGE_KEYS = {
   EQUIPMENT_SETS: 'sokil_equipment_sets',
   TRAININGS: 'sokil_trainings',
@@ -74,15 +76,39 @@ function generateId(): string {
  * such as "40 lbs"; this best-effort extracts the leading number from those.
  */
 export function coerceDrawWeightLbs(raw: unknown): number | undefined {
-  if (typeof raw === 'number') return Number.isFinite(raw) ? raw : undefined;
+  if (typeof raw === 'number') {
+    if (!Number.isFinite(raw) || raw <= 0) return undefined;
+    return raw;
+  }
   if (typeof raw === 'string') {
     const match = raw.replace(',', '.').match(/-?\d+(\.\d+)?/);
     if (match) {
       const value = Number.parseFloat(match[0]);
-      return Number.isFinite(value) ? value : undefined;
+      if (!Number.isFinite(value) || value <= 0) return undefined;
+      return value;
     }
   }
   return undefined;
+}
+
+function sanitizeTrainingSessionFields<T extends Partial<LocalTrainingSession>>(data: T): T {
+  const next = { ...data };
+
+  if ('shotsCount' in next && next.shotsCount !== undefined) {
+    next.shotsCount = clampNonNegative(next.shotsCount);
+  }
+  if ('scoreTotal' in next && next.scoreTotal !== undefined) {
+    next.scoreTotal = clampNonNegative(next.scoreTotal);
+  }
+  if ('arrowsPerSet' in next && next.arrowsPerSet !== undefined) {
+    const clamped = clampPositive(next.arrowsPerSet);
+    next.arrowsPerSet = clamped !== undefined ? Math.floor(clamped) : undefined;
+  }
+  if ('distance' in next && next.distance !== undefined) {
+    next.distance = normalizePositiveDistance(next.distance);
+  }
+
+  return next;
 }
 
 function classifyStorageError(error: unknown): StorageWriteFailureReason {
@@ -116,7 +142,18 @@ export function writeEquipmentSets(sets: LocalEquipmentSet[]): void {
 }
 
 export function writeTrainingSessions(sessions: LocalTrainingSession[]): void {
-  writeStorage(STORAGE_KEYS.TRAININGS, sessions);
+  writeStorage(
+    STORAGE_KEYS.TRAININGS,
+    sessions.map((session) => ({
+      ...session,
+      ...sanitizeTrainingSessionFields({
+        shotsCount: session.shotsCount,
+        scoreTotal: session.scoreTotal,
+        arrowsPerSet: session.arrowsPerSet,
+        distance: session.distance,
+      }),
+    })),
+  );
 }
 
 // Equipment Sets
@@ -135,6 +172,7 @@ export function saveEquipmentSet(
   const now = new Date().toISOString();
   const newSet: LocalEquipmentSet = {
     ...data,
+    drawWeight: clampPositive(coerceDrawWeightLbs(data.drawWeight)),
     id: generateId(),
     isSynced: false,
     createdAt: now,
@@ -152,9 +190,14 @@ export function updateEquipmentSet(
   const index = sets.findIndex((s) => s.id === id);
   if (index === -1) return null;
 
+  const patch = { ...data };
+  if ('drawWeight' in patch) {
+    patch.drawWeight = clampPositive(coerceDrawWeightLbs(patch.drawWeight));
+  }
+
   const updated: LocalEquipmentSet = {
     ...sets[index],
-    ...data,
+    ...patch,
     updatedAt: new Date().toISOString(),
     isSynced: data.isSynced !== undefined ? data.isSynced : false,
   };
@@ -183,8 +226,9 @@ export function saveTrainingSession(
 ): LocalTrainingSession {
   const sessions = getTrainingSessions();
   const now = new Date().toISOString();
+  const sanitized = sanitizeTrainingSessionFields(data);
   const newSession: LocalTrainingSession = {
-    ...data,
+    ...sanitized,
     id: generateId(),
     isSynced: false,
     createdAt: now,
@@ -202,9 +246,10 @@ export function updateTrainingSession(
   const index = sessions.findIndex((s) => s.id === id);
   if (index === -1) return null;
 
+  const sanitized = sanitizeTrainingSessionFields(data);
   const updated: LocalTrainingSession = {
     ...sessions[index],
-    ...data,
+    ...sanitized,
     updatedAt: new Date().toISOString(),
     isSynced: data.isSynced !== undefined ? data.isSynced : false,
   };

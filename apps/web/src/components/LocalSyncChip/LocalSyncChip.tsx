@@ -17,16 +17,20 @@ import SafeDialog from '../SafeDialog/SafeDialog';
 
 /**
  * Shows a "Local data on device" chip plus a small sync icon button.
- * Rendered on every unsynced card item.
+ * Only for guests / sync-off users — when sync is enabled, pushes stay invisible.
  */
 const LocalSyncChip: React.FC = () => {
   const { t } = useTranslation('common');
   const { lang } = useParams();
   const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   const { enableSyncAndSync, enabling } = useEnableSync();
-
   const [dialogOpen, setDialogOpen] = useState(false);
+
+  // Background sync is on — don't flash local/unsynced chrome on cards.
+  if (isAuthenticated && user?.syncTrainingsAndEquipment === true) {
+    return null;
+  }
 
   const handleSyncClick = async (e: React.MouseEvent) => {
     e.stopPropagation();

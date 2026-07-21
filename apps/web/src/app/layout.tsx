@@ -30,6 +30,9 @@ export const metadata: Metadata = {
     statusBarStyle: 'black-translucent',
     title: 'Sokil',
   },
+  other: {
+    google: 'notranslate',
+  },
 };
 
 export const viewport: Viewport = {
@@ -60,7 +63,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html
       lang={htmlLang}
-      className={`${montserrat.variable} text-gray-900 antialiased`}
+      translate="no"
+      className={`${montserrat.variable} notranslate text-gray-900 antialiased`}
       suppressHydrationWarning
     >
       <body suppressHydrationWarning>

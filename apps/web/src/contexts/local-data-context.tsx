@@ -66,13 +66,10 @@ interface LocalDataContextType {
   equipmentSets: LocalEquipmentSet[];
   trainingSessions: LocalTrainingSession[];
   defaultEquipmentSetId: string | null;
-  isSyncing: boolean;
   lastSyncError: string | null;
   lastStorageError: string | null;
   unsyncedCount: number;
-  hasPendingSync: boolean;
   hasUnsyncedData: boolean;
-  isSessionPersisting: (id: string) => boolean;
   addEquipmentSet: (
     data: Omit<LocalEquipmentSet, 'id' | 'isSynced' | 'createdAt' | 'updatedAt'>,
   ) => Promise<LocalEquipmentSet>;
@@ -127,15 +124,14 @@ export const LocalDataProvider: React.FC<Props> = ({ children }) => {
   const [trainingSessions, setTrainingSessions] = useState<LocalTrainingSession[]>(() =>
     getTrainingSessions(),
   );
-  const [isSyncing, setIsSyncing] = useState(false);
   const [lastSyncError, setLastSyncError] = useState<string | null>(null);
   const [lastStorageError, setLastStorageError] = useState<string | null>(null);
-  const [persistingSessionIds, setPersistingSessionIds] = useState<Set<string>>(() => new Set());
   const [defaultEquipmentSetIdRaw, setDefaultEquipmentSetIdRaw] = useState<string | null>(() =>
     getDefaultEquipmentSetId(),
   );
   const syncInProgress = useRef(false);
   const sessionPushTimers = useRef<Map<string, ReturnType<typeof setTimeout>>>(new Map());
+  const shouldSyncRef = useRef(false);
 
   const defaultEquipmentSetId = useMemo(
     () => resolveDefaultEquipmentSetId(equipmentSets),
@@ -154,29 +150,21 @@ export const LocalDataProvider: React.FC<Props> = ({ children }) => {
     throw error;
   }, []);
 
-  const setSessionPersisting = useCallback((id: string, persisting: boolean) => {
-    setPersistingSessionIds((prev) => {
-      const next = new Set(prev);
-      if (persisting) {
-        next.add(id);
-      } else {
-        next.delete(id);
-      }
-      return next;
-    });
-  }, []);
-
-  const isSessionPersisting = useCallback(
-    (id: string) => persistingSessionIds.has(id),
-    [persistingSessionIds],
-  );
-
   const shouldSync = isAuthenticated && user?.syncTrainingsAndEquipment === true;
+  shouldSyncRef.current = shouldSync;
 
   const pushSession = useCallback(async (session: LocalTrainingSession): Promise<void> => {
     const equipmentSetsSnapshot = getEquipmentSets();
     const { serverId } = await pushSessionToServer(session, equipmentSetsSnapshot, apiService);
-    updateTrainingSession(session.id, { serverId, isSynced: true });
+    const current = getTrainingSessions().find((item) => item.id === session.id);
+    if (!current) return;
+
+    // Only mark synced if nothing changed locally during the network round-trip.
+    if (current.updatedAt === session.updatedAt) {
+      updateTrainingSession(session.id, { serverId, isSynced: true });
+    } else {
+      updateTrainingSession(session.id, { serverId, isSynced: false });
+    }
   }, []);
 
   const scheduleSessionPush = useCallback(
@@ -189,28 +177,29 @@ export const LocalDataProvider: React.FC<Props> = ({ children }) => {
         sessionId,
         setTimeout(() => {
           timers.delete(sessionId);
-          if (!shouldSync || !navigator.onLine) return;
+          if (!shouldSyncRef.current || !navigator.onLine) return;
 
           const session = getTrainingSessions().find((item) => item.id === sessionId);
-          if (!session) return;
+          if (!session || session.isSynced) return;
 
-          setSessionPersisting(sessionId, true);
           void pushSession(session)
+            .then(() => {
+              const latest = getTrainingSessions().find((item) => item.id === sessionId);
+              if (latest && !latest.isSynced && shouldSyncRef.current && navigator.onLine) {
+                scheduleSessionPush(sessionId);
+              }
+            })
             .catch(() => {
               // will sync next time
-            })
-            .finally(() => {
-              setSessionPersisting(sessionId, false);
-              refresh();
             });
         }, SESSION_PUSH_DEBOUNCE_MS),
       );
     },
-    [shouldSync, pushSession, refresh, setSessionPersisting],
+    [pushSession],
   );
 
-  // In-progress sessions sync quietly in the background; don't flash the pending-sync banner
-  // on every shot increment.
+  // In-progress sessions sync quietly in the background; don't count them toward
+  // unsynced status that might be shown when sync is off.
   const unsyncedCount = useMemo(
     () =>
       equipmentSets.filter((s) => !s.isSynced).length +
@@ -223,14 +212,11 @@ export const LocalDataProvider: React.FC<Props> = ({ children }) => {
     [equipmentSets, trainingSessions],
   );
 
-  const hasPendingSync = shouldSync && unsyncedCount > 0 && !isSyncing && !lastSyncError;
-
   const syncNow = useCallback(async () => {
     if (!shouldSync || syncInProgress.current) return;
     if (!navigator.onLine) return;
 
     syncInProgress.current = true;
-    setIsSyncing(true);
     setLastSyncError(null);
 
     try {
@@ -270,21 +256,20 @@ export const LocalDataProvider: React.FC<Props> = ({ children }) => {
       setLastSyncError(err instanceof Error ? err.message : 'Sync failed');
     } finally {
       syncInProgress.current = false;
-      setIsSyncing(false);
       refresh();
     }
   }, [shouldSync, refresh, pushSession]);
 
   useEffect(() => {
     if (shouldSync) {
-      syncNow();
+      void syncNow();
     }
   }, [shouldSync, syncNow]);
 
   useEffect(() => {
     const handleOnline = () => {
       if (shouldSync) {
-        syncNow();
+        void syncNow();
       }
     };
     globalThis.addEventListener('online', handleOnline);
@@ -314,16 +299,18 @@ export const LocalDataProvider: React.FC<Props> = ({ children }) => {
         throw error;
       }
 
+      refresh();
+
       if (shouldSync && navigator.onLine) {
-        try {
-          const { serverId } = await pushEquipmentSetToServer(newSet, apiService);
-          updateEquipmentSet(newSet.id, { serverId, isSynced: true });
-        } catch {
-          // will sync next time
-        }
+        void pushEquipmentSetToServer(newSet, apiService)
+          .then(({ serverId }) => {
+            updateEquipmentSet(newSet.id, { serverId, isSynced: true });
+          })
+          .catch(() => {
+            // will sync next time
+          });
       }
 
-      refresh();
       return newSet;
     },
     [shouldSync, refresh, handleStorageError],
@@ -339,17 +326,18 @@ export const LocalDataProvider: React.FC<Props> = ({ children }) => {
         throw error;
       }
 
+      refresh();
+
       const updated = getEquipmentSets().find((set) => set.id === id);
       if (updated && shouldSync && navigator.onLine) {
-        try {
-          const { serverId } = await pushEquipmentSetToServer(updated, apiService);
-          updateEquipmentSet(id, { serverId, isSynced: true });
-        } catch {
-          // will sync next time
-        }
+        void pushEquipmentSetToServer(updated, apiService)
+          .then(({ serverId }) => {
+            updateEquipmentSet(id, { serverId, isSynced: true });
+          })
+          .catch(() => {
+            // will sync next time
+          });
       }
-
-      refresh();
     },
     [shouldSync, refresh, handleStorageError],
   );
@@ -367,14 +355,15 @@ export const LocalDataProvider: React.FC<Props> = ({ children }) => {
       }
 
       if (set?.serverId) {
-        addTombstone('equipment', set.serverId);
+        const serverId = set.serverId;
+        addTombstone('equipment', serverId);
         if (shouldSync && navigator.onLine) {
-          try {
-            await apiService.deleteEquipmentSet(set.serverId);
-            clearTombstone('equipment', set.serverId);
-          } catch {
-            // tombstone remains for next sync
-          }
+          void apiService
+            .deleteEquipmentSet(serverId)
+            .then(() => clearTombstone('equipment', serverId))
+            .catch(() => {
+              // tombstone remains for next sync
+            });
         }
       }
 
@@ -415,15 +404,14 @@ export const LocalDataProvider: React.FC<Props> = ({ children }) => {
         throw error;
       }
 
+      refresh();
+
       if (shouldSync && navigator.onLine) {
-        try {
-          await pushSession(newSession);
-        } catch {
+        void pushSession(newSession).catch(() => {
           // will sync next time
-        }
+        });
       }
 
-      refresh();
       return newSession;
     },
     [shouldSync, refresh, pushSession, handleStorageError],
@@ -461,15 +449,14 @@ export const LocalDataProvider: React.FC<Props> = ({ children }) => {
         throw error;
       }
 
+      refresh();
+
       if (shouldSync && navigator.onLine) {
-        try {
-          await pushSession(newSession);
-        } catch {
+        void pushSession(newSession).catch(() => {
           // will sync next time
-        }
+        });
       }
 
-      refresh();
       return getTrainingSessions().find((s) => s.id === newSession.id) ?? newSession;
     },
     [shouldSync, refresh, pushSession, handleStorageError],
@@ -485,16 +472,14 @@ export const LocalDataProvider: React.FC<Props> = ({ children }) => {
         throw error;
       }
 
+      refresh();
+
       const updated = getTrainingSessions().find((s) => s.id === id);
       if (updated && shouldSync && navigator.onLine) {
-        try {
-          await pushSession(updated);
-        } catch {
+        void pushSession(updated).catch(() => {
           // will sync next time
-        }
+        });
       }
-
-      refresh();
     },
     [shouldSync, refresh, pushSession, handleStorageError],
   );
@@ -528,14 +513,15 @@ export const LocalDataProvider: React.FC<Props> = ({ children }) => {
       }
 
       if (session?.serverId) {
-        addTombstone('training', session.serverId);
+        const serverId = session.serverId;
+        addTombstone('training', serverId);
         if (shouldSync && navigator.onLine) {
-          try {
-            await apiService.deleteTrainingSession(session.serverId);
-            clearTombstone('training', session.serverId);
-          } catch {
-            // tombstone remains for next sync
-          }
+          void apiService
+            .deleteTrainingSession(serverId)
+            .then(() => clearTombstone('training', serverId))
+            .catch(() => {
+              // tombstone remains for next sync
+            });
         }
       }
 
@@ -554,13 +540,10 @@ export const LocalDataProvider: React.FC<Props> = ({ children }) => {
       equipmentSets,
       trainingSessions,
       defaultEquipmentSetId,
-      isSyncing,
       lastSyncError,
       lastStorageError,
       unsyncedCount,
-      hasPendingSync,
       hasUnsyncedData,
-      isSessionPersisting,
       addEquipmentSet,
       editEquipmentSet,
       removeEquipmentSet,
@@ -577,13 +560,10 @@ export const LocalDataProvider: React.FC<Props> = ({ children }) => {
       equipmentSets,
       trainingSessions,
       defaultEquipmentSetId,
-      isSyncing,
       lastSyncError,
       lastStorageError,
       unsyncedCount,
-      hasPendingSync,
       hasUnsyncedData,
-      isSessionPersisting,
       addEquipmentSet,
       editEquipmentSet,
       removeEquipmentSet,

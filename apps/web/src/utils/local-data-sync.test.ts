@@ -185,6 +185,30 @@ describe('mergeServerEquipmentSets LWW', () => {
     expect(getEquipmentSets()[0].name).toBe('Local Edit');
   });
 
+  it('keeps unsynced local row even when server updatedAt is newer', () => {
+    writeEquipmentSets([
+      equipmentSet({
+        id: 'local_1',
+        serverId: 'server_1',
+        name: 'Pending Local',
+        updatedAt: '2026-01-01T00:00:00.000Z',
+        isSynced: false,
+      }),
+    ]);
+
+    mergeServerEquipmentSets([
+      {
+        id: 'server_1',
+        name: 'Server Name',
+        createdAt: '2026-01-01T00:00:00.000Z',
+        updatedAt: '2026-04-01T00:00:00.000Z',
+      },
+    ]);
+
+    expect(getEquipmentSets()[0].name).toBe('Pending Local');
+    expect(getEquipmentSets()[0].isSynced).toBe(false);
+  });
+
   it('inserts new server rows', () => {
     mergeServerEquipmentSets([
       {

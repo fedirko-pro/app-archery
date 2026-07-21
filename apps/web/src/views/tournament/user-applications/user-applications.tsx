@@ -1,10 +1,11 @@
-import { Delete } from '@mui/icons-material';
+import { Delete, Visibility } from '@mui/icons-material';
 import {
   Alert,
   Box,
   Button,
   Card,
   CardContent,
+  CardMedia,
   Chip,
   CircularProgress,
   Dialog,
@@ -165,68 +166,51 @@ const UserApplications: React.FC = () => {
           </CardContent>
         </Card>
       ) : (
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+            gap: 3,
+          }}
+        >
           {sortedApplications.map((application) => {
             const full = tournamentsById.get(application.tournament.id);
             const banner = resolveTournamentBanner(full?.banner);
             const address = full?.address;
-            const ruleCode = full?.rule?.ruleCode || full?.ruleCode;
+            const ruleLabel = full?.rule?.ruleName || full?.ruleCode;
             const category = categoryLabel(application);
             const division = divisionLabel(application);
 
             return (
-              <Card
-                key={application.id}
-                variant="outlined"
-                component={Link}
-                to={`/${lang}/tournaments/${application.tournament.id}`}
-                sx={{
-                  display: 'flex',
-                  overflow: 'hidden',
-                  textDecoration: 'none',
-                  color: 'inherit',
-                  transition: 'border-color 0.2s',
-                  '&:hover': { borderColor: 'primary.main', textDecoration: 'none' },
-                  '&:active': { textDecoration: 'none' },
-                }}
-              >
-                <Box
-                  sx={{
-                    width: '33.333%',
-                    flexShrink: 0,
-                    alignSelf: 'stretch',
-                    minHeight: 96,
-                  }}
-                >
-                  <Box
-                    component="img"
-                    src={banner}
-                    alt=""
-                    sx={{
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'cover',
-                      display: 'block',
-                    }}
-                  />
-                </Box>
-                <CardContent
-                  sx={{
-                    flex: 1,
-                    minWidth: 0,
-                    py: 1.5,
-                    '&:last-child': { pb: 1.5 },
-                  }}
-                >
+              <Card key={application.id}>
+                <CardMedia
+                  component="img"
+                  height="140"
+                  image={banner}
+                  alt={application.tournament.title}
+                  sx={{ objectFit: 'cover' }}
+                />
+                <CardContent>
                   <Box
                     sx={{
                       display: 'flex',
                       justifyContent: 'space-between',
                       alignItems: 'flex-start',
                       gap: 1,
+                      mb: 1,
                     }}
                   >
-                    <Typography variant="subtitle2" fontWeight={600} sx={{ minWidth: 0 }}>
+                    <Typography
+                      variant="h6"
+                      component={Link}
+                      to={`/${lang}/tournaments/${application.tournament.id}`}
+                      sx={{
+                        color: 'inherit',
+                        textDecoration: 'none',
+                        minWidth: 0,
+                        '&:hover': { textDecoration: 'underline' },
+                      }}
+                    >
                       {application.tournament.title}
                     </Typography>
                     <Chip
@@ -236,85 +220,85 @@ const UserApplications: React.FC = () => {
                       sx={{ flexShrink: 0 }}
                     />
                   </Box>
-                  <Box sx={{ mt: 0.5 }}>
-                    <Typography variant="caption" color="text.secondary" display="block">
-                      <Box component="strong" fontWeight={600}>
-                        {t('pages.tournaments.start')}:
-                      </Box>{' '}
-                      {formatDate(application.tournament.startDate)}
+
+                  <Typography variant="body2" sx={{ mb: 1 }}>
+                    <strong>{t('pages.tournaments.rules', 'Rules')}:</strong>{' '}
+                    {ruleLabel ? (
+                      ruleLabel
+                    ) : (
+                      <em style={{ color: 'var(--text-disabled)' }}>
+                        {t('pages.tournaments.noRulesAssigned', 'Not specified')}
+                      </em>
+                    )}
+                  </Typography>
+                  <Typography variant="body2">
+                    <strong>{t('pages.tournaments.start')}:</strong>{' '}
+                    {formatDate(application.tournament.startDate)}
+                  </Typography>
+                  {address && (
+                    <Typography variant="body2">
+                      <strong>{t('pages.tournaments.location')}:</strong> {address}
                     </Typography>
-                    {address && (
-                      <Typography variant="caption" color="text.secondary" display="block">
-                        <Box component="strong" fontWeight={600}>
-                          {t('pages.tournaments.location')}:
-                        </Box>{' '}
-                        {address}
-                      </Typography>
-                    )}
-                    {category && (
-                      <Typography variant="caption" color="text.secondary" display="block">
-                        <Box component="strong" fontWeight={600}>
-                          {t('pages.applications.category')}:
-                        </Box>{' '}
-                        {category}
-                        {division ? ` · ${division}` : ''}
-                      </Typography>
-                    )}
-                    {!category && division && (
-                      <Typography variant="caption" color="text.secondary" display="block">
-                        <Box component="strong" fontWeight={600}>
-                          {t('pages.applications.division')}:
-                        </Box>{' '}
-                        {division}
-                      </Typography>
-                    )}
-                    <Typography variant="caption" color="text.secondary" display="block">
-                      <Box component="strong" fontWeight={600}>
-                        {t('pages.applications.appliedOn')}:
-                      </Box>{' '}
-                      {formatDate(application.createdAt)}
+                  )}
+                  {category && (
+                    <Typography variant="body2">
+                      <strong>{t('pages.applications.category')}:</strong> {category}
+                      {division ? ` · ${division}` : ''}
                     </Typography>
-                    {ruleCode && (
-                      <Chip
-                        size="small"
-                        label={ruleCode}
-                        sx={{ mt: 0.75, height: 22, fontSize: '0.7rem' }}
-                      />
-                    )}
-                    {application.rejectionReason && (
-                      <Alert
-                        severity={application.status === 'withdrawn' ? 'warning' : 'error'}
-                        sx={{ mt: 1, py: 0, '& .MuiAlert-message': { fontSize: '0.75rem' } }}
-                      >
-                        <Box component="strong" fontWeight={600}>
-                          {application.status === 'withdrawn'
-                            ? t('pages.applications.withdrawReason', 'Withdrawal reason')
-                            : t('pages.applications.rejectionReason')}
-                          :{' '}
-                        </Box>
-                        {application.rejectionReason}
-                      </Alert>
-                    )}
+                  )}
+                  {!category && division && (
+                    <Typography variant="body2">
+                      <strong>{t('pages.applications.division')}:</strong> {division}
+                    </Typography>
+                  )}
+                  <Typography variant="body2">
+                    <strong>{t('pages.applications.appliedOn')}:</strong>{' '}
+                    {formatDate(application.createdAt)}
+                  </Typography>
+
+                  {application.rejectionReason && (
+                    <Alert
+                      severity={application.status === 'withdrawn' ? 'warning' : 'error'}
+                      sx={{ mt: 1.5 }}
+                    >
+                      <strong>
+                        {application.status === 'withdrawn'
+                          ? t('pages.applications.withdrawReason', 'Withdrawal reason')
+                          : t('pages.applications.rejectionReason')}
+                        :{' '}
+                      </strong>
+                      {application.rejectionReason}
+                    </Alert>
+                  )}
+
+                  <Box sx={{ mt: 2, display: 'flex', flexWrap: 'wrap', gap: 1, width: '100%' }}>
+                    <Button
+                      size="small"
+                      variant="outlined"
+                      startIcon={<Visibility />}
+                      component={Link}
+                      to={`/${lang}/tournaments/${application.tournament.id}`}
+                      sx={{ flex: '1 1 calc(50% - 4px)', minWidth: 0, justifyContent: 'center' }}
+                    >
+                      {t('pages.tournaments.viewDetails', 'View Details')}
+                    </Button>
                     {application.status === 'pending' && (
-                      <Box sx={{ mt: 1 }}>
-                        <Button
-                          variant="outlined"
-                          color="error"
-                          size="small"
-                          startIcon={<Delete />}
-                          onClick={(event) => {
-                            event.preventDefault();
-                            event.stopPropagation();
-                            setWithdrawDialog({
-                              open: true,
-                              applicationId: application.id,
-                              reason: '',
-                            });
-                          }}
-                        >
-                          {t('pages.applications.withdraw')}
-                        </Button>
-                      </Box>
+                      <Button
+                        size="small"
+                        variant="outlined"
+                        color="error"
+                        startIcon={<Delete />}
+                        onClick={() =>
+                          setWithdrawDialog({
+                            open: true,
+                            applicationId: application.id,
+                            reason: '',
+                          })
+                        }
+                        sx={{ flex: '1 1 calc(50% - 4px)', minWidth: 0, justifyContent: 'center' }}
+                      >
+                        {t('pages.applications.withdraw')}
+                      </Button>
                     )}
                   </Box>
                 </CardContent>

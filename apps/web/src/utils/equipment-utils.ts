@@ -13,6 +13,35 @@ export const ARROW_MATERIALS = [
 
 export type ArrowMaterial = (typeof ARROW_MATERIALS)[number];
 
+const PRESET_ARROW_MATERIALS = ARROW_MATERIALS.filter((m) => m !== 'custom');
+
+/** Split stored material into select preset + optional custom text. */
+export function resolveArrowMaterialFormState(stored?: string): {
+  preset: string;
+  custom: string;
+} {
+  if (!stored) return { preset: '', custom: '' };
+  if ((PRESET_ARROW_MATERIALS as readonly string[]).includes(stored)) {
+    return { preset: stored, custom: '' };
+  }
+  return { preset: 'custom', custom: stored === 'custom' ? '' : stored };
+}
+
+/** Persist select + custom text back to a single arrowMaterial value. */
+export function serializeArrowMaterial(preset: string, custom: string): string | undefined {
+  if (!preset) return undefined;
+  if (preset === 'custom') {
+    const trimmed = custom.trim();
+    return trimmed || undefined;
+  }
+  return preset;
+}
+
+/** True if value is a known preset key (not free-text custom). */
+export function isPresetArrowMaterial(value: string | undefined): value is ArrowMaterial {
+  return !!value && (PRESET_ARROW_MATERIALS as readonly string[]).includes(value);
+}
+
 export const DISMISSED_BOW_SETUP_PROMPT_KEY = 'dismissedBowSetupPrompt';
 export const DEFAULT_EQUIPMENT_SET_ID_KEY = 'sokil_default_equipment_set_id';
 

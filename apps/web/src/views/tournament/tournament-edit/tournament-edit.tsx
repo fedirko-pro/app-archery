@@ -26,6 +26,7 @@ import FileAttachments, {
 import { COUNTRIES, DEFAULT_COUNTRY_CODE } from '../../../config/countries';
 import apiService from '../../../services/api';
 import type { RuleDto, TournamentDto } from '../../../services/types';
+import { clampIntInRange } from '../../../utils/non-negative-number';
 
 const TournamentEdit: React.FC = () => {
   const navigate = useNavigate();
@@ -294,11 +295,14 @@ const TournamentEdit: React.FC = () => {
               type="number"
               value={formData.targetCount}
               onChange={(e) =>
-                setFormData({ ...formData, targetCount: parseInt(e.target.value) || 18 })
+                setFormData({
+                  ...formData,
+                  targetCount: clampIntInRange(e.target.value, 1, 100, 18),
+                })
               }
               fullWidth
               margin="normal"
-              inputProps={{ min: 1, max: 100 }}
+              inputProps={{ min: 1, max: 100, inputMode: 'numeric' }}
               helperText={t(
                 'pages.tournaments.form.targetCountHelper',
                 'Number of targets/patrols for the tournament',

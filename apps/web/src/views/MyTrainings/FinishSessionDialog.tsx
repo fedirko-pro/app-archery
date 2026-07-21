@@ -13,6 +13,7 @@ import SafeDialog from '../../components/SafeDialog/SafeDialog';
 import { useAchievementCelebration } from '../../contexts/achievement-celebration-context';
 import { useLocalData, type LocalTrainingSession } from '../../contexts/local-data-context';
 import type { TrainingMood } from '../../utils/local-data-storage';
+import { isNonNegativeIntegerInput, parseNonNegativeInt } from '../../utils/non-negative-number';
 import MoodPicker from './MoodPicker';
 
 interface FinishSessionDialogProps {
@@ -45,11 +46,10 @@ const FinishSessionDialog: React.FC<FinishSessionDialogProps> = ({ open, session
     if (!session) return;
     setSubmitting(true);
     try {
-      const parsedScore = scoreTotal ? Number.parseInt(scoreTotal, 10) : undefined;
+      const parsedScore = parseNonNegativeInt(scoreTotal);
       await editTrainingSession(session.id, {
         status: 'finished',
-        scoreTotal:
-          parsedScore !== undefined && !Number.isNaN(parsedScore) ? parsedScore : undefined,
+        scoreTotal: parsedScore,
         notes: notes.trim() || undefined,
         mood: mood || undefined,
       });
@@ -71,9 +71,12 @@ const FinishSessionDialog: React.FC<FinishSessionDialogProps> = ({ open, session
             label={t('trainings.scoreTotal')}
             type="number"
             value={scoreTotal}
-            onChange={(e) => setScoreTotal(e.target.value)}
+            onChange={(e) => {
+              const val = e.target.value;
+              if (isNonNegativeIntegerInput(val)) setScoreTotal(val);
+            }}
             fullWidth
-            inputProps={{ min: 0 }}
+            inputProps={{ min: 0, inputMode: 'numeric' }}
           />
           <TextField
             label={t('trainings.notes')}

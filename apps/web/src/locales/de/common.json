@@ -924,6 +924,8 @@
       "mix": "Mischung",
       "custom": "Benutzerdefiniert"
     },
+    "customArrowMaterial": "Eigenes Material",
+    "customArrowMaterialPlaceholder": "z. B. Bambus",
     "length": "Länge",
     "weight": "Gewicht",
     "material": "Material",

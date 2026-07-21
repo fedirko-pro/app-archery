@@ -1107,7 +1107,9 @@
       "fiberglass": "Скловолокно",
       "mix": "Мікс",
       "wood": "Дерево"
-    }
+    },
+    "customArrowMaterial": "Свій матеріал",
+    "customArrowMaterialPlaceholder": "напр. бамбук"
   },
   "onboarding": {
     "title": "Ласкаво просимо до Sokil",
