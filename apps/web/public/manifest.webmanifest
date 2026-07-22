@@ -7,6 +7,22 @@
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#000080",
+  "screenshots": [
+    {
+      "src": "/desktop.png",
+      "sizes": "2360x1640",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Desktop view"
+    },
+    {
+      "src": "/phone.png",
+      "sizes": "1170x2532",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Mobile view"
+    }
+  ],
   "icons": [
     {
       "src": "/logo192.png",
