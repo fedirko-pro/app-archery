@@ -133,6 +133,9 @@ const About = () => {
               <FeatureItem emoji="🧮" label={t('pages.about.current.calculator')} />
             </li>
             <li>
+              <FeatureItem emoji="📖" label={t('pages.about.current.glossary')} />
+            </li>
+            <li>
               <FeatureItem emoji="📎" label={t('pages.about.current.uploads')} />
             </li>
           </ul>

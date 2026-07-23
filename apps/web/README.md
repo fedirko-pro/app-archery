@@ -34,5 +34,5 @@ pnpm --filter @sokil/web test:run
 - Next.js 15 (App Router)
 - React 18, TypeScript
 - MUI v7, Emotion
-- i18next (EN, PT, IT, UK, ES)
+- i18next (EN, UK, ES, IT, PT, DE)
 - Vitest

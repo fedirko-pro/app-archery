@@ -450,6 +450,7 @@
         "rules": "Rules Management - Official archery rules with multi-language descriptions and PDF downloads (WA, NFAA, IBO, FITARCO, RFETA, AGB, FPTA, FSLU, FABP and more)",
         "converter": "Unit Converter - Convert between common archery measurements (inches/cm, pounds/kg, grains/grams, yards/meters)",
         "calculator": "Archery Calculator - FOC, total arrow weight (GPI), kinetic energy & momentum, draw-length estimate, approximate spine suggestion, and grains per pound (GPP)",
+        "glossary": "Glossary - Common archery terms and abbreviations used on the range and in competition",
         "uploads": "File Upload System - Image processing for avatars and banners, attachment management for tournaments",
         "multilang": "Multi-language Support - Available in 6 languages: English, Ukrainian, Spanish, Italian, Portuguese, and German",
         "pwa": "Progressive Web App - Installable PWA with offline capabilities",

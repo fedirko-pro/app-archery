@@ -469,6 +469,7 @@
         "rules": "Gestión de reglas - Reglas oficiales de tiro con arco con descripciones multilingües y descargas PDF (WA, NFAA, IBO, FITARCO, RFETA, AGB, FPTA, FSLU, FABP y más)",
         "converter": "Conversor de unidades - Convertir entre medidas comunes de tiro con arco (pulgadas/cm, libras/kg, granos/gramos, yardas/metros)",
         "calculator": "Calculadora de tiro con arco - FOC, peso total de flecha (GPI), energía cinética e impulso, estimación de longitud de tiro, sugerencia aproximada de spine y granos por libra (GPP)",
+        "glossary": "Glosario - Términos y abreviaturas comunes de tiro con arco usados en el campo y en competición",
         "uploads": "Sistema de carga de archivos - Procesamiento de imágenes para avatares y banners, gestión de adjuntos para torneos",
         "multilang": "Soporte multiidioma - Disponible en 6 idiomas: inglés, ucraniano, español, italiano, portugués y alemán",
         "pwa": "Aplicación web progresiva - PWA instalable con capacidades offline",
