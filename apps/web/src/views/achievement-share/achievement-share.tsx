@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router';
 
 import AchievementMedallion from '@/components/achievements/AchievementMedallion';
 import ShareMenu from '@/components/share/ShareMenu';

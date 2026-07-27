@@ -17,7 +17,7 @@ import {
 } from '@mui/material';
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, useParams, useSearchParams } from 'react-router-dom';
+import { Link, useParams, useSearchParams } from 'react-router';
 
 import { ALL_COUNTRIES_FILTER, COUNTRIES, getCountryName } from '../../../config/countries';
 import { isDev } from '../../../config/env';

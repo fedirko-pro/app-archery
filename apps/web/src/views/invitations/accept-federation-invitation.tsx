@@ -1,7 +1,7 @@
 import { Box, Button, CircularProgress, Typography, Alert } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router';
 
 import { useAuth } from '../../contexts/auth-context';
 import apiService from '../../services/api';

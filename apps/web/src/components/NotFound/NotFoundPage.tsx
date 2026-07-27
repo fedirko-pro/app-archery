@@ -2,7 +2,7 @@
 
 import { Button, Container, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router';
 
 import { useAppLang } from '@/contexts/lang-context';
 import { normalizeAppLang } from '@/utils/i18n-lang';

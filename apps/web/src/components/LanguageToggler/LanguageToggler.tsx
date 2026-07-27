@@ -7,7 +7,7 @@ import type { SelectChangeEvent } from '@mui/material/Select';
 import i18n from 'i18next';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router';
 
 import { useAuth } from '../../contexts/auth-context';
 import type { AppLanguageCode } from '../../contexts/types';

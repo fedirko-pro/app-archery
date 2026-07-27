@@ -5,7 +5,7 @@
     "lib": ["dom", "dom.iterable", "esnext", "webworker"],
     "allowJs": true,
     "noEmit": true,
-    "module": "esnext",
+    "module": "ESNext",
     "moduleResolution": "bundler",
     "jsx": "preserve",
     "incremental": true,

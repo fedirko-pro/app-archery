@@ -3,7 +3,7 @@ import './Menu.scss';
 import classNames from 'classnames';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 
 import { COLORS } from '../../theme/colors';
 import { normalizeAppLang } from '../../utils/i18n-lang';

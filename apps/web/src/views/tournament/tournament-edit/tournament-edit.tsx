@@ -17,7 +17,7 @@ import {
 } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router';
 
 import BannerUploader from '../../../components/BannerUploader/BannerUploader';
 import FileAttachments, {

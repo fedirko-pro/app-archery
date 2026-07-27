@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 
 import ProfileAchievementsPreview from '../profile/profile-achievements-preview';
 import ShareMenu from '@/components/share/ShareMenu';

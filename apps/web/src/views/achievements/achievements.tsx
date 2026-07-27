@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 
 import AchievementLockedDialog from '@/components/achievements/AchievementLockedDialog';
 import AchievementMedallion from '@/components/achievements/AchievementMedallion';

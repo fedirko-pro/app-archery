@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useMemo } from 'react';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter } from 'react-router';
 
 import { AppShellSkeleton } from '@/components/AppShellSkeleton';
 import { ClientOnly } from '@/components/ClientOnly/ClientOnly';

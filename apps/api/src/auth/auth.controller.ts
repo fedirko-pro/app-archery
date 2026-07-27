@@ -23,7 +23,7 @@ import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { RolesGuard } from './guards/roles.guard';
 import { Roles } from './decorators/roles.decorator';
 import { SkipCsrf } from './decorators/skip-csrf.decorator';
-import { Request as ExpressRequest, Response } from 'express';
+import type { Request as ExpressRequest, Response } from 'express';
 import { ConfigService } from '@nestjs/config';
 import { Roles as UserRoles } from '../user/types';
 import { RolePermissionsService } from './role-permissions.service';

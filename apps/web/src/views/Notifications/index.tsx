@@ -11,7 +11,7 @@ import Typography from '@mui/material/Typography';
 import { NotificationTypes } from '@sokil/shared-types';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router';
 
 import { useAchievementCelebration } from '../../contexts/achievement-celebration-context';
 import { useNotifications } from '../../contexts/notifications-context';

@@ -1,6 +1,6 @@
 import './Content.scss';
 
-import { Navigate, Outlet, Route, Routes, useParams } from 'react-router-dom';
+import { Navigate, Outlet, Route, Routes, useParams } from 'react-router';
 
 import {
   ROLES_CAN_ACCESS_CONTROL,

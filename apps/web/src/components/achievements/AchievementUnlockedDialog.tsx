@@ -3,7 +3,7 @@ import type { AchievementRarity } from '@sokil/shared-types';
 import confetti from 'canvas-confetti';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 
 import AchievementMedallion from '@/components/achievements/AchievementMedallion';
 import PrivacyAwareShareMenu from '@/components/share/PrivacyAwareShareMenu';

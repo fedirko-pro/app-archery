@@ -2,7 +2,7 @@ import { ArrowBack } from '@mui/icons-material';
 import { Box, Button, Alert, CircularProgress } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router';
 
 import { canDeleteUser } from '../../../config/roles';
 import { useAuth } from '../../../contexts/auth-context';

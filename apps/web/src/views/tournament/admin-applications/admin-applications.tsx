@@ -37,7 +37,7 @@ import {
 } from '@mui/material';
 import React, { useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router';
 
 import { canManageApplicationsAndPdfs } from '../../../config/roles';
 import { useAuth } from '../../../contexts/auth-context';

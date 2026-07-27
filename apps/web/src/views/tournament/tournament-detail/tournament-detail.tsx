@@ -36,7 +36,7 @@ import {
 import { isBefore, parseISO, startOfDay } from 'date-fns';
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router';
 
 import AdminApplyUserDialog from '../../../components/dialogs/admin-apply-user-dialog';
 import { FileAttachment } from '../../../components/FileAttachments/FileAttachments';

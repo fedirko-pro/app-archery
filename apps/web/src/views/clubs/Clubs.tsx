@@ -19,7 +19,7 @@ import {
 } from '@mui/material';
 import { useEffect, useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate, useParams, useSearchParams } from 'react-router';
 
 import { ALL_COUNTRIES_FILTER, COUNTRIES, getCountryName } from '../../config/countries';
 import { canManageReferenceData } from '../../config/roles';

@@ -18,7 +18,7 @@ import {
 } from '@mui/material';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router';
 
 import apiService from '../../../services/api';
 import type { TournamentApplicationDto, TournamentDto } from '../../../services/types';

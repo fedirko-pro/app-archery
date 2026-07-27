@@ -2,7 +2,7 @@ import './Header.scss';
 
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { NavLink, useLocation, useParams } from 'react-router-dom';
+import { NavLink, useLocation, useParams } from 'react-router';
 
 import { fromI18nLang, getCurrentI18nLang, normalizeAppLang } from '../../utils/i18n-lang';
 import NavMenu from '../NavMenu/NavMenu';

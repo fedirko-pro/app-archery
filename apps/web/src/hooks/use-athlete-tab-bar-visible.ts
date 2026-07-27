@@ -1,5 +1,5 @@
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router';
 
 /** Matches SCSS `@mixin mobile` (max-width: 767.98px). */
 export const ATHLETE_TAB_BAR_MQ = '(max-width: 767.98px)';

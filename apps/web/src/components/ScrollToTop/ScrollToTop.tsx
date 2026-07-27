@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router';
 
 /** Reset window scroll whenever the route path changes (page / tab switches). */
 export function ScrollToTop() {

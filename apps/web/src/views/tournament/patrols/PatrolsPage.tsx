@@ -7,7 +7,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import { Alert, Box, Button, CircularProgress, Grid, Snackbar, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router';
 
 import env from '../../../config/env';
 import apiService from '../../../services/api';

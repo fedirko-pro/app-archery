@@ -1,7 +1,7 @@
 import './Footer.scss';
 
 import { useTranslation } from 'react-i18next';
-import { Link, NavLink, useParams } from 'react-router-dom';
+import { Link, NavLink, useParams } from 'react-router';
 
 import { normalizeAppLang } from '../../utils/i18n-lang';
 

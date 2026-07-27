@@ -19,7 +19,7 @@ import Typography from '@mui/material/Typography';
 import { format, parseISO } from 'date-fns';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router';
 
 import AchievementMedallion from '../../components/achievements/AchievementMedallion';
 import LocalDataBanner from '../../components/LocalDataBanner/LocalDataBanner';

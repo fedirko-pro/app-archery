@@ -7,7 +7,7 @@ import React, {
   ReactNode,
   useRef,
 } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router';
 
 import apiService from '../services/api';
 import { getCachedUser, setCachedUser } from '../utils/cached-user';

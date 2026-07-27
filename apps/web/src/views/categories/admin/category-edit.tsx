@@ -9,7 +9,7 @@ import {
   Typography,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router';
 
 import { canManageReferenceData } from '../../../config/roles';
 import { useAuth } from '../../../contexts/auth-context';

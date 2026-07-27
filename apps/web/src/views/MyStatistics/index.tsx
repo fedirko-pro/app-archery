@@ -16,7 +16,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { format, parseISO } from 'date-fns';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router';
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
 import StatCard from '../../components/StatCard/StatCard';

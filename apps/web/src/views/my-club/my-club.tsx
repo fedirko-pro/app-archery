@@ -18,7 +18,7 @@ import {
 } from '@mui/material';
 import React, { useEffect, useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router';
 
 import { useNotification } from '../../contexts/error-feedback-context';
 import apiService from '../../services/api';

@@ -14,7 +14,7 @@ import {
   NotFoundException,
   ConflictException,
 } from '@nestjs/common';
-import { Response } from 'express';
+import type { Response } from 'express';
 import { format } from 'date-fns';
 import { PatrolService } from './patrol.service';
 import { BatchUpdatePatrolsDto } from './dto/batch-update-patrols.dto';

@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router';
 
 import SafeDialog from '@/components/SafeDialog/SafeDialog';
 import { useAuth } from '@/contexts/auth-context';

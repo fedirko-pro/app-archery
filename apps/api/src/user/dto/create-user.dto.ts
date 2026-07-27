@@ -1,5 +1,5 @@
 import { IsEmail, IsNotEmpty, IsOptional, IsString, IsUrl, ValidateIf } from 'class-validator';
-import { AuthProvider } from '../types';
+import type { AuthProvider } from '../types';
 
 export class CreateUserDto {
   @IsEmail()

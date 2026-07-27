@@ -20,7 +20,7 @@ import {
 } from '@mui/material';
 import React, { useEffect, useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router';
 
 import { getCountryName } from '../../../config/countries';
 import { ROLE_LABEL_KEYS } from '../../../config/roles';

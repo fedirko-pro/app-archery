@@ -4,7 +4,7 @@ import { ArrowBack, LockReset } from '@mui/icons-material';
 import { Box, Button, Alert, CircularProgress } from '@mui/material';
 import React, { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router';
 
 import { canChangeRole } from '../../../config/roles';
 import { useAuth } from '../../../contexts/auth-context';
