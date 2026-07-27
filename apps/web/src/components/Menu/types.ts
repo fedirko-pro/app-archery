@@ -2,6 +2,8 @@ export interface MenuItem {
   link: string;
   label: string;
   onClick?: (e: React.MouseEvent) => void;
+  /** Unread count shown as a badge on the menu item */
+  badgeCount?: number;
 }
 
 export interface MenuSection {
@@ -31,4 +33,5 @@ export interface NavLinkProps {
   className?: string;
   onClick?: (e: React.MouseEvent) => void;
   clickHandle?: () => void;
+  badgeCount?: number;
 }

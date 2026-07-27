@@ -55,7 +55,8 @@
     "glossary": "Глосарій",
     "fieldGuide": "Путівник",
     "myClub": "Мій клуб",
-    "myFederation": "Моя федерація"
+    "myFederation": "Моя федерація",
+    "notifications": "Сповіщення"
   },
   "accessControl": {
     "title": "Контроль доступу",
@@ -1542,5 +1543,63 @@
     "shareTitle": "Досягнення {{name}} у Sokil",
     "title": "Колекція досягнень",
     "topBadges": "Топ-значки"
+  },
+  "notifications": {
+    "title": "Сповіщення",
+    "lastLogin": "Останній вхід: {{datetime}}",
+    "firstSession": "Це ваша перша сесія на цьому пристрої.",
+    "empty": "У вас ще немає сповіщень.",
+    "fetchError": "Не вдалося завантажити сповіщення. Спробуйте ще раз.",
+    "markAllRead": "Позначити всі як прочитані",
+    "markAllError": "Не вдалося позначити сповіщення як прочитані.",
+    "openRelated": "Відкрити пов’язане",
+    "achievementUnlocked": {
+      "title": "Нове досягнення",
+      "body": "Ви відкрили «{{achievementName}}»."
+    },
+    "tournamentApplicationApproved": {
+      "title": "Заявку схвалено",
+      "body": "Вашу заявку на «{{tournamentTitle}}» схвалено."
+    },
+    "tournamentApplicationRejected": {
+      "title": "Заявку відхилено",
+      "body": "Вашу заявку на «{{tournamentTitle}}» відхилено."
+    },
+    "tournamentApplicationSubmitted": {
+      "title": "Заявку подано",
+      "body": "Вашу заявку на «{{tournamentTitle}}» подано."
+    },
+    "clubInvitationReceived": {
+      "title": "Запрошення до клубу",
+      "body": "{{invitedByName}} запросив(ла) вас до «{{clubName}}»."
+    },
+    "clubJoinApproved": {
+      "title": "Вступ до клубу схвалено",
+      "body": "Ваш запит на вступ до «{{clubName}}» схвалено."
+    },
+    "clubJoinRejected": {
+      "title": "Вступ до клубу відхилено",
+      "body": "Ваш запит на вступ до «{{clubName}}» відхилено."
+    },
+    "clubJoinSubmitted": {
+      "title": "Запит на вступ надіслано",
+      "body": "Ваш запит на вступ до «{{clubName}}» надіслано."
+    },
+    "federationMembershipApproved": {
+      "title": "Членство у федерації схвалено",
+      "body": "«{{clubName}}» тепер є членом «{{federationName}}»."
+    },
+    "federationMembershipRejected": {
+      "title": "Членство у федерації завершено",
+      "body": "«{{clubName}}» більше не є членом «{{federationName}}»."
+    },
+    "privacyVisibilityChanged": {
+      "title": "Приватність оновлено",
+      "body": "Видимість профілю змінено з {{previousVisibilityLabel}} на {{visibilityLabel}}."
+    },
+    "passwordChanged": {
+      "title": "Пароль змінено",
+      "body": "Пароль вашого облікового запису успішно змінено."
+    }
   }
 }

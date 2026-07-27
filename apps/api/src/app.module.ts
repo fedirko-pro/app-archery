@@ -21,6 +21,7 @@ import { BowCategoryModule } from './bow-category/bow-category.module';
 import { EquipmentModule } from './equipment/equipment.module';
 import { TrainingModule } from './training/training.module';
 import { AchievementsModule } from './achievements/achievements.module';
+import { NotificationsModule } from './notification/notifications.module';
 
 @Module({
   imports: [
@@ -60,6 +61,7 @@ import { AchievementsModule } from './achievements/achievements.module';
     EquipmentModule,
     TrainingModule,
     AchievementsModule,
+    NotificationsModule,
   ],
   controllers: [AppController],
   providers: [

@@ -128,6 +128,7 @@ export const Menu: React.FC<MenuProps> = ({
                       clickHandle={clickHandle}
                       onClick={item.onClick}
                       className={collapsible ? 'admin-menu-item' : ''}
+                      badgeCount={item.badgeCount}
                     >
                       {item.label}
                     </NavLink>

@@ -19,6 +19,7 @@ import { UploadModule } from '../upload/upload.module';
 import { EmailModule } from '../email/email.module';
 import { RolePermissionsModule } from '../auth/role-permissions.module';
 import { AchievementsModule } from '../achievements/achievements.module';
+import { NotificationsModule } from '../notification/notifications.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { AchievementsModule } from '../achievements/achievements.module';
     EmailModule,
     RolePermissionsModule,
     AchievementsModule,
+    NotificationsModule,
   ],
   providers: [
     TournamentService,

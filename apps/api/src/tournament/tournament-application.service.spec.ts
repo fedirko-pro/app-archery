@@ -5,6 +5,7 @@ import { TournamentApplicationService } from './tournament-application.service';
 import { ApplicationStatus } from './tournament-application.entity';
 import { EmailService } from '../email/email.service';
 import { AchievementsService } from '../user/achievements.service';
+import { NotificationsService } from '../notification/notifications.service';
 
 describe('TournamentApplicationService', () => {
   let service: TournamentApplicationService;
@@ -52,6 +53,13 @@ describe('TournamentApplicationService', () => {
           useValue: {
             grant: jest.fn().mockResolvedValue(undefined),
             syncComputed: jest.fn().mockResolvedValue(undefined),
+          },
+        },
+        {
+          provide: NotificationsService,
+          useValue: {
+            createSafe: jest.fn(),
+            create: jest.fn().mockResolvedValue(null),
           },
         },
       ],

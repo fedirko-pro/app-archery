@@ -17,6 +17,9 @@ import type {
   PatrolMemberUserDto,
   PatrolMemberDto,
   PatrolDto,
+  NotificationDto,
+  NotificationsListDto,
+  NotificationUnreadCountDto,
 } from '@sokil/shared-types';
 
 export type {
@@ -38,6 +41,9 @@ export type {
   PatrolMemberUserDto,
   PatrolMemberDto,
   PatrolDto,
+  NotificationDto,
+  NotificationsListDto,
+  NotificationUnreadCountDto,
 };
 
 export interface EquipmentSetDto {

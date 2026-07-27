@@ -12,6 +12,7 @@ import { UserService } from './user.service';
 import { EmailService } from '../email/email.service';
 import { UploadService } from '../upload/upload.service';
 import { ClubMembershipService } from '../club/club-membership.service';
+import { NotificationsService } from '../notification/notifications.service';
 
 jest.mock('bcryptjs');
 
@@ -82,6 +83,13 @@ describe('UserService', () => {
           provide: ClubMembershipService,
           useValue: {
             getAdminClub: jest.fn().mockResolvedValue({ id: 'club-1', name: 'Test Club' }),
+          },
+        },
+        {
+          provide: NotificationsService,
+          useValue: {
+            createSafe: jest.fn(),
+            create: jest.fn().mockResolvedValue(null),
           },
         },
       ],

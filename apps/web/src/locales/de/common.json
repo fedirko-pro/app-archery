@@ -30,7 +30,8 @@
     "glossary": "Glossar",
     "fieldGuide": "Feldführer",
     "myClub": "Mein Verein",
-    "myFederation": "Mein Verband"
+    "myFederation": "Mein Verband",
+    "notifications": "Benachrichtigungen"
   },
   "accessControl": {
     "title": "Zugriffskontrolle",
@@ -1509,5 +1510,63 @@
   },
   "myClub": {
     "adminBadge": "Admin"
+  },
+  "notifications": {
+    "title": "Benachrichtigungen",
+    "lastLogin": "Letzte Anmeldung: {{datetime}}",
+    "firstSession": "Dies ist Ihre erste Sitzung auf diesem Gerät.",
+    "empty": "Sie haben noch keine Benachrichtigungen.",
+    "fetchError": "Benachrichtigungen konnten nicht geladen werden. Bitte erneut versuchen.",
+    "markAllRead": "Alle als gelesen markieren",
+    "markAllError": "Benachrichtigungen konnten nicht als gelesen markiert werden.",
+    "openRelated": "Zugehöriges öffnen",
+    "achievementUnlocked": {
+      "title": "Neuer Erfolg",
+      "body": "Sie haben \"{{achievementName}}\" freigeschaltet."
+    },
+    "tournamentApplicationApproved": {
+      "title": "Anmeldung genehmigt",
+      "body": "Ihre Anmeldung für \"{{tournamentTitle}}\" wurde genehmigt."
+    },
+    "tournamentApplicationRejected": {
+      "title": "Anmeldung abgelehnt",
+      "body": "Ihre Anmeldung für \"{{tournamentTitle}}\" wurde abgelehnt."
+    },
+    "tournamentApplicationSubmitted": {
+      "title": "Anmeldung eingereicht",
+      "body": "Ihre Anmeldung für \"{{tournamentTitle}}\" wurde eingereicht."
+    },
+    "clubInvitationReceived": {
+      "title": "Vereinseinladung",
+      "body": "{{invitedByName}} hat Sie eingeladen, \"{{clubName}}\" beizutreten."
+    },
+    "clubJoinApproved": {
+      "title": "Vereinsbeitritt genehmigt",
+      "body": "Ihre Anfrage, \"{{clubName}}\" beizutreten, wurde genehmigt."
+    },
+    "clubJoinRejected": {
+      "title": "Vereinsbeitritt abgelehnt",
+      "body": "Ihre Anfrage, \"{{clubName}}\" beizutreten, wurde abgelehnt."
+    },
+    "clubJoinSubmitted": {
+      "title": "Beitrittsanfrage gesendet",
+      "body": "Ihre Anfrage, \"{{clubName}}\" beizutreten, wurde gesendet."
+    },
+    "federationMembershipApproved": {
+      "title": "Verbandsmitgliedschaft genehmigt",
+      "body": "\"{{clubName}}\" ist jetzt Mitglied von \"{{federationName}}\"."
+    },
+    "federationMembershipRejected": {
+      "title": "Verbandsmitgliedschaft beendet",
+      "body": "\"{{clubName}}\" ist kein Mitglied mehr von \"{{federationName}}\"."
+    },
+    "privacyVisibilityChanged": {
+      "title": "Datenschutz aktualisiert",
+      "body": "Die Profilsichtbarkeit wurde von {{previousVisibilityLabel}} auf {{visibilityLabel}} geändert."
+    },
+    "passwordChanged": {
+      "title": "Passwort geändert",
+      "body": "Das Passwort Ihres Kontos wurde erfolgreich geändert."
+    }
   }
 }

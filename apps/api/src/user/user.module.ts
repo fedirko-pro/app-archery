@@ -13,6 +13,7 @@ import { TrainingModule } from '../training/training.module';
 import { AchievementsModule } from '../achievements/achievements.module';
 import { ClubModule } from '../club/club.module';
 import { FederationMembership } from '../federation/federation-membership.entity';
+import { NotificationsModule } from '../notification/notifications.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { FederationMembership } from '../federation/federation-membership.entity
     TrainingModule,
     AchievementsModule,
     ClubModule,
+    NotificationsModule,
   ],
   providers: [UserService, PublicProfileService, ProfileVisibilityService],
   controllers: [UserController, PublicProfileController],

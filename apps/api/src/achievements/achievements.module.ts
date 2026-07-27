@@ -15,6 +15,7 @@ import { RolePermissionsModule } from '../auth/role-permissions.module';
 import { EmailModule } from '../email/email.module';
 import { UploadModule } from '../upload/upload.module';
 import { ClubModule } from '../club/club.module';
+import { NotificationsModule } from '../notification/notifications.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { ClubModule } from '../club/club.module';
     EmailModule,
     UploadModule,
     ClubModule,
+    NotificationsModule,
   ],
   providers: [AchievementsService, UserService, ProfileVisibilityService],
   controllers: [AchievementsController, AdminAchievementsController],

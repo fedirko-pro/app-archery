@@ -7,6 +7,8 @@ import { User } from '../user/entity/user.entity';
 import { EmailService } from '../email/email.service';
 import { ConfigService } from '@nestjs/config';
 import { randomBytes } from 'node:crypto';
+import { NotificationsService } from '../notification/notifications.service';
+import { NotificationTypes } from '@sokil/shared-types';
 
 @Injectable()
 export class ClubInvitationService {
@@ -16,6 +18,7 @@ export class ClubInvitationService {
     private readonly em: EntityManager,
     private readonly emailService: EmailService,
     private readonly configService: ConfigService,
+    private readonly notificationsService: NotificationsService,
   ) {}
 
   async sendInvitation(
@@ -64,6 +67,20 @@ export class ClubInvitationService {
       .catch((err) => {
         this.logger.error(`Failed to send club invitation email: ${err.message}`);
       });
+
+    const invitee = await this.em.findOne(User, { email });
+    if (invitee) {
+      this.notificationsService.createSafe({
+        userId: invitee.id,
+        type: NotificationTypes.ClubInvitationReceived,
+        params: {
+          clubName: club.name,
+          clubId: club.id,
+          invitedByName: invitedBy.firstName || invitedBy.email,
+        },
+        link: `/accept-club-invitation/${token}`,
+      });
+    }
 
     return invitation;
   }

@@ -18,6 +18,8 @@ import { ClubMembership, ClubMembershipRole, ClubMembershipStatus } from './club
 import { ClubInvitation, ClubInvitationStatus } from './club-invitation.entity';
 import { CreateClubJoinRequestDto } from './dto/create-club-join-request.dto';
 import { ClubMembershipService } from './club-membership.service';
+import { NotificationsService } from '../notification/notifications.service';
+import { NotificationTypes } from '@sokil/shared-types';
 
 @Injectable()
 export class ClubJoinRequestService {
@@ -28,6 +30,7 @@ export class ClubJoinRequestService {
     private readonly emailService: EmailService,
     private readonly configService: ConfigService,
     private readonly membershipService: ClubMembershipService,
+    private readonly notificationsService: NotificationsService,
   ) {}
 
   async create(
@@ -90,6 +93,15 @@ export class ClubJoinRequestService {
     await this.em.persistAndFlush(joinRequest);
 
     await this.notifyAdminsOfJoinRequest(joinRequest, club);
+
+    if (user) {
+      this.notificationsService.createSafe({
+        userId: user.id,
+        type: NotificationTypes.ClubJoinSubmitted,
+        params: { clubName: club.name, clubId: club.id },
+        link: `/clubs/${club.id}`,
+      });
+    }
 
     return joinRequest;
   }
@@ -167,6 +179,13 @@ export class ClubJoinRequestService {
         .catch((err) => {
           this.logger.error(`Failed to send join approved email: ${err.message}`);
         });
+
+      this.notificationsService.createSafe({
+        userId: user.id,
+        type: NotificationTypes.ClubJoinApproved,
+        params: { clubName: joinRequest.club.name, clubId: joinRequest.club.id },
+        link: `/clubs/${joinRequest.club.id}`,
+      });
     } else {
       const token = randomBytes(32).toString('hex');
       joinRequest.invitationToken = token;
@@ -236,6 +255,15 @@ export class ClubJoinRequestService {
       .catch((err) => {
         this.logger.error(`Failed to send join rejected email: ${err.message}`);
       });
+
+    if (joinRequest.user) {
+      this.notificationsService.createSafe({
+        userId: joinRequest.user.id,
+        type: NotificationTypes.ClubJoinRejected,
+        params: { clubName: joinRequest.club.name, clubId: joinRequest.club.id },
+        link: `/clubs/${joinRequest.club.id}`,
+      });
+    }
 
     return joinRequest;
   }

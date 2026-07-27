@@ -27,6 +27,8 @@ import {
 } from '../federation/federation-membership.entity';
 import type { AdminScope } from '../auth/permissions.service';
 import type { ProfileViewer } from './profile-visibility.service';
+import { NotificationsService } from '../notification/notifications.service';
+import { NotificationTypes } from '@sokil/shared-types';
 
 @Injectable()
 export class UserService {
@@ -38,6 +40,7 @@ export class UserService {
     private readonly emailService: EmailService,
     private readonly configService: ConfigService,
     private readonly clubMembershipService: ClubMembershipService,
+    private readonly notificationsService: NotificationsService,
   ) {}
 
   async create(userData: CreateUserDto): Promise<User> {
@@ -156,10 +159,29 @@ export class UserService {
       }
     }
 
+    const previousVisibility = user.profileVisibility;
+    const nextVisibility =
+      typeof safeUpdate.profileVisibility === 'string'
+        ? (safeUpdate.profileVisibility as string)
+        : undefined;
+
     Object.assign(user, safeUpdate);
     user.updatedAt = new Date();
 
     await this.entityManager.persistAndFlush(user);
+
+    if (nextVisibility && nextVisibility !== previousVisibility) {
+      this.notificationsService.createSafe({
+        userId: user.id,
+        type: NotificationTypes.PrivacyVisibilityChanged,
+        params: {
+          previousVisibility,
+          visibility: nextVisibility,
+        },
+        link: '/profile',
+      });
+    }
+
     return user;
   }
 
@@ -201,6 +223,12 @@ export class UserService {
     user.updatedAt = new Date();
 
     await this.entityManager.persistAndFlush(user);
+
+    this.notificationsService.createSafe({
+      userId: user.id,
+      type: NotificationTypes.PasswordChanged,
+      link: '/profile',
+    });
 
     return { message: 'Password changed successfully' };
   }

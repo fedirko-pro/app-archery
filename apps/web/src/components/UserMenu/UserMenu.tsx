@@ -2,6 +2,7 @@ import '../Header/Header.scss';
 
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import Avatar from '@mui/material/Avatar';
+import Badge from '@mui/material/Badge';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -12,6 +13,7 @@ import { useParams } from 'react-router-dom';
 import { isDev } from '../../config/env';
 import { USER_DEMO_NAV_ITEMS, isClubAdmin, isFederationAdmin } from '../../config/roles';
 import { useAuth } from '../../contexts/auth-context';
+import { useNotifications } from '../../contexts/notifications-context';
 import { ATHLETE_TAB_BAR_MQ } from '../../hooks/use-athlete-tab-bar-visible';
 import { useBodyScrollLock } from '../../hooks/use-body-scroll-lock';
 import { normalizeAppLang } from '../../utils/i18n-lang';
@@ -34,6 +36,7 @@ const UserMenu: React.FC = () => {
   const isMobile = useMediaQuery(ATHLETE_TAB_BAR_MQ);
 
   const { user, isAuthenticated, logout, initializing } = useAuth();
+  const { unreadImportantCount, refreshUnreadCount } = useNotifications();
 
   useBodyScrollLock(active);
 
@@ -51,7 +54,13 @@ const UserMenu: React.FC = () => {
   }
 
   const toggleMenu = (): void => {
-    setActive((prev) => !prev);
+    setActive((prev) => {
+      const next = !prev;
+      if (next && isAuthenticated) {
+        void refreshUnreadCount();
+      }
+      return next;
+    });
   };
 
   const closeMenu = (): void => {
@@ -69,6 +78,11 @@ const UserMenu: React.FC = () => {
   // About lives in the left Field Guide / nav menu — keep it out of the user menu.
   const authenticatedMenuItems = filterTabDuplicates([
     { link: '/home', label: t('dashboard.title') },
+    {
+      link: '/notifications',
+      label: t('nav.notifications'),
+      badgeCount: unreadImportantCount > 0 ? unreadImportantCount : undefined,
+    },
     { link: '/trainings', label: t('nav.myTrainings') },
     { link: '/statistics', label: t('nav.myStatistics') },
     { link: '/applications', label: t('nav.myApplications') },
@@ -118,33 +132,53 @@ const UserMenu: React.FC = () => {
 
   return (
     <>
-      <Avatar
-        onClick={toggleMenu}
+      <Badge
+        color="error"
+        badgeContent={isAuthenticated ? unreadImportantCount : 0}
+        overlap="circular"
+        max={99}
+        invisible={!isAuthenticated || unreadImportantCount < 1}
         sx={{
           marginRight: { xs: '8px', sm: '16px' },
-          cursor: 'pointer',
-          width: 44,
-          height: 44,
-          flexShrink: 0,
-          '& .MuiSvgIcon-root': {
-            width: '80%',
-            height: '80%',
-          },
-        }}
-        src={avatarSrc}
-        alt={user?.firstName || 'User'}
-        imgProps={{
-          referrerPolicy: 'no-referrer',
-          onError: (e) => {
-            if (isDev) {
-              console.error('Avatar image failed to load:', user?.picture);
-            }
-            e.currentTarget.style.display = 'none';
+          '& .MuiBadge-badge': {
+            top: 6,
+            right: 6,
+            border: '2px solid',
+            borderColor: 'background.paper',
+            minWidth: 18,
+            height: 18,
+            fontSize: '0.7rem',
+            padding: '0 4px',
           },
         }}
       >
-        <PersonOutlineIcon />
-      </Avatar>
+        <Avatar
+          onClick={toggleMenu}
+          sx={{
+            cursor: 'pointer',
+            width: 44,
+            height: 44,
+            flexShrink: 0,
+            '& .MuiSvgIcon-root': {
+              width: '80%',
+              height: '80%',
+            },
+          }}
+          src={avatarSrc}
+          alt={user?.firstName || 'User'}
+          imgProps={{
+            referrerPolicy: 'no-referrer',
+            onError: (e) => {
+              if (isDev) {
+                console.error('Avatar image failed to load:', user?.picture);
+              }
+              e.currentTarget.style.display = 'none';
+            },
+          }}
+        >
+          <PersonOutlineIcon />
+        </Avatar>
+      </Badge>
       <Menu
         active={active}
         sections={sections}

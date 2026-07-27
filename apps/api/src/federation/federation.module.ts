@@ -10,6 +10,7 @@ import { EmailModule } from '../email/email.module';
 import { ClubModule } from '../club/club.module';
 import { UserModule } from '../user/user.module';
 import { RolePermissionsModule } from '../auth/role-permissions.module';
+import { NotificationsModule } from '../notification/notifications.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { RolePermissionsModule } from '../auth/role-permissions.module';
     ClubModule,
     UserModule,
     RolePermissionsModule,
+    NotificationsModule,
   ],
   controllers: [FederationController],
   providers: [FederationService, FederationMembershipService],

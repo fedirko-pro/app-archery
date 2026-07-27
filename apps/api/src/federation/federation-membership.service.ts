@@ -11,6 +11,8 @@ import {
   ClubMembershipRole,
   ClubMembershipStatus,
 } from '../club/club-membership.entity';
+import { NotificationsService } from '../notification/notifications.service';
+import { NotificationTypes } from '@sokil/shared-types';
 
 @Injectable()
 export class FederationMembershipService {
@@ -20,6 +22,7 @@ export class FederationMembershipService {
     private readonly em: EntityManager,
     private readonly emailService: EmailService,
     private readonly configService: ConfigService,
+    private readonly notificationsService: NotificationsService,
   ) {}
 
   async findMemberships(federationId: string): Promise<FederationMembership[]> {
@@ -129,6 +132,29 @@ export class FederationMembershipService {
         });
     }
 
+    const clubAdminMemberships = await this.em.find(
+      ClubMembership,
+      {
+        club: { id: membership.club.id },
+        role: ClubMembershipRole.ADMIN,
+        status: ClubMembershipStatus.APPROVED,
+      },
+      { populate: ['user'] },
+    );
+
+    for (const cm of clubAdminMemberships) {
+      this.notificationsService.createSafe({
+        userId: cm.user.id,
+        type: NotificationTypes.FederationMembershipApproved,
+        params: {
+          federationName: membership.federation.name,
+          clubName: membership.club.name,
+          federationId: membership.federation.id,
+        },
+        link: '/my-club',
+      });
+    }
+
     return membership;
   }
 
@@ -145,6 +171,31 @@ export class FederationMembershipService {
     await this.em.removeAndFlush(membership);
 
     const frontendUrl = this.configService.get<string>('FRONTEND_URL');
+
+    const notifyClubAdminsRejected = async () => {
+      const clubAdminMemberships = await this.em.find(
+        ClubMembership,
+        {
+          club: { id: membership.club.id },
+          role: ClubMembershipRole.ADMIN,
+          status: ClubMembershipStatus.APPROVED,
+        },
+        { populate: ['user'] },
+      );
+
+      for (const cm of clubAdminMemberships) {
+        this.notificationsService.createSafe({
+          userId: cm.user.id,
+          type: NotificationTypes.FederationMembershipRejected,
+          params: {
+            federationName,
+            clubName,
+            federationId: membership.federation.id,
+          },
+          link: '/my-club',
+        });
+      }
+    };
 
     if (isSelfRemoval) {
       // Club left: notify club admins + federation admin who invited
@@ -173,6 +224,8 @@ export class FederationMembershipService {
             this.logger.error(`Failed to send club left federation email: ${err.message}`);
           });
       }
+
+      await notifyClubAdminsRejected();
 
       if (membership.invitedBy) {
         this.emailService
@@ -214,6 +267,8 @@ export class FederationMembershipService {
             this.logger.error(`Failed to send club removed from federation email: ${err.message}`);
           });
       }
+
+      await notifyClubAdminsRejected();
 
       const admin = await this.em.findOne(User, { id: removedById });
       if (admin) {

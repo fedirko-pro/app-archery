@@ -11,6 +11,7 @@ import { AchievementCelebrationProvider } from '../../contexts/achievement-celeb
 import { AuthProvider } from '../../contexts/auth-context';
 import { ErrorFeedbackProvider } from '../../contexts/error-feedback-context';
 import { LocalDataProvider } from '../../contexts/local-data-context';
+import { NotificationsProvider } from '../../contexts/notifications-context';
 import { COLORS } from '../../theme/colors';
 import AppBottomChrome from '../AppBottomChrome/AppBottomChrome';
 import AppStatusBar from '../AppStatusBar';
@@ -64,15 +65,17 @@ interface RouterShellProps {
 export function RouterShell({ children }: RouterShellProps) {
   return (
     <AuthProvider>
-      <LocalDataProvider>
-        <AchievementCelebrationProvider>
-          <ScrollToTop />
-          <Header />
-          {children}
-          {!isProd && <I18nDevOverlay />}
-          <AppBottomChrome />
-        </AchievementCelebrationProvider>
-      </LocalDataProvider>
+      <NotificationsProvider>
+        <LocalDataProvider>
+          <AchievementCelebrationProvider>
+            <ScrollToTop />
+            <Header />
+            {children}
+            {!isProd && <I18nDevOverlay />}
+            <AppBottomChrome />
+          </AchievementCelebrationProvider>
+        </LocalDataProvider>
+      </NotificationsProvider>
     </AuthProvider>
   );
 }

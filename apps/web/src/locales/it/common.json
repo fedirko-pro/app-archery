@@ -30,7 +30,8 @@
     "glossary": "Glossario",
     "fieldGuide": "Guida da Campo",
     "myClub": "Il mio club",
-    "myFederation": "La mia federazione"
+    "myFederation": "La mia federazione",
+    "notifications": "Notifiche"
   },
   "accessControl": {
     "title": "Controllo accessi",
@@ -1543,5 +1544,63 @@
     "archer": "Arciere",
     "backToProfile": "Torna al profilo",
     "title": "Achievement di {{name}}"
+  },
+  "notifications": {
+    "title": "Notifiche",
+    "lastLogin": "Ultimo accesso: {{datetime}}",
+    "firstSession": "Questa è la tua prima sessione su questo dispositivo.",
+    "empty": "Non hai ancora notifiche.",
+    "fetchError": "Impossibile caricare le notifiche. Riprova.",
+    "markAllRead": "Segna tutte come lette",
+    "markAllError": "Impossibile segnare le notifiche come lette.",
+    "openRelated": "Apri correlato",
+    "achievementUnlocked": {
+      "title": "Nuovo achievement",
+      "body": "Hai sbloccato \"{{achievementName}}\"."
+    },
+    "tournamentApplicationApproved": {
+      "title": "Iscrizione approvata",
+      "body": "La tua iscrizione a \"{{tournamentTitle}}\" è stata approvata."
+    },
+    "tournamentApplicationRejected": {
+      "title": "Iscrizione rifiutata",
+      "body": "La tua iscrizione a \"{{tournamentTitle}}\" è stata rifiutata."
+    },
+    "tournamentApplicationSubmitted": {
+      "title": "Iscrizione inviata",
+      "body": "La tua iscrizione a \"{{tournamentTitle}}\" è stata inviata."
+    },
+    "clubInvitationReceived": {
+      "title": "Invito al club",
+      "body": "{{invitedByName}} ti ha invitato a unirti a \"{{clubName}}\"."
+    },
+    "clubJoinApproved": {
+      "title": "Adesione al club approvata",
+      "body": "La tua richiesta di unirti a \"{{clubName}}\" è stata approvata."
+    },
+    "clubJoinRejected": {
+      "title": "Adesione al club rifiutata",
+      "body": "La tua richiesta di unirti a \"{{clubName}}\" è stata rifiutata."
+    },
+    "clubJoinSubmitted": {
+      "title": "Richiesta di adesione inviata",
+      "body": "La tua richiesta di unirti a \"{{clubName}}\" è stata inviata."
+    },
+    "federationMembershipApproved": {
+      "title": "Adesione alla federazione approvata",
+      "body": "\"{{clubName}}\" è ora membro di \"{{federationName}}\"."
+    },
+    "federationMembershipRejected": {
+      "title": "Adesione alla federazione terminata",
+      "body": "\"{{clubName}}\" non è più membro di \"{{federationName}}\"."
+    },
+    "privacyVisibilityChanged": {
+      "title": "Privacy aggiornata",
+      "body": "La visibilità del profilo è cambiata da {{previousVisibilityLabel}} a {{visibilityLabel}}."
+    },
+    "passwordChanged": {
+      "title": "Password modificata",
+      "body": "La password del tuo account è stata modificata correttamente."
+    }
   }
 }

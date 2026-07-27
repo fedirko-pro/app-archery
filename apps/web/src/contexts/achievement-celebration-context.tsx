@@ -1,3 +1,4 @@
+import { NotificationTypes } from '@sokil/shared-types';
 import {
   createContext,
   useCallback,
@@ -9,8 +10,10 @@ import {
   type ReactNode,
 } from 'react';
 
+import { useNotifications } from './notifications-context';
 import AchievementUnlockedDialog from '@/components/achievements/AchievementUnlockedDialog';
 import { useAchievements } from '@/hooks/use-achievements';
+import apiService from '@/services/api';
 
 interface AchievementCelebrationContextValue {
   enqueueCelebration: (ids: string[]) => void;
@@ -36,33 +39,99 @@ interface AchievementCelebrationProviderProps {
   children: ReactNode;
 }
 
+function achievementIdsFromNotifications(
+  items: Array<{ type: string; readAt: string | null; params?: Record<string, unknown> | null }>,
+): string[] {
+  const ids: string[] = [];
+  for (const item of items) {
+    if (item.type !== NotificationTypes.AchievementUnlocked) continue;
+    if (item.readAt) continue;
+    const achievementId = item.params?.achievementId;
+    if (typeof achievementId === 'string' && achievementId) {
+      ids.push(achievementId);
+    }
+  }
+  return ids;
+}
+
 export function AchievementCelebrationProvider({
   children,
 }: AchievementCelebrationProviderProps): React.ReactElement {
-  const { earned, loading, markSeen, isNewAchievement, syncAndCelebrate, refetch } =
-    useAchievements();
+  const {
+    earned,
+    loading,
+    markSeen,
+    hasSeenAchievement,
+    isNewAchievement,
+    syncAndCelebrate,
+    refetch,
+  } = useAchievements();
+  const { unreadImportantCount } = useNotifications();
 
   const [queue, setQueue] = useState<string[]>([]);
   const queuedOrShownRef = useRef<Set<string>>(new Set());
+  const prevUnreadRef = useRef<number | null>(null);
 
-  const enqueueCelebration = useCallback((ids: string[]) => {
-    if (ids.length === 0) return;
-    setQueue((prev) => {
-      const next = [...prev];
-      for (const id of ids) {
-        if (queuedOrShownRef.current.has(id)) continue;
-        queuedOrShownRef.current.add(id);
-        next.push(id);
-      }
-      return next;
-    });
-  }, []);
+  const enqueueCelebration = useCallback(
+    (ids: string[]) => {
+      if (ids.length === 0) return;
+      setQueue((prev) => {
+        const next = [...prev];
+        for (const id of ids) {
+          if (hasSeenAchievement(id)) continue;
+          if (queuedOrShownRef.current.has(id)) continue;
+          queuedOrShownRef.current.add(id);
+          next.push(id);
+        }
+        return next;
+      });
+    },
+    [hasSeenAchievement],
+  );
 
   const celebrateAfterSync = useCallback(async (): Promise<string[]> => {
     const ids = await syncAndCelebrate();
     enqueueCelebration(ids);
     return ids;
   }, [syncAndCelebrate, enqueueCelebration]);
+
+  const celebrateFromUnreadNotifications = useCallback(async () => {
+    try {
+      const data = await apiService.getNotifications({ limit: 30 });
+      const ids = achievementIdsFromNotifications(data.items);
+      if (ids.length === 0) return;
+      enqueueCelebration(ids);
+      await refetch();
+    } catch {
+      // Non-blocking
+    }
+  }, [enqueueCelebration, refetch]);
+
+  // When new important notifications arrive (e.g. achievement unlocked server-side),
+  // pick up achievement unlocks and show confetti without a full page refresh.
+  useEffect(() => {
+    if (prevUnreadRef.current === null) {
+      prevUnreadRef.current = unreadImportantCount;
+      if (unreadImportantCount > 0) {
+        void celebrateFromUnreadNotifications();
+      }
+      return;
+    }
+
+    if (unreadImportantCount > prevUnreadRef.current) {
+      void celebrateFromUnreadNotifications();
+    }
+    prevUnreadRef.current = unreadImportantCount;
+  }, [unreadImportantCount, celebrateFromUnreadNotifications]);
+
+  // Catch-up when returning to the tab after an unlock elsewhere.
+  useEffect(() => {
+    const onFocus = () => {
+      void refetch();
+    };
+    window.addEventListener('focus', onFocus);
+    return () => window.removeEventListener('focus', onFocus);
+  }, [refetch]);
 
   // Catch-up for silent unlocks (GET / training sync) and later refetches:
   // celebrate any earned id that is still unseen and recent.

@@ -40,6 +40,7 @@ export interface UseAchievementsResult {
   refetch: () => Promise<void>;
   syncAndCelebrate: () => Promise<string[]>;
   markSeen: (ids: string[]) => void;
+  hasSeenAchievement: (id: string) => boolean;
   unseenEarnedIds: string[];
   isNewAchievement: (id: string, earnedAt?: string | null) => boolean;
 }
@@ -143,6 +144,8 @@ export function useAchievements(options?: UseAchievementsOptions): UseAchievemen
     });
   }, []);
 
+  const hasSeenAchievement = useCallback((id: string): boolean => seenIds.has(id), [seenIds]);
+
   const isNewAchievement = useCallback(
     (id: string, earnedAt?: string | null): boolean => {
       if (seenIds.has(id)) return false;
@@ -177,6 +180,7 @@ export function useAchievements(options?: UseAchievementsOptions): UseAchievemen
     refetch: fetchServer,
     syncAndCelebrate,
     markSeen,
+    hasSeenAchievement,
     unseenEarnedIds,
     isNewAchievement,
   };

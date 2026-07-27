@@ -2,10 +2,12 @@ import { Injectable, NotFoundException, BadRequestException } from '@nestjs/comm
 import { EntityManager } from '@mikro-orm/core';
 import {
   ACHIEVEMENT_CATALOG,
+  ACHIEVEMENT_CATALOG_BY_ID,
   AchievementStatsSnapshot,
   evaluateComputedProgress,
   isValidAchievementId,
   lbsToKg,
+  NotificationTypes,
   summarizeCompletion,
 } from '@sokil/shared-types';
 import { UserAchievement } from './entity/user-achievement.entity';
@@ -15,6 +17,7 @@ import { EquipmentService } from '../equipment/equipment.service';
 import { TrainingSession } from '../training/training-session.entity';
 import { AchievementProgressDto, AchievementsListDto } from './dto/achievement-progress.dto';
 import { PublicProgressShareDto } from './dto/public-progress-share.dto';
+import { NotificationsService } from '../notification/notifications.service';
 
 @Injectable()
 export class AchievementsService {
@@ -22,6 +25,7 @@ export class AchievementsService {
     private readonly em: EntityManager,
     private readonly trainingService: TrainingService,
     private readonly equipmentService: EquipmentService,
+    private readonly notificationsService: NotificationsService,
   ) {}
 
   async buildSnapshot(userId: string): Promise<AchievementStatsSnapshot> {
@@ -110,6 +114,9 @@ export class AchievementsService {
 
     if (newlyUnlocked.length > 0) {
       await this.em.flush();
+      for (const achievementId of newlyUnlocked) {
+        this.notifyAchievementUnlocked(userId, achievementId);
+      }
     }
 
     return newlyUnlocked;
@@ -138,7 +145,21 @@ export class AchievementsService {
     row.source = source;
     if (metadata) row.metadata = metadata;
     await this.em.persistAndFlush(row);
+    this.notifyAchievementUnlocked(userId, achievementId);
     return true;
+  }
+
+  private notifyAchievementUnlocked(userId: string, achievementId: string): void {
+    const def = ACHIEVEMENT_CATALOG_BY_ID[achievementId];
+    this.notificationsService.createSafe({
+      userId,
+      type: NotificationTypes.AchievementUnlocked,
+      params: {
+        achievementId,
+        achievementTitleKey: def?.titleKey ?? achievementId,
+      },
+      link: '/achievements',
+    });
   }
 
   async getForUser(userId: string, syncFirst = false): Promise<AchievementsListDto> {

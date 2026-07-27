@@ -50,6 +50,9 @@ import type {
   AchievementsListDto,
   AchievementSyncResultDto,
   PublicProgressShareDto,
+  NotificationDto,
+  NotificationsListDto,
+  NotificationUnreadCountDto,
 } from './types';
 
 interface RequestOptions extends RequestInit {
@@ -1348,6 +1351,35 @@ class ApiService {
 
   async getTrainingStats(): Promise<TrainingStatsDto> {
     return this.request<TrainingStatsDto>('/trainings/stats');
+  }
+
+  // Notifications
+
+  async getNotifications(params?: {
+    limit?: number;
+    offset?: number;
+  }): Promise<NotificationsListDto> {
+    const search = new URLSearchParams();
+    if (params?.limit != null) search.set('limit', String(params.limit));
+    if (params?.offset != null) search.set('offset', String(params.offset));
+    const qs = search.toString();
+    return this.request<NotificationsListDto>(`/notifications${qs ? `?${qs}` : ''}`);
+  }
+
+  async getNotificationUnreadCount(): Promise<NotificationUnreadCountDto> {
+    return this.request<NotificationUnreadCountDto>('/notifications/unread-count');
+  }
+
+  async markNotificationRead(id: string): Promise<NotificationDto> {
+    return this.request<NotificationDto>(`/notifications/${id}/read`, {
+      method: 'PATCH',
+    });
+  }
+
+  async markAllNotificationsRead(): Promise<{ marked: number }> {
+    return this.request<{ marked: number }>('/notifications/read-all', {
+      method: 'PATCH',
+    });
   }
 }
 

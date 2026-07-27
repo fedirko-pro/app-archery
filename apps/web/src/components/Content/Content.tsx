@@ -38,6 +38,7 @@ import MyPaymentsPage from '../../views/MyPayments';
 import MyStatisticsPage from '../../views/MyStatistics';
 import MyTrainingsPage from '../../views/MyTrainings';
 import NotFound from '../../views/NotFound';
+import NotificationsPage from '../../views/Notifications';
 import OnboardingPage from '../../views/Onboarding';
 import Profile from '../../views/profile/profile';
 import ProfileEditPage from '../../views/profile/profile-edit-page';
@@ -98,6 +99,14 @@ function Content() {
             element={
               <ProtectedRoute>
                 <Profile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="notifications"
+            element={
+              <ProtectedRoute>
+                <NotificationsPage />
               </ProtectedRoute>
             }
           />

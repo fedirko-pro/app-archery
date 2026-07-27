@@ -82,6 +82,29 @@
           text-align: left;
           background: none;
           text-transform: capitalize;
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          gap: 10px;
+
+          .menu_link_label {
+            min-width: 0;
+          }
+
+          .menu_badge {
+            flex-shrink: 0;
+            min-width: 22px;
+            height: 22px;
+            padding: 0 6px;
+            border-radius: 11px;
+            background: #c62828;
+            color: $white;
+            font-size: 12px;
+            font-weight: 700;
+            line-height: 22px;
+            text-align: center;
+            text-transform: none;
+          }
 
           &.admin-menu-item {
             padding-left: 48px;

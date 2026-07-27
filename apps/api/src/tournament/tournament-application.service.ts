@@ -12,6 +12,8 @@ import { Division } from '../division/division.entity';
 import { BowCategory } from '../bow-category/bow-category.entity';
 import { EmailService } from '../email/email.service';
 import { AchievementsService } from '../user/achievements.service';
+import { NotificationsService } from '../notification/notifications.service';
+import { NotificationTypes } from '@sokil/shared-types';
 
 @Injectable()
 export class TournamentApplicationService {
@@ -19,6 +21,7 @@ export class TournamentApplicationService {
     private readonly em: EntityManager,
     private readonly emailService: EmailService,
     private readonly achievementsService: AchievementsService,
+    private readonly notificationsService: NotificationsService,
   ) {}
 
   /** Resolve divisionId from division (id) or divisionId. */
@@ -145,6 +148,13 @@ export class TournamentApplicationService {
         applicant.appLanguage,
       )
       .catch((err) => console.error('Failed to send application submitted email:', err));
+
+    this.notificationsService.createSafe({
+      userId: applicant.id,
+      type: NotificationTypes.TournamentApplicationSubmitted,
+      params: { tournamentTitle: tournament.title, tournamentId: tournament.id },
+      link: '/applications',
+    });
 
     return application;
   }
@@ -291,6 +301,27 @@ export class TournamentApplicationService {
         .catch(() => {
           /* non-blocking */
         });
+
+      this.notificationsService.createSafe({
+        userId: applicantId,
+        type: NotificationTypes.TournamentApplicationApproved,
+        params: {
+          tournamentTitle: application.tournament.title,
+          tournamentId: application.tournament.id,
+        },
+        link: '/applications',
+      });
+    } else if (status === ApplicationStatus.REJECTED) {
+      this.notificationsService.createSafe({
+        userId: application.applicant.id,
+        type: NotificationTypes.TournamentApplicationRejected,
+        params: {
+          tournamentTitle: application.tournament.title,
+          tournamentId: application.tournament.id,
+          rejectionReason: rejectionReason?.trim(),
+        },
+        link: '/applications',
+      });
     }
 
     // ✅ Send email notification

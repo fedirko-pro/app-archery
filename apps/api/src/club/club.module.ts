@@ -13,12 +13,14 @@ import { ClubJoinRequestService } from './club-join-request.service';
 import { ClubJoinRequestController } from './club-join-request.controller';
 import { UploadModule } from '../upload/upload.module';
 import { EmailModule } from '../email/email.module';
+import { NotificationsModule } from '../notification/notifications.module';
 
 @Module({
   imports: [
     MikroOrmModule.forFeature([Club, ClubMembership, ClubInvitation, ClubJoinRequest]),
     UploadModule,
     EmailModule,
+    NotificationsModule,
   ],
   controllers: [ClubJoinRequestController, ClubMembershipController, ClubController],
   providers: [ClubService, ClubMembershipService, ClubInvitationService, ClubJoinRequestService],

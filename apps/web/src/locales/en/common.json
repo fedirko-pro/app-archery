@@ -30,7 +30,8 @@
     "glossary": "Glossary",
     "fieldGuide": "Field Guide",
     "myClub": "My Club",
-    "myFederation": "My Federation"
+    "myFederation": "My Federation",
+    "notifications": "Notifications"
   },
   "accessControl": {
     "title": "Access Control",
@@ -1509,5 +1510,63 @@
   "logoUploader": {
     "currentLogo": "Current logo: {{name}}",
     "corsPreviewUnavailable": "Preview unavailable - CORS restriction. Upload a new image to edit."
+  },
+  "notifications": {
+    "title": "Notifications",
+    "lastLogin": "Last login: {{datetime}}",
+    "firstSession": "This is your first session on this device.",
+    "empty": "You have no notifications yet.",
+    "fetchError": "Could not load notifications. Please try again.",
+    "markAllRead": "Mark all as read",
+    "markAllError": "Could not mark notifications as read.",
+    "openRelated": "Open related",
+    "achievementUnlocked": {
+      "title": "New achievement",
+      "body": "You unlocked \"{{achievementName}}\"."
+    },
+    "tournamentApplicationApproved": {
+      "title": "Application approved",
+      "body": "Your application to \"{{tournamentTitle}}\" was approved."
+    },
+    "tournamentApplicationRejected": {
+      "title": "Application rejected",
+      "body": "Your application to \"{{tournamentTitle}}\" was rejected."
+    },
+    "tournamentApplicationSubmitted": {
+      "title": "Application submitted",
+      "body": "Your application to \"{{tournamentTitle}}\" was submitted."
+    },
+    "clubInvitationReceived": {
+      "title": "Club invitation",
+      "body": "{{invitedByName}} invited you to join \"{{clubName}}\"."
+    },
+    "clubJoinApproved": {
+      "title": "Club join approved",
+      "body": "Your request to join \"{{clubName}}\" was approved."
+    },
+    "clubJoinRejected": {
+      "title": "Club join rejected",
+      "body": "Your request to join \"{{clubName}}\" was rejected."
+    },
+    "clubJoinSubmitted": {
+      "title": "Club join request sent",
+      "body": "Your request to join \"{{clubName}}\" was submitted."
+    },
+    "federationMembershipApproved": {
+      "title": "Federation membership approved",
+      "body": "\"{{clubName}}\" is now a member of \"{{federationName}}\"."
+    },
+    "federationMembershipRejected": {
+      "title": "Federation membership ended",
+      "body": "\"{{clubName}}\" is no longer a member of \"{{federationName}}\"."
+    },
+    "privacyVisibilityChanged": {
+      "title": "Privacy updated",
+      "body": "Profile visibility changed from {{previousVisibilityLabel}} to {{visibilityLabel}}."
+    },
+    "passwordChanged": {
+      "title": "Password changed",
+      "body": "Your account password was changed successfully."
+    }
   }
 }

@@ -5,3 +5,4 @@ export * from './tournament';
 export * from './common';
 export * from './user';
 export * from './achievements';
+export * from './notification';
