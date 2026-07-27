@@ -1478,6 +1478,10 @@
   "languageToggler": {
     "label": "Idioma"
   },
+  "themeSwitcher": {
+    "toDark": "Mudar para tema escuro",
+    "toLight": "Mudar para tema claro"
+  },
   "localData": {
     "localStorageBadge": "Dados locais no dispositivo",
     "pendingSyncBanner": "{{count}} item a aguardar sincronização",

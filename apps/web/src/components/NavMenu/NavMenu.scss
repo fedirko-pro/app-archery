@@ -16,7 +16,7 @@
 .menu_title {
   margin-top: 4px;
   font-size: 10px;
-  color: $blue;
+  color: var(--chrome-text, #{$blue});
   letter-spacing: 0.5px;
   text-transform: uppercase;
 }
@@ -45,7 +45,7 @@ header.app-header {
       height: 3px;
       border-radius: 2px;
       margin: 8px 0;
-      background: $blue;
+      background: var(--chrome-text, #{$blue});
       &:first-of-type,
       &:last-of-type {
         margin: 0;

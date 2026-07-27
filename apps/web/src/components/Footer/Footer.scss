@@ -11,13 +11,13 @@ footer.app-footer {
   display: flex;
   align-items: center;
   justify-content: space-around;
-  background: $white;
+  background: var(--chrome-bg, #{$white});
 
   > a,
   .footer_side {
     text-decoration: none;
     text-transform: uppercase;
-    color: $blue;
+    color: var(--chrome-text, #{$blue});
     font-size: 10px;
     font-weight: bold;
     width: 33%;
@@ -57,7 +57,7 @@ footer.app-footer {
   }
   .central_button {
     display: block;
-    background: white url('../../../src/img/sokil.svg') center no-repeat;
+    background: var(--chrome-bg, #{$white}) url('../../../src/img/sokil.svg') center no-repeat;
     background-size: contain;
     border-radius: 50%;
     width: 44px;

@@ -6,13 +6,13 @@ header.app-header {
   height: 72px;
   width: 100%;
   transition: all 0.3s;
-  border-bottom: 3px solid $blue;
+  border-bottom: 3px solid var(--chrome-border, #{$blue});
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-direction: row;
   position: relative;
-  background: $white;
+  background: var(--chrome-bg, #{$white});
 
   .header_logo {
     position: absolute;
@@ -37,6 +37,11 @@ header.app-header {
     }
   }
 
+  :root[data-theme='dark'] & .header_logo a {
+    filter: drop-shadow(0 0 4px rgba(255, 204, 0, 0.55))
+      drop-shadow(0 0 10px rgba(255, 204, 0, 0.35));
+  }
+
   .menu_icon {
     width: 20px;
     height: 20px;
@@ -52,7 +57,7 @@ header.app-header {
   .menu_title {
     margin-top: 4px;
     font-size: 10px;
-    color: $blue;
+    color: var(--chrome-text, #{$blue});
     letter-spacing: 0.5px;
     text-transform: uppercase;
   }

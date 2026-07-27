@@ -3,16 +3,18 @@
 import '../../i18n';
 
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import type { ReactNode } from 'react';
+import CssBaseline from '@mui/material/CssBaseline';
+import { ThemeProvider } from '@mui/material/styles';
+import { useMemo, type ReactNode } from 'react';
 
 import { isProd } from '../../config/env';
 import { AchievementCelebrationProvider } from '../../contexts/achievement-celebration-context';
 import { AuthProvider } from '../../contexts/auth-context';
+import { ColorModeProvider, useColorMode } from '../../contexts/color-mode-context';
 import { ErrorFeedbackProvider } from '../../contexts/error-feedback-context';
 import { LocalDataProvider } from '../../contexts/local-data-context';
 import { NotificationsProvider } from '../../contexts/notifications-context';
-import { COLORS } from '../../theme/colors';
+import { createAppTheme } from '../../theme/create-app-theme';
 import AppBottomChrome from '../AppBottomChrome/AppBottomChrome';
 import AppStatusBar from '../AppStatusBar';
 import { AppUpdatePrompt } from '../AppUpdatePrompt';
@@ -22,20 +24,22 @@ import { ErrorBoundary } from '../ErrorBoundary';
 import Header from '../Header/Header';
 import { ScrollToTop } from '../ScrollToTop/ScrollToTop';
 
-const theme = createTheme({
-  typography: {
-    fontFamily: '"Montserrat", Arial, Helvetica, sans-serif',
-  },
-  palette: {
-    primary: {
-      main: COLORS.primary,
-    },
-    secondary: {
-      main: COLORS.secondary,
-      contrastText: COLORS.secondaryContrastText,
-    },
-  },
-});
+function ThemedApp({ children }: { children: ReactNode }) {
+  const { mode } = useColorMode();
+  const theme = useMemo(() => createAppTheme(mode), [mode]);
+
+  return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <ErrorFeedbackProvider>
+        <EnvError />
+        <AppStatusBar />
+        <AppUpdatePrompt />
+        {children}
+      </ErrorFeedbackProvider>
+    </ThemeProvider>
+  );
+}
 
 interface RootProvidersProps {
   children: ReactNode;
@@ -45,14 +49,9 @@ export function RootProviders({ children }: RootProvidersProps) {
   return (
     <ErrorBoundary>
       <AppRouterCacheProvider>
-        <ThemeProvider theme={theme}>
-          <ErrorFeedbackProvider>
-            <EnvError />
-            <AppStatusBar />
-            <AppUpdatePrompt />
-            {children}
-          </ErrorFeedbackProvider>
-        </ThemeProvider>
+        <ColorModeProvider>
+          <ThemedApp>{children}</ThemedApp>
+        </ColorModeProvider>
       </AppRouterCacheProvider>
     </ErrorBoundary>
   );

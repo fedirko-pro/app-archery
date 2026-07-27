@@ -1501,6 +1501,10 @@
   "languageToggler": {
     "label": "Language"
   },
+  "themeSwitcher": {
+    "toDark": "Switch to dark theme",
+    "toLight": "Switch to light theme"
+  },
   "fileAttachments": {
     "delete": "Delete"
   },

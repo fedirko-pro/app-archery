@@ -1,0 +1,37 @@
+@use '../../sass/helpers/variables' as *;
+
+.theme_switcher {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+
+  &__icon {
+    color: rgba(255, 255, 255, 0.35);
+    transition: color 0.2s ease;
+
+    &--active {
+      color: $yellow;
+    }
+  }
+
+  &__switch {
+    .MuiSwitch-switchBase {
+      color: $yellow;
+
+      &.Mui-checked {
+        color: $yellow;
+
+        + .MuiSwitch-track {
+          background-color: $yellow;
+          opacity: 0.5;
+        }
+      }
+    }
+
+    .MuiSwitch-track {
+      background-color: rgba(255, 255, 255, 0.35);
+      opacity: 1;
+    }
+  }
+}

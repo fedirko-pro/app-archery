@@ -1527,6 +1527,10 @@
   "languageToggler": {
     "label": "Мова"
   },
+  "themeSwitcher": {
+    "toDark": "Перемкнути на темну тему",
+    "toLight": "Перемкнути на світлу тему"
+  },
   "logoUploader": {
     "corsPreviewUnavailable": "Попередній перегляд недоступний — обмеження CORS. Завантажте нове зображення для редагування.",
     "currentLogo": "Поточний логотип: {{name}}"

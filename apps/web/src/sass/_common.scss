@@ -46,8 +46,8 @@ body {
   font-synthesis: weight;
   cursor: default;
   position: relative;
-  background: $white;
-  color: $text-body;
+  background: var(--bg-color, #{$white});
+  color: var(--text-primary, #{$text-body});
   font-size: 16px;
   overflow-x: clip;
   -webkit-tap-highlight-color: transparent;

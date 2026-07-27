@@ -1504,6 +1504,10 @@
   "languageToggler": {
     "label": "Sprache"
   },
+  "themeSwitcher": {
+    "toDark": "Zum dunklen Design wechseln",
+    "toLight": "Zum hellen Design wechseln"
+  },
   "logoUploader": {
     "corsPreviewUnavailable": "Vorschau nicht verfügbar — CORS-Einschränkung. Laden Sie ein neues Bild zum Bearbeiten hoch.",
     "currentLogo": "Aktuelles Logo: {{name}}"
