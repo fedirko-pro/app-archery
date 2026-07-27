@@ -39,7 +39,7 @@ void i18n.use(initReactI18next).init({
   ns: ['common'],
   defaultNS: 'common',
   interpolation: { escapeValue: false },
-  lng: isBrowser ? undefined : 'pt',
+  lng: isBrowser ? undefined : 'en',
   detection: isBrowser
     ? {
         order: ['path', 'localStorage', 'navigator', 'htmlTag'],

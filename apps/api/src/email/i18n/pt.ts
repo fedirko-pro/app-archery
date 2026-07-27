@@ -4,14 +4,14 @@ export const pt: EmailI18n = {
   footer: 'Este é um e-mail automático. Por favor, não responda a esta mensagem.',
 
   passwordReset: {
-    subject: 'Pedido de redefinição de senha',
-    heading: 'Pedido de Redefinição de Senha',
+    subject: 'Pedido de reposição de palavra-passe',
+    heading: 'Pedido de Reposição de Palavra-passe',
     hello: 'Olá,',
-    body: 'Recebemos um pedido para redefinir a senha da sua conta. Clique no botão abaixo para definir uma nova senha:',
-    ctaLabel: 'Redefinir Senha',
+    body: 'Recebemos um pedido para repor a palavra-passe da sua conta. Clique no botão abaixo para definir uma nova palavra-passe:',
+    ctaLabel: 'Repor Palavra-passe',
     linkFallback: 'Se o botão não funcionar, pode copiar e colar este link no seu navegador:',
     expiry: 'Este link expirará em 1 hora por razões de segurança.',
-    ignoreNote: 'Se não solicitou esta redefinição de senha, por favor ignore este e-mail.',
+    ignoreNote: 'Se não solicitou esta reposição de palavra-passe, por favor ignore este e-mail.',
   },
 
   welcome: {
@@ -32,8 +32,8 @@ export const pt: EmailI18n = {
   invitation: {
     subject: 'Está convidado(a) para a Archery App',
     heading: 'Está Convidado(a) para a Archery App',
-    body: '{{adminName}} criou uma conta para você na Archery App. Clique no botão abaixo para definir a sua senha e começar:',
-    ctaLabel: 'Definir Senha',
+    body: '{{adminName}} criou uma conta para si na Archery App. Clique no botão abaixo para definir a sua palavra-passe e começar:',
+    ctaLabel: 'Definir Palavra-passe',
     linkFallback: 'Se o botão não funcionar, copie e cole este link no seu navegador:',
     expiry: 'Este link expirará em 24 horas.',
     ignoreNote: 'Se não estava a esperar este convite, pode ignorar este e-mail com segurança.',

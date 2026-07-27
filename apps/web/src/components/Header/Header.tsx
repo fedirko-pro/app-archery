@@ -12,7 +12,7 @@ const Header: React.FC = () => {
   const { t } = useTranslation('common');
   const { lang } = useParams();
   const location = useLocation();
-  // Use URL param first, then fallback to pathname, then i18n, then default to 'pt'
+  // Use URL param first, then fallback to pathname, then i18n, then default to 'en'
   const inferredLang = fromI18nLang(getCurrentI18nLang());
   const currentLang = normalizeAppLang(lang || location.pathname.split('/')[1] || inferredLang);
   return (

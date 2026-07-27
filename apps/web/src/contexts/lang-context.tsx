@@ -4,7 +4,7 @@ import { createContext, useContext, type ReactNode } from 'react';
 
 import { type AppLanguage, normalizeAppLang } from '../utils/i18n-lang';
 
-const LangContext = createContext<AppLanguage>('pt');
+const LangContext = createContext<AppLanguage>('en');
 
 interface LangProviderProps {
   lang: string;

@@ -11,6 +11,11 @@
     "isolatedModules": true,
     "noEmit": true
   },
-  "include": ["apps/*/src/**/*.ts", "apps/*/src/**/*.tsx", "packages/*/src/**/*.ts"],
+  "include": [
+    "apps/*/src/**/*.ts",
+    "apps/*/src/**/*.tsx",
+    "apps/web/styles.d.ts",
+    "packages/*/src/**/*.ts"
+  ],
   "exclude": ["node_modules", "dist", ".next"]
 }

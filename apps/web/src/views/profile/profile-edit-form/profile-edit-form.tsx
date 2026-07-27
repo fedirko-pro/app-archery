@@ -268,12 +268,12 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
               select
               label={t('forms.applicationLanguage', 'Application language')}
               name="appLanguage"
-              value={profileData.appLanguage || 'pt'}
+              value={profileData.appLanguage || 'en'}
               onChange={onChange}
               fullWidth
               margin="normal"
             >
-              <MenuItem value="pt">Português (PT)</MenuItem>
+              <MenuItem value="pt">Português (Portugal)</MenuItem>
               <MenuItem value="en">English (EN)</MenuItem>
               <MenuItem value="it">Italiano (IT)</MenuItem>
               <MenuItem value="es">Español (ES)</MenuItem>

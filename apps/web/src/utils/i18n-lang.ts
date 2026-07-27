@@ -1,5 +1,7 @@
 export type AppLanguage = 'pt' | 'en' | 'it' | 'ua' | 'es' | 'de';
 
+export const DEFAULT_APP_LANG: AppLanguage = 'en';
+
 export const SUPPORTED_APP_LANGS: AppLanguage[] = ['pt', 'en', 'it', 'ua', 'es', 'de'];
 
 const APP_TO_I18N_MAP: Record<AppLanguage, string> = {
@@ -13,17 +15,18 @@ const APP_TO_I18N_MAP: Record<AppLanguage, string> = {
 
 const I18N_TO_APP_MAP: Record<string, AppLanguage> = {
   pt: 'pt',
-  'pt-PT': 'pt',
+  'pt-pt': 'pt',
+  'pt-br': 'pt', // browser locale; app copy is European Portuguese (pt-PT)
   en: 'en',
-  'en-US': 'en',
+  'en-us': 'en',
   it: 'it',
-  'it-IT': 'it',
+  'it-it': 'it',
   uk: 'ua',
-  'uk-UA': 'ua',
+  'uk-ua': 'ua',
   es: 'es',
-  'es-ES': 'es',
+  'es-es': 'es',
   de: 'de',
-  'de-DE': 'de',
+  'de-de': 'de',
 };
 
 export function normalizeAppLang(lang: string | undefined | null): AppLanguage {
@@ -31,7 +34,7 @@ export function normalizeAppLang(lang: string | undefined | null): AppLanguage {
   if (SUPPORTED_APP_LANGS.includes(lower as AppLanguage)) {
     return lower as AppLanguage;
   }
-  return 'pt';
+  return DEFAULT_APP_LANG;
 }
 
 export function toI18nLang(appLang: AppLanguage): string {
@@ -40,7 +43,7 @@ export function toI18nLang(appLang: AppLanguage): string {
 
 export function fromI18nLang(i18nLang: string): AppLanguage {
   const lower = i18nLang.toLowerCase();
-  return I18N_TO_APP_MAP[lower] || I18N_TO_APP_MAP[lower.split('-')[0]] || 'pt';
+  return I18N_TO_APP_MAP[lower] || I18N_TO_APP_MAP[lower.split('-')[0]] || DEFAULT_APP_LANG;
 }
 
 export function isRtlLanguage(_appLang: AppLanguage): boolean {
@@ -49,7 +52,7 @@ export function isRtlLanguage(_appLang: AppLanguage): boolean {
 
 export function getCurrentI18nLang(): string {
   if (typeof window === 'undefined') {
-    return 'pt';
+    return DEFAULT_APP_LANG;
   }
 
   // Prefer i18next stored lang, then <html lang>, then default
@@ -63,7 +66,7 @@ export function getCurrentI18nLang(): string {
   const htmlLang = document.documentElement.getAttribute('lang');
   if (htmlLang) return htmlLang;
 
-  return 'pt';
+  return DEFAULT_APP_LANG;
 }
 
 export function getDefaultAppLang(): AppLanguage {
@@ -82,7 +85,7 @@ export type UserLanguageSource = {
 /** Get app language from user profile; falls back to default. */
 export function getAppLanguageFromUser(
   user: UserLanguageSource,
-  defaultLang: AppLanguage = 'pt',
+  defaultLang: AppLanguage = DEFAULT_APP_LANG,
 ): AppLanguage {
   const raw = user?.appLanguage ?? user?.app_language ?? user?.language ?? defaultLang;
   return normalizeAppLang(raw);
@@ -109,8 +112,8 @@ export function pickLocalizedDescription(
   const snakeCaseDirect = record[snakeCaseKey];
   if (typeof snakeCaseDirect === 'string' && snakeCaseDirect.trim()) return snakeCaseDirect;
 
-  // fallback order: pt -> en -> it -> es -> uk -> plain description
-  const fallbacks: Array<AppLanguage | 'uk'> = ['pt', 'en', 'it', 'es', 'de', 'ua', 'uk'];
+  // fallback order: en -> pt -> it -> es -> de -> uk -> plain description
+  const fallbacks: Array<AppLanguage | 'uk'> = ['en', 'pt', 'it', 'es', 'de', 'ua', 'uk'];
   for (const fb of fallbacks) {
     const fbKey = fb === 'ua' ? 'uk' : fb;
 

@@ -16,11 +16,11 @@ describe('normalizeAppLang', () => {
     expect(normalizeAppLang('UA')).toBe('ua');
   });
 
-  it('returns "pt" for unsupported or empty', () => {
-    expect(normalizeAppLang('fr')).toBe('pt');
-    expect(normalizeAppLang('')).toBe('pt');
-    expect(normalizeAppLang(undefined)).toBe('pt');
-    expect(normalizeAppLang(null as unknown as string)).toBe('pt');
+  it('returns "en" for unsupported or empty', () => {
+    expect(normalizeAppLang('fr')).toBe('en');
+    expect(normalizeAppLang('')).toBe('en');
+    expect(normalizeAppLang(undefined)).toBe('en');
+    expect(normalizeAppLang(null as unknown as string)).toBe('en');
   });
 });
 
@@ -37,6 +37,9 @@ describe('fromI18nLang', () => {
     expect(fromI18nLang('en')).toBe('en');
     expect(fromI18nLang('uk')).toBe('ua');
     expect(fromI18nLang('uk-UA')).toBe('ua');
+    expect(fromI18nLang('pt')).toBe('pt');
+    expect(fromI18nLang('pt-PT')).toBe('pt');
+    expect(fromI18nLang('pt-BR')).toBe('pt');
   });
 });
 
@@ -91,16 +94,16 @@ describe('getAppLanguageFromUser', () => {
   });
 
   it('returns default for null user', () => {
-    expect(getAppLanguageFromUser(null)).toBe('pt');
-    expect(getAppLanguageFromUser(null, 'en')).toBe('en');
+    expect(getAppLanguageFromUser(null)).toBe('en');
+    expect(getAppLanguageFromUser(null, 'pt')).toBe('pt');
   });
 
   it('returns default when no language fields', () => {
-    expect(getAppLanguageFromUser({})).toBe('pt');
+    expect(getAppLanguageFromUser({})).toBe('en');
     expect(getAppLanguageFromUser({}, 'it')).toBe('it');
   });
 
   it('normalizes unsupported language to default', () => {
-    expect(getAppLanguageFromUser({ appLanguage: 'fr' })).toBe('pt');
+    expect(getAppLanguageFromUser({ appLanguage: 'fr' })).toBe('en');
   });
 });
