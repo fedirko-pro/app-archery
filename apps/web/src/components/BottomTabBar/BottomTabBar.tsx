@@ -38,7 +38,6 @@ const BottomTabBar: React.FC = () => {
           className={({ isActive }) =>
             classNames('bottom-tab-bar__link', {
               'bottom-tab-bar__link--active': isActive,
-              'bottom-tab-bar__link--center': path === 'home',
             })
           }
         >

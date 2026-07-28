@@ -66,6 +66,7 @@ import {
   toSessionFormDefaults,
 } from '../../utils/training-stats';
 import ConfirmReplaceActiveSessionDialog from '../MyTrainings/ConfirmReplaceActiveSessionDialog';
+import { MoodIcon } from '../MyTrainings/MoodPicker';
 
 interface MergedTournamentCard {
   tournament: Pick<
@@ -712,9 +713,12 @@ const HomePage: React.FC = () => {
                   <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1 }}>
                     <TrackChangesIcon color="primary" sx={{ mt: 0.25, fontSize: 20 }} />
                     <Box sx={{ flex: 1, minWidth: 0 }}>
-                      <Typography variant="subtitle2" fontWeight={600}>
-                        {formatTrainingSessionDateTime(session)}
-                      </Typography>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <Typography variant="subtitle2" fontWeight={600} sx={{ flex: 1 }}>
+                          {formatTrainingSessionDateTime(session)}
+                        </Typography>
+                        {session.mood && <MoodIcon mood={session.mood} fontSize={22} />}
+                      </Box>
                       <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mt: 0.5 }}>
                         {session.shotsCount !== undefined && (
                           <Typography variant="body2" color="text.secondary">

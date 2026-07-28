@@ -18,12 +18,7 @@ import {
   serializeArrowMaterial,
 } from '../../utils/equipment-utils';
 import type { LocalEquipmentSet, CustomField } from '../../utils/local-data-storage';
-import {
-  isNonNegativeDecimalInput,
-  isNonNegativeIntegerInput,
-  parsePositiveFloat,
-  parsePositiveInt,
-} from '../../utils/non-negative-number';
+import { isNonNegativeDecimalInput, parsePositiveFloat } from '../../utils/non-negative-number';
 
 interface EquipmentSetFormProps {
   initial?: Partial<LocalEquipmentSet>;
@@ -87,8 +82,8 @@ const EquipmentSetForm: React.FC<EquipmentSetFormProps> = ({
     }
 
     const length = parsePositiveFloat(arrowLength);
-    const spine = parsePositiveInt(arrowSpine);
     const weight = parsePositiveFloat(arrowWeight);
+    const spine = arrowSpine.trim();
 
     onSubmit({
       name: name.trim(),
@@ -97,7 +92,7 @@ const EquipmentSetForm: React.FC<EquipmentSetFormProps> = ({
       model: model.trim() || undefined,
       drawWeight: parsePositiveFloat(drawWeight),
       arrowLength: length !== undefined ? String(length) : undefined,
-      arrowSpine: spine !== undefined ? String(spine) : undefined,
+      arrowSpine: spine || undefined,
       arrowWeight: weight !== undefined ? String(weight) : undefined,
       arrowMaterial: serializeArrowMaterial(arrowMaterialPreset, customArrowMaterial),
       customFields: customFields.filter((f) => f.key.trim()),
@@ -197,16 +192,9 @@ const EquipmentSetForm: React.FC<EquipmentSetFormProps> = ({
         <TextField
           label={t('equipment.arrowSpine')}
           value={arrowSpine}
-          onChange={(e) => {
-            const val = e.target.value;
-            if (isNonNegativeIntegerInput(val)) setArrowSpine(val);
-          }}
-          type="number"
+          onChange={(e) => setArrowSpine(e.target.value)}
           fullWidth
-          placeholder="400"
-          slotProps={{
-            htmlInput: { min: 1, step: 1, inputMode: 'numeric' },
-          }}
+          placeholder="45-50"
         />
       </Box>
 
