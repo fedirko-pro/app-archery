@@ -1,9 +1,9 @@
-import { Entity, PrimaryKey, Property, ManyToOne } from '@mikro-orm/core';
+import { Entity, ManyToOne, PrimaryKey, Property } from '@mikro-orm/core';
 import { v4 as uuid } from 'uuid';
-import { Tournament } from './tournament.entity';
-import { User } from '../user/entity/user.entity';
-import { Division } from '../division/division.entity';
 import { BowCategory } from '../bow-category/bow-category.entity';
+import { Division } from '../division/division.entity';
+import { User } from '../user/entity/user.entity';
+import { Tournament } from './tournament.entity';
 
 export enum ApplicationStatus {
   PENDING = 'pending',

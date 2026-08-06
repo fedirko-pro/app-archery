@@ -1,14 +1,14 @@
-import { Injectable, NotFoundException, ConflictException, Logger } from '@nestjs/common';
-import { EntityManager } from '@mikro-orm/core';
-import { ClubInvitation, ClubInvitationStatus } from './club-invitation.entity';
-import { ClubMembership, ClubMembershipStatus, ClubMembershipRole } from './club-membership.entity';
-import { Club } from './club.entity';
-import { User } from '../user/entity/user.entity';
-import { EmailService } from '../email/email.service';
-import { ConfigService } from '@nestjs/config';
 import { randomBytes } from 'node:crypto';
-import { NotificationsService } from '../notification/notifications.service';
+import type { EntityManager } from '@mikro-orm/core';
+import { ConflictException, Injectable, Logger, NotFoundException } from '@nestjs/common';
+import type { ConfigService } from '@nestjs/config';
 import { NotificationTypes } from '@sokil/shared-types';
+import type { EmailService } from '../email/email.service';
+import type { NotificationsService } from '../notification/notifications.service';
+import { User } from '../user/entity/user.entity';
+import { Club } from './club.entity';
+import { ClubInvitation, ClubInvitationStatus } from './club-invitation.entity';
+import { ClubMembership, ClubMembershipRole, ClubMembershipStatus } from './club-membership.entity';
 
 @Injectable()
 export class ClubInvitationService {
@@ -96,7 +96,7 @@ export class ClubInvitationService {
     }
 
     // Find or create user by email
-    let user = await this.em.findOne(User, { email: invitation.email });
+    const user = await this.em.findOne(User, { email: invitation.email });
 
     invitation.status = ClubInvitationStatus.ACCEPTED;
 

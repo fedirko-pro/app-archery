@@ -1,9 +1,9 @@
-import { INestApplication } from '@nestjs/common';
+import type { INestApplication } from '@nestjs/common';
 import * as bcrypt from 'bcryptjs';
 import request from 'supertest';
 
 import {
-  AuthIntegrationMocks,
+  type AuthIntegrationMocks,
   createAuthIntegrationApp,
 } from './helpers/create-auth-integration-app';
 

@@ -1,5 +1,5 @@
-import { EMAIL_HEADER_HTML, EMAIL_HEADER_TEXT } from './partials/header';
 import { buildFooterHtml, buildFooterText } from './partials/footer';
+import { EMAIL_HEADER_HTML, EMAIL_HEADER_TEXT } from './partials/header';
 
 export interface WrappedEmail {
   html: string;

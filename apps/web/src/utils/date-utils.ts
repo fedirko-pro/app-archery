@@ -1,12 +1,8 @@
-import { format, parseISO, isValid, subDays } from 'date-fns';
+import { format, isValid, parseISO, subDays } from 'date-fns';
 
-export const formatDate = (
-  dateString: string | Date,
-  formatString: string = 'PPP',
-): string => {
+export const formatDate = (dateString: string | Date, formatString: string = 'PPP'): string => {
   try {
-    const date =
-      typeof dateString === 'string' ? parseISO(dateString) : dateString;
+    const date = typeof dateString === 'string' ? parseISO(dateString) : dateString;
 
     if (!isValid(date)) {
       return 'Invalid date';

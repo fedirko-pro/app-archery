@@ -1,10 +1,10 @@
 import {
-  Roles,
+  ADMIN_CAPABLE_ROLES,
+  ROLES_CAN_CHANGE_ROLE,
   ROLES_CAN_DELETE,
   ROLES_CAN_MANAGE_APPLICATIONS_AND_PDFS,
   ROLES_CAN_MANAGE_REFERENCE_DATA,
-  ROLES_CAN_CHANGE_ROLE,
-  ADMIN_CAPABLE_ROLES,
+  Roles,
 } from '../user/types';
 
 export interface RequestUser {
@@ -26,10 +26,7 @@ export function canCreateTournament(user: RequestUser): boolean {
 /**
  * Can update this tournament (General Admin, Federation Admin, or Club Admin if owner).
  */
-export function canUpdateTournament(
-  user: RequestUser,
-  tournament: TournamentWithCreator,
-): boolean {
+export function canUpdateTournament(user: RequestUser, tournament: TournamentWithCreator): boolean {
   if (user.role === Roles.GeneralAdmin || user.role === Roles.FederationAdmin) {
     return true;
   }
@@ -90,18 +87,14 @@ export function canViewTournamentApplications(
  * Can edit/delete applications and generate PDFs (Federation Admin, General Admin).
  */
 export function canManageApplicationsAndPdfs(user: RequestUser): boolean {
-  return (ROLES_CAN_MANAGE_APPLICATIONS_AND_PDFS as readonly string[]).includes(
-    user.role,
-  );
+  return (ROLES_CAN_MANAGE_APPLICATIONS_AND_PDFS as readonly string[]).includes(user.role);
 }
 
 /**
  * Can manage reference data (categories, clubs, divisions, rules). General Admin only.
  */
 export function canManageReferenceData(user: RequestUser): boolean {
-  return (ROLES_CAN_MANAGE_REFERENCE_DATA as readonly string[]).includes(
-    user.role,
-  );
+  return (ROLES_CAN_MANAGE_REFERENCE_DATA as readonly string[]).includes(user.role);
 }
 
 /**

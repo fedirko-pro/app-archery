@@ -1,41 +1,42 @@
 import {
+  ArrowDownward,
+  ArrowUpward,
   Check,
   Close,
-  Visibility,
   Groups,
-  ArrowUpward,
-  ArrowDownward,
   RateReview,
+  Visibility,
 } from '@mui/icons-material';
 import {
+  Alert,
   Avatar,
   Box,
-  Typography,
+  Button,
   Card,
   CardContent,
   Chip,
-  Button,
-  Alert,
   CircularProgress,
   Dialog,
-  DialogTitle,
-  DialogContent,
   DialogActions,
-  TextField,
+  DialogContent,
+  DialogTitle,
   FormControl,
   InputLabel,
-  Select,
   MenuItem,
+  Paper,
+  Select,
+  Snackbar,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  Paper,
-  Snackbar,
+  TextField,
+  Typography,
 } from '@mui/material';
-import React, { useState, useEffect, useMemo } from 'react';
+import type React from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router';
 
@@ -43,13 +44,13 @@ import { canManageApplicationsAndPdfs } from '../../../config/roles';
 import { useAuth } from '../../../contexts/auth-context';
 import apiService from '../../../services/api';
 import type {
-  TournamentDto,
-  TournamentApplicationDto,
   ApplicationStatsDto,
   ApplicationStatus,
+  TournamentApplicationDto,
+  TournamentDto,
 } from '../../../services/types';
 import { formatDate, getApplicationDeadline } from '../../../utils/date-utils';
-import { resolveUserAvatar, getAvatarInitials } from '../../../utils/placeholder-images';
+import { getAvatarInitials, resolveUserAvatar } from '../../../utils/placeholder-images';
 
 const AdminApplications: React.FC = () => {
   const { t } = useTranslation('common');
@@ -81,18 +82,7 @@ const AdminApplications: React.FC = () => {
     direction: 'asc' | 'desc';
   }>({ field: null, direction: 'asc' });
 
-  useEffect(() => {
-    fetchTournaments();
-  }, []);
-
-  useEffect(() => {
-    if (selectedTournament) {
-      fetchApplications();
-      fetchStats();
-    }
-  }, [selectedTournament]);
-
-  const fetchTournaments = async () => {
+  const fetchTournaments = useCallback(async () => {
     try {
       const data = await apiService.getAllTournaments();
       setTournaments(data);
@@ -108,9 +98,13 @@ const AdminApplications: React.FC = () => {
     } catch {
       setError(t('pages.adminApplications.fetchTournamentsError'));
     }
-  };
+  }, [tournamentId, t]);
 
-  const fetchApplications = async () => {
+  useEffect(() => {
+    fetchTournaments();
+  }, [fetchTournaments]);
+
+  const fetchApplications = useCallback(async () => {
     if (!selectedTournament) return;
 
     try {
@@ -131,9 +125,9 @@ const AdminApplications: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [selectedTournament, t]);
 
-  const fetchStats = async () => {
+  const fetchStats = useCallback(async () => {
     if (!selectedTournament) return;
 
     try {
@@ -142,7 +136,14 @@ const AdminApplications: React.FC = () => {
     } catch (error) {
       console.error('Error fetching stats:', error);
     }
-  };
+  }, [selectedTournament]);
+
+  useEffect(() => {
+    if (selectedTournament) {
+      fetchApplications();
+      fetchStats();
+    }
+  }, [selectedTournament, fetchApplications, fetchStats]);
 
   const handleStatusUpdate = async () => {
     if (!statusDialog.application) return;

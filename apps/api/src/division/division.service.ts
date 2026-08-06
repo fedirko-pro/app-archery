@@ -1,9 +1,9 @@
+import type { EntityManager } from '@mikro-orm/core';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { EntityManager } from '@mikro-orm/core';
-import { Division } from './division.entity';
 import { Rule } from '../rule/rule.entity';
-import { CreateDivisionDto } from './dto/create-division.dto';
-import { UpdateDivisionDto } from './dto/update-division.dto';
+import { Division } from './division.entity';
+import type { CreateDivisionDto } from './dto/create-division.dto';
+import type { UpdateDivisionDto } from './dto/update-division.dto';
 
 @Injectable()
 export class DivisionService {
@@ -13,9 +13,7 @@ export class DivisionService {
     const rule = await this.em.findOne(Rule, { id: createDivisionDto.ruleId });
 
     if (!rule) {
-      throw new NotFoundException(
-        `Rule with ID ${createDivisionDto.ruleId} not found`,
-      );
+      throw new NotFoundException(`Rule with ID ${createDivisionDto.ruleId} not found`);
     }
 
     const division = new Division();
@@ -33,11 +31,7 @@ export class DivisionService {
   }
 
   async findOne(id: string): Promise<Division> {
-    const division = await this.em.findOne(
-      Division,
-      { id },
-      { populate: ['rule'] },
-    );
+    const division = await this.em.findOne(Division, { id }, { populate: ['rule'] });
 
     if (!division) {
       throw new NotFoundException(`Division with ID ${id} not found`);
@@ -46,10 +40,7 @@ export class DivisionService {
     return division;
   }
 
-  async update(
-    id: string,
-    updateDivisionDto: UpdateDivisionDto,
-  ): Promise<Division> {
+  async update(id: string, updateDivisionDto: UpdateDivisionDto): Promise<Division> {
     const division = await this.findOne(id);
 
     if (updateDivisionDto.ruleId) {
@@ -57,16 +48,13 @@ export class DivisionService {
         id: updateDivisionDto.ruleId,
       });
       if (!rule) {
-        throw new NotFoundException(
-          `Rule with ID ${updateDivisionDto.ruleId} not found`,
-        );
+        throw new NotFoundException(`Rule with ID ${updateDivisionDto.ruleId} not found`);
       }
       division.rule = rule;
     }
 
     if (updateDivisionDto.name) division.name = updateDivisionDto.name;
-    if (updateDivisionDto.description)
-      division.description = updateDivisionDto.description;
+    if (updateDivisionDto.description) division.description = updateDivisionDto.description;
 
     await this.em.flush();
     return division;

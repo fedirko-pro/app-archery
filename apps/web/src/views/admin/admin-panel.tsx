@@ -1,7 +1,7 @@
 import './admin-panel.scss';
 
-import { Box, Typography, Alert } from '@mui/material';
-import React from 'react';
+import { Alert, Box, Typography } from '@mui/material';
+import type React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router';
 

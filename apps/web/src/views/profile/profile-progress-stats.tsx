@@ -1,7 +1,8 @@
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { format, parseISO } from 'date-fns';
-import React, { useMemo } from 'react';
+import type React from 'react';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import StatCard from '../../components/StatCard/StatCard';

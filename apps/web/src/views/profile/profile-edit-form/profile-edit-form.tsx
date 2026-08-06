@@ -1,26 +1,25 @@
 import {
-  TextField,
-  Button,
   Box,
+  Button,
   CircularProgress,
+  Divider,
   FormControlLabel,
   Switch,
+  TextField,
   Typography,
-  Divider,
 } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
 import Chip from '@mui/material/Chip';
 import MenuItem from '@mui/material/MenuItem';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-
+import type { ProfileVisibility } from '@/types/profile-visibility';
 import AvatarUploader from '../../../components/AvatarUploader';
 import ProfileVisibilitySelect from '../../../components/ProfileVisibilitySelect/ProfileVisibilitySelect';
 import { COUNTRIES } from '../../../config/countries';
 import apiService from '../../../services/api';
 import type { ClubDto, DivisionDto } from '../../../services/types';
 import type { ProfileData } from '../types';
-import type { ProfileVisibility } from '@/types/profile-visibility';
 
 interface ProfileEditFormProps {
   profileData: ProfileData;

@@ -41,7 +41,8 @@ const rulesData: RuleDto[] = [
   },
   {
     ruleCode: 'FABP',
-    ruleName: 'Federação dos Arqueiros e Besteiros de Portugal — Regulamento dos Quadros Competitivos',
+    ruleName:
+      'Federação dos Arqueiros e Besteiros de Portugal — Regulamento dos Quadros Competitivos',
     edition: 'QC2025',
     descriptionEn:
       'Portuguese national federation regulations for competitive archery. Defines local competition structures, championships, categories (including crossbow), and eligibility.',
@@ -50,7 +51,7 @@ const rulesData: RuleDto[] = [
     descriptionIt:
       "Regolamento nazionale portoghese per il tiro con l'arco competitivo. Definisce strutture di gara locali, campionati, categorie (inclusa la balestra) e criteri di ammissibilità.",
     descriptionUk:
-      "Національний португальський регламент зі спортивної стрільби з лука. Визначає структури змагань, чемпіонати, категорії (включно з арбалетом) та вимоги до учасників.",
+      'Національний португальський регламент зі спортивної стрільби з лука. Визначає структури змагань, чемпіонати, категорії (включно з арбалетом) та вимоги до учасників.',
     descriptionEs:
       'Reglamento nacional portugués para el tiro con arco competitivo. Define estructuras de competición locales, campeonatos, categorías (incluida ballesta) y criterios de elegibilidad.',
     link: 'https://www.fabp.pt',
@@ -67,7 +68,7 @@ const rulesData: RuleDto[] = [
     descriptionIt:
       "Regolamento dell'Associazione Internazionale di Tiro con l'Arco Storico. Definisce categorie storiche/tradizionali, formati di gara e requisiti di autenticità.",
     descriptionUk:
-      "Правила Міжнародної асоціації історичної стрільби з лука. Визначають історичні/традиційні категорії, формати змагань та вимоги до автентичності.",
+      'Правила Міжнародної асоціації історичної стрільби з лука. Визначають історичні/традиційні категорії, формати змагань та вимоги до автентичності.',
     descriptionEs:
       'Reglamento de la Asociación Internacional de Tiro con Arco Histórico (HDH-IAA). Define categorías históricas/tradicionales, formatos de competición y requisitos de autenticidad.',
     link: 'https://www.hdh-archery.com/rules',
@@ -76,5 +77,3 @@ const rulesData: RuleDto[] = [
 ];
 
 export default rulesData;
-
-

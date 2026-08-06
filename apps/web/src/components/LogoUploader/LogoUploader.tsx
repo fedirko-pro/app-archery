@@ -6,11 +6,12 @@ import {
   Card,
   CardContent,
   CardHeader,
+  CircularProgress,
   Slider,
   Typography,
-  CircularProgress,
 } from '@mui/material';
-import React, { useEffect, useRef, useState } from 'react';
+import type React from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useNotification } from '../../contexts/error-feedback-context';
@@ -253,6 +254,7 @@ const LogoUploader: React.FC<LogoUploaderProps> = ({
 
   // After selecting a file, auto-prepare a cropped logo so club Save uploads it
   // even if the user never clicks "Crop and Use".
+  // biome-ignore lint/correctness/useExhaustiveDependencies: guarded one-shot via autoPrepareAfterSelectRef; imageSrc/outputSize/cropToLocalFile intentionally excluded
   useEffect(() => {
     if (!autoPrepareAfterSelectRef.current || !imageEl || !naturalSize) return;
 
@@ -368,6 +370,8 @@ const LogoUploader: React.FC<LogoUploaderProps> = ({
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
             className="logo-uploader__viewport"
+            role="img"
+            aria-label={t('components.logoUploader.cropLabel')}
             style={{ '--logo-size': `${size}px` } as React.CSSProperties}
           >
             {imageEl ? (

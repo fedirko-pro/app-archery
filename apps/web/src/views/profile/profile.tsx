@@ -1,7 +1,8 @@
 import './profile.scss';
 
 import { Box, CircularProgress } from '@mui/material';
-import React, { useState, useEffect, useRef } from 'react';
+import type React from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import env from '../../config/env';

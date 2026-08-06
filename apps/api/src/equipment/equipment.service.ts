@@ -1,22 +1,15 @@
-import {
-  Injectable,
-  NotFoundException,
-  ForbiddenException,
-} from '@nestjs/common';
-import { EntityManager } from '@mikro-orm/core';
-import { EquipmentSet } from './equipment-set.entity';
-import { CreateEquipmentSetDto } from './dto/create-equipment-set.dto';
-import { UpdateEquipmentSetDto } from './dto/update-equipment-set.dto';
+import type { EntityManager } from '@mikro-orm/core';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { User } from '../user/entity/user.entity';
+import type { CreateEquipmentSetDto } from './dto/create-equipment-set.dto';
+import type { UpdateEquipmentSetDto } from './dto/update-equipment-set.dto';
+import { EquipmentSet } from './equipment-set.entity';
 
 @Injectable()
 export class EquipmentService {
   constructor(private readonly em: EntityManager) {}
 
-  async create(
-    userId: string,
-    createDto: CreateEquipmentSetDto,
-  ): Promise<EquipmentSet> {
+  async create(userId: string, createDto: CreateEquipmentSetDto): Promise<EquipmentSet> {
     const user = this.em.getReference(User, userId);
     const set = new EquipmentSet();
     Object.assign(set, createDto);
@@ -27,11 +20,7 @@ export class EquipmentService {
   }
 
   async findAllForUser(userId: string): Promise<EquipmentSet[]> {
-    return this.em.find(
-      EquipmentSet,
-      { user: { id: userId } },
-      { orderBy: { createdAt: 'ASC' } },
-    );
+    return this.em.find(EquipmentSet, { user: { id: userId } }, { orderBy: { createdAt: 'ASC' } });
   }
 
   async findOne(id: string, userId: string): Promise<EquipmentSet> {
@@ -66,10 +55,7 @@ export class EquipmentService {
     await this.em.removeAndFlush(set);
   }
 
-  async bulkSync(
-    userId: string,
-    sets: CreateEquipmentSetDto[],
-  ): Promise<EquipmentSet[]> {
+  async bulkSync(userId: string, sets: CreateEquipmentSetDto[]): Promise<EquipmentSet[]> {
     const user = this.em.getReference(User, userId);
     const created: EquipmentSet[] = [];
 

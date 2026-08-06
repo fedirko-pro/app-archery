@@ -2,10 +2,12 @@ import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {
+  Alert,
   Box,
   Button,
   Card,
   CardContent,
+  Chip,
   CircularProgress,
   IconButton,
   List,
@@ -13,10 +15,9 @@ import {
   ListItemText,
   TextField,
   Typography,
-  Chip,
-  Alert,
 } from '@mui/material';
-import React, { useEffect, useState, useCallback } from 'react';
+import type React from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useParams } from 'react-router';
 

@@ -2,7 +2,7 @@ import './user-card.scss';
 
 import Avatar from '@mui/material/Avatar';
 
-import { resolveUserAvatar, getAvatarInitials } from '../../../utils/placeholder-images';
+import { getAvatarInitials, resolveUserAvatar } from '../../../utils/placeholder-images';
 
 interface UserCardUser {
   picture?: string;

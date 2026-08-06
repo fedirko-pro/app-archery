@@ -2,6 +2,6 @@
 export {
   ACHIEVEMENT_CATALOG,
   ACHIEVEMENT_CATALOG_BY_ID,
-  isValidAchievementId,
   type AchievementRarity,
+  isValidAchievementId,
 } from '@sokil/shared-types';

@@ -7,7 +7,7 @@ import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import React from 'react';
+import type React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import type { TrainingMood } from '../../utils/local-data-storage';

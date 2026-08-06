@@ -1,19 +1,20 @@
-import { Visibility, VisibilityOff, Lock, Close } from '@mui/icons-material';
+import { Close, Lock, Visibility, VisibilityOff } from '@mui/icons-material';
 import {
+  Alert,
   Box,
   Button,
-  TextField,
-  Typography,
-  Alert,
-  CircularProgress,
   Card,
   CardContent,
   CardHeader,
+  CircularProgress,
+  Container,
   IconButton,
   InputAdornment,
-  Container,
+  TextField,
+  Typography,
 } from '@mui/material';
-import React, { useState, useEffect } from 'react';
+import type React from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams, useSearchParams } from 'react-router';
 
@@ -41,7 +42,7 @@ const ResetPassword: React.FC = () => {
     if (!token) {
       setError(t('reset.invalidLink'));
     }
-  }, [token]);
+  }, [token, t]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

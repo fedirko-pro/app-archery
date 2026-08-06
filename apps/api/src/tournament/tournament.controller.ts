@@ -1,24 +1,24 @@
-import {
-  Controller,
-  Post,
-  Body,
-  Get,
-  Put,
-  Delete,
-  Param,
-  Query,
-  UseGuards,
-  Request,
-  ForbiddenException,
-} from '@nestjs/common';
 import { wrap } from '@mikro-orm/core';
-import { TournamentService } from './tournament.service';
+import {
+  Body,
+  Controller,
+  Delete,
+  ForbiddenException,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
+import { Roles } from '../auth/decorators/roles.decorator';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
-import { Roles } from '../auth/decorators/roles.decorator';
+import type { RequestUser } from '../auth/permissions';
+import type { PermissionsService } from '../auth/permissions.service';
 import { Roles as UserRoles } from '../user/types';
-import { PermissionsService } from '../auth/permissions.service';
-import { RequestUser } from '../auth/permissions';
+import type { TournamentService } from './tournament.service';
 
 function serializeCreatedBy(
   createdBy:

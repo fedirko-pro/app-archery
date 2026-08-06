@@ -1,7 +1,12 @@
 export type AchievementRarity = 'common' | 'rare' | 'epic' | 'legendary';
 
 export type AchievementCategory =
-  'onboarding' | 'consistency' | 'volume' | 'exploration' | 'tournaments' | 'mastery';
+  | 'onboarding'
+  | 'consistency'
+  | 'volume'
+  | 'exploration'
+  | 'tournaments'
+  | 'mastery';
 
 export type AchievementMetric =
   | 'sessionsTotal'

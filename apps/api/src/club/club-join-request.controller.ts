@@ -1,9 +1,9 @@
-import { Controller, Get, Post, Body, Param, Patch, UseGuards, Request } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, Request, UseGuards } from '@nestjs/common';
 
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { RequestUser } from '../auth/permissions';
-import { ClubJoinRequestService } from './club-join-request.service';
-import { CreateClubJoinRequestDto } from './dto/create-club-join-request.dto';
+import type { RequestUser } from '../auth/permissions';
+import type { ClubJoinRequestService } from './club-join-request.service';
+import type { CreateClubJoinRequestDto } from './dto/create-club-join-request.dto';
 
 @Controller('clubs')
 export class ClubJoinRequestController {

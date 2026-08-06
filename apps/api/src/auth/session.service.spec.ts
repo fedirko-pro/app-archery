@@ -1,11 +1,11 @@
-import { EntityManager } from '@mikro-orm/core';
-import { ConfigService } from '@nestjs/config';
+import type { EntityManager } from '@mikro-orm/core';
+import type { ConfigService } from '@nestjs/config';
 import type { Response } from 'express';
 
-import { User } from '../user/entity/user.entity';
+import type { User } from '../user/entity/user.entity';
 import { AuthSession } from './entity/auth-session.entity';
-import { SESSION_COOKIE_NAME } from './utils/cookie-options';
 import { SessionService } from './session.service';
+import { SESSION_COOKIE_NAME } from './utils/cookie-options';
 
 describe('SessionService', () => {
   let service: SessionService;

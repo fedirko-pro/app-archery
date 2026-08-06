@@ -14,13 +14,14 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import type React from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router';
 
 import BannerUploader from '../../../components/BannerUploader/BannerUploader';
 import FileAttachments, {
-  FileAttachment,
+  type FileAttachment,
 } from '../../../components/FileAttachments/FileAttachments';
 import { COUNTRIES, DEFAULT_COUNTRY_CODE } from '../../../config/countries';
 import apiService from '../../../services/api';

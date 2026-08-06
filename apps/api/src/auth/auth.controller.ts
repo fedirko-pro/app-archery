@@ -1,34 +1,34 @@
 import {
-  Controller,
-  Post,
   Body,
+  Controller,
   Get,
-  Patch,
-  UseGuards,
-  Request,
-  Res,
   HttpCode,
   HttpStatus,
   Param,
+  Patch,
+  Post,
+  Request,
+  Res,
+  UseGuards,
 } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { UserLoginDto } from './dto/user-login.dto';
-import { ForgotPasswordDto } from './dto/forgot-password.dto';
-import { ResetPasswordDto } from './dto/reset-password.dto';
-import { SetPasswordDto } from './dto/set-password.dto';
-import { UpdateRolePermissionDto } from './dto/update-role-permission.dto';
-import { OAuthExchangeDto } from './dto/oauth-exchange.dto';
+import type { ConfigService } from '@nestjs/config';
 import { AuthGuard } from '@nestjs/passport';
-import { JwtAuthGuard } from './guards/jwt-auth.guard';
-import { RolesGuard } from './guards/roles.guard';
+import type { Request as ExpressRequest, Response } from 'express';
+import { Roles as UserRoles } from '../user/types';
+import type { AuthService } from './auth.service';
+import type { CsrfService } from './csrf.service';
 import { Roles } from './decorators/roles.decorator';
 import { SkipCsrf } from './decorators/skip-csrf.decorator';
-import type { Request as ExpressRequest, Response } from 'express';
-import { ConfigService } from '@nestjs/config';
-import { Roles as UserRoles } from '../user/types';
-import { RolePermissionsService } from './role-permissions.service';
-import { OAuthExchangeService } from './oauth-exchange.service';
-import { CsrfService } from './csrf.service';
+import type { ForgotPasswordDto } from './dto/forgot-password.dto';
+import type { OAuthExchangeDto } from './dto/oauth-exchange.dto';
+import type { ResetPasswordDto } from './dto/reset-password.dto';
+import type { SetPasswordDto } from './dto/set-password.dto';
+import type { UpdateRolePermissionDto } from './dto/update-role-permission.dto';
+import type { UserLoginDto } from './dto/user-login.dto';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { RolesGuard } from './guards/roles.guard';
+import type { OAuthExchangeService } from './oauth-exchange.service';
+import type { RolePermissionsService } from './role-permissions.service';
 import { SESSION_COOKIE_NAME } from './utils/cookie-options';
 
 @Controller('auth')

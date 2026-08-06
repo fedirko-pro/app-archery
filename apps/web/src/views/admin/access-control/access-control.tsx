@@ -3,25 +3,26 @@ import CheckBoxOutlineBlank from '@mui/icons-material/CheckBoxOutlineBlank';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import {
-  Box,
-  Typography,
   Alert,
+  Box,
+  Checkbox,
+  CircularProgress,
+  Collapse,
+  IconButton,
+  Paper,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  Paper,
-  CircularProgress,
-  IconButton,
-  Collapse,
-  Checkbox,
+  Typography,
 } from '@mui/material';
-import React, { useState, useEffect } from 'react';
+import type React from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { ROLES, ROLE_LABEL_KEYS, canChangeRole } from '../../../config/roles';
+import { canChangeRole, ROLE_LABEL_KEYS, ROLES } from '../../../config/roles';
 import { useAuth } from '../../../contexts/auth-context';
 import apiService from '../../../services/api';
 
@@ -41,11 +42,7 @@ const AccessControl: React.FC = () => {
 
   const canEdit = Boolean(user && canChangeRole(user.role));
 
-  useEffect(() => {
-    fetchMatrix();
-  }, []);
-
-  const fetchMatrix = async () => {
+  const fetchMatrix = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -56,7 +53,11 @@ const AccessControl: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [t]);
+
+  useEffect(() => {
+    fetchMatrix();
+  }, [fetchMatrix]);
 
   const handleToggle = async (role: string, permissionKey: string, enabled: boolean) => {
     if (!canEdit) return;

@@ -1,19 +1,19 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
-  UseGuards,
+  Get,
+  Param,
+  Patch,
+  Post,
   Request,
+  UseGuards,
 } from '@nestjs/common';
-import { TrainingService } from './training.service';
-import { CreateTrainingSessionDto } from './dto/create-training-session.dto';
-import { UpdateTrainingSessionDto } from './dto/update-training-session.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { AchievementsService } from '../user/achievements.service';
+import type { AchievementsService } from '../user/achievements.service';
+import type { CreateTrainingSessionDto } from './dto/create-training-session.dto';
+import type { UpdateTrainingSessionDto } from './dto/update-training-session.dto';
+import type { TrainingService } from './training.service';
 
 interface ReqWithUser {
   user: { sub: string };

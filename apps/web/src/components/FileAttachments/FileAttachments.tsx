@@ -1,22 +1,23 @@
 import './FileAttachments.scss';
 
-import { Delete, AttachFile, PictureAsPdf, Description, Image } from '@mui/icons-material';
+import { AttachFile, Delete, Description, Image, PictureAsPdf } from '@mui/icons-material';
 import {
   Box,
   Button,
   Card,
   CardContent,
   CardHeader,
+  Chip,
+  CircularProgress,
   IconButton,
   List,
   ListItem,
-  ListItemText,
   ListItemSecondaryAction,
+  ListItemText,
   Typography,
-  Chip,
-  CircularProgress,
 } from '@mui/material';
-import React, { useRef, useState } from 'react';
+import type React from 'react';
+import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useNotification } from '../../contexts/error-feedback-context';
@@ -283,7 +284,7 @@ const FileAttachments: React.FC<FileAttachmentsProps> = ({
             <List className="file-attachments__list">
               {pendingFiles.map((file, index) => (
                 <ListItem
-                  key={`${file.name}-${file.size}-${index}`}
+                  key={`${file.name}-${file.size}-${file.lastModified}`}
                   className="file-attachments__list-item"
                 >
                   <Box sx={{ mr: 2, display: 'flex', alignItems: 'center', color: 'primary.main' }}>

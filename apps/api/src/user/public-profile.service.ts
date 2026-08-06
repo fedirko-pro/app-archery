@@ -1,17 +1,17 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { UserService } from './user.service';
-import { ProfileVisibilityService, ProfileViewer } from './profile-visibility.service';
-import { TrainingService } from '../training/training.service';
-import { AchievementsService } from './achievements.service';
-import { PublicProfileDto, PublicProgressStatsDto } from './dto/public-profile.dto';
-import { PublicAchievementShareDto } from './dto/public-achievement-share.dto';
+import type { TrainingService } from '../training/training.service';
 import {
   ACHIEVEMENT_CATALOG_BY_ID,
-  AchievementRarity,
+  type AchievementRarity,
   isValidAchievementId,
 } from './achievement-catalog';
-import { User } from './entity/user.entity';
-import { ProfileVisibility, ProfileVisibilities } from './types';
+import type { AchievementsService } from './achievements.service';
+import type { PublicAchievementShareDto } from './dto/public-achievement-share.dto';
+import type { PublicProfileDto, PublicProgressStatsDto } from './dto/public-profile.dto';
+import type { User } from './entity/user.entity';
+import type { ProfileViewer, ProfileVisibilityService } from './profile-visibility.service';
+import { ProfileVisibilities, type ProfileVisibility } from './types';
+import type { UserService } from './user.service';
 
 @Injectable()
 export class PublicProfileService {

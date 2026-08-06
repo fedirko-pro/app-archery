@@ -1,14 +1,13 @@
 import type {
+  AuthResponse,
+  ChangePasswordData,
   LoginCredentials,
   RegisterData,
-  ChangePasswordData,
-  AuthResponse,
   User,
 } from '@sokil/shared-types';
 
-export type { LoginCredentials, RegisterData, ChangePasswordData, AuthResponse, User };
-
 export type { AppLanguageCode } from '@sokil/shared-types';
+export type { AuthResponse, ChangePasswordData, LoginCredentials, RegisterData, User };
 
 export interface AuthContextType {
   user: User | null;

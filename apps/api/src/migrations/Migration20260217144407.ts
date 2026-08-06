@@ -13,9 +13,7 @@ export class Migration20260217144407 extends Migration {
     this.addSql(
       `create table "rule" ("id" varchar(255) not null, "rule_code" varchar(255) not null, "rule_name" varchar(255) not null, "edition" varchar(255) null, "description_en" text null, "description_pt" text null, "description_it" text null, "description_uk" text null, "description_es" text null, "link" varchar(255) null, "download_link" varchar(255) null, "created_at" timestamptz not null, "updated_at" timestamptz null, constraint "rule_pkey" primary key ("id"));`,
     );
-    this.addSql(
-      `alter table "rule" add constraint "rule_rule_code_unique" unique ("rule_code");`,
-    );
+    this.addSql(`alter table "rule" add constraint "rule_rule_code_unique" unique ("rule_code");`);
 
     this.addSql(
       `create table "division" ("id" varchar(255) not null, "name" varchar(255) not null, "description" varchar(255) null, "rule_id" varchar(255) not null, "created_at" timestamptz not null, "updated_at" timestamptz null, constraint "division_pkey" primary key ("id"));`,

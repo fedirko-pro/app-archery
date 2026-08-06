@@ -1,21 +1,21 @@
 import {
-  Controller,
-  Get,
-  Post,
-  Patch,
-  Delete,
-  Param,
-  Query,
   Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
-import { BowCategoryService } from './bow-category.service';
-import { CreateBowCategoryDto } from './dto/create-bow-category.dto';
-import { UpdateBowCategoryDto } from './dto/update-bow-category.dto';
+import { Roles } from '../auth/decorators/roles.decorator';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
-import { Roles } from '../auth/decorators/roles.decorator';
 import { UserRoles } from '../user/types';
+import type { BowCategoryService } from './bow-category.service';
+import type { CreateBowCategoryDto } from './dto/create-bow-category.dto';
+import type { UpdateBowCategoryDto } from './dto/update-bow-category.dto';
 
 @Controller('bow-categories')
 export class BowCategoryController {

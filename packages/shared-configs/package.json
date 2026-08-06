@@ -8,7 +8,6 @@
     "typecheck": "tsc --noEmit"
   },
   "exports": {
-    "./eslint.base.config.mjs": "./eslint.base.config.mjs",
     "./tsconfig.base.json": "./tsconfig.base.json"
   }
 }

@@ -1,10 +1,10 @@
-import { Entity, PrimaryKey, Property, ManyToOne } from '@mikro-orm/core';
+import { Entity, ManyToOne, PrimaryKey, Property } from '@mikro-orm/core';
 import { v4 as uuid } from 'uuid';
-import { AuthProviders, ProfileVisibilities } from '../types';
-import type { AuthProvider, ProfileVisibility } from '../types';
 import { Club } from '../../club/club.entity';
 import { Division } from '../../division/division.entity';
 import { Federation } from '../../federation/federation.entity';
+import type { AuthProvider, ProfileVisibility } from '../types';
+import { AuthProviders, ProfileVisibilities } from '../types';
 
 @Entity()
 export class User {

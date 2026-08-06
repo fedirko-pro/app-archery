@@ -51,6 +51,7 @@ const PatrolsPage: React.FC = () => {
   }>({ open: false, message: '', severity: 'success' });
 
   // Load patrols on mount
+  // biome-ignore lint/correctness/useExhaustiveDependencies: loadPatrols (and helpers) are intentionally invoked once on mount; recreated each render
   useEffect(() => {
     if (tournamentId) {
       loadPatrols();

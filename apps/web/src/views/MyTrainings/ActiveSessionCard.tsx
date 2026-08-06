@@ -12,10 +12,11 @@ import { useTheme } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import React, { useState } from 'react';
+import type React from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { useLocalData, type LocalTrainingSession } from '../../contexts/local-data-context';
+import { type LocalTrainingSession, useLocalData } from '../../contexts/local-data-context';
 import {
   isNonNegativeDecimalInput,
   isNonNegativeIntegerInput,

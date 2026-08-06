@@ -1,20 +1,20 @@
-import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
-import { EntityManager } from '@mikro-orm/core';
-import { TrainingSession } from './training-session.entity';
-import { CreateTrainingSessionDto } from './dto/create-training-session.dto';
-import { UpdateTrainingSessionDto } from './dto/update-training-session.dto';
+import type { EntityManager } from '@mikro-orm/core';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import {
-  TrainingStatsDto,
-  ShotPeriodStatsDto,
-  MetersPeriodStatsDto,
-  ApplicationStatsForUserDto,
-  MonthlyDataPointDto,
-} from './dto/training-stats.dto';
-import { User } from '../user/entity/user.entity';
-import {
-  TournamentApplication,
   ApplicationStatus,
+  TournamentApplication,
 } from '../tournament/tournament-application.entity';
+import { User } from '../user/entity/user.entity';
+import type { CreateTrainingSessionDto } from './dto/create-training-session.dto';
+import type {
+  ApplicationStatsForUserDto,
+  MetersPeriodStatsDto,
+  MonthlyDataPointDto,
+  ShotPeriodStatsDto,
+  TrainingStatsDto,
+} from './dto/training-stats.dto';
+import type { UpdateTrainingSessionDto } from './dto/update-training-session.dto';
+import { TrainingSession } from './training-session.entity';
 
 @Injectable()
 export class TrainingService {

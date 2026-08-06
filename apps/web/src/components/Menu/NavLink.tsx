@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 import { useLocation, useMatch, useNavigate } from 'react-router';
 
 import { fromI18nLang, getCurrentI18nLang, normalizeAppLang } from '../../utils/i18n-lang';
@@ -39,7 +39,7 @@ const NavLink: React.FC<NavLinkProps> = ({
       <button type="button" onClick={handleClick} className={className}>
         <span className="menu_link_label">{children}</span>
         {showBadge && (
-          <span className="menu_badge" aria-label={`${badgeCount} unread`}>
+          <span className="menu_badge" role="status" aria-label={`${badgeCount} unread`}>
             {badgeCount > 99 ? '99+' : badgeCount}
           </span>
         )}

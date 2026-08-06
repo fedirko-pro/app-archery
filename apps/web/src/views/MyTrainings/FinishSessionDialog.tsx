@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next';
 
 import SafeDialog from '../../components/SafeDialog/SafeDialog';
 import { useAchievementCelebration } from '../../contexts/achievement-celebration-context';
-import { useLocalData, type LocalTrainingSession } from '../../contexts/local-data-context';
+import { type LocalTrainingSession, useLocalData } from '../../contexts/local-data-context';
 import type { TrainingMood } from '../../utils/local-data-storage';
 import { isNonNegativeIntegerInput, parseNonNegativeInt } from '../../utils/non-negative-number';
 import MoodPicker from './MoodPicker';

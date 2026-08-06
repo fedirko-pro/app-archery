@@ -1,13 +1,13 @@
 import { Type } from 'class-transformer';
 import {
-  IsString,
+  IsArray,
+  IsEmail,
+  IsIn,
   IsNotEmpty,
   IsOptional,
-  IsIn,
-  IsArray,
-  ValidateNested,
-  IsEmail,
+  IsString,
   IsUrl,
+  ValidateNested,
 } from 'class-validator';
 
 export class ClubLinkDto {

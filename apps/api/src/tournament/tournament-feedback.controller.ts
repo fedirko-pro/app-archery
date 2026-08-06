@@ -1,19 +1,19 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Param,
-  UseGuards,
-  Request,
-  ForbiddenException,
-} from '@nestjs/common';
 import { wrap } from '@mikro-orm/core';
-import { TournamentFeedbackService } from './tournament-feedback.service';
-import { TournamentService } from './tournament.service';
-import { SubmitTournamentFeedbackDto } from './dto/submit-tournament-feedback.dto';
+import {
+  Body,
+  Controller,
+  ForbiddenException,
+  Get,
+  Param,
+  Post,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { PermissionsService } from '../auth/permissions.service';
+import type { PermissionsService } from '../auth/permissions.service';
+import type { SubmitTournamentFeedbackDto } from './dto/submit-tournament-feedback.dto';
+import type { TournamentService } from './tournament.service';
+import type { TournamentFeedbackService } from './tournament-feedback.service';
 
 @Controller('tournament-feedback')
 export class TournamentFeedbackController {
@@ -26,9 +26,7 @@ export class TournamentFeedbackController {
   @UseGuards(JwtAuthGuard)
   @Get('pending')
   async getPending(@Request() req: { user: { sub: string } }) {
-    const tournaments = await this.feedbackService.getPendingForUser(
-      req.user.sub,
-    );
+    const tournaments = await this.feedbackService.getPendingForUser(req.user.sub);
     return tournaments.map((t) => ({
       id: t.id,
       title: t.title,
@@ -43,10 +41,7 @@ export class TournamentFeedbackController {
     @Body() data: SubmitTournamentFeedbackDto,
     @Request() req: { user: { sub: string } },
   ) {
-    const feedback = await this.feedbackService.submitFeedback(
-      req.user.sub,
-      data,
-    );
+    const feedback = await this.feedbackService.submitFeedback(req.user.sub, data);
     return wrap(feedback).toJSON();
   }
 
@@ -56,10 +51,7 @@ export class TournamentFeedbackController {
     @Param('tournamentId') tournamentId: string,
     @Request() req: { user: { sub: string } },
   ) {
-    const feedback = await this.feedbackService.getMyFeedback(
-      tournamentId,
-      req.user.sub,
-    );
+    const feedback = await this.feedbackService.getMyFeedback(tournamentId, req.user.sub);
     if (!feedback) return null;
     return wrap(feedback).toJSON();
   }
@@ -77,13 +69,10 @@ export class TournamentFeedbackController {
         createdBy: { id: tournament.createdBy.id },
       })
     ) {
-      throw new ForbiddenException(
-        'You do not have permission to view tournament feedback',
-      );
+      throw new ForbiddenException('You do not have permission to view tournament feedback');
     }
 
-    const { summary, items } =
-      await this.feedbackService.getFeedbackForTournament(tournamentId);
+    const { summary, items } = await this.feedbackService.getFeedbackForTournament(tournamentId);
 
     return {
       summary,

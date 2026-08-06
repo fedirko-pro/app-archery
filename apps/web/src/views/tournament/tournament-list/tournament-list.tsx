@@ -1,30 +1,31 @@
-import { Add, Edit, Delete, Send, Visibility } from '@mui/icons-material';
+import { Add, Delete, Edit, Send, Visibility } from '@mui/icons-material';
 import {
+  Alert,
   Box,
-  Typography,
   Button,
   Card,
   CardContent,
   CardMedia,
-  Alert,
   CircularProgress,
-  Tabs,
-  Tab,
   FormControl,
   InputLabel,
-  Select,
   MenuItem,
+  Select,
+  Tab,
+  Tabs,
+  Typography,
 } from '@mui/material';
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import type React from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useParams, useSearchParams } from 'react-router';
 
 import { ALL_COUNTRIES_FILTER, COUNTRIES, getCountryName } from '../../../config/countries';
 import { isDev } from '../../../config/env';
-import { canCreateTournament, canEditTournament, canDeleteTournament } from '../../../config/roles';
+import { canCreateTournament, canDeleteTournament, canEditTournament } from '../../../config/roles';
 import { useAuth } from '../../../contexts/auth-context';
 import apiService from '../../../services/api';
-import type { TournamentDto, TournamentApplicationDto } from '../../../services/types';
+import type { TournamentApplicationDto, TournamentDto } from '../../../services/types';
 import {
   getSavedCountryFilter,
   resolveDefaultCountryCode,

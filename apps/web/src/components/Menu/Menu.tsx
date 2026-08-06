@@ -44,6 +44,12 @@ export const Menu: React.FC<MenuProps> = ({
     clickHandle();
   };
 
+  const handleMenuKeyDown = (e: React.KeyboardEvent<HTMLDivElement>): void => {
+    if (e.key === 'Escape') {
+      clickHandle();
+    }
+  };
+
   const toggleSection = (sectionIndex: number, e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -54,6 +60,10 @@ export const Menu: React.FC<MenuProps> = ({
     <div
       className={classNames('menu', { active: active }, position)}
       onClick={handleMenuClick}
+      onKeyDown={handleMenuKeyDown}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Menu"
       style={{ pointerEvents: active ? 'auto' : 'none' }}
     >
       <div className="menu_container">
@@ -61,9 +71,10 @@ export const Menu: React.FC<MenuProps> = ({
           {sections.map((section, sectionIndex) => {
             const collapsible = isCollapsibleSection(section);
             const sectionOpen = openSections[sectionIndex] ?? false;
+            const sectionKeyId = `${getSectionLabelKey(section)}-${section.divider ? 'd' : 'n'}`;
 
             return (
-              <React.Fragment key={sectionIndex}>
+              <React.Fragment key={sectionKeyId}>
                 {section.divider && !collapsible && (
                   <li className="menu_separator" style={{ pointerEvents: 'auto' }}>
                     <hr
@@ -90,6 +101,7 @@ export const Menu: React.FC<MenuProps> = ({
                     </li>
                     <li style={{ pointerEvents: 'auto' }}>
                       <button
+                        type="button"
                         onClick={(e) => toggleSection(sectionIndex, e)}
                         style={{
                           background: 'none',
@@ -150,6 +162,7 @@ export const Menu: React.FC<MenuProps> = ({
               </li>
               <li style={{ pointerEvents: 'auto' }}>
                 <button
+                  type="button"
                   onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
                     e.preventDefault();
                     e.stopPropagation();

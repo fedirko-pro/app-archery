@@ -8,7 +8,7 @@
     "dev:web": "pnpm --filter @sokil/web dev",
     "dev:api": "pnpm --filter @sokil/api dev",
     "build": "pnpm -r build",
-    "lint": "pnpm --filter @sokil/shared-types build && pnpm -r lint",
+    "lint": "pnpm --filter @sokil/shared-types build && pnpm -r lint && biome check .",
     "test": "pnpm -r test",
     "test:run": "pnpm -r test:run",
     "typecheck": "pnpm --filter @sokil/web typecheck && pnpm --filter @sokil/api typecheck",
@@ -18,24 +18,21 @@
     "prepare": "husky"
   },
   "lint-staged": {
-    "apps/api/**/*.{js,jsx,ts,tsx}": [
-      "eslint --config apps/api/eslint.config.mjs --fix"
+    "*.{js,jsx,ts,tsx,json,css}": [
+      "biome check --write"
     ],
-    "apps/web/**/*.{js,jsx,ts,tsx}": [
-      "eslint --config apps/web/eslint.config.js --fix"
-    ],
-    "*.{js,jsx,ts,tsx,json,css,scss,md}": [
+    "*.scss": [
       "prettier --write"
     ]
   },
   "devDependencies": {
-    "@commitlint/cli": "^19.8.0",
-    "@commitlint/config-conventional": "^19.8.0",
-    "eslint": "^9.39.4",
+    "@biomejs/biome": "2.5.6",
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
     "husky": "^9.1.7",
     "lint-staged": "^16.4.0",
-    "prettier": "^3.9.3",
-    "turbo": "^2.10.1"
+    "prettier": "^3.9.6",
+    "turbo": "^2.10.8"
   },
   "engines": {
     "node": ">=22.12.0",

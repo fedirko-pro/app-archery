@@ -3,8 +3,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   getTrainingSessions,
   incrementTrainingSessionShots,
-  saveTrainingSession,
   StorageWriteError,
+  saveTrainingSession,
   updateTrainingSession,
 } from './local-data-storage';
 

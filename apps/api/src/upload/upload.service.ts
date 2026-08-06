@@ -1,13 +1,13 @@
-import { Injectable, BadRequestException, Logger } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
+import type { ConfigService } from '@nestjs/config';
 import { promises as fs } from 'fs';
 import { join, resolve, sep } from 'path';
 import sharp from 'sharp';
 import { v4 as uuidV4 } from 'uuid';
-import {
+import type {
+  AttachmentMetadata,
   ImageUploadOptions,
   ProcessedImage,
-  AttachmentMetadata,
 } from './interfaces/upload-options.interface';
 
 @Injectable()

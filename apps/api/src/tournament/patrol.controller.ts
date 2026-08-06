@@ -1,32 +1,32 @@
 import {
-  Controller,
-  Post,
   Body,
-  Get,
-  Put,
-  Delete,
-  Param,
-  Query,
-  UseGuards,
-  Res,
-  Request,
-  ForbiddenException,
-  NotFoundException,
   ConflictException,
+  Controller,
+  Delete,
+  ForbiddenException,
+  Get,
+  NotFoundException,
+  Param,
+  Post,
+  Put,
+  Query,
+  Request,
+  Res,
+  UseGuards,
 } from '@nestjs/common';
-import type { Response } from 'express';
 import { format } from 'date-fns';
-import { PatrolService } from './patrol.service';
-import { BatchUpdatePatrolsDto } from './dto/batch-update-patrols.dto';
-import { Patrol } from './patrol.entity';
-import { PatrolRole } from './patrol-member.entity';
-import { TournamentService } from './tournament.service';
+import type { Response } from 'express';
+import { Roles } from '../auth/decorators/roles.decorator';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
-import { Roles } from '../auth/decorators/roles.decorator';
+import type { RequestUser } from '../auth/permissions';
+import type { PermissionsService } from '../auth/permissions.service';
 import { Roles as UserRoles } from '../user/types';
-import { PermissionsService } from '../auth/permissions.service';
-import { RequestUser } from '../auth/permissions';
+import type { BatchUpdatePatrolsDto } from './dto/batch-update-patrols.dto';
+import type { Patrol } from './patrol.entity';
+import type { PatrolService } from './patrol.service';
+import type { PatrolRole } from './patrol-member.entity';
+import type { TournamentService } from './tournament.service';
 
 function redactPatrolEmails(patrol: Record<string, unknown>): Record<string, unknown> {
   const leader = patrol.leader as Record<string, unknown> | undefined;
@@ -85,7 +85,7 @@ export class PatrolController {
     @Param('tournamentId') tournamentId: string,
     @Request() req: { user: RequestUser },
   ) {
-    let tournament;
+    let tournament: Awaited<ReturnType<typeof this.tournamentService.findById>>;
     try {
       tournament = await this.tournamentService.findById(tournamentId);
     } catch {
@@ -106,7 +106,7 @@ export class PatrolController {
   async findOne(@Param('id') id: string, @Request() req: { user: RequestUser }) {
     const patrol = await this.patrolService.findById(id);
     const tournamentId = (patrol.tournament as { id: string }).id;
-    let tournament;
+    let tournament: Awaited<ReturnType<typeof this.tournamentService.findById>>;
     try {
       tournament = await this.tournamentService.findById(tournamentId);
     } catch {

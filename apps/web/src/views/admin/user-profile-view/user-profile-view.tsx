@@ -1,8 +1,9 @@
 import { ArrowBack } from '@mui/icons-material';
-import { Box, Button, Alert, CircularProgress } from '@mui/material';
-import React, { useState, useEffect } from 'react';
+import { Alert, Box, Button, CircularProgress } from '@mui/material';
+import type React from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useParams, useNavigate } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 
 import { canDeleteUser } from '../../../config/roles';
 import { useAuth } from '../../../contexts/auth-context';
@@ -37,13 +38,7 @@ const UserProfileView: React.FC = () => {
     categories: [],
   });
 
-  useEffect(() => {
-    if (userId) {
-      fetchUser();
-    }
-  }, [userId]);
-
-  const fetchUser = async () => {
+  const fetchUser = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -73,7 +68,13 @@ const UserProfileView: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [userId, t]);
+
+  useEffect(() => {
+    if (userId) {
+      fetchUser();
+    }
+  }, [userId, fetchUser]);
 
   const handleEditToggle = () => {
     if (isEditing) {

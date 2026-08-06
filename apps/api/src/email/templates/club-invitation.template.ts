@@ -1,12 +1,12 @@
 import type { EmailI18n } from '../i18n';
 import { interpolate } from '../i18n';
 import {
-  theme,
-  styleHeading,
-  styleButton,
   styleBlockCenter,
+  styleButton,
+  styleHeading,
   styleLinkMuted,
   styleNeutralBox,
+  theme,
 } from './theme';
 
 export interface ClubInvitationContentParams {

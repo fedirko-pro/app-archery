@@ -1,7 +1,7 @@
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
-import React from 'react';
+import type React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import type { User } from '../../contexts/types';

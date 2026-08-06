@@ -1,10 +1,9 @@
-import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
-import { EntityManager } from '@mikro-orm/core';
-import { Tournament } from './tournament.entity';
+import type { EntityManager, FilterQuery, RequiredEntityData } from '@mikro-orm/core';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { parseISO, startOfDay, subDays } from 'date-fns';
 import { Rule } from '../rule/rule.entity';
-import { subDays, parseISO, startOfDay } from 'date-fns';
-import { type RequiredEntityData, type FilterQuery } from '@mikro-orm/core';
-import { UploadService } from '../upload/upload.service';
+import type { UploadService } from '../upload/upload.service';
+import { Tournament } from './tournament.entity';
 
 @Injectable()
 export class TournamentService {
@@ -124,7 +123,7 @@ export class TournamentService {
 
     // Handle rule assignment
     if (data.ruleId !== undefined || data.ruleCode !== undefined) {
-      let rule: Rule | undefined = undefined;
+      let rule: Rule | undefined;
       if (data.ruleId) {
         const foundRule = await this.em.findOne(Rule, { id: data.ruleId });
         if (!foundRule) {

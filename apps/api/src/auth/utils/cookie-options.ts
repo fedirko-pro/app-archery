@@ -1,5 +1,5 @@
+import type { ConfigService } from '@nestjs/config';
 import type { CookieOptions } from 'express';
-import { ConfigService } from '@nestjs/config';
 
 export const SESSION_COOKIE_NAME = 'session';
 export const CSRF_COOKIE_NAME = 'csrf';

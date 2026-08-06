@@ -6,7 +6,7 @@ import EmojiEventsOutlinedIcon from '@mui/icons-material/EmojiEventsOutlined';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import TrackChangesIcon from '@mui/icons-material/TrackChanges';
 import classNames from 'classnames';
-import React from 'react';
+import type React from 'react';
 import { useTranslation } from 'react-i18next';
 import { NavLink, useLocation, useParams } from 'react-router';
 

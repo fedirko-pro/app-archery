@@ -1,10 +1,10 @@
+import type { EntityManager } from '@mikro-orm/core';
 import { Injectable } from '@nestjs/common';
-import { EntityManager } from '@mikro-orm/core';
-import { ConfigService } from '@nestjs/config';
+import type { ConfigService } from '@nestjs/config';
 import type { Response } from 'express';
+import type { User } from '../user/entity/user.entity';
 import { AuthSession } from './entity/auth-session.entity';
-import { User } from '../user/entity/user.entity';
-import { SESSION_COOKIE_NAME, getSessionCookieOptions } from './utils/cookie-options';
+import { getSessionCookieOptions, SESSION_COOKIE_NAME } from './utils/cookie-options';
 import { generateSecureToken, hashToken } from './utils/token-hash';
 
 @Injectable()

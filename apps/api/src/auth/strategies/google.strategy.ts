@@ -1,10 +1,10 @@
 import { ConflictException, Injectable } from '@nestjs/common';
+import type { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
-import { Strategy, VerifyCallback, Profile } from 'passport-google-oauth20';
-import { ConfigService } from '@nestjs/config';
-import { UserService } from '../../user/user.service';
+import { type Profile, Strategy, type VerifyCallback } from 'passport-google-oauth20';
+import type { UpdateUserDto } from '../../user/dto/update-user.dto';
 import { AuthProviders, Roles } from '../../user/types';
-import { UpdateUserDto } from '../../user/dto/update-user.dto';
+import type { UserService } from '../../user/user.service';
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {

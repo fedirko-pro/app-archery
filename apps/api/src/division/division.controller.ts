@@ -1,21 +1,21 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
-  UseGuards,
+  Get,
+  Param,
+  Patch,
+  Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
-import { DivisionService } from './division.service';
-import { CreateDivisionDto } from './dto/create-division.dto';
-import { UpdateDivisionDto } from './dto/update-division.dto';
+import { Roles } from '../auth/decorators/roles.decorator';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
-import { Roles } from '../auth/decorators/roles.decorator';
 import { UserRoles } from '../user/types';
+import type { DivisionService } from './division.service';
+import type { CreateDivisionDto } from './dto/create-division.dto';
+import type { UpdateDivisionDto } from './dto/update-division.dto';
 
 @Controller('divisions')
 export class DivisionController {
@@ -41,10 +41,7 @@ export class DivisionController {
   @Patch(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRoles.GeneralAdmin)
-  update(
-    @Param('id') id: string,
-    @Body() updateDivisionDto: UpdateDivisionDto,
-  ) {
+  update(@Param('id') id: string, @Body() updateDivisionDto: UpdateDivisionDto) {
     return this.divisionService.update(id, updateDivisionDto);
   }
 

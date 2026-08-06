@@ -1,11 +1,22 @@
-import { Alert, Box, Typography, Button } from '@mui/material';
-import { useState, useEffect } from 'react';
+import { Alert, Box, Button, Typography } from '@mui/material';
+import { useCallback, useEffect, useState } from 'react';
 
 const EnvError = () => {
   const [envErrors, setEnvErrors] = useState<{
     missingVars: string[];
     invalidVars: string[];
   } | null>(null);
+
+  /** Allow absolute URLs or paths like /api for Vite dev proxy. */
+  const isValidUrlOrPath = useCallback((string: string): boolean => {
+    if (string.startsWith('/')) return true;
+    try {
+      new URL(string);
+      return true;
+    } catch {
+      return false;
+    }
+  }, []);
 
   useEffect(() => {
     const checkEnv = () => {
@@ -35,18 +46,7 @@ const EnvError = () => {
     };
 
     checkEnv();
-  }, []);
-
-  /** Allow absolute URLs or paths like /api for Vite dev proxy. */
-  const isValidUrlOrPath = (string: string): boolean => {
-    if (string.startsWith('/')) return true;
-    try {
-      new URL(string);
-      return true;
-    } catch {
-      return false;
-    }
-  };
+  }, [isValidUrlOrPath]);
 
   if (!envErrors) {
     return null;

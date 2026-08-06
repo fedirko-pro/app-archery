@@ -1,4 +1,4 @@
-import { Options } from '@mikro-orm/core';
+import type { Options } from '@mikro-orm/core';
 import { PostgreSqlDriver } from '@mikro-orm/postgresql';
 import { loadRootEnv } from './src/config/load-root-env';
 

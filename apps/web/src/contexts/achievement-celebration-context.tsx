@@ -1,19 +1,18 @@
 import { NotificationTypes } from '@sokil/shared-types';
 import {
   createContext,
+  type ReactNode,
   useCallback,
   useContext,
   useEffect,
   useMemo,
   useRef,
   useState,
-  type ReactNode,
 } from 'react';
-
-import { useNotifications } from './notifications-context';
 import AchievementUnlockedDialog from '@/components/achievements/AchievementUnlockedDialog';
 import { useAchievements } from '@/hooks/use-achievements';
 import apiService from '@/services/api';
+import { useNotifications } from './notifications-context';
 
 interface AchievementCelebrationContextValue {
   enqueueCelebration: (ids: string[]) => void;

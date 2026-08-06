@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest';
 
 import {
+  fromI18nLang,
+  getAppLanguageFromUser,
   normalizeAppLang,
   pickLocalizedDescription,
   toI18nLang,
-  fromI18nLang,
-  getAppLanguageFromUser,
 } from './i18n-lang';
 
 describe('normalizeAppLang', () => {

@@ -1,14 +1,14 @@
 import { afterEach, describe, expect, it } from 'vitest';
 
 import {
-  PENDING_APPLICATION_KEY,
-  RETURN_URL_KEY,
   getAndClearPendingApplication,
   getAndClearReturnUrl,
   getPendingApplication,
   getSessionJson,
   isPendingApplication,
   isSafeRelativePath,
+  PENDING_APPLICATION_KEY,
+  RETURN_URL_KEY,
   setPendingApplication,
   setReturnUrl,
 } from './safe-session-json';

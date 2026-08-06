@@ -1,12 +1,14 @@
 import {
   ACHIEVEMENT_CATALOG,
+  type AchievementStatsSnapshot,
   evaluateComputedProgress,
   summarizeCompletion,
-  type AchievementStatsSnapshot,
 } from '@sokil/shared-types';
-
-import type { AchievementProgressDto, AchievementsListDto } from '../services/types';
-import type { ApplicationStatsForUser } from '../services/types';
+import type {
+  AchievementProgressDto,
+  AchievementsListDto,
+  ApplicationStatsForUser,
+} from '../services/types';
 import type { LocalEquipmentSet, LocalTrainingSession } from './local-data-storage';
 import { isSessionFinished } from './training-session-utils';
 import { computeLocalStats } from './training-stats';

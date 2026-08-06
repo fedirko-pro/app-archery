@@ -1,34 +1,34 @@
+import { randomBytes } from 'node:crypto';
+import type { EntityManager } from '@mikro-orm/core';
 import {
-  Injectable,
-  ConflictException,
   BadRequestException,
+  ConflictException,
+  Injectable,
+  Logger,
   NotFoundException,
   UnauthorizedException,
-  Logger,
 } from '@nestjs/common';
-import { EntityManager } from '@mikro-orm/core';
-import { ConfigService } from '@nestjs/config';
-import { User } from './entity/user.entity';
-import { CreateUserDto } from './dto/create-user.dto';
-import { AdminCreateUserDto } from './dto/admin-create-user.dto';
-import { UpdateUserDto, AdminUpdateUserDto } from './dto/update-user.dto';
-import { ChangePasswordDto } from './dto/change-password.dto';
-import { ProfileVisibilities, Roles } from './types';
+import type { ConfigService } from '@nestjs/config';
+import { NotificationTypes } from '@sokil/shared-types';
 import * as bcrypt from 'bcryptjs';
-import { randomBytes } from 'node:crypto';
-import { UploadService } from '../upload/upload.service';
+import type { AdminScope } from '../auth/permissions.service';
 import { Club } from '../club/club.entity';
+import type { ClubMembershipService } from '../club/club-membership.service';
 import { Division } from '../division/division.entity';
-import { EmailService } from '../email/email.service';
-import { ClubMembershipService } from '../club/club-membership.service';
+import type { EmailService } from '../email/email.service';
 import {
   FederationMembership,
   FederationMembershipStatus,
 } from '../federation/federation-membership.entity';
-import type { AdminScope } from '../auth/permissions.service';
+import type { NotificationsService } from '../notification/notifications.service';
+import type { UploadService } from '../upload/upload.service';
+import type { AdminCreateUserDto } from './dto/admin-create-user.dto';
+import type { ChangePasswordDto } from './dto/change-password.dto';
+import type { CreateUserDto } from './dto/create-user.dto';
+import type { AdminUpdateUserDto, UpdateUserDto } from './dto/update-user.dto';
+import { User } from './entity/user.entity';
 import type { ProfileViewer } from './profile-visibility.service';
-import { NotificationsService } from '../notification/notifications.service';
-import { NotificationTypes } from '@sokil/shared-types';
+import { ProfileVisibilities, Roles } from './types';
 
 @Injectable()
 export class UserService {
@@ -49,7 +49,7 @@ export class UserService {
       throw new ConflictException('User with this email already exists');
     }
 
-    let hashedPassword = undefined;
+    let hashedPassword: string | undefined;
     if (userData.password) {
       if (userData.password.length < 6) {
         throw new BadRequestException('Password must be at least 6 characters');

@@ -1,26 +1,26 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import type { ConfigService } from '@nestjs/config';
+import type { SentMessageInfo } from 'nodemailer';
 import * as nodemailer from 'nodemailer';
-import { SentMessageInfo } from 'nodemailer';
 
 import { getEmailI18n, interpolate } from './i18n';
 import {
-  wrapEmail,
-  getPasswordResetContent,
-  getWelcomeContent,
   getApplicationStatusContent,
   getApplicationSubmittedContent,
-  getInvitationContent,
-  getRoleChangedContent,
   getClubInvitationContent,
   getClubJoinedContent,
+  getClubJoinRequestApprovedContent,
+  getClubJoinRequestNotificationContent,
+  getClubJoinRequestRejectedContent,
   getClubLeftContent,
-  getFederationInvitationContent,
   getFederationClubJoinedContent,
   getFederationClubRemovedContent,
-  getClubJoinRequestNotificationContent,
-  getClubJoinRequestApprovedContent,
-  getClubJoinRequestRejectedContent,
+  getFederationInvitationContent,
+  getInvitationContent,
+  getPasswordResetContent,
+  getRoleChangedContent,
+  getWelcomeContent,
+  wrapEmail,
 } from './templates';
 
 export interface EmailOptions {

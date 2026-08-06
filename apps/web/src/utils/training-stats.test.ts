@@ -1,4 +1,4 @@
-import { describe, expect, it, vi, afterEach } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import type { LocalTrainingSession } from './local-data-storage';
 import {
@@ -6,8 +6,8 @@ import {
   computeLocalStats,
   computePriorMonthSummary,
   computeStreakAsOf,
-  getIsoWeekString,
   formatTrainingSessionDateTime,
+  getIsoWeekString,
   getLastLoggedSession,
   getMostRecentSession,
   getRecentTrainingSessions,

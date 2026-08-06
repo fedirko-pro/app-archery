@@ -18,10 +18,11 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
-import React, { useEffect, useState, useCallback } from 'react';
+import type React from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router';
-
+import PrivacyAwareShareMenu from '@/components/share/PrivacyAwareShareMenu';
 import { getCountryName } from '../../../config/countries';
 import { ROLE_LABEL_KEYS } from '../../../config/roles';
 import type { User } from '../../../contexts/types';
@@ -29,13 +30,12 @@ import apiService from '../../../services/api';
 import type { ClubMembershipDto } from '../../../services/types';
 import { fromI18nLang, getCurrentI18nLang, normalizeAppLang } from '../../../utils/i18n-lang';
 import {
-  resolveUserAvatarWithCacheBust,
   getAvatarInitials,
+  resolveUserAvatarWithCacheBust,
 } from '../../../utils/placeholder-images';
 import { getOrigin } from '../../../utils/user-display';
 import ProfileProgressSnapshot from '../profile-progress-snapshot';
 import type { ProfileData } from '../types';
-import PrivacyAwareShareMenu from '@/components/share/PrivacyAwareShareMenu';
 
 interface ProfileCardProps {
   profileData: ProfileData;

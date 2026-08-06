@@ -28,8 +28,6 @@ export class Migration20260223154857 extends Migration {
 
     this.addSql(`drop table if exists "equipment_set" cascade;`);
 
-    this.addSql(
-      `alter table "user" drop column "sync_trainings_and_equipment";`,
-    );
+    this.addSql(`alter table "user" drop column "sync_trainings_and_equipment";`);
   }
 }

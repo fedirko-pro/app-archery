@@ -9,11 +9,7 @@ async function testProfileApi() {
   console.log('🔍 Testing profile API response...\n');
 
   // Get a user with club
-  const user = await em.findOne(
-    User,
-    { email: 'admin@archery.com' },
-    { populate: ['club'] },
-  );
+  const user = await em.findOne(User, { email: 'admin@archery.com' }, { populate: ['club'] });
 
   if (!user) {
     console.log('User not found');

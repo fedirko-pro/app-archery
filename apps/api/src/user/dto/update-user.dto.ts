@@ -1,12 +1,12 @@
 import {
+  IsArray,
+  IsBoolean,
+  IsDateString,
+  IsEmail,
+  IsIn,
   IsOptional,
   IsString,
   IsUrl,
-  IsArray,
-  IsEmail,
-  IsBoolean,
-  IsDateString,
-  IsIn,
   ValidateIf,
 } from 'class-validator';
 import { VALID_PROFILE_VISIBILITIES } from '../types';

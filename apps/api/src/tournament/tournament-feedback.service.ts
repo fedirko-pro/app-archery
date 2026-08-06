@@ -1,21 +1,18 @@
+import type { EntityManager } from '@mikro-orm/core';
 import {
-  Injectable,
   BadRequestException,
-  NotFoundException,
   ConflictException,
   ForbiddenException,
+  Injectable,
+  NotFoundException,
 } from '@nestjs/common';
-import { EntityManager } from '@mikro-orm/core';
 import { startOfDay } from 'date-fns';
-import { Tournament } from './tournament.entity';
-import { TournamentFeedback } from './tournament-feedback.entity';
-import {
-  TournamentApplication,
-  ApplicationStatus,
-} from './tournament-application.entity';
+import { User } from '../user/entity/user.entity';
 import { Patrol } from './patrol.entity';
 import { PatrolMember } from './patrol-member.entity';
-import { User } from '../user/entity/user.entity';
+import { Tournament } from './tournament.entity';
+import { ApplicationStatus, TournamentApplication } from './tournament-application.entity';
+import { TournamentFeedback } from './tournament-feedback.entity';
 
 export interface FeedbackSummary {
   averageRating: number | null;
@@ -31,10 +28,7 @@ export class TournamentFeedbackService {
     return startOfDay(endDate) < startOfDay(new Date());
   }
 
-  async isEligibleParticipant(
-    tournamentId: string,
-    userId: string,
-  ): Promise<boolean> {
+  async isEligibleParticipant(tournamentId: string, userId: string): Promise<boolean> {
     const patrols = await this.em.find(Patrol, { tournament: tournamentId });
 
     if (patrols.length > 0) {
@@ -83,9 +77,7 @@ export class TournamentFeedbackService {
       { tournament: { $in: tournamentIds } },
       { populate: ['tournament'] },
     );
-    const tournamentsWithPatrols = new Set(
-      patrols.map((patrol) => patrol.tournament.id),
-    );
+    const tournamentsWithPatrols = new Set(patrols.map((patrol) => patrol.tournament.id));
 
     const patrolIds = patrols.map((patrol) => patrol.id);
     const patrolIdToTournamentId = new Map(
@@ -101,9 +93,7 @@ export class TournamentFeedbackService {
     const eligibleViaPatrol = new Set(
       patrolMemberships
         .map((member) => patrolIdToTournamentId.get(member.patrol.id))
-        .filter(
-          (tournamentId): tournamentId is string => tournamentId !== undefined,
-        ),
+        .filter((tournamentId): tournamentId is string => tournamentId !== undefined),
     );
 
     const approvedApplications = await this.em.find(TournamentApplication, {
@@ -141,35 +131,25 @@ export class TournamentFeedbackService {
     const { tournamentId, rating, comment } = data;
 
     if (!Number.isInteger(rating) || rating < 1 || rating > 5) {
-      throw new BadRequestException(
-        'Rating must be an integer between 1 and 5',
-      );
+      throw new BadRequestException('Rating must be an integer between 1 and 5');
     }
 
     const tournament = await this.em.findOne(Tournament, { id: tournamentId });
     if (!tournament) {
-      throw new NotFoundException(
-        `Tournament with ID ${tournamentId} not found`,
-      );
+      throw new NotFoundException(`Tournament with ID ${tournamentId} not found`);
     }
 
     if (!tournament.collectFeedback) {
-      throw new BadRequestException(
-        'This tournament does not collect feedback',
-      );
+      throw new BadRequestException('This tournament does not collect feedback');
     }
 
     if (!this.isFeedbackWindowOpen(tournament)) {
-      throw new BadRequestException(
-        'Feedback is not yet available for this tournament',
-      );
+      throw new BadRequestException('Feedback is not yet available for this tournament');
     }
 
     const eligible = await this.isEligibleParticipant(tournamentId, userId);
     if (!eligible) {
-      throw new ForbiddenException(
-        'You are not eligible to submit feedback for this tournament',
-      );
+      throw new ForbiddenException('You are not eligible to submit feedback for this tournament');
     }
 
     const existing = await this.em.findOne(TournamentFeedback, {
@@ -177,9 +157,7 @@ export class TournamentFeedbackService {
       user: userId,
     });
     if (existing) {
-      throw new ConflictException(
-        'You have already submitted feedback for this tournament',
-      );
+      throw new ConflictException('You have already submitted feedback for this tournament');
     }
 
     const feedback = this.em.create(TournamentFeedback, {
@@ -194,10 +172,7 @@ export class TournamentFeedbackService {
     return feedback;
   }
 
-  async getMyFeedback(
-    tournamentId: string,
-    userId: string,
-  ): Promise<TournamentFeedback | null> {
+  async getMyFeedback(tournamentId: string, userId: string): Promise<TournamentFeedback | null> {
     return this.em.findOne(
       TournamentFeedback,
       { tournament: tournamentId, user: userId },
@@ -211,9 +186,7 @@ export class TournamentFeedbackService {
   }> {
     const tournament = await this.em.findOne(Tournament, { id: tournamentId });
     if (!tournament) {
-      throw new NotFoundException(
-        `Tournament with ID ${tournamentId} not found`,
-      );
+      throw new NotFoundException(`Tournament with ID ${tournamentId} not found`);
     }
 
     const items = await this.em.find(

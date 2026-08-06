@@ -1,15 +1,15 @@
 import type { EmailI18n } from '../i18n';
 import { interpolate } from '../i18n';
 import {
-  theme,
-  styleHeading,
-  styleButton,
   styleBlockCenter,
-  styleSuccessBox,
-  styleSuccessBoxText,
+  styleButton,
   styleDangerBox,
   styleDangerBoxText,
+  styleHeading,
   styleNeutralBox,
+  styleSuccessBox,
+  styleSuccessBoxText,
+  theme,
 } from './theme';
 
 export interface ApplicationStatusContentParams {
@@ -24,19 +24,11 @@ export function getApplicationStatusContent(
   params: ApplicationStatusContentParams,
   t: EmailI18n,
 ): { html: string; text: string } {
-  const {
-    applicantName,
-    tournamentTitle,
-    status,
-    rejectionReason,
-    myApplicationsUrl,
-  } = params;
+  const { applicantName, tournamentTitle, status, rejectionReason, myApplicationsUrl } = params;
   const s = t.applicationStatus;
 
   const headingColor =
-    status === 'approved'
-      ? theme.colors.successHeading
-      : theme.colors.dangerHeading;
+    status === 'approved' ? theme.colors.successHeading : theme.colors.dangerHeading;
 
   const greeting = interpolate(s.greeting, { name: applicantName });
   const approvedMessage = interpolate(s.approvedMessage, { tournamentTitle });

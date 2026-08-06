@@ -1,9 +1,9 @@
 import { MikroORM } from '@mikro-orm/core';
+import * as bcrypt from 'bcryptjs';
 import config from '../../mikro-orm.config';
-import { User } from '../user/entity/user.entity';
 import { Club } from '../club/club.entity';
 import { TournamentApplication } from '../tournament/tournament-application.entity';
-import * as bcrypt from 'bcryptjs';
+import { User } from '../user/entity/user.entity';
 
 // Helper function to generate random 8-digit federation number
 function generateFederationNumber(): string {
@@ -239,10 +239,7 @@ async function reseedUsers() {
     const firstName = firstNames[i % firstNames.length];
     const lastName = lastNames[i % lastNames.length];
     const gender = femaleNames.includes(firstName) ? 'F' : 'M';
-    const club =
-      Math.random() < 0.1
-        ? undefined
-        : clubs[Math.floor(Math.random() * clubs.length)];
+    const club = Math.random() < 0.1 ? undefined : clubs[Math.floor(Math.random() * clubs.length)];
 
     const user = em.create(User, {
       email: `user${i + 1}@archery.com`,
@@ -268,9 +265,7 @@ async function reseedUsers() {
   console.log('\n🎉 User reseeding completed successfully!');
   console.log('\n📊 Summary:');
   console.log('   • 1 Admin user (admin@archery.com / admin123)');
-  console.log(
-    '   • 60 Regular users (user1@archery.com - user60@archery.com / user123)',
-  );
+  console.log('   • 60 Regular users (user1@archery.com - user60@archery.com / user123)');
   console.log('   • All users have federation numbers and clubs assigned');
 }
 

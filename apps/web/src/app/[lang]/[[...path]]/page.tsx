@@ -1,8 +1,6 @@
 import type { Metadata } from 'next';
 import { headers } from 'next/headers';
 import { notFound } from 'next/navigation';
-
-import LangCatchAllClient from './LangCatchAllClient';
 import {
   buildAchievementShareMetadata,
   buildProgressShareMetadata,
@@ -22,6 +20,7 @@ import {
   resolveSiteUrl,
 } from '@/lib/tournament-metadata';
 import { getTournamentIdFromPath } from '@/lib/tournament-route';
+import LangCatchAllClient from './LangCatchAllClient';
 
 interface LangCatchAllPageProps {
   params: Promise<{ lang: string; path?: string[] }>;

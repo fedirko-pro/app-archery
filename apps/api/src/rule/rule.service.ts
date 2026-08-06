@@ -1,12 +1,8 @@
-import {
-  Injectable,
-  NotFoundException,
-  BadRequestException,
-} from '@nestjs/common';
-import { EntityManager } from '@mikro-orm/core';
+import type { EntityManager } from '@mikro-orm/core';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import type { CreateRuleDto } from './dto/create-rule.dto';
+import type { UpdateRuleDto } from './dto/update-rule.dto';
 import { Rule } from './rule.entity';
-import { CreateRuleDto } from './dto/create-rule.dto';
-import { UpdateRuleDto } from './dto/update-rule.dto';
 
 @Injectable()
 export class RuleService {
@@ -19,9 +15,7 @@ export class RuleService {
     });
 
     if (existingRule) {
-      throw new BadRequestException(
-        `Rule with code ${createRuleDto.ruleCode} already exists`,
-      );
+      throw new BadRequestException(`Rule with code ${createRuleDto.ruleCode} already exists`);
     }
 
     const rule = new Rule();
@@ -65,9 +59,7 @@ export class RuleService {
       });
 
       if (existingRule) {
-        throw new BadRequestException(
-          `Rule with code ${updateRuleDto.ruleCode} already exists`,
-        );
+        throw new BadRequestException(`Rule with code ${updateRuleDto.ruleCode} already exists`);
       }
     }
 

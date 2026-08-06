@@ -1,9 +1,9 @@
 import { ConflictException } from '@nestjs/common';
-import { Test, TestingModule } from '@nestjs/testing';
+import { Test, type TestingModule } from '@nestjs/testing';
+import { PermissionsService } from '../auth/permissions.service';
 import { PatrolController } from './patrol.controller';
 import { PatrolService } from './patrol.service';
 import { TournamentService } from './tournament.service';
-import { PermissionsService } from '../auth/permissions.service';
 
 describe('PatrolController generate-and-save', () => {
   let controller: PatrolController;

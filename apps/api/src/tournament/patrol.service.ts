@@ -1,20 +1,19 @@
-import { Injectable, BadRequestException, NotFoundException, Logger } from '@nestjs/common';
-import { EntityManager, type RequiredEntityData } from '@mikro-orm/core';
-import { Patrol } from './patrol.entity';
-import { PatrolMember } from './patrol-member.entity';
-import { PatrolRole } from './patrol-member.entity';
-import { Tournament } from './tournament.entity';
-import { TournamentApplication, ApplicationStatus } from './tournament-application.entity';
+import type { EntityManager, RequiredEntityData } from '@mikro-orm/core';
+import { BadRequestException, Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { format } from 'date-fns';
 import { User } from '../user/entity/user.entity';
-import { PatrolGenerationService } from './patrol-generation.service';
-import { PatrolPdfService } from './patrol-pdf.service';
-import {
+import type {
   PatrolEntry,
   PatrolGenerationConfig,
   PatrolGenerationResult,
   ScoreCardConfig,
 } from './interfaces/patrol-generation.interface';
-import { format } from 'date-fns';
+import { Patrol } from './patrol.entity';
+import type { PatrolGenerationService } from './patrol-generation.service';
+import { PatrolMember, PatrolRole } from './patrol-member.entity';
+import type { PatrolPdfService } from './patrol-pdf.service';
+import { Tournament } from './tournament.entity';
+import { ApplicationStatus, TournamentApplication } from './tournament-application.entity';
 
 @Injectable()
 export class PatrolService {
@@ -169,8 +168,12 @@ export class PatrolService {
 
     // Get all user IDs from patrol members
     const allUserIds = new Set<string>();
-    allMembers.forEach((m) => allUserIds.add(m.user.id));
-    patrols.forEach((p) => allUserIds.add(p.leader.id));
+    allMembers.forEach((m) => {
+      allUserIds.add(m.user.id);
+    });
+    patrols.forEach((p) => {
+      allUserIds.add(p.leader.id);
+    });
 
     // Fetch applications to get division and bow category info for each user
     const applications = await this.em.find(
@@ -792,7 +795,9 @@ export class PatrolService {
     });
 
     const allMemberIds = new Set<string>();
-    allPatrolMembers.forEach((member) => allMemberIds.add(member.user.id));
+    allPatrolMembers.forEach((member) => {
+      allMemberIds.add(member.user.id);
+    });
 
     const applications = await this.em.find(
       TournamentApplication,

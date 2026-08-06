@@ -6,7 +6,7 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemText from '@mui/material/ListItemText';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import AlertDialog from '../components/dialogs/alert-dialog';
@@ -90,10 +90,10 @@ export default function Training() {
           handleConfirm={() => handleConfirm()}
         />
         <List sx={{ width: '100%' }}>
-          {trainings.map((training, index) => (
+          {trainings.map((training) => (
             <ListItem
               className="trainings_item"
-              key={index}
+              key={training.date.getTime()}
               secondaryAction={
                 <button
                   className="button clear_button"

@@ -1,8 +1,8 @@
-import { renderHook, act } from '@testing-library/react';
+import { act, renderHook } from '@testing-library/react';
 import { afterEach, describe, expect, it } from 'vitest';
 
 import { OFFLINE_CACHE_USED_EVENT, setLastServedFromCache } from '../utils/offline-cache';
-import { useStaleCacheHint, FRESH_DATA_EVENT } from './use-stale-cache-hint';
+import { FRESH_DATA_EVENT, useStaleCacheHint } from './use-stale-cache-hint';
 
 describe('useStaleCacheHint', () => {
   afterEach(() => {

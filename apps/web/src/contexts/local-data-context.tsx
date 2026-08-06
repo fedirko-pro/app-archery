@@ -1,12 +1,13 @@
-import React, {
+import type React from 'react';
+import {
   createContext,
-  useContext,
-  useState,
-  useEffect,
+  type ReactNode,
   useCallback,
+  useContext,
+  useEffect,
   useMemo,
   useRef,
-  ReactNode,
+  useState,
 } from 'react';
 
 import apiService from '../services/api';
@@ -16,19 +17,19 @@ import {
   setDefaultEquipmentSetId,
 } from '../utils/equipment-utils';
 import { runLocalDataMigrations } from '../utils/local-data-migrations';
+import type { LocalEquipmentSet, LocalTrainingSession } from '../utils/local-data-storage';
 import {
-  getEquipmentSets,
-  saveEquipmentSet,
-  updateEquipmentSet,
   deleteEquipmentSet,
-  getTrainingSessions,
-  saveTrainingSession,
-  updateTrainingSession,
   deleteTrainingSession,
+  getEquipmentSets,
+  getTrainingSessions,
   incrementTrainingSessionShots,
   StorageWriteError,
+  saveEquipmentSet,
+  saveTrainingSession,
+  updateEquipmentSet,
+  updateTrainingSession,
 } from '../utils/local-data-storage';
-import type { LocalEquipmentSet, LocalTrainingSession } from '../utils/local-data-storage';
 import {
   addTombstone,
   clearTombstone,
@@ -45,9 +46,9 @@ import {
 import { useAuth } from './auth-context';
 
 export type {
+  CustomField,
   LocalEquipmentSet,
   LocalTrainingSession,
-  CustomField,
 } from '../utils/local-data-storage';
 
 const SESSION_PUSH_DEBOUNCE_MS = 400;
@@ -133,6 +134,7 @@ export const LocalDataProvider: React.FC<Props> = ({ children }) => {
   const sessionPushTimers = useRef<Map<string, ReturnType<typeof setTimeout>>>(new Map());
   const shouldSyncRef = useRef(false);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: defaultEquipmentSetIdRaw forces a recompute when the default set changes
   const defaultEquipmentSetId = useMemo(
     () => resolveDefaultEquipmentSetId(equipmentSets),
     [equipmentSets, defaultEquipmentSetIdRaw],

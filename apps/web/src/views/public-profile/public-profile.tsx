@@ -11,17 +11,17 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import type React from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router';
-
-import ProfileAchievementsPreview from '../profile/profile-achievements-preview';
 import ShareMenu from '@/components/share/ShareMenu';
 import { useAuth } from '@/contexts/auth-context';
 import apiService from '@/services/api';
 import type { PublicProfileDto } from '@/services/types';
 import { getAvatarInitials, resolveUserAvatarWithCacheBust } from '@/utils/placeholder-images';
 import { displayName, getOrigin } from '@/utils/user-display';
+import ProfileAchievementsPreview from '../profile/profile-achievements-preview';
 
 const PublicProfilePage: React.FC = () => {
   const { t } = useTranslation('common');
@@ -58,7 +58,7 @@ const PublicProfilePage: React.FC = () => {
     };
 
     void load();
-  }, [userId, isAuthenticated, lang]);
+  }, [userId, isAuthenticated]);
 
   if (loading) {
     return (

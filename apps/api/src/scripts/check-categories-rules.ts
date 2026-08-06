@@ -8,17 +8,11 @@ async function checkCategoriesRules() {
 
   console.log('🔍 Checking bow categories and their rules...\n');
 
-  const categories = await em.find(
-    BowCategory,
-    {},
-    { populate: ['rule'], limit: 15 },
-  );
+  const categories = await em.find(BowCategory, {}, { populate: ['rule'], limit: 15 });
 
   console.log(`Found ${categories.length} categories (showing first 15):`);
   categories.forEach((cat) => {
-    console.log(
-      `  ${cat.code} - ${cat.name} | Rule: ${cat.rule?.ruleCode || 'NONE'}`,
-    );
+    console.log(`  ${cat.code} - ${cat.name} | Rule: ${cat.rule?.ruleCode || 'NONE'}`);
   });
 
   // Count by rule

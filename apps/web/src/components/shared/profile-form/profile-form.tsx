@@ -1,21 +1,21 @@
-import { Save, Cancel } from '@mui/icons-material';
+import { Cancel, Save } from '@mui/icons-material';
 import {
-  TextField,
-  Button,
-  Box,
-  CircularProgress,
-  Card,
-  CardHeader,
-  CardContent,
   Avatar,
-  Typography,
+  Box,
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  CircularProgress,
   Divider,
+  TextField,
+  Typography,
 } from '@mui/material';
-import React from 'react';
+import type React from 'react';
 
 import {
-  resolveUserAvatarWithCacheBust,
   getAvatarInitials,
+  resolveUserAvatarWithCacheBust,
 } from '../../../utils/placeholder-images';
 
 export interface ProfileFormData {

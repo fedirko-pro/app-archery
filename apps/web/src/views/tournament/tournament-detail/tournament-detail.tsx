@@ -6,8 +6,8 @@ import {
   Description,
   Edit,
   EventBusy,
-  GetApp,
   Gavel,
+  GetApp,
   GpsFixed,
   Image,
   LocationOn,
@@ -17,29 +17,29 @@ import {
   Send,
 } from '@mui/icons-material';
 import {
+  Alert,
   Box,
-  Typography,
   Button,
   Card,
   CardContent,
   CardMedia,
-  Alert,
+  Chip,
   CircularProgress,
+  Divider,
   List,
   ListItem,
-  ListItemText,
   ListItemIcon,
-  Divider,
-  Chip,
+  ListItemText,
   Paper,
+  Typography,
 } from '@mui/material';
 import { isBefore, parseISO, startOfDay } from 'date-fns';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, useParams, useNavigate } from 'react-router';
+import { Link, useNavigate, useParams } from 'react-router';
 
 import AdminApplyUserDialog from '../../../components/dialogs/admin-apply-user-dialog';
-import { FileAttachment } from '../../../components/FileAttachments/FileAttachments';
+import type { FileAttachment } from '../../../components/FileAttachments/FileAttachments';
 import NotFoundPage from '../../../components/NotFound/NotFoundPage';
 import ShareMenu from '../../../components/share/ShareMenu';
 import { getCountryName } from '../../../config/countries';

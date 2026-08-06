@@ -1,37 +1,38 @@
 import {
+  ArrowDownward,
+  ArrowUpward,
   Edit,
   Email,
-  Visibility,
-  ArrowUpward,
-  ArrowDownward,
   PersonAdd,
+  Visibility,
 } from '@mui/icons-material';
 import {
+  Alert,
+  Avatar,
   Box,
+  Button,
+  Chip,
+  CircularProgress,
+  IconButton,
+  Paper,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  Paper,
-  Typography,
-  Alert,
-  CircularProgress,
-  IconButton,
   Tooltip,
-  Avatar,
-  Chip,
-  Button,
+  Typography,
 } from '@mui/material';
-import React, { useState, useEffect, useMemo } from 'react';
+import type React from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import CreateUserDialog from '../../../components/dialogs/create-user-dialog';
 import { ROLE_LABEL_KEYS } from '../../../config/roles';
 import type { User } from '../../../contexts/types';
 import apiService from '../../../services/api';
-import { resolveUserAvatar, getAvatarInitials } from '../../../utils/placeholder-images';
+import { getAvatarInitials, resolveUserAvatar } from '../../../utils/placeholder-images';
 
 interface UsersListProps {
   onEditUser: (user: User) => void;
@@ -51,11 +52,7 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
   }>({ field: null, direction: 'asc' });
   const [createDialogOpen, setCreateDialogOpen] = useState(false);
 
-  useEffect(() => {
-    fetchUsers();
-  }, []);
-
-  const fetchUsers = async () => {
+  const fetchUsers = useCallback(async () => {
     try {
       setLoading(true);
       const usersData = await apiService.getAllUsers();
@@ -66,7 +63,11 @@ const UsersList: React.FC<UsersListProps> = ({ onEditUser, onViewProfile }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [t]);
+
+  useEffect(() => {
+    fetchUsers();
+  }, [fetchUsers]);
 
   const handleResetPassword = async (userId: string, userEmail: string) => {
     try {

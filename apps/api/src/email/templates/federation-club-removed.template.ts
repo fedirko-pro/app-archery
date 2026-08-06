@@ -1,6 +1,6 @@
 import type { EmailI18n } from '../i18n';
 import { interpolate } from '../i18n';
-import { styleHeading, styleDangerBox, styleDangerBoxText } from './theme';
+import { styleDangerBox, styleDangerBoxText, styleHeading } from './theme';
 
 export interface FederationClubRemovedContentParams {
   federationName: string;

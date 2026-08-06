@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import {
+import { v4 as uuid } from 'uuid';
+import type {
+  GeneratedPatrol,
   PatrolEntry,
   PatrolGenerationConfig,
   PatrolGenerationResult,
-  GeneratedPatrol,
   PatrolGenerationStats,
 } from './interfaces/patrol-generation.interface';
-import { v4 as uuid } from 'uuid';
 
 /**
  * Patrol Generation Service
@@ -40,10 +40,7 @@ export class PatrolGenerationService {
   /**
    * Main function to generate patrols from participant entries
    */
-  generatePatrols(
-    entries: PatrolEntry[],
-    config: PatrolGenerationConfig,
-  ): PatrolGenerationResult {
+  generatePatrols(entries: PatrolEntry[], config: PatrolGenerationConfig): PatrolGenerationResult {
     if (entries.length === 0) {
       return {
         patrols: [],
@@ -60,9 +57,7 @@ export class PatrolGenerationService {
     }
 
     // Create lookup map for O(1) access instead of O(n) searches
-    const entryMap = new Map<string, PatrolEntry>(
-      entries.map((e) => [e.participantId, e]),
-    );
+    const entryMap = new Map<string, PatrolEntry>(entries.map((e) => [e.participantId, e]));
 
     // 1. GROUP BY BOW CATEGORY (primary grouping)
     const groups = this.groupByBowCategory(entries);
@@ -76,21 +71,10 @@ export class PatrolGenerationService {
     let patrols = this.formInitialPatrols(groups, minSize, maxSize);
 
     // 4. ADJUST TO TARGET COUNT
-    patrols = this.adjustToTargetCount(
-      patrols,
-      config.targetPatrolCount,
-      minSize,
-      maxSize,
-    );
+    patrols = this.adjustToTargetCount(patrols, config.targetPatrolCount, minSize, maxSize);
 
     // 5. BALANCE PATROL SIZES (preserving bow category when possible)
-    patrols = this.balancePatrolSizes(
-      patrols,
-      minSize,
-      maxSize,
-      entries,
-      entryMap,
-    );
+    patrols = this.balancePatrolSizes(patrols, minSize, maxSize, entries, entryMap);
 
     // 6. BALANCE CLUBS (best effort)
     patrols = this.balanceClubs(patrols, entries, entryMap);
@@ -111,9 +95,7 @@ export class PatrolGenerationService {
    * Step 1: Group entries by bow category (primary grouping criterion)
    * This ensures participants with the same bow category are grouped together
    */
-  private groupByBowCategory(
-    entries: PatrolEntry[],
-  ): Map<string, PatrolEntry[]> {
+  private groupByBowCategory(entries: PatrolEntry[]): Map<string, PatrolEntry[]> {
     const groups = new Map<string, PatrolEntry[]>();
 
     for (const entry of entries) {
@@ -190,10 +172,7 @@ export class PatrolGenerationService {
   /**
    * Merge two smallest patrols
    */
-  private mergeSmallerPatrols(
-    patrols: string[][],
-    maxSize: number,
-  ): string[][] {
+  private mergeSmallerPatrols(patrols: string[][], maxSize: number): string[][] {
     if (patrols.length < 2) return patrols;
 
     // Sort by size
@@ -259,11 +238,7 @@ export class PatrolGenerationService {
       }
 
       // Move best candidate from largest to smallest
-      const candidate = this.findBestCandidateForMove(
-        largest,
-        smallest,
-        entryMap,
-      );
+      const candidate = this.findBestCandidateForMove(largest, smallest, entryMap);
 
       if (candidate) {
         // Move the candidate
@@ -353,11 +328,7 @@ export class PatrolGenerationService {
 
           if (otherClubs.length > 2) {
             // Try to swap members
-            const swapped = this.trySwapForDiversity(
-              patrol,
-              otherPatrol,
-              entryMap,
-            );
+            const swapped = this.trySwapForDiversity(patrol, otherPatrol, entryMap);
             if (swapped) break;
           }
         }
@@ -445,10 +416,7 @@ export class PatrolGenerationService {
   /**
    * Select 2 judges, preferably from different clubs
    */
-  private selectJudges(
-    members: string[],
-    entryMap: Map<string, PatrolEntry>,
-  ): [string, string] {
+  private selectJudges(members: string[], entryMap: Map<string, PatrolEntry>): [string, string] {
     if (members.length < 2) {
       // Fallback: duplicate if not enough members
       return [members[0], members[0]];
@@ -485,9 +453,7 @@ export class PatrolGenerationService {
     const availableMembers = members.filter((m) => !judges.includes(m));
 
     if (availableMembers.length > 0) {
-      return availableMembers[
-        Math.floor(Math.random() * availableMembers.length)
-      ];
+      return availableMembers[Math.floor(Math.random() * availableMembers.length)];
     }
 
     // Fallback: if all members are judges, pick randomly
@@ -531,8 +497,7 @@ export class PatrolGenerationService {
         homogeneousCategoryPatrols++;
       }
     }
-    const categoryHomogeneity =
-      (homogeneousCategoryPatrols / patrols.length) * 100;
+    const categoryHomogeneity = (homogeneousCategoryPatrols / patrols.length) * 100;
 
     // Division homogeneity
     let homogeneousDivisionPatrols = 0;
@@ -544,8 +509,7 @@ export class PatrolGenerationService {
         homogeneousDivisionPatrols++;
       }
     }
-    const divisionHomogeneity =
-      (homogeneousDivisionPatrols / patrols.length) * 100;
+    const divisionHomogeneity = (homogeneousDivisionPatrols / patrols.length) * 100;
 
     // Gender homogeneity
     let homogeneousGenderPatrols = 0;
@@ -574,10 +538,7 @@ export class PatrolGenerationService {
   /**
    * Helper: Get unique clubs from patrol members
    */
-  private getUniqueClubs(
-    members: string[],
-    entryMap: Map<string, PatrolEntry>,
-  ): string[] {
+  private getUniqueClubs(members: string[], entryMap: Map<string, PatrolEntry>): string[] {
     const clubs = members
       .map((id) => entryMap.get(id)?.club)
       .filter((club): club is string => Boolean(club));

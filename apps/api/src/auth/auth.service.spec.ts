@@ -1,13 +1,13 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { UnauthorizedException, BadRequestException, NotFoundException } from '@nestjs/common';
+import { BadRequestException, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import type { Response } from 'express';
+import { Test, type TestingModule } from '@nestjs/testing';
 import * as bcrypt from 'bcryptjs';
-import { AuthService } from './auth.service';
-import { UserService } from '../user/user.service';
+import type { Response } from 'express';
 import { EmailService } from '../email/email.service';
-import { SessionService } from './session.service';
+import { UserService } from '../user/user.service';
+import { AuthService } from './auth.service';
 import { OAuthExchangeService } from './oauth-exchange.service';
+import { SessionService } from './session.service';
 
 jest.mock('bcryptjs');
 

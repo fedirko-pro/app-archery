@@ -1,18 +1,19 @@
 import {
+  Alert,
   Box,
-  Typography,
   Button,
   Card,
   CardContent,
+  CircularProgress,
   FormControl,
   InputLabel,
-  Select,
   MenuItem,
-  Alert,
-  CircularProgress,
+  Select,
   TextField,
+  Typography,
 } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import type React from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useAuth } from '../../../contexts/auth-context';

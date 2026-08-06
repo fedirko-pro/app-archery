@@ -1,7 +1,7 @@
 import { MikroORM } from '@mikro-orm/core';
 import config from '../../mikro-orm.config';
-import { User } from '../user/entity/user.entity';
 import { Club } from '../club/club.entity';
+import { User } from '../user/entity/user.entity';
 
 async function checkClubs() {
   const orm = await MikroORM.init(config);

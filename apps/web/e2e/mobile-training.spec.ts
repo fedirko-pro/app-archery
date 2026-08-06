@@ -6,7 +6,9 @@ test.describe('mobile trainings page', () => {
 
     await expect(page).toHaveURL(/\/en\/trainings/);
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
-    await expect(page.getByRole('button', { name: /add training|додати|añadir|aggiungi/i })).toBeVisible();
+    await expect(
+      page.getByRole('button', { name: /add training|додати|añadir|aggiungi/i }),
+    ).toBeVisible();
   });
 
   test('shows athlete bottom tab bar with trainings active', async ({ page }) => {

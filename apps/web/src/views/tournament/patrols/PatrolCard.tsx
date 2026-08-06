@@ -138,8 +138,12 @@ const PatrolCard: React.FC<PatrolCardProps> = ({
 
         {errorWarnings.length > 0 && (
           <Box sx={{ mb: 1 }}>
-            {errorWarnings.map((warning, idx) => (
-              <Alert key={idx} severity="error" sx={{ mb: 0.5, py: 0.5 }}>
+            {errorWarnings.map((warning) => (
+              <Alert
+                key={`${warning.patrolId}-${warning.type}-${warning.message}`}
+                severity="error"
+                sx={{ mb: 0.5, py: 0.5 }}
+              >
                 {warningText(warning, patrol, t)}
               </Alert>
             ))}
@@ -148,8 +152,12 @@ const PatrolCard: React.FC<PatrolCardProps> = ({
 
         {otherWarnings.length > 0 && (
           <Box sx={{ mb: 1 }}>
-            {otherWarnings.map((warning, idx) => (
-              <Alert key={idx} severity={warning.severity} sx={{ mb: 0.5, py: 0.5 }}>
+            {otherWarnings.map((warning) => (
+              <Alert
+                key={`${warning.patrolId}-${warning.type}-${warning.message}`}
+                severity={warning.severity}
+                sx={{ mb: 0.5, py: 0.5 }}
+              >
                 {warningText(warning, patrol, t)}
               </Alert>
             ))}

@@ -2,10 +2,10 @@
 
 import '../../i18n';
 
-import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@mui/material/styles';
-import { useMemo, type ReactNode } from 'react';
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
+import { type ReactNode, useMemo } from 'react';
 
 import { isProd } from '../../config/env';
 import { AchievementCelebrationProvider } from '../../contexts/achievement-celebration-context';
@@ -19,8 +19,8 @@ import AppBottomChrome from '../AppBottomChrome/AppBottomChrome';
 import AppStatusBar from '../AppStatusBar';
 import { AppUpdatePrompt } from '../AppUpdatePrompt';
 import I18nDevOverlay from '../dev/I18nDevOverlay';
-import EnvError from '../env-error/env-error';
 import { ErrorBoundary } from '../ErrorBoundary';
+import EnvError from '../env-error/env-error';
 import Header from '../Header/Header';
 import { ScrollToTop } from '../ScrollToTop/ScrollToTop';
 

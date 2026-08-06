@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
 
-import { useLocalData, type LocalTrainingSession } from '../contexts/local-data-context';
+import { type LocalTrainingSession, useLocalData } from '../contexts/local-data-context';
 import { getStartedSession } from '../utils/training-session-utils';
 
 type StartDefaults = Partial<

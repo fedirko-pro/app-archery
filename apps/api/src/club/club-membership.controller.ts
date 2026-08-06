@@ -1,21 +1,21 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Param,
+  Controller,
   Delete,
-  UseGuards,
-  Request,
+  Get,
+  Param,
   Patch,
+  Post,
+  Request,
+  UseGuards,
 } from '@nestjs/common';
-import { ClubMembershipService } from './club-membership.service';
-import { ClubInvitationService } from './club-invitation.service';
+import { Roles } from '../auth/decorators/roles.decorator';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
-import { Roles } from '../auth/decorators/roles.decorator';
+import type { RequestUser } from '../auth/permissions';
 import { UserRoles } from '../user/types';
-import { RequestUser } from '../auth/permissions';
+import type { ClubInvitationService } from './club-invitation.service';
+import type { ClubMembershipService } from './club-membership.service';
 
 @Controller('clubs')
 export class ClubMembershipController {

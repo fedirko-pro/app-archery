@@ -4,7 +4,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { useRef, useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 import type { InfoDialogProps } from './types';
 
@@ -30,13 +30,9 @@ export default function InfoDialog(props: InfoDialogProps) {
     >
       <DialogTitle id="scroll-dialog-title">About chapter</DialogTitle>
       <DialogContent dividers={true}>
-        <DialogContentText
-          id="scroll-dialog-description"
-          ref={descriptionElementRef}
-          tabIndex={-1}
-        >
-          {props.description.split('\n').map((line: string, index: number) => (
-            <span style={{ display: 'block', marginBottom: '8px' }} key={index}>
+        <DialogContentText id="scroll-dialog-description" ref={descriptionElementRef} tabIndex={-1}>
+          {props.description.split('\n').map((line: string) => (
+            <span style={{ display: 'block', marginBottom: '8px' }} key={line}>
               {line}
             </span>
           ))}

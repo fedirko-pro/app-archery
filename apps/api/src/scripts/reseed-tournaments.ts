@@ -1,10 +1,10 @@
 import { MikroORM } from '@mikro-orm/core';
 import config from '../../mikro-orm.config';
-import { Tournament } from '../tournament/tournament.entity';
-import { TournamentApplication } from '../tournament/tournament-application.entity';
+import { Rule } from '../rule/rule.entity';
 import { Patrol } from '../tournament/patrol.entity';
 import { PatrolMember } from '../tournament/patrol-member.entity';
-import { Rule } from '../rule/rule.entity';
+import { Tournament } from '../tournament/tournament.entity';
+import { TournamentApplication } from '../tournament/tournament-application.entity';
 import { User } from '../user/entity/user.entity';
 
 async function reseedTournaments() {
@@ -166,9 +166,7 @@ async function reseedTournaments() {
     }
 
     await em.persistAndFlush(tournaments);
-    console.log(
-      `\n✅ Created ${tournaments.length} tournaments (10 future, 4 past) with rules\n`,
-    );
+    console.log(`\n✅ Created ${tournaments.length} tournaments (10 future, 4 past) with rules\n`);
 
     console.log('🎉 Reseeding completed successfully!');
   } catch (error) {

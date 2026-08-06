@@ -1,5 +1,5 @@
-import type { AppLanguageCode } from './common';
 import type { AuthProvider } from './auth';
+import type { AppLanguageCode } from './common';
 import type { ProfileVisibility } from './profile';
 
 export interface User {

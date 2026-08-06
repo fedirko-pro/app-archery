@@ -1,21 +1,21 @@
-import { EntityManager } from '@mikro-orm/core';
+import type { EntityManager } from '@mikro-orm/core';
 import { Seeder } from '@mikro-orm/seeder';
-import { User } from '../user/entity/user.entity';
-import { Tournament } from '../tournament/tournament.entity';
-import {
-  TournamentApplication,
-  ApplicationStatus,
-} from '../tournament/tournament-application.entity';
-import { Rule } from '../rule/rule.entity';
-import { Club } from '../club/club.entity';
 // 👇 Виправлено імпорт bcryptjs
 import * as bcrypt from 'bcryptjs';
-import { ClubSeeder } from './ClubSeeder';
-import { RuleSeeder } from './RuleSeeder';
-import { DivisionSeeder } from './DivisionSeeder';
-import { BowCategorySeeder } from './BowCategorySeeder';
-import { Division } from '../division/division.entity';
 import { BowCategory } from '../bow-category/bow-category.entity';
+import { Club } from '../club/club.entity';
+import { Division } from '../division/division.entity';
+import { Rule } from '../rule/rule.entity';
+import { Tournament } from '../tournament/tournament.entity';
+import {
+  ApplicationStatus,
+  TournamentApplication,
+} from '../tournament/tournament-application.entity';
+import { User } from '../user/entity/user.entity';
+import { BowCategorySeeder } from './BowCategorySeeder';
+import { ClubSeeder } from './ClubSeeder';
+import { DivisionSeeder } from './DivisionSeeder';
+import { RuleSeeder } from './RuleSeeder';
 
 // Helper function to generate random 8-digit federation number
 function generateFederationNumber(): string {

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { User } from './entity/user.entity';
+import type { User } from './entity/user.entity';
 import { ProfileVisibilities, Roles } from './types';
 
 export type ProfileViewLevel = 'none' | 'limited' | 'public' | 'full';

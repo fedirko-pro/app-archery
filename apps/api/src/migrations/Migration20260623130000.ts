@@ -8,8 +8,6 @@ export class Migration20260623130000 extends Migration {
   }
 
   override async down(): Promise<void> {
-    this.addSql(
-      `drop index if exists "tournament_feedback_tournament_id_index";`,
-    );
+    this.addSql(`drop index if exists "tournament_feedback_tournament_id_index";`);
   }
 }

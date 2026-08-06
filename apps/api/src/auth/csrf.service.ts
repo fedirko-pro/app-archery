@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import type { ConfigService } from '@nestjs/config';
 import type { Response } from 'express';
-import { generateSecureToken } from './utils/token-hash';
 import { CSRF_COOKIE_NAME, getCsrfCookieOptions } from './utils/cookie-options';
+import { generateSecureToken } from './utils/token-hash';
 
 @Injectable()
 export class CsrfService {

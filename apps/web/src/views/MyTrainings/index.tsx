@@ -11,13 +11,14 @@ import CardContent from '@mui/material/CardContent';
 import Chip from '@mui/material/Chip';
 import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import type React from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router';
 
 import LocalDataBanner from '../../components/LocalDataBanner/LocalDataBanner';
 import LocalSyncChip from '../../components/LocalSyncChip/LocalSyncChip';
-import { useLocalData, type LocalTrainingSession } from '../../contexts/local-data-context';
+import { type LocalTrainingSession, useLocalData } from '../../contexts/local-data-context';
 import { useGuardedStartTraining } from '../../hooks/use-guarded-start-training';
 import { getEquipmentSetName, isBowSetupPromptDismissed } from '../../utils/equipment-utils';
 import { getSessionCardTint } from '../../utils/session-card-tints';

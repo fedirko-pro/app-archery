@@ -1,8 +1,8 @@
-import { Module } from '@nestjs/common';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
+import { Module } from '@nestjs/common';
 import { RolePermission } from './entity/role-permission.entity';
-import { RolePermissionsService } from './role-permissions.service';
 import { PermissionsService } from './permissions.service';
+import { RolePermissionsService } from './role-permissions.service';
 
 @Module({
   imports: [MikroOrmModule.forFeature([RolePermission])],

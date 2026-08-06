@@ -1,18 +1,18 @@
-import { Test, TestingModule } from '@nestjs/testing';
+import { EntityManager } from '@mikro-orm/core';
 import {
-  ConflictException,
   BadRequestException,
+  ConflictException,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { EntityManager } from '@mikro-orm/core';
 import { ConfigService } from '@nestjs/config';
+import { Test, type TestingModule } from '@nestjs/testing';
 import * as bcrypt from 'bcryptjs';
-import { UserService } from './user.service';
-import { EmailService } from '../email/email.service';
-import { UploadService } from '../upload/upload.service';
 import { ClubMembershipService } from '../club/club-membership.service';
+import { EmailService } from '../email/email.service';
 import { NotificationsService } from '../notification/notifications.service';
+import { UploadService } from '../upload/upload.service';
+import { UserService } from './user.service';
 
 jest.mock('bcryptjs');
 

@@ -2,10 +2,10 @@ import './LanguageToggler.scss';
 
 import Box from '@mui/material/Box';
 import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
 import type { SelectChangeEvent } from '@mui/material/Select';
+import Select from '@mui/material/Select';
 import i18n from 'i18next';
-import React from 'react';
+import type React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate, useParams } from 'react-router';
 

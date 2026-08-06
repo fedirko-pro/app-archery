@@ -9,7 +9,8 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import type React from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useParams } from 'react-router';
 
@@ -56,7 +57,7 @@ const AchievementSharePage: React.FC = () => {
     };
 
     void load();
-  }, [userId, achievementId, isAuthenticated, lang]);
+  }, [userId, achievementId, isAuthenticated]);
 
   if (loading) {
     return (

@@ -1,12 +1,5 @@
-import {
-  IsEnum,
-  IsNumber,
-  IsOptional,
-  IsString,
-  Min,
-  Max,
-} from 'class-validator';
 import { Type } from 'class-transformer';
+import { IsEnum, IsNumber, IsOptional, IsString, Max, Min } from 'class-validator';
 
 export class UploadImageDto {
   @IsEnum(['avatar', 'banner', 'logo'])

@@ -1,20 +1,20 @@
 import {
-  Controller,
-  Post,
   Body,
+  Controller,
+  Get,
   HttpCode,
   HttpStatus,
-  Get,
-  UseGuards,
   NotFoundException,
+  Post,
+  UseGuards,
 } from '@nestjs/common';
-import { EmailService } from './email.service';
-import { ConfigService } from '@nestjs/config';
+import type { ConfigService } from '@nestjs/config';
+import { Roles } from '../auth/decorators/roles.decorator';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
-import { Roles } from '../auth/decorators/roles.decorator';
 import { Roles as UserRoles } from '../user/types';
-import { styleContainer, styleHeading, styleHr, styleFooter } from './templates/theme';
+import type { EmailService } from './email.service';
+import { styleContainer, styleFooter, styleHeading, styleHr } from './templates/theme';
 
 interface TestEmailDto {
   to: string;

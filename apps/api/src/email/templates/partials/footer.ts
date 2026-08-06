@@ -1,7 +1,6 @@
-import { styleHr, styleFooter } from '../theme';
+import { styleFooter, styleHr } from '../theme';
 
-const DEFAULT_FOOTER_TEXT =
-  'This is an automated email. Please do not reply to this message.';
+const DEFAULT_FOOTER_TEXT = 'This is an automated email. Please do not reply to this message.';
 
 export function buildFooterHtml(text: string = DEFAULT_FOOTER_TEXT): string {
   return `

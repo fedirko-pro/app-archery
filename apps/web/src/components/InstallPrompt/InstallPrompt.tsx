@@ -1,6 +1,7 @@
 import './InstallPrompt.scss';
 
-import React, { useState } from 'react';
+import type React from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { setInstallDismissed, usePWAInstall } from '../../hooks/usePwaInstall';
@@ -30,7 +31,7 @@ const InstallPrompt: React.FC = () => {
   if (!show) return null;
 
   return (
-    <div className="install-prompt" role="region" aria-label={t('pwa.installAria')}>
+    <section className="install-prompt" aria-label={t('pwa.installAria')}>
       <p className="install-prompt__text">{t('pwa.installPrompt')}</p>
       <div className="install-prompt__actions">
         <button
@@ -49,7 +50,7 @@ const InstallPrompt: React.FC = () => {
           {t('pwa.dismiss')}
         </button>
       </div>
-    </div>
+    </section>
   );
 };
 

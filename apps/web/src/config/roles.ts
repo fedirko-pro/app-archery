@@ -1,8 +1,8 @@
-import { ROLES, ADMIN_CAPABLE_ROLES, ROLES_CAN_MANAGE_REFERENCE_DATA } from '@sokil/shared-types';
 import type { Role } from '@sokil/shared-types';
+import { ADMIN_CAPABLE_ROLES, ROLES, ROLES_CAN_MANAGE_REFERENCE_DATA } from '@sokil/shared-types';
 
-export { ROLES, ADMIN_CAPABLE_ROLES, ROLES_CAN_MANAGE_REFERENCE_DATA };
 export type { Role };
+export { ADMIN_CAPABLE_ROLES, ROLES, ROLES_CAN_MANAGE_REFERENCE_DATA };
 
 /** Only General Admin can access Access Control and change roles. */
 export const ROLES_CAN_ACCESS_CONTROL: Role[] = [ROLES.GeneralAdmin];

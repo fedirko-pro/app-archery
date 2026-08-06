@@ -1,14 +1,14 @@
-import { Injectable, NotFoundException, Logger } from '@nestjs/common';
-import { EntityManager } from '@mikro-orm/core';
-import {
+import type { EntityManager } from '@mikro-orm/core';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import type {
   NotificationDto,
-  NotificationType,
   NotificationsListDto,
+  NotificationType,
   NotificationUnreadCountDto,
 } from '@sokil/shared-types';
-import { Notification } from './notification.entity';
-import { User } from '../user/entity/user.entity';
 import { AuthSession } from '../auth/entity/auth-session.entity';
+import { User } from '../user/entity/user.entity';
+import { Notification } from './notification.entity';
 import {
   getNotificationBodyKey,
   getNotificationTitleKey,

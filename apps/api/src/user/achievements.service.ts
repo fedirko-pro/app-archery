@@ -1,23 +1,23 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
-import { EntityManager } from '@mikro-orm/core';
+import type { EntityManager } from '@mikro-orm/core';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import {
   ACHIEVEMENT_CATALOG,
   ACHIEVEMENT_CATALOG_BY_ID,
-  AchievementStatsSnapshot,
+  type AchievementStatsSnapshot,
   evaluateComputedProgress,
   isValidAchievementId,
   lbsToKg,
   NotificationTypes,
   summarizeCompletion,
 } from '@sokil/shared-types';
-import { UserAchievement } from './entity/user-achievement.entity';
-import { User } from './entity/user.entity';
-import { TrainingService } from '../training/training.service';
-import { EquipmentService } from '../equipment/equipment.service';
+import type { EquipmentService } from '../equipment/equipment.service';
+import type { NotificationsService } from '../notification/notifications.service';
+import type { TrainingService } from '../training/training.service';
 import { TrainingSession } from '../training/training-session.entity';
-import { AchievementProgressDto, AchievementsListDto } from './dto/achievement-progress.dto';
-import { PublicProgressShareDto } from './dto/public-progress-share.dto';
-import { NotificationsService } from '../notification/notifications.service';
+import type { AchievementProgressDto, AchievementsListDto } from './dto/achievement-progress.dto';
+import type { PublicProgressShareDto } from './dto/public-progress-share.dto';
+import { User } from './entity/user.entity';
+import { UserAchievement } from './entity/user-achievement.entity';
 
 @Injectable()
 export class AchievementsService {

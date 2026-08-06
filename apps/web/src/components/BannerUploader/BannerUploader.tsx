@@ -6,11 +6,12 @@ import {
   Card,
   CardContent,
   CardHeader,
+  CircularProgress,
   Slider,
   Typography,
-  CircularProgress,
 } from '@mui/material';
-import React, { useEffect, useRef, useState } from 'react';
+import type React from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useNotification } from '../../contexts/error-feedback-context';
@@ -304,6 +305,8 @@ const BannerUploader: React.FC<BannerUploaderProps> = ({
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
             className="banner-uploader__viewport"
+            role="img"
+            aria-label={t('components.bannerUploader.cropLabel')}
             style={
               {
                 ['--banner-width' as string]: `${width}px`,

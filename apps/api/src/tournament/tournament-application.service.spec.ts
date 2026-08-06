@@ -1,11 +1,11 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { NotFoundException, ConflictException, BadRequestException } from '@nestjs/common';
 import { EntityManager } from '@mikro-orm/core';
-import { TournamentApplicationService } from './tournament-application.service';
-import { ApplicationStatus } from './tournament-application.entity';
+import { BadRequestException, ConflictException, NotFoundException } from '@nestjs/common';
+import { Test, type TestingModule } from '@nestjs/testing';
 import { EmailService } from '../email/email.service';
-import { AchievementsService } from '../user/achievements.service';
 import { NotificationsService } from '../notification/notifications.service';
+import { AchievementsService } from '../user/achievements.service';
+import { ApplicationStatus } from './tournament-application.entity';
+import { TournamentApplicationService } from './tournament-application.service';
 
 describe('TournamentApplicationService', () => {
   let service: TournamentApplicationService;

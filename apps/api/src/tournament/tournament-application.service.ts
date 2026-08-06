@@ -1,19 +1,19 @@
+import type { EntityManager } from '@mikro-orm/core';
 import {
-  Injectable,
   BadRequestException,
-  NotFoundException,
   ConflictException,
+  Injectable,
+  NotFoundException,
 } from '@nestjs/common';
-import { EntityManager } from '@mikro-orm/core';
-import { TournamentApplication, ApplicationStatus } from './tournament-application.entity';
-import { Tournament } from './tournament.entity';
-import { User } from '../user/entity/user.entity';
-import { Division } from '../division/division.entity';
-import { BowCategory } from '../bow-category/bow-category.entity';
-import { EmailService } from '../email/email.service';
-import { AchievementsService } from '../user/achievements.service';
-import { NotificationsService } from '../notification/notifications.service';
 import { NotificationTypes } from '@sokil/shared-types';
+import { BowCategory } from '../bow-category/bow-category.entity';
+import { Division } from '../division/division.entity';
+import type { EmailService } from '../email/email.service';
+import type { NotificationsService } from '../notification/notifications.service';
+import type { AchievementsService } from '../user/achievements.service';
+import { User } from '../user/entity/user.entity';
+import { Tournament } from './tournament.entity';
+import { ApplicationStatus, TournamentApplication } from './tournament-application.entity';
 
 @Injectable()
 export class TournamentApplicationService {

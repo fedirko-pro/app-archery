@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Roles } from '../user/types';
-import { RolePermissionsService } from './role-permissions.service';
 import type { RequestUser, TournamentWithCreator } from './permissions';
+import type { RolePermissionsService } from './role-permissions.service';
 
 export interface AdminScope {
   adminClubId?: string | null;

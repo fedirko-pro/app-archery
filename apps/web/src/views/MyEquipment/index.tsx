@@ -15,14 +15,15 @@ import DialogTitle from '@mui/material/DialogTitle';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import React, { useEffect, useState } from 'react';
+import type React from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useParams, useSearchParams } from 'react-router';
 
 import LocalDataBanner from '../../components/LocalDataBanner/LocalDataBanner';
 import LocalSyncChip from '../../components/LocalSyncChip/LocalSyncChip';
 import SafeDialog from '../../components/SafeDialog/SafeDialog';
-import { useLocalData, type LocalEquipmentSet } from '../../contexts/local-data-context';
+import { type LocalEquipmentSet, useLocalData } from '../../contexts/local-data-context';
 import { isPresetArrowMaterial } from '../../utils/equipment-utils';
 import EquipmentSetForm from './EquipmentSetForm';
 
@@ -54,7 +55,8 @@ const MyEquipmentPage: React.FC = () => {
 
   useEffect(() => {
     if (searchParams.get('add') !== '1') return;
-    handleOpenAdd();
+    setEditTarget(null);
+    setFormOpen(true);
     const next = new URLSearchParams(searchParams);
     next.delete('add');
     setSearchParams(next, { replace: true });

@@ -1,7 +1,7 @@
 import {
-  NotificationType,
-  NotificationTypes,
   isImportantNotificationType,
+  type NotificationType,
+  NotificationTypes,
 } from '@sokil/shared-types';
 
 const TYPE_I18N_SUFFIX: Record<NotificationType, string> = {

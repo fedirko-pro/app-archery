@@ -1,7 +1,8 @@
-import { Box, Typography, Card, CardContent, Button, Alert, CircularProgress } from '@mui/material';
-import React, { useState, useEffect } from 'react';
+import { Alert, Box, Button, Card, CardContent, CircularProgress, Typography } from '@mui/material';
+import type React from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useParams, useNavigate } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 
 import { useAuth } from '../../../contexts/auth-context';
 import apiService from '../../../services/api';
@@ -22,6 +23,7 @@ const PublicApplication: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: fetchTournament (recreated each render) is intentionally invoked once on mount
   useEffect(() => {
     if (tournamentId) {
       fetchTournament();

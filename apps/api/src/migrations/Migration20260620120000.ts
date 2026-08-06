@@ -5,9 +5,7 @@ export class Migration20260620120000 extends Migration {
     this.addSql(
       `alter table "user" add column "share_progress_enabled" boolean not null default false;`,
     );
-    this.addSql(
-      `alter table "user" add column "onboarding_completed_at" timestamptz null;`,
-    );
+    this.addSql(`alter table "user" add column "onboarding_completed_at" timestamptz null;`);
     this.addSql(
       `update "user" set "onboarding_completed_at" = "created_at" where "onboarding_completed_at" is null;`,
     );

@@ -33,11 +33,11 @@ const About = () => {
         <div className="about-intro">
           {introParagraphs.map((para, i) =>
             i === introParagraphs.length - 1 ? (
-              <p key={i}>
+              <p key={`para-${para}`}>
                 <strong>{para}</strong>
               </p>
             ) : (
-              <p key={i}>{para}</p>
+              <p key={`para-${para}`}>{para}</p>
             ),
           )}
         </div>

@@ -1,11 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import {
-  formatDate,
-  formatShortDate,
-  formatDateTime,
-  getApplicationDeadline,
-} from './date-utils';
+import { formatDate, formatDateTime, formatShortDate, getApplicationDeadline } from './date-utils';
 
 describe('formatDate', () => {
   it('formats ISO date string with default format', () => {

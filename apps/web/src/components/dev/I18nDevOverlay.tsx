@@ -1,5 +1,6 @@
 import i18n from 'i18next';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import type React from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { isProd } from '../../config/env';
 
@@ -13,7 +14,7 @@ type MissingKey = {
 
 function useMissingKeys() {
   const [missing, setMissing] = useState<Record<string, MissingKey>>({});
-  const keyFn = (lng: string, ns: string, key: string) => `${lng}::${ns}::${key}`;
+  const keyFn = useCallback((lng: string, ns: string, key: string) => `${lng}::${ns}::${key}`, []);
 
   useEffect(() => {
     const handler = (lngs: string | string[], ns: string, key: string) => {
@@ -31,7 +32,7 @@ function useMissingKeys() {
     return () => {
       i18n.off('missingKey', handler);
     };
-  }, []);
+  }, [keyFn]);
 
   const list = useMemo(() => Object.values(missing).sort((a, b) => b.lastAt - a.lastAt), [missing]);
 
@@ -86,7 +87,7 @@ const buttonStyle: React.CSSProperties = {
 export default function I18nDevOverlay() {
   const { list, clear } = useMissingKeys();
   const [open, setOpen] = useState(false);
-  const badgeRef = useRef<HTMLDivElement | null>(null);
+  const badgeRef = useRef<HTMLButtonElement | null>(null);
 
   useEffect(() => {
     try {
@@ -123,9 +124,9 @@ export default function I18nDevOverlay() {
 
   return (
     <>
-      <div ref={badgeRef} style={badgeStyle} onClick={() => setOpen(!open)}>
+      <button type="button" ref={badgeRef} style={badgeStyle} onClick={() => setOpen(!open)}>
         i18n {list.length > 0 ? `missing: ${list.length}` : 'ok'} (Alt+I)
-      </div>
+      </button>
       {open && (
         <div style={panelStyle}>
           <div
@@ -138,10 +139,10 @@ export default function I18nDevOverlay() {
           >
             <strong>Missing translation keys</strong>
             <div style={{ display: 'flex', gap: 8 }}>
-              <button style={buttonStyle} onClick={clear}>
+              <button type="button" style={buttonStyle} onClick={clear}>
                 Clear
               </button>
-              <button style={buttonStyle} onClick={() => setOpen(false)}>
+              <button type="button" style={buttonStyle} onClick={() => setOpen(false)}>
                 Close
               </button>
             </div>
@@ -159,7 +160,11 @@ export default function I18nDevOverlay() {
                   {m.count}
                 </div>
                 <div style={{ marginTop: 6, display: 'flex', gap: 6 }}>
-                  <button style={buttonStyle} onClick={() => copySnippet(m.ns, m.key)}>
+                  <button
+                    type="button"
+                    style={buttonStyle}
+                    onClick={() => copySnippet(m.ns, m.key)}
+                  >
                     Copy JSON
                   </button>
                 </div>

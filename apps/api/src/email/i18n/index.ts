@@ -2,8 +2,8 @@ import { en } from './en';
 import { es } from './es';
 import { it } from './it';
 import { pt } from './pt';
-import { uk } from './uk';
 import type { EmailI18n } from './types';
+import { uk } from './uk';
 
 export type { EmailI18n } from './types';
 
@@ -28,12 +28,6 @@ export function getEmailI18n(locale?: string | null): EmailI18n {
  * Replaces {{variable}} placeholders in a string.
  * e.g. interpolate('Hello {{name}}', { name: 'Alice' }) → 'Hello Alice'
  */
-export function interpolate(
-  template: string,
-  vars: Record<string, string>,
-): string {
-  return template.replaceAll(
-    /\{\{(\w+)\}\}/g,
-    (_, key: string) => vars[key] ?? `{{${key}}}`,
-  );
+export function interpolate(template: string, vars: Record<string, string>): string {
+  return template.replaceAll(/\{\{(\w+)\}\}/g, (_, key: string) => vars[key] ?? `{{${key}}}`);
 }

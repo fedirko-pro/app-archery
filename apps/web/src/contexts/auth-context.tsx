@@ -1,11 +1,12 @@
-import React, {
+import type React from 'react';
+import {
   createContext,
-  useContext,
-  useState,
-  useEffect,
+  type ReactNode,
   useCallback,
-  ReactNode,
+  useContext,
+  useEffect,
   useRef,
+  useState,
 } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 
@@ -15,11 +16,11 @@ import { fromI18nLang, getCurrentI18nLang, normalizeAppLang } from '../utils/i18
 import { isNetworkError } from '../utils/offline-cache';
 import { resolvePostAuthPath } from '../utils/post-auth-redirect';
 import type {
-  User,
-  RegisterData,
-  AuthResponse,
   AuthContextType,
+  AuthResponse,
   ChangePasswordData,
+  RegisterData,
+  User,
 } from './types';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -79,10 +80,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     checkAuth();
   }, []);
 
-  const handlePostAuthRedirect = (authenticatedUser?: User | null) => {
-    const landingUser = authenticatedUser !== undefined ? authenticatedUser : user;
-    navigate(resolvePostAuthPath(currentLang, landingUser));
-  };
+  const handlePostAuthRedirect = useCallback(
+    (authenticatedUser?: User | null) => {
+      const landingUser = authenticatedUser !== undefined ? authenticatedUser : user;
+      navigate(resolvePostAuthPath(currentLang, landingUser));
+    },
+    [currentLang, navigate, user],
+  );
 
   const login = async (email: string, password: string): Promise<AuthResponse> => {
     try {
@@ -170,7 +174,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     } finally {
       setActionLoading(false);
     }
-  }, [currentLang, navigate]);
+  }, [currentLang, navigate, handlePostAuthRedirect]);
 
   const changePassword = async (passwordData: ChangePasswordData): Promise<void> => {
     try {

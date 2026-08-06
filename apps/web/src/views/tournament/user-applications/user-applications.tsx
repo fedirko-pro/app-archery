@@ -16,7 +16,8 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import React, { useEffect, useMemo, useState } from 'react';
+import type React from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation, useParams } from 'react-router';
 
@@ -42,11 +43,7 @@ const UserApplications: React.FC = () => {
     reason: string;
   }>({ open: false, applicationId: null, reason: '' });
 
-  useEffect(() => {
-    void fetchApplications();
-  }, []);
-
-  const fetchApplications = async () => {
+  const fetchApplications = useCallback(async () => {
     try {
       setLoading(true);
       const [apps, tournaments] = await Promise.all([
@@ -61,7 +58,11 @@ const UserApplications: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [t]);
+
+  useEffect(() => {
+    void fetchApplications();
+  }, [fetchApplications]);
 
   const sortedApplications = useMemo(
     () =>

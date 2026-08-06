@@ -1,6 +1,6 @@
-import path from 'node:path';
 import { execSync } from 'node:child_process';
-import { readFileSync, existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
+import path from 'node:path';
 import { loadEnvConfig } from '@next/env';
 import withSerwistInit from '@serwist/next';
 import type { NextConfig } from 'next';

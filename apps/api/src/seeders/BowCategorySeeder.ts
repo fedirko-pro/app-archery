@@ -1,5 +1,5 @@
+import type { EntityManager } from '@mikro-orm/core';
 import { Seeder } from '@mikro-orm/seeder';
-import { EntityManager } from '@mikro-orm/core';
 import { BowCategory } from '../bow-category/bow-category.entity';
 import { Rule } from '../rule/rule.entity';
 

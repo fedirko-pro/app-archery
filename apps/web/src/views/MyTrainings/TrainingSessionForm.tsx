@@ -10,14 +10,15 @@ import IconButton from '@mui/material/IconButton';
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import React, { useState } from 'react';
+import type React from 'react';
+import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useParams } from 'react-router';
 
 import { useLocalData } from '../../contexts/local-data-context';
 import type {
-  LocalTrainingSession,
   CustomField,
+  LocalTrainingSession,
   TrainingMood,
 } from '../../utils/local-data-storage';
 import {
@@ -75,10 +76,13 @@ const TrainingSessionForm: React.FC<TrainingSessionFormProps> = ({
   );
   const [notes, setNotes] = useState(initial.notes ?? '');
   const [mood, setMood] = useState<TrainingMood | ''>(initial.mood ?? '');
-  const [customFields, setCustomFields] = useState<CustomField[]>(initial.customFields ?? []);
+  const [customFields, setCustomFields] = useState<(CustomField & { rowId: number })[]>(() =>
+    (initial.customFields ?? []).map((f, i) => ({ ...f, rowId: i })),
+  );
+  const nextFieldRowId = useRef(customFields.length);
 
   const handleAddCustomField = () => {
-    setCustomFields([...customFields, { key: '', value: '' }]);
+    setCustomFields([...customFields, { key: '', value: '', rowId: nextFieldRowId.current++ }]);
   };
 
   const handleCustomFieldChange = (index: number, field: 'key' | 'value', value: string) => {
@@ -241,27 +245,34 @@ const TrainingSessionForm: React.FC<TrainingSessionFormProps> = ({
           <Box sx={{ mb: 2 }}>
             <MoodPicker value={mood} onChange={setMood} />
           </Box>
-          {customFields.map((field, index) => (
-            <Box key={index} sx={{ display: 'flex', gap: 1, mb: 1 }}>
-              <TextField
-                label={t('trainings.fieldKey')}
-                value={field.key}
-                onChange={(e) => handleCustomFieldChange(index, 'key', e.target.value)}
-                size="small"
-                sx={{ flex: 1 }}
-              />
-              <TextField
-                label={t('trainings.fieldValue')}
-                value={field.value}
-                onChange={(e) => handleCustomFieldChange(index, 'value', e.target.value)}
-                size="small"
-                sx={{ flex: 1 }}
-              />
-              <IconButton onClick={() => handleRemoveCustomField(index)} size="small" color="error">
-                <DeleteIcon fontSize="small" />
-              </IconButton>
-            </Box>
-          ))}
+          {customFields.map((field) => {
+            const index = customFields.findIndex((f) => f.rowId === field.rowId);
+            return (
+              <Box key={field.rowId} sx={{ display: 'flex', gap: 1, mb: 1 }}>
+                <TextField
+                  label={t('trainings.fieldKey')}
+                  value={field.key}
+                  onChange={(e) => handleCustomFieldChange(index, 'key', e.target.value)}
+                  size="small"
+                  sx={{ flex: 1 }}
+                />
+                <TextField
+                  label={t('trainings.fieldValue')}
+                  value={field.value}
+                  onChange={(e) => handleCustomFieldChange(index, 'value', e.target.value)}
+                  size="small"
+                  sx={{ flex: 1 }}
+                />
+                <IconButton
+                  onClick={() => handleRemoveCustomField(index)}
+                  size="small"
+                  color="error"
+                >
+                  <DeleteIcon fontSize="small" />
+                </IconButton>
+              </Box>
+            );
+          })}
 
           <Button startIcon={<AddIcon />} onClick={handleAddCustomField} size="small">
             {t('trainings.addCustomField')}

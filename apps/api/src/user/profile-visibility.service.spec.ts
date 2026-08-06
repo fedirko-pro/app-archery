@@ -1,6 +1,6 @@
+import type { User } from './entity/user.entity';
 import { ProfileVisibilityService } from './profile-visibility.service';
 import { ProfileVisibilities, Roles } from './types';
-import { User } from './entity/user.entity';
 
 describe('ProfileVisibilityService', () => {
   const service = new ProfileVisibilityService();

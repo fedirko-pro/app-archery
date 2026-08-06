@@ -1,29 +1,29 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
-  UseGuards,
-  Request,
-  Query,
   ForbiddenException,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+  Request,
+  UseGuards,
 } from '@nestjs/common';
-import { FederationService } from './federation.service';
-import { FederationMembershipService } from './federation-membership.service';
-import { CreateFederationDto } from './dto/create-federation.dto';
-import { UpdateFederationDto } from './dto/update-federation.dto';
+import { Roles as RolesDecorator } from '../auth/decorators/roles.decorator';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
-import { Roles as RolesDecorator } from '../auth/decorators/roles.decorator';
+import type { RequestUser } from '../auth/permissions';
+import type { PermissionsService } from '../auth/permissions.service';
+import type { ClubMembershipService } from '../club/club-membership.service';
 import { UserRoles } from '../user/types';
-import { RequestUser } from '../auth/permissions';
-import { PermissionsService } from '../auth/permissions.service';
-import { ClubMembershipService } from '../club/club-membership.service';
-import { UserService } from '../user/user.service';
+import type { UserService } from '../user/user.service';
+import type { CreateFederationDto } from './dto/create-federation.dto';
+import type { UpdateFederationDto } from './dto/update-federation.dto';
+import type { FederationService } from './federation.service';
 import { FederationMembershipStatus } from './federation-membership.entity';
+import type { FederationMembershipService } from './federation-membership.service';
 
 @Controller('federations')
 export class FederationController {

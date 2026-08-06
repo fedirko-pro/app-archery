@@ -1,17 +1,17 @@
 import {
   Controller,
+  DefaultValuePipe,
   Get,
-  Patch,
   Param,
+  ParseIntPipe,
+  Patch,
   Query,
   Request,
   UseGuards,
-  ParseIntPipe,
-  DefaultValuePipe,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { RequestUser } from '../auth/permissions';
-import { NotificationsService } from './notifications.service';
+import type { RequestUser } from '../auth/permissions';
+import type { NotificationsService } from './notifications.service';
 
 @Controller('notifications')
 @UseGuards(JwtAuthGuard)

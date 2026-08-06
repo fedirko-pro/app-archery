@@ -1,19 +1,20 @@
-import { Visibility, VisibilityOff, Security, Lock } from '@mui/icons-material';
+import { Lock, Security, Visibility, VisibilityOff } from '@mui/icons-material';
 import {
-  Box,
-  CircularProgress,
   Alert,
-  TextField,
+  Box,
   Button,
   Card,
   CardContent,
   CardHeader,
+  CircularProgress,
+  Divider,
   IconButton,
   InputAdornment,
-  Divider,
+  TextField,
   Typography,
 } from '@mui/material';
-import React, { useState, useEffect } from 'react';
+import type React from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router';
 

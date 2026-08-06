@@ -1,6 +1,7 @@
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Box, Button, IconButton, Stack, TextField, Typography } from '@mui/material';
+import { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import type { ClubLinkDto } from '../../services/types';
@@ -12,6 +13,17 @@ interface ClubLinksEditorProps {
 
 const ClubLinksEditor: React.FC<ClubLinksEditorProps> = ({ value, onChange }) => {
   const { t } = useTranslation('common');
+  const idsRef = useRef<number[]>(value.map((_, i) => i));
+  const nextIdRef = useRef(value.length);
+
+  if (idsRef.current.length < value.length) {
+    for (let i = idsRef.current.length; i < value.length; i++) {
+      idsRef.current.push(nextIdRef.current++);
+    }
+  }
+  if (idsRef.current.length > value.length) {
+    idsRef.current.length = value.length;
+  }
 
   const handleAdd = () => {
     onChange([...value, { label: '', url: '' }]);
@@ -36,7 +48,7 @@ const ClubLinksEditor: React.FC<ClubLinksEditorProps> = ({ value, onChange }) =>
       <Stack spacing={2}>
         {value.map((link, index) => (
           <Stack
-            key={index}
+            key={idsRef.current[index]}
             direction={{ xs: 'column', sm: 'row' }}
             spacing={1}
             alignItems="flex-start"

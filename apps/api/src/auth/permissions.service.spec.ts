@@ -1,7 +1,7 @@
-import { Test, TestingModule } from '@nestjs/testing';
+import { Test, type TestingModule } from '@nestjs/testing';
+import { Roles } from '../user/types';
 import { PermissionsService } from './permissions.service';
 import { RolePermissionsService } from './role-permissions.service';
-import { Roles } from '../user/types';
 
 describe('PermissionsService', () => {
   let service: PermissionsService;

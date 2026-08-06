@@ -1,14 +1,8 @@
-import {
-  Entity,
-  PrimaryKey,
-  Property,
-  ManyToOne,
-  OneToMany,
-} from '@mikro-orm/core';
+import { Entity, ManyToOne, OneToMany, PrimaryKey, Property } from '@mikro-orm/core';
 import { v4 as uuid } from 'uuid';
-import { Tournament } from './tournament.entity';
 import { User } from '../user/entity/user.entity';
 import { PatrolMember } from './patrol-member.entity';
+import { Tournament } from './tournament.entity';
 
 @Entity()
 export class Patrol {
@@ -27,7 +21,10 @@ export class Patrol {
   @ManyToOne(() => User)
   leader: User;
 
-  @OneToMany(() => PatrolMember, (member) => member.patrol)
+  @OneToMany(
+    () => PatrolMember,
+    (member) => member.patrol,
+  )
   members = [];
 
   @Property({ onCreate: () => new Date() })

@@ -6,12 +6,13 @@ import Badge from '@mui/material/Badge';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import React, { useMemo, useState } from 'react';
+import type React from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router';
 
 import { isDev } from '../../config/env';
-import { USER_DEMO_NAV_ITEMS, isClubAdmin, isFederationAdmin } from '../../config/roles';
+import { isClubAdmin, isFederationAdmin, USER_DEMO_NAV_ITEMS } from '../../config/roles';
 import { useAuth } from '../../contexts/auth-context';
 import { useNotifications } from '../../contexts/notifications-context';
 import { ATHLETE_TAB_BAR_MQ } from '../../hooks/use-athlete-tab-bar-visible';

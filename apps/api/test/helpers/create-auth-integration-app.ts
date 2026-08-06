@@ -1,13 +1,13 @@
-import { INestApplication, ValidationPipe } from '@nestjs/common';
-import { APP_GUARD, Reflector } from '@nestjs/core';
+import { type INestApplication, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { Test, TestingModule } from '@nestjs/testing';
+import { APP_GUARD, Reflector } from '@nestjs/core';
+import { Test, type TestingModule } from '@nestjs/testing';
 import cookieParser from 'cookie-parser';
 
 import { AuthController } from '../../src/auth/auth.controller';
 import { AuthService } from '../../src/auth/auth.service';
-import { CsrfGuard } from '../../src/auth/guards/csrf.guard';
 import { CsrfService } from '../../src/auth/csrf.service';
+import { CsrfGuard } from '../../src/auth/guards/csrf.guard';
 import { OAuthExchangeService } from '../../src/auth/oauth-exchange.service';
 import { RolePermissionsService } from '../../src/auth/role-permissions.service';
 import { SessionService } from '../../src/auth/session.service';

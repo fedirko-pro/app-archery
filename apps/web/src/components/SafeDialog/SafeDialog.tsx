@@ -1,5 +1,6 @@
 import Dialog, { type DialogProps } from '@mui/material/Dialog';
-import React, { useLayoutEffect } from 'react';
+import type React from 'react';
+import { useLayoutEffect } from 'react';
 
 /**
  * MUI Dialog that blurs the triggering control before aria-hidden is applied to

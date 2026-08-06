@@ -1,8 +1,8 @@
-import { Entity, PrimaryKey, Property, ManyToOne, Unique } from '@mikro-orm/core';
+import { Entity, ManyToOne, PrimaryKey, Property, Unique } from '@mikro-orm/core';
 import { v4 as uuid } from 'uuid';
-import { Federation } from './federation.entity';
 import { Club } from '../club/club.entity';
 import { User } from '../user/entity/user.entity';
+import { Federation } from './federation.entity';
 
 export enum FederationMembershipStatus {
   PENDING = 'pending',

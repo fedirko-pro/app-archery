@@ -1,5 +1,5 @@
-import { Injectable, OnModuleInit } from '@nestjs/common';
-import { EntityManager } from '@mikro-orm/core';
+import type { EntityManager } from '@mikro-orm/core';
+import { Injectable, type OnModuleInit } from '@nestjs/common';
 import { RolePermission } from './entity/role-permission.entity';
 import { DEFAULT_ROLE_PERMISSIONS_MATRIX } from './role-permissions.constants';
 
@@ -51,11 +51,7 @@ export class RolePermissionsService implements OnModuleInit {
     return row ? row.roles.includes(role) : false;
   }
 
-  async setPermission(
-    role: string,
-    permissionKey: string,
-    enabled: boolean,
-  ): Promise<void> {
+  async setPermission(role: string, permissionKey: string, enabled: boolean): Promise<void> {
     const fork = this.em.fork();
     const existing = await fork.findOne(RolePermission, {
       role,

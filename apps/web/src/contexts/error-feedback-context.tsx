@@ -1,12 +1,6 @@
 import { Alert, Snackbar } from '@mui/material';
 import type { AlertColor } from '@mui/material/Alert';
-import React, {
-  createContext,
-  useCallback,
-  useContext,
-  useState,
-  type ReactNode,
-} from 'react';
+import React, { createContext, type ReactNode, useCallback, useContext, useState } from 'react';
 
 export type NotificationSeverity = AlertColor;
 
@@ -17,16 +11,12 @@ interface NotificationContextValue {
   showError: (message: string) => void;
 }
 
-const NotificationContext = createContext<NotificationContextValue | undefined>(
-  undefined,
-);
+const NotificationContext = createContext<NotificationContextValue | undefined>(undefined);
 
 export function useNotification(): NotificationContextValue {
   const context = useContext(NotificationContext);
   if (!context) {
-    throw new Error(
-      'useNotification must be used within an ErrorFeedbackProvider',
-    );
+    throw new Error('useNotification must be used within an ErrorFeedbackProvider');
   }
   return context;
 }
@@ -35,9 +25,7 @@ export function useNotification(): NotificationContextValue {
 export function useErrorFeedback(): Pick<NotificationContextValue, 'showError'> {
   const context = useContext(NotificationContext);
   if (!context) {
-    throw new Error(
-      'useErrorFeedback must be used within an ErrorFeedbackProvider',
-    );
+    throw new Error('useErrorFeedback must be used within an ErrorFeedbackProvider');
   }
   return { showError: context.showError };
 }
@@ -59,10 +47,7 @@ export function ErrorFeedbackProvider({
     setOpen(true);
   }, []);
 
-  const showSuccess = useCallback(
-    (msg: string) => show(msg, 'success'),
-    [show],
-  );
+  const showSuccess = useCallback((msg: string) => show(msg, 'success'), [show]);
   const showInfo = useCallback((msg: string) => show(msg, 'info'), [show]);
   const showWarning = useCallback((msg: string) => show(msg, 'warning'), [show]);
   const showError = useCallback((msg: string) => show(msg, 'error'), [show]);
@@ -72,9 +57,7 @@ export function ErrorFeedbackProvider({
   }, []);
 
   return (
-    <NotificationContext.Provider
-      value={{ showSuccess, showInfo, showWarning, showError }}
-    >
+    <NotificationContext.Provider value={{ showSuccess, showInfo, showWarning, showError }}>
       {children}
       <Snackbar
         open={open}
@@ -87,12 +70,7 @@ export function ErrorFeedbackProvider({
           top: '24px !important',
         }}
       >
-        <Alert
-          onClose={handleClose}
-          severity={severity}
-          variant="filled"
-          sx={{ width: '100%' }}
-        >
+        <Alert onClose={handleClose} severity={severity} variant="filled" sx={{ width: '100%' }}>
           {message}
         </Alert>
       </Snackbar>

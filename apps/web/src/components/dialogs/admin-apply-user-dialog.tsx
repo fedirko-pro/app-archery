@@ -13,7 +13,8 @@ import {
   Select,
   TextField,
 } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import type React from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import type { User } from '../../contexts/types';
@@ -59,15 +60,7 @@ const AdminApplyUserDialog: React.FC<AdminApplyUserDialogProps> = ({
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Load users when dialog opens
-  useEffect(() => {
-    if (open) {
-      loadUsers();
-      loadOptions();
-    }
-  }, [open, tournamentRuleCode]);
-
-  const loadUsers = async () => {
+  const loadUsers = useCallback(async () => {
     setLoadingUsers(true);
     try {
       const allUsers = await apiService.getAllUsers();
@@ -78,9 +71,9 @@ const AdminApplyUserDialog: React.FC<AdminApplyUserDialogProps> = ({
     } finally {
       setLoadingUsers(false);
     }
-  };
+  }, []);
 
-  const loadOptions = async () => {
+  const loadOptions = useCallback(async () => {
     setLoadingOptions(true);
     try {
       const [categoriesData, divisionsData] = await Promise.all([
@@ -103,7 +96,15 @@ const AdminApplyUserDialog: React.FC<AdminApplyUserDialogProps> = ({
     } finally {
       setLoadingOptions(false);
     }
-  };
+  }, [tournamentRuleCode]);
+
+  // Load users when dialog opens
+  useEffect(() => {
+    if (open) {
+      loadUsers();
+      loadOptions();
+    }
+  }, [open, loadUsers, loadOptions]);
 
   useEffect(() => {
     if (!selectedUser || loadingOptions) return;

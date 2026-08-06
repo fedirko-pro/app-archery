@@ -1,9 +1,10 @@
-import React from 'react';
+import type React from 'react';
 import { Navigate, useParams } from 'react-router';
 
 import { ADMIN_CAPABLE_ROLES } from '../../config/roles';
 
 export { ROLES_CAN_ACCESS_CONTROL } from '../../config/roles';
+
 import RouteLoadingSpinner from '../../components/RouteLoadingSpinner';
 import type { Role } from '../../config/roles';
 import { useAuth } from '../../contexts/auth-context';

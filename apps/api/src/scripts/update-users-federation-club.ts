@@ -1,7 +1,7 @@
 import { MikroORM } from '@mikro-orm/core';
 import config from '../../mikro-orm.config';
-import { User } from '../user/entity/user.entity';
 import { Club } from '../club/club.entity';
+import { User } from '../user/entity/user.entity';
 
 // Helper function to generate random 8-digit federation number
 function generateFederationNumber(): string {
@@ -46,9 +46,7 @@ async function updateUsersFederationAndClub() {
   await em.flush();
   await orm.close();
 
-  console.log(
-    `✅ Updated ${updatedCount} users with federation numbers and clubs`,
-  );
+  console.log(`✅ Updated ${updatedCount} users with federation numbers and clubs`);
   console.log('\n🎉 Done!');
 }
 

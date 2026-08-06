@@ -1,27 +1,27 @@
+import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
+import { ScheduleModule } from '@nestjs/schedule';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { AchievementsModule } from './achievements/achievements.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { MikroOrmModule } from '@mikro-orm/nestjs';
-import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
-import { EmailModule } from './email/email.module';
-import { ConfigModule } from '@nestjs/config';
-import { ScheduleModule } from '@nestjs/schedule';
+import { BowCategoryModule } from './bow-category/bow-category.module';
+import { ClubModule } from './club/club.module';
 import { envSchema } from './config/env.zod';
 import { resolveRootEnvPath } from './config/load-root-env';
-import { TournamentModule } from './tournament/tournament.module';
-import { UploadModule } from './upload/upload.module';
-import { ClubModule } from './club/club.module';
-import { FederationModule } from './federation/federation.module';
-import { RuleModule } from './rule/rule.module';
 import { DivisionModule } from './division/division.module';
-import { BowCategoryModule } from './bow-category/bow-category.module';
+import { EmailModule } from './email/email.module';
 import { EquipmentModule } from './equipment/equipment.module';
-import { TrainingModule } from './training/training.module';
-import { AchievementsModule } from './achievements/achievements.module';
+import { FederationModule } from './federation/federation.module';
 import { NotificationsModule } from './notification/notifications.module';
+import { RuleModule } from './rule/rule.module';
+import { TournamentModule } from './tournament/tournament.module';
+import { TrainingModule } from './training/training.module';
+import { UploadModule } from './upload/upload.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [

@@ -1,27 +1,28 @@
 import { ArrowBack, Save } from '@mui/icons-material';
 import {
+  Alert,
   Box,
-  Typography,
   Button,
   Card,
   CardContent,
-  TextField,
-  FormControlLabel,
   Checkbox,
-  Alert,
   CircularProgress,
   FormControl,
+  FormControlLabel,
   InputLabel,
-  Select,
   MenuItem,
+  Select,
+  TextField,
+  Typography,
 } from '@mui/material';
-import React, { useState, useEffect } from 'react';
+import type React from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router';
 
 import BannerUploader from '../../../components/BannerUploader/BannerUploader';
 import FileAttachments, {
-  FileAttachment,
+  type FileAttachment,
 } from '../../../components/FileAttachments/FileAttachments';
 import { COUNTRIES, DEFAULT_COUNTRY_CODE } from '../../../config/countries';
 import apiService from '../../../services/api';

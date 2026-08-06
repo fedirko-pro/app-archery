@@ -17,7 +17,8 @@ import Paper from '@mui/material/Paper';
 import { alpha, useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { format, parseISO } from 'date-fns';
-import React, { useEffect, useMemo, useState } from 'react';
+import type React from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate, useParams } from 'react-router';
 
@@ -112,11 +113,13 @@ const HomePage: React.FC = () => {
   const [pendingFeedback, setPendingFeedback] = useState<PendingTournamentFeedbackDto[]>([]);
   const [feedbackDismissTick, setFeedbackDismissTick] = useState(0);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: feedbackDismissTick intentionally forces a recompute on dismiss
   const visiblePendingFeedback = useMemo(
     () => pendingFeedback.filter((item) => !isTournamentFeedbackDismissed(item.id)),
     [pendingFeedback, feedbackDismissTick],
   );
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: bowPromptDismissTick intentionally forces a recompute on dismiss
   const showBowSetupPrompt = useMemo(
     () =>
       equipmentSets.length === 0 && !isBowSetupPromptDismissed() && !user?.onboardingCompletedAt,
@@ -147,10 +150,12 @@ const HomePage: React.FC = () => {
     () => computePriorMonthSummary(trainingSessions),
     [trainingSessions],
   );
+  // biome-ignore lint/correctness/useExhaustiveDependencies: streakDismissTick intentionally forces a recompute on dismiss
   const showStreakAtRisk = useMemo(
     () => streakAtRisk.isAtRisk && !isStreakAtRiskDismissed() && !showBowSetupPrompt,
     [streakAtRisk, showBowSetupPrompt, streakDismissTick],
   );
+  // biome-ignore lint/correctness/useExhaustiveDependencies: monthlySummaryDismissTick intentionally forces a recompute on dismiss
   const showMonthlySummary = useMemo(
     () =>
       isMonthlySummaryWindow() &&

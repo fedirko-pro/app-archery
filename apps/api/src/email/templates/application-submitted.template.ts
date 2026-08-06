@@ -1,12 +1,12 @@
 import type { EmailI18n } from '../i18n';
 import { interpolate } from '../i18n';
 import {
-  styleHeading,
-  styleButton,
   styleBlockCenter,
+  styleButton,
+  styleHeading,
+  styleMuted,
   styleSuccessBox,
   styleSuccessBoxText,
-  styleMuted,
 } from './theme';
 
 export interface ApplicationSubmittedContentParams {
@@ -22,11 +22,7 @@ function formatDate(date: Date, months: string[]): string {
   return `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
 }
 
-function buildDateRange(
-  startDate: Date,
-  endDate: Date | undefined,
-  months: string[],
-): string {
+function buildDateRange(startDate: Date, endDate: Date | undefined, months: string[]): string {
   const start = formatDate(startDate, months);
   if (!endDate) return start;
   const end = formatDate(endDate, months);
@@ -37,14 +33,8 @@ export function getApplicationSubmittedContent(
   params: ApplicationSubmittedContentParams,
   t: EmailI18n,
 ): { html: string; text: string } {
-  const {
-    applicantName,
-    tournamentTitle,
-    startDate,
-    endDate,
-    location,
-    myApplicationsUrl,
-  } = params;
+  const { applicantName, tournamentTitle, startDate, endDate, location, myApplicationsUrl } =
+    params;
   const s = t.applicationSubmitted;
 
   const dateRange = buildDateRange(startDate, endDate, s.months);

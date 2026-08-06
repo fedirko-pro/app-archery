@@ -3,7 +3,7 @@ import './ThemeSwitcher.scss';
 import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
 import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
 import Switch from '@mui/material/Switch';
-import React from 'react';
+import type React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useColorMode } from '../../contexts/color-mode-context';

@@ -1,8 +1,8 @@
-import { Entity, PrimaryKey, Property, OneToMany, Collection } from '@mikro-orm/core';
-import { v4 as uuid } from 'uuid';
+import { Collection, Entity, OneToMany, PrimaryKey, Property } from '@mikro-orm/core';
 import { Exclude } from 'class-transformer';
-import { Division } from '../division/division.entity';
+import { v4 as uuid } from 'uuid';
 import { BowCategory } from '../bow-category/bow-category.entity';
+import { Division } from '../division/division.entity';
 
 @Entity()
 export class Rule {
@@ -46,11 +46,17 @@ export class Rule {
   sortOrder: number = 0;
 
   @Exclude()
-  @OneToMany(() => Division, (division) => division.rule)
+  @OneToMany(
+    () => Division,
+    (division) => division.rule,
+  )
   divisions = new Collection<Division>(this);
 
   @Exclude()
-  @OneToMany(() => BowCategory, (bowCategory) => bowCategory.rule)
+  @OneToMany(
+    () => BowCategory,
+    (bowCategory) => bowCategory.rule,
+  )
   bowCategories = new Collection<BowCategory>(this);
 
   @Property({ onCreate: () => new Date() })

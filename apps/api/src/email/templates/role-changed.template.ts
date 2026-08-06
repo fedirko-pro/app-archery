@@ -1,12 +1,6 @@
 import type { EmailI18n } from '../i18n';
 import { interpolate } from '../i18n';
-import {
-  theme,
-  styleHeading,
-  styleButton,
-  styleBlockCenter,
-  styleNeutralBox,
-} from './theme';
+import { styleBlockCenter, styleButton, styleHeading, styleNeutralBox, theme } from './theme';
 
 export interface RoleChangedContentParams {
   recipientName: string;
@@ -24,8 +18,7 @@ export function getRoleChangedContent(
   const s = t.roleChanged;
 
   const getRoleLabel = (role: string) => s.roleLabels[role] ?? role;
-  const getRolePermissions = (role: string): string[] =>
-    s.rolePermissions[role] ?? [];
+  const getRolePermissions = (role: string): string[] => s.rolePermissions[role] ?? [];
 
   const oldRoleLabel = getRoleLabel(oldRole);
   const newRoleLabel = getRoleLabel(newRole);
@@ -38,10 +31,7 @@ export function getRoleChangedContent(
   });
 
   const permissionsHtml = permissions
-    .map(
-      (p) =>
-        `<li style="padding: 4px 0; color: ${theme.colors.text};">${p}</li>`,
-    )
+    .map((p) => `<li style="padding: 4px 0; color: ${theme.colors.text};">${p}</li>`)
     .join('');
 
   const permissionsText = permissions.map((p) => `  • ${p}`).join('\n');

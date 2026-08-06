@@ -1,8 +1,8 @@
-import { Module } from '@nestjs/common';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
-import { DivisionService } from './division.service';
+import { Module } from '@nestjs/common';
 import { DivisionController } from './division.controller';
 import { Division } from './division.entity';
+import { DivisionService } from './division.service';
 
 @Module({
   imports: [MikroOrmModule.forFeature([Division])],

@@ -1,16 +1,16 @@
-import { Module } from '@nestjs/common';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
-import { FederationService } from './federation.service';
-import { FederationMembershipService } from './federation-membership.service';
+import { Module } from '@nestjs/common';
+import { RolePermissionsModule } from '../auth/role-permissions.module';
+import { ClubModule } from '../club/club.module';
+import { EmailModule } from '../email/email.module';
+import { NotificationsModule } from '../notification/notifications.module';
+import { UserModule } from '../user/user.module';
 import { FederationController } from './federation.controller';
 import { Federation } from './federation.entity';
-import { FederationMembership } from './federation-membership.entity';
+import { FederationService } from './federation.service';
 import { FederationInvitation } from './federation-invitation.entity';
-import { EmailModule } from '../email/email.module';
-import { ClubModule } from '../club/club.module';
-import { UserModule } from '../user/user.module';
-import { RolePermissionsModule } from '../auth/role-permissions.module';
-import { NotificationsModule } from '../notification/notifications.module';
+import { FederationMembership } from './federation-membership.entity';
+import { FederationMembershipService } from './federation-membership.service';
 
 @Module({
   imports: [

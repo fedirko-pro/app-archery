@@ -1,13 +1,7 @@
-import {
-  Entity,
-  PrimaryKey,
-  Property,
-  ManyToOne,
-  Unique,
-} from '@mikro-orm/core';
+import { Entity, ManyToOne, PrimaryKey, Property, Unique } from '@mikro-orm/core';
 import { v4 as uuid } from 'uuid';
-import { Tournament } from './tournament.entity';
 import { User } from '../user/entity/user.entity';
+import { Tournament } from './tournament.entity';
 
 @Entity()
 @Unique({ properties: ['tournament', 'user'] })

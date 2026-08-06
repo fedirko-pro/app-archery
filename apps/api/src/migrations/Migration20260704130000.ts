@@ -2,9 +2,7 @@ import { Migration } from '@mikro-orm/migrations';
 
 export class Migration20260704130000 extends Migration {
   override async up(): Promise<void> {
-    this.addSql(
-      `alter table "rule" add column "sort_order" int not null default 0;`,
-    );
+    this.addSql(`alter table "rule" add column "sort_order" int not null default 0;`);
     this.addSql(`update "rule" set "sort_order" = 1 where "rule_code" = 'FABP';`);
     this.addSql(`update "rule" set "sort_order" = 2 where "rule_code" = 'FPTA';`);
     this.addSql(`update "rule" set "sort_order" = 3 where "rule_code" = 'IFAA';`);

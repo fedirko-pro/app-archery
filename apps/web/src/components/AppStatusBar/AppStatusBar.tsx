@@ -1,6 +1,7 @@
 import './AppStatusBar.scss';
 
-import React, { useEffect, useState } from 'react';
+import type React from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { setInstallDismissed, usePWAInstall } from '../../hooks/usePwaInstall';
@@ -104,11 +105,7 @@ const AppStatusBar: React.FC = () => {
     };
 
     return (
-      <div
-        className="app-status-bar app-status-bar--install"
-        role="region"
-        aria-label={t('pwa.installAria')}
-      >
+      <section className="app-status-bar app-status-bar--install" aria-label={t('pwa.installAria')}>
         <p className="app-status-bar__text">{t('pwa.installPrompt')}</p>
         <div className="app-status-bar__actions">
           <button
@@ -127,15 +124,14 @@ const AppStatusBar: React.FC = () => {
             {t('pwa.dismiss')}
           </button>
         </div>
-      </div>
+      </section>
     );
   }
 
   if (iosTipVisible && !isInstalled && !canInstall && showIosTip) {
     return (
-      <div
+      <section
         className="app-status-bar app-status-bar--install"
-        role="region"
         aria-label={t('pwa.iosInstallAria')}
       >
         <p className="app-status-bar__text">{t('pwa.iosInstallPrompt')}</p>
@@ -151,7 +147,7 @@ const AppStatusBar: React.FC = () => {
             {t('pwa.dismiss')}
           </button>
         </div>
-      </div>
+      </section>
     );
   }
 

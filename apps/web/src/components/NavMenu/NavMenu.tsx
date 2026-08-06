@@ -90,11 +90,16 @@ function NavMenu() {
 
   return (
     <>
-      <div className={classNames('hamburger', { hidden_smooth: active })} onClick={toggleMenu}>
+      <button
+        type="button"
+        aria-label={active ? 'Close menu' : 'Open menu'}
+        className={classNames('hamburger', { hidden_smooth: active })}
+        onClick={toggleMenu}
+      >
         <span></span>
         <span></span>
         <span></span>
-      </div>
+      </button>
       <Menu active={active} sections={sections} position={'left'} clickHandle={closeMenu} />
     </>
   );

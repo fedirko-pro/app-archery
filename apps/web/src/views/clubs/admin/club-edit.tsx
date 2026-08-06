@@ -12,7 +12,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate, useParams } from 'react-router';
 
@@ -60,10 +60,10 @@ const ClubEdit: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [canEdit, setCanEdit] = useState(false);
 
-  const setPendingLogo = (file: File | null) => {
+  const setPendingLogo = useCallback((file: File | null) => {
     pendingLogoFileRef.current = file;
     setPendingLogoFile(file);
-  };
+  }, []);
 
   const isGeneralAdmin = user && canManageReferenceData(user.role);
 
@@ -128,7 +128,7 @@ const ClubEdit: React.FC = () => {
       }
     };
     void load();
-  }, [clubId, canEdit, isCreate]);
+  }, [clubId, canEdit, isCreate, setPendingLogo]);
 
   const handleSave = async () => {
     if (isGeneralAdmin && !form.name.trim()) {

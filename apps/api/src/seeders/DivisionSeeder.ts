@@ -1,7 +1,7 @@
-import { EntityManager } from '@mikro-orm/core';
+import type { EntityManager } from '@mikro-orm/core';
 import { Seeder } from '@mikro-orm/seeder';
-import { Rule } from '../rule/rule.entity';
 import { Division } from '../division/division.entity';
+import { Rule } from '../rule/rule.entity';
 
 const STANDARD_DIVISIONS = [
   { name: 'Adult Female', description: 'Women 18-49 years' },

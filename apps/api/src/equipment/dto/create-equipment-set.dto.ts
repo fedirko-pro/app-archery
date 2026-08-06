@@ -1,13 +1,13 @@
+import { Type } from 'class-transformer';
 import {
-  IsString,
-  IsNotEmpty,
-  IsOptional,
   IsArray,
+  IsNotEmpty,
   IsNumber,
+  IsOptional,
+  IsString,
   Min,
   ValidateNested,
 } from 'class-validator';
-import { Type } from 'class-transformer';
 
 export class CustomFieldDto {
   @IsString()

@@ -1,7 +1,7 @@
-import { Module } from '@nestjs/common';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
-import { EquipmentService } from './equipment.service';
+import { Module } from '@nestjs/common';
 import { EquipmentController } from './equipment.controller';
+import { EquipmentService } from './equipment.service';
 import { EquipmentSet } from './equipment-set.entity';
 
 @Module({
