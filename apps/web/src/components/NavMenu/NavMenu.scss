@@ -34,6 +34,7 @@ header.app-header {
     min-height: 44px;
     cursor: pointer;
     flex-shrink: 0;
+    background: none;
 
     @include mobile {
       padding: 12px;

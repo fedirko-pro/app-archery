@@ -1,17 +1,35 @@
 .notifications-page {
+  --notif-border: #e0e0e0;
+  --notif-item-bg: #fff;
+  --notif-unread-bg: #f7f9fc;
+  --notif-expanded-bg: #f0f4fa;
+  --notif-hover-bg: rgba(0, 0, 128, 0.04);
+  --notif-title: #212121;
+  --notif-time: #666;
+
+  :root[data-theme='dark'] & {
+    --notif-border: #333;
+    --notif-item-bg: #1e1e1e;
+    --notif-unread-bg: #26262e;
+    --notif-expanded-bg: #2a2a33;
+    --notif-hover-bg: rgba(255, 204, 0, 0.08);
+    --notif-title: #e0e0e0;
+    --notif-time: #aaa;
+  }
+
   .notifications-list {
     list-style: none;
     margin: 0;
     padding: 0;
-    border-top: 1px solid #e0e0e0;
+    border-top: 1px solid var(--notif-border);
   }
 
   .notifications-item {
-    border-bottom: 1px solid #e0e0e0;
-    background: #fff;
+    border-bottom: 1px solid var(--notif-border);
+    background: var(--notif-item-bg);
 
     &.is-unread {
-      background: #f7f9fc;
+      background: var(--notif-unread-bg);
 
       .notifications-item__title {
         font-weight: 700;
@@ -23,7 +41,7 @@
     }
 
     &.is-expanded {
-      background: #f0f4fa;
+      background: var(--notif-expanded-bg);
     }
   }
 
@@ -42,7 +60,7 @@
     color: inherit;
 
     &:hover {
-      background: rgba(0, 0, 128, 0.04);
+      background: var(--notif-hover-bg);
     }
   }
 
@@ -66,13 +84,13 @@
   .notifications-item__title {
     font-size: 1rem;
     line-height: 1.4;
-    color: #212121;
+    color: var(--notif-title);
   }
 
   .notifications-item__time {
     flex-shrink: 0;
     font-size: 0.8rem;
-    color: #666;
+    color: var(--notif-time);
     white-space: nowrap;
     padding-top: 2px;
   }

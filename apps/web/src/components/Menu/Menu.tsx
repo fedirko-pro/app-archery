@@ -71,7 +71,7 @@ export const Menu: React.FC<MenuProps> = ({
           {sections.map((section, sectionIndex) => {
             const collapsible = isCollapsibleSection(section);
             const sectionOpen = openSections[sectionIndex] ?? false;
-            const sectionKeyId = `${getSectionLabelKey(section)}-${section.divider ? 'd' : 'n'}`;
+            const sectionKeyId = `${getSectionLabelKey(section)}-${section.divider ? 'd' : 'n'}-${sectionIndex}`;
 
             return (
               <React.Fragment key={sectionKeyId}>
