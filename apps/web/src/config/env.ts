@@ -1,4 +1,4 @@
-import type { Environment } from './types';
+import type { Environment, SiteMode } from './types';
 
 interface ValidationResult {
   isValid: boolean;
@@ -69,9 +69,16 @@ const isValidUrlOrPath = (string: string): boolean => {
   return isValidUrl(string);
 };
 
+const siteMode = (): SiteMode => {
+  const raw = process.env.NEXT_PUBLIC_SITE_MODE;
+  if (raw === 'prod' || raw === 'test') return raw;
+  return 'test';
+};
+
 export const env: Environment = {
   API_BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL || (isDev ? '/api' : ''),
   GOOGLE_AUTH_URL: process.env.NEXT_PUBLIC_GOOGLE_AUTH_URL || (isDev ? '/api/auth/google' : ''),
+  SITE_MODE: siteMode(),
 };
 
 export { isDev, isProd };

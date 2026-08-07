@@ -4,6 +4,7 @@ import type React from 'react';
 import { useTranslation } from 'react-i18next';
 import { NavLink, useLocation, useParams } from 'react-router';
 
+import { env } from '../../config/env';
 import { fromI18nLang, getCurrentI18nLang, normalizeAppLang } from '../../utils/i18n-lang';
 import NavMenu from '../NavMenu/NavMenu';
 import UserMenu from '../UserMenu/UserMenu';
@@ -15,12 +16,14 @@ const Header: React.FC = () => {
   // Use URL param first, then fallback to pathname, then i18n, then default to 'en'
   const inferredLang = fromI18nLang(getCurrentI18nLang());
   const currentLang = normalizeAppLang(lang || location.pathname.split('/')[1] || inferredLang);
+  const isTestSite = env.SITE_MODE === 'test';
   return (
     <header className="app-header">
       <NavMenu />
 
       <div className="header_logo">
         <NavLink to={`/${currentLang}`} aria-label={t('header.home')} />
+        {isTestSite && <span className="header_logo_test-badge">{t('header.testSite')}</span>}
       </div>
 
       <UserMenu />

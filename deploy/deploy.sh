@@ -2,10 +2,15 @@
 # Safe production deploy for the Hostinger VPS (~4GB RAM).
 # Builds and recreates services one at a time (avoids OOM from parallel Next.js + API builds).
 #
+# Branch deploy mapping:
+#   main  -> production site (set NEXT_PUBLIC_SITE_MODE=prod in the VPS .env)
+#   dev   -> dev/test site    (set NEXT_PUBLIC_SITE_MODE=test in the VPS .env, or leave default)
+#
 # Usage (on VPS):
-#   bash /srv/test-archery/src/deploy/deploy.sh          # api + frontend
-#   bash /srv/test-archery/src/deploy/deploy.sh api      # api only
-#   bash /srv/test-archery/src/deploy/deploy.sh frontend # frontend only
+#   bash /srv/test-archery/src/deploy/deploy.sh                 # api + frontend (branch: main)
+#   GIT_BRANCH=dev bash /srv/test-archery/src/deploy/deploy.sh  # api + frontend from dev branch
+#   bash /srv/test-archery/src/deploy/deploy.sh api             # api only
+#   bash /srv/test-archery/src/deploy/deploy.sh frontend        # frontend only
 #
 set -euo pipefail
 
@@ -14,6 +19,7 @@ REPO_DIR="${REPO_DIR:-${DEPLOY_ROOT}/src}"
 ENV_FILE="${ENV_FILE:-${DEPLOY_ROOT}/.env}"
 COMPOSE_DEST="${COMPOSE_FILE:-${DEPLOY_ROOT}/docker-compose.prod.yml}"
 COMPOSE_SRC="${REPO_DIR}/deploy/docker-compose.prod.yml"
+GIT_BRANCH="${GIT_BRANCH:-main}"
 
 if [[ $# -gt 0 ]]; then
   SERVICES=("$@")
@@ -22,8 +28,10 @@ else
 fi
 
 cd "$REPO_DIR"
-echo "==> Pulling latest code..."
-git pull origin main
+echo "==> Pulling latest code from origin/${GIT_BRANCH}..."
+git fetch origin
+git checkout "$GIT_BRANCH"
+git pull origin "$GIT_BRANCH"
 
 # Keep the VPS compose file in sync with the repo (paths assume DEPLOY_ROOT + ./src).
 cp "$COMPOSE_SRC" "$COMPOSE_DEST"

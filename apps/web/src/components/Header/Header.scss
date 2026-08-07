@@ -35,6 +35,23 @@ header.app-header {
       text-decoration: none;
       margin: 0;
     }
+    .header_logo_test-badge {
+      position: absolute;
+      bottom: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #e53935;
+      color: #fff;
+      font-size: 9px;
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      padding: 3px 7px;
+      border-radius: 8px;
+      white-space: nowrap;
+      pointer-events: none;
+    }
   }
 
   :root[data-theme='dark'] & .header_logo a {

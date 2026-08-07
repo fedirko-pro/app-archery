@@ -1489,7 +1489,8 @@
     "title": "Passwort zurücksetzen"
   },
   "header": {
-    "home": "Startseite"
+    "home": "Startseite",
+    "testSite": "Testsite"
   },
   "invitations": {
     "acceptError": "Einladung konnte nicht angenommen werden",

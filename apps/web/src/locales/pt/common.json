@@ -1463,7 +1463,8 @@
     "title": "Repor palavra-passe"
   },
   "header": {
-    "home": "Início"
+    "home": "Início",
+    "testSite": "Site de teste"
   },
   "invitations": {
     "acceptError": "Falha ao aceitar o convite",

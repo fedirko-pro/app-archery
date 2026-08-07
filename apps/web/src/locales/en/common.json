@@ -1496,7 +1496,8 @@
     "close": "Close"
   },
   "header": {
-    "home": "Home"
+    "home": "Home",
+    "testSite": "Test site"
   },
   "languageToggler": {
     "label": "Language"
