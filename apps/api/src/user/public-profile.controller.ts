@@ -1,8 +1,8 @@
 import { Controller, Get, Param, Request, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import type { RequestUser } from '../auth/permissions';
-import type { PublicProfileService } from './public-profile.service';
-import type { UserService } from './user.service';
+import { RequestUser } from '../auth/permissions';
+import { PublicProfileService } from './public-profile.service';
+import { UserService } from './user.service';
 
 @Controller('users')
 export class PublicProfileController {

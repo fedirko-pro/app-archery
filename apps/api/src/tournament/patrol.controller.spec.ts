@@ -1,5 +1,5 @@
 import { ConflictException } from '@nestjs/common';
-import { Test, type TestingModule } from '@nestjs/testing';
+import { Test, TestingModule } from '@nestjs/testing';
 import { PermissionsService } from '../auth/permissions.service';
 import { PatrolController } from './patrol.controller';
 import { PatrolService } from './patrol.service';

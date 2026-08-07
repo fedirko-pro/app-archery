@@ -1,7 +1,7 @@
-import type { EntityManager, FilterQuery } from '@mikro-orm/core';
+import { EntityManager, FilterQuery } from '@mikro-orm/core';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import type { CreateFederationDto } from './dto/create-federation.dto';
-import type { UpdateFederationDto } from './dto/update-federation.dto';
+import { CreateFederationDto } from './dto/create-federation.dto';
+import { UpdateFederationDto } from './dto/update-federation.dto';
 import { Federation, FederationVisibility } from './federation.entity';
 
 @Injectable()

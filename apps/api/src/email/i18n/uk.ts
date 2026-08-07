@@ -1,4 +1,4 @@
-import type { EmailI18n } from './types';
+import { EmailI18n } from './types';
 
 export const uk: EmailI18n = {
   footer: 'Це автоматичний лист. Будь ласка, не відповідайте на це повідомлення.',

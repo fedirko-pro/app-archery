@@ -1,4 +1,4 @@
-import type { EntityManager } from '@mikro-orm/core';
+import { EntityManager } from '@mikro-orm/core';
 import {
   BadRequestException,
   ConflictException,
@@ -8,9 +8,9 @@ import {
 import { NotificationTypes } from '@sokil/shared-types';
 import { BowCategory } from '../bow-category/bow-category.entity';
 import { Division } from '../division/division.entity';
-import type { EmailService } from '../email/email.service';
-import type { NotificationsService } from '../notification/notifications.service';
-import type { AchievementsService } from '../user/achievements.service';
+import { EmailService } from '../email/email.service';
+import { NotificationsService } from '../notification/notifications.service';
+import { AchievementsService } from '../user/achievements.service';
 import { User } from '../user/entity/user.entity';
 import { Tournament } from './tournament.entity';
 import { ApplicationStatus, TournamentApplication } from './tournament-application.entity';

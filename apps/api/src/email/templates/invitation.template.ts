@@ -1,5 +1,4 @@
-import type { EmailI18n } from '../i18n';
-import { interpolate } from '../i18n';
+import { EmailI18n, interpolate } from '../i18n';
 import {
   styleBlockCenter,
   styleButton,

@@ -15,10 +15,10 @@ import {
 import { Roles } from '../auth/decorators/roles.decorator';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
-import type { RequestUser } from '../auth/permissions';
-import type { PermissionsService } from '../auth/permissions.service';
+import { RequestUser } from '../auth/permissions';
+import { PermissionsService } from '../auth/permissions.service';
 import { Roles as UserRoles } from '../user/types';
-import type { TournamentService } from './tournament.service';
+import { TournamentService } from './tournament.service';
 
 function serializeCreatedBy(
   createdBy:

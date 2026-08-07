@@ -1,6 +1,6 @@
-import type { EntityManager } from '@mikro-orm/core';
+import { EntityManager } from '@mikro-orm/core';
 import { ConflictException, Injectable, Logger, NotFoundException } from '@nestjs/common';
-import type { ConfigService } from '@nestjs/config';
+import { ConfigService } from '@nestjs/config';
 import { NotificationTypes } from '@sokil/shared-types';
 import { Club } from '../club/club.entity';
 import {
@@ -8,8 +8,8 @@ import {
   ClubMembershipRole,
   ClubMembershipStatus,
 } from '../club/club-membership.entity';
-import type { EmailService } from '../email/email.service';
-import type { NotificationsService } from '../notification/notifications.service';
+import { EmailService } from '../email/email.service';
+import { NotificationsService } from '../notification/notifications.service';
 import { User } from '../user/entity/user.entity';
 import { Federation } from './federation.entity';
 import { FederationMembership, FederationMembershipStatus } from './federation-membership.entity';

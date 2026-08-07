@@ -1,10 +1,10 @@
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
-import type { ConfigService } from '@nestjs/config';
+import { ConfigService } from '@nestjs/config';
 import { promises as fs } from 'fs';
 import { join, resolve, sep } from 'path';
 import sharp from 'sharp';
 import { v4 as uuidV4 } from 'uuid';
-import type {
+import {
   AttachmentMetadata,
   ImageUploadOptions,
   ProcessedImage,

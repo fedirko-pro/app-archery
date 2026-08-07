@@ -15,12 +15,12 @@ import {
 import { Roles } from '../auth/decorators/roles.decorator';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
-import type { PermissionsService } from '../auth/permissions.service';
+import { PermissionsService } from '../auth/permissions.service';
 import { Roles as UserRoles } from '../user/types';
-import type { Tournament } from './tournament.entity';
-import type { TournamentService } from './tournament.service';
-import type { ApplicationStatus } from './tournament-application.entity';
-import type { TournamentApplicationService } from './tournament-application.service';
+import { Tournament } from './tournament.entity';
+import { TournamentService } from './tournament.service';
+import { ApplicationStatus } from './tournament-application.entity';
+import { TournamentApplicationService } from './tournament-application.service';
 
 interface ReqWithUser {
   user: {

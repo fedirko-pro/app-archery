@@ -10,10 +10,10 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import type { PermissionsService } from '../auth/permissions.service';
-import type { SubmitTournamentFeedbackDto } from './dto/submit-tournament-feedback.dto';
-import type { TournamentService } from './tournament.service';
-import type { TournamentFeedbackService } from './tournament-feedback.service';
+import { PermissionsService } from '../auth/permissions.service';
+import { SubmitTournamentFeedbackDto } from './dto/submit-tournament-feedback.dto';
+import { TournamentService } from './tournament.service';
+import { TournamentFeedbackService } from './tournament-feedback.service';
 
 @Controller('tournament-feedback')
 export class TournamentFeedbackController {

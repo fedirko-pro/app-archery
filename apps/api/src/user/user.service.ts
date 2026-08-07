@@ -1,5 +1,5 @@
 import { randomBytes } from 'node:crypto';
-import type { EntityManager } from '@mikro-orm/core';
+import { EntityManager } from '@mikro-orm/core';
 import {
   BadRequestException,
   ConflictException,
@@ -8,26 +8,26 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import type { ConfigService } from '@nestjs/config';
+import { ConfigService } from '@nestjs/config';
 import { NotificationTypes } from '@sokil/shared-types';
 import * as bcrypt from 'bcryptjs';
-import type { AdminScope } from '../auth/permissions.service';
+import { AdminScope } from '../auth/permissions.service';
 import { Club } from '../club/club.entity';
-import type { ClubMembershipService } from '../club/club-membership.service';
+import { ClubMembershipService } from '../club/club-membership.service';
 import { Division } from '../division/division.entity';
-import type { EmailService } from '../email/email.service';
+import { EmailService } from '../email/email.service';
 import {
   FederationMembership,
   FederationMembershipStatus,
 } from '../federation/federation-membership.entity';
-import type { NotificationsService } from '../notification/notifications.service';
-import type { UploadService } from '../upload/upload.service';
-import type { AdminCreateUserDto } from './dto/admin-create-user.dto';
-import type { ChangePasswordDto } from './dto/change-password.dto';
-import type { CreateUserDto } from './dto/create-user.dto';
-import type { AdminUpdateUserDto, UpdateUserDto } from './dto/update-user.dto';
+import { NotificationsService } from '../notification/notifications.service';
+import { UploadService } from '../upload/upload.service';
+import { AdminCreateUserDto } from './dto/admin-create-user.dto';
+import { ChangePasswordDto } from './dto/change-password.dto';
+import { CreateUserDto } from './dto/create-user.dto';
+import { AdminUpdateUserDto, UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entity/user.entity';
-import type { ProfileViewer } from './profile-visibility.service';
+import { ProfileViewer } from './profile-visibility.service';
 import { ProfileVisibilities, Roles } from './types';
 
 @Injectable()

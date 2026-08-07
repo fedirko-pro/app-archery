@@ -1,5 +1,5 @@
-import type { EntityManager } from '@mikro-orm/core';
-import { Injectable, type OnModuleInit } from '@nestjs/common';
+import { EntityManager } from '@mikro-orm/core';
+import { Injectable, OnModuleInit } from '@nestjs/common';
 import { RolePermission } from './entity/role-permission.entity';
 import { DEFAULT_ROLE_PERMISSIONS_MATRIX } from './role-permissions.constants';
 

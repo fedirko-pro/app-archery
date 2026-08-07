@@ -1,8 +1,8 @@
 import { BadRequestException, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { Test, type TestingModule } from '@nestjs/testing';
+import { Test, TestingModule } from '@nestjs/testing';
 import * as bcrypt from 'bcryptjs';
-import type { Response } from 'express';
+import { Response } from 'express';
 import { EmailService } from '../email/email.service';
 import { UserService } from '../user/user.service';
 import { AuthService } from './auth.service';

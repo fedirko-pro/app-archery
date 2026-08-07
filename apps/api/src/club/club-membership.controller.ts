@@ -12,10 +12,10 @@ import {
 import { Roles } from '../auth/decorators/roles.decorator';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
-import type { RequestUser } from '../auth/permissions';
+import { RequestUser } from '../auth/permissions';
 import { UserRoles } from '../user/types';
-import type { ClubInvitationService } from './club-invitation.service';
-import type { ClubMembershipService } from './club-membership.service';
+import { ClubInvitationService } from './club-invitation.service';
+import { ClubMembershipService } from './club-membership.service';
 
 @Controller('clubs')
 export class ClubMembershipController {

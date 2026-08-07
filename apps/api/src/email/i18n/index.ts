@@ -2,7 +2,7 @@ import { en } from './en';
 import { es } from './es';
 import { it } from './it';
 import { pt } from './pt';
-import type { EmailI18n } from './types';
+import { EmailI18n } from './types';
 import { uk } from './uk';
 
 export type { EmailI18n } from './types';

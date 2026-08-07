@@ -12,11 +12,11 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import type { RequestUser } from '../auth/permissions';
-import type { UploadAttachmentDto } from './dto/upload-attachment.dto';
-import type { UploadImageDto } from './dto/upload-image.dto';
+import { RequestUser } from '../auth/permissions';
+import { UploadAttachmentDto } from './dto/upload-attachment.dto';
+import { UploadImageDto } from './dto/upload-image.dto';
 import { UploadService } from './upload.service';
-import type { UploadAuthorizationService } from './upload-authorization.service';
+import { UploadAuthorizationService } from './upload-authorization.service';
 
 @Controller('upload')
 @UseGuards(JwtAuthGuard)

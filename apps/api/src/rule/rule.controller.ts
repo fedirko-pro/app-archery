@@ -3,9 +3,9 @@ import { Roles } from '../auth/decorators/roles.decorator';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { UserRoles } from '../user/types';
-import type { CreateRuleDto } from './dto/create-rule.dto';
-import type { UpdateRuleDto } from './dto/update-rule.dto';
-import type { RuleService } from './rule.service';
+import { CreateRuleDto } from './dto/create-rule.dto';
+import { UpdateRuleDto } from './dto/update-rule.dto';
+import { RuleService } from './rule.service';
 
 @Controller('rules')
 export class RuleController {

@@ -1,6 +1,6 @@
 import {
   isImportantNotificationType,
-  type NotificationType,
+  NotificationType,
   NotificationTypes,
 } from '@sokil/shared-types';
 

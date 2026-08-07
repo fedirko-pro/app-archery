@@ -8,12 +8,12 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import type { ConfigService } from '@nestjs/config';
+import { ConfigService } from '@nestjs/config';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles as UserRoles } from '../user/types';
-import type { EmailService } from './email.service';
+import { EmailService } from './email.service';
 import { styleContainer, styleFooter, styleHeading, styleHr } from './templates/theme';
 
 interface TestEmailDto {

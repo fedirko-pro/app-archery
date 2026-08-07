@@ -1,4 +1,4 @@
-import type { EmailI18n } from '../i18n';
+import { EmailI18n } from '../i18n';
 import { styleBlockCenter, styleButton, styleHeading, styleLinkMuted } from './theme';
 
 export interface PasswordResetContentParams {

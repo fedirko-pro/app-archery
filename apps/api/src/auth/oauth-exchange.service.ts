@@ -1,7 +1,7 @@
-import type { EntityManager } from '@mikro-orm/core';
+import { EntityManager } from '@mikro-orm/core';
 import { BadRequestException, Injectable } from '@nestjs/common';
-import type { ConfigService } from '@nestjs/config';
-import type { User } from '../user/entity/user.entity';
+import { ConfigService } from '@nestjs/config';
+import { User } from '../user/entity/user.entity';
 import { OAuthExchangeCode } from './entity/oauth-exchange-code.entity';
 import { generateSecureToken, hashToken } from './utils/token-hash';
 

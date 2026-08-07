@@ -13,9 +13,9 @@ import { Roles } from '../auth/decorators/roles.decorator';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { UserRoles } from '../user/types';
-import type { DivisionService } from './division.service';
-import type { CreateDivisionDto } from './dto/create-division.dto';
-import type { UpdateDivisionDto } from './dto/update-division.dto';
+import { DivisionService } from './division.service';
+import { CreateDivisionDto } from './dto/create-division.dto';
+import { UpdateDivisionDto } from './dto/update-division.dto';
 
 @Controller('divisions')
 export class DivisionController {

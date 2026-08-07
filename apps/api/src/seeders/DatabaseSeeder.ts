@@ -1,4 +1,4 @@
-import type { EntityManager } from '@mikro-orm/core';
+import { EntityManager } from '@mikro-orm/core';
 import { Seeder } from '@mikro-orm/seeder';
 // 👇 Виправлено імпорт bcryptjs
 import * as bcrypt from 'bcryptjs';

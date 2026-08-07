@@ -1,8 +1,8 @@
-import type { EntityManager } from '@mikro-orm/core';
+import { EntityManager } from '@mikro-orm/core';
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { User } from '../user/entity/user.entity';
-import type { CreateEquipmentSetDto } from './dto/create-equipment-set.dto';
-import type { UpdateEquipmentSetDto } from './dto/update-equipment-set.dto';
+import { CreateEquipmentSetDto } from './dto/create-equipment-set.dto';
+import { UpdateEquipmentSetDto } from './dto/update-equipment-set.dto';
 import { EquipmentSet } from './equipment-set.entity';
 
 @Injectable()

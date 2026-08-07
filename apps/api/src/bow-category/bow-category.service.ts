@@ -1,9 +1,9 @@
-import type { EntityManager } from '@mikro-orm/core';
+import { EntityManager } from '@mikro-orm/core';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { Rule } from '../rule/rule.entity';
 import { BowCategory } from './bow-category.entity';
-import type { CreateBowCategoryDto } from './dto/create-bow-category.dto';
-import type { UpdateBowCategoryDto } from './dto/update-bow-category.dto';
+import { CreateBowCategoryDto } from './dto/create-bow-category.dto';
+import { UpdateBowCategoryDto } from './dto/update-bow-category.dto';
 
 @Injectable()
 export class BowCategoryService {

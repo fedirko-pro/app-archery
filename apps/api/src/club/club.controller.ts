@@ -13,12 +13,12 @@ import {
 import { Roles } from '../auth/decorators/roles.decorator';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
-import type { RequestUser } from '../auth/permissions';
+import { RequestUser } from '../auth/permissions';
 import { UserRoles } from '../user/types';
-import type { ClubService } from './club.service';
-import type { ClubMembershipService } from './club-membership.service';
-import type { CreateClubDto } from './dto/create-club.dto';
-import type { UpdateClubDto } from './dto/update-club.dto';
+import { ClubService } from './club.service';
+import { ClubMembershipService } from './club-membership.service';
+import { CreateClubDto } from './dto/create-club.dto';
+import { UpdateClubDto } from './dto/update-club.dto';
 
 @Controller('clubs')
 export class ClubController {

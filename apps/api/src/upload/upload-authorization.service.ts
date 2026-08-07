@@ -1,7 +1,7 @@
-import type { EntityManager } from '@mikro-orm/core';
+import { EntityManager } from '@mikro-orm/core';
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
-import type { RequestUser } from '../auth/permissions';
-import type { PermissionsService } from '../auth/permissions.service';
+import { RequestUser } from '../auth/permissions';
+import { PermissionsService } from '../auth/permissions.service';
 import {
   ClubMembership,
   ClubMembershipRole,

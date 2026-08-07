@@ -1,4 +1,4 @@
-import type { AchievementCategory, AchievementRarity } from '@sokil/shared-types';
+import { AchievementCategory, AchievementRarity } from '@sokil/shared-types';
 
 export class AchievementProgressDto {
   id: string;

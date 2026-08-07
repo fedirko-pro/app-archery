@@ -1,4 +1,4 @@
-import { type EntityManager, FilterQuery } from '@mikro-orm/core';
+import { EntityManager, FilterQuery } from '@mikro-orm/core';
 import {
   ConflictException,
   ForbiddenException,
@@ -6,9 +6,9 @@ import {
   Logger,
   NotFoundException,
 } from '@nestjs/common';
-import type { ConfigService } from '@nestjs/config';
+import { ConfigService } from '@nestjs/config';
 import { ROLES } from '@sokil/shared-types';
-import type { EmailService } from '../email/email.service';
+import { EmailService } from '../email/email.service';
 import { User } from '../user/entity/user.entity';
 import { Club } from './club.entity';
 import { ClubMembership, ClubMembershipRole, ClubMembershipStatus } from './club-membership.entity';

@@ -4,18 +4,18 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import type { ConfigService } from '@nestjs/config';
+import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcryptjs';
 import { randomBytes } from 'crypto';
-import type { Response } from 'express';
-import type { EmailService } from '../email/email.service';
-import type { User } from '../user/entity/user.entity';
-import type { UserService } from '../user/user.service';
-import type { ForgotPasswordDto } from './dto/forgot-password.dto';
-import type { ResetPasswordDto } from './dto/reset-password.dto';
-import type { UserLoginDto } from './dto/user-login.dto';
-import type { OAuthExchangeService } from './oauth-exchange.service';
-import type { SessionService } from './session.service';
+import { Response } from 'express';
+import { EmailService } from '../email/email.service';
+import { User } from '../user/entity/user.entity';
+import { UserService } from '../user/user.service';
+import { ForgotPasswordDto } from './dto/forgot-password.dto';
+import { ResetPasswordDto } from './dto/reset-password.dto';
+import { UserLoginDto } from './dto/user-login.dto';
+import { OAuthExchangeService } from './oauth-exchange.service';
+import { SessionService } from './session.service';
 
 @Injectable()
 export class AuthService {

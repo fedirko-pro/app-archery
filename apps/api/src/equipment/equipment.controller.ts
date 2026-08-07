@@ -10,9 +10,9 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import type { CreateEquipmentSetDto } from './dto/create-equipment-set.dto';
-import type { UpdateEquipmentSetDto } from './dto/update-equipment-set.dto';
-import type { EquipmentService } from './equipment.service';
+import { CreateEquipmentSetDto } from './dto/create-equipment-set.dto';
+import { UpdateEquipmentSetDto } from './dto/update-equipment-set.dto';
+import { EquipmentService } from './equipment.service';
 
 interface ReqWithUser {
   user: { sub: string };

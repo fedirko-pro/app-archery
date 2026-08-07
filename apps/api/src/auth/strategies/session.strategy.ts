@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
-import type { Request } from 'express';
-import type { SessionService } from '../session.service';
+import { Request } from 'express';
+import { SessionService } from '../session.service';
 import { SESSION_COOKIE_NAME } from '../utils/cookie-options';
 import { CookieSessionPassportStrategy } from './cookie-session-passport.strategy';
 

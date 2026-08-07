@@ -1,9 +1,9 @@
-import type { EntityManager } from '@mikro-orm/core';
+import { EntityManager } from '@mikro-orm/core';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Rule } from '../rule/rule.entity';
 import { Division } from './division.entity';
-import type { CreateDivisionDto } from './dto/create-division.dto';
-import type { UpdateDivisionDto } from './dto/update-division.dto';
+import { CreateDivisionDto } from './dto/create-division.dto';
+import { UpdateDivisionDto } from './dto/update-division.dto';
 
 @Injectable()
 export class DivisionService {

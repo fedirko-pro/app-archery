@@ -1,8 +1,8 @@
-import type { EntityManager, FilterQuery, RequiredEntityData } from '@mikro-orm/core';
+import { EntityManager, FilterQuery, RequiredEntityData } from '@mikro-orm/core';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { parseISO, startOfDay, subDays } from 'date-fns';
 import { Rule } from '../rule/rule.entity';
-import type { UploadService } from '../upload/upload.service';
+import { UploadService } from '../upload/upload.service';
 import { Tournament } from './tournament.entity';
 
 @Injectable()

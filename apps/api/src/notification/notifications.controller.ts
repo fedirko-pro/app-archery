@@ -10,8 +10,8 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import type { RequestUser } from '../auth/permissions';
-import type { NotificationsService } from './notifications.service';
+import { RequestUser } from '../auth/permissions';
+import { NotificationsService } from './notifications.service';
 
 @Controller('notifications')
 @UseGuards(JwtAuthGuard)

@@ -1,17 +1,17 @@
-import type { EntityManager, RequiredEntityData } from '@mikro-orm/core';
+import { EntityManager, RequiredEntityData } from '@mikro-orm/core';
 import { BadRequestException, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { format } from 'date-fns';
 import { User } from '../user/entity/user.entity';
-import type {
+import {
   PatrolEntry,
   PatrolGenerationConfig,
   PatrolGenerationResult,
   ScoreCardConfig,
 } from './interfaces/patrol-generation.interface';
 import { Patrol } from './patrol.entity';
-import type { PatrolGenerationService } from './patrol-generation.service';
+import { PatrolGenerationService } from './patrol-generation.service';
 import { PatrolMember, PatrolRole } from './patrol-member.entity';
-import type { PatrolPdfService } from './patrol-pdf.service';
+import { PatrolPdfService } from './patrol-pdf.service';
 import { Tournament } from './tournament.entity';
 import { ApplicationStatus, TournamentApplication } from './tournament-application.entity';
 

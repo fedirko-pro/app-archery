@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
-import type { ConfigService } from '@nestjs/config';
-import type { SentMessageInfo } from 'nodemailer';
+import { ConfigService } from '@nestjs/config';
 import * as nodemailer from 'nodemailer';
+import { SentMessageInfo } from 'nodemailer';
 
 import { getEmailI18n, interpolate } from './i18n';
 import {

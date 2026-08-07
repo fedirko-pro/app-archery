@@ -1,12 +1,7 @@
-import {
-  type CanActivate,
-  type ExecutionContext,
-  ForbiddenException,
-  Injectable,
-} from '@nestjs/common';
-import type { Reflector } from '@nestjs/core';
-import type { Request } from 'express';
-import type { CsrfService } from '../csrf.service';
+import { CanActivate, ExecutionContext, ForbiddenException, Injectable } from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
+import { Request } from 'express';
+import { CsrfService } from '../csrf.service';
 import { CSRF_COOKIE_NAME } from '../utils/cookie-options';
 
 export const SKIP_CSRF_KEY = 'skipCsrf';

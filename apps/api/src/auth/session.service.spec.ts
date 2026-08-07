@@ -1,8 +1,8 @@
-import type { EntityManager } from '@mikro-orm/core';
-import type { ConfigService } from '@nestjs/config';
-import type { Response } from 'express';
+import { EntityManager } from '@mikro-orm/core';
+import { ConfigService } from '@nestjs/config';
+import { Response } from 'express';
 
-import type { User } from '../user/entity/user.entity';
+import { User } from '../user/entity/user.entity';
 import { AuthSession } from './entity/auth-session.entity';
 import { SessionService } from './session.service';
 import { SESSION_COOKIE_NAME } from './utils/cookie-options';

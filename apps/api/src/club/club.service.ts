@@ -1,9 +1,9 @@
-import type { EntityManager, FilterQuery } from '@mikro-orm/core';
+import { EntityManager, FilterQuery } from '@mikro-orm/core';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import type { UploadService } from '../upload/upload.service';
+import { UploadService } from '../upload/upload.service';
 import { Club, ClubVisibility } from './club.entity';
-import type { CreateClubDto } from './dto/create-club.dto';
-import type { UpdateClubDto } from './dto/update-club.dto';
+import { CreateClubDto } from './dto/create-club.dto';
+import { UpdateClubDto } from './dto/update-club.dto';
 
 @Injectable()
 export class ClubService {

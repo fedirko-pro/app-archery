@@ -1,6 +1,6 @@
 import { EntityManager } from '@mikro-orm/core';
 import { BadRequestException, ConflictException, NotFoundException } from '@nestjs/common';
-import { Test, type TestingModule } from '@nestjs/testing';
+import { Test, TestingModule } from '@nestjs/testing';
 import { EmailService } from '../email/email.service';
 import { NotificationsService } from '../notification/notifications.service';
 import { AchievementsService } from '../user/achievements.service';

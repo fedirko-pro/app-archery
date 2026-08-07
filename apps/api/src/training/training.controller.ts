@@ -10,10 +10,10 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import type { AchievementsService } from '../user/achievements.service';
-import type { CreateTrainingSessionDto } from './dto/create-training-session.dto';
-import type { UpdateTrainingSessionDto } from './dto/update-training-session.dto';
-import type { TrainingService } from './training.service';
+import { AchievementsService } from '../user/achievements.service';
+import { CreateTrainingSessionDto } from './dto/create-training-session.dto';
+import { UpdateTrainingSessionDto } from './dto/update-training-session.dto';
+import { TrainingService } from './training.service';
 
 interface ReqWithUser {
   user: { sub: string };

@@ -3,8 +3,7 @@ import { v4 as uuid } from 'uuid';
 import { Club } from '../../club/club.entity';
 import { Division } from '../../division/division.entity';
 import { Federation } from '../../federation/federation.entity';
-import type { AuthProvider, ProfileVisibility } from '../types';
-import { AuthProviders, ProfileVisibilities } from '../types';
+import { AuthProvider, AuthProviders, ProfileVisibilities, ProfileVisibility } from '../types';
 
 @Entity()
 export class User {

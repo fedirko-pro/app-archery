@@ -15,18 +15,18 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { format } from 'date-fns';
-import type { Response } from 'express';
+import { Response } from 'express';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
-import type { RequestUser } from '../auth/permissions';
-import type { PermissionsService } from '../auth/permissions.service';
+import { RequestUser } from '../auth/permissions';
+import { PermissionsService } from '../auth/permissions.service';
 import { Roles as UserRoles } from '../user/types';
-import type { BatchUpdatePatrolsDto } from './dto/batch-update-patrols.dto';
-import type { Patrol } from './patrol.entity';
-import type { PatrolService } from './patrol.service';
-import type { PatrolRole } from './patrol-member.entity';
-import type { TournamentService } from './tournament.service';
+import { BatchUpdatePatrolsDto } from './dto/batch-update-patrols.dto';
+import { Patrol } from './patrol.entity';
+import { PatrolService } from './patrol.service';
+import { PatrolRole } from './patrol-member.entity';
+import { TournamentService } from './tournament.service';
 
 function redactPatrolEmails(patrol: Record<string, unknown>): Record<string, unknown> {
   const leader = patrol.leader as Record<string, unknown> | undefined;

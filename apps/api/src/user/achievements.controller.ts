@@ -10,11 +10,11 @@ import {
 import { Roles } from '../auth/decorators/roles.decorator';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
-import type { RequestUser } from '../auth/permissions';
-import type { AchievementsService } from './achievements.service';
-import type { ProfileVisibilityService } from './profile-visibility.service';
+import { RequestUser } from '../auth/permissions';
+import { AchievementsService } from './achievements.service';
+import { ProfileVisibilityService } from './profile-visibility.service';
 import { Roles as UserRoles } from './types';
-import type { UserService } from './user.service';
+import { UserService } from './user.service';
 
 @Controller('users')
 export class AchievementsController {

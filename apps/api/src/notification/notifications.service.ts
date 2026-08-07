@@ -1,6 +1,6 @@
-import type { EntityManager } from '@mikro-orm/core';
+import { EntityManager } from '@mikro-orm/core';
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
-import type {
+import {
   NotificationDto,
   NotificationsListDto,
   NotificationType,

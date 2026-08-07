@@ -1,4 +1,4 @@
-import type { EmailI18n } from './types';
+import { EmailI18n } from './types';
 
 export const pt: EmailI18n = {
   footer: 'Este é um e-mail automático. Por favor, não responda a esta mensagem.',

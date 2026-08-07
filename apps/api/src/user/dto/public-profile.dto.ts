@@ -1,4 +1,4 @@
-import type { ProfileVisibility } from '../types';
+import { ProfileVisibility } from '../types';
 
 export class PublicProgressStatsDto {
   memberSince: string;

@@ -1,7 +1,7 @@
-import type { EntityManager } from '@mikro-orm/core';
+import { EntityManager } from '@mikro-orm/core';
 import { Seeder } from '@mikro-orm/seeder';
 import { Club, ClubVisibility } from '../club/club.entity';
-import type { ClubLink } from '../club/club-link.type';
+import { ClubLink } from '../club/club-link.type';
 
 type ClubSeedData = {
   name: string;

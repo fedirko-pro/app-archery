@@ -1,5 +1,5 @@
 import { ConflictException } from '@nestjs/common';
-import type { Profile } from 'passport-google-oauth20';
+import { Profile } from 'passport-google-oauth20';
 
 import { AuthProviders } from '../../user/types';
 import { GoogleStrategy } from './google.strategy';

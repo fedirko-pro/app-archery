@@ -1,4 +1,4 @@
-import { Test, type TestingModule } from '@nestjs/testing';
+import { Test, TestingModule } from '@nestjs/testing';
 import { Roles } from '../user/types';
 import { PermissionsService } from './permissions.service';
 import { RolePermissionsService } from './role-permissions.service';

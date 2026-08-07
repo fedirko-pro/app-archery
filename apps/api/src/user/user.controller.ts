@@ -14,14 +14,14 @@ import { Roles } from '../auth/decorators/roles.decorator';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { OptionalJwtAuthGuard } from '../auth/guards/optional-jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
-import type { RequestUser } from '../auth/permissions';
-import type { PermissionsService } from '../auth/permissions.service';
-import type { AdminCreateUserDto } from './dto/admin-create-user.dto';
-import type { ChangePasswordDto } from './dto/change-password.dto';
-import type { CreateUserDto } from './dto/create-user.dto';
-import type { AdminUpdateUserDto, UpdateUserDto } from './dto/update-user.dto';
+import { RequestUser } from '../auth/permissions';
+import { PermissionsService } from '../auth/permissions.service';
+import { AdminCreateUserDto } from './dto/admin-create-user.dto';
+import { ChangePasswordDto } from './dto/change-password.dto';
+import { CreateUserDto } from './dto/create-user.dto';
+import { AdminUpdateUserDto, UpdateUserDto } from './dto/update-user.dto';
 import { ProfileVisibilities, Roles as UserRoles } from './types';
-import type { UserService } from './user.service';
+import { UserService } from './user.service';
 
 function serializeUserProfile(user: Record<string, unknown>) {
   const {

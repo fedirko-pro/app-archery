@@ -1,7 +1,7 @@
 import { Entity, PrimaryKey, Property } from '@mikro-orm/core';
 import { v4 as uuid } from 'uuid';
 
-import type { ClubLink } from './club-link.type';
+import { ClubLink } from './club-link.type';
 
 export enum ClubVisibility {
   PUBLIC = 'public',

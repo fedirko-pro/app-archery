@@ -1,5 +1,5 @@
 import { ForbiddenException, NotFoundException } from '@nestjs/common';
-import type { RequestUser } from '../auth/permissions';
+import { RequestUser } from '../auth/permissions';
 import { ROLES } from '../user/types';
 import { UploadAuthorizationService } from './upload-authorization.service';
 

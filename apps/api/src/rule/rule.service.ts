@@ -1,7 +1,7 @@
-import type { EntityManager } from '@mikro-orm/core';
+import { EntityManager } from '@mikro-orm/core';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import type { CreateRuleDto } from './dto/create-rule.dto';
-import type { UpdateRuleDto } from './dto/update-rule.dto';
+import { CreateRuleDto } from './dto/create-rule.dto';
+import { UpdateRuleDto } from './dto/update-rule.dto';
 import { Rule } from './rule.entity';
 
 @Injectable()

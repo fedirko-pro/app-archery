@@ -1,10 +1,10 @@
 import { randomBytes } from 'node:crypto';
-import type { EntityManager } from '@mikro-orm/core';
+import { EntityManager } from '@mikro-orm/core';
 import { ConflictException, Injectable, Logger, NotFoundException } from '@nestjs/common';
-import type { ConfigService } from '@nestjs/config';
+import { ConfigService } from '@nestjs/config';
 import { NotificationTypes } from '@sokil/shared-types';
-import type { EmailService } from '../email/email.service';
-import type { NotificationsService } from '../notification/notifications.service';
+import { EmailService } from '../email/email.service';
+import { NotificationsService } from '../notification/notifications.service';
 import { User } from '../user/entity/user.entity';
 import { Club } from './club.entity';
 import { ClubInvitation, ClubInvitationStatus } from './club-invitation.entity';
