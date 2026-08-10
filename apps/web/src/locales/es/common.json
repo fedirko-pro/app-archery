@@ -469,7 +469,8 @@
         "divisions": "Gestión de divisiones - Gestión de grupos de edad y divisiones vinculadas a reglas",
         "rules": "Gestión de reglas - Reglas oficiales de tiro con arco con descripciones multilingües y descargas PDF (WA, NFAA, IBO, FITARCO, RFETA, AGB, FPTA, FSLU, FABP y más)",
         "converter": "Conversor de unidades - Convertir entre medidas comunes de tiro con arco (pulgadas/cm, libras/kg, granos/gramos, yardas/metros)",
-        "calculator": "Calculadora de tiro con arco - FOC, peso total de flecha (GPI), energía cinética e impulso, estimación de longitud de tiro, sugerencia aproximada de spine y granos por libra (GPP)",
+        "calculator": "Calculadoras de tiro con arco - Seis herramientas para FOC, peso total de flecha, energía cinética e impulso, estimación de longitud de tiro, sugerencia de spine de carbono o madera y granos por libra (GPP). Resultados aproximados",
+        "themeSwitcher": "Cambio de tema - Cambia entre temas claro y oscuro desde la navegación; tu preferencia se recuerda en este dispositivo",
         "glossary": "Glosario - Términos y abreviaturas comunes de tiro con arco usados en el campo y en competición",
         "uploads": "Sistema de carga de archivos - Procesamiento de imágenes para avatares y banners, gestión de adjuntos para torneos",
         "multilang": "Soporte multiidioma - Disponible en 6 idiomas: inglés, ucraniano, español, italiano, portugués y alemán",
@@ -998,6 +999,10 @@
     "close": "Cerrar",
     "edit": "Editar",
     "loading": "Cargando...",
+    "facebookSigninUnavailable": "El inicio de sesión con Facebook aún no está implementado.",
+    "facebookSignupUnavailable": "El registro con Facebook aún no está implementado.",
+    "nationalityPortuguese": "Portuguesa",
+    "nationalityOther": "Otra",
     "sending": "Enviando..."
   },
   "sharing": {
@@ -1510,6 +1515,11 @@
   "logoUploader": {
     "corsPreviewUnavailable": "Vista previa no disponible — restricción CORS. Sube una imagen nueva para editar.",
     "currentLogo": "Logo actual: {{name}}"
+  },
+  "components": {
+    "avatarUploader": { "cropLabel": "Recortar avatar" },
+    "bannerUploader": { "cropLabel": "Recortar banner" },
+    "logoUploader": { "cropLabel": "Recortar logotipo" }
   },
   "myClub": {
     "adminBadge": "Admin"

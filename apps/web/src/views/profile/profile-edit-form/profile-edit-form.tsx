@@ -237,8 +237,8 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
               fullWidth
               margin="normal"
             >
-              <MenuItem value="Portuguesa">Portuguesa</MenuItem>
-              <MenuItem value="Outro">Outro</MenuItem>
+              <MenuItem value="Portuguesa">{t('common.nationalityPortuguese')}</MenuItem>
+              <MenuItem value="Outro">{t('common.nationalityOther')}</MenuItem>
             </TextField>
           </Box>
         </Box>

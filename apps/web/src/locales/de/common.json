@@ -437,7 +437,7 @@
       "federationTitle": "Für Verbände & Organisatoren",
       "platformTitle": "Plattform",
       "current": {
-        "home": "Home Dashboard - Personal activity hub with this-week arrows, current streak, recent sessions, upcoming tournament discovery, monthly summary, and last achievement at a glance",
+        "home": "Start-Dashboard – Persönliche Aktivitätszentrale mit Pfeilen dieser Woche, aktueller Serie, letzten Trainingseinheiten, kommenden Turnieren, Monatsübersicht und letztem Erfolg auf einen Blick",
         "auth": "Benutzerauthentifizierung & -autoritisierung - JWT-basierte Authentifizierung mit Google OAuth, Passwort-Zurücksetzung und rollenbasierter Zugriffskontrolle",
         "profiles": "Benutzerprofile - Persönliches Profil mit Avatar, Bio, Standort, Bogenpräferenzen und bevorzugter Altersgruppe",
         "tournaments": "Turnierverwaltung - Turniere mit Banner, Anhängern, Kartenstandorten, Länderfilterung und Bewerbungsfristen erstellen, bearbeiten und verwalten",
@@ -450,7 +450,8 @@
         "divisions": "Altersgruppen-Verwaltung - Altersgruppen- und Gruppenverwaltung, die mit Regeln verknüpft ist",
         "rules": "Regelverwaltung - Offizielle Bogenschießregeln mit mehrsprachigen Beschreibungen und PDF-Downloads (WA, NFAA, IBO, FITARCO, RFETA, AGB, FPTA, FSLU, FABP und mehr)",
         "converter": "Einheitenkonverter - Umrechnung zwischen gängigen Bogenschießmaßen (Zoll/cm, Pfund/kg, Grain/Gramm, Yards/Meter)",
-        "calculator": "Bogensport-Rechner - FOC, Gesamt-Pfeilgewicht (GPI), kinetische Energie & Impuls, Auszugslängen-Schätzung, ungefähre Spine-Empfehlung und Grains pro Pfund (GPP)",
+        "calculator": "Bogensport-Rechner - Sechs Werkzeuge für FOC, Gesamtpfeilgewicht, kinetische Energie und Impuls, Auszugslängen-Schätzung, ungefähre Carbon- oder Holz-Spine-Empfehlung und Grains pro Pfund (GPP). Ergebnisse sind Richtwerte",
+        "themeSwitcher": "Theme-Wechsel - Zwischen hellem und dunklem Theme in der Navigation wechseln; die Auswahl wird auf diesem Gerät gespeichert",
         "glossary": "Glossar - Häufige Bogenschießbegriffe und Abkürzungen für den Schießplatz und den Wettkampf",
         "uploads": "Datei-Upload-System - Bildverarbeitung für Avatare und Banner, Anhangsverwaltung für Turniere",
         "multilang": "Mehrsprachige Unterstützung - Verfügbar in 6 Sprachen: Englisch, Ukrainisch, Spanisch, Italienisch, Portugiesisch und Deutsch",
@@ -1146,6 +1147,10 @@
     "close": "Schließen",
     "edit": "Bearbeiten",
     "loading": "Laden...",
+    "facebookSigninUnavailable": "Die Facebook-Anmeldung ist noch nicht implementiert.",
+    "facebookSignupUnavailable": "Die Facebook-Registrierung ist noch nicht implementiert.",
+    "nationalityPortuguese": "Portugiesisch",
+    "nationalityOther": "Andere",
     "sending": "Senden..."
   },
   "forms": {
@@ -1520,6 +1525,11 @@
   "logoUploader": {
     "corsPreviewUnavailable": "Vorschau nicht verfügbar — CORS-Einschränkung. Laden Sie ein neues Bild zum Bearbeiten hoch.",
     "currentLogo": "Aktuelles Logo: {{name}}"
+  },
+  "components": {
+    "avatarUploader": { "cropLabel": "Avatar zuschneiden" },
+    "bannerUploader": { "cropLabel": "Banner zuschneiden" },
+    "logoUploader": { "cropLabel": "Logo zuschneiden" }
   },
   "myClub": {
     "adminBadge": "Admin"

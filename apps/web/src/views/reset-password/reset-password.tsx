@@ -118,7 +118,7 @@ const ResetPassword: React.FC = () => {
           subheader={t('reset.subtitle')}
           avatar={<Lock color="primary" />}
           action={
-            <IconButton onClick={() => navigate(`/${lang}/signin`)} aria-label="close">
+            <IconButton onClick={() => navigate(`/${lang}/signin`)} aria-label={t('common.close')}>
               <Close />
             </IconButton>
           }

@@ -98,7 +98,7 @@ export default function Training() {
                 <button
                   className="button clear_button"
                   type="button"
-                  aria-label="comment"
+                  aria-label={t('pages.tournaments.feedback.admin.comment')}
                   onClick={() => {
                     setActiveTraining(training.date);
                     setConfirm(true);

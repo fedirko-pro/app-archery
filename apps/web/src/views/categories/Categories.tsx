@@ -94,7 +94,7 @@ const Categories: React.FC = () => {
     return (
       <section>
         <div className="container">
-          <Typography>Loading...</Typography>
+          <Typography>{t('common.loading')}</Typography>
         </div>
       </section>
     );

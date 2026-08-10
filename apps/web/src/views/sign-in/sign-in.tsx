@@ -253,7 +253,7 @@ const SignIn: React.FC = () => {
           {/* <Button
             fullWidth
             variant="outlined"
-            onClick={() => alert('Facebook signin not implemented yet')}
+            onClick={() => alert(t('common.facebookSigninUnavailable'))}
             startIcon={<FacebookIcon />}
           >
             Sign in with Facebook

@@ -109,29 +109,29 @@ const DivisionEdit: React.FC = () => {
     <section>
       <div className="container">
         <Typography variant="h4" gutterBottom>
-          {id === 'create' ? 'Create Division' : 'Edit Division'}
+          {id === 'create' ? t('pages.divisions.createTitle') : t('pages.divisions.editTitle')}
         </Typography>
 
         <Box sx={{ maxWidth: 600 }}>
           <Stack spacing={3}>
             <TextField
-              label="Division Name"
+              label={t('pages.divisions.name')}
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
-              placeholder="e.g. Adult, Junior, Veteran"
+              placeholder={t('pages.divisions.namePlaceholder')}
               required
               fullWidth
             />
 
             <FormControl fullWidth required>
-              <InputLabel>Rule</InputLabel>
+              <InputLabel>{t('pages.divisions.rule')}</InputLabel>
               <Select
                 value={form.rule_code || ''}
-                label="Rule"
+                label={t('pages.divisions.rule')}
                 onChange={(e) => setForm({ ...form, rule_code: e.target.value })}
               >
                 <MenuItem value="">
-                  <em>Select a rule</em>
+                  <em>{t('pages.divisions.selectRule')}</em>
                 </MenuItem>
                 {rules.map((rule) => (
                   <MenuItem key={rule.ruleCode} value={rule.ruleCode}>
@@ -142,10 +142,10 @@ const DivisionEdit: React.FC = () => {
             </FormControl>
 
             <TextField
-              label="Description"
+              label={t('pages.divisions.description')}
               value={form.description || ''}
               onChange={(e) => setForm({ ...form, description: e.target.value })}
-              placeholder="e.g. Adult archers (typically 18-49 years)"
+              placeholder={t('pages.divisions.descriptionPlaceholder')}
               multiline
               minRows={4}
               fullWidth
@@ -153,10 +153,10 @@ const DivisionEdit: React.FC = () => {
 
             <Stack direction="row" spacing={2}>
               <Button variant="contained" onClick={handleSave} disabled={loading}>
-                {loading ? 'Saving...' : 'Save'}
+                {loading ? t('common.saving') : t('common.save')}
               </Button>
               <Button variant="outlined" onClick={handleCancel} disabled={loading}>
-                Cancel
+                {t('common.cancel')}
               </Button>
             </Stack>
           </Stack>

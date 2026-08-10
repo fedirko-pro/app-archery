@@ -469,7 +469,8 @@
         "divisions": "Gestione divisioni - Gestione di gruppi di età e divisioni collegate alle regole",
         "rules": "Gestione regole - Regole ufficiali di tiro con l'arco con descrizioni multilingue e download PDF (WA, NFAA, IBO, FITARCO, RFETA, AGB, FPTA, FSLU, FABP e altri)",
         "converter": "Convertitore unità - Convertire tra misure comuni di tiro con l'arco (pollici/cm, libbre/kg, grani/grammi, iarde/metri)",
-        "calculator": "Calcolatrice per tiro con l'arco - FOC, peso totale freccia (GPI), energia cinetica e quantità di moto, stima lunghezza di trazione, suggerimento spine approssimativo e grani per libbra (GPP)",
+        "calculator": "Calcolatori per il tiro con l'arco - Sei strumenti per FOC, peso totale della freccia, energia cinetica e quantità di moto, stima della lunghezza di trazione, suggerimento approssimativo dello spine in carbonio o legno e grani per libbra (GPP). Risultati indicativi",
+        "themeSwitcher": "Cambio tema - Passa dal tema chiaro a quello scuro dalla navigazione; la preferenza viene ricordata su questo dispositivo",
         "glossary": "Glossario - Termini e abbreviazioni comuni di tiro con l'arco usati al campo e in gara",
         "uploads": "Sistema caricamento file - Elaborazione immagini per avatar e banner, gestione allegati per tornei",
         "multilang": "Supporto multilingua - Disponibile in 6 lingue: inglese, ucraino, spagnolo, italiano, portoghese e tedesco",
@@ -1165,6 +1166,10 @@
     "close": "Chiudi",
     "edit": "Modifica",
     "loading": "Caricamento...",
+    "facebookSigninUnavailable": "L'accesso con Facebook non è ancora disponibile.",
+    "facebookSignupUnavailable": "La registrazione con Facebook non è ancora disponibile.",
+    "nationalityPortuguese": "Portoghese",
+    "nationalityOther": "Altro",
     "sending": "Invio..."
   },
   "sharing": {
@@ -1510,6 +1515,11 @@
   "logoUploader": {
     "corsPreviewUnavailable": "Anteprima non disponibile — restrizione CORS. Carica una nuova immagine per modificarla.",
     "currentLogo": "Logo attuale: {{name}}"
+  },
+  "components": {
+    "avatarUploader": { "cropLabel": "Ritaglia avatar" },
+    "bannerUploader": { "cropLabel": "Ritaglia banner" },
+    "logoUploader": { "cropLabel": "Ritaglia logo" }
   },
   "myClub": {
     "adminBadge": "Admin"

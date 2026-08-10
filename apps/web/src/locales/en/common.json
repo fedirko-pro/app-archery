@@ -450,7 +450,8 @@
         "divisions": "Divisions Management - Age group and division management linked to rules",
         "rules": "Rules Management - Official archery rules with multi-language descriptions and PDF downloads (WA, NFAA, IBO, FITARCO, RFETA, AGB, FPTA, FSLU, FABP and more)",
         "converter": "Unit Converter - Convert between common archery measurements (inches/cm, pounds/kg, grains/grams, yards/meters)",
-        "calculator": "Archery Calculator - FOC, total arrow weight (GPI), kinetic energy & momentum, draw-length estimate, approximate spine suggestion, and grains per pound (GPP)",
+        "calculator": "Archery Calculators - Six quick setup tools for FOC, total arrow weight, kinetic energy & momentum, draw-length estimate, carbon or wood spine suggestion, and grains per pound (GPP). Results are approximate guidance only",
+        "themeSwitcher": "Theme Switching - Toggle between light and dark themes from the navigation; your preference is remembered on this device",
         "glossary": "Glossary - Common archery terms and abbreviations used on the range and in competition",
         "uploads": "File Upload System - Image processing for avatars and banners, attachment management for tournaments",
         "multilang": "Multi-language Support - Available in 6 languages: English, Ukrainian, Spanish, Italian, Portuguese, and German",
@@ -1146,6 +1147,10 @@
     "edit": "Edit",
     "sending": "Sending...",
     "loading": "Loading...",
+    "facebookSigninUnavailable": "Facebook sign-in is not implemented yet.",
+    "facebookSignupUnavailable": "Facebook sign-up is not implemented yet.",
+    "nationalityPortuguese": "Portuguese",
+    "nationalityOther": "Other",
     "close": "Close"
   },
   "forms": {
@@ -1523,6 +1528,11 @@
   "logoUploader": {
     "currentLogo": "Current logo: {{name}}",
     "corsPreviewUnavailable": "Preview unavailable - CORS restriction. Upload a new image to edit."
+  },
+  "components": {
+    "avatarUploader": { "cropLabel": "Crop avatar" },
+    "bannerUploader": { "cropLabel": "Crop banner" },
+    "logoUploader": { "cropLabel": "Crop logo" }
   },
   "notifications": {
     "title": "Notifications",

@@ -144,8 +144,8 @@ const TournamentApplicationForm: React.FC<TournamentApplicationFormProps> = ({
                       label={t('pages.applicationForm.nationality', 'Nationality')}
                       onChange={(e) => handleInputChange('nationality', e.target.value)}
                     >
-                      <MenuItem value="Portuguesa">Portuguesa</MenuItem>
-                      <MenuItem value="Outro">Outro</MenuItem>
+                      <MenuItem value="Portuguesa">{t('common.nationalityPortuguese')}</MenuItem>
+                      <MenuItem value="Outro">{t('common.nationalityOther')}</MenuItem>
                     </Select>
                   </FormControl>
                 </Box>

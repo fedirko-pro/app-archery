@@ -277,7 +277,7 @@ export default function SignUp() {
           {/* <Button
             fullWidth
             variant="outlined"
-            onClick={() => alert('Facebook signup not implemented yet')}
+            onClick={() => alert(t('common.facebookSignupUnavailable'))}
             startIcon={<FacebookIcon />}
           >
             Sign up with Facebook

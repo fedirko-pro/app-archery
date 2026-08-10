@@ -363,7 +363,7 @@ const Rules: React.FC = () => {
                       size="small"
                       color="primary"
                       onClick={() => handleOpenEditDialog(rule)}
-                      title="Edit"
+                      title={t('common.edit')}
                     >
                       <EditIcon fontSize="small" />
                     </IconButton>
@@ -371,7 +371,7 @@ const Rules: React.FC = () => {
                       size="small"
                       color="error"
                       onClick={() => handleOpenDeleteConfirm(rule)}
-                      title="Delete"
+                      title={t('common.delete')}
                     >
                       <DeleteIcon fontSize="small" />
                     </IconButton>

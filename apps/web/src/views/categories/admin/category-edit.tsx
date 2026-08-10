@@ -10,6 +10,7 @@ import {
 } from '@mui/material';
 import type React from 'react';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router';
 
 import { canManageReferenceData } from '../../../config/roles';
@@ -24,6 +25,7 @@ import type { CreateBowCategoryDto, RuleDto, UpdateBowCategoryDto } from '../../
 const CategoryEdit: React.FC = () => {
   const { id, lang } = useParams<{ id?: string; lang: string }>();
   const navigate = useNavigate();
+  const { t } = useTranslation('common');
   const { user } = useAuth();
   const isEditMode = !!id;
 
@@ -156,7 +158,7 @@ const CategoryEdit: React.FC = () => {
     <section>
       <div className="container">
         <Typography variant="h5" gutterBottom>
-          {isEditMode ? 'Edit category' : 'Create category'}
+          {isEditMode ? t('pages.categories.editTitle') : t('pages.categories.createTitle')}
         </Typography>
         {error && (
           <Typography color="error" sx={{ mb: 2 }}>
@@ -165,7 +167,7 @@ const CategoryEdit: React.FC = () => {
         )}
         <Stack spacing={2}>
           <TextField
-            label="Code"
+            label={t('pages.categories.code')}
             value={form.code}
             onChange={(e) => setForm({ ...form, code: e.target.value })}
             inputProps={{ maxLength: 10 }}
@@ -173,17 +175,17 @@ const CategoryEdit: React.FC = () => {
             disabled={loading}
           />
           <TextField
-            label="Name"
+            label={t('pages.categories.name')}
             value={form.name}
             onChange={(e) => setForm({ ...form, name: e.target.value })}
             required
             disabled={loading}
           />
           <FormControl required disabled={loading}>
-            <InputLabel>Rule</InputLabel>
+            <InputLabel>{t('pages.categories.rule')}</InputLabel>
             <Select
               value={form.ruleId}
-              label="Rule"
+              label={t('pages.categories.rule')}
               onChange={(e) => setForm({ ...form, ruleId: e.target.value })}
             >
               {rules.map((rule) => (
@@ -194,7 +196,7 @@ const CategoryEdit: React.FC = () => {
             </Select>
           </FormControl>
           <TextField
-            label="Description (EN)"
+            label={t('pages.categories.descriptionEn')}
             value={form.descriptionEn || ''}
             onChange={(e) => setForm({ ...form, descriptionEn: e.target.value })}
             multiline
@@ -202,7 +204,7 @@ const CategoryEdit: React.FC = () => {
             disabled={loading}
           />
           <TextField
-            label="Description (PT)"
+            label={t('pages.categories.descriptionPt')}
             value={form.descriptionPt || ''}
             onChange={(e) => setForm({ ...form, descriptionPt: e.target.value })}
             multiline
@@ -210,7 +212,7 @@ const CategoryEdit: React.FC = () => {
             disabled={loading}
           />
           <TextField
-            label="Description (IT)"
+            label={t('pages.categories.descriptionIt')}
             value={form.descriptionIt || ''}
             onChange={(e) => setForm({ ...form, descriptionIt: e.target.value })}
             multiline
@@ -218,7 +220,7 @@ const CategoryEdit: React.FC = () => {
             disabled={loading}
           />
           <TextField
-            label="Description (UA)"
+            label={t('pages.categories.descriptionUk')}
             value={form.descriptionUk || ''}
             onChange={(e) => setForm({ ...form, descriptionUk: e.target.value })}
             multiline
@@ -226,7 +228,7 @@ const CategoryEdit: React.FC = () => {
             disabled={loading}
           />
           <TextField
-            label="Description (ES)"
+            label={t('pages.categories.descriptionEs')}
             value={form.descriptionEs || ''}
             onChange={(e) => setForm({ ...form, descriptionEs: e.target.value })}
             multiline
@@ -234,7 +236,7 @@ const CategoryEdit: React.FC = () => {
             disabled={loading}
           />
           <TextField
-            label="Description (DE)"
+            label={t('pages.categories.descriptionDe')}
             value={form.descriptionDe || ''}
             onChange={(e) => setForm({ ...form, descriptionDe: e.target.value })}
             multiline
@@ -242,20 +244,20 @@ const CategoryEdit: React.FC = () => {
             disabled={loading}
           />
           <TextField
-            label="Rule reference"
+            label={t('pages.categories.ruleReference')}
             value={form.ruleReference || ''}
             onChange={(e) => setForm({ ...form, ruleReference: e.target.value })}
             disabled={loading}
           />
           <TextField
-            label="Rule citation (link text)"
+            label={t('pages.categories.ruleCitation')}
             value={form.ruleCitation || ''}
             onChange={(e) => setForm({ ...form, ruleCitation: e.target.value })}
             disabled={loading}
           />
           <Stack direction="row" spacing={2}>
             <Button variant="contained" onClick={handleSave} disabled={loading}>
-              {loading ? 'Saving...' : 'Save'}
+              {loading ? t('common.saving') : t('common.save')}
             </Button>
             <Button
               variant="outlined"
