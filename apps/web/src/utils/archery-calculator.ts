@@ -105,3 +105,40 @@ export function suggestSpine(input: {
     effectiveDrawWeight,
   };
 }
+
+export type WoodSpineSuggestion = {
+  spineLow: number;
+  spineHigh: number;
+};
+
+/** Wood spine point-weight adjustment range (grains). Outside this range no extra adjustment applies. */
+const WOOD_POINT_MIN_GRAINS = 70;
+const WOOD_POINT_MAX_GRAINS = 150;
+const WOOD_POINT_BASELINE_GRAINS = 125;
+
+/**
+ * Wooden arrow spine band (in lbs, e.g. 45/50) for traditional bows (e.g. English longbow),
+ * derived from the common spine table: baseline 125 gr point at 28" arrow,
+ * +5 lb spine per 5 lb draw weight and per 1" of arrow length.
+ * Uses the archer's actual draw weight and arrow length (not draw length).
+ * Point adjustment: ±5 lb spine per 25 gr vs 125 gr, only within 70–150 gr.
+ * Guidance only — final spine depends on bow type (off-the-hand vs shelf) and shooting style.
+ */
+export function suggestWoodSpine(input: {
+  drawWeightLbs: number;
+  arrowLengthIn: number;
+  pointWeightGrains?: number;
+}): WoodSpineSuggestion | null {
+  const { drawWeightLbs, arrowLengthIn, pointWeightGrains = WOOD_POINT_BASELINE_GRAINS } = input;
+  if (drawWeightLbs <= 0 || arrowLengthIn <= 0) return null;
+
+  const clampedPoint = Math.min(
+    WOOD_POINT_MAX_GRAINS,
+    Math.max(WOOD_POINT_MIN_GRAINS, pointWeightGrains),
+  );
+  const pointAdj = Math.round((clampedPoint - WOOD_POINT_BASELINE_GRAINS) / 25) * 5;
+
+  const raw = drawWeightLbs - 5 + (arrowLengthIn - 28) * 5 + pointAdj;
+  const spineLow = Math.floor(raw / 5) * 5;
+  return { spineLow, spineHigh: spineLow + 5 };
+}

@@ -1071,7 +1071,8 @@
       "hintLow": "Eher niedrig — üblich bei manchen Ziel-Setups",
       "hintTarget": "Typischer Ziel- / Hallenbereich",
       "hintHunting": "Typisches Jagd- / Outdoor-FOC",
-      "hintHigh": "Hohes FOC — Flug und Clearance prüfen"
+      "hintHigh": "Hohes FOC — Flug und Clearance prüfen",
+      "traditionalNote": "Diese FOC-Bereiche passen zu modernen Ziel-/Jagd-Setups; traditionelle Langbögen und Holzpfeile können außerhalb liegen."
     },
     "arrowWeight": {
       "short": "GPI",
@@ -1104,12 +1105,19 @@
       "short": "Spine",
       "title": "Spine-Empfehlung",
       "desc": "Ungefährer Carbon-Spine-Bereich aus Zuggewicht, Pfeillänge und Spitzengewicht. Immer die Hersteller-Tabelle prüfen.",
+      "descWood": "Ungefährer Holz-Spine-Bereich (lb) für traditionelle Bögen aus Ihrem Zuggewicht und der Pfeillänge. Basis: 125-Grain-Spitze; ±5 lb pro 25 Grain Spitzengewicht (70–150 Grain).",
+      "arrowType": "Pfeiltyp",
+      "arrowTypeCarbon": "Carbon",
+      "arrowTypeWood": "Holz",
       "drawWeight": "Zuggewicht (lb)",
       "arrowLength": "Pfeillänge (Zoll)",
       "pointWeight": "Spitzengewicht (Grain)",
       "result": "Etwa {{low}}–{{high}} Spine",
       "resultHint": "Effektives Zuggewicht: {{dw}} lb · nur Orientierung",
-      "consultManual": "Konsultieren Sie immer das Herstellerhandbuch und die Spine-Tabelle, bevor Sie Pfeile wählen."
+      "consultManual": "Konsultieren Sie immer das Herstellerhandbuch und die Spine-Tabelle, bevor Sie Pfeile wählen.",
+      "resultBelowMin": "Unter 10 lb Spine",
+      "resultHintWood": "Holz-Spine in lb · nur Orientierung",
+      "woodNote": "Der nötige Holz-Spine hängt von Bogentyp (über die Hand oder Shelf), Sehne und Schießstil ab. Mit Bare-Shaft-Test feinabstimmen."
     },
     "gpp": {
       "short": "GPP",

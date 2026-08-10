@@ -6,6 +6,8 @@ import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Box from '@mui/material/Box';
+import MenuItem from '@mui/material/MenuItem';
+import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { type ReactNode, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -18,6 +20,7 @@ import {
   calculateMomentum,
   estimateDrawLength,
   suggestSpine,
+  suggestWoodSpine,
 } from '../../utils/archery-calculator';
 import CalculatorNumberField, { parseOptionalNumber } from './CalculatorNumberField';
 
@@ -86,6 +89,14 @@ function FocPanel() {
         />
       </div>
       <ResultBox value={foc == null ? null : foc.toFixed(2)} unit="%" hint={hint} />
+      <Typography
+        variant="body2"
+        color="text.secondary"
+        sx={{ mt: 1.5, fontStyle: 'italic', display: 'flex', alignItems: 'flex-start', gap: 0.75 }}
+      >
+        <InfoOutlinedIcon fontSize="small" sx={{ mt: '1px', flexShrink: 0 }} />
+        {t('calculator.foc.traditionalNote')}
+      </Typography>
     </>
   );
 }
@@ -206,19 +217,43 @@ function DrawLengthPanel() {
 
 function SpinePanel() {
   const { t } = useTranslation('common');
+  const [arrowType, setArrowType] = useState<'carbon' | 'wood'>('carbon');
   const [drawWeight, setDrawWeight] = useState('');
   const [arrowLength, setArrowLength] = useState('28');
   const [point, setPoint] = useState('100');
-  const suggestion = suggestSpine({
+
+  const handleArrowTypeChange = (value: string) => {
+    const next = value === 'wood' ? 'wood' : 'carbon';
+    setArrowType(next);
+    setPoint(next === 'wood' ? '125' : '100');
+  };
+
+  const parsed = {
     drawWeightLbs: parseOptionalNumber(drawWeight),
     arrowLengthIn: parseOptionalNumber(arrowLength),
     pointWeightGrains: parseOptionalNumber(point),
-  });
+  };
+  const carbonSuggestion = arrowType === 'carbon' ? suggestSpine(parsed) : null;
+  const woodSuggestion = arrowType === 'wood' ? suggestWoodSpine(parsed) : null;
 
   return (
     <>
-      <PanelDesc>{t('calculator.spine.desc')}</PanelDesc>
+      <PanelDesc>
+        {t(arrowType === 'wood' ? 'calculator.spine.descWood' : 'calculator.spine.desc')}
+      </PanelDesc>
       <div className="calculator-fields">
+        <TextField
+          select
+          label={t('calculator.spine.arrowType')}
+          value={arrowType}
+          onChange={(e) => handleArrowTypeChange(e.target.value)}
+          size="small"
+          InputLabelProps={{ shrink: true }}
+          sx={{ m: 1, width: { xs: '100%', sm: '45%' }, minWidth: 140 }}
+        >
+          <MenuItem value="carbon">{t('calculator.spine.arrowTypeCarbon')}</MenuItem>
+          <MenuItem value="wood">{t('calculator.spine.arrowTypeWood')}</MenuItem>
+        </TextField>
         <CalculatorNumberField
           label={t('calculator.spine.drawWeight')}
           value={drawWeight}
@@ -235,28 +270,44 @@ function SpinePanel() {
           onChange={setPoint}
         />
       </div>
-      <ResultBox
-        value={
-          suggestion == null
-            ? null
-            : t('calculator.spine.result', {
-                low: suggestion.spineLow,
-                high: suggestion.spineHigh,
-              })
-        }
-        hint={
-          suggestion == null
-            ? undefined
-            : t('calculator.spine.resultHint', { dw: suggestion.effectiveDrawWeight })
-        }
-      />
+      {arrowType === 'carbon' ? (
+        <ResultBox
+          value={
+            carbonSuggestion == null
+              ? null
+              : t('calculator.spine.result', {
+                  low: carbonSuggestion.spineLow,
+                  high: carbonSuggestion.spineHigh,
+                })
+          }
+          hint={
+            carbonSuggestion == null
+              ? undefined
+              : t('calculator.spine.resultHint', { dw: carbonSuggestion.effectiveDrawWeight })
+          }
+        />
+      ) : (
+        <ResultBox
+          value={
+            woodSuggestion == null
+              ? null
+              : woodSuggestion.spineLow < 10
+                ? t('calculator.spine.resultBelowMin')
+                : t('calculator.spine.result', {
+                    low: woodSuggestion.spineLow,
+                    high: woodSuggestion.spineHigh,
+                  })
+          }
+          hint={woodSuggestion == null ? undefined : t('calculator.spine.resultHintWood')}
+        />
+      )}
       <Typography
         variant="body2"
         color="text.secondary"
         sx={{ mt: 1.5, fontStyle: 'italic', display: 'flex', alignItems: 'flex-start', gap: 0.75 }}
       >
         <InfoOutlinedIcon fontSize="small" sx={{ mt: '1px', flexShrink: 0 }} />
-        {t('calculator.spine.consultManual')}
+        {t(arrowType === 'wood' ? 'calculator.spine.woodNote' : 'calculator.spine.consultManual')}
       </Typography>
     </>
   );

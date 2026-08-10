@@ -1071,7 +1071,8 @@
       "hintLow": "On the low side — common for some target setups",
       "hintTarget": "Typical target / indoor range",
       "hintHunting": "Typical hunting / outdoor FOC",
-      "hintHigh": "High FOC — check flight and clearance"
+      "hintHigh": "High FOC — check flight and clearance",
+      "traditionalNote": "These FOC bands suit modern target/hunting setups; traditional longbows and wooden arrows may sit outside them."
     },
     "arrowWeight": {
       "short": "GPI",
@@ -1104,12 +1105,19 @@
       "short": "Spine",
       "title": "Spine suggestion",
       "desc": "Approximate carbon spine band from draw weight, arrow length, and point weight. Always check your shaft manufacturer's chart.",
+      "descWood": "Approximate wood spine band (lb) for traditional bows from your draw weight and arrow length. Assumes a 125 gr point; adjust ±5 lb per 25 gr of point weight (70–150 gr).",
+      "arrowType": "Arrow type",
+      "arrowTypeCarbon": "Carbon",
+      "arrowTypeWood": "Wood",
       "drawWeight": "Draw weight (lb)",
       "arrowLength": "Arrow length (in)",
       "pointWeight": "Point weight (gr)",
       "result": "About {{low}}–{{high}} spine",
       "resultHint": "Effective draw weight used: {{dw}} lb · guidance only",
-      "consultManual": "Always consult the manufacturer's manual and spine chart before choosing arrows."
+      "consultManual": "Always consult the manufacturer's manual and spine chart before choosing arrows.",
+      "resultBelowMin": "Below 10 lb spine",
+      "resultHintWood": "Wood spine in lbs · guidance only",
+      "woodNote": "Wood spine needs vary with bow type (off-the-hand vs shelf), string and shooting style. Fine-tune with bare-shaft testing."
     },
     "gpp": {
       "short": "GPP",

@@ -1152,7 +1152,8 @@
       "hintLow": "Algo bajo — habitual en algunos setups de diana",
       "hintTarget": "Rango típico de diana / sala",
       "hintHunting": "FOC típico de caza / exterior",
-      "hintHigh": "FOC alto — comprueba vuelo y clearance"
+      "hintHigh": "FOC alto — comprueba vuelo y clearance",
+      "traditionalNote": "Estas bandas de FOC sirven para setups modernos de tiro/caza; los arcos largos tradicionales y las flechas de madera pueden quedar fuera de ellas."
     },
     "arrowWeight": {
       "short": "GPI",
@@ -1185,12 +1186,19 @@
       "short": "Spine",
       "title": "Sugerencia de spine",
       "desc": "Banda aproximada de spine de carbono según libras, longitud de flecha y peso de punta. Consulta siempre la tabla del fabricante.",
+      "descWood": "Banda aproximada de spine de madera (lb) para arcos tradicionales según tus libras de tiro y longitud de flecha. Base: punta de 125 granos; ±5 lb por cada 25 granos de punta (70–150 granos).",
+      "arrowType": "Tipo de flecha",
+      "arrowTypeCarbon": "Carbono",
+      "arrowTypeWood": "Madera",
       "drawWeight": "Libras (lb)",
       "arrowLength": "Longitud de flecha (pulg)",
       "pointWeight": "Peso de punta (granos)",
       "result": "Sobre {{low}}–{{high}} spine",
       "resultHint": "Libras efectivas usadas: {{dw}} lb · solo orientación",
-      "consultManual": "Consulta siempre el manual y la tabla de spine del fabricante antes de elegir flechas."
+      "consultManual": "Consulta siempre el manual y la tabla de spine del fabricante antes de elegir flechas.",
+      "resultBelowMin": "Menos de 10 lb de spine",
+      "resultHintWood": "Spine de madera en lb · solo orientación",
+      "woodNote": "El spine de madera necesario varía según el tipo de arco (sobre la mano o con repisa), la cuerda y el estilo de tiro. Afina con prueba de bare-shaft."
     },
     "gpp": {
       "short": "GPP",

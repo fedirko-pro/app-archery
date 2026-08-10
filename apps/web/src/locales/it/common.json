@@ -1090,7 +1090,8 @@
       "hintLow": "Un po' basso — comune in alcuni setup da target",
       "hintTarget": "Intervallo tipico target / indoor",
       "hintHunting": "FOC tipico caccia / outdoor",
-      "hintHigh": "FOC alto — controlla volo e clearance"
+      "hintHigh": "FOC alto — controlla volo e clearance",
+      "traditionalNote": "Queste fasce di FOC valgono per setup moderni da tiro/caccia; i longbow tradizionali e le frecce in legno possono rientrare in valori diversi."
     },
     "arrowWeight": {
       "short": "GPI",
@@ -1123,12 +1124,19 @@
       "short": "Spine",
       "title": "Suggerimento spine",
       "desc": "Fascia spine carbonio approssimativa da libbraggio, lunghezza freccia e peso punta. Controlla sempre la tabella del produttore.",
+      "descWood": "Fascia approssimativa di spine legno (lb) per archi tradizionali dal tuo libbraggio e dalla lunghezza freccia. Base: punta da 125 grani; ±5 lb ogni 25 grani di punta (70–150 grani).",
+      "arrowType": "Tipo di freccia",
+      "arrowTypeCarbon": "Carbonio",
+      "arrowTypeWood": "Legno",
       "drawWeight": "Libbraggio (lb)",
       "arrowLength": "Lunghezza freccia (pollici)",
       "pointWeight": "Peso punta (grani)",
       "result": "Circa {{low}}–{{high}} spine",
       "resultHint": "Libbraggio effettivo usato: {{dw}} lb · solo orientamento",
-      "consultManual": "Consulta sempre il manuale e la tabella spine del produttore prima di scegliere le frecce."
+      "consultManual": "Consulta sempre il manuale e la tabella spine del produttore prima di scegliere le frecce.",
+      "resultBelowMin": "Sotto 10 lb di spine",
+      "resultHintWood": "Spine legno in lb · solo orientamento",
+      "woodNote": "Lo spine del legno necessario varia con il tipo di arco (sulla mano o con rest), la corda e lo stile di tiro. Affina con il test bare-shaft."
     },
     "gpp": {
       "short": "GPP",
