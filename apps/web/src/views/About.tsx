@@ -133,6 +133,15 @@ const About = () => {
               <FeatureItem emoji="🧮" label={t('pages.about.current.calculator')} />
             </li>
             <li>
+              <FeatureItem
+                emoji="🌗"
+                label={t('pages.about.current.themeSwitcher', {
+                  defaultValue:
+                    'Theme Switching - Toggle between light and dark themes from the navigation; your preference is remembered on this device',
+                })}
+              />
+            </li>
+            <li>
               <FeatureItem emoji="📖" label={t('pages.about.current.glossary')} />
             </li>
             <li>

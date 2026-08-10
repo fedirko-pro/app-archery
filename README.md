@@ -10,6 +10,7 @@ Built with Next.js 15 + NestJS 11 in a pnpm monorepo.
 
 - Training log with offline support and automatic sync
 - Equipment management with detailed bow specifications
+- Archery calculators for FOC, arrow weight, kinetic energy and momentum, draw length, arrow spine, and GPP
 - Personal statistics — arrows fired, distance, streaks, scoring trends
 - Achievement system — 35+ badges across 6 categories and 4 rarity tiers
 - Public profiles and shareable progress snapshots
@@ -27,6 +28,7 @@ Built with Next.js 15 + NestJS 11 in a pnpm monorepo.
 **Platform**
 
 - 6 languages: English, Ukrainian, Spanish, Italian, Portuguese, German
+- Light and dark themes with a switcher that remembers your preference
 - Progressive Web App (installable, works offline)
 - JWT auth with Google OAuth and role-based access control
 
@@ -83,3 +85,18 @@ docker compose up -d --build
 ## Deployment
 
 See [DEPLOYMENT.md](./DEPLOYMENT.md) for VPS setup with Traefik.
+
+## Archer tools
+
+Open the **Archery Calculator** page to use six quick setup tools:
+
+- Front of Center (FOC)
+- Total arrow weight from shaft GPI and components
+- Kinetic energy and momentum
+- Draw-length estimate from wingspan
+- Approximate carbon or wood arrow spine suggestion
+- Grains per pound (GPP)
+
+Calculator results are guidance only. Confirm arrow and equipment choices with manufacturer charts and a qualified coach.
+
+Use the sun/moon switcher in the application navigation to change between light and dark themes. Sokil stores the selected theme in your browser for future visits.

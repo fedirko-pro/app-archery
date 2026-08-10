@@ -1,6 +1,6 @@
 # @sokil/web
 
-Next.js frontend for Sokil — archery training companion with offline support, gamification, and tournament management.
+Next.js frontend for Sokil — archery training companion with offline support, gamification, tournament management, theme switching, and archery calculators.
 
 See the [monorepo README](../../README.md) for setup instructions.
 
@@ -28,6 +28,12 @@ Uses Next.js standalone output for minimal Docker images.
 pnpm --filter @sokil/web test
 pnpm --filter @sokil/web test:run
 ```
+
+## User-facing tools
+
+- The navigation theme switcher toggles light and dark themes and persists the choice in `localStorage`.
+- The Archery Calculator page includes FOC, total arrow weight, kinetic energy and momentum, draw-length, carbon/wood spine, and GPP calculators.
+- Calculator outputs are approximate setup guidance and should be checked against manufacturer charts or a qualified coach.
 
 ## Tech stack
 
