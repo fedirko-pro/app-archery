@@ -92,7 +92,7 @@ const UserMenu: React.FC = () => {
     { link: '/achievements', label: t('nav.myAchievements') },
     {
       link: '/profile',
-      label: t('menu.myProfile', { name: (user?.firstName || '') + ' ' + (user?.lastName || '') }),
+      label: t('menu.myProfile', { name: `${user?.firstName || ''} ${user?.lastName || ''}` }),
     },
     ...(user && isClubAdmin(user.role)
       ? [{ link: '/my-club', label: t('nav.myClub', 'My Club') }]

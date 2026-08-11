@@ -29,7 +29,7 @@ export default function UserCard(props: UserCardProps) {
         {!avatarSrc ? getAvatarInitials(user.firstName, user.lastName) : null}
       </Avatar>
       <div className="name">{`${user.firstName} ${user.lastName}`}</div>
-      {user.role !== 'member' && <div className={'role ' + user.role}>{user.role}</div>}
+      {user.role !== 'member' && <div className={`role ${user.role}`}>{user.role}</div>}
     </div>
   );
 }

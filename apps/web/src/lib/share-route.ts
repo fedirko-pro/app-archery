@@ -6,7 +6,7 @@ export interface ArcherRouteMatch {
 
 /** Returns archer share route info for /{lang}/archers/{userId}, .../achievements/{id}, or .../progress. */
 export function getArcherRouteFromPath(path?: string[]): ArcherRouteMatch | null {
-  if (!path || path[0] !== 'archers' || !path[1]) {
+  if (path?.[0] !== 'archers' || !path[1]) {
     return null;
   }
 

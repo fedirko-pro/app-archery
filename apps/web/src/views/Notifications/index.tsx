@@ -75,7 +75,7 @@ const NotificationsPage: React.FC = () => {
             !item.readAt &&
             typeof item.params?.achievementId === 'string',
         )
-        .map((item) => item.params!.achievementId as string);
+        .map((item) => (item.params?.achievementId ?? '') as string);
       if (unlockedIds.length > 0) {
         enqueueCelebration(unlockedIds);
       }

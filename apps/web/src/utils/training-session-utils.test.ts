@@ -47,7 +47,7 @@ describe('getStartedSession', () => {
   it('returns first started session when multiple exist', () => {
     const s1 = session({ id: '1', status: 'started' });
     const s2 = session({ id: '2', status: 'started' });
-    expect(getStartedSession([s1, s2])!.id).toBe('1');
+    expect(getStartedSession([s1, s2])?.id).toBe('1');
   });
 });
 

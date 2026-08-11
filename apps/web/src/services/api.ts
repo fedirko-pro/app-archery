@@ -774,7 +774,7 @@ class ApiService {
   async getBowCategoriesByRule(ruleCode: string): Promise<BowCategory[]> {
     try {
       const rule = await this.getRuleByCode(ruleCode);
-      if (!rule || !rule.id) {
+      if (!rule?.id) {
         console.warn(`Rule with code ${ruleCode} not found`);
         return [];
       }
@@ -1069,7 +1069,7 @@ class ApiService {
   private static mapDivisionsFromBackend(divisions: Record<string, unknown>[]): DivisionDto[] {
     if (!Array.isArray(divisions) || divisions.length === 0) return [];
     const transformed = divisions
-      .filter((div: Record<string, unknown>) => div && div.id && div.name)
+      .filter((div: Record<string, unknown>) => div?.id && div?.name)
       .map((div: Record<string, unknown>) => ({
         id: div.id as string,
         name: div.name as string,
@@ -1122,7 +1122,7 @@ class ApiService {
   async getDivisionsByRule(ruleCode: string): Promise<DivisionDto[]> {
     try {
       const rule = await this.getRuleByCode(ruleCode);
-      if (!rule || !rule.id) {
+      if (!rule?.id) {
         return [];
       }
 

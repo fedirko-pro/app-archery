@@ -207,7 +207,7 @@ const Divisions: React.FC = () => {
                         >
                           <EditIcon fontSize="small" />
                         </IconButton>
-                        <IconButton size="small" onClick={() => handleDelete(item.id!)}>
+                        <IconButton size="small" onClick={() => handleDelete(item.id ?? '')}>
                           <DeleteIcon fontSize="small" />
                         </IconButton>
                       </Box>

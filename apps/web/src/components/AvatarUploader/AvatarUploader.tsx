@@ -197,10 +197,10 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({
       const cropHeight = Math.round(sSize);
 
       if (
-        isNaN(cropX) ||
-        isNaN(cropY) ||
-        isNaN(cropWidth) ||
-        isNaN(cropHeight) ||
+        Number.isNaN(cropX) ||
+        Number.isNaN(cropY) ||
+        Number.isNaN(cropWidth) ||
+        Number.isNaN(cropHeight) ||
         cropX < 0 ||
         cropY < 0 ||
         cropWidth <= 0 ||

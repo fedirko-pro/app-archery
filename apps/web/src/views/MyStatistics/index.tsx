@@ -30,7 +30,7 @@ import { computeLocalStats } from '../../utils/training-stats';
 
 const formatMonthTick = (month: string): string => {
   const [year, m] = month.split('-');
-  return format(new Date(Number.parseInt(year), Number.parseInt(m) - 1, 1), "MMM ''yy");
+  return format(new Date(Number.parseInt(year, 10), Number.parseInt(m, 10) - 1, 1), "MMM ''yy");
 };
 
 const fmt = (n: number): string => n.toLocaleString();

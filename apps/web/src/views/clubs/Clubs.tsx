@@ -283,7 +283,7 @@ const Clubs: React.FC = () => {
                           variant="outlined"
                           color="error"
                           startIcon={<DeleteIcon />}
-                          onClick={() => handleDelete(club.id!)}
+                          onClick={() => handleDelete(club.id ?? '')}
                           sx={{ flex: 1, minWidth: 0, justifyContent: 'center' }}
                         >
                           {t('common.delete', 'Delete')}

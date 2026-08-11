@@ -133,8 +133,9 @@ const HomePage: React.FC = () => {
     return (
       earned
         .filter((a) => a.earnedAt)
-        .sort((a, b) => new Date(b.earnedAt!).getTime() - new Date(a.earnedAt!).getTime())[0] ??
-      null
+        .sort(
+          (a, b) => new Date(b.earnedAt ?? 0).getTime() - new Date(a.earnedAt ?? 0).getTime(),
+        )[0] ?? null
     );
   }, [earned]);
 
@@ -606,7 +607,7 @@ const HomePage: React.FC = () => {
                   </Typography>
                   <Typography variant="caption" color="text.secondary">
                     {t('dashboard.lastAchievement.earnedOn', {
-                      date: format(parseISO(lastAchievement.earnedAt!), 'dd MMM yyyy'),
+                      date: format(parseISO(lastAchievement.earnedAt ?? ''), 'dd MMM yyyy'),
                     })}
                   </Typography>
                   <Box sx={{ mt: 'auto', pt: 1, display: 'flex', justifyContent: 'flex-end' }}>

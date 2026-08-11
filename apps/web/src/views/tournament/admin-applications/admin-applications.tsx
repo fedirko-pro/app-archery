@@ -170,7 +170,7 @@ const AdminApplications: React.FC = () => {
       // Update local state to keep position in list
       setApplications((prev) =>
         prev.map((app) =>
-          app.id === statusDialog.application!.id
+          app.id === statusDialog.application?.id
             ? {
                 ...app,
                 status: statusDialog.newStatus as ApplicationStatus,

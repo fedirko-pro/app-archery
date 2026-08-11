@@ -6,7 +6,6 @@ import {
   RadioGroup,
   Typography,
 } from '@mui/material';
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { PROFILE_VISIBILITY_OPTIONS, type ProfileVisibility } from '@/types/profile-visibility';

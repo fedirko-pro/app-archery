@@ -192,8 +192,8 @@ const LogoUploader: React.FC<LogoUploaderProps> = ({
       zoomValue: number;
       offsetValue: { x: number; y: number };
     } = {
-      image: imageEl!,
-      natural: naturalSize!,
+      image: imageEl as HTMLImageElement,
+      natural: naturalSize as { w: number; h: number },
       zoomValue: zoom,
       offsetValue: offset,
     },
@@ -215,10 +215,10 @@ const LogoUploader: React.FC<LogoUploaderProps> = ({
     const cropHeight = Math.round(sSize);
 
     if (
-      isNaN(cropX) ||
-      isNaN(cropY) ||
-      isNaN(cropWidth) ||
-      isNaN(cropHeight) ||
+      Number.isNaN(cropX) ||
+      Number.isNaN(cropY) ||
+      Number.isNaN(cropWidth) ||
+      Number.isNaN(cropHeight) ||
       cropX < 0 ||
       cropY < 0 ||
       cropWidth <= 0 ||

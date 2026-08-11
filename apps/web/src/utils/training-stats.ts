@@ -88,7 +88,7 @@ interface PeriodAccumulator {
 }
 
 function accumulateSession(acc: PeriodAccumulator, s: LocalTrainingSession): void {
-  const d = new Date(s.date + 'T00:00:00');
+  const d = new Date(`${s.date}T00:00:00`);
   const now = new Date();
   const weekStart = getStartOfWeek(now);
   const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);

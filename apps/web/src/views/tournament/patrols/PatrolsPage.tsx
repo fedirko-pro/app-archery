@@ -179,7 +179,7 @@ const PatrolsPage: React.FC = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const backendPatrols = await apiService.getPatrolsByTournament(tournamentId!);
+      const backendPatrols = await apiService.getPatrolsByTournament(tournamentId ?? '');
 
       if (tournamentId) {
         const tournament = await apiService.getTournament(tournamentId);
@@ -443,7 +443,7 @@ const PatrolsPage: React.FC = () => {
 
     setIsLoading(true);
     try {
-      const response = await apiService.regeneratePatrols(tournamentId!);
+      const response = await apiService.regeneratePatrols(tournamentId ?? '');
       applyPatrolData(response.patrols, response.stats);
       setIsDirty(false);
 

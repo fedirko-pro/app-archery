@@ -33,7 +33,7 @@ const PublicApplication: React.FC = () => {
   const fetchTournament = async () => {
     try {
       setLoading(true);
-      const data = await apiService.getTournament(tournamentId!);
+      const data = await apiService.getTournament(tournamentId ?? '');
       setTournament(data);
     } catch (error) {
       setError(t('pages.publicApplication.notFound'));
@@ -131,7 +131,7 @@ const PublicApplication: React.FC = () => {
   return (
     <Box sx={{ p: 3 }}>
       <TournamentApplicationForm
-        tournamentId={tournamentId!}
+        tournamentId={tournamentId ?? ''}
         tournamentTitle={tournament.title}
         tournamentRuleCode={tournament.ruleCode}
         onSuccess={handleApplicationSuccess}

@@ -135,7 +135,7 @@ describe('getMostRecentSession', () => {
   it('returns the most recent session by date', () => {
     const s1 = session('2026-06-01');
     const s2 = session('2026-06-15');
-    expect(getMostRecentSession([s1, s2])!.id).toBe('2026-06-15');
+    expect(getMostRecentSession([s1, s2])?.id).toBe('2026-06-15');
   });
 
   it('breaks date ties by createdAt', () => {
@@ -149,7 +149,7 @@ describe('getMostRecentSession', () => {
       id: 'evening',
       createdAt: '2026-06-15T14:00:00.000Z',
     };
-    expect(getMostRecentSession([s1, s2])!.id).toBe('evening');
+    expect(getMostRecentSession([s1, s2])?.id).toBe('evening');
   });
 });
 
@@ -218,7 +218,7 @@ describe('getLastLoggedSession', () => {
   it('returns session with most recent createdAt', () => {
     const s1 = { ...session('2026-06-01'), createdAt: '2026-06-01T08:00:00.000Z' };
     const s2 = { ...session('2026-06-01'), createdAt: '2026-06-01T14:00:00.000Z' };
-    expect(getLastLoggedSession([s1, s2])!.createdAt).toBe('2026-06-01T14:00:00.000Z');
+    expect(getLastLoggedSession([s1, s2])?.createdAt).toBe('2026-06-01T14:00:00.000Z');
   });
 });
 

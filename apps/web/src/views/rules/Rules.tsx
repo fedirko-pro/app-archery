@@ -123,7 +123,8 @@ const Rules: React.FC = () => {
   const handleDownloadPdf = async (downloadLink: string) => {
     const href = buildDownloadHref(downloadLink);
     if (!href) return;
-    const url = getPdfDownloadUrl(downloadLink)!;
+    const url = getPdfDownloadUrl(downloadLink);
+    if (!url) return;
     const filename = downloadLink.replace(/^.*\//, '') || 'rule.pdf';
     try {
       const res = await fetch(url, { method: 'GET', cache: 'no-store' });
@@ -232,15 +233,15 @@ const Rules: React.FC = () => {
 
     setLoading(true);
     try {
-      if (editingRule && editingRule.id) {
+      if (editingRule?.id) {
         // Update existing rule
         await apiService.updateRule(editingRule.id, formData);
         setSnackbar({ open: true, message: 'Rule updated successfully', severity: 'success' });
       } else {
         // Create new rule (payload validated above: ruleCode and ruleName present)
         const createPayload: CreateRuleDto = {
-          ruleCode: formData.ruleCode!,
-          ruleName: formData.ruleName!,
+          ruleCode: formData.ruleCode ?? '',
+          ruleName: formData.ruleName ?? '',
           edition: formData.edition,
           descriptionEn: formData.descriptionEn,
           descriptionPt: formData.descriptionPt,
@@ -281,7 +282,7 @@ const Rules: React.FC = () => {
   };
 
   const handleDeleteRule = async () => {
-    if (!ruleToDelete || !ruleToDelete.id) return;
+    if (!ruleToDelete?.id) return;
 
     setLoading(true);
     try {
