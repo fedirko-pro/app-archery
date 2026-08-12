@@ -1,7 +1,7 @@
 import { EmailI18n, interpolate } from '../i18n';
 import {
-  styleBlockCenter,
-  styleButton,
+  buildButtonHtml,
+  styleBody,
   styleDangerBox,
   styleDangerBoxText,
   styleHeading,
@@ -39,8 +39,8 @@ export function getApplicationStatusContent(
         <strong>${approvedMessage}</strong>
       </p>
     </div>
-    <p>${s.approvedDetail}</p>
-    <p>${s.approvedLookForward}</p>
+    <p style="${styleBody()}">${s.approvedDetail}</p>
+    <p style="${styleBody()}">${s.approvedLookForward}</p>
   `;
 
   const rejectedBlockHtml = `
@@ -50,28 +50,23 @@ export function getApplicationStatusContent(
     ${
       rejectionReason
         ? `
-    <p><strong>${s.feedbackLabel}</strong></p>
+    <p style="${styleBody()}"><strong>${s.feedbackLabel}</strong></p>
     <div style="${styleNeutralBox()}">
       ${rejectionReason}
     </div>
     `
         : ''
     }
-    <p>${s.questionsNote}</p>
+    <p style="${styleBody()}">${s.questionsNote}</p>
   `;
 
   const html = `
     <h2 style="${styleHeading(headingColor)}">
       ${status === 'approved' ? s.headingApproved : s.headingUpdate}
     </h2>
-    <p>${greeting}</p>
+    <p style="${styleBody()}">${greeting}</p>
     ${status === 'approved' ? approvedBlockHtml : rejectedBlockHtml}
-    <div style="${styleBlockCenter()}">
-      <a href="${myApplicationsUrl}"
-         style="${styleButton()}">
-        ${s.ctaLabel}
-      </a>
-    </div>
+    ${buildButtonHtml(myApplicationsUrl, s.ctaLabel)}
   `;
 
   const approvedBlockText = `${approvedMessage}

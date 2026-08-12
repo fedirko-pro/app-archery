@@ -14,7 +14,8 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles as UserRoles } from '../user/types';
 import { EmailService } from './email.service';
-import { styleContainer, styleFooter, styleHeading, styleHr } from './templates/theme';
+import { getEmailI18n } from './i18n';
+import { wrapEmail } from './templates';
 
 interface TestEmailDto {
   to: string;
@@ -58,28 +59,32 @@ export class EmailController {
     const {
       to,
       subject = 'Test Email',
-      message = 'This is a test email from Archery App',
+      message = 'This is a test email from Sokil',
     } = testEmailDto;
 
-    const html = `
-      <div style="${styleContainer()}">
-        <h2 style="${styleHeading()}">${subject}</h2>
-        <p>${message}</p>
-        <p>This is a test email sent from the Archery App email service.</p>
-        <hr style="${styleHr()}">
-        <p style="${styleFooter()}">Test email - Archery App</p>
-      </div>
+    const t = getEmailI18n('en');
+    const frontendUrl = this.configService.get<string>('FRONTEND_URL');
+    const supportEmail = this.configService.get<string>('SUPPORT_EMAIL');
+    const contentHtml = `
+      <h2>${subject}</h2>
+      <p>${message}</p>
+      <p>This is a test email sent from the Sokil email service.</p>
     `;
+    const contentText = `${subject}\n\n${message}\n\nThis is a test email sent from the Sokil email service.`;
 
-    const text = `
-      ${subject}
-
-      ${message}
-
-      This is a test email sent from the Archery App email service.
-
-      Test email - Archery App
-    `;
+    const { html, text } = wrapEmail({
+      contentHtml,
+      contentText,
+      footerText: t.footer,
+      appDescription: t.appDescription,
+      supportLabel: t.supportLabel,
+      supportAction: t.supportAction,
+      signOff: t.signOff,
+      teamName: t.teamName,
+      previewText: message,
+      frontendUrl,
+      supportEmail,
+    });
 
     await this.emailService.sendEmail({
       to,

@@ -1,13 +1,20 @@
 import { EmailI18n } from './types';
 
 export const uk: EmailI18n = {
-  footer: 'Це автоматичний лист. Будь ласка, не відповідайте на це повідомлення.',
+  footer: 'Це автоматичний лист від Sokil. Будь ласка, не відповідайте на це повідомлення.',
+  signOff: 'З найкращими побажаннями,',
+  teamName: 'Команда Sokil',
+  appDescription:
+    'Sokil — це платформа для керування стрільбою з лука для клубів, федерацій та спортсменів.',
+  supportLabel: 'Потрібна допомога?',
+  supportAction: "Зв'язатися з підтримкою",
 
   passwordReset: {
     subject: 'Запит на скидання пароля',
+    preview: 'Скиньте пароль Sokil — це посилання діє 1 годину.',
     heading: 'Запит на Скидання Пароля',
     hello: 'Привіт,',
-    body: 'Ми отримали запит на скидання пароля для вашого облікового запису. Натисніть кнопку нижче, щоб встановити новий пароль:',
+    body: 'Ми отримали запит на скидання пароля для вашого облікового запису Sokil. Натисніть кнопку нижче, щоб встановити новий пароль:',
     ctaLabel: 'Скинути Пароль',
     linkFallback: 'Якщо кнопка не працює, скопіюйте та вставте це посилання у свій браузер:',
     expiry: 'Це посилання діє протягом 1 години з міркувань безпеки.',
@@ -15,8 +22,9 @@ export const uk: EmailI18n = {
   },
 
   welcome: {
-    subject: 'Ласкаво просимо до Archery App!',
-    heading: 'Ласкаво просимо до Archery App!',
+    subject: 'Ласкаво просимо до Sokil!',
+    preview: 'Ласкаво просимо до Sokil! Заповніть профіль та беріть участь у змаганнях.',
+    heading: 'Ласкаво просимо до Sokil!',
     greeting: 'Привіт, {{name}}!',
     intro: 'Дякуємо, що приєдналися до нашої стрілецької спільноти! Раді вітати вас у нас.',
     features: [
@@ -29,9 +37,10 @@ export const uk: EmailI18n = {
   },
 
   invitation: {
-    subject: 'Вас запрошено до Archery App',
-    heading: 'Вас Запрошено до Archery App',
-    body: '{{adminName}} створив(ла) для вас обліковий запис в Archery App. Натисніть кнопку нижче, щоб встановити пароль і розпочати роботу:',
+    subject: 'Вас запрошено до Sokil',
+    preview: 'Вас запрошено до Sokil. Встановіть пароль, щоб почати.',
+    heading: 'Вас Запрошено до Sokil',
+    body: '{{adminName}} створив(ла) для вас обліковий запис в Sokil. Натисніть кнопку нижче, щоб встановити пароль і розпочати роботу:',
     ctaLabel: 'Встановити Пароль',
     linkFallback: 'Якщо кнопка не працює, скопіюйте та вставте це посилання у свій браузер:',
     expiry: 'Це посилання діє протягом 24 годин.',
@@ -40,6 +49,7 @@ export const uk: EmailI18n = {
 
   applicationSubmitted: {
     subject: 'Заявку подано – {{tournamentTitle}}',
+    preview: 'Вашу заявку на {{tournamentTitle}} подано.',
     heading: 'Заявку Подано',
     greeting: 'Привіт, {{name}}!',
     successMessage: 'Вашу заявку на участь у {{tournamentTitle}} успішно подано.',
@@ -68,6 +78,8 @@ export const uk: EmailI18n = {
   applicationStatus: {
     subjectApproved: 'Заявку схвалено – {{tournamentTitle}}',
     subjectRejected: 'Оновлення заявки – {{tournamentTitle}}',
+    previewApproved: 'Вашу заявку на {{tournamentTitle}} схвалено.',
+    previewRejected: 'Вашу заявку на {{tournamentTitle}} розглянуто.',
     headingApproved: 'Заявку на турнір схвалено ✓',
     headingUpdate: 'Оновлення заявки на турнір',
     greeting: 'Привіт, {{name}}!',
@@ -82,10 +94,11 @@ export const uk: EmailI18n = {
   },
 
   roleChanged: {
-    subject: 'Вашу роль оновлено – Archery App',
+    subject: 'Вашу роль оновлено – Sokil',
+    preview: 'Вашу роль в Sokil оновлено до {{newRole}}.',
     heading: 'Вашу Роль Оновлено',
     greeting: 'Привіт, {{name}}!',
-    body: '{{adminName}} оновив(ла) вашу роль в Archery App:',
+    body: '{{adminName}} оновив(ла) вашу роль в Sokil:',
     permissionsHeading: 'З роллю {{role}} ви можете:',
     questionsNote: 'Якщо у вас є запитання щодо нових прав, зверніться до вашого адміністратора.',
     ctaLabel: 'Переглянути мій профіль',
@@ -128,6 +141,7 @@ export const uk: EmailI18n = {
 
   clubInvitation: {
     subject: 'Вас запрошено приєднатися до {{clubName}}',
+    preview: 'Вас запрошено приєднатися до {{clubName}}.',
     heading: 'Запрошення до клубу',
     greeting: 'Вас запрошено приєднатися до {{clubName}}.',
     body: '{{inviterName}} (адмін клубу {{clubName}}) запросив вас приєднатися до свого клубу. Ви можете прийняти це запрошення або проігнорувати цей лист.',
@@ -138,22 +152,25 @@ export const uk: EmailI18n = {
 
   clubJoined: {
     subject: 'Новий учасник приєднався до {{clubName}}',
+    preview: '{{userName}} приєднався(лась) до {{clubName}}.',
     heading: 'Новий учасник клубу',
     greeting: 'Новий учасник приєднався до {{clubName}}.',
     body: '{{userName}} приєднався(лась) до {{clubName}}.',
-    viewProfile: 'Переглянути профіль: {{profileUrl}}',
+    viewProfile: 'Переглянути профіль',
   },
 
   clubLeft: {
     subject: 'Учасник залишив {{clubName}}',
+    preview: '{{userName}} залишив(ла) {{clubName}}.',
     heading: 'Учасник клубу залишив',
     greeting: 'Учасник залишив {{clubName}}.',
     body: '{{userName}} залишив(ла) {{clubName}}.',
-    viewProfile: 'Переглянути профіль: {{profileUrl}}',
+    viewProfile: 'Переглянути профіль',
   },
 
   federationInvitation: {
     subject: '{{federationName}} запрошує ваш клуб приєднатися',
+    preview: '{{federationName}} запросив ваш клуб приєднатися.',
     heading: 'Запрошення до федерації',
     greeting: '{{federationName}} запросив ваш клуб приєднатися.',
     body: '{{inviterName}} (адмін федерації {{federationName}}) запросив {{clubName}} приєднатися до федерації. Ви можете прийняти це запрошення або проігнорувати цей лист.',
@@ -164,6 +181,7 @@ export const uk: EmailI18n = {
 
   federationClubJoined: {
     subject: '{{clubName}} приєднався до {{federationName}}',
+    preview: '{{clubName}} приєднався до {{federationName}}.',
     heading: 'Клуб приєднався до федерації',
     greeting: '{{federationName}} має нового клубу-учасника.',
     body: '{{clubName}} приєднався(лась) до {{federationName}}.',
@@ -171,6 +189,7 @@ export const uk: EmailI18n = {
 
   federationClubRemoved: {
     subject: 'Клуб видалено з {{federationName}}',
+    preview: '{{clubName}} було видалено з {{federationName}}.',
     heading: 'Клуб видалено з федерації',
     greeting: 'Клуб було видалено з {{federationName}}.',
     body: '{{clubName}} було видалено з {{federationName}} користувачем {{removedBy}}.',
@@ -178,23 +197,26 @@ export const uk: EmailI18n = {
 
   clubJoinRequestNotification: {
     subject: 'Новий запит на вступ до {{clubName}}',
+    preview: '{{requesterName}} хоче вступити до {{clubName}}.',
     heading: 'Новий запит на вступ до клубу',
     greeting: 'Хтось хоче вступити до {{clubName}}.',
     body: '{{requesterName}} ({{requesterEmail}}) подав запит на вступ до {{clubName}}.',
     messageLabel: 'Повідомлення:',
-    reviewNote: 'Перегляньте та відповідь у Мій клуб: {{reviewUrl}}',
+    reviewNote: 'Перегляньте та відповідь у Мій клуб',
   },
 
   clubJoinRequestApproved: {
     subject: 'Ласкаво просимо до {{clubName}}',
+    preview: 'Ваш запит на вступ до {{clubName}} схвалено.',
     heading: 'Запит на вступ схвалено',
     greeting: 'Вітаємо, {{name}},',
     body: 'Ваш запит на вступ до {{clubName}} схвалено.',
-    profileNote: 'Переглянути профіль: {{profileUrl}}',
+    profileNote: 'Переглянути профіль',
   },
 
   clubJoinRequestRejected: {
     subject: 'Оновлення щодо запиту на вступ до {{clubName}}',
+    preview: 'Ваш запит на вступ до {{clubName}} наразі не схвалено.',
     heading: 'Оновлення запиту на вступ',
     greeting: 'Вітаємо, {{name}},',
     body: 'Ваш запит на вступ до {{clubName}} наразі не схвалено.',

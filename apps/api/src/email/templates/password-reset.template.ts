@@ -1,5 +1,5 @@
 import { EmailI18n } from '../i18n';
-import { styleBlockCenter, styleButton, styleHeading, styleLinkMuted } from './theme';
+import { buildButtonHtml, styleBody, styleHeading, styleLinkMuted } from './theme';
 
 export interface PasswordResetContentParams {
   resetUrl: string;
@@ -14,18 +14,13 @@ export function getPasswordResetContent(
 
   const html = `
     <h2 style="${styleHeading()}">${s.heading}</h2>
-    <p>${s.hello}</p>
-    <p>${s.body}</p>
-    <div style="${styleBlockCenter()}">
-      <a href="${resetUrl}"
-         style="${styleButton()}">
-        ${s.ctaLabel}
-      </a>
-    </div>
-    <p>${s.linkFallback}</p>
+    <p style="${styleBody()}">${s.hello}</p>
+    <p style="${styleBody()}">${s.body}</p>
+    ${buildButtonHtml(resetUrl, s.ctaLabel)}
+    <p style="${styleBody()}">${s.linkFallback}</p>
     <p style="${styleLinkMuted()}">${resetUrl}</p>
-    <p>${s.expiry}</p>
-    <p>${s.ignoreNote}</p>
+    <p style="${styleBody()}">${s.expiry}</p>
+    <p style="${styleBody()}">${s.ignoreNote}</p>
   `;
 
   const text = `

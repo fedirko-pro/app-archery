@@ -1,5 +1,5 @@
 import { EmailI18n, interpolate } from '../i18n';
-import { styleHeading } from './theme';
+import { styleBody, styleHeading } from './theme';
 
 export interface WelcomeContentParams {
   firstName: string;
@@ -17,15 +17,15 @@ export function getWelcomeContent(
 
   const html = `
     <h2 style="${styleHeading()}">${s.heading}</h2>
-    <p>${greeting}</p>
-    <p>${s.intro}</p>
-    <ul>
-      <li>${f1}</li>
-      <li>${f2}</li>
-      <li>${f3}</li>
-      <li>${f4}</li>
+    <p style="${styleBody()}">${greeting}</p>
+    <p style="${styleBody()}">${s.intro}</p>
+    <ul style="padding-left:20px; margin:16px 0;">
+      <li style="${styleBody()}">${f1}</li>
+      <li style="${styleBody()}">${f2}</li>
+      <li style="${styleBody()}">${f3}</li>
+      <li style="${styleBody()}">${f4}</li>
     </ul>
-    <p>${s.helpNote}</p>
+    <p style="${styleBody()}">${s.helpNote}</p>
   `;
 
   const text = `

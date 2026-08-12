@@ -1,5 +1,5 @@
 import { EmailI18n, interpolate } from '../i18n';
-import { styleBlockCenter, styleButton, styleHeading, styleNeutralBox, theme } from './theme';
+import { buildButtonHtml, styleBody, styleHeading, styleNeutralBox, theme } from './theme';
 
 export interface RoleChangedContentParams {
   recipientName: string;
@@ -37,8 +37,8 @@ export function getRoleChangedContent(
 
   const html = `
     <h2 style="${styleHeading()}">${s.heading}</h2>
-    <p>${greeting}</p>
-    <p>${body}</p>
+    <p style="${styleBody()}">${greeting}</p>
+    <p style="${styleBody()}">${body}</p>
     <div style="${styleNeutralBox()} display: flex; gap: 8px; align-items: center;">
       <span style="color: ${theme.colors.textMuted}; text-decoration: line-through;">${oldRoleLabel}</span>
       <span style="color: ${theme.colors.textMuted}; margin: 0 6px;">→</span>
@@ -47,20 +47,15 @@ export function getRoleChangedContent(
     ${
       permissions.length > 0
         ? `
-    <p style="margin-top: 20px;"><strong>${permissionsHeading}</strong></p>
+    <p style="margin-top: 20px; ${styleBody()}"><strong>${permissionsHeading}</strong></p>
     <ul style="padding-left: 20px; margin: 8px 0;">
       ${permissionsHtml}
     </ul>
     `
         : ''
     }
-    <p style="margin-top: 16px;">${s.questionsNote}</p>
-    <div style="${styleBlockCenter()}">
-      <a href="${profileUrl}"
-         style="${styleButton()}">
-        ${s.ctaLabel}
-      </a>
-    </div>
+    <p style="margin-top: 16px; ${styleBody()}">${s.questionsNote}</p>
+    ${buildButtonHtml(profileUrl, s.ctaLabel)}
   `;
 
   const text = `

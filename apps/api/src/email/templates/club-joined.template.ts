@@ -1,5 +1,5 @@
 import { EmailI18n, interpolate } from '../i18n';
-import { styleHeading, styleNeutralBox, theme } from './theme';
+import { buildButtonHtml, styleBody, styleHeading } from './theme';
 
 export interface ClubJoinedContentParams {
   clubName: string;
@@ -19,13 +19,9 @@ export function getClubJoinedContent(
 
   const html = `
     <h2 style="${styleHeading()}">${s.heading}</h2>
-    <p>${greeting}</p>
-    <p>${body}</p>
-    <div style="${styleNeutralBox()}">
-      <p style="margin: 0; color: ${theme.colors.text};">
-        ${interpolate(s.viewProfile, { profileUrl })}
-      </p>
-    </div>
+    <p style="${styleBody()}">${greeting}</p>
+    <p style="${styleBody()}">${body}</p>
+    ${buildButtonHtml(profileUrl, s.viewProfile)}
   `;
 
   const text = `
@@ -35,7 +31,7 @@ ${greeting}
 
 ${body}
 
-${profileUrl}
+${s.viewProfile}: ${profileUrl}
 `.trim();
 
   return { html, text };

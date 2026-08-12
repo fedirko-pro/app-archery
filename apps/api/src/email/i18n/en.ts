@@ -1,13 +1,19 @@
 import { EmailI18n } from './types';
 
 export const en: EmailI18n = {
-  footer: 'This is an automated email. Please do not reply to this message.',
+  footer: 'This is an automated email from Sokil. Please do not reply to this message.',
+  signOff: 'Best regards,',
+  teamName: 'The Sokil Team',
+  appDescription: 'Sokil is an archery management platform for clubs, federations, and athletes.',
+  supportLabel: 'Need help?',
+  supportAction: 'Contact support',
 
   passwordReset: {
     subject: 'Password Reset Request',
+    preview: 'Reset your Sokil password — this link expires in 1 hour.',
     heading: 'Password Reset Request',
     hello: 'Hello,',
-    body: 'We received a request to reset the password for your account. Click the button below to set a new password:',
+    body: 'We received a request to reset the password for your Sokil account. Click the button below to set a new password:',
     ctaLabel: 'Reset Password',
     linkFallback: "If the button doesn't work, you can copy and paste this link into your browser:",
     expiry: 'This link will expire in 1 hour for security reasons.',
@@ -15,10 +21,11 @@ export const en: EmailI18n = {
   },
 
   welcome: {
-    subject: 'Welcome to Archery App!',
-    heading: 'Welcome to Archery App!',
+    subject: 'Welcome to Sokil!',
+    preview: 'Welcome to Sokil! Complete your profile and join competitions.',
+    heading: 'Welcome to Sokil!',
     greeting: 'Hello {{name}},',
-    intro: "Thank you for joining our archery community! We're excited to have you on board.",
+    intro: "Thank you for joining the Sokil archery community! We're excited to have you on board.",
     features: [
       'Complete your profile',
       'Join competitions',
@@ -29,9 +36,10 @@ export const en: EmailI18n = {
   },
 
   invitation: {
-    subject: "You're Invited to Archery App",
-    heading: "You're Invited to Archery App",
-    body: '{{adminName}} has created an account for you on Archery App. Click the button below to set your password and get started:',
+    subject: "You're Invited to Sokil",
+    preview: "You've been invited to Sokil. Set your password to get started.",
+    heading: "You're Invited to Sokil",
+    body: '{{adminName}} has created an account for you on Sokil. Click the button below to set your password and get started:',
     ctaLabel: 'Set Your Password',
     linkFallback: "If the button doesn't work, copy and paste this link into your browser:",
     expiry: 'This link will expire in 24 hours.',
@@ -40,6 +48,7 @@ export const en: EmailI18n = {
 
   applicationSubmitted: {
     subject: 'Application Submitted – {{tournamentTitle}}',
+    preview: 'Your application for {{tournamentTitle}} has been submitted.',
     heading: 'Application Submitted',
     greeting: 'Hello {{name}},',
     successMessage: 'Your application for {{tournamentTitle}} has been successfully submitted.',
@@ -68,6 +77,8 @@ export const en: EmailI18n = {
   applicationStatus: {
     subjectApproved: 'Application Approved – {{tournamentTitle}}',
     subjectRejected: 'Application Update – {{tournamentTitle}}',
+    previewApproved: 'Your application for {{tournamentTitle}} has been approved.',
+    previewRejected: 'Your application for {{tournamentTitle}} has been reviewed.',
     headingApproved: 'Tournament Application Approved ✓',
     headingUpdate: 'Tournament Application Update',
     greeting: 'Hello {{name}},',
@@ -82,10 +93,11 @@ export const en: EmailI18n = {
   },
 
   roleChanged: {
-    subject: 'Your Role Has Been Updated – Archery App',
+    subject: 'Your Role Has Been Updated – Sokil',
+    preview: 'Your role in Sokil has been updated to {{newRole}}.',
     heading: 'Your Role Has Been Updated',
     greeting: 'Hello {{name}},',
-    body: '{{adminName}} has updated your role in Archery App:',
+    body: '{{adminName}} has updated your role in Sokil:',
     permissionsHeading: 'With the {{role}} role you can:',
     questionsNote:
       'If you have any questions about your new permissions, please contact your administrator.',
@@ -129,6 +141,7 @@ export const en: EmailI18n = {
 
   clubInvitation: {
     subject: 'You are invited to join {{clubName}}',
+    preview: "You've been invited to join {{clubName}}.",
     heading: 'Club Invitation',
     greeting: 'You have been invited to join {{clubName}}.',
     body: '{{inviterName}} (Club Admin of {{clubName}}) has invited you to join their club. You can accept this invitation or ignore this email.',
@@ -139,22 +152,25 @@ export const en: EmailI18n = {
 
   clubJoined: {
     subject: 'New member joined {{clubName}}',
+    preview: '{{userName}} has joined {{clubName}}.',
     heading: 'New Club Member',
     greeting: 'A new member has joined {{clubName}}.',
     body: '{{userName}} has joined {{clubName}}.',
-    viewProfile: 'View profile: {{profileUrl}}',
+    viewProfile: 'View profile',
   },
 
   clubLeft: {
     subject: 'Member left {{clubName}}',
+    preview: '{{userName}} has left {{clubName}}.',
     heading: 'Club Member Left',
     greeting: 'A member has left {{clubName}}.',
     body: '{{userName}} has left {{clubName}}.',
-    viewProfile: 'View profile: {{profileUrl}}',
+    viewProfile: 'View profile',
   },
 
   federationInvitation: {
     subject: '{{federationName}} invites your club to join',
+    preview: '{{federationName}} has invited your club to join.',
     heading: 'Federation Invitation',
     greeting: '{{federationName}} has invited your club to join.',
     body: '{{inviterName}} (Federation Admin of {{federationName}}) has invited {{clubName}} to join the federation. You can accept this invitation or ignore this email.',
@@ -165,6 +181,7 @@ export const en: EmailI18n = {
 
   federationClubJoined: {
     subject: '{{clubName}} joined {{federationName}}',
+    preview: '{{clubName}} has joined {{federationName}}.',
     heading: 'Club Joined Federation',
     greeting: '{{federationName}} has a new member club.',
     body: '{{clubName}} has joined {{federationName}}.',
@@ -172,6 +189,7 @@ export const en: EmailI18n = {
 
   federationClubRemoved: {
     subject: 'Club removed from {{federationName}}',
+    preview: '{{clubName}} has been removed from {{federationName}}.',
     heading: 'Club Removed from Federation',
     greeting: 'A club has been removed from {{federationName}}.',
     body: '{{clubName}} has been removed from {{federationName}} by {{removedBy}}.',
@@ -179,23 +197,26 @@ export const en: EmailI18n = {
 
   clubJoinRequestNotification: {
     subject: 'New join request for {{clubName}}',
+    preview: '{{requesterName}} wants to join {{clubName}}.',
     heading: 'New Club Join Request',
     greeting: 'Someone wants to join {{clubName}}.',
     body: '{{requesterName}} ({{requesterEmail}}) has requested to join {{clubName}}.',
     messageLabel: 'Message:',
-    reviewNote: 'Review and respond in My Club: {{reviewUrl}}',
+    reviewNote: 'Review and respond in My Club',
   },
 
   clubJoinRequestApproved: {
     subject: 'Welcome to {{clubName}}',
+    preview: 'Your request to join {{clubName}} has been approved.',
     heading: 'Club Join Request Approved',
     greeting: 'Hello {{name}},',
     body: 'Your request to join {{clubName}} has been approved.',
-    profileNote: 'View your profile: {{profileUrl}}',
+    profileNote: 'View your profile',
   },
 
   clubJoinRequestRejected: {
     subject: 'Update on your {{clubName}} join request',
+    preview: 'Your request to join {{clubName}} was not approved.',
     heading: 'Club Join Request Update',
     greeting: 'Hello {{name}},',
     body: 'Your request to join {{clubName}} was not approved at this time.',

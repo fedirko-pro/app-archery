@@ -1,5 +1,5 @@
 import { EmailI18n, interpolate } from '../i18n';
-import { styleHeading, styleNeutralBox } from './theme';
+import { styleBody, styleHeading } from './theme';
 
 export interface FederationClubJoinedContentParams {
   federationName: string;
@@ -18,8 +18,8 @@ export function getFederationClubJoinedContent(
 
   const html = `
     <h2 style="${styleHeading()}">${s.heading}</h2>
-    <p>${greeting}</p>
-    <p>${body}</p>
+    <p style="${styleBody()}">${greeting}</p>
+    <p style="${styleBody()}">${body}</p>
   `;
 
   const text = `

@@ -1,8 +1,20 @@
 export interface EmailI18n {
+  /** Footer note explaining the email is automated. */
   footer: string;
+  /** Sign-off line, e.g. "Best regards,". */
+  signOff: string;
+  /** Sender name used in the sign-off, e.g. "The Sokil Team". */
+  teamName: string;
+  /** Short one-line description of the app shown in the footer. */
+  appDescription: string;
+  /** "Need help?" label in the footer. */
+  supportLabel: string;
+  /** "Contact support" label in the footer. */
+  supportAction: string;
 
   passwordReset: {
     subject: string;
+    preview: string;
     heading: string;
     hello: string;
     body: string;
@@ -14,6 +26,7 @@ export interface EmailI18n {
 
   welcome: {
     subject: string;
+    preview: string;
     heading: string;
     greeting: string; // supports {{name}}
     intro: string;
@@ -23,6 +36,7 @@ export interface EmailI18n {
 
   invitation: {
     subject: string;
+    preview: string;
     heading: string;
     body: string; // supports {{adminName}}
     ctaLabel: string;
@@ -33,6 +47,7 @@ export interface EmailI18n {
 
   applicationSubmitted: {
     subject: string; // supports {{tournamentTitle}}
+    preview: string; // supports {{tournamentTitle}}
     heading: string;
     greeting: string; // supports {{name}}
     successMessage: string; // supports {{tournamentTitle}}
@@ -60,6 +75,8 @@ export interface EmailI18n {
   applicationStatus: {
     subjectApproved: string; // supports {{tournamentTitle}}
     subjectRejected: string; // supports {{tournamentTitle}}
+    previewApproved: string; // supports {{tournamentTitle}}
+    previewRejected: string; // supports {{tournamentTitle}}
     headingApproved: string;
     headingUpdate: string;
     greeting: string; // supports {{name}}
@@ -74,6 +91,7 @@ export interface EmailI18n {
 
   roleChanged: {
     subject: string;
+    preview: string; // supports {{newRole}}
     heading: string;
     greeting: string; // supports {{name}}
     body: string; // supports {{adminName}}
@@ -86,6 +104,7 @@ export interface EmailI18n {
 
   clubInvitation: {
     subject: string;
+    preview: string; // supports {{clubName}}
     heading: string;
     greeting: string; // supports {{clubName}}
     body: string; // supports {{inviterName}}, {{clubName}}
@@ -96,22 +115,25 @@ export interface EmailI18n {
 
   clubJoined: {
     subject: string;
+    preview: string; // supports {{clubName}}
     heading: string;
     greeting: string; // supports {{clubName}}
     body: string; // supports {{userName}}, {{clubName}}
-    viewProfile: string; // supports {{profileUrl}}
+    viewProfile: string; // CTA label only; URL is appended by the template
   };
 
   clubLeft: {
     subject: string;
+    preview: string; // supports {{clubName}}
     heading: string;
     greeting: string; // supports {{clubName}}
     body: string; // supports {{userName}}, {{clubName}}
-    viewProfile: string; // supports {{profileUrl}}
+    viewProfile: string; // CTA label only; URL is appended by the template
   };
 
   federationInvitation: {
     subject: string;
+    preview: string; // supports {{federationName}}
     heading: string;
     greeting: string; // supports {{federationName}}
     body: string; // supports {{inviterName}}, {{federationName}}, {{clubName}}
@@ -122,6 +144,7 @@ export interface EmailI18n {
 
   federationClubJoined: {
     subject: string;
+    preview: string; // supports {{clubName}}, {{federationName}}
     heading: string;
     greeting: string; // supports {{federationName}}
     body: string; // supports {{clubName}}, {{federationName}}
@@ -129,6 +152,7 @@ export interface EmailI18n {
 
   federationClubRemoved: {
     subject: string;
+    preview: string; // supports {{clubName}}, {{federationName}}
     heading: string;
     greeting: string; // supports {{federationName}}
     body: string; // supports {{clubName}}, {{federationName}}, {{removedBy}}
@@ -136,23 +160,26 @@ export interface EmailI18n {
 
   clubJoinRequestNotification: {
     subject: string;
+    preview: string; // supports {{clubName}}
     heading: string;
     greeting: string; // supports {{clubName}}
     body: string; // supports {{requesterName}}, {{requesterEmail}}, {{clubName}}
     messageLabel: string;
-    reviewNote: string; // supports {{reviewUrl}}
+    reviewNote: string; // CTA label only; URL is appended by the template
   };
 
   clubJoinRequestApproved: {
     subject: string;
+    preview: string; // supports {{clubName}}
     heading: string;
     greeting: string; // supports {{name}}
     body: string; // supports {{clubName}}
-    profileNote: string; // supports {{profileUrl}}
+    profileNote: string; // CTA label only; URL is appended by the template
   };
 
   clubJoinRequestRejected: {
     subject: string;
+    preview: string; // supports {{clubName}}
     heading: string;
     greeting: string; // supports {{name}}
     body: string; // supports {{clubName}}

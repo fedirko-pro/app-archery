@@ -1,7 +1,7 @@
 import { EmailI18n, interpolate } from '../i18n';
 import {
-  styleBlockCenter,
-  styleButton,
+  buildButtonHtml,
+  styleBody,
   styleHeading,
   styleMuted,
   styleSuccessBox,
@@ -73,18 +73,13 @@ export function getApplicationSubmittedContent(
 
   const html = `
     <h2 style="${styleHeading()}">${s.heading}</h2>
-    <p>${greeting}</p>
+    <p style="${styleBody()}">${greeting}</p>
     <div style="${styleSuccessBox()}">
       <p style="${styleSuccessBoxText()}">${successMessage}</p>
     </div>
     ${detailsHtml}
-    <p>${s.waitMessage}</p>
-    <div style="${styleBlockCenter()}">
-      <a href="${myApplicationsUrl}"
-         style="${styleButton()}">
-        ${s.ctaLabel}
-      </a>
-    </div>
+    <p style="${styleBody()}">${s.waitMessage}</p>
+    ${buildButtonHtml(myApplicationsUrl, s.ctaLabel)}
   `;
 
   const text = `

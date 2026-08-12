@@ -1,5 +1,5 @@
 import { EmailI18n, interpolate } from '../i18n';
-import { styleDangerBox, styleDangerBoxText, styleHeading } from './theme';
+import { buildButtonHtml, styleBody, styleHeading } from './theme';
 
 export interface ClubLeftContentParams {
   userName: string;
@@ -19,13 +19,9 @@ export function getClubLeftContent(
 
   const html = `
     <h2 style="${styleHeading()}">${s.heading}</h2>
-    <p>${greeting}</p>
-    <p>${body}</p>
-    <div style="${styleDangerBox()}">
-      <p style="${styleDangerBoxText()}">
-        ${interpolate(s.viewProfile, { profileUrl })}
-      </p>
-    </div>
+    <p style="${styleBody()}">${greeting}</p>
+    <p style="${styleBody()}">${body}</p>
+    ${buildButtonHtml(profileUrl, s.viewProfile)}
   `;
 
   const text = `
@@ -35,7 +31,7 @@ ${greeting}
 
 ${body}
 
-${profileUrl}
+${s.viewProfile}: ${profileUrl}
 `.trim();
 
   return { html, text };

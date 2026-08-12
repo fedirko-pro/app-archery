@@ -1,5 +1,5 @@
 import { EmailI18n, interpolate } from '../i18n';
-import { styleHeading, styleNeutralBox, theme } from './theme';
+import { buildButtonHtml, styleBody, styleHeading } from './theme';
 
 export interface ClubJoinRequestNotificationParams {
   clubName: string;
@@ -17,18 +17,16 @@ export function getClubJoinRequestNotificationContent(
   const s = t.clubJoinRequestNotification;
 
   const body = interpolate(s.body, { requesterName, requesterEmail, clubName });
-  const messageBlock = message ? `<p><strong>${s.messageLabel}</strong> ${message}</p>` : '';
+  const messageBlock = message
+    ? `<p style="${styleBody()}"><strong>${s.messageLabel}</strong> ${message}</p>`
+    : '';
 
   const html = `
     <h2 style="${styleHeading()}">${s.heading}</h2>
-    <p>${interpolate(s.greeting, { clubName })}</p>
-    <p>${body}</p>
+    <p style="${styleBody()}">${interpolate(s.greeting, { clubName })}</p>
+    <p style="${styleBody()}">${body}</p>
     ${messageBlock}
-    <div style="${styleNeutralBox()}">
-      <p style="margin: 0; color: ${theme.colors.text};">
-        ${interpolate(s.reviewNote, { reviewUrl })}
-      </p>
-    </div>
+    ${buildButtonHtml(reviewUrl, s.reviewNote)}
   `;
 
   const text = `
@@ -39,7 +37,7 @@ ${interpolate(s.greeting, { clubName })}
 ${body}
 ${message ? `\n${s.messageLabel}: ${message}` : ''}
 
-${reviewUrl}
+${s.reviewNote}: ${reviewUrl}
 `.trim();
 
   return { html, text };

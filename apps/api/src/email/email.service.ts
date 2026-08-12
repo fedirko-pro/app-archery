@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import * as nodemailer from 'nodemailer';
 import { SentMessageInfo } from 'nodemailer';
 
-import { getEmailI18n, interpolate } from './i18n';
+import { type EmailI18n, getEmailI18n, interpolate } from './i18n';
 import {
   getApplicationStatusContent,
   getApplicationSubmittedContent,
@@ -105,6 +105,28 @@ export class EmailService {
     }
   }
 
+  private wrapContent(
+    content: { html: string; text: string },
+    t: EmailI18n,
+    previewText?: string,
+  ): { html: string; text: string } {
+    const frontendUrl = this.configService.get<string>('FRONTEND_URL');
+    const supportEmail = this.configService.get<string>('SUPPORT_EMAIL');
+    return wrapEmail({
+      contentHtml: content.html,
+      contentText: content.text,
+      footerText: t.footer,
+      appDescription: t.appDescription,
+      supportLabel: t.supportLabel,
+      supportAction: t.supportAction,
+      signOff: t.signOff,
+      teamName: t.teamName,
+      previewText,
+      frontendUrl,
+      supportEmail,
+    });
+  }
+
   async sendInvitationEmail(
     email: string,
     recipientName: string,
@@ -114,7 +136,7 @@ export class EmailService {
   ): Promise<void> {
     const t = getEmailI18n(locale);
     const content = getInvitationContent({ recipientName, adminName, setPasswordUrl }, t);
-    const { html, text } = wrapEmail(content.html, content.text, t.footer);
+    const { html, text } = this.wrapContent(content, t, t.invitation.preview);
     await this.sendEmail({
       to: email,
       subject: t.invitation.subject,
@@ -143,7 +165,8 @@ export class EmailService {
       },
       t,
     );
-    const { html, text } = wrapEmail(content.html, content.text, t.footer);
+    const preview = interpolate(t.roleChanged.preview, { newRole });
+    const { html, text } = this.wrapContent(content, t, preview);
     await this.sendEmail({
       to: email,
       subject: t.roleChanged.subject,
@@ -160,7 +183,7 @@ export class EmailService {
   ): Promise<void> {
     const t = getEmailI18n(locale);
     const content = getPasswordResetContent({ resetUrl }, t);
-    const { html, text } = wrapEmail(content.html, content.text, t.footer);
+    const { html, text } = this.wrapContent(content, t, t.passwordReset.preview);
     await this.sendEmail({
       to: email,
       subject: t.passwordReset.subject,
@@ -172,7 +195,7 @@ export class EmailService {
   async sendWelcomeEmail(email: string, firstName: string, locale?: string): Promise<void> {
     const t = getEmailI18n(locale);
     const content = getWelcomeContent({ firstName }, t);
-    const { html, text } = wrapEmail(content.html, content.text, t.footer);
+    const { html, text } = this.wrapContent(content, t, t.welcome.preview);
     await this.sendEmail({ to: email, subject: t.welcome.subject, html, text });
   }
 
@@ -198,7 +221,11 @@ export class EmailService {
       },
       t,
     );
-    const { html, text } = wrapEmail(content.html, content.text, t.footer);
+    const { html, text } = this.wrapContent(
+      content,
+      t,
+      interpolate(t.applicationSubmitted.preview, { tournamentTitle }),
+    );
     const subject = interpolate(t.applicationSubmitted.subject, {
       tournamentTitle,
     });
@@ -225,7 +252,16 @@ export class EmailService {
       },
       t,
     );
-    const { html, text } = wrapEmail(content.html, content.text, t.footer);
+    const { html, text } = this.wrapContent(
+      content,
+      t,
+      interpolate(
+        status === 'approved'
+          ? t.applicationStatus.previewApproved
+          : t.applicationStatus.previewRejected,
+        { tournamentTitle },
+      ),
+    );
     const subject = interpolate(
       status === 'approved'
         ? t.applicationStatus.subjectApproved
@@ -244,7 +280,11 @@ export class EmailService {
   ): Promise<void> {
     const t = getEmailI18n(locale);
     const content = getClubInvitationContent({ clubName, inviterName, acceptUrl }, t);
-    const { html, text } = wrapEmail(content.html, content.text, t.footer);
+    const { html, text } = this.wrapContent(
+      content,
+      t,
+      interpolate(t.clubInvitation.preview, { clubName }),
+    );
     const subject = interpolate(t.clubInvitation.subject, { clubName });
     await this.sendEmail({ to: email, subject, html, text });
   }
@@ -259,7 +299,11 @@ export class EmailService {
   ): Promise<void> {
     const t = getEmailI18n(locale);
     const content = getClubJoinedContent({ clubName, userName, profileUrl }, t);
-    const { html, text } = wrapEmail(content.html, content.text, t.footer);
+    const { html, text } = this.wrapContent(
+      content,
+      t,
+      interpolate(t.clubJoined.preview, { userName, clubName }),
+    );
     const subject = interpolate(t.clubJoined.subject, { clubName });
     await this.sendEmail({ to: adminEmail, subject, html, text });
   }
@@ -273,7 +317,11 @@ export class EmailService {
   ): Promise<void> {
     const t = getEmailI18n(locale);
     const content = getClubLeftContent({ userName, clubName, profileUrl }, t);
-    const { html, text } = wrapEmail(content.html, content.text, t.footer);
+    const { html, text } = this.wrapContent(
+      content,
+      t,
+      interpolate(t.clubLeft.preview, { userName, clubName }),
+    );
     const subject = interpolate(t.clubLeft.subject, { clubName });
     await this.sendEmail({ to: email, subject, html, text });
   }
@@ -287,7 +335,11 @@ export class EmailService {
   ): Promise<void> {
     const t = getEmailI18n(locale);
     const content = getClubLeftContent({ userName: removedUserName, clubName, profileUrl: '' }, t);
-    const { html, text } = wrapEmail(content.html, content.text, t.footer);
+    const { html, text } = this.wrapContent(
+      content,
+      t,
+      interpolate(t.clubLeft.preview, { userName: removedUserName, clubName }),
+    );
     const subject = interpolate(t.clubLeft.subject, { clubName });
     await this.sendEmail({ to: email, subject, html, text });
   }
@@ -306,7 +358,11 @@ export class EmailService {
       { clubName, federationName, inviterName, acceptUrl },
       t,
     );
-    const { html, text } = wrapEmail(content.html, content.text, t.footer);
+    const { html, text } = this.wrapContent(
+      content,
+      t,
+      interpolate(t.federationInvitation.preview, { federationName }),
+    );
     const subject = interpolate(t.federationInvitation.subject, { federationName });
     await this.sendEmail({ to: email, subject, html, text });
   }
@@ -320,7 +376,11 @@ export class EmailService {
   ): Promise<void> {
     const t = getEmailI18n(locale);
     const content = getFederationClubJoinedContent({ federationName, clubName }, t);
-    const { html, text } = wrapEmail(content.html, content.text, t.footer);
+    const { html, text } = this.wrapContent(
+      content,
+      t,
+      interpolate(t.federationClubJoined.preview, { clubName, federationName }),
+    );
     const subject = interpolate(t.federationClubJoined.subject, { clubName, federationName });
     await this.sendEmail({ to: email, subject, html, text });
   }
@@ -335,7 +395,11 @@ export class EmailService {
   ): Promise<void> {
     const t = getEmailI18n(locale);
     const content = getFederationClubRemovedContent({ federationName, clubName, removedBy }, t);
-    const { html, text } = wrapEmail(content.html, content.text, t.footer);
+    const { html, text } = this.wrapContent(
+      content,
+      t,
+      interpolate(t.federationClubRemoved.preview, { clubName, federationName }),
+    );
     const subject = interpolate(t.federationClubRemoved.subject, { federationName });
     await this.sendEmail({ to: email, subject, html, text });
   }
@@ -354,7 +418,11 @@ export class EmailService {
       { clubName, requesterName, requesterEmail, message, reviewUrl },
       t,
     );
-    const { html, text } = wrapEmail(content.html, content.text, t.footer);
+    const { html, text } = this.wrapContent(
+      content,
+      t,
+      interpolate(t.clubJoinRequestNotification.preview, { requesterName, clubName }),
+    );
     const subject = interpolate(t.clubJoinRequestNotification.subject, { clubName });
     await this.sendEmail({ to: email, subject, html, text });
   }
@@ -368,7 +436,11 @@ export class EmailService {
   ): Promise<void> {
     const t = getEmailI18n(locale);
     const content = getClubJoinRequestApprovedContent({ name, clubName, profileUrl }, t);
-    const { html, text } = wrapEmail(content.html, content.text, t.footer);
+    const { html, text } = this.wrapContent(
+      content,
+      t,
+      interpolate(t.clubJoinRequestApproved.preview, { clubName }),
+    );
     const subject = interpolate(t.clubJoinRequestApproved.subject, { clubName });
     await this.sendEmail({ to: email, subject, html, text });
   }
@@ -381,7 +453,11 @@ export class EmailService {
   ): Promise<void> {
     const t = getEmailI18n(locale);
     const content = getClubJoinRequestRejectedContent({ name, clubName }, t);
-    const { html, text } = wrapEmail(content.html, content.text, t.footer);
+    const { html, text } = this.wrapContent(
+      content,
+      t,
+      interpolate(t.clubJoinRequestRejected.preview, { clubName }),
+    );
     const subject = interpolate(t.clubJoinRequestRejected.subject, { clubName });
     await this.sendEmail({ to: email, subject, html, text });
   }
@@ -399,7 +475,11 @@ export class EmailService {
       { federationName, clubName, removedBy: clubName },
       t,
     );
-    const { html, text } = wrapEmail(content.html, content.text, t.footer);
+    const { html, text } = this.wrapContent(
+      content,
+      t,
+      interpolate(t.federationClubRemoved.preview, { clubName, federationName }),
+    );
     const subject = interpolate(t.federationClubRemoved.subject, { federationName });
     await this.sendEmail({ to: email, subject, html, text });
   }
@@ -416,7 +496,11 @@ export class EmailService {
       { federationName, clubName, removedBy: 'Federation Admin' },
       t,
     );
-    const { html, text } = wrapEmail(content.html, content.text, t.footer);
+    const { html, text } = this.wrapContent(
+      content,
+      t,
+      interpolate(t.federationClubRemoved.preview, { clubName, federationName }),
+    );
     const subject = interpolate(t.federationClubRemoved.subject, { federationName });
     await this.sendEmail({ to: email, subject, html, text });
   }

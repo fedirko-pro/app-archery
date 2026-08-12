@@ -1,3 +1,4 @@
+import { de } from './de';
 import { en } from './en';
 import { es } from './es';
 import { it } from './it';
@@ -7,7 +8,7 @@ import { uk } from './uk';
 
 export type { EmailI18n } from './types';
 
-const translations: Record<string, EmailI18n> = { en, es, it, pt, uk };
+const translations: Record<string, EmailI18n> = { de, en, es, it, pt, uk };
 
 /**
  * The app stores Ukrainian as 'ua' (app code) but the translations map uses 'uk' (BCP-47).

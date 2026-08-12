@@ -1,7 +1,7 @@
 import { EmailI18n, interpolate } from '../i18n';
 import {
-  styleBlockCenter,
-  styleButton,
+  buildButtonHtml,
+  styleBody,
   styleHeading,
   styleLinkMuted,
   styleNeutralBox,
@@ -27,15 +27,10 @@ export function getFederationInvitationContent(
 
   const html = `
     <h2 style="${styleHeading()}">${s.heading}</h2>
-    <p>${greeting}</p>
-    <p>${body}</p>
-    <div style="${styleBlockCenter()}">
-      <a href="${acceptUrl}"
-         style="${styleButton()}">
-        ${s.ctaLabel}
-      </a>
-    </div>
-    <p>${s.linkFallback}</p>
+    <p style="${styleBody()}">${greeting}</p>
+    <p style="${styleBody()}">${body}</p>
+    ${buildButtonHtml(acceptUrl, s.ctaLabel)}
+    <p style="${styleBody()}">${s.linkFallback}</p>
     <p style="${styleLinkMuted()}">${acceptUrl}</p>
     <div style="${styleNeutralBox()}">
       <p style="margin: 0; color: ${theme.colors.text};">

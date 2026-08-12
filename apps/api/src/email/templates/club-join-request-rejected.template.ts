@@ -1,5 +1,5 @@
 import { EmailI18n, interpolate } from '../i18n';
-import { styleHeading } from './theme';
+import { styleBody, styleHeading } from './theme';
 
 export interface ClubJoinRequestRejectedParams {
   name: string;
@@ -16,9 +16,9 @@ export function getClubJoinRequestRejectedContent(
 
   const html = `
     <h2 style="${styleHeading()}">${s.heading}</h2>
-    <p>${greeting}</p>
-    <p>${interpolate(s.body, { clubName })}</p>
-    <p>${s.note}</p>
+    <p style="${styleBody()}">${greeting}</p>
+    <p style="${styleBody()}">${interpolate(s.body, { clubName })}</p>
+    <p style="${styleBody()}">${s.note}</p>
   `;
 
   const text = `

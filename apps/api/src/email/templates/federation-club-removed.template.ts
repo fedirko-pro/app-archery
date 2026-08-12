@@ -1,5 +1,5 @@
 import { EmailI18n, interpolate } from '../i18n';
-import { styleDangerBox, styleDangerBoxText, styleHeading } from './theme';
+import { styleBody, styleDangerBox, styleDangerBoxText, styleHeading } from './theme';
 
 export interface FederationClubRemovedContentParams {
   federationName: string;
@@ -19,7 +19,7 @@ export function getFederationClubRemovedContent(
 
   const html = `
     <h2 style="${styleHeading()}">${s.heading}</h2>
-    <p>${greeting}</p>
+    <p style="${styleBody()}">${greeting}</p>
     <div style="${styleDangerBox()}">
       <p style="${styleDangerBoxText()}">${body}</p>
     </div>
