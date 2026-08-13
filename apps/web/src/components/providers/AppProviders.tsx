@@ -6,7 +6,6 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@mui/material/styles';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import { type ReactNode, useMemo } from 'react';
-
 import { isProd } from '../../config/env';
 import { AchievementCelebrationProvider } from '../../contexts/achievement-celebration-context';
 import { AuthProvider } from '../../contexts/auth-context';
@@ -18,6 +17,7 @@ import { createAppTheme } from '../../theme/create-app-theme';
 import AppBottomChrome from '../AppBottomChrome/AppBottomChrome';
 import AppStatusBar from '../AppStatusBar';
 import { AppUpdatePrompt } from '../AppUpdatePrompt';
+import { UserIdentityTracker } from '../analytics/UserIdentityTracker';
 import I18nDevOverlay from '../dev/I18nDevOverlay';
 import { ErrorBoundary } from '../ErrorBoundary';
 import EnvError from '../env-error/env-error';
@@ -67,6 +67,7 @@ export function RouterShell({ children }: RouterShellProps) {
       <NotificationsProvider>
         <LocalDataProvider>
           <AchievementCelebrationProvider>
+            <UserIdentityTracker />
             <ScrollToTop />
             <Header />
             {children}

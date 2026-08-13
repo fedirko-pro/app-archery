@@ -5,6 +5,7 @@ import type { Metadata, Viewport } from 'next';
 import { Montserrat } from 'next/font/google';
 import { cookies } from 'next/headers';
 
+import { GoogleAnalytics } from '@/components/analytics/GoogleAnalytics';
 import { RootProviders } from '@/components/providers/AppProviders';
 import { normalizeAppLang, toI18nLang } from '@/utils/i18n-lang';
 
@@ -68,6 +69,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       suppressHydrationWarning
     >
       <body suppressHydrationWarning>
+        <GoogleAnalytics />
         <RootProviders>{children}</RootProviders>
       </body>
     </html>
