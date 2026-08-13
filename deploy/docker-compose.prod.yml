@@ -66,6 +66,7 @@ services:
         NEXT_PUBLIC_GOOGLE_AUTH_URL: ${NEXT_PUBLIC_GOOGLE_AUTH_URL}
         NEXT_PUBLIC_APP_BUILD_ID: ${APP_BUILD_ID:-local}
         NEXT_PUBLIC_SITE_MODE: ${NEXT_PUBLIC_SITE_MODE:-test}
+        NEXT_PUBLIC_GOOGLE_ANALYTICS_ID: ${NEXT_PUBLIC_GOOGLE_ANALYTICS_ID:-}
     container_name: archery_frontend
     restart: unless-stopped
     networks:

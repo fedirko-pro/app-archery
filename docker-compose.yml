@@ -52,6 +52,8 @@ services:
       args:
         NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL:-http://localhost:3000}
         NEXT_PUBLIC_GOOGLE_AUTH_URL: ${NEXT_PUBLIC_GOOGLE_AUTH_URL:-http://localhost:3000/auth/google}
+        NEXT_PUBLIC_SITE_MODE: ${NEXT_PUBLIC_SITE_MODE:-test}
+        NEXT_PUBLIC_GOOGLE_ANALYTICS_ID: ${NEXT_PUBLIC_GOOGLE_ANALYTICS_ID:-}
     container_name: archery_web_dev
     restart: unless-stopped
     ports:
