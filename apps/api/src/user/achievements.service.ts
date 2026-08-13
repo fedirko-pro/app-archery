@@ -66,7 +66,7 @@ export class AchievementsService {
 
     const profileComplete =
       !!user.onboardingCompletedAt ||
-      (!!user.firstName && (!!user.location || !!user.club || !!user.bio || !!user.picture));
+      (!!user.firstName && !!user.picture && (!!user.location || !!user.club || !!user.bio));
 
     return {
       sessionsTotal: stats.totalSessions,

@@ -48,10 +48,8 @@ function buildLocalSnapshot(
   const profileComplete =
     !!userContext?.onboardingCompletedAt ||
     (!!userContext?.firstName &&
-      (!!userContext.location ||
-        !!userContext.clubId ||
-        !!userContext.bio ||
-        !!userContext.picture));
+      !!userContext?.picture &&
+      (!!userContext.location || !!userContext.clubId || !!userContext.bio));
 
   return {
     sessionsTotal: stats.totalSessions,
