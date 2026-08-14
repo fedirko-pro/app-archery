@@ -66,3 +66,5 @@ docker compose "${COMPOSE_ARGS[@]}" ps
 
 echo ""
 echo "Done. Logs: docker logs archery_api --tail 30"
+echo ""
+echo "==> App version: ${APP_BUILD_ID}"
