@@ -31,7 +31,8 @@
     "fieldGuide": "Guida da Campo",
     "myClub": "Il mio club",
     "myFederation": "La mia federazione",
-    "notifications": "Notifiche"
+    "notifications": "Notifiche",
+    "communications": "Comunicazioni"
   },
   "accessControl": {
     "title": "Controllo accessi",
@@ -725,11 +726,46 @@
       "usersTitle": "Gestione utenti",
       "viewProfile": "Vedi profilo"
     },
+    "communications": {
+      "title": "Comunicazioni",
+      "description": "Invia notifiche ai tuoi utenti e rivedi i messaggi inviati.",
+      "sendButton": "Invia notifica",
+      "empty": "Non hai ancora inviato alcuna notifica.",
+      "loadError": "Impossibile caricare le notifiche. Riprova.",
+      "messageRequired": "Il messaggio è obbligatorio",
+      "selectUsers": "Seleziona almeno un destinatario",
+      "sendError": "Impossibile inviare la notifica. Riprova.",
+      "sendSuccess": "Notifica inviata",
+      "recipients": "{{count}} destinatari",
+      "audience": {
+        "all": "Tutti gli utenti",
+        "users": "Utenti selezionati",
+        "tournament": "Partecipanti al torneo"
+      },
+      "dialog": {
+        "title": "Invia notifica",
+        "global": "Notifica globale",
+        "globalWarning": "Stai per inviare una notifica a tutti i {{count}} utenti nel tuo ambito. Assicurati che questo messaggio sia pertinente per tutti.",
+        "recipients": "Destinatari",
+        "searchPlaceholder": "Cerca utenti...",
+        "titleLabel": "Titolo (facoltativo)",
+        "message": "Messaggio",
+        "cancel": "Annulla",
+        "send": "Invia",
+        "sending": "Invio..."
+      },
+      "tournament": {
+        "dialogTitle": "Notifica i partecipanti al torneo",
+        "warning": "Questo avviserà tutti i {{count}} partecipanti approvati."
+      }
+    },
     "adminApplications": {
       "title": "Gestione domande di partecipazione ai tornei",
       "selectTournament": "Seleziona torneo",
       "noApplications": "Nessuna domanda trovata per questo torneo.",
       "managePatrols": "Gestisci pattuglie",
+      "notifyParticipants": "Notifica partecipanti",
+      "notifySuccess": "Notifica inviata ai partecipanti",
       "fetchError": "Errore nel caricamento delle domande",
       "fetchTournamentsError": "Errore nel caricamento dei tornei",
       "statsTotal": "Totale",
@@ -1624,6 +1660,10 @@
     "passwordChanged": {
       "title": "Password modificata",
       "body": "La password del tuo account è stata modificata correttamente."
+    },
+    "announcementMessage": {
+      "title": "Messaggio da {{senderName}}",
+      "body": "{{message}}"
     }
   }
 }

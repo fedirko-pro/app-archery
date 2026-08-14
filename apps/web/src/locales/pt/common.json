@@ -56,7 +56,8 @@
     "fieldGuide": "Guia de Campo",
     "myClub": "O meu clube",
     "myFederation": "A minha federação",
-    "notifications": "Notificações"
+    "notifications": "Notificações",
+    "communications": "Comunicações"
   },
   "accessControl": {
     "title": "Controlo de Acesso",
@@ -747,11 +748,46 @@
       "usersTitle": "Gestão de utilizadores",
       "viewProfile": "Ver perfil"
     },
+    "communications": {
+      "title": "Comunicações",
+      "description": "Envie notificações aos seus utilizadores e reveja as suas mensagens enviadas.",
+      "sendButton": "Enviar notificação",
+      "empty": "Ainda não enviou nenhuma notificação.",
+      "loadError": "Não foi possível carregar as notificações. Tente novamente.",
+      "messageRequired": "A mensagem é obrigatória",
+      "selectUsers": "Selecione pelo menos um destinatário",
+      "sendError": "Não foi possível enviar a notificação. Tente novamente.",
+      "sendSuccess": "Notificação enviada",
+      "recipients": "{{count}} destinatários",
+      "audience": {
+        "all": "Todos os utilizadores",
+        "users": "Utilizadores selecionados",
+        "tournament": "Participantes do torneio"
+      },
+      "dialog": {
+        "title": "Enviar notificação",
+        "global": "Notificação global",
+        "globalWarning": "Está prestes a enviar uma notificação a todos os {{count}} utilizadores no seu âmbito. Certifique-se de que esta mensagem é relevante para todos.",
+        "recipients": "Destinatários",
+        "searchPlaceholder": "Procurar utilizadores...",
+        "titleLabel": "Título (opcional)",
+        "message": "Mensagem",
+        "cancel": "Cancelar",
+        "send": "Enviar",
+        "sending": "A enviar..."
+      },
+      "tournament": {
+        "dialogTitle": "Notificar participantes do torneio",
+        "warning": "Isto notificará todos os {{count}} participantes aprovados."
+      }
+    },
     "adminApplications": {
       "title": "Gestão de inscrições em torneios",
       "selectTournament": "Selecionar torneio",
       "noApplications": "Nenhuma inscrição encontrada para este torneio.",
       "managePatrols": "Gerir Patrulhas",
+      "notifyParticipants": "Notificar participantes",
+      "notifySuccess": "Notificação enviada aos participantes",
       "fetchError": "Falha ao carregar inscrições",
       "fetchTournamentsError": "Falha ao carregar torneios",
       "statsTotal": "Total",
@@ -1621,6 +1657,10 @@
     "passwordChanged": {
       "title": "Palavra-passe alterada",
       "body": "A palavra-passe da sua conta foi alterada com sucesso."
+    },
+    "announcementMessage": {
+      "title": "Mensagem de {{senderName}}",
+      "body": "{{message}}"
     }
   }
 }

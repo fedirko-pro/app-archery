@@ -4,10 +4,12 @@ import {
   NotificationDto,
   NotificationsListDto,
   NotificationType,
+  NotificationTypes,
   NotificationUnreadCountDto,
 } from '@sokil/shared-types';
 import { AuthSession } from '../auth/entity/auth-session.entity';
 import { User } from '../user/entity/user.entity';
+import { NotificationBroadcast } from './announcement.entity';
 import { Notification } from './notification.entity';
 import {
   getNotificationBodyKey,
@@ -64,6 +66,63 @@ export class NotificationsService {
     void this.create(input).catch((err) => {
       this.logger.error(`createSafe failed: ${err instanceof Error ? err.message : String(err)}`);
     });
+  }
+
+  /**
+   * Bulk-create an announcement notification for many recipients.
+   * All rows are written in a single flush for efficiency.
+   */
+  async createAnnouncementsForUsers(
+    userIds: string[],
+    input: {
+      title?: string;
+      message: string;
+      senderName?: string;
+      link?: string;
+      broadcastId?: string;
+    },
+  ): Promise<number> {
+    const uniqueIds = [...new Set(userIds)].filter(Boolean);
+    if (uniqueIds.length === 0) {
+      return 0;
+    }
+
+    const type = NotificationTypes.Announcement;
+    const params: Record<string, unknown> = {
+      title: input.title?.trim() || undefined,
+      message: input.message,
+      senderName: input.senderName,
+    };
+
+    try {
+      const broadcastRef = input.broadcastId
+        ? this.em.getReference(NotificationBroadcast, input.broadcastId)
+        : undefined;
+
+      for (const userId of uniqueIds) {
+        this.em.create(Notification, {
+          user: this.em.getReference(User, userId),
+          type,
+          titleKey: getNotificationTitleKey(type),
+          bodyKey: getNotificationBodyKey(type),
+          params,
+          link: input.link,
+          important: resolveImportant(type),
+          broadcast: broadcastRef,
+          createdAt: new Date(),
+        });
+      }
+
+      await this.em.flush();
+      return uniqueIds.length;
+    } catch (err) {
+      this.logger.error(
+        `Failed to create announcements for ${uniqueIds.length} users: ${
+          err instanceof Error ? err.message : String(err)
+        }`,
+      );
+      return 0;
+    }
   }
 
   async listForUser(

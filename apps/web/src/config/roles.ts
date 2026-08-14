@@ -34,6 +34,7 @@ export interface NavItemConfig {
 export const ORGANIZER_NAV_ITEMS: NavItemConfig[] = [
   { link: '/admin/users', labelKey: 'nav.users' },
   { link: '/admin/applications', labelKey: 'nav.userApplications' },
+  { link: '/admin/communications', labelKey: 'nav.communications' },
 ];
 
 export const ADMIN_NAV_ITEMS: NavItemConfig[] = [

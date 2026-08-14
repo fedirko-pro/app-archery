@@ -16,6 +16,7 @@ import AchievementSharePage from '../../views/achievement-share/achievement-shar
 import Achievements from '../../views/achievements/achievements';
 import AccessControl from '../../views/admin/access-control/access-control';
 import AdminPanel from '../../views/admin/admin-panel';
+import Communications from '../../views/admin/communications/communications';
 import ProtectedAdminRoute from '../../views/admin/protected-admin-route';
 import UserEdit from '../../views/admin/user-edit/user-edit';
 import UserProfileView from '../../views/admin/user-profile-view/user-profile-view';
@@ -155,6 +156,14 @@ function Content() {
             element={
               <ProtectedAdminRoute allowedRoles={ROLES_CAN_ACCESS_CONTROL}>
                 <AccessControl />
+              </ProtectedAdminRoute>
+            }
+          />
+          <Route
+            path="admin/communications"
+            element={
+              <ProtectedAdminRoute>
+                <Communications />
               </ProtectedAdminRoute>
             }
           />

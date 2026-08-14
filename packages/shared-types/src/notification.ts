@@ -11,6 +11,7 @@ export const NotificationTypes = {
   FederationMembershipRejected: 'federation.membership.rejected',
   PrivacyVisibilityChanged: 'privacy.visibility.changed',
   PasswordChanged: 'password.changed',
+  Announcement: 'announcement.message',
 } as const;
 
 export type NotificationType = (typeof NotificationTypes)[keyof typeof NotificationTypes];
@@ -25,6 +26,7 @@ export const IMPORTANT_NOTIFICATION_TYPES: readonly NotificationType[] = [
   NotificationTypes.ClubJoinRejected,
   NotificationTypes.FederationMembershipApproved,
   NotificationTypes.FederationMembershipRejected,
+  NotificationTypes.Announcement,
 ] as const;
 
 export function isImportantNotificationType(type: string): boolean {
@@ -50,5 +52,36 @@ export interface NotificationsListDto {
 }
 
 export interface NotificationUnreadCountDto {
+  count: number;
+}
+
+export type AnnouncementAudienceType = 'all' | 'users' | 'tournament';
+
+export interface SendAnnouncementRequest {
+  mode: 'all' | 'users';
+  userIds?: string[];
+  title?: string;
+  message: string;
+  link?: string;
+}
+
+export interface AnnouncementDto {
+  id: string;
+  audienceType: AnnouncementAudienceType;
+  title: string | null;
+  message: string;
+  link: string | null;
+  recipientCount: number;
+  tournamentId: string | null;
+  tournamentTitle: string | null;
+  createdAt: string;
+}
+
+export interface AnnouncementsListDto {
+  items: AnnouncementDto[];
+  total: number;
+}
+
+export interface AudienceCountDto {
   count: number;
 }

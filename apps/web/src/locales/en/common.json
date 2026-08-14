@@ -31,7 +31,8 @@
     "fieldGuide": "Field Guide",
     "myClub": "My Club",
     "myFederation": "My Federation",
-    "notifications": "Notifications"
+    "notifications": "Notifications",
+    "communications": "Communications"
   },
   "accessControl": {
     "title": "Access Control",
@@ -703,11 +704,46 @@
       "creating": "Creating...",
       "createAndInvite": "Create & Invite"
     },
+    "communications": {
+      "title": "Communications",
+      "description": "Send notifications to your users and review your sent messages.",
+      "sendButton": "Send notification",
+      "empty": "You have not sent any notifications yet.",
+      "loadError": "Could not load notifications. Please try again.",
+      "messageRequired": "Message is required",
+      "selectUsers": "Select at least one recipient",
+      "sendError": "Failed to send notification. Please try again.",
+      "sendSuccess": "Notification sent",
+      "recipients": "{{count}} recipients",
+      "audience": {
+        "all": "All users",
+        "users": "Selected users",
+        "tournament": "Tournament participants"
+      },
+      "dialog": {
+        "title": "Send notification",
+        "global": "Global notification",
+        "globalWarning": "You are about to send a notification to all {{count}} users in your scope. Make sure this message is relevant to everyone.",
+        "recipients": "Recipients",
+        "searchPlaceholder": "Search users...",
+        "titleLabel": "Title (optional)",
+        "message": "Message",
+        "cancel": "Cancel",
+        "send": "Send",
+        "sending": "Sending..."
+      },
+      "tournament": {
+        "dialogTitle": "Notify tournament participants",
+        "warning": "This will notify all {{count}} approved participants."
+      }
+    },
     "adminApplications": {
       "title": "Tournament Applications Management",
       "selectTournament": "Select Tournament",
       "noApplications": "No applications found for this tournament.",
       "managePatrols": "Manage Patrols",
+      "notifyParticipants": "Notify participants",
+      "notifySuccess": "Notification sent to participants",
       "fetchError": "Failed to fetch applications",
       "fetchTournamentsError": "Failed to fetch tournaments",
       "statsTotal": "Total",
@@ -1590,6 +1626,10 @@
     "passwordChanged": {
       "title": "Password changed",
       "body": "Your account password was changed successfully."
+    },
+    "announcementMessage": {
+      "title": "Message from {{senderName}}",
+      "body": "{{message}}"
     }
   }
 }

@@ -17,6 +17,7 @@ const TYPE_I18N_SUFFIX: Record<NotificationType, string> = {
   [NotificationTypes.FederationMembershipRejected]: 'federationMembershipRejected',
   [NotificationTypes.PrivacyVisibilityChanged]: 'privacyVisibilityChanged',
   [NotificationTypes.PasswordChanged]: 'passwordChanged',
+  [NotificationTypes.Announcement]: 'announcementMessage',
 };
 
 export function getNotificationTitleKey(type: NotificationType): string {

@@ -31,7 +31,8 @@
     "fieldGuide": "Feldführer",
     "myClub": "Mein Verein",
     "myFederation": "Mein Verband",
-    "notifications": "Benachrichtigungen"
+    "notifications": "Benachrichtigungen",
+    "communications": "Mitteilungen"
   },
   "accessControl": {
     "title": "Zugriffskontrolle",
@@ -703,11 +704,46 @@
       "usersTitle": "Benutzerverwaltung",
       "viewProfile": "Profil ansehen"
     },
+    "communications": {
+      "title": "Mitteilungen",
+      "description": "Senden Sie Benachrichtigungen an Ihre Benutzer und prüfen Sie Ihre gesendeten Nachrichten.",
+      "sendButton": "Benachrichtigung senden",
+      "empty": "Sie haben noch keine Benachrichtigungen gesendet.",
+      "loadError": "Benachrichtigungen konnten nicht geladen werden. Bitte versuchen Sie es erneut.",
+      "messageRequired": "Nachricht ist erforderlich",
+      "selectUsers": "Wählen Sie mindestens einen Empfänger aus",
+      "sendError": "Benachrichtigung konnte nicht gesendet werden. Bitte versuchen Sie es erneut.",
+      "sendSuccess": "Benachrichtigung gesendet",
+      "recipients": "{{count}} Empfänger",
+      "audience": {
+        "all": "Alle Benutzer",
+        "users": "Ausgewählte Benutzer",
+        "tournament": "Turnierteilnehmer"
+      },
+      "dialog": {
+        "title": "Benachrichtigung senden",
+        "global": "Globale Benachrichtigung",
+        "globalWarning": "Sie sind dabei, eine Benachrichtigung an alle {{count}} Benutzer in Ihrem Bereich zu senden. Stellen Sie sicher, dass diese Nachricht für alle relevant ist.",
+        "recipients": "Empfänger",
+        "searchPlaceholder": "Benutzer suchen...",
+        "titleLabel": "Titel (optional)",
+        "message": "Nachricht",
+        "cancel": "Abbrechen",
+        "send": "Senden",
+        "sending": "Wird gesendet..."
+      },
+      "tournament": {
+        "dialogTitle": "Turnierteilnehmer benachrichtigen",
+        "warning": "Dies benachrichtigt alle {{count}} zugelassenen Teilnehmer."
+      }
+    },
     "adminApplications": {
       "title": "Turnierbewerbungen Verwaltung",
       "selectTournament": "Turnier auswählen",
       "noApplications": "Keine Bewerbungen für dieses Turnier gefunden.",
       "managePatrols": "Patrouillen verwalten",
+      "notifyParticipants": "Teilnehmer benachrichtigen",
+      "notifySuccess": "Benachrichtigung an Teilnehmer gesendet",
       "fetchError": "Bewerbungen konnten nicht geladen werden",
       "fetchTournamentsError": "Turniere konnten nicht geladen werden",
       "statsTotal": "Gesamt",
@@ -1590,6 +1626,10 @@
     "passwordChanged": {
       "title": "Passwort geändert",
       "body": "Das Passwort Ihres Kontos wurde erfolgreich geändert."
+    },
+    "announcementMessage": {
+      "title": "Nachricht von {{senderName}}",
+      "body": "{{message}}"
     }
   }
 }

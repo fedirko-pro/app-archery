@@ -22,8 +22,11 @@ import type { ProfileData } from '../views/profile/types';
 import type {
   AchievementSyncResultDto,
   AchievementsListDto,
+  AnnouncementDto,
+  AnnouncementsListDto,
   ApiError,
   ApplicationStatsDto,
+  AudienceCountDto,
   BowCategory,
   CategoryDto,
   ClubDto,
@@ -45,6 +48,7 @@ import type {
   PublicProfileDto,
   PublicProgressShareDto,
   RuleDto,
+  SendAnnouncementRequest,
   TournamentApplicationDto,
   TournamentDto,
   TournamentFeedbackDto,
@@ -1379,6 +1383,40 @@ class ApiService {
   async markAllNotificationsRead(): Promise<{ marked: number }> {
     return this.request<{ marked: number }>('/notifications/read-all', {
       method: 'PATCH',
+    });
+  }
+
+  // Announcements (admin/organizer communications)
+
+  async getAnnouncements(params?: {
+    limit?: number;
+    offset?: number;
+  }): Promise<AnnouncementsListDto> {
+    const search = new URLSearchParams();
+    if (params?.limit != null) search.set('limit', String(params.limit));
+    if (params?.offset != null) search.set('offset', String(params.offset));
+    const qs = search.toString();
+    return this.request<AnnouncementsListDto>(`/announcements${qs ? `?${qs}` : ''}`);
+  }
+
+  async getAnnouncementAudienceCount(): Promise<AudienceCountDto> {
+    return this.request<AudienceCountDto>('/announcements/audience-count');
+  }
+
+  async sendAnnouncement(data: SendAnnouncementRequest): Promise<AnnouncementDto> {
+    return this.request<AnnouncementDto>('/announcements', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async sendTournamentAnnouncement(
+    tournamentId: string,
+    data: { title?: string; message: string; link?: string },
+  ): Promise<AnnouncementDto> {
+    return this.request<AnnouncementDto>(`/announcements/tournament/${tournamentId}`, {
+      method: 'POST',
+      body: JSON.stringify(data),
     });
   }
 }

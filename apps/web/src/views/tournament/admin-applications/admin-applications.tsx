@@ -1,6 +1,7 @@
 import {
   ArrowDownward,
   ArrowUpward,
+  Campaign,
   Check,
   Close,
   Groups,
@@ -40,7 +41,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router';
 
-import { canManageApplicationsAndPdfs } from '../../../config/roles';
+import { canManageApplicationsAndPdfs, isGeneralAdmin } from '../../../config/roles';
 import { useAuth } from '../../../contexts/auth-context';
 import apiService from '../../../services/api';
 import type {
@@ -51,6 +52,7 @@ import type {
 } from '../../../services/types';
 import { formatDate, getApplicationDeadline } from '../../../utils/date-utils';
 import { getAvatarInitials, resolveUserAvatar } from '../../../utils/placeholder-images';
+import NotifyParticipantsDialog from '../notify-participants-dialog';
 
 const AdminApplications: React.FC = () => {
   const { t } = useTranslation('common');
@@ -65,6 +67,9 @@ const AdminApplications: React.FC = () => {
   const [selectedTournament, setSelectedTournament] = useState<string>('');
   const [tournaments, setTournaments] = useState<TournamentDto[]>([]);
   const [currentTournament, setCurrentTournament] = useState<TournamentDto | null>(null);
+  const canNotifyParticipants = user
+    ? isGeneralAdmin(user.role) || currentTournament?.createdBy?.id === user.id
+    : false;
   const [statusDialog, setStatusDialog] = useState<{
     open: boolean;
     application: TournamentApplicationDto | null;
@@ -77,6 +82,7 @@ const AdminApplications: React.FC = () => {
     message: string;
     severity: 'success' | 'error' | 'info' | 'warning';
   }>({ open: false, message: '', severity: 'success' });
+  const [notifyOpen, setNotifyOpen] = useState(false);
   const [sortConfig, setSortConfig] = useState<{
     field: string | null;
     direction: 'asc' | 'desc';
@@ -383,6 +389,11 @@ const AdminApplications: React.FC = () => {
             onClick={() => navigate(`/${lang}/tournaments/${selectedTournament}/feedback/admin`)}
           >
             {t('pages.tournaments.viewFeedback')}
+          </Button>
+        )}
+        {selectedTournament && canNotifyParticipants && (
+          <Button variant="outlined" startIcon={<Campaign />} onClick={() => setNotifyOpen(true)}>
+            {t('pages.adminApplications.notifyParticipants', 'Notify participants')}
           </Button>
         )}
       </Box>
@@ -931,6 +942,23 @@ const AdminApplications: React.FC = () => {
           {snackbar.message}
         </Alert>
       </Snackbar>
+
+      <NotifyParticipantsDialog
+        open={notifyOpen}
+        onClose={() => setNotifyOpen(false)}
+        tournamentId={selectedTournament}
+        participantCount={stats?.approved ?? 0}
+        onSent={() => {
+          setSnackbar({
+            open: true,
+            message: t(
+              'pages.adminApplications.notifySuccess',
+              'Notification sent to participants',
+            ),
+            severity: 'success',
+          });
+        }}
+      />
     </Box>
   );
 };

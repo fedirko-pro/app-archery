@@ -27,6 +27,10 @@ function resolveNotificationBody(
 ): string {
   const params = { ...(item.params ?? {}) } as Record<string, unknown>;
 
+  if (item.type === NotificationTypes.Announcement) {
+    return (params.message as string) || '';
+  }
+
   if (typeof params.achievementTitleKey === 'string') {
     params.achievementName = t(params.achievementTitleKey);
   }
@@ -200,7 +204,14 @@ const NotificationsPage: React.FC = () => {
                 >
                   <span className="notifications-item__title-row">
                     {isUnread && <span className="notifications-item__dot" aria-hidden />}
-                    <span className="notifications-item__title">{t(item.titleKey)}</span>
+                    <span className="notifications-item__title">
+                      {item.type === NotificationTypes.Announcement
+                        ? (item.params?.title as string) ||
+                          t('notifications.announcementMessage.title', {
+                            senderName: item.params?.senderName as string | undefined,
+                          })
+                        : t(item.titleKey)}
+                    </span>
                   </span>
                   <time className="notifications-item__time" dateTime={item.createdAt}>
                     {formatDateTime(item.createdAt)}
