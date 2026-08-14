@@ -84,6 +84,9 @@ docker compose up -d --build
 
 ## Deployment
 
+- Live: https://sokil.app
+- Test: https://archery.fedirko.pro
+
 See [DEPLOYMENT.md](./DEPLOYMENT.md) for VPS setup with Traefik.
 
 ## Archer tools

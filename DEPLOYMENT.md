@@ -9,11 +9,16 @@
 
 ## URLs
 
-| Service           | URL                             | Port   |
-| ----------------- | ------------------------------- | ------ |
-| Frontend          | https://archery.fedirko.pro     | 3001   |
-| API               | https://api-archery.fedirko.pro | 3000   |
-| Traefik dashboard | -                               | 80/443 |
+| Environment | Service          | URL                             | Port |
+| ----------- | ---------------- | ------------------------------- | ---- |
+| Live        | Frontend         | https://sokil.app               | 3001 |
+| Test        | Frontend         | https://archery.fedirko.pro     | 3001 |
+| Test        | API              | https://api-archery.fedirko.pro | 3000 |
+| -           | Traefik dashboard | -                              | 80/443 |
+
+The live and test frontends are **separate origins**, so PWA state (service
+worker, installed app, `localStorage` install-prompt cooldown) does not carry
+over between them. Installing the test site PWA has no effect on the live site.
 
 ## Folder Structure
 
