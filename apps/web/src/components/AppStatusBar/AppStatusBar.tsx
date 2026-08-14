@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { setInstallDismissed, usePWAInstall } from '../../hooks/usePwaInstall';
 
 const IOS_A2HS_DISMISS_KEY = 'pwa-ios-a2hs-dismissed';
-const IOS_A2HS_DISMISS_DAYS = 7;
+const IOS_A2HS_DISMISS_DAYS = 1;
 
 /**
  * True on any iOS browser (Safari, Chrome, Firefox, Edge, etc.).

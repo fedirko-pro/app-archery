@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 
 const PWA_DISMISS_KEY = 'pwa-install-dismissed';
-const PWA_DISMISS_DAYS = 7;
+const PWA_DISMISS_DAYS = 1;
 
 function isStandalone(): boolean {
   if (typeof window === 'undefined') return false;
@@ -62,6 +62,12 @@ function ensureBeforeInstallListener(): void {
     setSharedDeferredPrompt(e as BeforeInstallPromptEvent);
   });
 }
+
+// Attach at module scope so the listener is registered as early as possible.
+// Chrome can fire `beforeinstallprompt` before React mounts (especially on
+// repeat visits when the service worker is already active); if it fires before
+// the listener exists the event is lost and the install prompt never appears.
+ensureBeforeInstallListener();
 
 export function usePWAInstall(): {
   canInstall: boolean;
