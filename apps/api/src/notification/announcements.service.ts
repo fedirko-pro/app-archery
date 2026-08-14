@@ -94,8 +94,6 @@ export class AnnouncementsService {
       throw new NotFoundException('Invalid audience mode');
     }
 
-    recipientIds = [...new Set([...recipientIds, viewerId])].filter(Boolean);
-
     return this.persistBroadcast({
       senderId: viewerId,
       senderName,
@@ -135,9 +133,7 @@ export class AnnouncementsService {
       { fields: ['applicant'] },
     );
 
-    const recipientIds = [
-      ...new Set([...applications.map((a) => a.applicant.id), viewerId]),
-    ].filter(Boolean);
+    const recipientIds = [...new Set(applications.map((a) => a.applicant.id))].filter(Boolean);
 
     return this.persistBroadcast({
       senderId: viewerId,
