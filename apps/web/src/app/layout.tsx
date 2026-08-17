@@ -21,7 +21,6 @@ export const metadata: Metadata = {
   ...(siteUrl ? { metadataBase: new URL(siteUrl) } : {}),
   title: 'Sokil APP',
   description: 'Sokil APP',
-  manifest: '/manifest.webmanifest',
   icons: {
     icon: '/favicon.png',
     apple: '/logo192.png',
@@ -68,6 +67,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       className={`${montserrat.variable} notranslate text-gray-900 antialiased`}
       suppressHydrationWarning
     >
+      <head>
+        <link rel="manifest" href="/manifest.webmanifest" />
+      </head>
       <body suppressHydrationWarning>
         <GoogleAnalytics />
         <RootProviders>{children}</RootProviders>
