@@ -25,14 +25,17 @@ function wasDismissedRecently(): boolean {
   }
 }
 
+const dismissListeners = new Set<() => void>();
+
 export function setInstallDismissed(): void {
   try {
     localStorage.setItem(PWA_DISMISS_KEY, String(Date.now()));
   } catch {
     /* ignore */
   }
-  // Drop the captured prompt so Chrome stops waiting for prompt().
-  setSharedDeferredPrompt(null);
+  for (const listener of dismissListeners) {
+    listener();
+  }
 }
 
 /** Shared across hook instances so only one listener captures the install event. */
@@ -53,13 +56,15 @@ function ensureBeforeInstallListener(): void {
   w.__pwaBeforeInstallBound = true;
 
   window.addEventListener('beforeinstallprompt', (e: Event) => {
-    // Skip custom UI if already installed or user dismissed recently — let the
-    // browser keep its default handling instead of capturing a prompt we won't show.
-    if (isStandalone() || wasDismissedRecently()) {
+    if (isStandalone()) {
       return;
     }
     e.preventDefault();
     setSharedDeferredPrompt(e as BeforeInstallPromptEvent);
+  });
+
+  window.addEventListener('appinstalled', () => {
+    setSharedDeferredPrompt(null);
   });
 }
 
@@ -73,6 +78,7 @@ export function usePWAInstall(): {
   canInstall: boolean;
   isInstalled: boolean;
   dismissedRecently: boolean;
+  shouldShowPrompt: boolean;
   prompt: () => Promise<boolean>;
 } {
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(
@@ -98,6 +104,12 @@ export function usePWAInstall(): {
   useEffect(() => {
     setInstalled(isStandalone());
     setDismissedRecently(wasDismissedRecently());
+
+    const onDismiss = () => setDismissedRecently(true);
+    dismissListeners.add(onDismiss);
+    return () => {
+      dismissListeners.delete(onDismiss);
+    };
   }, []);
 
   const prompt = useCallback(async (): Promise<boolean> => {
@@ -118,6 +130,7 @@ export function usePWAInstall(): {
     canInstall: !!deferredPrompt,
     isInstalled: installed,
     dismissedRecently,
+    shouldShowPrompt: !!deferredPrompt && !installed && !dismissedRecently,
     prompt,
   };
 }

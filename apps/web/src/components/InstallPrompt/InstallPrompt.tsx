@@ -8,7 +8,7 @@ import { setInstallDismissed, usePWAInstall } from '../../hooks/usePwaInstall';
 
 const InstallPrompt: React.FC = () => {
   const { t } = useTranslation('common');
-  const { canInstall, isInstalled, dismissedRecently, prompt } = usePWAInstall();
+  const { shouldShowPrompt, prompt } = usePWAInstall();
   const [visible, setVisible] = useState(true);
   const [installing, setInstalling] = useState(false);
 
@@ -27,7 +27,7 @@ const InstallPrompt: React.FC = () => {
     setVisible(false);
   };
 
-  const show = visible && canInstall && !isInstalled && !dismissedRecently;
+  const show = visible && shouldShowPrompt;
   if (!show) return null;
 
   return (

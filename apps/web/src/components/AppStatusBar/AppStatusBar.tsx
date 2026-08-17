@@ -50,7 +50,7 @@ function setIosTipDismissed(): void {
  */
 const AppStatusBar: React.FC = () => {
   const { t } = useTranslation('common');
-  const { canInstall, isInstalled, dismissedRecently, prompt } = usePWAInstall();
+  const { canInstall, isInstalled, shouldShowPrompt, prompt } = usePWAInstall();
   const [mounted, setMounted] = useState(false);
   const [isOffline, setIsOffline] = useState(false);
   const [installVisible, setInstallVisible] = useState(true);
@@ -86,7 +86,7 @@ const AppStatusBar: React.FC = () => {
     );
   }
 
-  const showInstall = installVisible && canInstall && !isInstalled && !dismissedRecently;
+  const showInstall = installVisible && shouldShowPrompt;
 
   if (showInstall) {
     const handleInstall = async () => {
