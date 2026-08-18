@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import type { TournamentDto } from '@/services/types';
 import { formatDate } from '@/utils/date-utils';
 import { isExternalPlaceholderUrl } from '@/utils/placeholder-images';
+import { alternateOgLocales, toOgLocale } from './og-locale';
 
 export const DEFAULT_OG_IMAGE_PATH = '/og/default-tournament-banner.png';
 
@@ -63,7 +64,8 @@ export function buildTournamentMetadata(
       url: pageUrl,
       siteName: 'Sokil',
       type: 'website',
-      locale: lang,
+      locale: toOgLocale(lang),
+      alternateLocale: alternateOgLocales(lang),
       images: [
         {
           url: imageUrl,

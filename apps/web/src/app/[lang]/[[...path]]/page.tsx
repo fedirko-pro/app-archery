@@ -14,6 +14,7 @@ import {
   fetchTournamentForMetadata,
 } from '@/lib/server-api';
 import { getArcherRouteFromPath } from '@/lib/share-route';
+import { buildSiteMetadata } from '@/lib/site-metadata';
 import {
   buildTournamentMetadata,
   buildTournamentNotFoundMetadata,
@@ -62,6 +63,14 @@ export async function generateMetadata({ params }: LangCatchAllPageProps): Promi
   const tournamentId = getTournamentIdFromPath(path);
 
   if (!tournamentId) {
+    const isTournamentsList = !path || (path.length === 1 && path[0] === 'tournaments');
+    if (isTournamentsList) {
+      return buildSiteMetadata({
+        lang,
+        siteUrl,
+        url: `${siteUrl}/${lang}/tournaments`,
+      });
+    }
     return {};
   }
 

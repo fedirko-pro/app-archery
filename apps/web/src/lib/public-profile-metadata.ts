@@ -6,6 +6,7 @@ import type {
   PublicProgressShareDto,
 } from '@/services/types';
 import { displayName } from '@/utils/user-display';
+import { alternateOgLocales, toOgLocale } from './og-locale';
 
 export const DEFAULT_PROFILE_OG_IMAGE_PATH = '/og/default-tournament-banner.png';
 export const DEFAULT_ACHIEVEMENT_OG_IMAGE_PATH = '/og/default-tournament-banner.png';
@@ -45,7 +46,8 @@ export function buildPublicProfileMetadata(
       url: pageUrl,
       siteName: 'Sokil',
       type: 'profile',
-      locale: lang,
+      locale: toOgLocale(lang),
+      alternateLocale: alternateOgLocales(lang),
       images: [{ url: imageUrl, width: 1200, height: 630, alt: name }],
     },
     twitter: {
@@ -81,7 +83,8 @@ export function buildAchievementShareMetadata(
       url: pageUrl,
       siteName: 'Sokil',
       type: 'website',
-      locale: lang,
+      locale: toOgLocale(lang),
+      alternateLocale: alternateOgLocales(lang),
       images: [{ url: imageUrl, width: 1200, height: 630, alt: title }],
     },
     twitter: {
@@ -113,7 +116,8 @@ export function buildProgressShareMetadata(
       url: pageUrl,
       siteName: 'Sokil',
       type: 'website',
-      locale: lang,
+      locale: toOgLocale(lang),
+      alternateLocale: alternateOgLocales(lang),
       images: [{ url: imageUrl, width: 1200, height: 630, alt: ownerName }],
     },
     twitter: {
