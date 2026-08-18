@@ -5,7 +5,7 @@ import { alternateOgLocales, toOgLocale } from './og-locale';
 export const SITE_NAME = 'Sokil';
 export const SITE_TITLE = 'Sokil APP';
 export const SITE_DESCRIPTION = 'Sokil archery tournament and training app';
-export const SITE_OG_IMAGE_PATH = '/og/og-image.png';
+export const SITE_OG_IMAGE_PATH = '/og/og-image-v2.png';
 export const SITE_OG_IMAGE_WIDTH = 1200;
 export const SITE_OG_IMAGE_HEIGHT = 630;
 
