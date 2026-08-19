@@ -1519,7 +1519,9 @@
   "fieldGuide": {
     "title": "Field Guide",
     "glossary": "Glossary",
-    "glossaryDesc": "Common terms and abbreviations used in archery"
+    "glossaryDesc": "Common terms and abbreviations used in archery",
+    "glossarySearch": "Search terms",
+    "glossaryNoResults": "No matching terms"
   },
   "buttons": {
     "ok": "OK"

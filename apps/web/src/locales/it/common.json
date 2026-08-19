@@ -1445,7 +1445,9 @@
   "fieldGuide": {
     "title": "Guida da Campo",
     "glossary": "Glossario",
-    "glossaryDesc": "Termini e abbreviazioni comuni usati nel tiro con l'arco"
+    "glossaryDesc": "Termini e abbreviazioni comuni usati nel tiro con l'arco",
+    "glossarySearch": "Cerca termini",
+    "glossaryNoResults": "Nessun termine corrispondente"
   },
   "achievementShare": {
     "badge": "Achievement",

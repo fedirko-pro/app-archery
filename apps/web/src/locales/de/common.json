@@ -1519,7 +1519,9 @@
   "fieldGuide": {
     "title": "Feldführer",
     "glossary": "Glossar",
-    "glossaryDesc": "Häufige Begriffe und Abkürzungen im Bogenschießen"
+    "glossaryDesc": "Häufige Begriffe und Abkürzungen im Bogenschießen",
+    "glossarySearch": "Begriffe suchen",
+    "glossaryNoResults": "Keine passenden Begriffe"
   },
   "buttons": {
     "ok": "OK"

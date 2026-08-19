@@ -1442,7 +1442,9 @@
   "fieldGuide": {
     "title": "Guia de Campo",
     "glossary": "Glossário",
-    "glossaryDesc": "Termos e abreviaturas comuns usados no tiro com arco"
+    "glossaryDesc": "Termos e abreviaturas comuns usados no tiro com arco",
+    "glossarySearch": "Pesquisar termos",
+    "glossaryNoResults": "Nenhum termo correspondente"
   },
   "achievementShare": {
     "badge": "Conquista",
