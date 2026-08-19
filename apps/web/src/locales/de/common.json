@@ -432,51 +432,54 @@
       "confirmClose": "OK"
     },
     "about": {
-      "title": "Über diese App",
-      "intro": "Sokil hilft Bogenschützen, Trainingseinheiten zu protokollieren, Fortschritte zu verfolgen, Erfolge freizuschalten und Ausrüstung zu verwalten – mit Offline-Unterstützung und automatischer Synchronisation.\n\nGamification macht das Hobby spannend.\n\nIhre Daten werden sicher gespeichert und Sie entscheiden, was Sie teilen. Verbände und Vereine können Turniere veranstalten, Bewerbungen verwalten und Events organisieren.\n\nStärkung von Bogenschießgemeinschaften mit moderner Technologie.",
+      "title": "Über Sokil",
+      "intro": "Sokil ist dein Begleiter beim Bogenschießen — ob zum Spaß, ernsthaft trainierst du oder einen Verein oder Verband mitorganisierst.\n\nHalte Trainingseinheiten auf dem Platz fest, sieh, wie sich dein Fortschritt summiert, und freu dich über kleine Erfolge. Offline funktioniert es auch — schlechtes Netz am Platz ist kein Problem mehr.\n\nVereine bleiben mit ihren Mitgliedern verbunden. Verbände verbringen weniger Zeit mit Papierkram und mehr mit dem Sport.\n\nInstalliere die App, wähle deine Sprache und mach sie zu deiner. Deine Daten gehören dir, und du entscheidest, was du teilst.\n\nVon Bogenschützen für Bogenschießgemeinschaften.",
       "archerTitle": "Für Bogenschützen",
-      "federationTitle": "Für Verbände & Organisatoren",
-      "platformTitle": "Plattform",
-      "current": {
-        "home": "Start-Dashboard – Persönliche Aktivitätszentrale mit Pfeilen dieser Woche, aktueller Serie, letzten Trainingseinheiten, kommenden Turnieren, Monatsübersicht und letztem Erfolg auf einen Blick",
-        "auth": "Benutzerauthentifizierung & -autoritisierung - JWT-basierte Authentifizierung mit Google OAuth, Passwort-Zurücksetzung und rollenbasierter Zugriffskontrolle",
-        "profiles": "Benutzerprofile - Persönliches Profil mit Avatar, Bio, Standort, Bogenpräferenzen und bevorzugter Altersgruppe",
-        "tournaments": "Turnierverwaltung - Turniere mit Banner, Anhängern, Kartenstandorten, Länderfilterung und Bewerbungsfristen erstellen, bearbeiten und verwalten",
-        "applications": "Turnierbewerbungen - Bewerbungen mit Kategorie, Altersgruppe und Ausrüstungsauswahl einreichen. Admin-Genehmigungsworkflow mit Statusverfolgung",
-        "patrols": "Patrouillensystem - Automatische Patrouillengenerierung mit intelligenter Gruppierung nach Bogenkategorie, Altersgruppe und Geschlecht. Drag-and-drop-Verwaltungsoberfläche und PDF-Export",
-        "tournamentFeedback": "Turnier-Feedback - Teilnehmer bewerten Veranstaltungen mit Sternebewertungen und optionalen Kommentaren; Organisatoren sehen aggregierte Ergebnisse",
-        "admin": "Admin-Panel - Benutzerverwaltung, Bewerbungsgenehmigungen, Turnierüberwachung und Systemverwaltung",
-        "categories": "Bogenkategorien-Verwaltung - Vollständige CRUD für Bogenkategorien mit Regelverweisen",
-        "clubs": "Vereine & Verbände - Öffentliche Vereinsprofile, Beitrittsanfragen, Vereinsmitgliedschaft mit verifizierten/unverifizierten Abzeichen, Verbandshierarchie und Einladungsabläufe",
-        "divisions": "Altersgruppen-Verwaltung - Altersgruppen- und Gruppenverwaltung, die mit Regeln verknüpft ist",
-        "rules": "Regelverwaltung - Offizielle Bogenschießregeln mit mehrsprachigen Beschreibungen und PDF-Downloads (WA, NFAA, IBO, FITARCO, RFETA, AGB, FPTA, FSLU, FABP und mehr)",
-        "converter": "Einheitenkonverter - Umrechnung zwischen gängigen Bogenschießmaßen (Zoll/cm, Pfund/kg, Grain/Gramm, Yards/Meter)",
-        "calculator": "Bogensport-Rechner - Sechs Werkzeuge für FOC, Gesamtpfeilgewicht, kinetische Energie und Impuls, Auszugslängen-Schätzung, ungefähre Carbon- oder Holz-Spine-Empfehlung und Grains pro Pfund (GPP). Ergebnisse sind Richtwerte",
-        "themeSwitcher": "Theme-Wechsel - Zwischen hellem und dunklem Theme in der Navigation wechseln; die Auswahl wird auf diesem Gerät gespeichert",
-        "glossary": "Glossar - Häufige Bogenschießbegriffe und Abkürzungen für den Schießplatz und den Wettkampf",
-        "uploads": "Datei-Upload-System - Bildverarbeitung für Avatare und Banner, Anhangsverwaltung für Turniere",
-        "multilang": "Mehrsprachige Unterstützung - Verfügbar in 6 Sprachen: Englisch, Ukrainisch, Spanisch, Italienisch, Portugiesisch und Deutsch",
-        "pwa": "Progressive Web App - Installierbare PWA mit Offline-Funktionen",
-        "onboarding": "Onboarding-Assistent - Geführte Einrichtung für neue Benutzer: Profil, Standard-Bogenausrüstung, Synchronisations- und Datenschutzeinstellungen",
-        "trainingLog": "Trainingsprotokoll - Persönliche Trainingseinheiten mit Datum, Distanz, Zieltyp, Pfeilanzahl, Stimmung und Punkte aufzeichnen. Funktioniert offline mit automatischer Synchronisation",
-        "equipment": "Ausrüstungsverwaltung - Bogenausrüstungssets mit detaillierten Spezifikationen (Zugkraft, Pfeil-Spine, Länge, Material und mehr) speichern und verwalten",
-        "statistics": "Meine Statistiken - Persönliches Aktivitätsdashboard mit Pfeilen nach Zeitraum, Distanz, Trainingsserie, Ausrüstungsvergleich, Punktetrends und Monatsdiagrammen",
-        "achievements": "Erfolge - Schalten Sie 35+ echte Abzeichen frei, die aus Ihren tatsächlichen Trainings- und Turnierdaten erworben wurden. Teilen Sie Erfolge und Fortschritte mit Freunden",
-        "gamification": "Gamification-System - Sechs Erfolgskategorien (Erste Schritte, Beständigkeit, Volumen, Erkundung, Turniere, Meisterschaft) mit vier Seltenheitsstufen (Gewöhnlich, Selten, Episch, Legendär)",
-        "publicProfiles": "Öffentliche Profile & Teilen - Teilen Sie Ihr Bogenschützen-Profil per Link mit drei Datenschutzstufen: Persönlich, Begrenzt oder Öffentlich",
-        "progressSnapshot": "Fortschrittsübersicht - Ihr öffentliches Profil zeigt wöchentliche Pfeile, Trainingsserie, Gesamtpfeile und letzten Erfolg auf einen Blick",
-        "security": "Sicherheit & Datenschutz - Ihre Daten werden sicher mit verschlüsselten Verbindungen gespeichert. Sie entscheiden, was Sie teilen – Trainingsstatistiken, Erfolge und Profilsichtbarkeit bleiben unter Ihrer Kontrolle"
+      "archerIntro": "Ob zweimal pro Woche oder zweimal im Monat — Sokil hilft dir, dranzubleiben und zu sehen, wie weit du gekommen bist.",
+      "clubTitle": "Für Vereine",
+      "clubIntro": "Führe deinen Verein von einem Ort aus — weniger E-Mail-Admin, mehr Zeit mit den Mitgliedern.",
+      "federationTitle": "Für Verbände",
+      "federationIntro": "Weniger Logistik, mehr Fokus darauf, dass Turniere reibungslos laufen.",
+      "archers": {
+        "home": "Startseite - Beginne mit einem Wochenüberblick: Pfeile, Serie, letzte Trainingseinheiten und was als Nächstes ansteht",
+        "trainingLog": "Trainingsprotokoll - Halte fest, wie sich eine Einheit angefühlt hat, nicht nur die Punkte. Distanz, Ziel, Stimmung, Pfeile — auch offline",
+        "equipment": "Ausrüstung - Bewahre deine Bogen-Setups an einem Ort — ohne zu raten, welche Pfeile du beim letzten Mal genutzt hast",
+        "statistics": "Statistiken - Erkenne Muster: was sich verbessert, welche Ausrüstung am besten funktioniert, wie konstant du bist",
+        "achievements": "Erfolge - Verdiene Abzeichen aus echtem Training und Turnieren — und teile die, auf die du stolz bist",
+        "profileSharing": "Dein Profil - Zeige der Welt (oder nur deinem Verein), wer du als Bogenschütze bist — mit Datenschutz unter deiner Kontrolle",
+        "notifications": "Benachrichtigungen - Verpasse keine Genehmigung, keine Einladung und nicht den Moment, wenn etwas Neues freigeschaltet wird",
+        "tournamentApplications": "Turniere - In wenigen Schritten bewerben, den Status verfolgen und nach dem Event Feedback geben",
+        "onboarding": "Erste Schritte - Eine kurze Einführung, damit du gleich dein erstes Training eintragen kannst",
+        "fieldGuide": "Field Guide - Praktisch am Platz: Glossar, wenn Begriffe unklar sind, Einheitenrechner und Rechner für Bogenfragen"
       },
-      "plannedTitle": "Geplante Funktionen:",
+      "clubs": {
+        "publicProfiles": "Öffentliches Profil - Eine Heimatseite für deinen Verein, die Mitglieder und Neulinge finden und teilen können",
+        "joinInvitations": "Verein wachsen lassen - Beitrittsanfragen oder direkte Einladungen — jeder sieht, wer dabei ist",
+        "myClub": "Mein Verein - Anfragen genehmigen, die Mitgliederliste pflegen und neue Leute einladen — ohne Tabellen-Chaos",
+        "clubTournaments": "Vereins-Events - Organisiere eigene Schießtage und Turniere ohne Verbandstools",
+        "clubCommunications": "In Kontakt bleiben - Sende Updates dorthin, wo sie gesehen werden — in der App"
+      },
+      "federations": {
+        "tournamentManagement": "Turniere - Veröffentliche Events mit allen Details: wo, wann, wie man sich bewirbt und was beigefügt ist",
+        "applicationsWorkflow": "Bewerbungen - Prüfen, genehmigen oder ablehnen mit klarer Begründung; bei Bedarf für andere anmelden",
+        "patrols": "Patrouillen - Schützen fair gruppieren, Gruppen anpassen und Punktekarten drucken, wenn es soweit ist",
+        "tournamentFeedback": "Feedback - Höre nach dem Event von den Teilnehmern — was gut lief und was nicht, in ihren Worten",
+        "communications": "Ankündigungen - Erreiche alle, eine ausgewählte Gruppe oder nur die für ein Turnier Angemeldeten",
+        "federationMembership": "Verbandsnetzwerk - Vereine in den Verband einladen und die Struktur übersichtlich halten",
+        "referenceData": "Regeln & Referenz - Offizielle Regelwerke, Altersgruppen und Bogenkategorien — was Organisatoren brauchen",
+        "adminTools": "Administration - Nutzer und Berechtigungen verwalten, damit die richtigen Leute das Richtige tun können"
+      },
+      "plannedTitle": "Was als Nächstes kommt",
+      "plannedIntro": "Wir bauen noch weiter. Darauf arbeiten wir hin.",
       "planned": {
-        "socialSharing": "Erweitertes Social Sharing - Mehr Möglichkeiten, Ergebnisse, Statistiken und Erfolge mit Freunden und Vereinskameraden zu teilen",
-        "payments": "Zahlungssystem - Demo-Seite verfügbar, Zahlungsmethoden, Abonnements und Turniergebührenverfolgung kommen bald",
-        "competitions": "Wettbewerbsfunktionen - Erweitertes Wettbewerbsmanagement und Wertung",
-        "duels": "Freundschaftliche Duelle - Fordern Sie andere Bogenschützen zu freundschaftlichen Duellen heraus",
-        "news": "Nachrichten & Updates - Turniernachrichten und Verbandsankündigungen",
-        "calendar": "Veranstaltungskalender - Integrierte Kalenderansicht von Turnieren und Veranstaltungen",
-        "knowledgeBase": "Wissensdatenbank - Umfassendes Bogenschieß-Lexikon und Ressourcen",
-        "more": "Und vieles mehr..."
+        "socialSharing": "Besseres Teilen - Mehr Möglichkeiten, Ergebnisse mit Freunden und Vereinskameraden zu feiern",
+        "duels": "Freundschaftliche Duelle - Leichte Wettkämpfe unter Bogenschützen",
+        "knowledgeBase": "Wissensdatenbank - Eine tiefere Bogenschieß-Bibliothek jenseits des Glossars",
+        "payments": "Zahlungen - Turniergebühren und Mitgliedschaften (eine Demo gibt es schon)",
+        "paperlessScoring": "Papierloses Werten - Von der Punktekarten-Demo zum vollständigen Wettkampf-Werten",
+        "calendar": "Kalender - Kommende Turniere und Events auf einen Blick",
+        "newsFeed": "Nachrichtenfeed - Ein öffentliches Zuhause für Turniernews und Updates",
+        "more": "Und mehr, wovon wir noch träumen..."
       },
       "contact": "Für Funktioneanfragen, Fehlerberichte oder Fragen kontaktieren Sie bitte",
       "authorsTitle": "Autoren",
@@ -1565,9 +1568,15 @@
     "currentLogo": "Aktuelles Logo: {{name}}"
   },
   "components": {
-    "avatarUploader": { "cropLabel": "Avatar zuschneiden" },
-    "bannerUploader": { "cropLabel": "Banner zuschneiden" },
-    "logoUploader": { "cropLabel": "Logo zuschneiden" }
+    "avatarUploader": {
+      "cropLabel": "Avatar zuschneiden"
+    },
+    "bannerUploader": {
+      "cropLabel": "Banner zuschneiden"
+    },
+    "logoUploader": {
+      "cropLabel": "Logo zuschneiden"
+    }
   },
   "myClub": {
     "adminBadge": "Admin"

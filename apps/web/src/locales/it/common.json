@@ -451,51 +451,54 @@
       "confirmRemove": "Sei sicuro di voler rimuovere questo membro?"
     },
     "about": {
-      "title": "Informazioni su questa app",
-      "intro": "Sokil aiuta gli arcieri a registrare gli allenamenti, monitorare i progressi, sbloccare traguardi e gestire l'attrezzatura — con supporto offline e sincronizzazione automatica.\n\nLa gamification rende il hobby più coinvolgente.\n\nI tuoi dati sono archiviati in modo sicuro e tu scegli cosa condividere. Federazioni e club possono organizzare tornei, gestire domande ed eventi.\n\nPotenziare le comunità del tiro con l'arco con tecnologia moderna.",
+      "title": "Informazioni su Sokil",
+      "intro": "Sokil è il tuo compagno di tiro con l'arco — che tu tiri per divertimento, ti alleni seriamente o aiuti a gestire un club o una federazione.\n\nRegistra le sessioni sul campo, guarda il progresso crescere e celebra le piccole vittorie. Funziona anche offline — il segnale debole sul campo non è più un problema.\n\nI club restano connessi con i membri. Le federazioni passano meno tempo sulla burocrazia e più sullo sport.\n\nInstallala sul telefono, scegli la lingua e rendila tua. I tuoi dati sono tuoi e decidi tu cosa condividere.\n\nCreato da arcieri, per le comunità del tiro con l'arco.",
       "archerTitle": "Per gli arcieri",
-      "federationTitle": "Per federazioni e organizzatori",
-      "platformTitle": "Piattaforma",
-      "current": {
-        "home": "Dashboard Home - Centro attività personale con frecce della settimana, serie attuale, sessioni recenti, scoperta tornei imminenti, riepilogo mensile e ultimo traguardo",
-        "auth": "Autenticazione e autorizzazione - Autenticazione basata su JWT con Google OAuth, reset password e controllo accessi basato su ruoli",
-        "profiles": "Profili utente - Profilo personale con avatar, biografia, posizione, preferenze di arco e divisione preferita",
-        "tournaments": "Gestione tornei - Creare, modificare e gestire tornei con banner, allegati, mappe di posizione, filtro per paese e scadenze per le domande",
-        "applications": "Domande per tornei - Inviare domande con selezione di categoria, divisione e attrezzatura. Flusso di lavoro di approvazione amministratore con tracciamento dello stato",
-        "patrols": "Sistema pattuglie - Generazione automatica di pattuglie con raggruppamento intelligente per categoria di arco, divisione e genere. Interfaccia di gestione drag-and-drop ed esportazione PDF",
-        "tournamentFeedback": "Feedback tornei - I partecipanti valutano gli eventi con stelle e commenti opzionali; gli organizzatori visualizzano i risultati aggregati",
-        "admin": "Pannello amministratore - Gestione utenti, approvazioni domande, supervisione tornei e amministrazione sistema",
-        "categories": "Gestione categorie di arco - CRUD completo per categorie di arco con riferimenti alle regole",
-        "clubs": "Club e Federazioni - Profili pubblici dei club, richieste di adesione, badge verificati, gerarchia federale e flussi di invito",
-        "divisions": "Gestione divisioni - Gestione di gruppi di età e divisioni collegate alle regole",
-        "rules": "Gestione regole - Regole ufficiali di tiro con l'arco con descrizioni multilingue e download PDF (WA, NFAA, IBO, FITARCO, RFETA, AGB, FPTA, FSLU, FABP e altri)",
-        "converter": "Convertitore unità - Convertire tra misure comuni di tiro con l'arco (pollici/cm, libbre/kg, grani/grammi, iarde/metri)",
-        "calculator": "Calcolatori per il tiro con l'arco - Sei strumenti per FOC, peso totale della freccia, energia cinetica e quantità di moto, stima della lunghezza di trazione, suggerimento approssimativo dello spine in carbonio o legno e grani per libbra (GPP). Risultati indicativi",
-        "themeSwitcher": "Cambio tema - Passa dal tema chiaro a quello scuro dalla navigazione; la preferenza viene ricordata su questo dispositivo",
-        "glossary": "Glossario - Termini e abbreviazioni comuni di tiro con l'arco usati al campo e in gara",
-        "uploads": "Sistema caricamento file - Elaborazione immagini per avatar e banner, gestione allegati per tornei",
-        "multilang": "Supporto multilingua - Disponibile in 6 lingue: inglese, ucraino, spagnolo, italiano, portoghese e tedesco",
-        "pwa": "Applicazione web progressiva - PWA installabile con funzionalità offline",
-        "onboarding": "Procedura guidata - Configurazione guidata per nuovi utenti: profilo, attrezzatura predefinita, preferenze di sincronizzazione e privacy",
-        "trainingLog": "Registro allenamenti - Registra sessioni con data, distanza, tipo di bersaglio, frecce, umore e punteggio. Funziona offline con sincronizzazione automatica",
-        "equipment": "Gestione attrezzatura - Archivia e gestisci set di attrezzatura con specifiche dettagliate (peso di trazione, spine delle frecce, lunghezza, materiale e altro)",
-        "statistics": "Le mie statistiche - Dashboard con frecce per periodo, distanza, serie, confronto attrezzatura, tendenze punteggio e grafici mensili",
-        "achievements": "Traguardi - Sblocca 35+ badge reali guadagnati dai tuoi dati di allenamento e tornei. Condividi traguardi e progressi con gli amici",
-        "gamification": "Sistema di gamification - Sei categorie di traguardi (Primi passi, Costanza, Volume, Esplorazione, Tornei, Maestria) con quattro livelli di rarità (Comune, Raro, Epico, Leggendario)",
-        "publicProfiles": "Profili pubblici - Condividi il tuo profilo di arciere tramite link con tre livelli di privacy: Personale, Limitato o Pubblico",
-        "progressSnapshot": "Riepilogo progressi - Il tuo profilo pubblico mostra frecce settimanali, serie, totale frecce e ultimo traguardo a colpo d'occhio",
-        "security": "Sicurezza e Privacy - I tuoi dati sono archiviati in modo sicuro con connessioni crittografate. Tu scegli cosa condividere — statistiche di allenamento, traguardi e visibilità del profilo restano sotto il tuo controllo"
+      "archerIntro": "Che tu tiri due volte a settimana o due volte al mese — Sokil ti aiuta a restare costante e vedere quanto sei arrivato lontano.",
+      "clubTitle": "Per i club",
+      "clubIntro": "Gestisci il club da un unico posto — meno email, più tempo con i membri.",
+      "federationTitle": "Per le federazioni",
+      "federationIntro": "Meno logistica, più attenzione a far funzionare bene i tornei.",
+      "archers": {
+        "home": "Home - Inizia con un riepilogo della settimana: frecce, serie, sessioni recenti e cosa arriva",
+        "trainingLog": "Registro allenamenti - Cattura come ti è sembrata la sessione, non solo il punteggio. Distanza, bersaglio, umore, frecce — anche offline",
+        "equipment": "Attrezzatura - Tieni le configurazioni dell'arco in un posto — senza indovinare quali frecce hai usato l'ultima volta",
+        "statistics": "Statistiche - Nota i pattern: cosa migliora, quale attrezzatura funziona meglio, quanto sei costante",
+        "achievements": "Traguardi - Guadagna badge da allenamenti e tornei reali — e condividi quelli di cui vai fiero",
+        "profileSharing": "Il tuo profilo - Mostra al mondo (o solo al club) chi sei come arciere, con privacy sotto il tuo controllo",
+        "notifications": "Notifiche - Non perdere un'approvazione, un invito o quel momento soddisfacente di sbloccare qualcosa di nuovo",
+        "tournamentApplications": "Tornei - Candidati in pochi tap, segui lo stato e lascia feedback dopo l'evento",
+        "onboarding": "Primi passi - Una configurazione rapida per registrare la prima sessione, non impazzire con le impostazioni",
+        "fieldGuide": "Guida sul campo - Utile sul campo: glossario quando i termini confondono, convertitore e calcolatori per dubbi sull'attrezzatura"
       },
-      "plannedTitle": "Funzionalità pianificate:",
+      "clubs": {
+        "publicProfiles": "Profilo pubblico - Una home page per il club che membri e nuovi arrivati possono trovare e condividere",
+        "joinInvitations": "Far crescere il club - Richieste di adesione o inviti diretti — tutti sanno chi c'è dentro",
+        "myClub": "Il mio club - Approva richieste, gestisci l'elenco e invita nuovi membri senza fogli di calcolo",
+        "clubTournaments": "Eventi del club - Organizza i tuoi tiri e tornei senza strumenti da federazione",
+        "clubCommunications": "Restare in contatto - Invia aggiornamenti dove li vedranno — dentro l'app"
+      },
+      "federations": {
+        "tournamentManagement": "Tornei - Pubblica eventi con tutti i dettagli: dove, quando, come iscriversi e cosa è allegato",
+        "applicationsWorkflow": "Domande - Esamina, approva o rifiuta con un motivo chiaro; iscrivere altri quando serve",
+        "patrols": "Pattuglie - Raggruppa i tiratori in modo equo, modifica i gruppi al volo e stampa le schede punteggio quando sei pronto",
+        "tournamentFeedback": "Feedback - Ascolta i partecipanti dopo l'evento — cosa ha funzionato e cosa no, con le loro parole",
+        "communications": "Annunci - Raggiungi tutti, un gruppo selezionato o solo chi è iscritto a un torneo",
+        "federationMembership": "Rete federale - Porta i club nella federazione e mantieni la gerarchia chiara",
+        "referenceData": "Regole e riferimenti - Regolamenti ufficiali, divisioni e categorie — ciò che gli organizzatori consultano",
+        "adminTools": "Amministrazione - Gestisci utenti e permessi così le persone giuste possono fare ciò che serve"
+      },
+      "plannedTitle": "Cosa arriva",
+      "plannedIntro": "Stiamo ancora costruendo. Ecco verso cosa stiamo lavorando.",
       "planned": {
-        "socialSharing": "Condivisione Social Avanzata - Più modi per condividere risultati, statistiche e traguardi con amici e compagni di club",
-        "payments": "Sistema Pagamenti - Pagina demo disponibile, metodi di pagamento, abbonamenti e tracciamento delle quote torneo in arrivo",
-        "competitions": "Funzioni competizione - Gestione migliorata delle competizioni e punteggio",
-        "duels": "Sfide amichevoli - Sfidare altri arcieri a duelli amichevoli",
-        "news": "Notizie e aggiornamenti - Notizie sui tornei e annunci della federazione",
-        "calendar": "Calendario eventi - Vista calendario integrata di tornei ed eventi",
-        "knowledgeBase": "Base di conoscenza - Enciclopedia e risorse complete sul tiro con l'arco",
-        "more": "E molto altro..."
+        "socialSharing": "Condivisione migliore - Più modi per festeggiare i risultati con amici e compagni di club",
+        "duels": "Sfide amichevoli - Duelli leggeri tra arcieri",
+        "knowledgeBase": "Base di conoscenza - Una biblioteca più profonda oltre al glossario",
+        "payments": "Pagamenti - Quote torneo e iscrizioni (c'è già una demo)",
+        "paperlessScoring": "Punteggio senza carta - Dalla demo delle schede al punteggio completo di gara",
+        "calendar": "Calendario - Tornei ed eventi in arrivo a colpo d'occhio",
+        "newsFeed": "Feed notizie - Una casa pubblica per news e aggiornamenti sui tornei",
+        "more": "E altro che stiamo ancora sognando..."
       },
       "contact": "Per richieste di funzionalità, segnalazioni di bug o domande, si prega di contattare",
       "authorsTitle": "Autori",
@@ -1555,9 +1558,15 @@
     "currentLogo": "Logo attuale: {{name}}"
   },
   "components": {
-    "avatarUploader": { "cropLabel": "Ritaglia avatar" },
-    "bannerUploader": { "cropLabel": "Ritaglia banner" },
-    "logoUploader": { "cropLabel": "Ritaglia logo" }
+    "avatarUploader": {
+      "cropLabel": "Ritaglia avatar"
+    },
+    "bannerUploader": {
+      "cropLabel": "Ritaglia banner"
+    },
+    "logoUploader": {
+      "cropLabel": "Ritaglia logo"
+    }
   },
   "myClub": {
     "adminBadge": "Admin"

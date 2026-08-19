@@ -44,114 +44,97 @@ const About = () => {
 
         <div className="features-section">
           <h3>{t('pages.about.archerTitle')}</h3>
+          <p className="section-intro">{t('pages.about.archerIntro')}</p>
           <ul className="features-list">
             <li>
-              <FeatureItem emoji="🏠" label={t('pages.about.current.home')} />
+              <FeatureItem emoji="🏠" label={t('pages.about.archers.home')} />
             </li>
             <li>
-              <FeatureItem emoji="🏋️" label={t('pages.about.current.trainingLog')} />
+              <FeatureItem emoji="🏋️" label={t('pages.about.archers.trainingLog')} />
             </li>
             <li>
-              <FeatureItem emoji="🎽" label={t('pages.about.current.equipment')} />
+              <FeatureItem emoji="🎽" label={t('pages.about.archers.equipment')} />
             </li>
             <li>
-              <FeatureItem emoji="📈" label={t('pages.about.current.statistics')} />
+              <FeatureItem emoji="📈" label={t('pages.about.archers.statistics')} />
             </li>
             <li>
-              <FeatureItem emoji="🏆" label={t('pages.about.current.achievements')} />
+              <FeatureItem emoji="🏆" label={t('pages.about.archers.achievements')} />
             </li>
             <li>
-              <FeatureItem emoji="🎮" label={t('pages.about.current.gamification')} />
+              <FeatureItem emoji="👤" label={t('pages.about.archers.profileSharing')} />
             </li>
             <li>
-              <FeatureItem emoji="👤" label={t('pages.about.current.profiles')} />
+              <FeatureItem emoji="🔔" label={t('pages.about.archers.notifications')} />
             </li>
             <li>
-              <FeatureItem emoji="🔗" label={t('pages.about.current.publicProfiles')} />
+              <FeatureItem emoji="📝" label={t('pages.about.archers.tournamentApplications')} />
             </li>
             <li>
-              <FeatureItem emoji="📊" label={t('pages.about.current.progressSnapshot')} />
+              <FeatureItem emoji="🚀" label={t('pages.about.archers.onboarding')} />
+            </li>
+            <li>
+              <FeatureItem emoji="📖" label={t('pages.about.archers.fieldGuide')} />
+            </li>
+          </ul>
+        </div>
+
+        <div className="features-section">
+          <h3>{t('pages.about.clubTitle')}</h3>
+          <p className="section-intro">{t('pages.about.clubIntro')}</p>
+          <ul className="features-list">
+            <li>
+              <FeatureItem emoji="🏢" label={t('pages.about.clubs.publicProfiles')} />
+            </li>
+            <li>
+              <FeatureItem emoji="🤝" label={t('pages.about.clubs.joinInvitations')} />
+            </li>
+            <li>
+              <FeatureItem emoji="👥" label={t('pages.about.clubs.myClub')} />
+            </li>
+            <li>
+              <FeatureItem emoji="🏹" label={t('pages.about.clubs.clubTournaments')} />
+            </li>
+            <li>
+              <FeatureItem emoji="📣" label={t('pages.about.clubs.clubCommunications')} />
             </li>
           </ul>
         </div>
 
         <div className="features-section">
           <h3>{t('pages.about.federationTitle')}</h3>
+          <p className="section-intro">{t('pages.about.federationIntro')}</p>
           <ul className="features-list">
             <li>
-              <FeatureItem emoji="🏹" label={t('pages.about.current.tournaments')} />
+              <FeatureItem emoji="🏆" label={t('pages.about.federations.tournamentManagement')} />
             </li>
             <li>
-              <FeatureItem emoji="📝" label={t('pages.about.current.applications')} />
+              <FeatureItem emoji="📋" label={t('pages.about.federations.applicationsWorkflow')} />
             </li>
             <li>
-              <FeatureItem emoji="👥" label={t('pages.about.current.patrols')} />
+              <FeatureItem emoji="👥" label={t('pages.about.federations.patrols')} />
             </li>
             <li>
-              <FeatureItem emoji="⭐" label={t('pages.about.current.tournamentFeedback')} />
+              <FeatureItem emoji="⭐" label={t('pages.about.federations.tournamentFeedback')} />
             </li>
             <li>
-              <FeatureItem emoji="⚙️" label={t('pages.about.current.admin')} />
+              <FeatureItem emoji="📣" label={t('pages.about.federations.communications')} />
             </li>
             <li>
-              <FeatureItem emoji="🎯" label={t('pages.about.current.categories')} />
+              <FeatureItem emoji="🔗" label={t('pages.about.federations.federationMembership')} />
             </li>
             <li>
-              <FeatureItem emoji="🏢" label={t('pages.about.current.clubs')} />
+              <FeatureItem emoji="📜" label={t('pages.about.federations.referenceData')} />
             </li>
             <li>
-              <FeatureItem emoji="📋" label={t('pages.about.current.divisions')} />
-            </li>
-            <li>
-              <FeatureItem emoji="📜" label={t('pages.about.current.rules')} />
-            </li>
-          </ul>
-        </div>
-
-        <div className="features-section">
-          <h3>{t('pages.about.platformTitle')}</h3>
-          <ul className="features-list">
-            <li>
-              <FeatureItem emoji="🔐" label={t('pages.about.current.auth')} />
-            </li>
-            <li>
-              <FeatureItem emoji="🛡️" label={t('pages.about.current.security')} />
-            </li>
-            <li>
-              <FeatureItem emoji="🚀" label={t('pages.about.current.onboarding')} />
-            </li>
-            <li>
-              <FeatureItem emoji="📱" label={t('pages.about.current.pwa')} />
-            </li>
-            <li>
-              <FeatureItem emoji="🌍" label={t('pages.about.current.multilang')} />
-            </li>
-            <li>
-              <FeatureItem emoji="🔄" label={t('pages.about.current.converter')} />
-            </li>
-            <li>
-              <FeatureItem emoji="🧮" label={t('pages.about.current.calculator')} />
-            </li>
-            <li>
-              <FeatureItem
-                emoji="🌗"
-                label={t('pages.about.current.themeSwitcher', {
-                  defaultValue:
-                    'Theme Switching - Toggle between light and dark themes from the navigation; your preference is remembered on this device',
-                })}
-              />
-            </li>
-            <li>
-              <FeatureItem emoji="📖" label={t('pages.about.current.glossary')} />
-            </li>
-            <li>
-              <FeatureItem emoji="📎" label={t('pages.about.current.uploads')} />
+              <FeatureItem emoji="⚙️" label={t('pages.about.federations.adminTools')} />
             </li>
           </ul>
         </div>
 
         <div className="features-section">
           <h3>{t('pages.about.plannedTitle')}</h3>
+          <p className="section-intro">{t('pages.about.plannedIntro')}</p>
           <ul className="features-list">
             <li>
               <FeatureItem label={t('pages.about.planned.socialSharing')} />
@@ -166,13 +149,13 @@ const About = () => {
               <FeatureItem label={t('pages.about.planned.payments')} />
             </li>
             <li>
-              <FeatureItem label={t('pages.about.planned.competitions')} />
-            </li>
-            <li>
-              <FeatureItem label={t('pages.about.planned.news')} />
+              <FeatureItem label={t('pages.about.planned.paperlessScoring')} />
             </li>
             <li>
               <FeatureItem label={t('pages.about.planned.calendar')} />
+            </li>
+            <li>
+              <FeatureItem label={t('pages.about.planned.newsFeed')} />
             </li>
             <li>
               <FeatureItem label={t('pages.about.planned.more')} />
