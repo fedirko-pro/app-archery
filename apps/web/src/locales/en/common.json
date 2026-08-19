@@ -432,51 +432,54 @@
       "confirmClose": "OK"
     },
     "about": {
-      "title": "About this App",
-      "intro": "Sokil helps archers log training sessions, track progress, unlock achievements, and manage equipment — with offline support and automatic sync.\n\nGamification keeps the hobby engaging.\n\nYour data is stored securely and you choose what to share. Federations and clubs can run tournaments, manage applications, and organize events.\n\nEmpowering archery communities with modern technology.",
+      "title": "About Sokil",
+      "intro": "Sokil is your archery companion — whether you shoot for fun, train seriously, or help run a club or federation.\n\nLog sessions at the range, watch your progress add up, and celebrate the small wins along the way. It works offline too, so a patchy signal at the field is not a problem.\n\nClubs stay connected with their members. Federations spend less time on paperwork and more time on the sport.\n\nInstall it on your phone, pick your language, and make it yours. Your data belongs to you, and you decide what to share.\n\nBuilt by archers, for archery communities.",
       "archerTitle": "For archers",
-      "federationTitle": "For federations & organizers",
-      "platformTitle": "Platform",
-      "current": {
-        "home": "Home Dashboard - Personal activity hub with this-week arrows, current streak, recent sessions, upcoming tournament discovery, monthly summary, and last achievement at a glance",
-        "auth": "User Authentication & Authorization - JWT-based authentication with Google OAuth, password reset, and role-based access control",
-        "profiles": "User Profiles - Personal profile with avatar, bio, location, bow preferences, and preferred division",
-        "tournaments": "Tournament Management - Create, edit, and manage tournaments with banners, attachments, location mapping, country filtering, and application deadlines",
-        "applications": "Tournament Applications - Submit applications with category, division, and equipment selection. Admin approval workflow with status tracking",
-        "patrols": "Patrol System - Automatic patrol generation with intelligent grouping by bow category, division, and gender. Drag-and-drop management interface and PDF export",
-        "tournamentFeedback": "Tournament Feedback - Participants rate events with star ratings and optional comments after tournaments end; organizers view aggregated results and full response list",
-        "admin": "Admin Panel - User management, application approvals, tournament oversight, and system administration",
-        "categories": "Bow Categories Management - Complete CRUD for bow categories with rule references",
-        "clubs": "Clubs & Federations - Public club profiles, join-request flow, club membership with verified/unverified badges, federation hierarchy, invitation flows, and admin management",
-        "divisions": "Divisions Management - Age group and division management linked to rules",
-        "rules": "Rules Management - Official archery rules with multi-language descriptions and PDF downloads (WA, NFAA, IBO, FITARCO, RFETA, AGB, FPTA, FSLU, FABP and more)",
-        "converter": "Unit Converter - Convert between common archery measurements (inches/cm, pounds/kg, grains/grams, yards/meters)",
-        "calculator": "Archery Calculators - Six quick setup tools for FOC, total arrow weight, kinetic energy & momentum, draw-length estimate, carbon or wood spine suggestion, and grains per pound (GPP). Results are approximate guidance only",
-        "themeSwitcher": "Theme Switching - Toggle between light and dark themes from the navigation; your preference is remembered on this device",
-        "glossary": "Glossary - Common archery terms and abbreviations used on the range and in competition",
-        "uploads": "File Upload System - Image processing for avatars and banners, attachment management for tournaments",
-        "multilang": "Multi-language Support - Available in 6 languages: English, Ukrainian, Spanish, Italian, Portuguese, and German",
-        "pwa": "Progressive Web App - Installable PWA with offline capabilities",
-        "onboarding": "Onboarding Wizard - Guided setup for new users: profile, default bow equipment, sync preferences, and privacy settings — all in one flow",
-        "trainingLog": "Training Log - Record and manage personal training sessions with date, distance, target type, shot count, mood, and score. Works offline with automatic sync",
-        "equipment": "Equipment Management - Store and manage bow equipment sets with detailed specifications (draw weight, arrow spine, length, material, and more)",
-        "statistics": "My Statistics - Personal activity dashboard with shots fired by period, distance traveled, training streak, training habits, equipment performance comparison, scoring trends, and monthly charts",
-        "achievements": "Achievements - Unlock 35+ real badges earned from your actual training and tournament data. Share individual achievements and your full progress collection with friends",
-        "gamification": "Gamification System - Six achievement categories (Getting Started, Consistency, Volume, Exploration, Tournaments, Mastery) with four rarity tiers (Common, Rare, Epic, Legendary). Milestone tracking for arrows shot, sessions logged, streaks, distance walked, and draw weight lifted",
-        "publicProfiles": "Public Profiles & Sharing - Share your archer profile via link with three privacy tiers: Personal, Limited (club/federation), or Public. Control exactly what others can see",
-        "progressSnapshot": "Progress Snapshot - Your public profile shows weekly arrows, training streak, total arrows, and latest achievement at a glance — a live summary of your archery journey",
-        "security": "Security & Privacy - Your data is stored securely with encrypted connections. You choose what to share — training stats, achievements, and profile visibility stay under your control"
+      "archerIntro": "Whether you shoot twice a week or twice a month, Sokil helps you stay in the habit and see how far you've come.",
+      "clubTitle": "For clubs",
+      "clubIntro": "Run your club from one place — less admin by email, more time with your members.",
+      "federationTitle": "For federations",
+      "federationIntro": "Less time on logistics, more time making tournaments run smoothly.",
+      "archers": {
+        "home": "Home - Start each visit with a snapshot of your week: arrows shot, your streak, recent sessions, and what's coming up",
+        "trainingLog": "Training log - Capture how a session felt, not just the score. Distance, target, mood, shots — saved even when you're offline",
+        "equipment": "Equipment - Keep your bow setups in one place so you're not guessing which arrows you used last time",
+        "statistics": "Statistics - Spot patterns in your shooting: what's improving, what equipment works best, how consistent you've been",
+        "achievements": "Achievements - Earn badges from your real training and tournaments — then share the ones you're proud of",
+        "profileSharing": "Your profile - Show the world (or just your club) who you are as an archer, with privacy controls you're in charge of",
+        "notifications": "Notifications - Never miss an approval, an invite, or that satisfying moment when you unlock something new",
+        "tournamentApplications": "Tournaments - Apply in a few taps, track your application, and tell organizers what you thought after the event",
+        "onboarding": "Getting started - A quick guided setup so you're ready to log your first session, not wrestling with settings",
+        "fieldGuide": "Field Guide - Handy tools at the range: a glossary when terminology gets fuzzy, a unit converter, and calculators for bow tuning questions"
       },
-      "plannedTitle": "Planned Features:",
+      "clubs": {
+        "publicProfiles": "Public profile - A home page for your club that members and newcomers can find and share",
+        "joinInvitations": "Growing your club - Let people request to join or invite them directly — everyone knows who's in",
+        "myClub": "My Club - Approve join requests, manage your roster, and invite new members without chasing spreadsheets",
+        "clubTournaments": "Club events - Organize your own shoots and tournaments without needing federation-level tools",
+        "clubCommunications": "Stay in touch - Send updates to your members where they'll actually see them — inside the app"
+      },
+      "federations": {
+        "tournamentManagement": "Tournaments - Publish events with all the details archers need: where, when, how to apply, and what's attached",
+        "applicationsWorkflow": "Applications - Review entries, approve or decline with a clear reason, and register archers on their behalf when needed",
+        "patrols": "Patrols - Group shooters fairly, adjust groups on the fly, and print score cards when you're ready",
+        "tournamentFeedback": "Feedback - Hear from participants after the event — what worked, what didn't, in their own words",
+        "communications": "Announcements - Reach everyone, a selected group, or just the people registered for a tournament",
+        "federationMembership": "Federation network - Bring clubs into your federation and keep the hierarchy clear",
+        "referenceData": "Rules & reference - Official rulebooks, divisions, and bow categories — the material organizers reach for",
+        "adminTools": "Administration - Manage users and permissions so the right people can do the right things"
+      },
+      "plannedTitle": "What's next",
+      "plannedIntro": "We're still building. Here's what we're working toward.",
       "planned": {
-        "socialSharing": "Enhanced Social Sharing - Richer ways to share results, stats, and achievements with friends and club mates",
-        "payments": "Payments System - Demo page available, payment methods, subscriptions and tournament fee tracking coming soon",
-        "competitions": "Competition Features - Enhanced competition management and scoring",
-        "duels": "Friendly Challenges - Challenge other archers to friendly duels",
-        "news": "News & Updates - Tournament news and federation announcements",
-        "calendar": "Event Calendar - Integrated calendar view of tournaments and events",
-        "knowledgeBase": "Knowledge Base - Comprehensive archery encyclopedia and resources",
-        "more": "And much more..."
+        "socialSharing": "Better sharing - More ways to celebrate results with friends and club mates",
+        "duels": "Friendly challenges - Light-hearted head-to-head with other archers",
+        "knowledgeBase": "Knowledge base - A deeper archery library beyond the glossary",
+        "payments": "Payments - Tournament fees and memberships (a demo is already there)",
+        "paperlessScoring": "Paperless scoring - From demo score cards to full competition scoring",
+        "calendar": "Calendar - See upcoming tournaments and events at a glance",
+        "newsFeed": "News feed - A public home for tournament news and updates",
+        "more": "And more we're still dreaming up..."
       },
       "contact": "For feature requests, bug reports, or questions, please contact",
       "authorsTitle": "Authors",
@@ -1568,9 +1571,15 @@
     "corsPreviewUnavailable": "Preview unavailable - CORS restriction. Upload a new image to edit."
   },
   "components": {
-    "avatarUploader": { "cropLabel": "Crop avatar" },
-    "bannerUploader": { "cropLabel": "Crop banner" },
-    "logoUploader": { "cropLabel": "Crop logo" }
+    "avatarUploader": {
+      "cropLabel": "Crop avatar"
+    },
+    "bannerUploader": {
+      "cropLabel": "Crop banner"
+    },
+    "logoUploader": {
+      "cropLabel": "Crop logo"
+    }
   },
   "notifications": {
     "title": "Notifications",
