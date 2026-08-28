@@ -8,9 +8,9 @@ import TrackChangesIcon from '@mui/icons-material/TrackChanges';
 import classNames from 'classnames';
 import type React from 'react';
 import { useTranslation } from 'react-i18next';
-import { NavLink, useLocation, useParams } from 'react-router';
+import { NavLink } from 'react-router';
 
-import { fromI18nLang, getCurrentI18nLang, normalizeAppLang } from '../../utils/i18n-lang';
+import { useCurrentLang } from '../../hooks/use-current-lang';
 
 /** Home stays in the center when there are 5 tabs. */
 const TABS = [
@@ -23,11 +23,7 @@ const TABS = [
 
 const BottomTabBar: React.FC = () => {
   const { t } = useTranslation('common');
-  const { lang } = useParams();
-  const location = useLocation();
-  // RouterShell sits outside the `:lang` route, so params.lang is often undefined.
-  const inferredLang = fromI18nLang(getCurrentI18nLang());
-  const currentLang = normalizeAppLang(lang || location.pathname.split('/')[1] || inferredLang);
+  const currentLang = useCurrentLang();
 
   return (
     <nav className="bottom-tab-bar" aria-label={t('nav.athleteTabs')}>

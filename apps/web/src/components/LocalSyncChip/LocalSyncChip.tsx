@@ -10,9 +10,10 @@ import Typography from '@mui/material/Typography';
 import type React from 'react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate, useParams } from 'react-router';
+import { useNavigate } from 'react-router';
 
 import { useAuth } from '../../contexts/auth-context';
+import { useCurrentLang } from '../../hooks/use-current-lang';
 import { useEnableSync } from '../../hooks/use-enable-sync';
 import SafeDialog from '../SafeDialog/SafeDialog';
 
@@ -22,7 +23,7 @@ import SafeDialog from '../SafeDialog/SafeDialog';
  */
 const LocalSyncChip: React.FC = () => {
   const { t } = useTranslation('common');
-  const { lang } = useParams();
+  const lang = useCurrentLang();
   const navigate = useNavigate();
   const { isAuthenticated, user } = useAuth();
   const { enableSyncAndSync, enabling } = useEnableSync();

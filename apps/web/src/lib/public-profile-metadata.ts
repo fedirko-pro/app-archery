@@ -7,6 +7,7 @@ import type {
 } from '@/services/types';
 import { displayName } from '@/utils/user-display';
 import { alternateOgLocales, toOgLocale } from './og-locale';
+import type { ServerTranslate } from './server-i18n';
 
 export const DEFAULT_PROFILE_OG_IMAGE_PATH = '/og/default-tournament-banner.png';
 export const DEFAULT_ACHIEVEMENT_OG_IMAGE_PATH = '/og/default-tournament-banner.png';
@@ -26,13 +27,16 @@ export function buildPublicProfileMetadata(
   profile: PublicProfileDto,
   lang: string,
   siteUrl: string,
+  t: ServerTranslate,
 ): Metadata {
   const name = displayName(profile);
   const pageUrl = `${siteUrl}/${lang}/archers/${profile.id}`;
   const streak = profile.progress?.currentStreakWeeks ?? 0;
   const weeklyArrows = profile.progress?.shotsThisWeek ?? 0;
   const description =
-    profile.bio?.trim() || `${weeklyArrows} arrows this week · ${streak}-week streak on Sokil`;
+    profile.bio?.trim() ||
+    t('publicProfile.ogDescription', { arrows: weeklyArrows, weeks: streak });
+  const shareTitle = t('publicProfile.shareText', { name });
 
   const imageUrl = resolveOgImageUrl(profile.picture, siteUrl);
 
@@ -41,7 +45,7 @@ export function buildPublicProfileMetadata(
     description,
     alternates: { canonical: pageUrl },
     openGraph: {
-      title: `${name} on Sokil`,
+      title: shareTitle,
       description,
       url: pageUrl,
       siteName: 'Sokil',
@@ -52,7 +56,7 @@ export function buildPublicProfileMetadata(
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${name} on Sokil`,
+      title: shareTitle,
       description,
       images: [imageUrl],
     },
@@ -63,14 +67,12 @@ export function buildAchievementShareMetadata(
   achievement: PublicAchievementShareDto,
   lang: string,
   siteUrl: string,
-  titleResolver?: (key: string) => string,
+  t: ServerTranslate,
 ): Metadata {
   const ownerName = displayName(achievement.owner);
   const pageUrl = `${siteUrl}/${lang}/archers/${achievement.owner.id}/achievements/${achievement.id}`;
-  const title = titleResolver ? titleResolver(achievement.titleKey) : achievement.titleKey;
-  const description = titleResolver
-    ? titleResolver(achievement.descriptionKey)
-    : achievement.descriptionKey;
+  const title = t(achievement.titleKey);
+  const description = t(achievement.descriptionKey);
   const imageUrl = resolveOgImageUrl(achievement.owner.picture, siteUrl);
 
   return {
@@ -100,18 +102,23 @@ export function buildProgressShareMetadata(
   progress: PublicProgressShareDto,
   lang: string,
   siteUrl: string,
+  t: ServerTranslate,
 ): Metadata {
   const ownerName = displayName(progress.owner);
   const pageUrl = `${siteUrl}/${lang}/archers/${progress.owner.id}/progress`;
-  const description = `${progress.earnedCount} of ${progress.totalCount} achievements unlocked (${progress.percent}%)`;
+  const description = `${t('progressShare.shareText', {
+    earned: progress.earnedCount,
+    total: progress.totalCount,
+  })} (${progress.percent}%)`;
+  const shareTitle = t('progressShare.shareTitle', { name: ownerName });
   const imageUrl = resolveOgImageUrl(progress.owner.picture, siteUrl);
 
   return {
-    title: `${ownerName}'s achievements · ${progress.percent}% | Sokil`,
+    title: `${t('userAchievements.title', { name: ownerName })} · ${progress.percent}% | Sokil`,
     description,
     alternates: { canonical: pageUrl },
     openGraph: {
-      title: `${ownerName}'s achievement progress`,
+      title: shareTitle,
       description,
       url: pageUrl,
       siteName: 'Sokil',
@@ -122,16 +129,16 @@ export function buildProgressShareMetadata(
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${ownerName}'s achievement progress`,
+      title: shareTitle,
       description,
       images: [imageUrl],
     },
   };
 }
 
-export function buildShareNotFoundMetadata(): Metadata {
+export function buildShareNotFoundMetadata(t: ServerTranslate): Metadata {
   return {
-    title: 'Not found | Sokil',
+    title: `${t('notFound.title')} | Sokil`,
     robots: { index: false, follow: false },
   };
 }

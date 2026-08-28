@@ -1212,7 +1212,8 @@
     "totalArrows": "Усього стріл",
     "latestAchievement": "Останнє досягнення",
     "viewAchievements": "Переглянути досягнення",
-    "shareText": "{{name}} у Sokil"
+    "shareText": "{{name}} у Sokil",
+    "ogDescription": "{{arrows}} стріл цього тижня · серія {{weeks}} тиж. у Sokil"
   },
   "userAchievements": {
     "title": "Досягнення {{name}}",

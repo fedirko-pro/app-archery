@@ -3,11 +3,11 @@ import type { AchievementRarity } from '@sokil/shared-types';
 import confetti from 'canvas-confetti';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useParams } from 'react-router';
 
 import AchievementMedallion from '@/components/achievements/AchievementMedallion';
 import PrivacyAwareShareMenu from '@/components/share/PrivacyAwareShareMenu';
 import { useAuth } from '@/contexts/auth-context';
+import { useCurrentLang } from '@/hooks/use-current-lang';
 import type { AchievementProgressDto } from '@/services/types';
 import { getRarityStyle, RARITY_COLORS } from '@/theme/achievementTokens';
 
@@ -53,7 +53,7 @@ export default function AchievementUnlockedDialog({
 }: AchievementUnlockedDialogProps) {
   const { t } = useTranslation('common');
   const { user } = useAuth();
-  const { lang } = useParams();
+  const lang = useCurrentLang();
 
   useEffect(() => {
     if (open && achievement) {

@@ -1041,7 +1041,8 @@
     "totalArrows": "Total arrows",
     "latestAchievement": "Latest achievement",
     "viewAchievements": "View achievements",
-    "shareText": "{{name}} on Sokil"
+    "shareText": "{{name}} on Sokil",
+    "ogDescription": "{{arrows}} arrows this week · {{weeks}}-week streak on Sokil"
   },
   "userAchievements": {
     "title": "{{name}}'s achievements",

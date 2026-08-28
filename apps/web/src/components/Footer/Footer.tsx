@@ -1,9 +1,9 @@
 import './Footer.scss';
 
 import { useTranslation } from 'react-i18next';
-import { Link, NavLink, useParams } from 'react-router';
+import { Link, NavLink } from 'react-router';
 
-import { normalizeAppLang } from '../../utils/i18n-lang';
+import { useCurrentLang } from '../../hooks/use-current-lang';
 
 const appBuildId = process.env.NEXT_PUBLIC_APP_BUILD_ID ?? 'unknown';
 const appVersion = process.env.NEXT_PUBLIC_APP_VERSION ?? 'unknown';
@@ -11,8 +11,7 @@ const displayVersion = appBuildId === 'dev' ? appVersion : appBuildId;
 
 const Footer = () => {
   const { t } = useTranslation('common');
-  const { lang } = useParams();
-  const currentLang = normalizeAppLang(lang);
+  const currentLang = useCurrentLang();
   return (
     <footer className="app-footer">
       <span className="footer_side">

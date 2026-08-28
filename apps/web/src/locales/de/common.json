@@ -1041,7 +1041,8 @@
     "totalArrows": "Gesamte Pfeile",
     "latestAchievement": "Neuester Erfolg",
     "viewAchievements": "Erfolge anzeigen",
-    "shareText": "{{name}} auf Sokil"
+    "shareText": "{{name}} auf Sokil",
+    "ogDescription": "{{arrows}} Pfeile diese Woche · {{weeks}}-Wochen-Serie auf Sokil"
   },
   "userAchievements": {
     "title": "Erfolge von {{name}}",

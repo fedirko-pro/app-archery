@@ -1599,6 +1599,7 @@
     "latestAchievement": "Última conquista",
     "notFoundMessage": "Este perfil é privado ou não existe.",
     "notFoundTitle": "Perfil indisponível",
+    "ogDescription": "{{arrows}} setas esta semana · sequência de {{weeks}} semanas no Sokil",
     "progressTitle": "Resumo do progresso",
     "shareText": "{{name}} no Sokil",
     "streak": "Sequência de treinos",

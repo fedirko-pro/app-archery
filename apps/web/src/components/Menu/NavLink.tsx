@@ -1,7 +1,7 @@
 import type React from 'react';
-import { useLocation, useMatch, useNavigate } from 'react-router';
+import { useMatch, useNavigate } from 'react-router';
 
-import { fromI18nLang, getCurrentI18nLang, normalizeAppLang } from '../../utils/i18n-lang';
+import { useCurrentLang } from '../../hooks/use-current-lang';
 import type { NavLinkProps } from './types';
 
 const NavLink: React.FC<NavLinkProps> = ({
@@ -12,9 +12,7 @@ const NavLink: React.FC<NavLinkProps> = ({
   className,
   badgeCount,
 }) => {
-  const location = useLocation();
-  const inferredLang = fromI18nLang(getCurrentI18nLang());
-  const currentLang = normalizeAppLang(location.pathname.split('/')[1] || inferredLang);
+  const currentLang = useCurrentLang();
   const match = useMatch(`/${currentLang}${to}`);
   const navigate = useNavigate();
 

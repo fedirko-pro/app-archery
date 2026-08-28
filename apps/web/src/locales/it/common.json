@@ -1602,6 +1602,7 @@
     "latestAchievement": "Ultimo achievement",
     "notFoundMessage": "Questo profilo è privato o non esiste.",
     "notFoundTitle": "Profilo non disponibile",
+    "ogDescription": "{{arrows}} frecce questa settimana · serie di {{weeks}} settimane su Sokil",
     "progressTitle": "Istantanea dei progressi",
     "shareText": "{{name}} su Sokil",
     "streak": "Serie di allenamenti",

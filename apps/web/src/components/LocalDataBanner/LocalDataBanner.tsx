@@ -13,10 +13,11 @@ import Typography from '@mui/material/Typography';
 import type React from 'react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate, useParams } from 'react-router';
+import { useNavigate } from 'react-router';
 
 import { useAuth } from '../../contexts/auth-context';
 import { useLocalData } from '../../contexts/local-data-context';
+import { useCurrentLang } from '../../hooks/use-current-lang';
 import { useEnableSync } from '../../hooks/use-enable-sync';
 import { useStaleCacheHint } from '../../hooks/use-stale-cache-hint';
 import SafeDialog from '../SafeDialog/SafeDialog';
@@ -28,7 +29,7 @@ interface LocalDataBannerProps {
 
 const LocalDataBanner: React.FC<LocalDataBannerProps> = ({ showSyncStatus = false }) => {
   const { t } = useTranslation('common');
-  const { lang } = useParams();
+  const lang = useCurrentLang();
   const navigate = useNavigate();
   const { isAuthenticated, user } = useAuth();
   const { lastSyncError, lastStorageError, syncNow } = useLocalData();

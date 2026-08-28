@@ -13,6 +13,7 @@ import {
   fetchPublicProfileForMetadata,
   fetchTournamentForMetadata,
 } from '@/lib/server-api';
+import { createServerTranslate } from '@/lib/server-i18n';
 import { getArcherRouteFromPath } from '@/lib/share-route';
 import { buildSiteMetadata } from '@/lib/site-metadata';
 import {
@@ -34,30 +35,32 @@ export async function generateMetadata({ params }: LangCatchAllPageProps): Promi
 
   const archerRoute = getArcherRouteFromPath(path);
   if (archerRoute) {
+    const t = createServerTranslate(lang);
+
     if (archerRoute.achievementId) {
       const achievement = await fetchAchievementShareForMetadata(
         archerRoute.userId,
         archerRoute.achievementId,
       );
       if (!achievement) {
-        return buildShareNotFoundMetadata();
+        return buildShareNotFoundMetadata(t);
       }
-      return buildAchievementShareMetadata(achievement, lang, siteUrl);
+      return buildAchievementShareMetadata(achievement, lang, siteUrl, t);
     }
 
     if (archerRoute.progress) {
       const progress = await fetchProgressShareForMetadata(archerRoute.userId);
       if (!progress) {
-        return buildShareNotFoundMetadata();
+        return buildShareNotFoundMetadata(t);
       }
-      return buildProgressShareMetadata(progress, lang, siteUrl);
+      return buildProgressShareMetadata(progress, lang, siteUrl, t);
     }
 
     const profile = await fetchPublicProfileForMetadata(archerRoute.userId);
     if (!profile) {
-      return buildShareNotFoundMetadata();
+      return buildShareNotFoundMetadata(t);
     }
-    return buildPublicProfileMetadata(profile, lang, siteUrl);
+    return buildPublicProfileMetadata(profile, lang, siteUrl, t);
   }
 
   const tournamentId = getTournamentIdFromPath(path);
