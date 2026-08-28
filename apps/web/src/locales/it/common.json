@@ -1455,6 +1455,7 @@
   "achievementShare": {
     "badge": "Achievement",
     "earnedBy": "Arciere",
+    "shareTitle": "Nuovo achievement: {{title}}",
     "notFoundMessage": "Questo link achievement è privato o non esiste.",
     "notFoundTitle": "Achievement non disponibile"
   },

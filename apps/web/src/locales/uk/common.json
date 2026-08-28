@@ -1224,7 +1224,8 @@
     "notFoundTitle": "Досягнення недоступне",
     "notFoundMessage": "Це посилання приватне або не існує.",
     "badge": "Досягнення",
-    "earnedBy": "Лучник"
+    "earnedBy": "Лучник",
+    "shareTitle": "Нове досягнення: {{title}}"
   },
   "localData": {
     "localStorageBadge": "Локальні дані на пристрої",

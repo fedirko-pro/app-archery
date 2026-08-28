@@ -123,7 +123,7 @@ export default function AchievementUnlockedDialog({
       <DialogActions sx={{ justifyContent: 'center', pb: 3, gap: 1 }}>
         <PrivacyAwareShareMenu
           url={shareUrl}
-          title={t(achievement.titleKey)}
+          title={t('achievementShare.shareTitle', { title: t(achievement.titleKey) })}
           text={t(achievement.descriptionKey)}
           imageUrl={pickAchievementShareImage(achievement.icon, user?.picture)}
           buttonLabel={t('achievements.share')}

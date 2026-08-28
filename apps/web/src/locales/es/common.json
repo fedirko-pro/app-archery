@@ -1455,6 +1455,7 @@
   "achievementShare": {
     "badge": "Logro",
     "earnedBy": "Arquero",
+    "shareTitle": "Nuevo logro: {{title}}",
     "notFoundMessage": "Este enlace de logro es privado o no existe.",
     "notFoundTitle": "Logro no disponible"
   },

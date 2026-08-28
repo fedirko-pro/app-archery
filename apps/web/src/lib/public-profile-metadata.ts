@@ -73,6 +73,7 @@ export function buildAchievementShareMetadata(
   const pageUrl = `${siteUrl}/${lang}/archers/${achievement.owner.id}/achievements/${achievement.id}`;
   const title = t(achievement.titleKey);
   const description = t(achievement.descriptionKey);
+  const shareTitle = t('achievementShare.shareTitle', { title });
   const imageUrl = resolveAchievementShareOgImage(
     achievement.icon,
     achievement.owner.picture,
@@ -80,11 +81,11 @@ export function buildAchievementShareMetadata(
   );
 
   return {
-    title: `${title} · ${ownerName} | Sokil`,
+    title: `${shareTitle} · ${ownerName} | Sokil`,
     description,
     alternates: { canonical: pageUrl },
     openGraph: {
-      title: `${title} — ${ownerName}`,
+      title: `${shareTitle} — ${ownerName}`,
       description,
       url: pageUrl,
       siteName: 'Sokil',
@@ -95,7 +96,7 @@ export function buildAchievementShareMetadata(
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${title} — ${ownerName}`,
+      title: `${shareTitle} — ${ownerName}`,
       description,
       images: [imageUrl],
     },

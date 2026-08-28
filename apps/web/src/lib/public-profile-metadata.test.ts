@@ -39,7 +39,7 @@ describe('buildAchievementShareMetadata', () => {
       createServerTranslate('en'),
     );
 
-    expect(metadata.openGraph?.title).toBe('Warming Up — Serhii Fedirko');
+    expect(metadata.openGraph?.title).toBe('New achievement: Warming Up — Serhii Fedirko');
     expect(metadata.description).toBe('Train at least once a week for 2 weeks in a row');
     expect(JSON.stringify(metadata)).not.toContain('achievements.streak2Weeks');
   });
@@ -52,7 +52,7 @@ describe('buildAchievementShareMetadata', () => {
       createServerTranslate('ua'),
     );
 
-    expect(metadata.openGraph?.title).toBe('Розминка — Serhii Fedirko');
+    expect(metadata.openGraph?.title).toBe('Нове досягнення: Розминка — Serhii Fedirko');
     expect(metadata.openGraph?.locale).toBe('uk_UA');
   });
 

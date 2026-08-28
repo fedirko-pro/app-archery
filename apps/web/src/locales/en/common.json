@@ -1053,7 +1053,8 @@
     "notFoundTitle": "Achievement not available",
     "notFoundMessage": "This achievement share link is private or does not exist.",
     "badge": "Achievement",
-    "earnedBy": "Archer"
+    "earnedBy": "Archer",
+    "shareTitle": "New achievement: {{title}}"
   },
   "localData": {
     "localStorageBadge": "Local data on device",

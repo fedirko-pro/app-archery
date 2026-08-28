@@ -1053,7 +1053,8 @@
     "notFoundTitle": "Erfolg nicht verfügbar",
     "notFoundMessage": "Dieser Erfolgs-Link ist privat oder existiert nicht.",
     "badge": "Erfolg",
-    "earnedBy": "Bogenschütze"
+    "earnedBy": "Bogenschütze",
+    "shareTitle": "Neuer Erfolg: {{title}}"
   },
   "localData": {
     "localStorageBadge": "Lokale Daten auf dem Gerät",

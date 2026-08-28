@@ -83,6 +83,7 @@ const AchievementSharePage: React.FC = () => {
   const shareUrl = `${getOrigin()}/${lang}/archers/${achievement.owner.id}/achievements/${achievement.id}`;
   const title = t(achievement.titleKey);
   const description = t(achievement.descriptionKey);
+  const shareTitle = t('achievementShare.shareTitle', { title });
 
   return (
     <Container maxWidth="sm" sx={{ py: 4 }}>
@@ -136,7 +137,7 @@ const AchievementSharePage: React.FC = () => {
               </Box>
               <ShareMenu
                 url={shareUrl}
-                title={title}
+                title={shareTitle}
                 text={description}
                 imageUrl={pickAchievementShareImage(achievement.icon, achievement.owner.picture)}
                 size="small"

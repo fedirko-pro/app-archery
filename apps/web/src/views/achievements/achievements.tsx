@@ -231,7 +231,7 @@ const Achievements = () => {
                           ? `${origin}/${lang}/archers/${user.id}/achievements/${achievement.id}`
                           : `${origin}/${lang}/achievements`
                       }
-                      title={t(achievement.titleKey)}
+                      title={t('achievementShare.shareTitle', { title: t(achievement.titleKey) })}
                       text={t(achievement.descriptionKey)}
                       variant="icon"
                       size="small"

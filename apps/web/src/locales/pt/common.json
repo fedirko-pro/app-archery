@@ -1452,6 +1452,7 @@
   "achievementShare": {
     "badge": "Conquista",
     "earnedBy": "Arqueiro",
+    "shareTitle": "Nova conquista: {{title}}",
     "notFoundMessage": "Esta ligação de conquista é privada ou não existe.",
     "notFoundTitle": "Conquista indisponível"
   },
