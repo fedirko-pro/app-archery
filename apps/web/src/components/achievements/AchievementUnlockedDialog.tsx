@@ -8,6 +8,7 @@ import AchievementMedallion from '@/components/achievements/AchievementMedallion
 import PrivacyAwareShareMenu from '@/components/share/PrivacyAwareShareMenu';
 import { useAuth } from '@/contexts/auth-context';
 import { useCurrentLang } from '@/hooks/use-current-lang';
+import { pickAchievementShareImage } from '@/lib/share-og-image';
 import type { AchievementProgressDto } from '@/services/types';
 import { getRarityStyle, RARITY_COLORS } from '@/theme/achievementTokens';
 
@@ -124,6 +125,7 @@ export default function AchievementUnlockedDialog({
           url={shareUrl}
           title={t(achievement.titleKey)}
           text={t(achievement.descriptionKey)}
+          imageUrl={pickAchievementShareImage(achievement.icon, user?.picture)}
           buttonLabel={t('achievements.share')}
           variant="button"
           size="small"

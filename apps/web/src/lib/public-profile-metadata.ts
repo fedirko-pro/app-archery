@@ -8,9 +8,9 @@ import type {
 import { displayName } from '@/utils/user-display';
 import { alternateOgLocales, toOgLocale } from './og-locale';
 import type { ServerTranslate } from './server-i18n';
+import { resolveAchievementShareOgImage } from './share-og-image';
 
 export const DEFAULT_PROFILE_OG_IMAGE_PATH = '/og/default-tournament-banner.png';
-export const DEFAULT_ACHIEVEMENT_OG_IMAGE_PATH = '/og/default-tournament-banner.png';
 
 function resolveOgImageUrl(picture: string | undefined, siteUrl: string): string {
   if (picture) {
@@ -73,7 +73,11 @@ export function buildAchievementShareMetadata(
   const pageUrl = `${siteUrl}/${lang}/archers/${achievement.owner.id}/achievements/${achievement.id}`;
   const title = t(achievement.titleKey);
   const description = t(achievement.descriptionKey);
-  const imageUrl = resolveOgImageUrl(achievement.owner.picture, siteUrl);
+  const imageUrl = resolveAchievementShareOgImage(
+    achievement.icon,
+    achievement.owner.picture,
+    siteUrl,
+  );
 
   return {
     title: `${title} · ${ownerName} | Sokil`,

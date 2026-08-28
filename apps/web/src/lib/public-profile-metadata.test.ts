@@ -68,6 +68,43 @@ describe('buildAchievementShareMetadata', () => {
       'https://sokil.app/de/archers/owner-1/achievements/streak-2-weeks',
     );
   });
+
+  it('uses the branded site image when the icon is not a picture and there is no avatar', () => {
+    const metadata = buildAchievementShareMetadata(
+      achievement,
+      'en',
+      SITE_URL,
+      createServerTranslate('en'),
+    );
+
+    expect(metadata.openGraph?.images).toEqual([
+      {
+        url: 'https://sokil.app/og/og-image-v2.png',
+        width: 1200,
+        height: 630,
+        alt: 'Warming Up',
+      },
+    ]);
+  });
+
+  it('proxies a Google avatar for the Open Graph image', () => {
+    const metadata = buildAchievementShareMetadata(
+      {
+        ...achievement,
+        owner: {
+          ...owner,
+          picture: 'https://lh3.googleusercontent.com/a/ACg8ocKexample=s96-c',
+        },
+      },
+      'en',
+      SITE_URL,
+      createServerTranslate('en'),
+    );
+    const serialized = JSON.stringify(metadata.openGraph?.images);
+
+    expect(serialized).toContain('https://sokil.app/og/share-image?src=');
+    expect(serialized).toContain('s512-c');
+  });
 });
 
 describe('buildProgressShareMetadata', () => {
