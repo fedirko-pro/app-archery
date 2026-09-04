@@ -142,7 +142,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setError(null);
     pendingApplicationProcessedRef.current = false;
     authCheckExecutedRef.current = false;
-    navigate(`/${currentLang}/tournaments`);
+    navigate(`/${currentLang}/about`);
   };
 
   const updateUser = (userData: User): void => {

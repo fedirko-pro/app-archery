@@ -17,27 +17,28 @@ function user(role: string): User {
 }
 
 describe('getDefaultLandingPath', () => {
-  it('returns /{lang}/tournaments for general_admin', () => {
-    expect(getDefaultLandingPath('en', user('general_admin'))).toBe('/en/tournaments');
+  it('returns /{lang}/home for general_admin', () => {
+    expect(getDefaultLandingPath('en', user('general_admin'))).toBe('/en/home');
   });
 
-  it('returns /{lang}/tournaments for federation_admin', () => {
-    expect(getDefaultLandingPath('en', user('federation_admin'))).toBe('/en/tournaments');
+  it('returns /{lang}/home for federation_admin', () => {
+    expect(getDefaultLandingPath('en', user('federation_admin'))).toBe('/en/home');
   });
 
-  it('returns /{lang}/tournaments for club_admin', () => {
-    expect(getDefaultLandingPath('en', user('club_admin'))).toBe('/en/tournaments');
+  it('returns /{lang}/home for club_admin', () => {
+    expect(getDefaultLandingPath('en', user('club_admin'))).toBe('/en/home');
   });
 
   it('returns /{lang}/home for regular user', () => {
     expect(getDefaultLandingPath('en', user('user'))).toBe('/en/home');
   });
 
-  it('returns /{lang}/tournaments for null user', () => {
-    expect(getDefaultLandingPath('en', null)).toBe('/en/tournaments');
+  it('returns /{lang}/about for null user', () => {
+    expect(getDefaultLandingPath('en', null)).toBe('/en/about');
   });
 
   it('uses the provided language', () => {
     expect(getDefaultLandingPath('ua', user('user'))).toBe('/ua/home');
+    expect(getDefaultLandingPath('ua', null)).toBe('/ua/about');
   });
 });

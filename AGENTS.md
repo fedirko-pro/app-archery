@@ -59,7 +59,9 @@ Per-package equivalent: `pnpm --filter @sokil/web <script>` /
 - Install-prompt dismissal cooldowns are stored in `localStorage` and set to
   **1 day** (`PWA_DISMISS_DAYS`, `IOS_A2HS_DISMISS_DAYS`).
 - The manifest is `apps/web/public/manifest.webmanifest` (`id`/`start_url` are
-  `"/"`, which the middleware redirects to `/{lang}/tournaments`).
+  `"/"`, which the middleware redirects to `/{lang}/about` for guests and
+  `/{lang}/home` for session-cookie users — see `middleware.ts` and
+  `src/utils/default-landing.ts`).
 
 ## Conventions
 

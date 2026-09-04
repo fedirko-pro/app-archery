@@ -3,6 +3,9 @@ import { NextResponse } from 'next/server';
 
 import { getDefaultAppLang, normalizeAppLang, SUPPORTED_APP_LANGS } from './src/utils/i18n-lang';
 
+// Must match SESSION_COOKIE_NAME in the API (apps/api/src/auth/utils/cookie-options.ts).
+const SESSION_COOKIE_NAME = 'session';
+
 const LANG_PATTERN = new RegExp(`^/(${SUPPORTED_APP_LANGS.join('|')})(/|$)`);
 
 function withNoStoreHeaders(response: NextResponse): NextResponse {
@@ -57,8 +60,9 @@ export function middleware(request: NextRequest) {
   const defaultLang = getDefaultLang(request);
 
   if (pathname === '/') {
+    const landingPage = request.cookies.get(SESSION_COOKIE_NAME) ? 'home' : 'about';
     return withNoStoreHeaders(
-      NextResponse.redirect(new URL(`/${defaultLang}/tournaments`, request.url)),
+      NextResponse.redirect(new URL(`/${defaultLang}/${landingPage}`, request.url)),
     );
   }
 
