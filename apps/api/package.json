@@ -55,7 +55,7 @@
     "dotenv": "^17.4.0",
     "helmet": "^8.3.0",
     "multer": "^2.2.0",
-    "nodemailer": "^9.0.1",
+    "nodemailer": "^9.1.1",
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
     "passport-jwt": "^4.0.1",
