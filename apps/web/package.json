@@ -45,7 +45,7 @@
     "serwist": "^9.5.11",
     "typescript": "^5.9.3",
     "vite": "^6.4.3",
-    "vitest": "^3.2.6"
+    "vitest": "^4.1.11"
   },
   "scripts": {
     "dev": "dotenv -e ../../.env -- next dev -p 3001",
