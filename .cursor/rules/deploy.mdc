@@ -1,0 +1,17 @@
+---
+description: Docker Compose, Traefik, and production env rules
+globs: deploy/**/*,**/Dockerfile,docker-compose*.yml,.env.example
+alwaysApply: false
+---
+
+# Deploy
+
+- Production layout is `deploy/docker-compose.prod.yml`. Traefik on `traefik-public` terminates TLS. Do not publish Postgres or the API to host ports.
+- `deploy/deploy.sh` builds one service at a time (4 GB VPS). Keep that sequence.
+- Web image build-args: `NEXT_PUBLIC_API_BASE_URL`, `NEXT_PUBLIC_GOOGLE_AUTH_URL`, `NEXT_PUBLIC_APP_BUILD_ID`, `NEXT_PUBLIC_SITE_MODE`, `NEXT_PUBLIC_GOOGLE_ANALYTICS_ID`. Changing them rebuilds the frontend. Restart is not enough.
+- `NEXT_PUBLIC_SITE_MODE` only toggles the test badge and Google Analytics.
+- API container runs migrations, then `node dist/src/main.js`. A bad migration blocks boot; review SQL before merging.
+- Secrets stay in the host env file (see `DEPLOYMENT.md`). `.env.example` gets names and placeholders only.
+- `trust proxy` stays `1` because Traefik is the only proxy. Extra proxies would let clients spoof the throttle IP.
+- Uploads are bind mounts on the API host. Do not assume a second API replica can see them.
+- Checked-in hostnames are the test site (`archery.fedirko.pro`, `api-archery.fedirko.pro`). Do not overwrite them with live hostnames in this compose file unless the deploy docs change too.

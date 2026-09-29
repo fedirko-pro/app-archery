@@ -1,0 +1,16 @@
+---
+description: Vitest, Jest, and Playwright test conventions
+globs: "**/*.{test,spec}.{ts,tsx},apps/web/e2e/**/*.ts,apps/api/test/**/*.ts"
+alwaysApply: false
+---
+
+# Tests
+
+- Web unit tests: Vitest + jsdom, `*.test.ts` next to the source. API unit tests: Jest, `*.spec.ts` next to the source. Do not add a third runner.
+- Prefer a pure function and a unit test over a component test. Extract the decision (sync merge, patrol warning, permission, password rule) when the UI is hard to mount.
+- When the change is a React flow, use Testing Library (`@testing-library/react` is already installed). Assert behavior: what the user sees after click or submit.
+- API service tests mock `EntityManager`. Do not require a live Postgres for a unit spec. A multi-entity write still deserves a test that a thrown error does not leave partial updates in the unit's transaction mock.
+- Cover the failure you are fixing: revoked session, out-of-scope admin, tombstone resurrection, rejected short password. One happy-path assertion is not enough for auth or sync.
+- Playwright (`apps/web/e2e`) is for a full browser redirect or shell smoke test, not for a pure util.
+- Run the package you touched: `pnpm --filter @sokil/web test:run` or `pnpm --filter @sokil/api test:run`. `shared-types` has no test script yet; typecheck covers it.
+- Do not weaken a test to match a bug. Do not skip hooks (`--no-verify`).

@@ -1,0 +1,40 @@
+---
+description: NestJS 11 API patterns — modules, validation, authz, errors
+globs: apps/api/**/*.ts
+alwaysApply: false
+---
+
+# API (NestJS 11)
+
+Feature code lives in `apps/api/src/<feature>/` as `*.module.ts`, `*.controller.ts`, `*.service.ts`, `dto/`, `*.entity.ts`.
+
+## Controllers
+
+- Controllers parse the request, call a service, and shape the response. Business rules belong in the service.
+- Protect routes with `JwtAuthGuard` (session cookie) and `RolesGuard` / `@Roles`. Then check scope via `PermissionsService` (`canViewUserAsAdmin`, `assertCanManageClub`, tournament helpers). A role decorator alone is not enough for an id in the URL or body.
+- Pass `req.user.sub` into ownership checks. Do not trust a body `userId` unless the permission explicitly allows acting for someone else **and** that user is inside the caller's admin scope.
+- Input is a class-validator DTO. Global `ValidationPipe` uses `whitelist`, `forbidNonWhitelisted`, and `transform`. Do not accept `Record<string, unknown>` for a new write endpoint.
+- Throw Nest HTTP exceptions (`BadRequestException`, `ForbiddenException`, `NotFoundException`, `ConflictException`). Do not add a new exception filter unless the master plan says so.
+
+```typescript
+@Post(':id/invite')
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles(ROLES.ClubAdmin, ROLES.GeneralAdmin)
+invite(@Param('id') clubId: string, @Req() req: AuthedRequest) {
+  return this.membership.assertCanManageClub(clubId, req.user);
+}
+```
+
+## Services
+
+- Multi-row writes use `em.transactional()`. One `flush()` is not a transaction boundary.
+- Load related rows in batches. Do not `findOne` inside a loop over user-supplied ids.
+- Email and push side effects are fire-and-forget after the DB write succeeds. A mail failure must not fail the user action. Log the failure without tokens, passwords, or reset links.
+- HTML email templates escape interpolated names, messages, and titles.
+
+## Auth details
+
+- Session tokens and OAuth exchange codes are stored as SHA-256 hashes. New reset or invite tokens follow that pattern.
+- Login and forgot-password responses stay generic (`Invalid email or password`, uniform forgot-password copy).
+- Password minimum is 8 characters on signup, reset, and change.
+- `@Throttle` on login, signup, forgot-password, reset-password, and OAuth exchange stays stricter than the global 100/min guard.

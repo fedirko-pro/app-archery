@@ -1,0 +1,18 @@
+---
+description: Serwist PWA, service worker, and local-first offline data
+globs: apps/web/src/app/sw.ts,apps/web/next.config.ts,apps/web/src/hooks/usePwaInstall.ts,apps/web/public/manifest.webmanifest,apps/web/src/utils/local-data-*.ts,apps/web/src/contexts/local-data-context.tsx,apps/web/middleware.ts
+alwaysApply: false
+---
+
+# PWA and offline
+
+- `@serwist/next` compiles `src/app/sw.ts` to `public/sw.js` and injects registration. Do not register a worker yourself and do not mount `SerwistProvider`.
+- The worker is disabled in development. Test SW behavior on a production build.
+- API traffic stays uncached: `NetworkOnly` for same-origin `/api/*`, and stop propagation for the cross-origin API host. Authenticated JSON must not enter the precache.
+- Navigation fallback is `/~offline`. Middleware already bypasses `/~offline`, the SW, and `/auth/google/callback`.
+- `beforeinstallprompt` is captured at module scope in `usePwaInstall.ts` (it can fire before React mounts). Install UI is `AppStatusBar`, not `InstallPrompt`.
+- Dismiss cooldowns stay 1 day (`PWA_DISMISS_DAYS`, `IOS_A2HS_DISMISS_DAYS`).
+- Manifest `id` and `start_url` stay `/`. Middleware sends guests to `/{lang}/about` and users with a `session` cookie to `/{lang}/home`.
+- Offline athlete data goes through `local-data-storage` / `local-data-sync` (tombstones included). Do not write a second training cache.
+- Push `notificationclick` may open only a same-origin relative path. Reject absolute URLs.
+- `NEXT_PUBLIC_APP_BUILD_ID` is the SW revision. Changing it requires a web rebuild.

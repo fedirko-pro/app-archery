@@ -1,0 +1,27 @@
+---
+description: MikroORM persistence and shared-types contracts
+globs: apps/api/**/*.entity.ts,apps/api/**/dto/**/*.ts,apps/api/**/*.service.ts,packages/shared-types/**/*.ts,apps/web/src/services/**/*.ts
+alwaysApply: false
+---
+
+# Data and contracts
+
+## MikroORM
+
+- Entities stay next to their feature module. A schema change is: edit the entity, then `pnpm --filter @sokil/api mikro-orm migration:create`, then review the SQL in `apps/api/src/migrations/`.
+- Migrations are forward-only. Deploy runs `mikro-orm migration:up` before the API process. Do not hand-edit an already shipped migration; add a new one.
+- Relations use MikroORM collections. A loose string id is a bug unless the master plan explicitly keeps one (training `equipmentSetId` is an existing loose id).
+- Hide secrets on the entity (`hidden: true`): password hashes, reset tokens, session hashes.
+- Seeders must keep the `NODE_ENV === 'production'` early return. No new well-known passwords.
+
+## Shared types
+
+- Values used by both apps (roles, notification types, achievement ids, stable response DTOs) go in `packages/shared-types` and are imported from the package, not copied.
+- Request bodies that need runtime validation stay as class-validator classes in `apps/api/**/dto`. Do not validate HTTP bodies with Zod. Zod is for API env (`env.zod.ts`).
+- Web-only view state stays in the web app. Do not put React types in `shared-types`.
+- After changing the package, consumers import the built export. Root `pnpm dev` / `pnpm lint` build it first; a filtered command may not.
+
+## Client API types
+
+- `apps/web/src/services/types.ts` re-exports shared types. Add a new cross-app field to `shared-types` instead of a parallel interface.
+- Domain HTTP helpers share one client that sets `credentials: 'include'`, `Accept-Language`, timeout, and `X-CSRF-Token` on POST, PUT, PATCH, and DELETE.

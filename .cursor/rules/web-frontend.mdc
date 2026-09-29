@@ -1,0 +1,34 @@
+---
+description: Next.js 15 shell, React Router screens, MUI, i18n, and client data
+globs: apps/web/**/*.{ts,tsx,scss}
+alwaysApply: false
+---
+
+# Web (Next.js 15 + React Router)
+
+## Routing
+
+- Middleware (`apps/web/middleware.ts`) only handles language prefixes, `/` landing, and cache headers. It does not authorize. API guards do.
+- New screens: a React Router `<Route>` in `Content.tsx` and a view under `apps/web/src/views/`.
+- Language prefix is `/{lang}/...` with `SUPPORTED_APP_LANGS`. Post-login return paths must pass `isSafeRelativePath` (reject `//` and `://`).
+- Auth UI uses `ProtectedRoute` / `ProtectedAdminRoute`. Do not duplicate redirect logic in the page.
+
+## UI and data
+
+- UI kit is MUI plus colocated SCSS (global helpers in `src/sass/`). Do not add CSS modules, Tailwind, or a second component library.
+- Server state is `apiService` plus local `useState` / `useEffect`. Do not introduce React Query, SWR, Redux, or Zustand in a feature change.
+- Contexts in `RouterShell` are the shared client state (auth, notifications, local data, achievements). Prefer a hook or a plain function over a new context.
+- Loading and errors: local `Alert` / `CircularProgress`, or the global snackbar from `useNotification` in `error-feedback-context.tsx`. Do not add another snackbar system. `notifications-context.tsx` is the server notification feed, not toasts.
+- Forms stay controlled `useState` unless a master-plan step introduces a form library.
+- Split a view that is growing past a few hundred lines into a container and presentational sections. Keep fetch logic in the container.
+
+## i18n and security on the client
+
+- Add keys to all six `locales/*/common.json` files. No new hardcoded English in the UI.
+- Do not use `dangerouslySetInnerHTML`.
+- Session cookie is httpOnly. Do not store access tokens in `localStorage`. The cached profile snapshot must stay minimal and clear on logout.
+- Client permission checks (`config/roles.ts`) only hide UI. The API still enforces.
+
+## Metadata
+
+- Share/OG stays in `apps/web/src/lib/` and the catch-all `generateMetadata`. Public SEO fetches use `server-api.ts` without the user cookie.

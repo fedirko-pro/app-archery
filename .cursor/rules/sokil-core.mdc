@@ -1,0 +1,38 @@
+---
+description: Sokil defaults for every change — stack, scope, and invariants
+alwaysApply: true
+---
+
+# Sokil change rules
+
+pnpm monorepo: Next.js 15 (`apps/web`), NestJS 11 + MikroORM (`apps/api`), `@sokil/shared-types`. Node >= 22.12, pnpm >= 9. Never npm or yarn.
+
+Improvement work follows `MASTER-PLAN.md` **one step at a time**. Do not pull the next step or a drive-by refactor into the current change.
+
+## Branches
+
+All commits and pushes go to `dev`. Do not commit or push to `main`. Sync `dev` into `main` only when the user says the feature is ready.
+
+## Architecture you must keep
+
+- Auth is an httpOnly `session` cookie plus a readable `csrf` cookie and `X-CSRF-Token`. `JwtAuthGuard` is the cookie session guard. Do not add a second auth mode.
+- Product screens are React Router routes in `Content.tsx` inside the Next.js `[lang]` shell. Add a screen there. Do not add a second App Router page for it.
+- Trainings and equipment are local-first (`LocalDataProvider`). Server sync is optional and best-effort.
+- Live (`sokil.app`) and test (`archery.fedirko.pro`) are different origins. `localStorage` and the service worker do not carry across them.
+- `NEXT_PUBLIC_*` is inlined at **build** time. A frontend env change needs a rebuild.
+
+## While editing
+
+- Conventional Commits: `fix(web):`, `feat(api):`, `fix(api):`.
+- Lint JS/TS with Biome. Format SCSS with Prettier. Shared package is `packages/shared-configs` (tsconfig only).
+- No code comments unless asked. Never commit `.env` or secret values.
+- Build `@sokil/shared-types` before depending on a new export.
+- Match existing naming in the folder you touch. Do not rename `JwtAuthGuard` or split `api.ts` unless the current master-plan step says so.
+- User-facing strings go through i18next (`locales/{en,de,es,it,pt,uk}`). `ua` in types maps to the `uk` folder.
+
+## Invariants
+
+- Mutating API calls stay on the global CSRF guard. `@SkipCsrf()` is only for auth bootstrap that cannot have a token yet.
+- Authorize with ownership or admin scope in the service. ClubAdmin and FederationAdmin are not global admins.
+- Hash new secrets at rest. Revoke all sessions for a user when their password changes.
+- Do not cache API responses in the service worker, and do not call `navigator.serviceWorker.register` or add `SerwistProvider`.

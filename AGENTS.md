@@ -9,7 +9,7 @@ Guidance for AI agents working in this repository.
 - `apps/web` — Next.js 15 frontend (`@sokil/web`), port 3001
 - `apps/api` — NestJS 11 backend (`@sokil/api`), port 3000
 - `packages/shared-types` — shared TypeScript types
-- `packages/shared-configs` — shared ESLint / TS config
+- `packages/shared-configs` — shared TypeScript config (`tsconfig.base.json`)
 - `deploy/` — production Docker Compose (Traefik)
 
 Node `>=22.12.0`, pnpm `>=9`. Never use `npm`/`yarn`.
@@ -24,7 +24,7 @@ Node `>=22.12.0`, pnpm `>=9`. Never use `npm`/`yarn`.
 | Build      | `pnpm build`                                                   |
 | Lint       | `pnpm lint` (Biome; web also uses `biome check src`)           |
 | Typecheck  | `pnpm typecheck` (web + api `tsc --noEmit`)                    |
-| Test       | `pnpm test` / `pnpm test:run` (Vitest)                         |
+| Test       | `pnpm test` / `pnpm test:run` (Vitest on web, Jest on api)     |
 
 Per-package equivalent: `pnpm --filter @sokil/web <script>` /
 `pnpm --filter @sokil/api <script>`.
@@ -62,6 +62,14 @@ Per-package equivalent: `pnpm --filter @sokil/web <script>` /
   `"/"`, which the middleware redirects to `/{lang}/about` for guests and
   `/{lang}/home` for session-cookie users — see `middleware.ts` and
   `src/utils/default-landing.ts`).
+
+## Improvements
+
+Future improvements are sequenced in `MASTER-PLAN.md`. Do one numbered step at a time. Agent rules in `.cursor/rules/` cover day-to-day changes (API, web, data, PWA, tests, deploy).
+
+## Branches
+
+All work happens on `dev`. Commit and push only to `dev`. Sync `dev` into `main` only when a feature is ready to release. Deploy still tracks `origin/main` (live) and `origin/dev` (test).
 
 ## Conventions
 
