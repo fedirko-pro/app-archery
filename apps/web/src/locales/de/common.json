@@ -1643,6 +1643,19 @@
     "announcementMessage": {
       "title": "Nachricht von {{senderName}}",
       "body": "{{message}}"
+    },
+    "trainingStreakAtRisk": {
+      "title": "Verliere deine Trainingsserie nicht",
+      "body": "Du hast eine Serie von {{priorStreakWeeks}} Wochen. Trag diese Woche ein Training ein, damit sie nicht abbricht."
+    },
+    "push": {
+      "enable": "Telefon-Benachrichtigungen aktivieren",
+      "disable": "Telefon-Benachrichtigungen ausschalten",
+      "enabled": "Telefon-Benachrichtigungen sind auf diesem Gerät aktiv.",
+      "denied": "Benachrichtigungen sind in den Browser-Einstellungen blockiert.",
+      "iosInstall": "Füge Sokil zum Home-Bildschirm hinzu, um Benachrichtigungen auf dem iPhone zu erhalten.",
+      "unavailable": "Telefon-Benachrichtigungen sind in diesem Browser nicht verfügbar.",
+      "error": "Telefon-Benachrichtigungen konnten nicht aktualisiert werden."
     }
   }
 }

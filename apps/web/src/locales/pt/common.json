@@ -1674,6 +1674,19 @@
     "announcementMessage": {
       "title": "Mensagem de {{senderName}}",
       "body": "{{message}}"
+    },
+    "trainingStreakAtRisk": {
+      "title": "Não percas a tua sequência",
+      "body": "Tens uma sequência de {{priorStreakWeeks}} semanas. Regista um treino esta semana para não a perderes."
+    },
+    "push": {
+      "enable": "Ativar notificações no telemóvel",
+      "disable": "Desativar notificações no telemóvel",
+      "enabled": "As notificações no telemóvel estão ativas neste dispositivo.",
+      "denied": "As notificações estão bloqueadas nas definições do navegador.",
+      "iosInstall": "Adiciona o Sokil ao Ecrã Principal para receberes notificações no iPhone.",
+      "unavailable": "As notificações no telemóvel não estão disponíveis neste navegador.",
+      "error": "Não foi possível atualizar as notificações no telemóvel."
     }
   }
 }

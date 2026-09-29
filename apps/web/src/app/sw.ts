@@ -59,3 +59,45 @@ const serwist = new Serwist({
 });
 
 serwist.addEventListeners();
+
+self.addEventListener('push', (event) => {
+  let payload: { title?: string; body?: string; url?: string } = {};
+  try {
+    payload = (event.data?.json() ?? {}) as { title?: string; body?: string; url?: string };
+  } catch {
+    payload = { body: event.data?.text() };
+  }
+
+  event.waitUntil(
+    self.registration.showNotification(payload.title || 'Sokil', {
+      body: payload.body,
+      icon: '/logo192.png',
+      badge: '/logo192.png',
+      data: { url: payload.url || '/notifications' },
+    }),
+  );
+});
+
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+  const data = event.notification.data as { url?: string } | undefined;
+  const target = new URL(data?.url || '/notifications', self.location.origin).href;
+
+  event.waitUntil(
+    (async () => {
+      const windowClients = await self.clients.matchAll({
+        type: 'window',
+        includeUncontrolled: true,
+      });
+      for (const client of windowClients) {
+        if (!client.url.startsWith(self.location.origin)) continue;
+        await client.focus();
+        if ('navigate' in client) {
+          await client.navigate(target);
+        }
+        return;
+      }
+      await self.clients.openWindow(target);
+    })(),
+  );
+});

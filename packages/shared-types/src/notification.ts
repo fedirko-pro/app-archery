@@ -12,6 +12,7 @@ export const NotificationTypes = {
   PrivacyVisibilityChanged: 'privacy.visibility.changed',
   PasswordChanged: 'password.changed',
   Announcement: 'announcement.message',
+  TrainingStreakAtRisk: 'training.streak.at_risk',
 } as const;
 
 export type NotificationType = (typeof NotificationTypes)[keyof typeof NotificationTypes];
@@ -27,6 +28,7 @@ export const IMPORTANT_NOTIFICATION_TYPES: readonly NotificationType[] = [
   NotificationTypes.FederationMembershipApproved,
   NotificationTypes.FederationMembershipRejected,
   NotificationTypes.Announcement,
+  NotificationTypes.TrainingStreakAtRisk,
 ] as const;
 
 export function isImportantNotificationType(type: string): boolean {

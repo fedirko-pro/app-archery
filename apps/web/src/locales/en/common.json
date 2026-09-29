@@ -1643,6 +1643,19 @@
     "announcementMessage": {
       "title": "Message from {{senderName}}",
       "body": "{{message}}"
+    },
+    "trainingStreakAtRisk": {
+      "title": "Keep your training streak",
+      "body": "You have a {{priorStreakWeeks}}-week streak. Log a session this week so you don't lose it."
+    },
+    "push": {
+      "enable": "Enable phone notifications",
+      "disable": "Turn off phone notifications",
+      "enabled": "Phone notifications are on for this device.",
+      "denied": "Notifications are blocked in your browser settings.",
+      "iosInstall": "Add Sokil to your Home Screen to receive notifications on iPhone.",
+      "unavailable": "Phone notifications are not available in this browser.",
+      "error": "Could not update phone notifications."
     }
   }
 }

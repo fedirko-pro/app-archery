@@ -16,6 +16,7 @@ import {
   getNotificationTitleKey,
   resolveImportant,
 } from './notification-meta';
+import { PushService } from './push.service';
 
 export interface CreateNotificationInput {
   userId: string;
@@ -28,7 +29,10 @@ export interface CreateNotificationInput {
 export class NotificationsService {
   private readonly logger = new Logger(NotificationsService.name);
 
-  constructor(private readonly em: EntityManager) {}
+  constructor(
+    private readonly em: EntityManager,
+    private readonly pushService: PushService,
+  ) {}
 
   async create(input: CreateNotificationInput): Promise<Notification | null> {
     try {
@@ -50,6 +54,11 @@ export class NotificationsService {
       });
 
       await this.em.persistAndFlush(notification);
+      await this.pushService.sendToUser(user, {
+        type: input.type,
+        params: input.params,
+        link: input.link,
+      });
       return notification;
     } catch (err) {
       this.logger.error(
@@ -114,6 +123,11 @@ export class NotificationsService {
       }
 
       await this.em.flush();
+      await this.pushService.sendToUsers(uniqueIds, {
+        type,
+        params,
+        link: input.link,
+      });
       return uniqueIds.length;
     } catch (err) {
       this.logger.error(

@@ -1,22 +1,55 @@
 import {
+  Body,
   Controller,
   DefaultValuePipe,
+  Delete,
   Get,
+  Headers,
   Param,
   ParseIntPipe,
   Patch,
+  Put,
   Query,
   Request,
   UseGuards,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RequestUser } from '../auth/permissions';
+import { DeletePushSubscriptionDto, UpsertPushSubscriptionDto } from './dto/push-subscription.dto';
 import { NotificationsService } from './notifications.service';
+import { PushService } from './push.service';
 
 @Controller('notifications')
 @UseGuards(JwtAuthGuard)
 export class NotificationsController {
-  constructor(private readonly notificationsService: NotificationsService) {}
+  constructor(
+    private readonly notificationsService: NotificationsService,
+    private readonly pushService: PushService,
+  ) {}
+
+  @Get('push/vapid-public-key')
+  vapidPublicKey() {
+    return { publicKey: this.pushService.getPublicKey() };
+  }
+
+  @Put('push/subscription')
+  async upsertPushSubscription(
+    @Request() req: { user: RequestUser },
+    @Body() dto: UpsertPushSubscriptionDto,
+    @Headers('user-agent') userAgent?: string,
+  ) {
+    await this.pushService.upsert(req.user.sub, dto, userAgent);
+    return { ok: true };
+  }
+
+  @Delete('push/subscription')
+  async deletePushSubscription(
+    @Request() req: { user: RequestUser },
+    @Body() dto: DeletePushSubscriptionDto,
+  ) {
+    await this.pushService.remove(req.user.sub, dto);
+    return { ok: true };
+  }
 
   @Get()
   async list(

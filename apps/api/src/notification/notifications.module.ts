@@ -7,14 +7,17 @@ import { AnnouncementsService } from './announcements.service';
 import { Notification } from './notification.entity';
 import { NotificationsController } from './notifications.controller';
 import { NotificationsService } from './notifications.service';
+import { PushService } from './push.service';
+import { PushSubscription } from './push-subscription.entity';
+import { StreakReminderService } from './streak-reminder.service';
 
 @Module({
   imports: [
-    MikroOrmModule.forFeature([Notification, NotificationBroadcast]),
+    MikroOrmModule.forFeature([Notification, NotificationBroadcast, PushSubscription]),
     RolePermissionsModule,
   ],
   controllers: [NotificationsController, AnnouncementsController],
-  providers: [NotificationsService, AnnouncementsService],
+  providers: [NotificationsService, AnnouncementsService, PushService, StreakReminderService],
   exports: [NotificationsService],
 })
 export class NotificationsModule {}

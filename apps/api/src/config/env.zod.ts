@@ -32,6 +32,9 @@ export const envSchema = z
     SMTP_PASSWORD: z.string().min(1, 'SMTP_PASSWORD is required'),
     SMTP_FROM_EMAIL: z.string().email('SMTP_FROM_EMAIL must be a valid email'),
     SMTP_FROM_NAME: z.string().min(1, 'SMTP_FROM_NAME is required'),
+    VAPID_PUBLIC_KEY: z.string().optional(),
+    VAPID_PRIVATE_KEY: z.string().optional(),
+    VAPID_SUBJECT: z.string().optional(),
   })
   .superRefine((data, ctx) => {
     if (data.NODE_ENV === 'production' && data.JWT_SECRET.length < 32) {

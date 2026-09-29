@@ -1386,6 +1386,28 @@ class ApiService {
     });
   }
 
+  async getPushPublicKey(): Promise<{ publicKey: string | null }> {
+    return this.request<{ publicKey: string | null }>('/notifications/push/vapid-public-key');
+  }
+
+  async savePushSubscription(subscription: {
+    endpoint: string;
+    p256dh: string;
+    auth: string;
+  }): Promise<{ ok: boolean }> {
+    return this.request<{ ok: boolean }>('/notifications/push/subscription', {
+      method: 'PUT',
+      body: JSON.stringify(subscription),
+    });
+  }
+
+  async deletePushSubscription(endpoint: string): Promise<{ ok: boolean }> {
+    return this.request<{ ok: boolean }>('/notifications/push/subscription', {
+      method: 'DELETE',
+      body: JSON.stringify({ endpoint }),
+    });
+  }
+
   // Announcements (admin/organizer communications)
 
   async getAnnouncements(params?: {

@@ -20,6 +20,7 @@ import apiService from '../../services/api';
 import type { NotificationDto } from '../../services/types';
 import { formatDateTime } from '../../utils/date-utils';
 import { normalizeAppLang } from '../../utils/i18n-lang';
+import PushOptIn from './push-opt-in';
 
 function resolveNotificationBody(
   t: (key: string, options?: Record<string, unknown>) => string,
@@ -157,6 +158,8 @@ const NotificationsPage: React.FC = () => {
           </Button>
         )}
       </Box>
+
+      <PushOptIn />
 
       <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
         {lastLoginAt
