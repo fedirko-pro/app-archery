@@ -2,10 +2,9 @@ import './profile.scss';
 
 import { Box, CircularProgress } from '@mui/material';
 import type React from 'react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import env from '../../config/env';
 import { useAuth } from '../../contexts/auth-context';
 import type { User } from '../../contexts/types';
 import { getCurrentI18nLang } from '../../utils/i18n-lang';
@@ -23,7 +22,6 @@ const Profile: React.FC<ProfileProps> = ({ userOverride, isAdminView = false }) 
   const { t } = useTranslation('common');
 
   const [isEditing, setIsEditing] = useState(false);
-  const healthCheckExecutedRef = useRef(false);
 
   const [profileData, setProfileData] = useState<ProfileData>({
     firstName: '',
@@ -35,27 +33,6 @@ const Profile: React.FC<ProfileProps> = ({ userOverride, isAdminView = false }) 
     federationNumber: '',
     categories: [],
   });
-
-  useEffect(() => {
-    const checkBackendHealth = async () => {
-      // Prevent duplicate health checks
-      if (healthCheckExecutedRef.current) {
-        return;
-      }
-      healthCheckExecutedRef.current = true;
-
-      try {
-        const response = await fetch(`${env.API_BASE_URL}/auth/google/test`);
-        if (!response.ok) {
-          console.error('Backend health check failed:', response.status);
-        }
-      } catch (error) {
-        console.error('Backend health check error:', error);
-      }
-    };
-
-    checkBackendHealth();
-  }, []);
 
   useEffect(() => {
     if (user) {

@@ -24,21 +24,18 @@ function resolveApiOrigin(): string | null {
 
 const apiOrigin = resolveApiOrigin();
 
+self.addEventListener('fetch', (event) => {
+  if (!apiOrigin) return;
+  if (new URL(event.request.url).origin !== apiOrigin) return;
+  event.stopImmediatePropagation();
+});
+
 const serwist = new Serwist({
   precacheEntries: self.__SW_MANIFEST,
   skipWaiting: true,
   clientsClaim: true,
   navigationPreload: true,
   runtimeCaching: [
-    // Never cache private/auth API responses (same rule as the former Vite Workbox setup).
-    ...(apiOrigin
-      ? [
-          {
-            matcher: ({ url }: { url: URL }) => url.origin === apiOrigin,
-            handler: new NetworkOnly(),
-          },
-        ]
-      : []),
     {
       matcher: ({ url }: { url: URL; sameOrigin: boolean }) =>
         url.pathname.startsWith('/api/') && url.pathname !== '/api/app-version',

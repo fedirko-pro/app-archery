@@ -1,12 +1,13 @@
-import './Notifications.scss';
-
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MarkEmailReadOutlinedIcon from '@mui/icons-material/MarkEmailReadOutlined';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import Accordion from '@mui/material/Accordion';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
-import Collapse from '@mui/material/Collapse';
 import Typography from '@mui/material/Typography';
 import { NotificationTypes } from '@sokil/shared-types';
 import type React from 'react';
@@ -96,11 +97,10 @@ const NotificationsPage: React.FC = () => {
     void load();
   }, [load]);
 
-  const handleToggle = async (item: NotificationDto) => {
-    const nextExpanded = expandedId === item.id ? null : item.id;
-    setExpandedId(nextExpanded);
+  const handleToggle = async (item: NotificationDto, isExpanded: boolean) => {
+    setExpandedId(isExpanded ? item.id : null);
 
-    if (nextExpanded && !item.readAt) {
+    if (isExpanded && !item.readAt) {
       try {
         const updated = await apiService.markNotificationRead(item.id);
         setItems((prev) => prev.map((row) => (row.id === item.id ? updated : row)));
@@ -133,7 +133,7 @@ const NotificationsPage: React.FC = () => {
   const hasUnread = items.some((item) => !item.readAt);
 
   return (
-    <Box className="notifications-page" sx={{ maxWidth: 720, mx: 'auto', px: 2, py: 3 }}>
+    <Box sx={{ maxWidth: 720, mx: 'auto', px: 2, py: 3 }}>
       <Box
         sx={{
           display: 'flex',
@@ -183,66 +183,84 @@ const NotificationsPage: React.FC = () => {
         <Alert severity="info">{t('notifications.empty')}</Alert>
       )}
 
-      {!loading && items.length > 0 && (
-        <ul className="notifications-list">
-          {items.map((item) => {
-            const isExpanded = expandedId === item.id;
-            const isUnread = !item.readAt;
-            const relatedLink = item.link
-              ? `/${currentLang}${item.link.startsWith('/') ? item.link : `/${item.link}`}`
-              : null;
+      {!loading &&
+        items.length > 0 &&
+        items.map((item) => {
+          const isUnread = !item.readAt;
+          const relatedLink = item.link
+            ? `/${currentLang}${item.link.startsWith('/') ? item.link : `/${item.link}`}`
+            : null;
+          const title =
+            item.type === NotificationTypes.Announcement
+              ? (item.params?.title as string) ||
+                t('notifications.announcementMessage.title', {
+                  senderName: item.params?.senderName as string | undefined,
+                })
+              : t(item.titleKey);
 
-            return (
-              <li
-                key={item.id}
-                className={`notifications-item${isUnread ? ' is-unread' : ''}${
-                  isExpanded ? ' is-expanded' : ''
-                }${item.important ? ' is-important' : ''}`}
-              >
-                <button
-                  type="button"
-                  className="notifications-item__header"
-                  onClick={() => void handleToggle(item)}
-                  aria-expanded={isExpanded}
+          return (
+            <Accordion
+              key={item.id}
+              expanded={expandedId === item.id}
+              onChange={(_, isExpanded) => void handleToggle(item, isExpanded)}
+              sx={{ mb: 1 }}
+            >
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="space-between"
+                  width="100%"
+                  gap={2}
+                  pr={1}
                 >
-                  <span className="notifications-item__title-row">
-                    {isUnread && <span className="notifications-item__dot" aria-hidden />}
-                    <span className="notifications-item__title">
-                      {item.type === NotificationTypes.Announcement
-                        ? (item.params?.title as string) ||
-                          t('notifications.announcementMessage.title', {
-                            senderName: item.params?.senderName as string | undefined,
-                          })
-                        : t(item.titleKey)}
-                    </span>
-                  </span>
-                  <time className="notifications-item__time" dateTime={item.createdAt}>
-                    {formatDateTime(item.createdAt)}
-                  </time>
-                </button>
-                <Collapse in={isExpanded}>
-                  <div className="notifications-item__body">
-                    <Typography variant="body2" color="text.secondary">
-                      {resolveNotificationBody(t, item)}
-                    </Typography>
-                    {relatedLink && (
-                      <Button
-                        component={Link}
-                        to={relatedLink}
-                        size="small"
-                        endIcon={<OpenInNewIcon fontSize="small" />}
-                        sx={{ mt: 1.5 }}
-                      >
-                        {t('notifications.openRelated')}
-                      </Button>
+                  <Box display="flex" alignItems="center" gap={1} minWidth={0}>
+                    {isUnread && (
+                      <Box
+                        aria-hidden
+                        sx={{
+                          width: 8,
+                          height: 8,
+                          borderRadius: '50%',
+                          bgcolor: 'error.main',
+                          flexShrink: 0,
+                        }}
+                      />
                     )}
-                  </div>
-                </Collapse>
-              </li>
-            );
-          })}
-        </ul>
-      )}
+                    <Typography variant="subtitle1" sx={{ fontWeight: isUnread ? 700 : 500 }}>
+                      {title}
+                    </Typography>
+                  </Box>
+                  <Typography
+                    variant="caption"
+                    color="text.secondary"
+                    component="time"
+                    dateTime={item.createdAt}
+                    sx={{ flexShrink: 0 }}
+                  >
+                    {formatDateTime(item.createdAt)}
+                  </Typography>
+                </Box>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Typography variant="body2" color="text.secondary">
+                  {resolveNotificationBody(t, item)}
+                </Typography>
+                {relatedLink && (
+                  <Button
+                    component={Link}
+                    to={relatedLink}
+                    size="small"
+                    endIcon={<OpenInNewIcon fontSize="small" />}
+                    sx={{ mt: 1.5 }}
+                  >
+                    {t('notifications.openRelated')}
+                  </Button>
+                )}
+              </AccordionDetails>
+            </Accordion>
+          );
+        })}
     </Box>
   );
 };
