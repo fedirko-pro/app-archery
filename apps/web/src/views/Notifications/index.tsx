@@ -203,7 +203,7 @@ const NotificationsPage: React.FC = () => {
               key={item.id}
               expanded={expandedId === item.id}
               onChange={(_, isExpanded) => void handleToggle(item, isExpanded)}
-              sx={{ mb: 1 }}
+              sx={{ mb: 1, ...(isUnread && { bgcolor: 'action.hover' }) }}
             >
               <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                 <Box
@@ -227,7 +227,7 @@ const NotificationsPage: React.FC = () => {
                         }}
                       />
                     )}
-                    <Typography variant="subtitle1" sx={{ fontWeight: isUnread ? 700 : 500 }}>
+                    <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
                       {title}
                     </Typography>
                   </Box>
