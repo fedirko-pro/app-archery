@@ -242,7 +242,7 @@ const TournamentList: React.FC = () => {
   }
 
   return (
-    <Box sx={{ p: 3 }}>
+    <Box sx={{ px: { xs: 2, md: 4 }, py: { xs: 2, md: 3 } }}>
       <Box
         sx={{
           display: 'flex',
@@ -325,8 +325,12 @@ const TournamentList: React.FC = () => {
       <Box
         sx={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
-          gap: 3,
+          gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 280px), 320px))',
+          justifyContent: 'center',
+          columnGap: { xs: 2, md: 4 },
+          rowGap: { xs: 3, md: 4 },
+          px: { xs: 0, sm: 1, md: 3 },
+          py: { xs: 1, md: 2 },
         }}
       >
         {filteredTournaments.map((tournament) => {
