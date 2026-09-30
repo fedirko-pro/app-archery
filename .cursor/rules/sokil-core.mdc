@@ -9,9 +9,10 @@ pnpm monorepo: Next.js 15 (`apps/web`), NestJS 11 + MikroORM (`apps/api`), `@sok
 
 Improvement work follows `MASTER-PLAN.md` **one step at a time**. Do not pull the next step or a drive-by refactor into the current change.
 
-## Branches
+## Commits and branches
 
-All commits and pushes go to `dev`. Do not commit or push to `main`. Sync `dev` into `main` only when the user says the feature is ready.
+- **Never commit or push unless the user explicitly asks in the current message.** Leave changes in the working tree and report them. This applies to every change, including docs and rules.
+- When asked, commit and push to `dev` only. Do not commit or push to `main`. Sync `dev` into `main` only when the user says the feature is ready.
 
 ## Architecture you must keep
 

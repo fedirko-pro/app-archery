@@ -12,7 +12,7 @@ This is the only improvement backlog. Do not start a later step because it looks
 2. Change only the files that step names, plus tests for that behavior.
 3. Keep the current architecture: cookie session, Next.js shell + React Router screens, local-first trainings, pnpm.
 4. Prove the step with the tests it lists. Run `pnpm typecheck` if types moved.
-5. Commit to `dev`. Stop. Do not clean up neighboring code.
+5. Stop and report. Do not commit until the user asks; when they do, commit to `dev`. Do not clean up neighboring code.
 
 ## Decisions to confirm before the gated steps
 
