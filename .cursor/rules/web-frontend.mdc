@@ -21,6 +21,8 @@ alwaysApply: false
 - Loading and errors: local `Alert` / `CircularProgress`, or the global snackbar from `useNotification` in `error-feedback-context.tsx`. Do not add another snackbar system. `notifications-context.tsx` is the server notification feed, not toasts.
 - Forms stay controlled `useState` unless a master-plan step introduces a form library.
 - Split a view that is growing past a few hundred lines into a container and presentational sections. Keep fetch logic in the container.
+- New routes in `Content.tsx` are `React.lazy` with the `RouteLoadingSpinner` fallback. Heavy libraries (charts, drag-and-drop, confetti, glossary data) load inside the screen that needs them, not at the route table.
+- Interactive elements need a visible label or `aria-label`, keyboard focus, and a tap target of at least 44px on the mobile tab bar and training controls.
 
 ## i18n and security on the client
 

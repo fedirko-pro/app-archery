@@ -30,6 +30,8 @@ invite(@Param('id') clubId: string, @Req() req: AuthedRequest) {
 - Multi-row writes use `em.transactional()`. One `flush()` is not a transaction boundary.
 - Load related rows in batches. Do not `findOne` inside a loop over user-supplied ids.
 - Email and push side effects are fire-and-forget after the DB write succeeds. A mail failure must not fail the user action. Log the failure without tokens, passwords, or reset links.
+- Log through the injected Nest `Logger` (or the pino logger once it lands). No `console.*` in `apps/api/src` outside `scripts/` and `seeders/`. Never log cookies, `Authorization`, passwords, or raw tokens.
+- Admin actions that change another user's data (role, permissions, resets, deletes, application status) must write an audit entry once the audit module exists.
 - HTML email templates escape interpolated names, messages, and titles.
 
 ## Auth details

@@ -15,3 +15,6 @@ alwaysApply: false
 - `trust proxy` stays `1` because Traefik is the only proxy. Extra proxies would let clients spoof the throttle IP.
 - Uploads are bind mounts on the API host. Do not assume a second API replica can see them.
 - Checked-in hostnames are the test site (`archery.fedirko.pro`, `api-archery.fedirko.pro`). Do not overwrite them with live hostnames in this compose file unless the deploy docs change too.
+- Every service in the production compose gets a healthcheck, `mem_limit`, and `json-file` log rotation. A new stateful volume needs a matching backup entry.
+- `deploy.sh` must exit non-zero when a recreated container does not become healthy. Do not print `Done` on failure.
+- CI (`.github/workflows/ci.yml`) runs for `dev` and `main`. Do not narrow the triggers.
