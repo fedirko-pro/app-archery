@@ -2,6 +2,7 @@ import { EntityManager } from '@mikro-orm/core';
 import { Seeder } from '@mikro-orm/seeder';
 import { BowCategory } from '../bow-category/bow-category.entity';
 import { Rule } from '../rule/rule.entity';
+import { TournamentApplication } from '../tournament/tournament-application.entity';
 
 const IFAA_CATEGORY_CODES = new Set([
   'BBC',
@@ -321,20 +322,68 @@ export class BowCategorySeeder extends Seeder {
         ruleCitation: 'Longbow rules and restrictions',
       },
       {
-        code: 'MBR',
-        name: 'Modern Bow Recurve',
+        code: 'HLB',
+        name: 'Historical Longbow',
         descriptionEn:
-          'Recurve–reflex built entirely from modern materials (e.g., fiberglass, carbon, synthetics), one or two piece. Same shooting rules as HBR (Mediterranean, 3-under, thumb ring); no face-walking or string-walking. Wood/bamboo arrows with natural feathers; traditional nocks allowed; arrows similar in length (±25 mm), diameter, fletching and points; no sighting marks on arrows.',
+          'English longbows, war bows, Victorian target bows, primitive bows and selfbows in natural materials only, modelled on bows that existed by 1900. No modern fibers, no shooting window. Wood or bamboo arrows with natural feathers; nocks of horn, bone, metal, wood, or self-nocks. Mediterranean draw.',
         descriptionPt:
-          'Recurvo–reflexo inteiramente em materiais modernos (fibra de vidro, carbono, sintéticos), uma ou duas peças. Mesmas regras de tiro do HBR (Mediterrâneo, 3-embaixo, anel de polegar); sem face-/string-walking. Setas de madeira/bambu com penas naturais; nocks tradicionais; setas semelhantes em comprimento (±25 mm), diâmetro, penas e pontas; sem marcas de mira nas setas.',
+          'Longbows ingleses, war bows, arcos vitorianos de alvo, arcos primitivos e selfbows só em materiais naturais, inspirados em arcos existentes até 1900. Sem fibras modernas e sem janela. Flechas de madeira ou bambu com penas naturais; nocks em corno, osso, metal, madeira ou self-nocks. Puxada mediterrânica.',
         descriptionIt:
-          "Ricurvo–reflex interamente in materiali moderni (vetroresina, carbonio, sintetici), in uno o due pezzi. Stesse regole di tiro dell'HBR (Mediterraneo, 3-sotto, anello da pollice); vietato face-/string-walking. Frecce in legno/bambù con piume naturali; cocche tradizionali; frecce simili in lunghezza (±25 mm), diametro, piume e punte; nessun segno di mira sulle frecce.",
+          'Longbow inglesi, war bow, archi vittoriani da bersaglio, archi primitivi e selfbow solo in materiali naturali, sul modello di archi esistenti entro il 1900. Niente fibre moderne e niente finestra. Frecce in legno o bambù con piume naturali; cocche in corno, osso, metallo, legno o self-nock. Sgancio mediterraneo.',
         descriptionUk:
-          "Рекурсивно-рефлексний повністю з сучасних матеріалів (склопластик, карбон, синтетика), одне або два коліна. Ті самі правила, що для HBR (середземноморський, 3-під, кільце); заборонено face-/string-walking. Дерев'яні/бамбукові стріли з натуральним оперенням; традиційні ноки; стріли однакові за довжиною (±25 мм), діаметром, оперенням і наконечниками; без прицільних міток.",
+          'Англійські лонгбоу, war bow, вікторіанські мішеневі луки, примітивні та суцільні луки лише з природних матеріалів, за зразками до 1900 року. Без сучасних волокон і без вікна. Стріли з дерева або бамбука з натуральним оперенням; ноки з рогу, кістки, металу, дерева або self-nock. Середземноморський хват.',
         descriptionEs:
-          'Recurvo–réflex construido íntegramente con materiales modernos (fibra de vidrio, carbono, sintéticos), de una o dos piezas. Mismas reglas de tiro que HBR (mediterránea, tres por debajo, anillo de pulgar); prohibido el face-/string-walking. Flechas de madera/bambú con plumas naturales; culatines tradicionales permitidos; flechas similares en longitud (±25 mm), diámetro, emplumado y puntas; sin marcas de puntería.',
-        ruleReference: 'FABP QC2025 — Rota dos Castelos: 2.b) Moderno (MBR)',
-        ruleCitation: 'Modern bow recurve rules',
+          'Longbows ingleses, war bows, arcos victorianos de diana, arcos primitivos y selfbows solo de materiales naturales, inspirados en arcos existentes hasta 1900. Sin fibras modernas y sin ventana. Flechas de madera o bambú con plumas naturales; culatines de cuerno, hueso, metal, madera o self-nock. Liberación mediterránea.',
+        ruleReference: 'FABP QC2025, Art. 26 — Rota dos Castelos 1 (HLB)',
+        ruleCitation: 'Historical longbow for Rota dos Castelos',
+      },
+      {
+        code: 'MB-LB',
+        name: 'Modern Longbow',
+        descriptionEn:
+          'American flatbow / modern longbow. Wood-based, one or two piece, usually laminated, with modern fibers such as fiberglass or carbon. Shooting window optional. Wood or bamboo arrows with natural feathers; non-fluorescent plastic nocks allowed.',
+        descriptionPt:
+          'American flatbow / longbow moderno. Base de madeira, uma ou duas peças, normalmente laminado, com fibras modernas (fibra de vidro ou carbono). Janela de disparo opcional. Flechas de madeira ou bambu com penas naturais; nocks de plástico não fluorescentes permitidos.',
+        descriptionIt:
+          'American flatbow / longbow moderno. Base in legno, uno o due pezzi, di solito laminato, con fibre moderne (vetroresina o carbonio). Finestra di tiro facoltativa. Frecce in legno o bambù con piume naturali; cocche in plastica non fluorescenti ammesse.',
+        descriptionUk:
+          'American flatbow / сучасний лонгбоу. Дерев’яна основа, одна або дві частини, зазвичай ламінований, із сучасними волокнами (склопластик або карбон). Вікно необов’язкове. Стріли з дерева або бамбука з натуральним оперенням; нефлуоресцентні пластикові ноки дозволені.',
+        descriptionEs:
+          'American flatbow / longbow moderno. Base de madera, de una o dos piezas, normalmente laminado, con fibras modernas (fibra de vidrio o carbono). Ventana de tiro opcional. Flechas de madera o bambú con plumas naturales; culatines de plástico no fluorescentes permitidos.',
+        ruleReference: 'FABP QC2025, Art. 26 — Rota dos Castelos 3 (MB LB)',
+        ruleCitation: 'Modern longbow for Rota dos Castelos',
+      },
+      {
+        code: 'MB-TR',
+        name: 'Modern Traditional Recurve',
+        descriptionEn:
+          'Traditional reflex-deflex recurve, one piece or two-piece takedown. Wood-based, modern fibers allowed. Shooting window optional. Wood or bamboo arrows with natural feathers; non-fluorescent plastic nocks allowed.',
+        descriptionPt:
+          'Recurvo tradicional reflexo-deflexo, uma peça ou take-down de duas peças. Base de madeira, fibras modernas permitidas. Janela de disparo opcional. Flechas de madeira ou bambu com penas naturais; nocks de plástico não fluorescentes permitidos.',
+        descriptionIt:
+          'Ricurvo tradizionale reflex-deflex, monopezzo o takedown in due pezzi. Base in legno, fibre moderne ammesse. Finestra di tiro facoltativa. Frecce in legno o bambù con piume naturali; cocche in plastica non fluorescenti ammesse.',
+        descriptionUk:
+          'Традиційний рекурсив reflex-deflex, суцільний або takedown із двох частин. Дерев’яна основа, сучасні волокна дозволені. Вікно необов’язкове. Стріли з дерева або бамбука з натуральним оперенням; нефлуоресцентні пластикові ноки дозволені.',
+        descriptionEs:
+          'Recurvo tradicional reflex-deflex, de una pieza o takedown de dos piezas. Base de madera, fibras modernas permitidas. Ventana de tiro opcional. Flechas de madera o bambú con plumas naturales; culatines de plástico no fluorescentes permitidos.',
+        ruleReference: 'FABP QC2025, Art. 26 — Rota dos Castelos 4 (MB TR)',
+        ruleCitation: 'Modern traditional recurve for Rota dos Castelos',
+      },
+      {
+        code: 'MB-SB',
+        name: 'Special Modern Recurve',
+        descriptionEn:
+          'Modern recurve, including three-piece takedown, with a wooden base. Wood or bamboo arrows with natural feathers; non-fluorescent plastic nocks allowed. For archers starting in Rota dos Castelos. Does not score for the individual or club championship.',
+        descriptionPt:
+          'Recurvo moderno, incluindo take-down de três peças, com base de madeira. Flechas de madeira ou bambu com penas naturais; nocks de plástico não fluorescentes permitidos. Para quem inicia na Rota dos Castelos. Não pontua para o campeonato individual nem para o de clubes.',
+        descriptionIt:
+          'Ricurvo moderno, incluso takedown in tre pezzi, con base in legno. Frecce in legno o bambù con piume naturali; cocche in plastica non fluorescenti ammesse. Per chi inizia nella Rota dos Castelos. Non assegna punti al campionato individuale né a quello di società.',
+        descriptionUk:
+          'Сучасний рекурсив, зокрема takedown із трьох частин, із дерев’яною основою. Стріли з дерева або бамбука з натуральним оперенням; нефлуоресцентні пластикові ноки дозволені. Для тих, хто починає в Rota dos Castelos. Не йде в залік особистого чемпіонату та чемпіонату клубів.',
+        descriptionEs:
+          'Recurvo moderno, incluido el takedown de tres piezas, con base de madera. Flechas de madera o bambú con plumas naturales; culatines de plástico no fluorescentes permitidos. Para quien empieza en la Rota dos Castelos. No puntúa para el campeonato individual ni para el de clubes.',
+        ruleReference: 'FABP QC2025, Art. 26 — Rota dos Castelos 5 (MB SB)',
+        ruleCitation: 'Special modern recurve for Rota dos Castelos',
       },
       {
         code: 'MC',
@@ -440,6 +489,93 @@ export class BowCategorySeeder extends Seeder {
           created++;
           console.log(`  ✅ ${fabpResult.code} under ${fabpRule.ruleCode}`);
         }
+      }
+    }
+
+    const targetDivisions: CategoryData[] = [
+      {
+        code: 'RC',
+        name: 'Recurve',
+        descriptionEn:
+          'World Archery Recurve division. Sight, stabilisers, and a clicker are permitted.',
+        descriptionPt:
+          'Divisão Recurvo da World Archery. Mira, estabilizadores e clicker são permitidos.',
+        descriptionIt:
+          'Divisione Ricurvo World Archery. Mirino, stabilizzatori e clicker sono consentiti.',
+        descriptionUk: 'Дивізіон Recurve World Archery. Приціл, стабілізатори та клікер дозволені.',
+        descriptionEs:
+          'División Recurvo de World Archery. Se permiten mira, estabilizadores y clicker.',
+        ruleReference: 'World Archery Book 3 (2026), 9.1 — Recurve Division',
+        ruleCitation: 'Recurve division equipment',
+      },
+      {
+        code: 'CP',
+        name: 'Compound',
+        descriptionEn:
+          'World Archery Compound division. Release aid, scope, and peep sight are permitted.',
+        descriptionPt:
+          'Divisão Compound da World Archery. Disparador, scope e peep sight são permitidos.',
+        descriptionIt:
+          'Divisione Compound World Archery. Sgancio meccanico, scope e peep sight sono consentiti.',
+        descriptionUk: 'Дивізіон Compound World Archery. Реліз, scope і peep sight дозволені.',
+        descriptionEs:
+          'División Compound de World Archery. Se permiten disparador, scope y peep sight.',
+        ruleReference: 'World Archery Book 3 (2026), 9.2 — Compound Division',
+        ruleCitation: 'Compound division equipment',
+      },
+      {
+        code: 'BB',
+        name: 'Barebow',
+        descriptionEn:
+          'World Archery Barebow division. Recurve equipment without a sight or stabilisers.',
+        descriptionPt:
+          'Divisão Barebow da World Archery. Equipamento de recurvo sem mira nem estabilizadores.',
+        descriptionIt:
+          'Divisione Barebow World Archery. Attrezzatura da ricurvo senza mirino né stabilizzatori.',
+        descriptionUk:
+          'Дивізіон Barebow World Archery. Рекурсивне спорядження без прицілу та стабілізаторів.',
+        descriptionEs:
+          'División Barebow de World Archery. Equipo de recurvo sin mira ni estabilizadores.',
+        ruleReference: 'World Archery Book 3 (2026), 9.3 — Barebow Division',
+        ruleCitation: 'Barebow division equipment',
+      },
+    ];
+
+    for (const ruleCode of ['FPTA', 'WA', 'WA-INDOOR']) {
+      const rule = await em.findOne(Rule, { ruleCode });
+      if (!rule) {
+        console.log(`   ⚠️  Rule ${ruleCode} not found, skipping target divisions`);
+        continue;
+      }
+      for (const catData of targetDivisions) {
+        const reference =
+          ruleCode === 'FPTA'
+            ? 'FPTA Quadros Competitivos (fev. 2026), Art. 5 — Recurvo, Compound e Barebow'
+            : catData.ruleReference;
+        const result = await ensureCategory(em, { ...catData, ruleReference: reference }, rule);
+        if (result) {
+          created++;
+          console.log(`  ✅ ${result.code} under ${rule.ruleCode}`);
+        }
+      }
+    }
+
+    if (fabpRule) {
+      const legacyMbr = await em.findOne(BowCategory, { code: 'MBR', rule: fabpRule.id });
+      const modernTraditional = await em.findOne(BowCategory, {
+        code: 'MB-TR',
+        rule: fabpRule.id,
+      });
+      if (legacyMbr && modernTraditional) {
+        const applications = await em.find(TournamentApplication, { bowCategory: legacyMbr });
+        for (const application of applications) {
+          application.bowCategory = modernTraditional;
+        }
+        await em.flush();
+        await em.removeAndFlush(legacyMbr);
+        console.log(
+          `  ↪ retired MBR (${applications.length} applications moved to MB-TR); QC2025 has no MBR class`,
+        );
       }
     }
 

@@ -2,30 +2,16 @@ import { EntityManager } from '@mikro-orm/core';
 import { Seeder } from '@mikro-orm/seeder';
 import { Division } from '../division/division.entity';
 import { Rule } from '../rule/rule.entity';
+import { DIVISIONS_BY_RULE } from './division-catalog';
 
-const STANDARD_DIVISIONS = [
-  { name: 'Adult Female', description: 'Women 18-49 years' },
-  { name: 'Adult Male', description: 'Men 18-49 years' },
-  { name: 'Cub Female', description: 'Girls under 12 years' },
-  { name: 'Cub Male', description: 'Boys under 12 years' },
-  { name: 'Junior Female', description: 'Girls 12-17 years' },
-  { name: 'Junior Male', description: 'Boys 12-17 years' },
-  { name: 'Veteran Female', description: 'Women 50+ years' },
-  { name: 'Veteran Male', description: 'Men 50+ years' },
-];
-
-const RULE_CODES = ['IFAA', 'IFAA-HB', 'FABP', 'HDH-IAA'];
-
-/**
- * Seeds standard divisions (Cub, Junior, Adult, Veteran - Male/Female) for main rules.
- */
 export class DivisionSeeder extends Seeder {
   async run(em: EntityManager): Promise<void> {
-    console.log('📋 Seeding divisions for main rules...\n');
+    console.log('📋 Seeding divisions from rulebooks...\n');
 
     let totalCreated = 0;
+    let totalUpdated = 0;
 
-    for (const ruleCode of RULE_CODES) {
+    for (const [ruleCode, divisions] of Object.entries(DIVISIONS_BY_RULE)) {
       const rule = await em.findOne(Rule, { ruleCode });
       if (!rule) {
         console.log(`   ⚠️  Rule ${ruleCode} not found, skipping`);
@@ -33,28 +19,34 @@ export class DivisionSeeder extends Seeder {
       }
 
       let created = 0;
-      for (const div of STANDARD_DIVISIONS) {
+      let updated = 0;
+      for (const div of divisions) {
         const existing = await em.findOne(Division, {
           name: div.name,
           rule,
         });
         if (!existing) {
-          const division = em.create(Division, {
-            name: div.name,
-            description: div.description,
-            rule,
-          });
-          em.persist(division);
+          em.persist(
+            em.create(Division, {
+              name: div.name,
+              description: div.description,
+              rule,
+            }),
+          );
           created++;
+          continue;
+        }
+        if (existing.description !== div.description) {
+          existing.description = div.description;
+          updated++;
         }
       }
       totalCreated += created;
-      console.log(
-        `   ${ruleCode}: ${created} new divisions (${STANDARD_DIVISIONS.length - created} already existed)`,
-      );
+      totalUpdated += updated;
+      console.log(`   ${ruleCode}: ${created} new, ${updated} descriptions updated`);
     }
 
     await em.flush();
-    console.log(`\n✅ ${totalCreated} divisions created for main rules`);
+    console.log(`\n✅ ${totalCreated} divisions created, ${totalUpdated} descriptions updated`);
   }
 }
