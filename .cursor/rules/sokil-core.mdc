@@ -37,3 +37,4 @@ Improvement work follows `MASTER-PLAN.md` **one step at a time**. Do not pull th
 - Authorize with ownership or admin scope in the service. ClubAdmin and FederationAdmin are not global admins.
 - Hash new secrets at rest. Revoke all sessions for a user when their password changes.
 - Do not cache API responses in the service worker, and do not call `navigator.serviceWorker.register` or add `SerwistProvider`.
+- The product is already released. Changes to rows that already exist in a deployed database (divisions, bow categories, rules, and similar reference data) go in a **new** migration. Deploy runs `migration:up` only. Seeders do not run on deploy, and a shipped migration is never edited.

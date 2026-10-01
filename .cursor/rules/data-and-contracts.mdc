@@ -10,6 +10,7 @@ alwaysApply: false
 
 - Entities stay next to their feature module. A schema change is: edit the entity, then `pnpm --filter @sokil/api mikro-orm migration:create`, then review the SQL in `apps/api/src/migrations/`.
 - Migrations are forward-only. Deploy runs `mikro-orm migration:up` before the API process. Do not hand-edit an already shipped migration; add a new one.
+- The product is already released. Corrections to seeded reference data (divisions, bow categories, rules) also need a new migration. Updating a seeder does not change a database that was already seeded.
 - Relations use MikroORM collections. A loose string id is a bug unless the master plan explicitly keeps one (training `equipmentSetId` is an existing loose id).
 - Hide secrets on the entity (`hidden: true`): password hashes, reset tokens, session hashes.
 - Seeders must keep the `NODE_ENV === 'production'` early return. No new well-known passwords.
