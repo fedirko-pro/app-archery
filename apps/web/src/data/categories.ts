@@ -199,7 +199,7 @@ const IFAA_CATEGORIES: CategoryDto[] = [
     description_es:
       'Recurvo–réflex (de caballo/nómada) principalmente de materiales naturales; puede incluir laminados de fibras modernas; sin ventana de tiro. Liberaciones permitidas: mediterránea, tres por debajo, anillo de pulgar. Prohibido el face-walking y el string-walking. Flechas de madera/bambú con plumas naturales; culatines de cuerno/hueso/metal/madera o tallados; flechas similares en longitud (±25 mm), diámetro, emplumado y puntas; sin marcas de puntería en las flechas.',
     rule_reference: 'FABP',
-    rule_citation: 'FABP QC2025 — Rota dos Castelos: 2.a) Histórico (HBR)',
+    rule_citation: 'FABP QC2025, Art. 27 — Rota dos Castelos 2 (HBR)',
   },
   {
     code: 'HCB',
@@ -264,7 +264,7 @@ const IFAA_CATEGORIES: CategoryDto[] = [
     description_es:
       'Longbows ingleses, war bows, arcos victorianos de diana, arcos primitivos y selfbows solo de materiales naturales, inspirados en arcos existentes hasta 1900. Sin fibras modernas y sin ventana. Flechas de madera o bambú con plumas naturales; culatines de cuerno, hueso, metal, madera o self-nock. Liberación mediterránea.',
     rule_reference: 'FABP',
-    rule_citation: 'FABP QC2025, Art. 26 — Rota dos Castelos 1 (HLB)',
+    rule_citation: 'FABP QC2025, Art. 27 — Rota dos Castelos 1 (HLB)',
   },
   {
     code: 'MB-LB',
@@ -280,7 +280,7 @@ const IFAA_CATEGORIES: CategoryDto[] = [
     description_es:
       'American flatbow / longbow moderno. Base de madera, de una o dos piezas, normalmente laminado, con fibras modernas (fibra de vidrio o carbono). Ventana de tiro opcional. Flechas de madera o bambú con plumas naturales; culatines de plástico no fluorescentes permitidos.',
     rule_reference: 'FABP',
-    rule_citation: 'FABP QC2025, Art. 26 — Rota dos Castelos 3 (MB LB)',
+    rule_citation: 'FABP QC2025, Art. 27 — Rota dos Castelos 3 (MB LB)',
   },
   {
     code: 'MB-TR',
@@ -296,7 +296,7 @@ const IFAA_CATEGORIES: CategoryDto[] = [
     description_es:
       'Recurvo tradicional reflex-deflex, de una pieza o takedown de dos piezas. Base de madera, fibras modernas permitidas. Ventana de tiro opcional. Flechas de madera o bambú con plumas naturales; culatines de plástico no fluorescentes permitidos.',
     rule_reference: 'FABP',
-    rule_citation: 'FABP QC2025, Art. 26 — Rota dos Castelos 4 (MB TR)',
+    rule_citation: 'FABP QC2025, Art. 27 — Rota dos Castelos 4 (MB TR)',
   },
   {
     code: 'MB-SB',
@@ -312,7 +312,7 @@ const IFAA_CATEGORIES: CategoryDto[] = [
     description_es:
       'Recurvo moderno, incluido el takedown de tres piezas, con base de madera. Flechas de madera o bambú con plumas naturales; culatines de plástico no fluorescentes permitidos. Para quien empieza en la Rota dos Castelos. No puntúa para el campeonato individual ni para el de clubes.',
     rule_reference: 'FABP',
-    rule_citation: 'FABP QC2025, Art. 26 — Rota dos Castelos 5 (MB SB)',
+    rule_citation: 'FABP QC2025, Art. 27 — Rota dos Castelos 5 (MB SB)',
   },
   {
     code: 'MC',
@@ -323,7 +323,7 @@ const IFAA_CATEGORIES: CategoryDto[] = [
     description_uk: 'Середньовічний (історичний) арбалет FABP; унісекс категорія.',
     description_es: 'Ballesta medieval (estilo histórico) de la FABP; categoría unisex.',
     rule_reference: 'FABP',
-    rule_citation: 'FABP QC2025, Art. 8.2 — Categorias Crossbow Unissexo (SC-St, SC-Fs, TC, MC)',
+    rule_citation: 'FABP QC2025, Art. 27 — Rota dos Castelos 6 (MC)',
   },
   {
     code: 'SC-Fs',
