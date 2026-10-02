@@ -199,7 +199,7 @@ const IFAA_CATEGORIES: CategoryDto[] = [
     description_es:
       'Recurvo–réflex (de caballo/nómada) principalmente de materiales naturales; puede incluir laminados de fibras modernas; sin ventana de tiro. Liberaciones permitidas: mediterránea, tres por debajo, anillo de pulgar. Prohibido el face-walking y el string-walking. Flechas de madera/bambú con plumas naturales; culatines de cuerno/hueso/metal/madera o tallados; flechas similares en longitud (±25 mm), diámetro, emplumado y puntas; sin marcas de puntería en las flechas.',
     rule_reference: 'FABP',
-    rule_citation: 'FABP QC2025, Art. 27 — Rota dos Castelos 2 (HBR)',
+    rule_citation: 'FABP QC2026, Art. 27 — Campeonato dos Castelos B.1 (HBR)',
   },
   {
     code: 'HCB',
@@ -264,7 +264,7 @@ const IFAA_CATEGORIES: CategoryDto[] = [
     description_es:
       'Longbows ingleses, war bows, arcos victorianos de diana, arcos primitivos y selfbows solo de materiales naturales, inspirados en arcos existentes hasta 1900. Sin fibras modernas y sin ventana. Flechas de madera o bambú con plumas naturales; culatines de cuerno, hueso, metal, madera o self-nock. Liberación mediterránea.',
     rule_reference: 'FABP',
-    rule_citation: 'FABP QC2025, Art. 27 — Rota dos Castelos 1 (HLB)',
+    rule_citation: 'FABP QC2026, Art. 27 — Campeonato dos Castelos A (HLB)',
   },
   {
     code: 'MB-LB',
@@ -280,7 +280,7 @@ const IFAA_CATEGORIES: CategoryDto[] = [
     description_es:
       'American flatbow / longbow moderno. Base de madera, de una o dos piezas, normalmente laminado, con fibras modernas (fibra de vidrio o carbono). Ventana de tiro opcional. Flechas de madera o bambú con plumas naturales; culatines de plástico no fluorescentes permitidos.',
     rule_reference: 'FABP',
-    rule_citation: 'FABP QC2025, Art. 27 — Rota dos Castelos 3 (MB LB)',
+    rule_citation: 'FABP QC2026, Art. 27 — Campeonato dos Castelos C (MB LB)',
   },
   {
     code: 'MB-TR',
@@ -296,23 +296,23 @@ const IFAA_CATEGORIES: CategoryDto[] = [
     description_es:
       'Recurvo tradicional reflex-deflex, de una pieza o takedown de dos piezas. Base de madera, fibras modernas permitidas. Ventana de tiro opcional. Flechas de madera o bambú con plumas naturales; culatines de plástico no fluorescentes permitidos.',
     rule_reference: 'FABP',
-    rule_citation: 'FABP QC2025, Art. 27 — Rota dos Castelos 4 (MB TR)',
+    rule_citation: 'FABP QC2026, Art. 27 — Campeonato dos Castelos D (MB TR)',
   },
   {
-    code: 'MB-SB',
-    name: 'Special Modern Recurve',
+    code: 'MBR',
+    name: 'Modern Bow Recurve',
     description_en:
-      'Modern recurve, including three-piece takedown, with a wooden base. Wood or bamboo arrows with natural feathers; non-fluorescent plastic nocks allowed. For archers starting in Rota dos Castelos. Does not score for the individual or club championship.',
+      'Horse/nomad-style recurve–reflex built entirely from modern materials (fiberglass, carbon, synthetics), one or two piece, no shooting window. Releases: Mediterranean, 3-under, thumb ring. Wood/bamboo arrows with natural feathers; horn/bone/metal/wood/self nocks.',
     description_pt:
-      'Recurvo moderno, incluindo take-down de três peças, com base de madeira. Flechas de madeira ou bambu com penas naturais; nocks de plástico não fluorescentes permitidos. Para quem inicia na Rota dos Castelos. Não pontua para o campeonato individual nem para o de clubes.',
+      'Recurvo–reflexo estilo cavalo/nómada fabricado integralmente com materiais modernos (fibra de vidro, carbono, sintéticos), uma ou duas peças, sem janela de disparo. Liberações: Mediterrâneo, 3-embaixo, anel de polegar. Flechas de madeira/bambu com penas naturais; nocks em corno/osso/metal/madeira/self.',
     description_it:
-      'Ricurvo moderno, incluso takedown in tre pezzi, con base in legno. Frecce in legno o bambù con piume naturali; cocche in plastica non fluorescenti ammesse. Per chi inizia nella Rota dos Castelos. Non assegna punti al campionato individuale né a quello di società.',
+      'Ricurvo–reflex stile cavallo/nomade interamente in materiali moderni (vetroresina, carbonio, sintetici), uno o due pezzi, senza finestra. Rilasci: Mediterraneo, 3-sotto, anello da pollice. Frecce in legno/bambù con piume naturali; cocche in corno/osso/metallo/legno/self.',
     description_uk:
-      'Сучасний рекурсив, зокрема takedown із трьох частин, із дерев’яною основою. Стріли з дерева або бамбука з натуральним оперенням; нефлуоресцентні пластикові ноки дозволені. Для тих, хто починає в Rota dos Castelos. Не йде в залік особистого чемпіонату та чемпіонату клубів.',
+      'Рекурсивно-рефлексний кінний/кочовий стиль повністю з сучасних матеріалів (склопластик, карбон, синтетика), одна або дві частини, без вікна. Хват: середземноморський, 3-під, кільце. Стріли з дерева/бамбука з натуральним оперенням; ноки з рогу/кістки/металу/дерева/self.',
     description_es:
-      'Recurvo moderno, incluido el takedown de tres piezas, con base de madera. Flechas de madera o bambú con plumas naturales; culatines de plástico no fluorescentes permitidos. Para quien empieza en la Rota dos Castelos. No puntúa para el campeonato individual ni para el de clubes.',
+      'Recurvo–réflex estilo caballo/nómada fabricado íntegramente con materiales modernos (fibra de vidro, carbono, sintéticos), de una o dos piezas, sin ventana. Liberaciones: mediterránea, tres por debajo, anillo de pulgar. Flechas de madera/bambú con plumas naturales; culatines de cuerno/hueso/metal/madera/self.',
     rule_reference: 'FABP',
-    rule_citation: 'FABP QC2025, Art. 27 — Rota dos Castelos 5 (MB SB)',
+    rule_citation: 'FABP QC2026, Art. 27 — Campeonato dos Castelos B.2 (MBR)',
   },
   {
     code: 'MC',
@@ -323,7 +323,7 @@ const IFAA_CATEGORIES: CategoryDto[] = [
     description_uk: 'Середньовічний (історичний) арбалет FABP; унісекс категорія.',
     description_es: 'Ballesta medieval (estilo histórico) de la FABP; categoría unisex.',
     rule_reference: 'FABP',
-    rule_citation: 'FABP QC2025, Art. 27 — Rota dos Castelos 6 (MC)',
+    rule_citation: 'FABP QC2026, Art. 27 — Campeonato dos Castelos E (MC)',
   },
   {
     code: 'SC-Fs',
@@ -334,7 +334,7 @@ const IFAA_CATEGORIES: CategoryDto[] = [
     description_uk: 'Спортивний арбалет FABP — конфігурація freestyle; унісекс категорія.',
     description_es: 'Ballesta deportiva de la FABP — configuración freestyle; categoría unisex.',
     rule_reference: 'FABP',
-    rule_citation: 'FABP QC2025, Art. 8.2 — Categorias Crossbow Unissexo (SC-St, SC-Fs, TC, MC)',
+    rule_citation: 'FABP QC2026, Art. 8.2 — Categorias Crossbow Unissexo (SC-St, SC-Fs, TC, MC)',
   },
   {
     code: 'SC-St',
@@ -345,7 +345,7 @@ const IFAA_CATEGORIES: CategoryDto[] = [
     description_uk: 'Спортивний арбалет FABP — стандартна конфігурація; унісекс категорія.',
     description_es: 'Ballesta deportiva de la FABP — configuración estándar; categoría unisex.',
     rule_reference: 'FABP',
-    rule_citation: 'FABP QC2025, Art. 8.2 — Categorias Crossbow Unissexo (SC-St, SC-Fs, TC, MC)',
+    rule_citation: 'FABP QC2026, Art. 8.2 — Categorias Crossbow Unissexo (SC-St, SC-Fs, TC, MC)',
   },
   {
     code: 'TC',
@@ -356,7 +356,7 @@ const IFAA_CATEGORIES: CategoryDto[] = [
     description_uk: 'Дисципліна арбалет «таргет» у FABP; унісекс категорія.',
     description_es: 'Disciplina de ballesta de diana de la FABP; categoría unissex.',
     rule_reference: 'FABP',
-    rule_citation: 'FABP QC2025, Art. 8.2 — Categorias Crossbow Unissexo (SC-St, SC-Fs, TC, MC)',
+    rule_citation: 'FABP QC2026, Art. 8.2 — Categorias Crossbow Unissexo (SC-St, SC-Fs, TC, MC)',
   },
   {
     code: 'TR',
@@ -411,7 +411,7 @@ const IFAA_TO_FABP_CODES = new Set([
 const fabpDuplicates = IFAA_CATEGORIES.filter((c) => IFAA_TO_FABP_CODES.has(c.code)).map((c) => ({
   ...c,
   rule_reference: 'FABP' as const,
-  rule_citation: 'FABP QC2025, Art. 8 — IFAA classes accepted',
+  rule_citation: 'FABP QC2026, Art. 8 — IFAA classes accepted',
 }));
 
 const targetDivisions: CategoryDto[] = [

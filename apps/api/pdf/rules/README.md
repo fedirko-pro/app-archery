@@ -2,7 +2,7 @@
 
 PDFs are served from the repo-root `uploads/rules/` directory, not this folder.
 
-- **In DB:** `Rule.downloadLink` — e.g. `/uploads/rules/FABP_QC2025.pdf`
+- **In DB:** `Rule.downloadLink` — e.g. `/uploads/rules/FABP_QC2026.pdf`
 - **On disk:** `uploads/rules/<filename>.pdf` at the monorepo root
 - **URL:** `GET /uploads/rules/<filename>` (API static assets)
 

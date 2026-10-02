@@ -43,7 +43,7 @@ const rulesData: RuleDto[] = [
     ruleCode: 'FABP',
     ruleName:
       'Federação dos Arqueiros e Besteiros de Portugal — Regulamento dos Quadros Competitivos',
-    edition: 'QC2025',
+    edition: 'QC2026',
     descriptionEn:
       'Portuguese national federation regulations for competitive archery. Defines local competition structures, championships, categories (including crossbow), and eligibility.',
     descriptionPt:
@@ -55,7 +55,7 @@ const rulesData: RuleDto[] = [
     descriptionEs:
       'Reglamento nacional portugués para el tiro con arco competitivo. Define estructuras de competición locales, campeonatos, categorías (incluida ballesta) y criterios de elegibilidad.',
     link: 'https://www.fabp.pt',
-    downloadLink: '/mnt/data/QC2025.pdf',
+    downloadLink: '/mnt/data/QC2026.pdf',
   },
   {
     ruleCode: 'HDH-IAA',

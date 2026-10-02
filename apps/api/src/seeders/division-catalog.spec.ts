@@ -34,4 +34,13 @@ describe('division catalog', () => {
     expect(names('HDH-IAA')).not.toContain('Senior Male');
     expect(description('HDH-IAA', 'Veteran Male')).toContain('55');
   });
+
+  it('adds Campeonato dos Castelos divisions from FABP QC2026 Art. 7.1.1', () => {
+    expect(names('FABP')).toEqual(
+      expect.arrayContaining(['Mancebos', 'Infantes', 'Donzelas', 'Cavaleiros', 'Damas']),
+    );
+    expect(description('FABP', 'Mancebos')).toMatch(/unisex/i);
+    expect(description('FABP', 'Infantes')).toContain('14-16');
+    expect(description('FABP', 'Cavaleiros')).toContain('17');
+  });
 });

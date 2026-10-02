@@ -22,7 +22,7 @@ const divisionsData: DivisionDto[] = [
   {
     id: 'fabp-young-adult',
     name: 'Young Adult',
-    description: '18-20 (suspended at national events)',
+    description: '17-20 (suspended at national events)',
     rule_code: 'FABP',
   },
   {
@@ -36,6 +36,36 @@ const divisionsData: DivisionDto[] = [
     id: 'fabp-senior',
     name: 'Senior',
     description: '65 and over (optional; suspended at national events)',
+    rule_code: 'FABP',
+  },
+  {
+    id: 'fabp-mancebos',
+    name: 'Mancebos',
+    description: 'Under 13 inclusive (unisex; Campeonato dos Castelos)',
+    rule_code: 'FABP',
+  },
+  {
+    id: 'fabp-infantes',
+    name: 'Infantes',
+    description: 'Boys 14-16 inclusive (Campeonato dos Castelos)',
+    rule_code: 'FABP',
+  },
+  {
+    id: 'fabp-donzelas',
+    name: 'Donzelas',
+    description: 'Girls 14-16 inclusive (Campeonato dos Castelos)',
+    rule_code: 'FABP',
+  },
+  {
+    id: 'fabp-cavaleiros',
+    name: 'Cavaleiros',
+    description: 'Men 17 and over (Campeonato dos Castelos)',
+    rule_code: 'FABP',
+  },
+  {
+    id: 'fabp-damas',
+    name: 'Damas',
+    description: 'Women 17 and over (Campeonato dos Castelos)',
     rule_code: 'FABP',
   },
   { id: 'hdh-mini', name: 'Mini', description: '10-12 (optional)', rule_code: 'HDH-IAA' },

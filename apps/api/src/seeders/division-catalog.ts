@@ -26,14 +26,41 @@ const IFAA_DIVISIONS: DivisionSeed[] = [
   ...menWomen('Senior', '65 and over (optional; may shoot Veteran or Adult instead)'),
 ];
 
-const FABP_DIVISIONS: DivisionSeed[] = [
+/** Art. 7.1.2 — FABP IFAA championships (Indoor, Field, Bowhunter). */
+const FABP_IFAA_DIVISIONS: DivisionSeed[] = [
   ...boysGirls('Cub', 'under 13'),
-  ...boysGirls('Junior', '13-16'),
-  ...menWomen('Young Adult', '18-20 (suspended at national events)'),
+  ...boysGirls('Junior', '13-16 inclusive'),
+  ...menWomen('Young Adult', '17-20 (suspended at national events)'),
   ...menWomen('Adult', '21-54 (17 and over may shoot Adult)'),
   ...menWomen('Veteran', '55-64 (optional)'),
   ...menWomen('Senior', '65 and over (optional; suspended at national events)'),
 ];
+
+/** Art. 7.1.1 / Art. 27.10 — Campeonato dos Castelos. */
+const FABP_CASTELOS_DIVISIONS: DivisionSeed[] = [
+  {
+    name: 'Mancebos',
+    description: 'Under 13 inclusive (unisex; Campeonato dos Castelos)',
+  },
+  {
+    name: 'Infantes',
+    description: 'Boys 14-16 inclusive (Campeonato dos Castelos)',
+  },
+  {
+    name: 'Donzelas',
+    description: 'Girls 14-16 inclusive (Campeonato dos Castelos)',
+  },
+  {
+    name: 'Cavaleiros',
+    description: 'Men 17 and over (Campeonato dos Castelos)',
+  },
+  {
+    name: 'Damas',
+    description: 'Women 17 and over (Campeonato dos Castelos)',
+  },
+];
+
+const FABP_DIVISIONS: DivisionSeed[] = [...FABP_IFAA_DIVISIONS, ...FABP_CASTELOS_DIVISIONS];
 
 const HDH_DIVISIONS: DivisionSeed[] = [
   ...boysGirls('Mini', '10-12 (optional)'),
