@@ -2,6 +2,11 @@
   "footer": {
     "about": "Sobre o app"
   },
+  "social": {
+    "facebook": "Facebook",
+    "x": "X",
+    "threads": "Threads"
+  },
   "auth": {
     "logout": "Sair",
     "signIn": "Entrar",
@@ -525,6 +530,8 @@
         "newsFeed": "Feed de notícias - Um lar público para notícias e atualizações de torneios",
         "more": "E mais coisas com que ainda sonhamos..."
       },
+      "socialTitle": "Segue a Sokil",
+      "socialText": "Notícias, fotos do campo e atualizações do produto estão no Facebook, no X e no Threads.",
       "contact": "Para solicitações de recursos, relatórios de bugs ou perguntas, entre em contato",
       "authorsTitle": "Autores",
       "authorMariia": "Mariia Fedirko",

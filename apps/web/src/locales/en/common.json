@@ -2,6 +2,11 @@
   "footer": {
     "about": "About app"
   },
+  "social": {
+    "facebook": "Facebook",
+    "x": "X",
+    "threads": "Threads"
+  },
   "menu": {
     "admin": "Admin",
     "organizerTools": "Organizer tools",
@@ -481,6 +486,8 @@
         "newsFeed": "News feed - A public home for tournament news and updates",
         "more": "And more we're still dreaming up..."
       },
+      "socialTitle": "Follow Sokil",
+      "socialText": "News, range photos, and product updates live on Facebook, X, and Threads.",
       "contact": "For feature requests, bug reports, or questions, please contact",
       "authorsTitle": "Authors",
       "authorMariia": "Mariia Fedirko",

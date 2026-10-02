@@ -2,6 +2,11 @@
   "footer": {
     "about": "Über die App"
   },
+  "social": {
+    "facebook": "Facebook",
+    "x": "X",
+    "threads": "Threads"
+  },
   "menu": {
     "admin": "Admin",
     "organizerTools": "Organisatoren-Werkzeuge",
@@ -481,6 +486,8 @@
         "newsFeed": "Nachrichtenfeed - Ein öffentliches Zuhause für Turniernews und Updates",
         "more": "Und mehr, wovon wir noch träumen..."
       },
+      "socialTitle": "Sokil folgen",
+      "socialText": "Neuigkeiten, Fotos vom Schießplatz und Produktupdates gibt es auf Facebook, X und Threads.",
       "contact": "Für Funktioneanfragen, Fehlerberichte oder Fragen kontaktieren Sie bitte",
       "authorsTitle": "Autoren",
       "authorMariia": "Mariia Fedirko",

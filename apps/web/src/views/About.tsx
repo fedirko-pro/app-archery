@@ -2,6 +2,8 @@ import './About.scss';
 
 import { useTranslation } from 'react-i18next';
 
+import SocialLinks from '../components/SocialLinks/SocialLinks';
+
 const FeatureItem = ({ emoji, label }: { emoji?: string; label: string }) => {
   const dashIdx = label.indexOf(' - ');
   const prefix = emoji ? `${emoji} ` : '';
@@ -161,6 +163,12 @@ const About = () => {
               <FeatureItem label={t('pages.about.planned.more')} />
             </li>
           </ul>
+        </div>
+
+        <div className="social-cta">
+          <h3>{t('pages.about.socialTitle')}</h3>
+          <p>{t('pages.about.socialText')}</p>
+          <SocialLinks />
         </div>
 
         <hr />

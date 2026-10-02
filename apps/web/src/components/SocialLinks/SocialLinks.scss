@@ -1,0 +1,58 @@
+@use '../../sass/helpers/variables' as *;
+
+.social-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+
+  a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    min-width: 44px;
+    min-height: 44px;
+    border-radius: 50%;
+    background: transparent;
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    text-decoration: none;
+
+    .MuiSvgIcon-root {
+      font-size: 30px;
+    }
+
+    @media (hover: hover) {
+      &:hover {
+        background: var(--primary-color);
+        color: var(--bg-color);
+        text-decoration: none;
+      }
+    }
+
+    &:active {
+      background: var(--primary-color);
+      color: var(--bg-color);
+      text-decoration: none;
+    }
+  }
+}
+
+.menu .social-links a {
+  border-color: $yellow;
+  color: $yellow;
+
+  @media (hover: hover) {
+    &:hover {
+      background: $yellow;
+      color: $black;
+    }
+  }
+
+  &:active {
+    background: $yellow;
+    color: $black;
+  }
+}

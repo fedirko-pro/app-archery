@@ -22,6 +22,7 @@ import { resolveUserAvatarWithCacheBust } from '../../utils/placeholder-images';
 import LanguageToggler from '../LanguageToggler/LanguageToggler';
 import Menu from '../Menu/Menu';
 import type { MenuItem, MenuSection } from '../Menu/types';
+import SocialLinks from '../SocialLinks/SocialLinks';
 import ThemeSwitcher from '../ThemeSwitcher/ThemeSwitcher';
 
 const appBuildId = process.env.NEXT_PUBLIC_APP_BUILD_ID ?? 'unknown';
@@ -189,6 +190,9 @@ const UserMenu: React.FC = () => {
         onLogout={isAuthenticated ? handleLogout : null}
         footer={
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, alignItems: 'stretch' }}>
+            <Box sx={{ mb: 1 }}>
+              <SocialLinks />
+            </Box>
             <Box sx={{ mb: 2 }}>
               <ThemeSwitcher />
             </Box>
