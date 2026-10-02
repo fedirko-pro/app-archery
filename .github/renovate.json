@@ -2,9 +2,21 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["config:recommended", ":disableDependencyDashboard"],
   "vulnerabilityAlerts": true,
+  "osvVulnerabilityAlerts": true,
   "labels": ["dependencies"],
   "rangeStrategy": "bump",
+  "lockFileMaintenance": {
+    "enabled": true,
+    "automerge": true,
+    "schedule": ["before 7am on monday"]
+  },
   "packageRules": [
+    {
+      "description": "Keep pnpm.overrides floors current in pnpm-workspace.yaml",
+      "matchDepTypes": ["pnpm.overrides"],
+      "rangeStrategy": "bump",
+      "addLabels": ["security-overrides"]
+    },
     {
       "matchUpdateTypes": ["minor", "patch"],
       "automerge": true

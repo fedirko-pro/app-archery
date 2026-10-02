@@ -2,9 +2,12 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, dev]
   pull_request:
-    branches: [main]
+    branches: [main, dev]
+  schedule:
+    # Catch high audit regressions even when no push/PR lands that week.
+    - cron: '0 6 * * 1'
 
 jobs:
   quality:
@@ -26,6 +29,7 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
+      # Runs early on every CI trigger (dev/main push, PRs into those, weekly).
       - run: pnpm audit --audit-level=high
 
       - run: pnpm lint
