@@ -2,8 +2,11 @@ import { Alert } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import MuiCard from '@mui/material/Card';
+import Checkbox from '@mui/material/Checkbox';
 import Divider from '@mui/material/Divider';
 import FormControl from '@mui/material/FormControl';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormHelperText from '@mui/material/FormHelperText';
 import FormLabel from '@mui/material/FormLabel';
 import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
@@ -11,8 +14,8 @@ import { styled } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
-import { useTranslation } from 'react-i18next';
-import { useParams } from 'react-router';
+import { Trans, useTranslation } from 'react-i18next';
+import { Link as RouterLink, useParams } from 'react-router';
 
 import { GoogleIcon } from '../../components/custom-icons';
 import env from '../../config/env';
@@ -63,8 +66,33 @@ export default function SignUp() {
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
   const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [acceptedLegal, setAcceptedLegal] = React.useState(false);
+  const [acceptedLegalError, setAcceptedLegalError] = React.useState(false);
 
   const { register, error, clearError } = useAuth();
+
+  const legalLink = (path: string) => (
+    <Link
+      component={RouterLink}
+      to={`/${lang}${path}`}
+      onClick={(event: React.MouseEvent) => event.stopPropagation()}
+    />
+  );
+
+  const acceptLegalLabel = (
+    <Typography variant="body2" component="span">
+      <Trans
+        i18nKey="auth.acceptLegal"
+        ns="common"
+        components={{
+          terms: legalLink('/terms'),
+          privacy: legalLink('/privacy'),
+          notice: legalLink('/legal-notice'),
+          cancellation: legalLink('/cancellation'),
+        }}
+      />
+    </Typography>
+  );
 
   const validateInputs = () => {
     const email = document.getElementById('email') as HTMLInputElement;
@@ -112,6 +140,13 @@ export default function SignUp() {
       setLastNameErrorMessage('');
     }
 
+    if (!acceptedLegal) {
+      setAcceptedLegalError(true);
+      isValid = false;
+    } else {
+      setAcceptedLegalError(false);
+    }
+
     return isValid;
   };
 
@@ -144,6 +179,11 @@ export default function SignUp() {
   };
 
   const handleGoogleSignUp = () => {
+    if (!acceptedLegal) {
+      setAcceptedLegalError(true);
+      return;
+    }
+
     // Check if there is a pending application in sessionStorage
     const pendingData = sessionStorage.getItem('pendingApplication');
 
@@ -249,6 +289,25 @@ export default function SignUp() {
             control={<Checkbox value="allowExtraEmails" color="primary" />}
             label={t('auth.receiveUpdates')}
           /> */}
+          <FormControl error={acceptedLegalError}>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={acceptedLegal}
+                  onChange={(_event, checked) => {
+                    setAcceptedLegal(checked);
+                    if (checked) {
+                      setAcceptedLegalError(false);
+                    }
+                  }}
+                  name="acceptLegal"
+                  color="primary"
+                />
+              }
+              label={acceptLegalLabel}
+            />
+            {acceptedLegalError && <FormHelperText>{t('auth.acceptLegalRequired')}</FormHelperText>}
+          </FormControl>
           <Button type="submit" fullWidth variant="contained" disabled={isSubmitting}>
             {isSubmitting ? t('auth.signingUp') : t('auth.signUp')}
           </Button>

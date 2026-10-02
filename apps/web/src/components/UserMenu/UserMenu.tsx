@@ -20,6 +20,7 @@ import { useBodyScrollLock } from '../../hooks/use-body-scroll-lock';
 import { normalizeAppLang } from '../../utils/i18n-lang';
 import { resolveUserAvatarWithCacheBust } from '../../utils/placeholder-images';
 import LanguageToggler from '../LanguageToggler/LanguageToggler';
+import LegalLinks from '../LegalLinks/LegalLinks';
 import Menu from '../Menu/Menu';
 import type { MenuItem, MenuSection } from '../Menu/types';
 import SocialLinks from '../SocialLinks/SocialLinks';
@@ -189,7 +190,15 @@ const UserMenu: React.FC = () => {
         clickHandle={closeMenu}
         onLogout={isAuthenticated ? handleLogout : null}
         footer={
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, alignItems: 'stretch' }}>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 1,
+              alignItems: 'center',
+              width: '100%',
+            }}
+          >
             <Box sx={{ mb: 1 }}>
               <SocialLinks />
             </Box>
@@ -203,6 +212,7 @@ const UserMenu: React.FC = () => {
             >
               v.{displayVersion}
             </Typography>
+            <LegalLinks />
           </Box>
         }
       />

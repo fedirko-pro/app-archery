@@ -1,0 +1,39 @@
+.legal-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.35rem 0.85rem;
+  margin: 0.85rem 0 0;
+
+  a {
+    font-size: 0.75rem;
+    line-height: 1.35;
+    color: var(--text-secondary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+
+    @media (hover: hover) {
+      &:hover {
+        color: var(--text-primary);
+      }
+    }
+  }
+}
+
+.menu .legal-links {
+  width: 100%;
+  margin: 2px 0 0;
+  gap: 0.2rem 0.7rem;
+
+  a {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.62);
+
+    @media (hover: hover) {
+      &:hover {
+        color: rgba(255, 255, 255, 0.9);
+      }
+    }
+  }
+}

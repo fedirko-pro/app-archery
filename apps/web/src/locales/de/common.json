@@ -1351,7 +1351,9 @@
     "googleCompleting": "Google-Authentifizierung wird abgeschlossen...",
     "googleFailed": "Google-Authentifizierung fehlgeschlagen",
     "googleRedirecting": "Weiterleitung zur Anmeldeseite...",
-    "receiveUpdates": "Ich möchte Updates per E-Mail erhalten."
+    "receiveUpdates": "Ich möchte Updates per E-Mail erhalten.",
+    "acceptLegal": "Ich akzeptiere die <terms>Nutzungsbedingungen</terms>, die <privacy>Datenschutzerklärung</privacy>, das <notice>Impressum</notice> und <cancellation>Widerruf und Erstattung</cancellation>.",
+    "acceptLegalRequired": "Bitte akzeptiere diese Bedingungen, um ein Konto anzulegen."
   },
   "dialog": {
     "yes": "Ja",
@@ -1663,6 +1665,148 @@
       "iosInstall": "Füge Sokil zum Home-Bildschirm hinzu, um Benachrichtigungen auf dem iPhone zu erhalten.",
       "unavailable": "Telefon-Benachrichtigungen sind in diesem Browser nicht verfügbar.",
       "error": "Telefon-Benachrichtigungen konnten nicht aktualisiert werden."
+    }
+  },
+  "legal": {
+    "navLabel": "Rechtliches",
+    "updated": "Zuletzt aktualisiert: 2. Oktober 2026",
+    "nav": {
+      "privacy": "Datenschutzerklärung",
+      "terms": "Nutzungsbedingungen",
+      "notice": "Impressum",
+      "cancellation": "Widerruf und Erstattung"
+    },
+    "privacy": {
+      "title": "Datenschutzerklärung",
+      "controller": {
+        "title": "Wer wir sind",
+        "body": "Sokil wird aus Portugal, in der Europäischen Union, bereitgestellt. Diese Erklärung gilt für https://sokil.app.\n\nFragen zum Datenschutz: contact@fedirko.pro."
+      },
+      "data": {
+        "title": "Welche Daten wir erheben",
+        "body": "Kontodaten: E-Mail-Adresse, ein gehashtes Passwort oder eine Google-Anmeldekennung, Name, Profilfoto, Kurzbiografie, Ort, Land, Sprache, Verbandsnummer, Nationalität, Geschlecht, Bogenklassen, Verein, Division und Profilsichtbarkeit.\n\nTraining und Ausrüstung: Einheiten, Ergebnisse und Bogen-Setups. Sie bleiben auf deinem Gerät. Wenn die Synchronisierung eingeschaltet ist, liegt eine Kopie auf unserem Server.\n\nNutzung des Dienstes: Turnieranmeldungen, Vereins- und Verbandsmitgliedschaft, Mitteilungen in der App und ein optionales Push-Abo für ein Gerät, das du aktivierst.\n\nTechnische Daten: ein Sitzungs-Cookie, ein CSRF-Cookie, deine Sprache, dein Design und ein kleines zwischengespeichertes Profil auf dem Gerät. Außerdem nutzen wir Google Analytics."
+      },
+      "purposes": {
+        "title": "Wofür wir sie nutzen",
+        "body": "Wir nutzen diese Daten, um dein Konto anzulegen und zu schützen, dich angemeldet zu halten, die Trainingsdaten zu speichern, die du synchronisieren willst, Vereine, Verbände und Turnieranmeldungen zu betreiben und Servicemitteilungen zu senden, etwa zum Zurücksetzen des Passworts und zu Benachrichtigungen, die du einschaltest.\n\nAnalytics hilft uns zu sehen, wie die App genutzt wird."
+      },
+      "bases": {
+        "title": "Rechtsgrundlagen",
+        "body": "Konto-, Synchronisierungs- und Anmeldedaten verarbeiten wir, um den Dienst zu erbringen, den du nutzt (Vertrag).\n\nDas Sitzungs-Cookie und zugehörige Sicherheitsdaten verarbeiten wir, um Konten zu schützen und den Dienst am Laufen zu halten (berechtigte Interessen).\n\nPush-Benachrichtigungen sind freiwillig und beruhen auf deiner Einwilligung. Du kannst sie in der App ausschalten. Google Analytics auf https://sokil.app setzt Cookies. Nicht notwendige Cookies kannst du im Browser blockieren."
+      },
+      "cookies": {
+        "title": "Cookies und Speicher auf deinem Gerät",
+        "body": "session — ein httpOnly-Cookie, das dich angemeldet hält. Es ist erforderlich.\n\ncsrf — ein Cookie, das die App liest, damit sie bei Änderungen ein passendes Token senden kann. Es ist erforderlich, um gefälschte Anfragen zu verhindern.\n\nappLang und i18nextLng — merken sich deine Sprache.\n\nLokaler Speicher — Training und Ausrüstung, dein Design, ein kurzes zwischengespeichertes Profil und ob du einen Hinweis geschlossen hast. Das bleibt auf deinem Gerät, bis du es löschst.\n\nGoogle-Analytics-Cookies — gesetzt von Google, um Besuche zu messen."
+      },
+      "sharing": {
+        "title": "An wen wir Daten weitergeben",
+        "body": "Wir verkaufen keine personenbezogenen Daten.\n\nDas Unternehmen, das unsere Server betreibt, speichert, was zum Betrieb von Sokil nötig ist. E-Mails, etwa zum Zurücksetzen des Passworts, laufen über unseren E-Mail-Dienst. Wenn du dich mit Google anmeldest, führt Google diese Anmeldung aus. Google Analytics erhält Nutzungsdaten.\n\nVereins- und Verbandsadmins sehen Mitgliedschaften und die Anmeldungen, die du ihnen schickst. Andere Personen sehen dein Profil nur so weit, wie deine Sichtbarkeit es erlaubt: persönlich, eingeschränkt oder öffentlich."
+      },
+      "retention": {
+        "title": "Wie lange wir Daten behalten",
+        "body": "Kontodaten bleiben, bis du das Konto löschst oder uns um Löschung bittest. Trainingsdaten auf dem Server bleiben, solange die Synchronisierung an ist und das Konto besteht. Daten, die dein Gerät nie verlassen, bleiben, bis du sie entfernst.\n\nDas Sitzungs-Cookie endet, wenn du dich abmeldest oder die Sitzung abläuft. Analytics-Daten bewahrt Google nach seinen eigenen Einstellungen auf."
+      },
+      "rights": {
+        "title": "Deine Rechte",
+        "body": "Wenn du in der Europäischen Union bist, kannst du eine Kopie deiner Daten verlangen, sie berichtigen, löschen oder einschränken lassen oder sie in einem übertragbaren Format erhalten. Du kannst der Verarbeitung auf Grundlage berechtigter Interessen widersprechen und eine Einwilligung jederzeit widerrufen.\n\nSchreib dafür an contact@fedirko.pro. Du kannst dich auch bei der Datenschutzbehörde in deinem Land beschweren."
+      },
+      "children": {
+        "title": "Kinder",
+        "body": "Sokil richtet sich nicht an Kinder unter 16 Jahren. Leg kein Konto an, wenn du unter 16 bist."
+      },
+      "changes": {
+        "title": "Änderungen",
+        "body": "Wenn sich diese Erklärung ändert, aktualisieren wir diese Seite und das Datum oben."
+      }
+    },
+    "terms": {
+      "title": "Nutzungsbedingungen",
+      "agreement": {
+        "title": "Vertrag",
+        "body": "Diese Bedingungen sind die Vereinbarung über die Nutzung von Sokil. Mit dem Anlegen eines Kontos oder der weiteren Nutzung der App nimmst du sie an. Wenn du sie nicht annimmst, nutze Sokil nicht."
+      },
+      "service": {
+        "title": "Der Dienst",
+        "body": "Sokil ist ein Begleiter fürs Bogenschießen: Training protokollieren, Ausrüstung pflegen, Vereinen beitreten und sich zu Turnieren anmelden. Sokil ist kostenlos. Manche späteren Funktionen können ein Abonnement erfordern. Manche Funktionen sind noch im Bau. Der Zahlungsbildschirm kann Beispieleinträge zeigen. Das ist keine echte Kasse und keine Belastung."
+      },
+      "accounts": {
+        "title": "Konten",
+        "body": "Nutze eine echte E-Mail-Adresse. Du bist für dein Passwort und für das verantwortlich, was unter deinem Konto geschieht. Du kannst dich mit E-Mail oder mit Google anmelden.\n\nHalt dein Profil dort korrekt, wo ein Verein oder Verband sich darauf verlässt, einschließlich Name und Verbandsnummer, wenn du sie angibst."
+      },
+      "use": {
+        "title": "Zulässige Nutzung",
+        "body": "Versuch nicht, auf das Konto einer anderen Person zuzugreifen, den Dienst zu stören, rechtswidrige Inhalte hochzuladen oder Sokil zu nutzen, um jemanden zu belästigen. Vereins- und Verbandsfunktionen sind nur für die Gemeinschaft, die du verwaltest."
+      },
+      "content": {
+        "title": "Deine Inhalte",
+        "body": "Trainingsprotokolle, Fotos und Texte, die du hinzufügst, bleiben deine. Du erlaubst uns, sie zu speichern und anzuzeigen, damit der Dienst funktioniert, einschließlich eines Profils, das dein Verein oder die Öffentlichkeit sieht, wenn du diese Sichtbarkeit wählst.\n\nDu bist für Inhalte verantwortlich, die du veröffentlichst, und dafür, dass du sie teilen darfst."
+      },
+      "organizers": {
+        "title": "Vereine und Verbände",
+        "body": "Wenn du einen Verein oder Verband verwaltest, kannst du Mitglieder und Anmeldungen in diesem Bereich sehen und verwalten. Nutze diesen Zugang nur für diese Gemeinschaft und halte dieselben Datenschutzregeln ein, wenn du Daten anderer Personen verarbeitest."
+      },
+      "availability": {
+        "title": "Verfügbarkeit",
+        "body": "Sokil wird so bereitgestellt, wie es verfügbar ist. Wir können Funktionen ändern, pausieren oder entfernen, auch während einer Wartung. Training, das nur auf deinem Gerät liegt, kann verloren gehen, wenn du den Browser leerst oder die App deinstallierst. Behalte eine eigene Kopie von allem, was du nicht verlieren darfst."
+      },
+      "payments": {
+        "title": "Zahlungen",
+        "body": "Sokil ist kostenlos. Manche späteren Funktionen können ein Abonnement erfordern. Wenn ein Abonnement hinzukommt, zeigen wir Preis, Leistung und Kündigung, bevor du zahlst. Die Seite zu Widerruf und Erstattung gilt dann für diese Zahlungen."
+      },
+      "liability": {
+        "title": "Haftung",
+        "body": "Ergebnisse, Statistiken und Rechner in Sokil sind Werkzeuge für dein eigenes Training. Sie sind keine offiziellen Wettkampfergebnisse.\n\nSoweit das Gesetz es zulässt, haften wir nicht für mittelbare Schäden oder Folgeschäden, einschließlich verlorener Daten oder eines verpassten Termins. Das schränkt keine Haftung ein, die das Gesetz nicht einschränken lässt."
+      },
+      "ending": {
+        "title": "Ende der Nutzung",
+        "body": "Du kannst Sokil jederzeit nicht mehr nutzen und uns unter contact@fedirko.pro bitten, dein Konto zu löschen. Wir können ein Konto sperren oder schließen, das diese Bedingungen bricht oder andere Personen gefährdet."
+      },
+      "law": {
+        "title": "Welches Recht gilt",
+        "body": "Sokil wird aus Portugal, in der Europäischen Union, bereitgestellt. Für diese Bedingungen gilt das Recht der Europäischen Union. Wenn du Verbraucher in der EU bist, behältst du die zwingenden Schutzrechte des Landes, in dem du lebst, einschließlich des Rechts, vor deinen örtlichen Gerichten zu klagen."
+      }
+    },
+    "notice": {
+      "title": "Impressum",
+      "operator": {
+        "title": "Anbieter",
+        "body": "Sokil wird aus Portugal, in der Europäischen Union, bereitgestellt."
+      },
+      "contact": {
+        "title": "Kontakt",
+        "body": "E-Mail: contact@fedirko.pro"
+      },
+      "sites": {
+        "title": "Website",
+        "body": "https://sokil.app"
+      },
+      "content": {
+        "title": "Verantwortung für Inhalte",
+        "body": "Für die redaktionellen Inhalte von Sokil sind wir verantwortlich. Profile, Vereinsseiten und Turnierangaben stammen von den Personen, die sie veröffentlichen."
+      }
+    },
+    "cancellation": {
+      "title": "Widerruf und Erstattung",
+      "now": {
+        "title": "Der Dienst ist kostenlos",
+        "body": "Sokil ist kostenlos. Ein Konto kostet nichts. Manche späteren Funktionen können ein Abonnement erfordern. Der Zahlungsbildschirm zeigt Beispieleinträge, damit du das Layout sehen kannst. Das sind keine echten Belastungen, und es gibt nichts zu erstatten."
+      },
+      "withdrawal": {
+        "title": "Wenn ein Abonnement hinzukommt",
+        "body": "Wenn du Verbraucher in der Europäischen Union bist und später ein Abonnement hinzukommt, kannst du innerhalb von 14 Tagen ohne Angabe von Gründen widerrufen.\n\nDie 14 Tage beginnen an dem Tag, an dem der Vertrag geschlossen wird. Wir weisen vor der Zahlung noch einmal auf dieses Recht hin."
+      },
+      "how": {
+        "title": "So widerrufst du",
+        "body": "Schreib an contact@fedirko.pro mit der E-Mail deines Kontos und dem, was du widerrufen willst. Jede eindeutige Widerrufserklärung genügt. Wir bestätigen den Eingang und erstatten eine fällige Zahlung auf demselben Weg, den du genutzt hast, ohne Zusatzgebühr, innerhalb von 14 Tagen."
+      },
+      "exceptions": {
+        "title": "Wann die 14 Tage entfallen können",
+        "body": "Bei digitalen Inhalten, deren sofortigen Beginn du verlangst, kann das Widerrufsrecht enden, sobald die Leistung begonnen hat, wenn du dem zugestimmt und bestätigt hast, dass du das Recht verlierst. Diese Zustimmung fragen wir getrennt ab, bevor du zahlst. Sie gilt nicht für den kostenlosen Dienst, den du heute nutzt."
+      },
+      "contact": {
+        "title": "Fragen",
+        "body": "Schreib an contact@fedirko.pro."
+      }
     }
   }
 }

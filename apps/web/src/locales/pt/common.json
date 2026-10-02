@@ -30,7 +30,9 @@
     "googleCompleting": "A concluir a autenticação Google...",
     "googleFailed": "Falha na autenticação Google",
     "googleRedirecting": "A redirecionar para a página de início de sessão...",
-    "receiveUpdates": "Quero receber atualizações por email."
+    "receiveUpdates": "Quero receber atualizações por email.",
+    "acceptLegal": "Aceito os <terms>Termos e condições</terms>, a <privacy>Política de privacidade</privacy>, o <notice>Aviso legal</notice> e <cancellation>Cancelamento e reembolsos</cancellation>.",
+    "acceptLegalRequired": "Aceita estes termos para criares uma conta."
   },
   "menu": {
     "admin": "Admin",
@@ -1694,6 +1696,148 @@
       "iosInstall": "Adiciona o Sokil ao Ecrã Principal para receberes notificações no iPhone.",
       "unavailable": "As notificações no telemóvel não estão disponíveis neste navegador.",
       "error": "Não foi possível atualizar as notificações no telemóvel."
+    }
+  },
+  "legal": {
+    "navLabel": "Informação legal",
+    "updated": "Última atualização: 2 de outubro de 2026",
+    "nav": {
+      "privacy": "Política de privacidade",
+      "terms": "Termos e condições",
+      "notice": "Aviso legal",
+      "cancellation": "Cancelamento e reembolsos"
+    },
+    "privacy": {
+      "title": "Política de privacidade",
+      "controller": {
+        "title": "Quem somos",
+        "body": "O Sokil é prestado a partir de Portugal, na União Europeia. Esta política abrange https://sokil.app.\n\nPara questões de privacidade, escreve para contact@fedirko.pro."
+      },
+      "data": {
+        "title": "Que dados recolhemos",
+        "body": "Dados da conta: endereço de email, uma palavra-passe com hash ou um identificador de início de sessão Google, nome, fotografia de perfil, biografia, localidade, país, idioma, número de federação, nacionalidade, género, categorias de arco, clube, divisão e visibilidade do perfil.\n\nTreino e equipamento: sessões, pontuações e configurações do arco. Ficam no teu dispositivo. Se deixares a sincronização ligada, guardamos uma cópia no nosso servidor.\n\nAtividade no serviço: inscrições em torneios, filiação em clubes e federações, avisos na aplicação e uma subscrição opcional de notificações push num dispositivo que actives.\n\nDados técnicos: um cookie de sessão, um cookie CSRF, o teu idioma, o tema e um perfil curto em cache no dispositivo. Também usamos o Google Analytics."
+      },
+      "purposes": {
+        "title": "Para que os usamos",
+        "body": "Usamos estes dados para criar e proteger a tua conta, manter a sessão, guardar os treinos que escolhes sincronizar, gerir clubes, federações e inscrições, e enviar mensagens de serviço como a reposição da palavra-passe e os avisos que ligas.\n\nA analítica ajuda-nos a ver como a aplicação é usada."
+      },
+      "bases": {
+        "title": "Fundamentos legais",
+        "body": "Tratamos os dados da conta, da sincronização e das inscrições para prestar o serviço que pediste (contrato).\n\nTratamos o cookie de sessão e os dados de segurança associados para proteger as contas e manter o serviço a funcionar (interesses legítimos).\n\nAs notificações push são opcionais e baseiam-se no teu consentimento. Podes desligá-las na aplicação. O Google Analytics em https://sokil.app usa cookies. Podes bloquear cookies não essenciais no navegador."
+      },
+      "cookies": {
+        "title": "Cookies e armazenamento no dispositivo",
+        "body": "session — um cookie httpOnly que mantém a sessão. É necessário.\n\ncsrf — um cookie que a aplicação lê para enviar um token correspondente quando alteras dados. É necessário para impedir pedidos falsificados.\n\nappLang e i18nextLng — recordam o teu idioma.\n\nArmazenamento local — treino e equipamento, o tema, um perfil curto em cache e se fechaste um aviso. Fica no dispositivo até o limpares.\n\nCookies do Google Analytics — definidos pela Google para medir visitas."
+      },
+      "sharing": {
+        "title": "Com quem os partilhamos",
+        "body": "Não vendemos dados pessoais.\n\nA empresa que aloja os nossos servidores guarda o que é preciso para operar o Sokil. O email que enviamos, como a reposição da palavra-passe, passa pelo nosso fornecedor de correio. Se entrares com a Google, a Google trata desse acesso. O Google Analytics recebe dados de utilização.\n\nOs administradores de um clube ou federação podem ver a filiação e as inscrições que lhes envias. As outras pessoas veem o teu perfil apenas na medida da visibilidade que escolhes: pessoal, limitada ou pública."
+      },
+      "retention": {
+        "title": "Durante quanto tempo os guardamos",
+        "body": "Os dados da conta ficam até eliminares a conta ou nos pedires para os apagar. Os treinos no servidor ficam enquanto a sincronização estiver ligada e a conta existir. Os dados que não saem do dispositivo ficam até os removeres.\n\nO cookie de sessão termina quando terminas a sessão ou quando a sessão expira. A Google conserva os dados de analítica segundo as definições dela."
+      },
+      "rights": {
+        "title": "Os teus direitos",
+        "body": "Se estiveres na União Europeia, podes pedir-nos uma cópia dos teus dados, a correção, o apagamento, a limitação ou a receção num formato portátil. Podes opor-te ao tratamento baseado em interesses legítimos e retirar o consentimento a qualquer momento.\n\nPara exercer estes direitos, escreve para contact@fedirko.pro. Também podes apresentar queixa à autoridade de proteção de dados do teu país."
+      },
+      "children": {
+        "title": "Crianças",
+        "body": "O Sokil não se destina a crianças com menos de 16 anos. Não cries uma conta se tiveres menos de 16 anos."
+      },
+      "changes": {
+        "title": "Alterações",
+        "body": "Quando esta política mudar, atualizamos esta página e a data acima."
+      }
+    },
+    "terms": {
+      "title": "Termos e condições",
+      "agreement": {
+        "title": "Acordo",
+        "body": "Estes termos são o acordo para usares o Sokil. Ao criares uma conta ou continuares a usar a aplicação, aceitas-os. Se não os aceitares, não uses o Sokil."
+      },
+      "service": {
+        "title": "O serviço",
+        "body": "O Sokil é um companheiro de tiro com arco para registares treinos, guardares equipamento, entrares em clubes e te inscreveres em torneios. O Sokil é gratuito. Algumas funções futuras podem exigir uma subscrição. Algumas funções ainda estão a ser construídas. O ecrã de pagamentos pode mostrar exemplos. Esses exemplos não são um pagamento real nem uma cobrança."
+      },
+      "accounts": {
+        "title": "Contas",
+        "body": "Usa um email verdadeiro. És responsável pela tua palavra-passe e pelo que acontece na tua conta. Podes entrar com email ou com a Google.\n\nMantém o perfil correto quando um clube ou uma federação dependem dele, incluindo o nome e o número de federação se os indicares."
+      },
+      "use": {
+        "title": "Uso aceitável",
+        "body": "Não tentes aceder à conta de outra pessoa, perturbar o serviço, carregar conteúdo ilícito nem usar o Sokil para assediar alguém. As ferramentas de clube e federação são só para a comunidade que administras."
+      },
+      "content": {
+        "title": "O teu conteúdo",
+        "body": "Os registos de treino, as fotografias e os textos que adicionas continuam a ser teus. Permites que os guardemos e mostremos para o serviço funcionar, incluindo um perfil visível para o teu clube ou para o público quando escolhes essa visibilidade.\n\nÉs responsável pelo conteúdo que publicas e por teres o direito de o partilhar."
+      },
+      "organizers": {
+        "title": "Clubes e federações",
+        "body": "Se administras um clube ou uma federação, podes ver e gerir membros e inscrições nesse âmbito. Usa esse acesso só para essa comunidade e segue as mesmas regras de privacidade quando tratas dados de outras pessoas."
+      },
+      "availability": {
+        "title": "Disponibilidade",
+        "body": "O Sokil é fornecido tal como está disponível. Podemos alterar, pausar ou remover funções, inclusive durante uma manutenção. O treino guardado só no dispositivo pode perder-se se limpares o navegador ou desinstalares a aplicação. Guarda uma cópia tua de tudo o que não te possas dar ao luxo de perder."
+      },
+      "payments": {
+        "title": "Pagamentos",
+        "body": "O Sokil é gratuito. Algumas funções futuras podem exigir uma subscrição. Se for adicionada uma subscrição, o preço, o que estás a comprar e como cancelar serão mostrados antes de pagares. A página de cancelamento e reembolsos aplica-se a esses pagamentos."
+      },
+      "liability": {
+        "title": "Responsabilidade",
+        "body": "Pontuações, estatísticas e calculadoras no Sokil são ferramentas para o teu treino. Não são resultados oficiais de competição.\n\nNa medida em que a lei o permite, não respondemos por perdas indiretas ou consequentes, incluindo dados perdidos ou um evento a que faltes. Isto não limita a responsabilidade que a lei não permite limitar."
+      },
+      "ending": {
+        "title": "Fim da utilização",
+        "body": "Podes deixar de usar o Sokil a qualquer momento e pedir-nos para eliminar a conta em contact@fedirko.pro. Podemos suspender ou encerrar uma conta que viole estes termos ou ponha outras pessoas em risco."
+      },
+      "law": {
+        "title": "Que lei se aplica",
+        "body": "O Sokil é prestado a partir de Portugal, na União Europeia. Estes termos seguem o direito da União Europeia. Se fores consumidor na UE, manténs as proteções obrigatórias do país onde vives, incluindo o direito de intentar uma ação nos tribunais locais."
+      }
+    },
+    "notice": {
+      "title": "Aviso legal",
+      "operator": {
+        "title": "Operador",
+        "body": "O Sokil é prestado a partir de Portugal, na União Europeia."
+      },
+      "contact": {
+        "title": "Contacto",
+        "body": "Email: contact@fedirko.pro"
+      },
+      "sites": {
+        "title": "Site",
+        "body": "https://sokil.app"
+      },
+      "content": {
+        "title": "Responsabilidade pelo conteúdo",
+        "body": "O conteúdo editorial do Sokil é da nossa responsabilidade. Perfis, páginas de clubes e informação de torneios são publicados pelas pessoas que os criam."
+      }
+    },
+    "cancellation": {
+      "title": "Cancelamento e reembolsos",
+      "now": {
+        "title": "O serviço é gratuito",
+        "body": "O Sokil é gratuito. Criar uma conta não custa nada. Algumas funções futuras podem exigir uma subscrição. O ecrã de pagamentos mostra exemplos para veres a disposição. Esses exemplos não são cobranças reais e não há nada a reembolsar."
+      },
+      "withdrawal": {
+        "title": "Se for adicionada uma subscrição",
+        "body": "Se fores consumidor na União Europeia e mais tarde for adicionada uma subscrição, podes desistir dessa compra no prazo de 14 dias sem indicares um motivo.\n\nOs 14 dias começam no dia em que o contrato é celebrado. Voltamos a informar-te deste direito antes de pagares."
+      },
+      "how": {
+        "title": "Como cancelar",
+        "body": "Escreve para contact@fedirko.pro com o email da conta e o que queres cancelar. Basta uma declaração clara de desistência. Confirmamos a receção e, quando houver reembolso, devolvemos o pagamento pelo mesmo meio que usaste, sem taxa extra, no prazo de 14 dias."
+      },
+      "exceptions": {
+        "title": "Quando os 14 dias podem não se aplicar",
+        "body": "Para conteúdo digital cujo início imediato nos pedes, o direito de desistência pode terminar quando a prestação tiver começado, se tiveres concordado com isso e reconhecido que perdes o direito. Pedimos esse acordo à parte, antes de pagares. Não se aplica ao serviço gratuito que usas hoje."
+      },
+      "contact": {
+        "title": "Perguntas",
+        "body": "Escreve para contact@fedirko.pro."
+      }
     }
   }
 }

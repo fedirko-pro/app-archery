@@ -1,7 +1,9 @@
 import './Content.scss';
 
+import { lazy, Suspense } from 'react';
 import { Navigate, Outlet, Route, Routes, useParams } from 'react-router';
 
+import type { LegalPageId } from '../../components/LegalLinks/legal-pages';
 import {
   ROLES_CAN_ACCESS_CONTROL,
   ROLES_CAN_DELETE_AND_MANAGE_APPS,
@@ -63,6 +65,17 @@ import TournamentList from '../../views/tournament/tournament-list/tournament-li
 import UserApplications from '../../views/tournament/user-applications/user-applications';
 import UserAchievementsPage from '../../views/user-achievements/user-achievements';
 import { RouteErrorBoundary } from '../RouteErrorBoundary';
+import RouteLoadingSpinner from '../RouteLoadingSpinner';
+
+const LegalPage = lazy(() => import('../../views/legal/LegalPage'));
+
+function LegalRoute({ page }: { page: LegalPageId }) {
+  return (
+    <Suspense fallback={<RouteLoadingSpinner />}>
+      <LegalPage page={page} />
+    </Suspense>
+  );
+}
 
 function DefaultLandingRedirect() {
   const { user, initializing } = useAuth();
@@ -172,6 +185,10 @@ function Content() {
           <Route path="glossary" element={<Glossary />} />
           <Route path="competition/user" element={<UserPage />} />
           <Route path="about" element={<About />} />
+          <Route path="privacy" element={<LegalRoute page="privacy" />} />
+          <Route path="terms" element={<LegalRoute page="terms" />} />
+          <Route path="legal-notice" element={<LegalRoute page="notice" />} />
+          <Route path="cancellation" element={<LegalRoute page="cancellation" />} />
           <Route path="categories" element={<Categories />} />
           <Route path="clubs" element={<Clubs />} />
           <Route path="clubs/:clubId" element={<ClubDetail />} />

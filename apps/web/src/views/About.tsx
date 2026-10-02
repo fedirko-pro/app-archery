@@ -2,6 +2,7 @@ import './About.scss';
 
 import { useTranslation } from 'react-i18next';
 
+import LegalLinks from '../components/LegalLinks/LegalLinks';
 import SocialLinks from '../components/SocialLinks/SocialLinks';
 
 const FeatureItem = ({ emoji, label }: { emoji?: string; label: string }) => {
@@ -169,6 +170,7 @@ const About = () => {
           <h3>{t('pages.about.socialTitle')}</h3>
           <p>{t('pages.about.socialText')}</p>
           <SocialLinks />
+          <LegalLinks />
         </div>
 
         <hr />
