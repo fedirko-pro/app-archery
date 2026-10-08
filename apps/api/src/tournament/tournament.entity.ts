@@ -11,7 +11,7 @@ export class Tournament {
   @Property()
   title: string;
 
-  @Property({ nullable: true })
+  @Property({ nullable: true, columnType: 'text' })
   description?: string;
 
   @Property({ nullable: true })
