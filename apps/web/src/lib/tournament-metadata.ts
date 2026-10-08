@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import type { TournamentDto } from '@/services/types';
 import { formatDate } from '@/utils/date-utils';
 import { isExternalPlaceholderUrl } from '@/utils/placeholder-images';
+import { tournamentPreviewText } from '@/utils/tournament-preview-text';
 import { alternateOgLocales, toOgLocale } from './og-locale';
 import { toAbsoluteImageUrl } from './share-og-image';
 
@@ -99,7 +100,7 @@ export function buildTournamentMetadata(
   siteUrl: string,
 ): Metadata {
   const pageUrl = `${siteUrl}/${lang}/tournaments/${tournament.id}`;
-  const rawDescription = tournament.shortDescription?.trim() ?? '';
+  const rawDescription = tournamentPreviewText(tournament.shortDescription, tournament.description);
   const fromDescription = rawDescription ? descriptionForLinkPreview(rawDescription) : '';
   const description = fromDescription || buildDescriptionFallback(tournament);
   const image = resolveOgImage(tournament, siteUrl);

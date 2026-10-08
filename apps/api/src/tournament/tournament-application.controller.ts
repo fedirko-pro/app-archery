@@ -88,13 +88,16 @@ export class TournamentApplicationController {
     const adminNote = `Application submitted by admin ${adminName}`;
     const finalNotes = data.notes ? `${adminNote}\n\n${data.notes}` : adminNote;
 
-    return this.applicationService.create({
-      tournamentId: data.tournamentId,
-      applicantId: data.userId,
-      category: data.category,
-      division: data.division,
-      notes: finalNotes,
-    });
+    return this.applicationService.create(
+      {
+        tournamentId: data.tournamentId,
+        applicantId: data.userId,
+        category: data.category,
+        division: data.division,
+        notes: finalNotes,
+      },
+      { bypassDeadline: true },
+    );
   }
 
   @Get()

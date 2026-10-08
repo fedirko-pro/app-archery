@@ -6,6 +6,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { NotificationTypes } from '@sokil/shared-types';
+import { isAfter, startOfDay } from 'date-fns';
 import { BowCategory } from '../bow-category/bow-category.entity';
 import { Division } from '../division/division.entity';
 import { EmailService } from '../email/email.service';
@@ -23,6 +24,11 @@ export class TournamentApplicationService {
     private readonly achievementsService: AchievementsService,
     private readonly notificationsService: NotificationsService,
   ) {}
+
+  private isApplicationDeadlinePassed(tournament: Tournament): boolean {
+    if (!tournament.applicationDeadline) return false;
+    return isAfter(startOfDay(new Date()), startOfDay(tournament.applicationDeadline));
+  }
 
   /** Resolve divisionId from division (id) or divisionId. */
   private resolveDivisionId(data: { divisionId?: string; division?: string }): string | undefined {
@@ -57,20 +63,27 @@ export class TournamentApplicationService {
     return byCode.id;
   }
 
-  async create(data: {
-    tournamentId: string;
-    applicantId: string;
-    divisionId?: string;
-    division?: string;
-    bowCategoryId?: string;
-    category?: string;
-    notes?: string;
-  }): Promise<TournamentApplication> {
+  async create(
+    data: {
+      tournamentId: string;
+      applicantId: string;
+      divisionId?: string;
+      division?: string;
+      bowCategoryId?: string;
+      category?: string;
+      notes?: string;
+    },
+    options?: { bypassDeadline?: boolean },
+  ): Promise<TournamentApplication> {
     const tournament = await this.em.findOne(Tournament, {
       id: data.tournamentId,
     });
     if (!tournament) {
       throw new NotFoundException('Tournament not found');
+    }
+
+    if (!options?.bypassDeadline && this.isApplicationDeadlinePassed(tournament)) {
+      throw new BadRequestException('Application deadline has been reached');
     }
 
     const divisionId = this.resolveDivisionId(data);

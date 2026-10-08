@@ -81,19 +81,19 @@ describe('buildTournamentMetadata', () => {
     ]);
   });
 
-  it('ignores the full description when no short description is set', () => {
+  it('uses the first paragraph when no short description is set', () => {
     const metadata = buildTournamentMetadata(
       tournament({
-        description: 'https://maps.app.goo.gl/abc\nHorários',
-        address: 'Tomar',
+        description: 'Historical bows in Tomar.\n\nhttps://maps.app.goo.gl/abc\n\nHorários',
+        address: 'Castelo',
       }),
       'en',
       SITE,
     );
 
+    expect(metadata.description).toBe('Historical bows in Tomar.');
     expect(metadata.description).not.toContain('maps.app.goo.gl');
     expect(metadata.description).not.toContain('Horários');
-    expect(metadata.description).toContain('Tomar');
   });
 
   it('uses the default image when the tournament has no banner', () => {

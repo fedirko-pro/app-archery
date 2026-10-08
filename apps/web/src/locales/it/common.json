@@ -565,7 +565,7 @@
       "form": {
         "title": "Titolo",
         "shortDescription": "Descrizione breve",
-        "shortDescriptionHelper": "Compare nell'elenco dei tornei e durante la condivisione. Fino a {{max}} caratteri.",
+        "shortDescriptionHelper": "Compare nell'elenco dei tornei e durante la condivisione. Se vuoto, si usa il primo paragrafo della descrizione. Fino a {{max}} caratteri.",
         "description": "Descrizione",
         "descriptionHelper": "Dettagli completi mostrati nella pagina del torneo.",
         "startDate": "Data di inizio",
@@ -616,6 +616,8 @@
       },
       "addFiles": "Aggiungi file",
       "applicationDeadline": "Scadenza iscrizioni",
+      "applicationDeadlinePassedTitle": "Termine di iscrizione scaduto",
+      "applicationDeadlinePassedMessage": "Il termine per le iscrizioni è scaduto, ma puoi provare a contattare direttamente l'organizzatore.",
       "applicationSubmitted": "Domanda inviata con successo!",
       "attachments": "Allegati aggiuntivi",
       "attachmentsReady": "{{count}} file pronti — verranno caricati al salvataggio",

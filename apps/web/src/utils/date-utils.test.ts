@@ -1,6 +1,12 @@
 import { describe, expect, it } from 'vitest';
 
-import { formatDate, formatDateTime, formatShortDate, getApplicationDeadline } from './date-utils';
+import {
+  formatDate,
+  formatDateTime,
+  formatShortDate,
+  getApplicationDeadline,
+  isApplicationDeadlinePassed,
+} from './date-utils';
 
 describe('formatDate', () => {
   it('formats ISO date string with default format', () => {
@@ -55,5 +61,22 @@ describe('getApplicationDeadline', () => {
     const deadline = getApplicationDeadline('2025-03-20');
     expect(deadline.getDate()).toBe(15);
     expect(deadline.getMonth()).toBe(2); // March = 2
+  });
+});
+
+describe('isApplicationDeadlinePassed', () => {
+  const now = new Date(2026, 9, 9, 15, 0, 0);
+
+  it('stays open on the deadline day', () => {
+    expect(isApplicationDeadlinePassed('2026-10-09', now)).toBe(false);
+  });
+
+  it('is passed the day after the deadline', () => {
+    expect(isApplicationDeadlinePassed('2026-10-08', now)).toBe(true);
+  });
+
+  it('stays open when no deadline is set', () => {
+    expect(isApplicationDeadlinePassed(null, now)).toBe(false);
+    expect(isApplicationDeadlinePassed(undefined, now)).toBe(false);
   });
 });

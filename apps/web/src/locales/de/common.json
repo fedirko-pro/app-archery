@@ -563,7 +563,7 @@
       "form": {
         "title": "Titel",
         "shortDescription": "Kurzbeschreibung",
-        "shortDescriptionHelper": "Wird in der Turnierliste und beim Teilen angezeigt. Maximal {{max}} Zeichen.",
+        "shortDescriptionHelper": "Wird in der Turnierliste und beim Teilen angezeigt. Wenn leer, wird der erste Absatz der Beschreibung verwendet. Maximal {{max}} Zeichen.",
         "description": "Beschreibung",
         "descriptionHelper": "Vollständige Details auf der Turnierseite.",
         "startDate": "Startdatum",
@@ -613,6 +613,8 @@
         }
       },
       "applicationDeadline": "Anmeldefrist",
+      "applicationDeadlinePassedTitle": "Anmeldeschluss erreicht",
+      "applicationDeadlinePassedMessage": "Der Anmeldeschluss ist erreicht. Sie können versuchen, den Veranstalter direkt zu kontaktieren.",
       "applicationSubmitted": "Bewerbung erfolgreich eingereicht!",
       "attachmentsReady": "{{count}} Datei(en) bereit — werden beim Speichern hochgeladen",
       "bannerReady": "Banner bereit — wird beim Speichern hochgeladen",

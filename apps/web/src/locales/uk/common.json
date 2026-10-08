@@ -592,7 +592,7 @@
       "form": {
         "title": "Назва",
         "shortDescription": "Короткий опис",
-        "shortDescriptionHelper": "Показується у списку турнірів і під час поширення. До {{max}} символів.",
+        "shortDescriptionHelper": "Показується у списку турнірів і під час поширення. Якщо порожнє, використовується перший абзац опису. До {{max}} символів.",
         "description": "Опис",
         "descriptionHelper": "Повні деталі на сторінці турніру.",
         "startDate": "Дата початку",
@@ -643,6 +643,8 @@
       },
       "addFiles": "Додати файли",
       "applicationDeadline": "Дедлайн заявок",
+      "applicationDeadlinePassedTitle": "Дедлайн заявок минув",
+      "applicationDeadlinePassedMessage": "Термін подання заявок минув, але ви можете спробувати зв’язатися з організатором напряму.",
       "applicationSubmitted": "Заявку успішно подано!",
       "attachments": "Додаткові вкладення",
       "attachmentsReady": "{{count}} файл(ів) готово — завантажаться під час збереження",

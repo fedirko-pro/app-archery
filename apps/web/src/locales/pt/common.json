@@ -609,7 +609,7 @@
       "form": {
         "title": "Título",
         "shortDescription": "Descrição curta",
-        "shortDescriptionHelper": "Aparece na lista de torneios e ao partilhar. Até {{max}} caracteres.",
+        "shortDescriptionHelper": "Aparece na lista de torneios e ao partilhar. Se ficar vazio, usa-se o primeiro parágrafo da descrição. Até {{max}} caracteres.",
         "description": "Descrição",
         "descriptionHelper": "Detalhes completos apresentados na página do torneio.",
         "startDate": "Data de início",
@@ -659,6 +659,8 @@
         }
       },
       "applicationDeadline": "Prazo de inscrição",
+      "applicationDeadlinePassedTitle": "Prazo de inscrição terminou",
+      "applicationDeadlinePassedMessage": "O prazo de inscrição terminou, mas pode tentar contactar o organizador diretamente.",
       "applicationSubmitted": "Inscrição submetida com sucesso!",
       "attachmentsReady": "{{count}} ficheiro(s) pronto(s) — serão enviados ao guardar",
       "bannerReady": "Banner pronto — será enviado ao guardar",

@@ -1,4 +1,4 @@
-import { Add, Delete, Edit, Send, Visibility } from '@mui/icons-material';
+import { Add, Delete, Edit, Visibility } from '@mui/icons-material';
 import {
   Alert,
   Box,
@@ -34,6 +34,8 @@ import {
 import { formatDate } from '../../../utils/date-utils';
 import { resolveTournamentBanner } from '../../../utils/placeholder-images';
 import { isPastTournament } from '../../../utils/tournament-filters';
+import { tournamentPreviewText } from '../../../utils/tournament-preview-text';
+import ApplyTournamentButton from '../apply-tournament-button';
 
 const TournamentList: React.FC = () => {
   const { user } = useAuth();
@@ -335,6 +337,10 @@ const TournamentList: React.FC = () => {
       >
         {filteredTournaments.map((tournament) => {
           const isPast = isPastTournament(tournament);
+          const previewText = tournamentPreviewText(
+            tournament.shortDescription,
+            tournament.description,
+          );
           return (
             <Box key={tournament.id}>
               <Card>
@@ -360,13 +366,13 @@ const TournamentList: React.FC = () => {
                   >
                     {tournament.title}
                   </Typography>
-                  {tournament.shortDescription && (
+                  {previewText && (
                     <Typography
                       variant="body2"
                       color="text.secondary"
                       sx={{ mb: 2, whiteSpace: 'pre-wrap' }}
                     >
-                      {tournament.shortDescription}
+                      {previewText}
                     </Typography>
                   )}
                   <Typography variant="body2" sx={{ mb: 1 }}>
@@ -434,12 +440,11 @@ const TournamentList: React.FC = () => {
                       {!isPast &&
                         (tournament.allowMultipleApplications ||
                           !hasApplicationForTournament(tournament.id)) && (
-                          <Button
+                          <ApplyTournamentButton
                             size="small"
-                            variant="contained"
-                            startIcon={<Send />}
-                            component={Link}
                             to={`/${lang}/apply/${tournament.id}`}
+                            deadline={tournament.applicationDeadline}
+                            label={t('pages.tournaments.apply')}
                             sx={{
                               flex: hasApplicationForTournament(tournament.id)
                                 ? '1 1 100%'
@@ -447,9 +452,7 @@ const TournamentList: React.FC = () => {
                               minWidth: 0,
                               justifyContent: 'center',
                             }}
-                          >
-                            {t('pages.tournaments.apply')}
-                          </Button>
+                          />
                         )}
                     </Box>
                     {user &&

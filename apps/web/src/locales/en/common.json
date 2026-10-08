@@ -563,7 +563,7 @@
       "form": {
         "title": "Title",
         "shortDescription": "Short description",
-        "shortDescriptionHelper": "Shown on the tournament list and when sharing. Up to {{max}} characters.",
+        "shortDescriptionHelper": "Shown on the tournament list and when sharing. If empty, the first paragraph of the description is used. Up to {{max}} characters.",
         "description": "Description",
         "descriptionHelper": "Full details shown on the tournament page.",
         "startDate": "Start Date",
@@ -613,6 +613,8 @@
         }
       },
       "applicationDeadline": "Application Deadline",
+      "applicationDeadlinePassedTitle": "Application deadline reached",
+      "applicationDeadlinePassedMessage": "The application deadline has been reached, but you can try contacting the organiser directly.",
       "applicationSubmitted": "Application submitted successfully!",
       "attachmentsReady": "{{count}} file(s) ready — they will upload when you save",
       "bannerReady": "Banner ready — it will upload when you save",

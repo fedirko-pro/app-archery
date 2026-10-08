@@ -14,7 +14,6 @@ import {
   PersonAdd,
   PictureAsPdf,
   RateReview,
-  Send,
 } from '@mui/icons-material';
 import {
   Alert,
@@ -50,6 +49,8 @@ import apiService from '../../../services/api';
 import type { TournamentDto } from '../../../services/types';
 import { formatDate } from '../../../utils/date-utils';
 import { resolveTournamentBanner } from '../../../utils/placeholder-images';
+import { tournamentPreviewText } from '../../../utils/tournament-preview-text';
+import ApplyTournamentButton from '../apply-tournament-button';
 
 const TournamentDetail: React.FC = () => {
   const { tournamentId, lang } = useParams<{ tournamentId: string; lang: string }>();
@@ -301,23 +302,22 @@ const TournamentDetail: React.FC = () => {
                 <ShareMenu
                   url={shareUrl}
                   title={tournament.title}
-                  text={tournament.shortDescription || undefined}
+                  text={
+                    tournamentPreviewText(tournament.shortDescription, tournament.description) ||
+                    undefined
+                  }
                   imageUrl={resolveTournamentBanner(tournament.banner)}
                   fullWidth
                   sx={{ justifyContent: 'center' }}
                 />
               </Box>
               {!isPastTournament(tournament) && (
-                <Button
-                  variant="contained"
-                  size="large"
-                  startIcon={<Send />}
-                  component={Link}
+                <ApplyTournamentButton
                   to={`/${lang}/apply/${tournament.id}`}
+                  deadline={tournament.applicationDeadline}
+                  label={t('pages.tournaments.apply', 'Apply to tournament')}
                   sx={{ flex: 1, minWidth: 0, justifyContent: 'center' }}
-                >
-                  {t('pages.tournaments.apply', 'Apply to tournament')}
-                </Button>
+                />
               )}
             </Box>
             {user &&

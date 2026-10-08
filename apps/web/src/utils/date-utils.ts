@@ -1,4 +1,4 @@
-import { format, isValid, parseISO, subDays } from 'date-fns';
+import { format, isAfter, isValid, parseISO, startOfDay, subDays } from 'date-fns';
 
 export const formatDate = (dateString: string | Date, formatString: string = 'PPP'): string => {
   try {
@@ -25,4 +25,14 @@ export const formatDateTime = (dateString: string | Date): string => {
 export const getApplicationDeadline = (startDate: string | Date): Date => {
   const date = typeof startDate === 'string' ? parseISO(startDate) : startDate;
   return subDays(date, 5);
+};
+
+export const isApplicationDeadlinePassed = (
+  deadline?: string | Date | null,
+  now: Date = new Date(),
+): boolean => {
+  if (!deadline) return false;
+  const date = typeof deadline === 'string' ? parseISO(deadline) : deadline;
+  if (!isValid(date)) return false;
+  return isAfter(startOfDay(now), startOfDay(date));
 };

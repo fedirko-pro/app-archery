@@ -7,6 +7,7 @@ import { useNavigate, useParams } from 'react-router';
 import { useAuth } from '../../../contexts/auth-context';
 import apiService from '../../../services/api';
 import type { TournamentDto } from '../../../services/types';
+import { isApplicationDeadlinePassed } from '../../../utils/date-utils';
 import { getDefaultAppLang, normalizeAppLang } from '../../../utils/i18n-lang';
 import { removeSessionItem, setPendingApplication } from '../../../utils/safe-session-json';
 import TournamentApplicationForm from '../tournament-application-form/tournament-application-form';
@@ -86,6 +87,21 @@ const PublicApplication: React.FC = () => {
         <Alert severity="error">{error || t('pages.publicApplication.notFound')}</Alert>
         <Button variant="contained" sx={{ mt: 2 }} onClick={() => navigate(-1)}>
           {t('common.back')}
+        </Button>
+      </Box>
+    );
+  }
+
+  if (isApplicationDeadlinePassed(tournament.applicationDeadline)) {
+    return (
+      <Box sx={{ p: 3, maxWidth: 600, mx: 'auto' }}>
+        <Alert severity="warning">{t('pages.tournaments.applicationDeadlinePassedMessage')}</Alert>
+        <Button
+          variant="contained"
+          sx={{ mt: 2 }}
+          onClick={() => navigate(`/${appLang}/tournaments/${tournament.id}`)}
+        >
+          {t('pages.tournaments.viewDetails')}
         </Button>
       </Box>
     );

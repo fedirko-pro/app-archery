@@ -129,6 +129,37 @@ describe('TournamentApplicationService', () => {
         service.create({ tournamentId: 'tournament-1', applicantId: 'user-1' }),
       ).rejects.toThrow(ConflictException);
     });
+
+    it('should reject applications after the deadline', async () => {
+      em.findOne.mockResolvedValueOnce({
+        ...mockTournament,
+        applicationDeadline: new Date('2000-01-01'),
+      } as any);
+
+      await expect(
+        service.create({ tournamentId: 'tournament-1', applicantId: 'user-1' }),
+      ).rejects.toThrow(BadRequestException);
+      expect(em.persistAndFlush).not.toHaveBeenCalled();
+    });
+
+    it('should allow an organiser to apply someone after the deadline', async () => {
+      em.findOne.mockResolvedValueOnce({
+        ...mockTournament,
+        applicationDeadline: new Date('2000-01-01'),
+      } as any);
+      em.findOne.mockResolvedValueOnce(mockUser as any);
+      em.find.mockResolvedValue([]);
+      const mockApp = { id: 'app-1' };
+      em.create.mockReturnValue(mockApp as any);
+
+      const result = await service.create(
+        { tournamentId: 'tournament-1', applicantId: 'user-1' },
+        { bypassDeadline: true },
+      );
+
+      expect(result).toEqual(mockApp);
+      expect(em.persistAndFlush).toHaveBeenCalledWith(mockApp);
+    });
   });
 
   describe('withdraw', () => {
