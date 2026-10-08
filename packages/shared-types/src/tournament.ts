@@ -1,3 +1,5 @@
+export const TOURNAMENT_SHORT_DESCRIPTION_MAX_LENGTH = 280;
+
 export type ApplicationStatus = 'pending' | 'approved' | 'rejected' | 'withdrawn';
 
 export type PatrolRole = 'leader' | 'member' | 'judge';

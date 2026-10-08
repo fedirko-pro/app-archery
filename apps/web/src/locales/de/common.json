@@ -562,7 +562,10 @@
       "updating": "Wird aktualisiert...",
       "form": {
         "title": "Titel",
+        "shortDescription": "Kurzbeschreibung",
+        "shortDescriptionHelper": "Wird in der Turnierliste und beim Teilen angezeigt. Maximal {{max}} Zeichen.",
         "description": "Beschreibung",
+        "descriptionHelper": "Vollständige Details auf der Turnierseite.",
         "startDate": "Startdatum",
         "endDate": "Enddatum (optional - Standard ist Startdatum)",
         "endDateHelper": "Leer lassen, um Startdatum zu verwenden",

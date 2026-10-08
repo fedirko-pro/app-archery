@@ -301,7 +301,7 @@ const TournamentDetail: React.FC = () => {
                 <ShareMenu
                   url={shareUrl}
                   title={tournament.title}
-                  text={tournament.description}
+                  text={tournament.shortDescription || undefined}
                   imageUrl={resolveTournamentBanner(tournament.banner)}
                   fullWidth
                   sx={{ justifyContent: 'center' }}

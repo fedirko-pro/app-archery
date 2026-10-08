@@ -23,16 +23,23 @@ describe('buildShareBody', () => {
 describe('buildShareMessage', () => {
   it('builds message with title, text, and url', () => {
     const result = buildShareMessage('Title', 'Body', 'https://example.com');
-    expect(result).toBe('Title\n\nBody\n\nhttps://example.com');
+    expect(result).toBe('https://example.com\n\nTitle\n\nBody');
   });
 
   it('builds message without text', () => {
     const result = buildShareMessage('Title', undefined, 'https://example.com');
-    expect(result).toBe('Title\n\nhttps://example.com');
+    expect(result).toBe('https://example.com\n\nTitle');
   });
 
   it('builds message with empty text', () => {
     const result = buildShareMessage('Title', '', 'https://example.com');
-    expect(result).toBe('Title\n\nhttps://example.com');
+    expect(result).toBe('https://example.com\n\nTitle');
+  });
+
+  it('puts the page url before links written in the description', () => {
+    const page = 'https://sokil.app/en/tournaments/1';
+    const result = buildShareMessage('Title', 'Map\nhttps://maps.app.goo.gl/abc', page);
+    expect(result.startsWith(page)).toBe(true);
+    expect(result.indexOf(page)).toBeLessThan(result.indexOf('https://maps.app.goo.gl/abc'));
   });
 });

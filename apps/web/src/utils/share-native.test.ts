@@ -22,9 +22,22 @@ describe('shareTournamentNative', () => {
     });
 
     await expect(
-      shareTournamentNative({ title: 'Test', url: 'https://example.com' }),
+      shareTournamentNative({
+        title: 'Test',
+        description: 'See https://maps.app.goo.gl/abc',
+        url: 'https://example.com',
+      }),
     ).resolves.toBe(true);
-    expect(share).toHaveBeenCalled();
+    expect(share).toHaveBeenCalledWith(
+      expect.objectContaining({
+        url: 'https://example.com',
+        text: expect.stringMatching(/^https:\/\/example\.com\n/),
+      }),
+    );
+    const text = share.mock.calls[0][0].text as string;
+    expect(text.indexOf('https://example.com')).toBeLessThan(
+      text.indexOf('https://maps.app.goo.gl/abc'),
+    );
   });
 
   it('returns false when user cancels share (AbortError)', async () => {

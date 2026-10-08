@@ -4,8 +4,14 @@ import type { TournamentDto } from '@/services/types';
 import { formatDate } from '@/utils/date-utils';
 import { isExternalPlaceholderUrl } from '@/utils/placeholder-images';
 import { alternateOgLocales, toOgLocale } from './og-locale';
+import { toAbsoluteImageUrl } from './share-og-image';
 
 export const DEFAULT_OG_IMAGE_PATH = '/og/default-tournament-banner.png';
+export const TOURNAMENT_BANNER_OG_WIDTH = 1200;
+export const TOURNAMENT_BANNER_OG_HEIGHT = 400;
+
+const BANNER_WEBP_PATH = /\/uploads\/images\/banners\/([A-Za-z0-9._-]+)\.webp$/i;
+const HTTP_URL = /https?:\/\/[^\s<>"']+/gi;
 
 function buildDescriptionFallback(tournament: TournamentDto): string {
   const parts: string[] = [];
@@ -20,16 +26,60 @@ function buildDescriptionFallback(tournament: TournamentDto): string {
   return parts.join(' · ') || tournament.title;
 }
 
-function resolveOgImageUrl(tournament: TournamentDto, siteUrl: string): string {
+export function descriptionForLinkPreview(text: string): string {
+  return text
+    .replace(HTTP_URL, '')
+    .replace(/[^\S\n]+/g, ' ')
+    .replace(/ *\n */g, '\n')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+}
+
+export function toBannerJpegUrl(bannerUrl: string): string | null {
+  try {
+    const parsed = new URL(bannerUrl);
+    if (parsed.protocol !== 'https:' && parsed.protocol !== 'http:') {
+      return null;
+    }
+    const match = parsed.pathname.match(BANNER_WEBP_PATH);
+    if (!match) {
+      return null;
+    }
+    return `${parsed.origin}/tournaments/${match[1]}/og-image.jpg`;
+  } catch {
+    return null;
+  }
+}
+
+function resolveOgImage(
+  tournament: TournamentDto,
+  siteUrl: string,
+): { url: string; width: number; height: number; type: string } {
   const banner = tournament.banner;
   if (banner && !isExternalPlaceholderUrl(banner)) {
-    try {
-      return new URL(banner).toString();
-    } catch {
-      return new URL(banner, siteUrl).toString();
+    const absolute = toAbsoluteImageUrl(banner, siteUrl);
+    const jpeg = toBannerJpegUrl(absolute);
+    if (jpeg) {
+      return {
+        url: jpeg,
+        width: TOURNAMENT_BANNER_OG_WIDTH,
+        height: TOURNAMENT_BANNER_OG_HEIGHT,
+        type: 'image/jpeg',
+      };
     }
+    return {
+      url: absolute,
+      width: TOURNAMENT_BANNER_OG_WIDTH,
+      height: TOURNAMENT_BANNER_OG_HEIGHT,
+      type: /\.png(?:$|\?)/i.test(absolute) ? 'image/png' : 'image/jpeg',
+    };
   }
-  return new URL(DEFAULT_OG_IMAGE_PATH, siteUrl).toString();
+  return {
+    url: new URL(DEFAULT_OG_IMAGE_PATH, siteUrl).toString(),
+    width: 400,
+    height: 400,
+    type: 'image/png',
+  };
 }
 
 export function resolveSiteUrl(headersList: Headers): string {
@@ -49,8 +99,10 @@ export function buildTournamentMetadata(
   siteUrl: string,
 ): Metadata {
   const pageUrl = `${siteUrl}/${lang}/tournaments/${tournament.id}`;
-  const description = tournament.description?.trim() || buildDescriptionFallback(tournament);
-  const imageUrl = resolveOgImageUrl(tournament, siteUrl);
+  const rawDescription = tournament.shortDescription?.trim() ?? '';
+  const fromDescription = rawDescription ? descriptionForLinkPreview(rawDescription) : '';
+  const description = fromDescription || buildDescriptionFallback(tournament);
+  const image = resolveOgImage(tournament, siteUrl);
 
   return {
     title: `${tournament.title} | Sokil`,
@@ -68,10 +120,11 @@ export function buildTournamentMetadata(
       alternateLocale: alternateOgLocales(lang),
       images: [
         {
-          url: imageUrl,
-          width: 1200,
-          height: 630,
+          url: image.url,
+          width: image.width,
+          height: image.height,
           alt: tournament.title,
+          type: image.type,
         },
       ],
     },
@@ -79,7 +132,7 @@ export function buildTournamentMetadata(
       card: 'summary_large_image',
       title: tournament.title,
       description,
-      images: [imageUrl],
+      images: [image.url],
     },
   };
 }

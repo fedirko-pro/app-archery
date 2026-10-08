@@ -608,7 +608,10 @@
       "updating": "A atualizar...",
       "form": {
         "title": "Título",
+        "shortDescription": "Descrição curta",
+        "shortDescriptionHelper": "Aparece na lista de torneios e ao partilhar. Até {{max}} caracteres.",
         "description": "Descrição",
+        "descriptionHelper": "Detalhes completos apresentados na página do torneio.",
         "startDate": "Data de início",
         "endDate": "Data de fim (opcional - padrão é a data de início)",
         "endDateHelper": "Deixe vazio para usar a data de início",

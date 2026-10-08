@@ -1,4 +1,5 @@
 import { Entity, ManyToOne, PrimaryKey, Property } from '@mikro-orm/core';
+import { TOURNAMENT_SHORT_DESCRIPTION_MAX_LENGTH } from '@sokil/shared-types';
 import { v4 as uuid } from 'uuid';
 import { Rule } from '../rule/rule.entity';
 import { User } from '../user/entity/user.entity';
@@ -13,6 +14,9 @@ export class Tournament {
 
   @Property({ nullable: true, columnType: 'text' })
   description?: string;
+
+  @Property({ nullable: true, length: TOURNAMENT_SHORT_DESCRIPTION_MAX_LENGTH })
+  shortDescription?: string | null;
 
   @Property({ nullable: true })
   address?: string;

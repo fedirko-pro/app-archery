@@ -1,5 +1,5 @@
 import { fetchImageAsShareFile } from './share-image';
-import { buildShareBody } from './share-message';
+import { buildShareMessage } from './share-message';
 
 export interface TournamentSharePayload {
   title: string;
@@ -14,7 +14,7 @@ export async function shareTournamentNative(payload: TournamentSharePayload): Pr
     return false;
   }
 
-  const text = buildShareBody(payload.title, payload.description);
+  const text = buildShareMessage(payload.title, payload.description, payload.url);
   let shareData: ShareData = {
     title: payload.title,
     text,

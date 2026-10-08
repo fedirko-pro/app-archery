@@ -3,6 +3,7 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { parseISO, startOfDay, subDays } from 'date-fns';
 import { Rule } from '../rule/rule.entity';
 import { UploadService } from '../upload/upload.service';
+import { normalizeTournamentShortDescription } from './short-description';
 import { Tournament } from './tournament.entity';
 
 @Injectable()
@@ -48,10 +49,17 @@ export class TournamentService {
       }
     }
 
-    const { ruleCode: _ruleCode, ruleId: _ruleId, ...tournamentData } = data;
+    const {
+      ruleCode: _ruleCode,
+      ruleId: _ruleId,
+      shortDescription: rawShortDescription,
+      ...tournamentData
+    } = data;
+    const shortDescription = normalizeTournamentShortDescription(rawShortDescription);
 
     const tournament = this.em.create(Tournament, {
       ...tournamentData,
+      ...(shortDescription ? { shortDescription } : {}),
       rule,
       startDate,
       endDate,
@@ -142,7 +150,16 @@ export class TournamentService {
       tournament.rule = rule;
     }
 
-    const { ruleCode: _rc, ruleId: _ri, ...updateData } = data;
+    const hasShortDescription = 'shortDescription' in data;
+    const {
+      ruleCode: _rc,
+      ruleId: _ri,
+      shortDescription: rawShortDescription,
+      ...updateData
+    } = data;
+    if (hasShortDescription) {
+      tournament.shortDescription = normalizeTournamentShortDescription(rawShortDescription);
+    }
     Object.assign(tournament, updateData);
     tournament.updatedAt = new Date();
 

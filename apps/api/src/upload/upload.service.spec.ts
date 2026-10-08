@@ -71,6 +71,30 @@ describe('UploadService', () => {
     });
   });
 
+  describe('readBannerAsJpeg', () => {
+    it('rejects traversal before touching the filesystem', async () => {
+      (fs.access as jest.Mock).mockClear();
+
+      await expect(uploadService.readBannerAsJpeg('../secrets')).rejects.toThrow(
+        BadRequestException,
+      );
+      expect(fs.access).not.toHaveBeenCalled();
+    });
+
+    it('returns null when the banner file is missing', async () => {
+      (fs.access as jest.Mock).mockRejectedValue(
+        Object.assign(new Error('missing'), { code: 'ENOENT' }),
+      );
+
+      await expect(uploadService.readBannerAsJpeg('tournament-1')).resolves.toBeNull();
+
+      const paths = (fs.access as jest.Mock).mock.calls.map((call) => call[0] as string);
+      const bannerPath = paths.find((path) => path.includes('tournament-1.webp'));
+      expect(bannerPath).toContain('banners');
+      expect(bannerPath).not.toContain('..');
+    });
+  });
+
   describe('deleteAttachment', () => {
     it('rejects traversal in tournamentId before touching the filesystem', async () => {
       await expect(uploadService.deleteAttachment('../secrets', 'safe-file.pdf')).rejects.toThrow(

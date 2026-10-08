@@ -292,6 +292,26 @@ export class UploadService {
     }
   }
 
+  async readBannerAsJpeg(entityId: string): Promise<Buffer | null> {
+    this.assertSafePathSegment(entityId, 'entity ID');
+    const filepath = this.resolveWithinUploadDir('images', 'banners', `${entityId}.webp`);
+
+    try {
+      await fs.access(filepath);
+    } catch {
+      return null;
+    }
+
+    try {
+      return await sharp(filepath).jpeg({ quality: 82 }).toBuffer();
+    } catch (error) {
+      this.logger.error(
+        `Failed to render banner jpeg for ${entityId}: ${error instanceof Error ? error.message : 'unknown error'}`,
+      );
+      return null;
+    }
+  }
+
   async deleteImage(entityId: string, type: 'avatar' | 'banner' | 'logo'): Promise<void> {
     try {
       this.assertSafePathSegment(entityId, 'entity ID');

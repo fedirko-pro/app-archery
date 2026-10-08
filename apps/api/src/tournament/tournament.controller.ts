@@ -5,11 +5,14 @@ import {
   Delete,
   ForbiddenException,
   Get,
+  Header,
+  NotFoundException,
   Param,
   Post,
   Put,
   Query,
   Request,
+  StreamableFile,
   UseGuards,
 } from '@nestjs/common';
 import { Roles } from '../auth/decorators/roles.decorator';
@@ -17,6 +20,7 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { RequestUser } from '../auth/permissions';
 import { PermissionsService } from '../auth/permissions.service';
+import { UploadService } from '../upload/upload.service';
 import { Roles as UserRoles } from '../user/types';
 import { TournamentService } from './tournament.service';
 
@@ -49,6 +53,7 @@ export class TournamentController {
   constructor(
     private readonly tournamentService: TournamentService,
     private readonly permissionsService: PermissionsService,
+    private readonly uploadService: UploadService,
   ) {}
 
   @UseGuards(JwtAuthGuard, RolesGuard)
@@ -87,6 +92,16 @@ export class TournamentController {
         createdBy: serializeCreatedBy(t.createdBy),
       };
     });
+  }
+
+  @Get(':id/og-image.jpg')
+  @Header('Cache-Control', 'public, max-age=3600')
+  async ogImage(@Param('id') id: string): Promise<StreamableFile> {
+    const jpeg = await this.uploadService.readBannerAsJpeg(id);
+    if (!jpeg) {
+      throw new NotFoundException();
+    }
+    return new StreamableFile(jpeg, { type: 'image/jpeg' });
   }
 
   @Get(':id')

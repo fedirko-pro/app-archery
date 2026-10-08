@@ -564,7 +564,10 @@
       "attachmentsSaved": "{{count}} file caricato/i con successo",
       "form": {
         "title": "Titolo",
+        "shortDescription": "Descrizione breve",
+        "shortDescriptionHelper": "Compare nell'elenco dei tornei e durante la condivisione. Fino a {{max}} caratteri.",
         "description": "Descrizione",
+        "descriptionHelper": "Dettagli completi mostrati nella pagina del torneo.",
         "startDate": "Data di inizio",
         "endDate": "Data di fine (opzionale - predefinita alla data di inizio)",
         "endDateHelper": "Lascia vuoto per usare la data di inizio",

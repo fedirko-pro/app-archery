@@ -7,7 +7,6 @@ export function buildShareBody(title: string, text?: string): string {
   return title;
 }
 
-/** Full message including URL (for platforms that take a single text field). */
 export function buildShareMessage(title: string, text: string | undefined, url: string): string {
-  return `${buildShareBody(title, text)}\n\n${url}`;
+  return `${url}\n\n${buildShareBody(title, text)}`;
 }

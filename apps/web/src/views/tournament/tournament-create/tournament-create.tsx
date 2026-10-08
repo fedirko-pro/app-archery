@@ -14,6 +14,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
+import { TOURNAMENT_SHORT_DESCRIPTION_MAX_LENGTH } from '@sokil/shared-types';
 import type React from 'react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -41,6 +42,7 @@ const TournamentCreate: React.FC = () => {
 
   const [formData, setFormData] = useState({
     title: '',
+    shortDescription: '',
     description: '',
     startDate: '',
     endDate: '',
@@ -176,6 +178,20 @@ const TournamentCreate: React.FC = () => {
             />
 
             <TextField
+              label={t('pages.tournaments.form.shortDescription')}
+              value={formData.shortDescription}
+              onChange={(e) => setFormData({ ...formData, shortDescription: e.target.value })}
+              fullWidth
+              margin="normal"
+              multiline
+              rows={2}
+              inputProps={{ maxLength: TOURNAMENT_SHORT_DESCRIPTION_MAX_LENGTH }}
+              helperText={t('pages.tournaments.form.shortDescriptionHelper', {
+                max: TOURNAMENT_SHORT_DESCRIPTION_MAX_LENGTH,
+              })}
+            />
+
+            <TextField
               label={t('pages.tournaments.form.description')}
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
@@ -183,6 +199,7 @@ const TournamentCreate: React.FC = () => {
               margin="normal"
               multiline
               rows={3}
+              helperText={t('pages.tournaments.form.descriptionHelper')}
             />
 
             <TextField

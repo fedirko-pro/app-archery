@@ -562,7 +562,10 @@
       "updating": "Updating...",
       "form": {
         "title": "Title",
+        "shortDescription": "Short description",
+        "shortDescriptionHelper": "Shown on the tournament list and when sharing. Up to {{max}} characters.",
         "description": "Description",
+        "descriptionHelper": "Full details shown on the tournament page.",
         "startDate": "Start Date",
         "endDate": "End Date (optional - defaults to start date)",
         "endDateHelper": "Leave empty to use start date",

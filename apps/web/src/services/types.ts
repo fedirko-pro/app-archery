@@ -161,6 +161,7 @@ export interface TournamentDto {
   id: string;
   title: string;
   description?: string;
+  shortDescription?: string | null;
   startDate: string;
   endDate: string;
   address?: string;
