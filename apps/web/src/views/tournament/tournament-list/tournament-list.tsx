@@ -361,7 +361,11 @@ const TournamentList: React.FC = () => {
                     {tournament.title}
                   </Typography>
                   {tournament.description && (
-                    <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{ mb: 2, whiteSpace: 'pre-wrap' }}
+                    >
                       {tournament.description}
                     </Typography>
                   )}

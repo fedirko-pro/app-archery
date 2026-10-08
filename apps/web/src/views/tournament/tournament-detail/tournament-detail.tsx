@@ -172,7 +172,12 @@ const TournamentDetail: React.FC = () => {
           </Typography>
 
           {tournament.description && (
-            <Typography variant="body1" color="text.secondary" paragraph>
+            <Typography
+              variant="body1"
+              color="text.secondary"
+              paragraph
+              sx={{ whiteSpace: 'pre-wrap' }}
+            >
               {tournament.description}
             </Typography>
           )}
