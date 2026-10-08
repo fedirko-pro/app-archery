@@ -56,6 +56,14 @@ const BannerUploader: React.FC<BannerUploaderProps> = ({
   const [error, setError] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
   const currentFileRef = useRef<File | null>(null);
+  const autoPrepareAfterSelectRef = useRef(false);
+  const onPendingFileChangeRef = useRef(onPendingFileChange);
+  const onChangeRef = useRef(onChange);
+
+  useEffect(() => {
+    onPendingFileChangeRef.current = onPendingFileChange;
+    onChangeRef.current = onChange;
+  }, [onPendingFileChange, onChange]);
 
   useEffect(() => {
     setImageSrc(value);
@@ -94,6 +102,8 @@ const BannerUploader: React.FC<BannerUploaderProps> = ({
     }
     setError(null);
     currentFileRef.current = file;
+    autoPrepareAfterSelectRef.current = true;
+    onPendingFileChangeRef.current?.(file);
     const reader = new FileReader();
     reader.onload = () => {
       setImageSrc(String(reader.result));
@@ -182,29 +192,46 @@ const BannerUploader: React.FC<BannerUploaderProps> = ({
     setOffset(clamped);
   };
 
-  const getCropSource = () => {
-    if (!naturalSize) return null;
-    const baseScaleW = width / naturalSize.w;
-    const baseScaleH = height / naturalSize.h;
-    const baseScale = Math.max(baseScaleW, baseScaleH);
-    const scale = baseScale * zoom;
-    const sx = Math.max(0, Math.min(naturalSize.w - width / scale, -offset.x / scale));
-    const sy = Math.max(0, Math.min(naturalSize.h - height / scale, -offset.y / scale));
-    return {
-      sx: Math.round(sx),
-      sy: Math.round(sy),
-      sWidth: Math.round(width / scale),
-      sHeight: Math.round(height / scale),
-    };
-  };
-
-  const cropToLocalFile = async (): Promise<{ file: File; previewUrl: string }> => {
-    if (!imageEl || !naturalSize) {
+  const cropToLocalFile = async (
+    source: {
+      image: HTMLImageElement;
+      natural: { w: number; h: number };
+      zoomValue: number;
+      offsetValue: { x: number; y: number };
+    } = {
+      image: imageEl as HTMLImageElement,
+      natural: naturalSize as { w: number; h: number },
+      zoomValue: zoom,
+      offsetValue: offset,
+    },
+  ): Promise<{ file: File; previewUrl: string }> => {
+    const { image, natural, zoomValue, offsetValue } = source;
+    if (!image || !natural) {
       throw new Error('Image not ready');
     }
-    const crop = getCropSource();
-    if (!crop) {
-      throw new Error('Crop not ready');
+
+    const baseScaleW = width / natural.w;
+    const baseScaleH = height / natural.h;
+    const baseScale = Math.max(baseScaleW, baseScaleH);
+    const scale = baseScale * zoomValue;
+    const sx = Math.max(0, Math.min(natural.w - width / scale, -offsetValue.x / scale));
+    const sy = Math.max(0, Math.min(natural.h - height / scale, -offsetValue.y / scale));
+    const sWidth = Math.round(width / scale);
+    const sHeight = Math.round(height / scale);
+    const cropX = Math.round(sx);
+    const cropY = Math.round(sy);
+
+    if (
+      Number.isNaN(cropX) ||
+      Number.isNaN(cropY) ||
+      Number.isNaN(sWidth) ||
+      Number.isNaN(sHeight) ||
+      cropX < 0 ||
+      cropY < 0 ||
+      sWidth <= 0 ||
+      sHeight <= 0
+    ) {
+      throw new Error('Invalid crop parameters');
     }
 
     const canvas = document.createElement('canvas');
@@ -215,17 +242,7 @@ const BannerUploader: React.FC<BannerUploaderProps> = ({
       throw new Error('Canvas unavailable');
     }
 
-    ctx.drawImage(
-      imageEl,
-      crop.sx,
-      crop.sy,
-      crop.sWidth,
-      crop.sHeight,
-      0,
-      0,
-      outputWidth,
-      outputHeight,
-    );
+    ctx.drawImage(image, cropX, cropY, sWidth, sHeight, 0, 0, outputWidth, outputHeight);
 
     const blob = await new Promise<Blob>((resolve, reject) => {
       canvas.toBlob(
@@ -241,6 +258,44 @@ const BannerUploader: React.FC<BannerUploaderProps> = ({
     const file = new File([blob], 'banner.jpg', { type: 'image/jpeg' });
     return { file, previewUrl: URL.createObjectURL(blob) };
   };
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: guarded one-shot via autoPrepareAfterSelectRef; imageSrc/output size/cropToLocalFile intentionally excluded
+  useEffect(() => {
+    if (!autoPrepareAfterSelectRef.current || !imageEl || !naturalSize) return;
+
+    let cancelled = false;
+    autoPrepareAfterSelectRef.current = false;
+
+    const baseScale = Math.max(width / naturalSize.w, height / naturalSize.h);
+    const scaledW = naturalSize.w * baseScale;
+    const scaledH = naturalSize.h * baseScale;
+    const defaultOffset = { x: (width - scaledW) / 2, y: (height - scaledH) / 2 };
+
+    void (async () => {
+      try {
+        const { file, previewUrl } = await cropToLocalFile({
+          image: imageEl,
+          natural: naturalSize,
+          zoomValue: 1,
+          offsetValue: defaultOffset,
+        });
+        if (cancelled) return;
+        onPendingFileChangeRef.current?.(file);
+        onChangeRef.current?.(previewUrl);
+        setImageSrc(previewUrl);
+      } catch (err) {
+        if (cancelled) return;
+        if (currentFileRef.current) {
+          onPendingFileChangeRef.current?.(currentFileRef.current);
+        }
+        console.error('Auto-prepare banner failed:', err);
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [imageEl, naturalSize, width, height]);
 
   const handleSave = async () => {
     if (!imageEl || !naturalSize || !currentFileRef.current) return;
