@@ -130,6 +130,21 @@ describe('TournamentApplicationService', () => {
       ).rejects.toThrow(ConflictException);
     });
 
+    it('should reject applications for announcement-only tournaments', async () => {
+      em.findOne.mockResolvedValueOnce({
+        ...mockTournament,
+        announcement: true,
+      } as any);
+
+      await expect(
+        service.create(
+          { tournamentId: 'tournament-1', applicantId: 'user-1' },
+          { bypassDeadline: true },
+        ),
+      ).rejects.toThrow(BadRequestException);
+      expect(em.persistAndFlush).not.toHaveBeenCalled();
+    });
+
     it('should reject applications after the deadline', async () => {
       em.findOne.mockResolvedValueOnce({
         ...mockTournament,

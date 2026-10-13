@@ -405,6 +405,7 @@ export class DatabaseSeeder extends Seeder {
           endDate,
           applicationDeadline,
           allowMultipleApplications: i % 3 !== 0,
+          announcement: false,
           collectFeedback: false,
           targetCount: 12 + (i % 3) * 6,
           createdBy: admin,

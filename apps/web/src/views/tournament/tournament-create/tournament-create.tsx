@@ -8,6 +8,7 @@ import {
   Checkbox,
   FormControl,
   FormControlLabel,
+  FormHelperText,
   InputLabel,
   MenuItem,
   Select,
@@ -52,6 +53,7 @@ const TournamentCreate: React.FC = () => {
     ruleCode: '',
     targetCount: 18,
     allowMultipleApplications: false,
+    announcement: false,
     collectFeedback: true,
     banner: '',
     attachments: [] as FileAttachment[],
@@ -308,6 +310,26 @@ const TournamentCreate: React.FC = () => {
               label={t('pages.tournaments.form.collectFeedbackLabel')}
               sx={{ mt: 1 }}
             />
+
+            <FormControl sx={{ mt: 1, display: 'flex' }}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={formData.announcement}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        announcement: e.target.checked,
+                      })
+                    }
+                  />
+                }
+                label={t('pages.tournaments.form.announcementOnlyLabel')}
+              />
+              <FormHelperText sx={{ mx: 0 }}>
+                {t('pages.tournaments.form.announcementOnlyHelper')}
+              </FormHelperText>
+            </FormControl>
           </CardContent>
         </Card>
 

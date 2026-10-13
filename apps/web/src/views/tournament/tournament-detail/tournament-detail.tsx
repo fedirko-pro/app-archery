@@ -10,6 +10,7 @@ import {
   GetApp,
   GpsFixed,
   Image,
+  Info,
   LocationOn,
   PersonAdd,
   PictureAsPdf,
@@ -38,6 +39,7 @@ import { useTranslation } from 'react-i18next';
 import { Link, useNavigate, useParams } from 'react-router';
 
 import AdminApplyUserDialog from '../../../components/dialogs/admin-apply-user-dialog';
+import AnnouncementApplyDialog from '../../../components/dialogs/announcement-apply-dialog';
 import type { FileAttachment } from '../../../components/FileAttachments/FileAttachments';
 import NotFoundPage from '../../../components/NotFound/NotFoundPage';
 import ShareMenu from '../../../components/share/ShareMenu';
@@ -63,6 +65,7 @@ const TournamentDetail: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [notFound, setNotFound] = useState(false);
   const [applyUserDialogOpen, setApplyUserDialogOpen] = useState(false);
+  const [announcementInfoOpen, setAnnouncementInfoOpen] = useState(false);
 
   useEffect(() => {
     const fetchTournament = async () => {
@@ -313,6 +316,7 @@ const TournamentDetail: React.FC = () => {
                 <ApplyTournamentButton
                   to={`/${lang}/apply/${tournament.id}`}
                   deadline={tournament.applicationDeadline}
+                  announcement={tournament.announcement}
                   label={t('pages.tournaments.apply', 'Apply to tournament')}
                   sx={{ flex: 1, minWidth: 0, justifyContent: 'center' }}
                 />
@@ -360,8 +364,12 @@ const TournamentDetail: React.FC = () => {
                     <Button
                       variant="outlined"
                       size="large"
-                      startIcon={<PersonAdd />}
-                      onClick={() => setApplyUserDialogOpen(true)}
+                      startIcon={tournament.announcement ? <Info /> : <PersonAdd />}
+                      onClick={() =>
+                        tournament.announcement
+                          ? setAnnouncementInfoOpen(true)
+                          : setApplyUserDialogOpen(true)
+                      }
                     >
                       {t('pages.tournaments.applyOtherUser', 'Apply Other User')}
                     </Button>
@@ -371,6 +379,11 @@ const TournamentDetail: React.FC = () => {
           </Box>
         </CardContent>
       </Card>
+
+      <AnnouncementApplyDialog
+        open={announcementInfoOpen}
+        onClose={() => setAnnouncementInfoOpen(false)}
+      />
 
       {/* Admin Apply User Dialog */}
       {tournament && (

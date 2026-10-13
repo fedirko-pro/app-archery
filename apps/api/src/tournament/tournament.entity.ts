@@ -39,6 +39,9 @@ export class Tournament {
   @Property({ default: false })
   allowMultipleApplications: boolean = false;
 
+  @Property({ default: false })
+  announcement: boolean = false;
+
   @Property({ default: true })
   collectFeedback: boolean = true;
 

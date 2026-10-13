@@ -92,6 +92,21 @@ const PublicApplication: React.FC = () => {
     );
   }
 
+  if (tournament.announcement) {
+    return (
+      <Box sx={{ p: 3, maxWidth: 600, mx: 'auto' }}>
+        <Alert severity="info">{t('pages.tournaments.announcementApplyMessage')}</Alert>
+        <Button
+          variant="contained"
+          sx={{ mt: 2 }}
+          onClick={() => navigate(`/${appLang}/tournaments/${tournament.id}`)}
+        >
+          {t('pages.tournaments.viewDetails')}
+        </Button>
+      </Box>
+    );
+  }
+
   if (isApplicationDeadlinePassed(tournament.applicationDeadline)) {
     return (
       <Box sx={{ p: 3, maxWidth: 600, mx: 'auto' }}>

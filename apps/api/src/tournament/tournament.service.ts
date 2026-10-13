@@ -65,6 +65,7 @@ export class TournamentService {
       endDate,
       applicationDeadline,
       allowMultipleApplications: data.allowMultipleApplications ?? false,
+      announcement: data.announcement ?? false,
       collectFeedback: data.collectFeedback ?? true,
     } as RequiredEntityData<Tournament>);
 

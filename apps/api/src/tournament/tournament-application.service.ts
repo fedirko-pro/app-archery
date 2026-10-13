@@ -82,6 +82,12 @@ export class TournamentApplicationService {
       throw new NotFoundException('Tournament not found');
     }
 
+    if (tournament.announcement) {
+      throw new BadRequestException(
+        'Applications are not accepted through Sokil for this tournament',
+      );
+    }
+
     if (!options?.bypassDeadline && this.isApplicationDeadlinePassed(tournament)) {
       throw new BadRequestException('Application deadline has been reached');
     }

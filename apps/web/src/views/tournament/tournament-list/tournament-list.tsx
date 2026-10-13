@@ -444,6 +444,7 @@ const TournamentList: React.FC = () => {
                             size="small"
                             to={`/${lang}/apply/${tournament.id}`}
                             deadline={tournament.applicationDeadline}
+                            announcement={tournament.announcement}
                             label={t('pages.tournaments.apply')}
                             sx={{
                               flex: hasApplicationForTournament(tournament.id)

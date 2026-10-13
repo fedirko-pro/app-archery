@@ -167,6 +167,7 @@ export interface TournamentDto {
   address?: string;
   country?: string;
   allowMultipleApplications?: boolean;
+  announcement?: boolean;
   collectFeedback?: boolean;
   applicationDeadline?: string;
   banner?: string;
