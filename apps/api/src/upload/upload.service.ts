@@ -30,7 +30,7 @@ export class UploadService {
 
   private readonly imageDimensions = {
     avatar: { width: 512, height: 512 },
-    banner: { width: 1200, height: 400 },
+    banner: { width: 1200, height: 1200 },
     logo: { width: 1200, height: 1200 }, // Max 1200px, will resize proportionally
   };
 
@@ -142,24 +142,22 @@ export class UploadService {
         });
       }
 
-      // Resize to target dimensions
-      // For logos, use 'inside' to maintain aspect ratio and fit within max dimensions
-      // For avatars and banners, use 'cover' to fill the entire area
       const resizeOptions =
-        type === 'logo'
+        type === 'avatar'
           ? {
-              fit: 'inside' as const,
-              withoutEnlargement: true, // Don't enlarge smaller images
-            }
-          : {
               fit: 'cover' as const,
               position: 'center' as const,
+            }
+          : {
+              fit: 'inside' as const,
+              withoutEnlargement: true,
             };
 
       image = image.resize(dimensions.width, dimensions.height, resizeOptions);
 
-      // Convert to WebP
-      const processedBuffer = await image.webp({ quality }).toBuffer();
+      const { data: processedBuffer, info } = await image
+        .webp({ quality })
+        .toBuffer({ resolveWithObject: true });
 
       // Use entityId as filename - this ensures we always overwrite the old file
       const filename = `${entityId}.webp`;
@@ -187,7 +185,10 @@ export class UploadService {
         url,
         filename,
         size: stats.size,
-        dimensions,
+        dimensions: {
+          width: info.width,
+          height: info.height,
+        },
       };
     } catch (error) {
       if (error instanceof BadRequestException) {

@@ -170,7 +170,7 @@ const TournamentDetail: React.FC = () => {
           component="img"
           image={resolveTournamentBanner(tournament.banner)}
           alt={tournament.title}
-          sx={{ width: '100%', height: 'auto', display: 'block' }}
+          sx={{ width: '100%', height: 'auto', objectFit: 'contain', display: 'block' }}
         />
         <CardContent>
           {tournament.description && (

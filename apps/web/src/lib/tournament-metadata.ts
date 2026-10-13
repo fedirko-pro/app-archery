@@ -8,8 +8,6 @@ import { alternateOgLocales, toOgLocale } from './og-locale';
 import { toAbsoluteImageUrl } from './share-og-image';
 
 export const DEFAULT_OG_IMAGE_PATH = '/og/default-tournament-banner.png';
-export const TOURNAMENT_BANNER_OG_WIDTH = 1200;
-export const TOURNAMENT_BANNER_OG_HEIGHT = 400;
 
 const BANNER_WEBP_PATH = /\/uploads\/images\/banners\/([A-Za-z0-9._-]+)\.webp$/i;
 const HTTP_URL = /https?:\/\/[^\s<>"']+/gi;
@@ -55,7 +53,7 @@ export function toBannerJpegUrl(bannerUrl: string): string | null {
 function resolveOgImage(
   tournament: TournamentDto,
   siteUrl: string,
-): { url: string; width: number; height: number; type: string } {
+): { url: string; width?: number; height?: number; type: string } {
   const banner = tournament.banner;
   if (banner && !isExternalPlaceholderUrl(banner)) {
     const absolute = toAbsoluteImageUrl(banner, siteUrl);
@@ -63,15 +61,11 @@ function resolveOgImage(
     if (jpeg) {
       return {
         url: jpeg,
-        width: TOURNAMENT_BANNER_OG_WIDTH,
-        height: TOURNAMENT_BANNER_OG_HEIGHT,
         type: 'image/jpeg',
       };
     }
     return {
       url: absolute,
-      width: TOURNAMENT_BANNER_OG_WIDTH,
-      height: TOURNAMENT_BANNER_OG_HEIGHT,
       type: /\.png(?:$|\?)/i.test(absolute) ? 'image/png' : 'image/jpeg',
     };
   }
@@ -122,8 +116,8 @@ export function buildTournamentMetadata(
       images: [
         {
           url: image.url,
-          width: image.width,
-          height: image.height,
+          ...(image.width !== undefined ? { width: image.width } : {}),
+          ...(image.height !== undefined ? { height: image.height } : {}),
           alt: tournament.title,
           type: image.type,
         },

@@ -392,10 +392,6 @@ const TournamentEdit: React.FC = () => {
             onChange={(dataUrl) => {
               setFormData({ ...formData, banner: dataUrl || '' });
             }}
-            width={500}
-            height={167}
-            outputWidth={1200}
-            outputHeight={400}
           />
         </Box>
 

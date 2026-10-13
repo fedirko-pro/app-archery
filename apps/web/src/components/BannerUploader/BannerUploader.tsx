@@ -7,89 +7,60 @@ import {
   CardContent,
   CardHeader,
   CircularProgress,
-  Slider,
   Typography,
 } from '@mui/material';
 import type React from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { useNotification } from '../../contexts/error-feedback-context';
-import { requiresCrossOriginForCanvas } from '../../utils/placeholder-images';
+import { downscaleImageFile } from '../../utils/image-resize';
 
 interface BannerUploaderProps {
   value?: string;
   onChange: (url: string | null) => void;
-  /** Cropped banner file kept locally until the tournament form is saved. */
   onPendingFileChange?: (file: File | null) => void;
-  width?: number; // viewport width in px
-  height?: number; // viewport height in px
-  outputWidth?: number; // output canvas width
-  outputHeight?: number; // output canvas height
 }
 
-const MAX_SIZE_BYTES = 10 * 1024 * 1024; // 10MB (API limit)
+const MAX_SIZE_BYTES = 10 * 1024 * 1024;
+const MAX_BANNER_DIMENSION = 1200;
 const ACCEPTED_TYPES = ['image/png', 'image/jpeg', 'image/jpg'];
 
 const BannerUploader: React.FC<BannerUploaderProps> = ({
   value,
   onChange,
   onPendingFileChange,
-  width = 600,
-  height = 200,
-  outputWidth = 1200,
-  outputHeight = 400,
 }) => {
   const { t } = useTranslation('common');
-  const { showSuccess } = useNotification();
-  const [imageSrc, setImageSrc] = useState<string | undefined>(value);
-  const [imageEl, setImageEl] = useState<HTMLImageElement | null>(null);
-  const [naturalSize, setNaturalSize] = useState<{ w: number; h: number } | null>(null);
-  const [zoom, setZoom] = useState<number>(1);
-  const [offset, setOffset] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
-  const [dragging, setDragging] = useState(false);
-  const dragStart = useRef<{ x: number; y: number } | null>(null);
-  const didDragRef = useRef<boolean>(false);
-  const offsetStart = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
-  const containerRef = useRef<HTMLDivElement | null>(null);
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [previewSrc, setPreviewSrc] = useState<string | undefined>(value);
+  const [preparing, setPreparing] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [uploading, setUploading] = useState(false);
-  const currentFileRef = useRef<File | null>(null);
-  const autoPrepareAfterSelectRef = useRef(false);
-  const onPendingFileChangeRef = useRef(onPendingFileChange);
-  const onChangeRef = useRef(onChange);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const previewUrlRef = useRef<string | null>(null);
 
   useEffect(() => {
-    onPendingFileChangeRef.current = onPendingFileChange;
-    onChangeRef.current = onChange;
-  }, [onPendingFileChange, onChange]);
-
-  useEffect(() => {
-    setImageSrc(value);
+    setPreviewSrc(value);
   }, [value]);
 
   useEffect(() => {
-    if (!imageSrc) return;
-    const img = new Image();
-    if (requiresCrossOriginForCanvas(imageSrc)) {
-      img.crossOrigin = 'anonymous';
-    }
-    img.onload = () => {
-      setImageEl(img);
-      setNaturalSize({ w: img.naturalWidth, h: img.naturalHeight });
-      setZoom(1);
-      const baseScaleW = width / img.naturalWidth;
-      const baseScaleH = height / img.naturalHeight;
-      const baseScale = Math.max(baseScaleW, baseScaleH);
-      const scaledW = img.naturalWidth * baseScale;
-      const scaledH = img.naturalHeight * baseScale;
-      setOffset({ x: (width - scaledW) / 2, y: (height - scaledH) / 2 });
+    return () => {
+      if (previewUrlRef.current) {
+        URL.revokeObjectURL(previewUrlRef.current);
+      }
     };
-    img.src = imageSrc;
-  }, [imageSrc, width, height]);
+  }, []);
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const replacePreview = (url: string | undefined) => {
+    if (previewUrlRef.current) {
+      URL.revokeObjectURL(previewUrlRef.current);
+      previewUrlRef.current = null;
+    }
+    if (url?.startsWith('blob:')) {
+      previewUrlRef.current = url;
+    }
+    setPreviewSrc(url);
+  };
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
     if (!ACCEPTED_TYPES.includes(file.type)) {
@@ -100,243 +71,32 @@ const BannerUploader: React.FC<BannerUploaderProps> = ({
       setError(t('profile.imageTooLarge', 'Image is too large (max 10MB).'));
       return;
     }
+
+    setPreparing(true);
     setError(null);
-    currentFileRef.current = file;
-    autoPrepareAfterSelectRef.current = true;
-    onPendingFileChangeRef.current?.(file);
-    const reader = new FileReader();
-    reader.onload = () => {
-      setImageSrc(String(reader.result));
-    };
-    reader.readAsDataURL(file);
-  };
-
-  const clampOffset = (nx: number, ny: number) => {
-    if (!naturalSize) return { x: nx, y: ny };
-    const baseScaleW = width / naturalSize.w;
-    const baseScaleH = height / naturalSize.h;
-    const baseScale = Math.max(baseScaleW, baseScaleH);
-    const scale = baseScale * zoom;
-    const scaledW = naturalSize.w * scale;
-    const scaledH = naturalSize.h * scale;
-    const minX = Math.min(0, width - scaledW);
-    const minY = Math.min(0, height - scaledH);
-    const maxX = 0;
-    const maxY = 0;
-    return {
-      x: Math.min(maxX, Math.max(minX, nx)),
-      y: Math.min(maxY, Math.max(minY, ny)),
-    };
-  };
-
-  const handleMouseDown = (e: React.MouseEvent) => {
-    if (!imageEl) return;
-    setDragging(true);
-    dragStart.current = { x: e.clientX, y: e.clientY };
-    offsetStart.current = { ...offset };
-    didDragRef.current = false;
-  };
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!dragging || !dragStart.current) return;
-    const dx = e.clientX - dragStart.current.x;
-    const dy = e.clientY - dragStart.current.y;
-    const { x, y } = clampOffset(offsetStart.current.x + dx, offsetStart.current.y + dy);
-    setOffset({ x, y });
-    didDragRef.current = true;
-  };
-  const handleMouseUp = () => {
-    setDragging(false);
-    dragStart.current = null;
-  };
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    if (!imageEl) return;
-    const touch = e.touches[0];
-    setDragging(true);
-    dragStart.current = { x: touch.clientX, y: touch.clientY };
-    offsetStart.current = { ...offset };
-    didDragRef.current = false;
-  };
-  const handleTouchMove = (e: React.TouchEvent) => {
-    if (!dragging || !dragStart.current) return;
-    const touch = e.touches[0];
-    const dx = touch.clientX - dragStart.current.x;
-    const dy = touch.clientY - dragStart.current.y;
-    const { x, y } = clampOffset(offsetStart.current.x + dx, offsetStart.current.y + dy);
-    setOffset({ x, y });
-    didDragRef.current = true;
-  };
-  const handleTouchEnd = () => {
-    setDragging(false);
-    dragStart.current = null;
-    didDragRef.current = false;
-  };
-
-  const handleZoomChange = (_: Event, value: number | number[]) => {
-    if (!naturalSize) return;
-    const z = Array.isArray(value) ? value[0] : value;
-    const prevZoom = zoom;
-    const baseScaleW = width / naturalSize.w;
-    const baseScaleH = height / naturalSize.h;
-    const baseScale = Math.max(baseScaleW, baseScaleH);
-    const prevScale = baseScale * prevZoom;
-    const nextScale = baseScale * z;
-    const centerX = width / 2;
-    const centerY = height / 2;
-    const relX = (centerX - offset.x) / prevScale;
-    const relY = (centerY - offset.y) / prevScale;
-    const nextOffsetX = centerX - relX * nextScale;
-    const nextOffsetY = centerY - relY * nextScale;
-    const clamped = clampOffset(nextOffsetX, nextOffsetY);
-    setZoom(z);
-    setOffset(clamped);
-  };
-
-  const cropToLocalFile = async (
-    source: {
-      image: HTMLImageElement;
-      natural: { w: number; h: number };
-      zoomValue: number;
-      offsetValue: { x: number; y: number };
-    } = {
-      image: imageEl as HTMLImageElement,
-      natural: naturalSize as { w: number; h: number },
-      zoomValue: zoom,
-      offsetValue: offset,
-    },
-  ): Promise<{ file: File; previewUrl: string }> => {
-    const { image, natural, zoomValue, offsetValue } = source;
-    if (!image || !natural) {
-      throw new Error('Image not ready');
-    }
-
-    const baseScaleW = width / natural.w;
-    const baseScaleH = height / natural.h;
-    const baseScale = Math.max(baseScaleW, baseScaleH);
-    const scale = baseScale * zoomValue;
-    const sx = Math.max(0, Math.min(natural.w - width / scale, -offsetValue.x / scale));
-    const sy = Math.max(0, Math.min(natural.h - height / scale, -offsetValue.y / scale));
-    const sWidth = Math.round(width / scale);
-    const sHeight = Math.round(height / scale);
-    const cropX = Math.round(sx);
-    const cropY = Math.round(sy);
-
-    if (
-      Number.isNaN(cropX) ||
-      Number.isNaN(cropY) ||
-      Number.isNaN(sWidth) ||
-      Number.isNaN(sHeight) ||
-      cropX < 0 ||
-      cropY < 0 ||
-      sWidth <= 0 ||
-      sHeight <= 0
-    ) {
-      throw new Error('Invalid crop parameters');
-    }
-
-    const canvas = document.createElement('canvas');
-    canvas.width = outputWidth;
-    canvas.height = outputHeight;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) {
-      throw new Error('Canvas unavailable');
-    }
-
-    ctx.drawImage(image, cropX, cropY, sWidth, sHeight, 0, 0, outputWidth, outputHeight);
-
-    const blob = await new Promise<Blob>((resolve, reject) => {
-      canvas.toBlob(
-        (result) => {
-          if (result) resolve(result);
-          else reject(new Error('Failed to encode banner'));
-        },
-        'image/jpeg',
-        0.85,
-      );
-    });
-
-    const file = new File([blob], 'banner.jpg', { type: 'image/jpeg' });
-    return { file, previewUrl: URL.createObjectURL(blob) };
-  };
-
-  // biome-ignore lint/correctness/useExhaustiveDependencies: guarded one-shot via autoPrepareAfterSelectRef; imageSrc/output size/cropToLocalFile intentionally excluded
-  useEffect(() => {
-    if (!autoPrepareAfterSelectRef.current || !imageEl || !naturalSize) return;
-
-    let cancelled = false;
-    autoPrepareAfterSelectRef.current = false;
-
-    const baseScale = Math.max(width / naturalSize.w, height / naturalSize.h);
-    const scaledW = naturalSize.w * baseScale;
-    const scaledH = naturalSize.h * baseScale;
-    const defaultOffset = { x: (width - scaledW) / 2, y: (height - scaledH) / 2 };
-
-    void (async () => {
-      try {
-        const { file, previewUrl } = await cropToLocalFile({
-          image: imageEl,
-          natural: naturalSize,
-          zoomValue: 1,
-          offsetValue: defaultOffset,
-        });
-        if (cancelled) return;
-        onPendingFileChangeRef.current?.(file);
-        onChangeRef.current?.(previewUrl);
-        setImageSrc(previewUrl);
-      } catch (err) {
-        if (cancelled) return;
-        if (currentFileRef.current) {
-          onPendingFileChangeRef.current?.(currentFileRef.current);
-        }
-        console.error('Auto-prepare banner failed:', err);
-      }
-    })();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [imageEl, naturalSize, width, height]);
-
-  const handleSave = async () => {
-    if (!imageEl || !naturalSize || !currentFileRef.current) return;
-
-    setUploading(true);
-    setError(null);
-
     try {
-      // Keep cropped image local until the tournament form is saved.
-      const { file, previewUrl } = await cropToLocalFile();
-      onPendingFileChange?.(file);
+      const prepared = await downscaleImageFile(file, {
+        maxDimension: MAX_BANNER_DIMENSION,
+        quality: 0.85,
+      });
+      const previewUrl = URL.createObjectURL(prepared.file);
+      replacePreview(previewUrl);
+      onPendingFileChange?.(prepared.file);
       onChange(previewUrl);
-      setImageSrc(previewUrl);
-      showSuccess(
-        t('pages.tournaments.bannerReady', 'Banner ready — it will upload when you save'),
-      );
     } catch (err) {
       setError(t('pages.tournaments.uploadFailed', 'Upload failed. Please try again.'));
-      console.error('Upload failed:', err);
+      console.error('Prepare banner failed:', err);
     } finally {
-      setUploading(false);
+      setPreparing(false);
     }
   };
 
   const handleRemove = () => {
-    setImageSrc(undefined);
-    setImageEl(null);
-    setZoom(1);
-    setOffset({ x: 0, y: 0 });
-    currentFileRef.current = null;
+    replacePreview(undefined);
     onPendingFileChange?.(null);
     onChange(null);
     setError(null);
     if (fileInputRef.current) fileInputRef.current.value = '';
-  };
-
-  const getBaseScale = () => {
-    if (!naturalSize) return 1;
-    const baseScaleW = width / naturalSize.w;
-    const baseScaleH = height / naturalSize.h;
-    return Math.max(baseScaleW, baseScaleH);
   };
 
   return (
@@ -345,65 +105,20 @@ const BannerUploader: React.FC<BannerUploaderProps> = ({
         title={t('pages.tournaments.banner', 'Tournament Banner')}
         subheader={t(
           'pages.tournaments.bannerSubheader',
-          'Select an image, then drag to reposition (PNG, JPG up to 3MB)',
+          'PNG or JPG up to 10MB. The whole image is kept at its original proportions.',
         )}
       />
       <CardContent>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, alignItems: 'center' }}>
-          <div
-            ref={containerRef}
-            onMouseDown={handleMouseDown}
-            onMouseMove={handleMouseMove}
-            onMouseUp={handleMouseUp}
-            onMouseLeave={handleMouseUp}
-            onTouchStart={handleTouchStart}
-            onTouchMove={handleTouchMove}
-            onTouchEnd={handleTouchEnd}
-            className="banner-uploader__viewport"
-            role="img"
-            aria-label={t('components.bannerUploader.cropLabel')}
-            style={
-              {
-                ['--banner-width' as string]: `${width}px`,
-                ['--banner-height' as string]: `${height}px`,
-              } as React.CSSProperties
-            }
-          >
-            {imageEl ? (
-              <img
-                src={imageSrc}
-                alt="banner-crop"
-                draggable={false}
-                className="banner-uploader__image"
-                style={{
-                  transform: `translate(${offset.x}px, ${offset.y}px) scale(${getBaseScale() * zoom})`,
-                }}
-              />
+          <div className="banner-uploader__preview">
+            {previewSrc ? (
+              <img src={previewSrc} alt="" className="banner-uploader__image" />
             ) : (
               <div className="banner-uploader__placeholder">
-                {t(
-                  'pages.tournaments.dragToReposition',
-                  'Select an image, then drag to reposition',
-                )}
+                {t('pages.tournaments.dragToReposition', 'No banner selected')}
               </div>
             )}
           </div>
-          <Box
-            sx={{ display: 'flex', alignItems: 'center', gap: 2, width: '100%', maxWidth: width }}
-          >
-            <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-              {t('profile.zoom', 'Zoom')}
-            </Typography>
-            <Slider
-              value={zoom}
-              onChange={handleZoomChange}
-              min={1}
-              max={3}
-              step={0.01}
-              sx={{ flex: 1 }}
-              disabled={!imageEl}
-            />
-          </Box>
 
           <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', justifyContent: 'center' }}>
             <input
@@ -416,25 +131,16 @@ const BannerUploader: React.FC<BannerUploaderProps> = ({
             <Button
               variant="outlined"
               onClick={() => fileInputRef.current?.click()}
-              disabled={uploading}
+              disabled={preparing}
             >
-              {imageEl
+              {previewSrc
                 ? t('profile.changePhoto', 'Change Photo')
                 : t('profile.uploadPhoto', 'Upload Photo')}
             </Button>
-            <Button
-              variant="contained"
-              onClick={handleSave}
-              disabled={!imageEl || uploading}
-              startIcon={uploading ? <CircularProgress size={16} /> : null}
-            >
-              {uploading
-                ? t('pages.tournaments.preparing', 'Preparing...')
-                : t('profile.cropAndUse', 'Crop and Use')}
-            </Button>
-            <Button color="error" onClick={handleRemove} disabled={!imageEl || uploading}>
+            <Button color="error" onClick={handleRemove} disabled={!previewSrc || preparing}>
               {t('profile.removePhoto', 'Remove Photo')}
             </Button>
+            {preparing && <CircularProgress size={24} />}
             {error && (
               <Typography
                 variant="caption"

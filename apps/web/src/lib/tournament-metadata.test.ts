@@ -73,8 +73,6 @@ describe('buildTournamentMetadata', () => {
     expect(metadata.openGraph?.images).toEqual([
       {
         url: `https://api.sokil.app/tournaments/${TOURNAMENT_ID}/og-image.jpg`,
-        width: 1200,
-        height: 400,
         alt: 'VII Campeonato dos Castelos FABP26',
         type: 'image/jpeg',
       },
