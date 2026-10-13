@@ -160,18 +160,16 @@ const TournamentDetail: React.FC = () => {
       </Button>
 
       <Card>
+        <CardContent sx={{ pb: 2 }}>
+          <Typography variant="h4">{tournament.title}</Typography>
+        </CardContent>
         <CardMedia
           component="img"
-          height="300"
           image={resolveTournamentBanner(tournament.banner)}
           alt={tournament.title}
-          sx={{ objectFit: 'cover' }}
+          sx={{ width: '100%', height: 'auto', display: 'block' }}
         />
         <CardContent>
-          <Typography variant="h4" gutterBottom>
-            {tournament.title}
-          </Typography>
-
           {tournament.description && (
             <Typography
               variant="body1"
