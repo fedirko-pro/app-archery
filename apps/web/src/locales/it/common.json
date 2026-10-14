@@ -1069,6 +1069,8 @@
     "customFields": "Campi aggiuntivi",
     "date": "Data",
     "deleteConfirm": "Sei sicuro di voler eliminare questa sessione di allenamento?",
+    "finishQ": "Terminare l'allenamento?",
+    "finishConfirm": "Sei sicuro di voler terminare questa sessione di allenamento?",
     "deleteError": "Impossibile eliminare la sessione di allenamento",
     "distance": "Distanza",
     "empty": "Nessuna sessione di allenamento ancora. Aggiungi la prima!",

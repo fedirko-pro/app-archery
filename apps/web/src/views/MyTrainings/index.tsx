@@ -31,6 +31,7 @@ import {
 } from '../../utils/training-stats';
 import { TRAINING_TEMPLATES, type TrainingTemplate } from '../../utils/training-templates';
 import ActiveSessionCard from './ActiveSessionCard';
+import ConfirmDeleteSessionDialog from './ConfirmDeleteSessionDialog';
 import ConfirmReplaceActiveSessionDialog from './ConfirmReplaceActiveSessionDialog';
 import FinishSessionDialog from './FinishSessionDialog';
 import { MoodIcon } from './MoodPicker';
@@ -56,6 +57,8 @@ const MyTrainingsPage: React.FC = () => {
   const [editTarget, setEditTarget] = useState<LocalTrainingSession | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [deleteError, setDeleteError] = useState<string | null>(null);
+  const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState(false);
   const [finishOpen, setFinishOpen] = useState(false);
 
   const activeSession = useMemo(() => getStartedSession(trainingSessions), [trainingSessions]);
@@ -144,12 +147,18 @@ const MyTrainingsPage: React.FC = () => {
     }
   };
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async () => {
+    if (!deleteTargetId) return;
     setDeleteError(null);
+    setDeleting(true);
     try {
-      await removeTrainingSession(id);
+      await removeTrainingSession(deleteTargetId);
+      setDeleteTargetId(null);
     } catch {
       setDeleteError(t('trainings.deleteError'));
+      setDeleteTargetId(null);
+    } finally {
+      setDeleting(false);
     }
   };
 
@@ -351,7 +360,7 @@ const MyTrainingsPage: React.FC = () => {
                     size="small"
                     color="error"
                     startIcon={<DeleteIcon />}
-                    onClick={() => void handleDelete(session.id)}
+                    onClick={() => setDeleteTargetId(session.id)}
                   >
                     {t('common.delete')}
                   </Button>
@@ -366,6 +375,13 @@ const MyTrainingsPage: React.FC = () => {
         open={finishOpen}
         session={activeSession}
         onClose={() => setFinishOpen(false)}
+      />
+
+      <ConfirmDeleteSessionDialog
+        open={deleteTargetId !== null}
+        deleting={deleting}
+        onClose={() => setDeleteTargetId(null)}
+        onConfirm={() => void handleDelete()}
       />
 
       <ConfirmReplaceActiveSessionDialog

@@ -1278,7 +1278,9 @@ class ApiService {
    * Delete an attachment file from a tournament.
    */
   async deleteAttachment(tournamentId: string, filename: string): Promise<void> {
-    return await this.request<void>(`/upload/attachment/${tournamentId}/${filename}`, {
+    const tournament = encodeURIComponent(tournamentId);
+    const storedName = encodeURIComponent(filename);
+    return await this.request<void>(`/upload/attachment/${tournament}/${storedName}`, {
       method: 'DELETE',
     });
   }

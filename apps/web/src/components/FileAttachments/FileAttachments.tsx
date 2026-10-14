@@ -12,7 +12,6 @@ import {
   IconButton,
   List,
   ListItem,
-  ListItemSecondaryAction,
   ListItemText,
   Typography,
 } from '@mui/material';
@@ -55,6 +54,17 @@ const ACCEPTED_TYPES = [
 
 const ACCEPTED_EXTENSIONS = '.png,.jpg,.jpeg,.pdf,.doc,.docx';
 
+function storedAttachmentFilename(url: string): string | null {
+  const path = url.split(/[?#]/)[0] ?? '';
+  const segment = path.split('/').pop() ?? '';
+  if (!segment) return null;
+  try {
+    return decodeURIComponent(segment);
+  } catch {
+    return segment;
+  }
+}
+
 const FileAttachments: React.FC<FileAttachmentsProps> = ({
   value,
   onChange,
@@ -69,6 +79,7 @@ const FileAttachments: React.FC<FileAttachmentsProps> = ({
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
   const deferUpload = !tournamentId;
 
   const formatFileSize = (bytes: number): string => {
@@ -208,16 +219,27 @@ const FileAttachments: React.FC<FileAttachmentsProps> = ({
     }
   };
 
-  const handleRemoveUploaded = async (id: string, filename: string) => {
-    if (!tournamentId) return;
+  const handleRemoveUploaded = async (file: FileAttachment) => {
+    if (!tournamentId || deletingId) return;
+    const storedName = storedAttachmentFilename(file.url);
+    if (!storedName) {
+      setError(t('pages.tournaments.deleteFileFailed', 'Failed to delete file. Please try again.'));
+      return;
+    }
+
     setError(null);
+    setDeletingId(file.id);
 
     try {
-      await apiService.deleteAttachment(tournamentId, filename);
-      onChange(value.filter((file) => file.id !== id));
+      const next = value.filter((item) => item.id !== file.id);
+      await apiService.deleteAttachment(tournamentId, storedName);
+      await apiService.updateTournament(tournamentId, { attachments: next });
+      onChange(next);
     } catch (err) {
       setError(t('pages.tournaments.deleteFileFailed', 'Failed to delete file. Please try again.'));
       console.error('Delete failed:', err);
+    } finally {
+      setDeletingId(null);
     }
   };
 
@@ -286,6 +308,18 @@ const FileAttachments: React.FC<FileAttachmentsProps> = ({
                 <ListItem
                   key={`${file.name}-${file.size}-${file.lastModified}`}
                   className="file-attachments__list-item"
+                  secondaryAction={
+                    <IconButton
+                      edge="end"
+                      aria-label={t('fileAttachments.delete')}
+                      onClick={() => handleRemovePending(index)}
+                      color="error"
+                      size="small"
+                      type="button"
+                    >
+                      <Delete />
+                    </IconButton>
+                  }
                 >
                   <Box sx={{ mr: 2, display: 'flex', alignItems: 'center', color: 'primary.main' }}>
                     {getFileIcon(file.type)}
@@ -295,17 +329,6 @@ const FileAttachments: React.FC<FileAttachmentsProps> = ({
                     secondary={formatFileSize(file.size)}
                     primaryTypographyProps={{ noWrap: true }}
                   />
-                  <ListItemSecondaryAction>
-                    <IconButton
-                      edge="end"
-                      aria-label={t('fileAttachments.delete')}
-                      onClick={() => handleRemovePending(index)}
-                      color="error"
-                      size="small"
-                    >
-                      <Delete />
-                    </IconButton>
-                  </ListItemSecondaryAction>
                 </ListItem>
               ))}
             </List>
@@ -314,7 +337,23 @@ const FileAttachments: React.FC<FileAttachmentsProps> = ({
           {!deferUpload && value.length > 0 && (
             <List className="file-attachments__list">
               {value.map((file) => (
-                <ListItem key={file.id} className="file-attachments__list-item">
+                <ListItem
+                  key={file.id}
+                  className="file-attachments__list-item"
+                  secondaryAction={
+                    <IconButton
+                      edge="end"
+                      aria-label={t('fileAttachments.delete')}
+                      onClick={() => handleRemoveUploaded(file)}
+                      color="error"
+                      size="small"
+                      type="button"
+                      disabled={uploading || deletingId === file.id}
+                    >
+                      {deletingId === file.id ? <CircularProgress size={16} /> : <Delete />}
+                    </IconButton>
+                  }
+                >
                   <Box sx={{ mr: 2, display: 'flex', alignItems: 'center', color: 'primary.main' }}>
                     {getFileIcon(file.mimeType)}
                   </Box>
@@ -323,18 +362,6 @@ const FileAttachments: React.FC<FileAttachmentsProps> = ({
                     secondary={formatFileSize(file.size)}
                     primaryTypographyProps={{ noWrap: true }}
                   />
-                  <ListItemSecondaryAction>
-                    <IconButton
-                      edge="end"
-                      aria-label={t('fileAttachments.delete')}
-                      onClick={() => handleRemoveUploaded(file.id, file.filename)}
-                      color="error"
-                      size="small"
-                      disabled={uploading}
-                    >
-                      <Delete />
-                    </IconButton>
-                  </ListItemSecondaryAction>
                 </ListItem>
               ))}
             </List>

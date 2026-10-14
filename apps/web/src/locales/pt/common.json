@@ -1093,6 +1093,8 @@
     "customFields": "Campos adicionais",
     "date": "Data",
     "deleteConfirm": "Tem a certeza de que pretende eliminar esta sessão de treino?",
+    "finishQ": "Terminar treino?",
+    "finishConfirm": "Tem a certeza de que pretende terminar esta sessão de treino?",
     "deleteError": "Falha ao eliminar a sessão de treino",
     "distance": "Distância",
     "empty": "Ainda não há sessões de treino. Adicione a primeira!",

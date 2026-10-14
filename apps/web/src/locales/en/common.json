@@ -919,6 +919,8 @@
     "fieldKey": "Field name",
     "fieldValue": "Value",
     "deleteConfirm": "Are you sure you want to delete this training session?",
+    "finishQ": "Finish training?",
+    "finishConfirm": "Are you sure you want to finish this training session?",
     "saveError": "Failed to save training session",
     "deleteError": "Failed to delete training session",
     "syncing": "Synchronizing...",

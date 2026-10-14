@@ -399,7 +399,7 @@ const TournamentEdit: React.FC = () => {
           <FileAttachments
             value={formData.attachments}
             onChange={(files) => {
-              setFormData({ ...formData, attachments: files });
+              setFormData((current) => ({ ...current, attachments: files }));
             }}
             tournamentId={tournamentId || ''}
           />

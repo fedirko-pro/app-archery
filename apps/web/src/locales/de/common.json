@@ -919,6 +919,8 @@
     "fieldKey": "Feldname",
     "fieldValue": "Wert",
     "deleteConfirm": "Sind Sie sicher, dass Sie diese Trainingseinheit löschen möchten?",
+    "finishQ": "Training beenden?",
+    "finishConfirm": "Sind Sie sicher, dass Sie diese Trainingseinheit beenden möchten?",
     "saveError": "Trainingseinheit konnte nicht gespeichert werden",
     "deleteError": "Trainingseinheit konnte nicht gelöscht werden",
     "syncing": "Wird synchronisiert...",

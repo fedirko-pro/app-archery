@@ -14,6 +14,7 @@ import { useAchievementCelebration } from '../../contexts/achievement-celebratio
 import { type LocalTrainingSession, useLocalData } from '../../contexts/local-data-context';
 import type { TrainingMood } from '../../utils/local-data-storage';
 import { isNonNegativeIntegerInput, parseNonNegativeInt } from '../../utils/non-negative-number';
+import ConfirmFinishSessionDialog from './ConfirmFinishSessionDialog';
 import MoodPicker from './MoodPicker';
 
 interface FinishSessionDialogProps {
@@ -33,9 +34,14 @@ const FinishSessionDialog: React.FC<FinishSessionDialogProps> = ({ open, session
   const [notes, setNotes] = useState('');
   const [mood, setMood] = useState<TrainingMood | ''>('');
   const [submitting, setSubmitting] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false);
 
   React.useEffect(() => {
-    if (open && session) {
+    if (!open) {
+      setConfirmOpen(false);
+      return;
+    }
+    if (session) {
       setScoreTotal(session.scoreTotal !== undefined ? String(session.scoreTotal) : '');
       setNotes(session.notes ?? '');
       setMood(session.mood ?? '');
@@ -56,6 +62,7 @@ const FinishSessionDialog: React.FC<FinishSessionDialogProps> = ({ open, session
       await celebrateAfterSync().catch(() => {
         /* non-blocking */
       });
+      setConfirmOpen(false);
       onClose();
     } finally {
       setSubmitting(false);
@@ -108,14 +115,20 @@ const FinishSessionDialog: React.FC<FinishSessionDialogProps> = ({ open, session
         </Button>
         <Button
           variant="contained"
-          onClick={() => void handleFinish()}
+          onClick={() => setConfirmOpen(true)}
           disabled={submitting}
           size={fullScreen ? 'large' : 'medium'}
           sx={fullScreen ? { minHeight: 48 } : undefined}
         >
-          {submitting ? t('common.saving') : t('trainings.finishSession')}
+          {t('trainings.finishSession')}
         </Button>
       </DialogActions>
+      <ConfirmFinishSessionDialog
+        open={confirmOpen}
+        finishing={submitting}
+        onClose={() => setConfirmOpen(false)}
+        onConfirm={() => void handleFinish()}
+      />
     </SafeDialog>
   );
 };
