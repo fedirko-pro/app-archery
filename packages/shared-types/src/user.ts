@@ -28,6 +28,8 @@ export interface User {
   app_language?: AppLanguageCode;
   language?: AppLanguageCode;
   syncTrainingsAndEquipment?: boolean;
+  notifyNewTournaments?: boolean;
+  notifyStreakReminder?: boolean;
   profileVisibility?: ProfileVisibility;
   onboardingCompletedAt?: string | null;
 }

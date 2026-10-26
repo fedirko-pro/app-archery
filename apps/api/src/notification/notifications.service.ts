@@ -78,6 +78,86 @@ export class NotificationsService {
   }
 
   /**
+   * Bulk-create one notification type for many recipients.
+   * All rows are written in a single flush, then a single push dispatch.
+   */
+  async createForUsers(
+    userIds: string[],
+    input: {
+      type: NotificationType;
+      params?: Record<string, unknown>;
+      link?: string;
+    },
+  ): Promise<number> {
+    const uniqueIds = [...new Set(userIds)].filter(Boolean);
+    if (uniqueIds.length === 0) {
+      return 0;
+    }
+
+    try {
+      for (const userId of uniqueIds) {
+        this.em.create(Notification, {
+          user: this.em.getReference(User, userId),
+          type: input.type,
+          titleKey: getNotificationTitleKey(input.type),
+          bodyKey: getNotificationBodyKey(input.type),
+          params: input.params,
+          link: input.link,
+          important: resolveImportant(input.type),
+          createdAt: new Date(),
+        });
+      }
+
+      await this.em.flush();
+      await this.pushService.sendToUsers(uniqueIds, {
+        type: input.type,
+        params: input.params,
+        link: input.link,
+      });
+      return uniqueIds.length;
+    } catch (err) {
+      this.logger.error(
+        `Failed to create "${input.type}" notifications for ${uniqueIds.length} users: ${
+          err instanceof Error ? err.message : String(err)
+        }`,
+      );
+      return 0;
+    }
+  }
+
+  /**
+   * Notify every user who opted in to new-tournament alerts and shares the
+   * tournament's country (creator excluded).
+   */
+  async notifyNewTournament(
+    tournament: { id: string; title: string; country?: string | null },
+    creatorUserId: string,
+  ): Promise<number> {
+    if (!tournament.country) {
+      return 0;
+    }
+
+    const users = await this.em.find(
+      User,
+      {
+        notifyNewTournaments: true,
+        country: tournament.country,
+        id: { $ne: creatorUserId },
+      },
+      { fields: ['id'] },
+    );
+
+    return this.createForUsers(
+      users.map((user) => user.id),
+      {
+        type: NotificationTypes.TournamentCreated,
+        params: { tournamentTitle: tournament.title },
+        link: `/tournaments/${tournament.id}`,
+      },
+    );
+  }
+
+  /**
    * Bulk-create an announcement notification for many recipients.
    * All rows are written in a single flush for efficiency.
    */

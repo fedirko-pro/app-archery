@@ -19,6 +19,8 @@ const TYPE_I18N_SUFFIX: Record<NotificationType, string> = {
   [NotificationTypes.PasswordChanged]: 'passwordChanged',
   [NotificationTypes.Announcement]: 'announcementMessage',
   [NotificationTypes.TrainingStreakAtRisk]: 'trainingStreakAtRisk',
+  [NotificationTypes.TrainingStreakReminder]: 'trainingStreakReminder',
+  [NotificationTypes.TournamentCreated]: 'tournamentCreated',
 };
 
 export function getNotificationTitleKey(type: NotificationType): string {

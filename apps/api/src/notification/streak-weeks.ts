@@ -50,3 +50,12 @@ export function sessionInstant(value: string | Date): Date {
   }
   return new Date(`${String(value).slice(0, 10)}T00:00:00`);
 }
+
+export function getDaysSinceSession(
+  lastSessionDate: string | Date,
+  referenceDate: Date = new Date(),
+): number {
+  const reference = new Date(referenceDate);
+  reference.setHours(0, 0, 0, 0);
+  return Math.round((reference.getTime() - sessionInstant(lastSessionDate).getTime()) / 86_400_000);
+}

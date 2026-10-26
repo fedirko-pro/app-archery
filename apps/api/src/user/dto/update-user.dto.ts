@@ -82,6 +82,14 @@ export class UpdateUserDto {
   @IsOptional()
   syncTrainingsAndEquipment?: boolean;
 
+  @IsBoolean()
+  @IsOptional()
+  notifyNewTournaments?: boolean;
+
+  @IsBoolean()
+  @IsOptional()
+  notifyStreakReminder?: boolean;
+
   @IsIn([...VALID_PROFILE_VISIBILITIES])
   @IsOptional()
   profileVisibility?: (typeof VALID_PROFILE_VISIBILITIES)[number];

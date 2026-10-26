@@ -67,6 +67,12 @@ export class User {
   @Property({ default: true, nullable: true })
   syncTrainingsAndEquipment?: boolean = true;
 
+  @Property({ default: false })
+  notifyNewTournaments?: boolean = false;
+
+  @Property({ default: false })
+  notifyStreakReminder?: boolean = false;
+
   @Property({ default: ProfileVisibilities.Personal })
   profileVisibility: ProfileVisibility = ProfileVisibilities.Personal;
 

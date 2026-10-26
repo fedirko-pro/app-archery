@@ -1,6 +1,7 @@
 import { EntityManager, FilterQuery, RequiredEntityData } from '@mikro-orm/core';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { parseISO, startOfDay, subDays } from 'date-fns';
+import { NotificationsService } from '../notification/notifications.service';
 import { Rule } from '../rule/rule.entity';
 import { UploadService } from '../upload/upload.service';
 import { normalizeTournamentShortDescription } from './short-description';
@@ -11,6 +12,7 @@ export class TournamentService {
   constructor(
     private readonly em: EntityManager,
     private readonly uploadService: UploadService,
+    private readonly notificationsService: NotificationsService,
   ) {}
 
   async create(
@@ -70,6 +72,12 @@ export class TournamentService {
     } as RequiredEntityData<Tournament>);
 
     await this.em.persistAndFlush(tournament);
+
+    void this.notificationsService.notifyNewTournament(
+      { id: tournament.id, title: tournament.title, country: tournament.country },
+      data.createdBy as unknown as string,
+    );
+
     return tournament;
   }
 

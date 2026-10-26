@@ -51,6 +51,14 @@ export const PUSH_LOCALES: Record<string, PushLocaleCopy> = {
         title: 'Keep your training streak',
         body: "You have a {{priorStreakWeeks}}-week streak. Log a session this week so you don't lose it.",
       },
+      trainingStreakReminder: {
+        title: 'Time to train',
+        body: "You haven't logged a training session for {{days}} days. A quick session keeps your routine going.",
+      },
+      tournamentCreated: {
+        title: 'New tournament nearby',
+        body: '"{{tournamentTitle}}" was just announced in your country.',
+      },
     },
     achievements: {
       unlocked: 'Achievement Unlocked!',
@@ -130,6 +138,14 @@ export const PUSH_LOCALES: Record<string, PushLocaleCopy> = {
         title: 'Verliere deine Trainingsserie nicht',
         body: 'Du hast eine Serie von {{priorStreakWeeks}} Wochen. Trag diese Woche ein Training ein, damit sie nicht abbricht.',
       },
+      trainingStreakReminder: {
+        title: 'Zeit fürs Training',
+        body: 'Du hast seit {{days}} Tagen kein Training eingetragen. Eine kurze Einheit hält deine Routine aufrecht.',
+      },
+      tournamentCreated: {
+        title: 'Neues Turnier in deiner Nähe',
+        body: '"{{tournamentTitle}}" wurde gerade in deinem Land bekannt gegeben.',
+      },
     },
     achievements: {
       unlocked: 'Erfolg freigeschaltet!',
@@ -208,6 +224,14 @@ export const PUSH_LOCALES: Record<string, PushLocaleCopy> = {
       trainingStreakAtRisk: {
         title: 'No pierdas tu racha de entrenamiento',
         body: 'Llevas una racha de {{priorStreakWeeks}} semanas. Registra una sesión esta semana para no perderla.',
+      },
+      trainingStreakReminder: {
+        title: 'Hora de entrenar',
+        body: 'No has registrado una sesión de entrenamiento desde hace {{days}} días. Una sesión corta mantiene tu rutina.',
+      },
+      tournamentCreated: {
+        title: 'Nuevo torneo cerca de ti',
+        body: 'Se acaba de anunciar "{{tournamentTitle}}" en tu país.',
       },
     },
     achievements: {
@@ -295,6 +319,14 @@ export const PUSH_LOCALES: Record<string, PushLocaleCopy> = {
         title: 'Non perdere la tua serie di allenamenti',
         body: 'Hai una serie di {{priorStreakWeeks}} settimane. Registra una sessione questa settimana per non perderla.',
       },
+      trainingStreakReminder: {
+        title: 'È ora di allenarsi',
+        body: 'Non registri una sessione di allenamento da {{days}} giorni. Una breve sessione mantiene la tua routine.',
+      },
+      tournamentCreated: {
+        title: 'Nuovo torneo vicino a te',
+        body: '"{{tournamentTitle}}" è stato appena annunciato nel tuo paese.',
+      },
     },
     achievements: {
       firstBullseye: 'Primo Centro',
@@ -381,6 +413,14 @@ export const PUSH_LOCALES: Record<string, PushLocaleCopy> = {
         title: 'Não percas a tua sequência',
         body: 'Tens uma sequência de {{priorStreakWeeks}} semanas. Regista um treino esta semana para não a perderes.',
       },
+      trainingStreakReminder: {
+        title: 'Hora de treinar',
+        body: 'Não registou um treino há {{days}} dias. Uma sessão curta mantém a sua rotina.',
+      },
+      tournamentCreated: {
+        title: 'Novo torneio perto de si',
+        body: '"{{tournamentTitle}}" foi anunciado no seu país.',
+      },
     },
     achievements: {
       firstBullseye: 'Primeiro Alvo Perfeito',
@@ -466,6 +506,14 @@ export const PUSH_LOCALES: Record<string, PushLocaleCopy> = {
       trainingStreakAtRisk: {
         title: 'Не втрачай серію тренувань',
         body: 'У тебе серія з {{priorStreakWeeks}} тижнів. Запиши тренування цього тижня, щоб не втратити її.',
+      },
+      trainingStreakReminder: {
+        title: 'Час тренуватися',
+        body: 'Ти не записував тренування вже {{days}} днів. Коротке тренування підтримає твою рутину.',
+      },
+      tournamentCreated: {
+        title: 'Новий турнір поруч',
+        body: '«{{tournamentTitle}}» щойно оголошено у твоїй країні.',
       },
     },
     achievements: {
