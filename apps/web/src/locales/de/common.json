@@ -1668,6 +1668,14 @@
       "title": "Verliere deine Trainingsserie nicht",
       "body": "Du hast eine Serie von {{priorStreakWeeks}} Wochen. Trag diese Woche ein Training ein, damit sie nicht abbricht."
     },
+    "trainingStreakReminder": {
+      "title": "Zeit fürs Training",
+      "body": "Du hast seit {{days}} Tagen kein Training eingetragen. Eine kurze Einheit hält deine Routine aufrecht."
+    },
+    "tournamentCreated": {
+      "title": "Neues Turnier in deiner Nähe",
+      "body": "\"{{tournamentTitle}}\" wurde gerade in deinem Land bekannt gegeben."
+    },
     "push": {
       "enable": "Telefon-Benachrichtigungen aktivieren",
       "disable": "Telefon-Benachrichtigungen ausschalten",
@@ -1676,6 +1684,29 @@
       "iosInstall": "Füge Sokil zum Home-Bildschirm hinzu, um Benachrichtigungen auf dem iPhone zu erhalten.",
       "unavailable": "Telefon-Benachrichtigungen sind in diesem Browser nicht verfügbar.",
       "error": "Telefon-Benachrichtigungen konnten nicht aktualisiert werden."
+    },
+    "settings": {
+      "title": "Benachrichtigungseinstellungen",
+      "open": "Benachrichtigungseinstellungen",
+      "close": "Schließen",
+      "saveError": "Benachrichtigungseinstellungen konnten nicht gespeichert werden.",
+      "phone": {
+        "title": "Telefon-Benachrichtigungen",
+        "description": "Benachrichtigungen auf diesem Gerät erhalten."
+      },
+      "newTournaments": {
+        "title": "Neue Turniere",
+        "description": "Benachrichtige mich, wenn in meinem Land ein neues Turnier bekannt gegeben wird."
+      },
+      "streakReminder": {
+        "title": "Serien-Erinnerung",
+        "description": "Erinnere mich, wenn ich seit 6 Tagen kein Training eingetragen habe."
+      },
+      "status": {
+        "sleepy": "Alle Benachrichtigungen sind aus",
+        "partial": "Einige Benachrichtigungen sind aktiv",
+        "inspired": "Alle Benachrichtigungen sind aktiv"
+      }
     }
   },
   "legal": {

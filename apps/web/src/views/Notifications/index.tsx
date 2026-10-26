@@ -1,6 +1,7 @@
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MarkEmailReadOutlinedIcon from '@mui/icons-material/MarkEmailReadOutlined';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import TuneOutlinedIcon from '@mui/icons-material/TuneOutlined';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -17,11 +18,13 @@ import { Link, useParams } from 'react-router';
 
 import { useAchievementCelebration } from '../../contexts/achievement-celebration-context';
 import { useNotifications } from '../../contexts/notifications-context';
+import { usePushNotifications } from '../../hooks/usePushNotifications';
 import apiService from '../../services/api';
 import type { NotificationDto } from '../../services/types';
 import { formatDateTime } from '../../utils/date-utils';
 import { normalizeAppLang } from '../../utils/i18n-lang';
-import PushOptIn from './push-opt-in';
+import type { ProfileData } from '../profile/types';
+import NotificationSettingsDialog from './notification-settings-dialog';
 
 function resolveNotificationBody(
   t: (key: string, options?: Record<string, unknown>) => string,
@@ -65,14 +68,24 @@ const NotificationsPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [markingAll, setMarkingAll] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [settings, setSettings] = useState({ newTournaments: false, streakReminder: false });
+  const { status: pushStatus, busy: pushBusy, enable, disable } = usePushNotifications();
 
   const load = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
-      const data = await apiService.getNotifications({ limit: 100 });
+      const [data, profile] = await Promise.all([
+        apiService.getNotifications({ limit: 100 }),
+        apiService.getProfile(),
+      ]);
       setItems(data.items);
       setLastLoginAt(data.lastLoginAt);
+      setSettings({
+        newTournaments: profile?.notifyNewTournaments ?? false,
+        streakReminder: profile?.notifyStreakReminder ?? false,
+      });
 
       const unlockedIds = data.items
         .filter(
@@ -132,22 +145,45 @@ const NotificationsPage: React.FC = () => {
 
   const hasUnread = items.some((item) => !item.readAt);
 
+  const updateSetting = useCallback(
+    async (patch: Partial<Pick<ProfileData, 'notifyNewTournaments' | 'notifyStreakReminder'>>) => {
+      setSettings((prev) => ({
+        newTournaments: patch.notifyNewTournaments ?? prev.newTournaments,
+        streakReminder: patch.notifyStreakReminder ?? prev.streakReminder,
+      }));
+      try {
+        await apiService.updateProfile(patch);
+        return true;
+      } catch (err) {
+        console.error('Failed to save notification settings:', err);
+        setError(t('notifications.settings.saveError'));
+        const profile = await apiService.getProfile().catch(() => null);
+        setSettings({
+          newTournaments: profile?.notifyNewTournaments ?? false,
+          streakReminder: profile?.notifyStreakReminder ?? false,
+        });
+        return false;
+      }
+    },
+    [t],
+  );
+
+  const enabledCount =
+    (pushStatus === 'subscribed' ? 1 : 0) +
+    (settings.newTournaments ? 1 : 0) +
+    (settings.streakReminder ? 1 : 0);
+  const mood = enabledCount === 0 ? 'sleepy' : enabledCount < 3 ? 'partial' : 'inspired';
+  const moodEmoji = { sleepy: '😴', partial: '🙂', inspired: '🔥' }[mood];
+  const moodLabel = t(`notifications.settings.status.${mood}`);
+
   return (
     <Box sx={{ maxWidth: 720, mx: 'auto', px: 2, py: 3 }}>
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: { xs: 'flex-start', sm: 'center' },
-          justifyContent: 'space-between',
-          gap: 2,
-          mb: 2,
-          flexDirection: { xs: 'column', sm: 'row' },
-        }}
-      >
-        <Typography variant="h4" component="h1">
-          {t('notifications.title')}
-        </Typography>
-        {hasUnread && (
+      <Typography variant="h4" component="h1" align="center">
+        {t('notifications.title')}
+      </Typography>
+
+      {hasUnread && (
+        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 1 }}>
           <Button
             size="small"
             startIcon={<MarkEmailReadOutlinedIcon />}
@@ -156,12 +192,38 @@ const NotificationsPage: React.FC = () => {
           >
             {t('notifications.markAllRead')}
           </Button>
-        )}
+        </Box>
+      )}
+
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 1.5,
+          my: 2,
+        }}
+      >
+        <Typography
+          component="span"
+          role="img"
+          aria-label={moodLabel}
+          title={moodLabel}
+          sx={{ fontSize: '1.75rem', lineHeight: 1 }}
+        >
+          {moodEmoji}
+        </Typography>
+        <Button
+          size="small"
+          variant="outlined"
+          startIcon={<TuneOutlinedIcon />}
+          onClick={() => setSettingsOpen(true)}
+        >
+          {t('notifications.settings.open')}
+        </Button>
       </Box>
 
-      <PushOptIn />
-
-      <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
+      <Typography variant="body2" color="text.secondary" sx={{ mb: 3, textAlign: 'center' }}>
         {lastLoginAt
           ? t('notifications.lastLogin', { datetime: formatDateTime(lastLoginAt) })
           : t('notifications.firstSession')}
@@ -261,6 +323,16 @@ const NotificationsPage: React.FC = () => {
             </Accordion>
           );
         })}
+
+      <NotificationSettingsDialog
+        open={settingsOpen}
+        onClose={() => setSettingsOpen(false)}
+        newTournaments={settings.newTournaments}
+        streakReminder={settings.streakReminder}
+        onToggleNewTournaments={(value) => updateSetting({ notifyNewTournaments: value })}
+        onToggleStreakReminder={(value) => updateSetting({ notifyStreakReminder: value })}
+        push={{ status: pushStatus, busy: pushBusy, enable, disable }}
+      />
     </Box>
   );
 };

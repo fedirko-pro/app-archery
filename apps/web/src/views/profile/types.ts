@@ -18,6 +18,8 @@ export interface ProfileData {
   role?: string;
   appLanguage?: AppLanguage;
   syncTrainingsAndEquipment?: boolean;
+  notifyNewTournaments?: boolean;
+  notifyStreakReminder?: boolean;
   profileVisibility?: 'personal' | 'limited' | 'public';
   onboardingCompletedAt?: string | null;
 }

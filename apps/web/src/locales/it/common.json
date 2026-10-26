@@ -1702,6 +1702,14 @@
       "title": "Non perdere la tua serie di allenamenti",
       "body": "Hai una serie di {{priorStreakWeeks}} settimane. Registra una sessione questa settimana per non perderla."
     },
+    "trainingStreakReminder": {
+      "title": "È ora di allenarsi",
+      "body": "Non registri una sessione di allenamento da {{days}} giorni. Una breve sessione mantiene la tua routine."
+    },
+    "tournamentCreated": {
+      "title": "Nuovo torneo vicino a te",
+      "body": "\"{{tournamentTitle}}\" è stato appena annunciato nel tuo paese."
+    },
     "push": {
       "enable": "Attiva le notifiche sul telefono",
       "disable": "Disattiva le notifiche sul telefono",
@@ -1710,6 +1718,29 @@
       "iosInstall": "Aggiungi Sokil alla schermata Home per ricevere notifiche su iPhone.",
       "unavailable": "Le notifiche sul telefono non sono disponibili in questo browser.",
       "error": "Impossibile aggiornare le notifiche sul telefono."
+    },
+    "settings": {
+      "title": "Impostazioni notifiche",
+      "open": "Impostazioni notifiche",
+      "close": "Chiudi",
+      "saveError": "Impossibile salvare le impostazioni delle notifiche.",
+      "phone": {
+        "title": "Notifiche sul telefono",
+        "description": "Ricevi notifiche su questo dispositivo."
+      },
+      "newTournaments": {
+        "title": "Nuovi tornei",
+        "description": "Avvisami quando viene annunciato un nuovo torneo nel mio paese."
+      },
+      "streakReminder": {
+        "title": "Promemoria della serie",
+        "description": "Ricordami se non registro allenamenti da 6 giorni."
+      },
+      "status": {
+        "sleepy": "Tutte le notifiche sono disattivate",
+        "partial": "Alcune notifiche sono attive",
+        "inspired": "Tutte le notifiche sono attive"
+      }
     }
   },
   "legal": {

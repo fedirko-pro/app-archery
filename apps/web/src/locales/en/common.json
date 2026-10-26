@@ -1668,6 +1668,14 @@
       "title": "Keep your training streak",
       "body": "You have a {{priorStreakWeeks}}-week streak. Log a session this week so you don't lose it."
     },
+    "trainingStreakReminder": {
+      "title": "Time to train",
+      "body": "You haven't recorded a training session for {{days}} days. A quick session keeps your routine going."
+    },
+    "tournamentCreated": {
+      "title": "New tournament nearby",
+      "body": "\"{{tournamentTitle}}\" was just announced in your country."
+    },
     "push": {
       "enable": "Enable phone notifications",
       "disable": "Turn off phone notifications",
@@ -1676,6 +1684,29 @@
       "iosInstall": "Add Sokil to your Home Screen to receive notifications on iPhone.",
       "unavailable": "Phone notifications are not available in this browser.",
       "error": "Could not update phone notifications."
+    },
+    "settings": {
+      "title": "Notification settings",
+      "open": "Notification settings",
+      "close": "Close",
+      "saveError": "Could not save notification settings.",
+      "phone": {
+        "title": "Phone notifications",
+        "description": "Get notifications on this device."
+      },
+      "newTournaments": {
+        "title": "New tournaments",
+        "description": "Notify me when a new tournament is announced in my country."
+      },
+      "streakReminder": {
+        "title": "Streak reminder",
+        "description": "Remind me if I haven't recorded training for 6 days."
+      },
+      "status": {
+        "sleepy": "All notifications are off",
+        "partial": "Some notifications are on",
+        "inspired": "All notifications are on"
+      }
     }
   },
   "legal": {

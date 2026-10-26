@@ -1699,6 +1699,14 @@
       "title": "Não percas a tua sequência",
       "body": "Tens uma sequência de {{priorStreakWeeks}} semanas. Regista um treino esta semana para não a perderes."
     },
+    "trainingStreakReminder": {
+      "title": "Hora de treinar",
+      "body": "Não registou um treino há {{days}} dias. Uma sessão curta mantém a sua rotina."
+    },
+    "tournamentCreated": {
+      "title": "Novo torneio perto de si",
+      "body": "\"{{tournamentTitle}}\" foi anunciado no seu país."
+    },
     "push": {
       "enable": "Ativar notificações no telemóvel",
       "disable": "Desativar notificações no telemóvel",
@@ -1707,6 +1715,29 @@
       "iosInstall": "Adiciona o Sokil ao Ecrã Principal para receberes notificações no iPhone.",
       "unavailable": "As notificações no telemóvel não estão disponíveis neste navegador.",
       "error": "Não foi possível atualizar as notificações no telemóvel."
+    },
+    "settings": {
+      "title": "Definições de notificações",
+      "open": "Definições de notificações",
+      "close": "Fechar",
+      "saveError": "Não foi possível guardar as definições de notificações.",
+      "phone": {
+        "title": "Notificações no telemóvel",
+        "description": "Receba notificações neste dispositivo."
+      },
+      "newTournaments": {
+        "title": "Novos torneios",
+        "description": "Avise-me quando um novo torneio for anunciado no meu país."
+      },
+      "streakReminder": {
+        "title": "Lembrete de sequência",
+        "description": "Lembre-me se não registar treino durante 6 dias."
+      },
+      "status": {
+        "sleepy": "Todas as notificações estão desligadas",
+        "partial": "Algumas notificações estão ligadas",
+        "inspired": "Todas as notificações estão ligadas"
+      }
     }
   },
   "legal": {
