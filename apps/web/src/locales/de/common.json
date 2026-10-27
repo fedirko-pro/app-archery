@@ -1703,9 +1703,9 @@
         "description": "Erinnere mich, wenn ich seit 6 Tagen kein Training eingetragen habe."
       },
       "status": {
-        "sleepy": "Alle Benachrichtigungen sind aus",
-        "partial": "Einige Benachrichtigungen sind aktiv",
-        "inspired": "Alle Benachrichtigungen sind aktiv"
+        "sleepy": "Alle deaktiviert",
+        "partial": "Einige aktiviert",
+        "inspired": "Alle aktiviert"
       }
     }
   },

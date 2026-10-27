@@ -1703,9 +1703,9 @@
         "description": "Remind me if I haven't recorded training for 6 days."
       },
       "status": {
-        "sleepy": "All notifications are off",
-        "partial": "Some notifications are on",
-        "inspired": "All notifications are on"
+        "sleepy": "All disabled",
+        "partial": "Some enabled",
+        "inspired": "All enabled"
       }
     }
   },

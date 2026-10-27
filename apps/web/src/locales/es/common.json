@@ -1737,9 +1737,9 @@
         "description": "Recuérdame si no he registrado entrenamiento durante 6 días."
       },
       "status": {
-        "sleepy": "Todas las notificaciones están desactivadas",
-        "partial": "Algunas notificaciones están activadas",
-        "inspired": "Todas las notificaciones están activadas"
+        "sleepy": "Todas desactivadas",
+        "partial": "Algunas activadas",
+        "inspired": "Todas activadas"
       }
     }
   },

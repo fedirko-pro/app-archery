@@ -1737,9 +1737,9 @@
         "description": "Ricordami se non registro allenamenti da 6 giorni."
       },
       "status": {
-        "sleepy": "Tutte le notifiche sono disattivate",
-        "partial": "Alcune notifiche sono attive",
-        "inspired": "Tutte le notifiche sono attive"
+        "sleepy": "Tutte disattivate",
+        "partial": "Alcune attivate",
+        "inspired": "Tutte attivate"
       }
     }
   },

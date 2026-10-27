@@ -1734,9 +1734,9 @@
         "description": "Lembre-me se não registar treino durante 6 dias."
       },
       "status": {
-        "sleepy": "Todas as notificações estão desligadas",
-        "partial": "Algumas notificações estão ligadas",
-        "inspired": "Todas as notificações estão ligadas"
+        "sleepy": "Todas desligadas",
+        "partial": "Algumas ligadas",
+        "inspired": "Todas ligadas"
       }
     }
   },

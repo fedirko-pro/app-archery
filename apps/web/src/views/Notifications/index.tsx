@@ -223,6 +223,16 @@ const NotificationsPage: React.FC = () => {
         </Button>
       </Box>
 
+      <Typography
+        variant="caption"
+        color="text.secondary"
+        display="block"
+        textAlign="center"
+        sx={{ mt: -1, mb: 2 }}
+      >
+        {moodLabel}
+      </Typography>
+
       <Typography variant="body2" color="text.secondary" sx={{ mb: 3, textAlign: 'center' }}>
         {lastLoginAt
           ? t('notifications.lastLogin', { datetime: formatDateTime(lastLoginAt) })
