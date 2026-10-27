@@ -1677,13 +1677,10 @@
       "body": "\"{{tournamentTitle}}\" wurde gerade in deinem Land bekannt gegeben."
     },
     "push": {
-      "enable": "Telefon-Benachrichtigungen aktivieren",
-      "disable": "Telefon-Benachrichtigungen ausschalten",
-      "enabled": "Telefon-Benachrichtigungen sind auf diesem Gerät aktiv.",
       "denied": "Benachrichtigungen sind in den Browser-Einstellungen blockiert.",
       "iosInstall": "Füge Sokil zum Home-Bildschirm hinzu, um Benachrichtigungen auf dem iPhone zu erhalten.",
-      "unavailable": "Telefon-Benachrichtigungen sind in diesem Browser nicht verfügbar.",
-      "error": "Telefon-Benachrichtigungen konnten nicht aktualisiert werden."
+      "unavailable": "Push-Benachrichtigungen sind in diesem Browser nicht verfügbar.",
+      "error": "Push-Benachrichtigungen konnten nicht aktualisiert werden."
     },
     "settings": {
       "title": "Benachrichtigungseinstellungen",
@@ -1691,7 +1688,7 @@
       "close": "Schließen",
       "saveError": "Benachrichtigungseinstellungen konnten nicht gespeichert werden.",
       "phone": {
-        "title": "Telefon-Benachrichtigungen",
+        "title": "Push-Benachrichtigungen",
         "description": "Benachrichtigungen auf diesem Gerät erhalten."
       },
       "newTournaments": {
@@ -1699,7 +1696,7 @@
         "description": "Benachrichtige mich, wenn in meinem Land ein neues Turnier bekannt gegeben wird."
       },
       "streakReminder": {
-        "title": "Serien-Erinnerung",
+        "title": "Trainingsserie",
         "description": "Erinnere mich, wenn ich seit 6 Tagen kein Training eingetragen habe."
       },
       "status": {

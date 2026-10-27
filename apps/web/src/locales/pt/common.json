@@ -1708,13 +1708,10 @@
       "body": "\"{{tournamentTitle}}\" foi anunciado no seu país."
     },
     "push": {
-      "enable": "Ativar notificações no telemóvel",
-      "disable": "Desativar notificações no telemóvel",
-      "enabled": "As notificações no telemóvel estão ativas neste dispositivo.",
       "denied": "As notificações estão bloqueadas nas definições do navegador.",
       "iosInstall": "Adiciona o Sokil ao Ecrã Principal para receberes notificações no iPhone.",
-      "unavailable": "As notificações no telemóvel não estão disponíveis neste navegador.",
-      "error": "Não foi possível atualizar as notificações no telemóvel."
+      "unavailable": "As notificações push não estão disponíveis neste navegador.",
+      "error": "Não foi possível atualizar as notificações push."
     },
     "settings": {
       "title": "Definições de notificações",
@@ -1722,7 +1719,7 @@
       "close": "Fechar",
       "saveError": "Não foi possível guardar as definições de notificações.",
       "phone": {
-        "title": "Notificações no telemóvel",
+        "title": "Notificações push",
         "description": "Receba notificações neste dispositivo."
       },
       "newTournaments": {
@@ -1730,7 +1727,7 @@
         "description": "Avise-me quando um novo torneio for anunciado no meu país."
       },
       "streakReminder": {
-        "title": "Lembrete de sequência",
+        "title": "Sequência de treino",
         "description": "Lembre-me se não registar treino durante 6 dias."
       },
       "status": {

@@ -1677,13 +1677,10 @@
       "body": "\"{{tournamentTitle}}\" was just announced in your country."
     },
     "push": {
-      "enable": "Enable phone notifications",
-      "disable": "Turn off phone notifications",
-      "enabled": "Phone notifications are on for this device.",
       "denied": "Notifications are blocked in your browser settings.",
       "iosInstall": "Add Sokil to your Home Screen to receive notifications on iPhone.",
-      "unavailable": "Phone notifications are not available in this browser.",
-      "error": "Could not update phone notifications."
+      "unavailable": "Push notifications are not available in this browser.",
+      "error": "Could not update push notifications."
     },
     "settings": {
       "title": "Notification settings",
@@ -1691,7 +1688,7 @@
       "close": "Close",
       "saveError": "Could not save notification settings.",
       "phone": {
-        "title": "Phone notifications",
+        "title": "Push notifications",
         "description": "Get notifications on this device."
       },
       "newTournaments": {
@@ -1699,7 +1696,7 @@
         "description": "Notify me when a new tournament is announced in my country."
       },
       "streakReminder": {
-        "title": "Streak reminder",
+        "title": "Training streak",
         "description": "Remind me if I haven't recorded training for 6 days."
       },
       "status": {
