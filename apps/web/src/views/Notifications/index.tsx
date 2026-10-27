@@ -204,15 +204,20 @@ const NotificationsPage: React.FC = () => {
           my: 2,
         }}
       >
-        <Typography
-          component="span"
-          role="img"
-          aria-label={moodLabel}
-          title={moodLabel}
-          sx={{ fontSize: '1.75rem', lineHeight: 1 }}
-        >
-          {moodEmoji}
-        </Typography>
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <Typography
+            component="span"
+            role="img"
+            aria-label={moodLabel}
+            title={moodLabel}
+            sx={{ fontSize: '1.75rem', lineHeight: 1 }}
+          >
+            {moodEmoji}
+          </Typography>
+          <Typography variant="caption" color="text.secondary" sx={{ mt: 0.25 }}>
+            {moodLabel}
+          </Typography>
+        </Box>
         <Button
           size="small"
           variant="outlined"
@@ -222,16 +227,6 @@ const NotificationsPage: React.FC = () => {
           {t('notifications.settings.open')}
         </Button>
       </Box>
-
-      <Typography
-        variant="caption"
-        color="text.secondary"
-        display="block"
-        textAlign="center"
-        sx={{ mt: -1, mb: 2 }}
-      >
-        {moodLabel}
-      </Typography>
 
       <Typography variant="body2" color="text.secondary" sx={{ mb: 3, textAlign: 'center' }}>
         {lastLoginAt
