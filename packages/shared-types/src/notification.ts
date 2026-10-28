@@ -54,7 +54,6 @@ export interface NotificationDto {
 export interface NotificationsListDto {
   items: NotificationDto[];
   total: number;
-  lastLoginAt: string | null;
 }
 
 export interface NotificationUnreadCountDto {

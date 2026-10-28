@@ -63,7 +63,6 @@ const NotificationsPage: React.FC = () => {
   const { enqueueCelebration } = useAchievementCelebration();
 
   const [items, setItems] = useState<NotificationDto[]>([]);
-  const [lastLoginAt, setLastLoginAt] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [expandedId, setExpandedId] = useState<string | null>(null);
@@ -81,7 +80,6 @@ const NotificationsPage: React.FC = () => {
         apiService.getProfile(),
       ]);
       setItems(data.items);
-      setLastLoginAt(data.lastLoginAt);
       setSettings({
         newTournaments: profile?.notifyNewTournaments ?? false,
         streakReminder: profile?.notifyStreakReminder ?? false,
@@ -227,12 +225,6 @@ const NotificationsPage: React.FC = () => {
           {t('notifications.settings.open')}
         </Button>
       </Box>
-
-      <Typography variant="body2" color="text.secondary" sx={{ mb: 3, textAlign: 'center' }}>
-        {lastLoginAt
-          ? t('notifications.lastLogin', { datetime: formatDateTime(lastLoginAt) })
-          : t('notifications.firstSession')}
-      </Typography>
 
       {loading && (
         <Box sx={{ display: 'flex', justifyContent: 'center', py: 6 }}>

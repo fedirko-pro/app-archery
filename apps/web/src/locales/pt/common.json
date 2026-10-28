@@ -1636,8 +1636,6 @@
   },
   "notifications": {
     "title": "Notificações",
-    "lastLogin": "Último login: {{datetime}}",
-    "firstSession": "Esta é a sua primeira sessão neste dispositivo.",
     "empty": "Ainda não tem notificações.",
     "fetchError": "Não foi possível carregar as notificações. Tente novamente.",
     "markAllRead": "Marcar todas como lidas",

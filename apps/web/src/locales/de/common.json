@@ -1605,8 +1605,6 @@
   },
   "notifications": {
     "title": "Benachrichtigungen",
-    "lastLogin": "Letzte Anmeldung: {{datetime}}",
-    "firstSession": "Dies ist Ihre erste Sitzung auf diesem Gerät.",
     "empty": "Sie haben noch keine Benachrichtigungen.",
     "fetchError": "Benachrichtigungen konnten nicht geladen werden. Bitte erneut versuchen.",
     "markAllRead": "Alle als gelesen markieren",

@@ -7,7 +7,6 @@ import {
   NotificationTypes,
   NotificationUnreadCountDto,
 } from '@sokil/shared-types';
-import { AuthSession } from '../auth/entity/auth-session.entity';
 import { User } from '../user/entity/user.entity';
 import { NotificationBroadcast } from './announcement.entity';
 import { Notification } from './notification.entity';
@@ -236,12 +235,9 @@ export class NotificationsService {
       },
     );
 
-    const lastLoginAt = await this.getPreviousLoginAt(userId);
-
     return {
       items: rows.map((row) => this.toDto(row)),
       total,
-      lastLoginAt: lastLoginAt?.toISOString() ?? null,
     };
   }
 
@@ -296,28 +292,6 @@ export class NotificationsService {
     }
     await this.em.flush();
     return { marked: unread.length };
-  }
-
-  /**
-   * Previous session (not the current/most recent one).
-   * Returns null when the user has only ever had one session.
-   */
-  private async getPreviousLoginAt(userId: string): Promise<Date | null> {
-    const sessions = await this.em.find(
-      AuthSession,
-      { user: { id: userId } },
-      {
-        orderBy: { createdAt: 'DESC' },
-        limit: 2,
-        fields: ['id', 'createdAt'],
-      },
-    );
-
-    if (sessions.length < 2) {
-      return null;
-    }
-
-    return sessions[1].createdAt;
   }
 
   private toDto(row: Notification): NotificationDto {

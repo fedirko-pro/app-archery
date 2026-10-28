@@ -1639,8 +1639,6 @@
   },
   "notifications": {
     "title": "Notifiche",
-    "lastLogin": "Ultimo accesso: {{datetime}}",
-    "firstSession": "Questa è la tua prima sessione su questo dispositivo.",
     "empty": "Non hai ancora notifiche.",
     "fetchError": "Impossibile caricare le notifiche. Riprova.",
     "markAllRead": "Segna tutte come lette",

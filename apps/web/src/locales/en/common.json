@@ -1605,8 +1605,6 @@
   },
   "notifications": {
     "title": "Notifications",
-    "lastLogin": "Last login: {{datetime}}",
-    "firstSession": "This is your first session on this device.",
     "empty": "You have no notifications yet.",
     "fetchError": "Could not load notifications. Please try again.",
     "markAllRead": "Mark all as read",
