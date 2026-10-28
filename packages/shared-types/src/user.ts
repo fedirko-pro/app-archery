@@ -30,6 +30,7 @@ export interface User {
   syncTrainingsAndEquipment?: boolean;
   notifyNewTournaments?: boolean;
   notifyStreakReminder?: boolean;
+  notifyAppUpdates?: boolean;
   profileVisibility?: ProfileVisibility;
   onboardingCompletedAt?: string | null;
 }

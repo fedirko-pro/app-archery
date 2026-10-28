@@ -1697,6 +1697,10 @@
         "title": "Trainingsserie",
         "description": "Erinnere mich, wenn ich seit 6 Tagen kein Training eingetragen habe."
       },
+      "appUpdates": {
+        "title": "App-Updates",
+        "description": "Erfahre als Erster, was es Neues in der App gibt."
+      },
       "status": {
         "sleepy": "Alle deaktiviert",
         "partial": "Einige aktiviert",

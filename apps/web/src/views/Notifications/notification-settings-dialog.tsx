@@ -28,8 +28,10 @@ interface NotificationSettingsDialogProps {
   onClose: () => void;
   newTournaments: boolean;
   streakReminder: boolean;
+  appUpdates: boolean;
   onToggleNewTournaments: (value: boolean) => Promise<boolean>;
   onToggleStreakReminder: (value: boolean) => Promise<boolean>;
+  onToggleAppUpdates: (value: boolean) => Promise<boolean>;
   push: PushController;
 }
 
@@ -100,8 +102,10 @@ const NotificationSettingsDialog: React.FC<NotificationSettingsDialogProps> = ({
   onClose,
   newTournaments,
   streakReminder,
+  appUpdates,
   onToggleNewTournaments,
   onToggleStreakReminder,
+  onToggleAppUpdates,
   push,
 }) => {
   const { t } = useTranslation('common');
@@ -190,6 +194,12 @@ const NotificationSettingsDialog: React.FC<NotificationSettingsDialogProps> = ({
             onToggle={(value) => void handleSettingToggle(onToggleStreakReminder, value)}
             title={t('notifications.settings.streakReminder.title')}
             description={t('notifications.settings.streakReminder.description')}
+          />
+          <SettingRow
+            checked={appUpdates}
+            onToggle={(value) => void handleSettingToggle(onToggleAppUpdates, value)}
+            title={t('notifications.settings.appUpdates.title')}
+            description={t('notifications.settings.appUpdates.description')}
           />
         </FormGroup>
         {push.busy && (

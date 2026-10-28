@@ -68,7 +68,11 @@ const NotificationsPage: React.FC = () => {
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [markingAll, setMarkingAll] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
-  const [settings, setSettings] = useState({ newTournaments: false, streakReminder: false });
+  const [settings, setSettings] = useState({
+    newTournaments: false,
+    streakReminder: false,
+    appUpdates: false,
+  });
   const { status: pushStatus, busy: pushBusy, enable, disable } = usePushNotifications();
 
   const load = useCallback(async () => {
@@ -83,6 +87,7 @@ const NotificationsPage: React.FC = () => {
       setSettings({
         newTournaments: profile?.notifyNewTournaments ?? false,
         streakReminder: profile?.notifyStreakReminder ?? false,
+        appUpdates: profile?.notifyAppUpdates ?? false,
       });
 
       const unlockedIds = data.items
@@ -144,10 +149,15 @@ const NotificationsPage: React.FC = () => {
   const hasUnread = items.some((item) => !item.readAt);
 
   const updateSetting = useCallback(
-    async (patch: Partial<Pick<ProfileData, 'notifyNewTournaments' | 'notifyStreakReminder'>>) => {
+    async (
+      patch: Partial<
+        Pick<ProfileData, 'notifyNewTournaments' | 'notifyStreakReminder' | 'notifyAppUpdates'>
+      >,
+    ) => {
       setSettings((prev) => ({
         newTournaments: patch.notifyNewTournaments ?? prev.newTournaments,
         streakReminder: patch.notifyStreakReminder ?? prev.streakReminder,
+        appUpdates: patch.notifyAppUpdates ?? prev.appUpdates,
       }));
       try {
         await apiService.updateProfile(patch);
@@ -159,6 +169,7 @@ const NotificationsPage: React.FC = () => {
         setSettings({
           newTournaments: profile?.notifyNewTournaments ?? false,
           streakReminder: profile?.notifyStreakReminder ?? false,
+          appUpdates: profile?.notifyAppUpdates ?? false,
         });
         return false;
       }
@@ -169,8 +180,9 @@ const NotificationsPage: React.FC = () => {
   const enabledCount =
     (pushStatus === 'subscribed' ? 1 : 0) +
     (settings.newTournaments ? 1 : 0) +
-    (settings.streakReminder ? 1 : 0);
-  const mood = enabledCount === 0 ? 'sleepy' : enabledCount < 3 ? 'partial' : 'inspired';
+    (settings.streakReminder ? 1 : 0) +
+    (settings.appUpdates ? 1 : 0);
+  const mood = enabledCount === 0 ? 'sleepy' : enabledCount < 4 ? 'partial' : 'inspired';
   const moodEmoji = { sleepy: '😴', partial: '🙂', inspired: '🔥' }[mood];
   const moodLabel = t(`notifications.settings.status.${mood}`);
 
@@ -326,8 +338,10 @@ const NotificationsPage: React.FC = () => {
         onClose={() => setSettingsOpen(false)}
         newTournaments={settings.newTournaments}
         streakReminder={settings.streakReminder}
+        appUpdates={settings.appUpdates}
         onToggleNewTournaments={(value) => updateSetting({ notifyNewTournaments: value })}
         onToggleStreakReminder={(value) => updateSetting({ notifyStreakReminder: value })}
+        onToggleAppUpdates={(value) => updateSetting({ notifyAppUpdates: value })}
         push={{ status: pushStatus, busy: pushBusy, enable, disable }}
       />
     </Box>

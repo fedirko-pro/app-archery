@@ -1728,6 +1728,10 @@
         "title": "Sequência de treino",
         "description": "Lembre-me se não registar treino durante 6 dias."
       },
+      "appUpdates": {
+        "title": "Atualizações da aplicação",
+        "description": "Saiba as novidades da aplicação assim que estiverem disponíveis."
+      },
       "status": {
         "sleepy": "Todas desligadas",
         "partial": "Algumas ligadas",

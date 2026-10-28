@@ -90,6 +90,10 @@ export class UpdateUserDto {
   @IsOptional()
   notifyStreakReminder?: boolean;
 
+  @IsBoolean()
+  @IsOptional()
+  notifyAppUpdates?: boolean;
+
   @IsIn([...VALID_PROFILE_VISIBILITIES])
   @IsOptional()
   profileVisibility?: (typeof VALID_PROFILE_VISIBILITIES)[number];

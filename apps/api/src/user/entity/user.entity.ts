@@ -73,6 +73,9 @@ export class User {
   @Property({ default: false })
   notifyStreakReminder?: boolean = false;
 
+  @Property({ default: false })
+  notifyAppUpdates?: boolean = false;
+
   @Property({ default: ProfileVisibilities.Personal })
   profileVisibility: ProfileVisibility = ProfileVisibilities.Personal;
 

@@ -1731,6 +1731,10 @@
         "title": "Racha de entrenamiento",
         "description": "Recuérdame si no he registrado entrenamiento durante 6 días."
       },
+      "appUpdates": {
+        "title": "Actualizaciones de la app",
+        "description": "Entérate de las novedades de la app en cuanto estén disponibles."
+      },
       "status": {
         "sleepy": "Todas desactivadas",
         "partial": "Algunas activadas",

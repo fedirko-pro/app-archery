@@ -1731,6 +1731,10 @@
         "title": "Serie di allenamento",
         "description": "Ricordami se non registro allenamenti da 6 giorni."
       },
+      "appUpdates": {
+        "title": "Aggiornamenti dell'app",
+        "description": "Scopri le novità dell'app appena disponibili."
+      },
       "status": {
         "sleepy": "Tutte disattivate",
         "partial": "Alcune attivate",

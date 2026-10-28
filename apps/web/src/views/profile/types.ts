@@ -20,6 +20,7 @@ export interface ProfileData {
   syncTrainingsAndEquipment?: boolean;
   notifyNewTournaments?: boolean;
   notifyStreakReminder?: boolean;
+  notifyAppUpdates?: boolean;
   profileVisibility?: 'personal' | 'limited' | 'public';
   onboardingCompletedAt?: string | null;
 }

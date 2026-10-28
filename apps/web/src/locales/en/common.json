@@ -1697,6 +1697,10 @@
         "title": "Training streak",
         "description": "Remind me if I haven't recorded training for 6 days."
       },
+      "appUpdates": {
+        "title": "Application updates",
+        "description": "Know what's new in the app right when it's ready."
+      },
       "status": {
         "sleepy": "All disabled",
         "partial": "Some enabled",
