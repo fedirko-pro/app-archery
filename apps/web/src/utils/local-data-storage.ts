@@ -178,7 +178,18 @@ export function saveEquipmentSet(
     createdAt: now,
     updatedAt: now,
   };
-  writeStorage(STORAGE_KEYS.EQUIPMENT_SETS, [...sets, newSet]);
+
+  const defaultId = localStorage.getItem('sokil_default_equipment_set_id');
+  const defaultIndex = defaultId ? sets.findIndex((s) => s.id === defaultId) : -1;
+
+  let insertIndex = 0;
+  if (defaultIndex > -1) {
+    insertIndex = defaultIndex + 1;
+  }
+
+  const newSets = [...sets];
+  newSets.splice(insertIndex, 0, newSet);
+  writeStorage(STORAGE_KEYS.EQUIPMENT_SETS, newSets);
   return newSet;
 }
 

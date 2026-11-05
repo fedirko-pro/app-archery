@@ -29,6 +29,7 @@ import {
   saveTrainingSession,
   updateEquipmentSet,
   updateTrainingSession,
+  writeEquipmentSets,
 } from '../utils/local-data-storage';
 import {
   addTombstone,
@@ -532,10 +533,25 @@ export const LocalDataProvider: React.FC<Props> = ({ children }) => {
     [shouldSync, refresh, handleStorageError],
   );
 
-  const setDefaultEquipmentSet = useCallback((id: string | null) => {
-    setDefaultEquipmentSetId(id);
-    setDefaultEquipmentSetIdRaw(id);
-  }, []);
+  const setDefaultEquipmentSet = useCallback(
+    (id: string | null) => {
+      setDefaultEquipmentSetId(id);
+      setDefaultEquipmentSetIdRaw(id);
+
+      if (id) {
+        const sets = getEquipmentSets();
+        const favIndex = sets.findIndex((s) => s.id === id);
+        if (favIndex > 0) {
+          const newSets = [...sets];
+          const [fav] = newSets.splice(favIndex, 1);
+          newSets.unshift(fav);
+          writeEquipmentSets(newSets);
+          refresh();
+        }
+      }
+    },
+    [refresh],
+  );
 
   const value: LocalDataContextType = useMemo(
     () => ({
