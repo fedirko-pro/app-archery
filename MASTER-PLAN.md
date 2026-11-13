@@ -538,14 +538,14 @@ Do these as one step only because each change is small. Skip any item that needs
 
 ### Step 24 — Framework majors
 
-**Why:** Renovate automerges minor and patch, so majors pile up. Today: `@nestjs/config` 3, `@nestjs/passport` 10, `@nestjs/jwt` 10 (removed in Step 19) beside Nest 11; React 18 with Next 15 and MUI 7 (both support 19); Zod 3; Postgres 15 (17 is current).
+**Why:** Renovate automerges minor and patch, so majors pile up. Today: `@nestjs/config` 3, `@nestjs/passport` 10, `@nestjs/jwt` 10 (removed in Step 19) beside Nest 11; React 18 with Next 15 and MUI 7 (both support 19); Zod 3. (Postgres was moved from 15 to 18 on 2026-11-13.)
 
 **Change, one PR each, in this order:**
 
 1. Nest satellites to the Nest 11 line (`@nestjs/config`, `@nestjs/passport`).
 2. Zod 4 (`env.zod.ts` only).
 3. React 19 + `@types/react` 19; run Playwright and the component tests; check MUI and react-router peer ranges.
-4. Postgres 17 via the Step 4 backup: dump, new volume, restore, verify, switch. Keep the 15 volume until the next successful nightly backup.
+4. ~~Postgres 17 via the Step 4 backup~~ Done 2026-11-13: Postgres 18 via dump, new volume, restore, verify, switch (archery first, sokil after). The 15 volumes are kept for rollback for about a week.
 
 **Leave alone:** Next 16 or MUI 8 unless they are already current when this step starts; evaluate then.
 

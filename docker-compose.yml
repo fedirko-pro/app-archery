@@ -4,7 +4,7 @@
 
 services:
   db:
-    image: postgres:15-alpine
+    image: postgres:18-alpine
     container_name: archery_db_dev
     restart: unless-stopped
     environment:
@@ -12,7 +12,9 @@ services:
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-archery_password}
       POSTGRES_DB: ${DATABASE_NAME:-archery_db}
     volumes:
-      - db_data:/var/lib/postgresql/data
+      # Postgres 18 keeps data under /var/lib/postgresql. New volume name, so an old
+      # Postgres 15 db_data volume is left alone (dump it first if you need that data).
+      - db_pg18_data:/var/lib/postgresql
     ports:
       - '5432:5432'
     networks:
@@ -68,4 +70,4 @@ networks:
     driver: bridge
 
 volumes:
-  db_data:
+  db_pg18_data:
