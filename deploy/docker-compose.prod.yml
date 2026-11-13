@@ -13,6 +13,10 @@ services:
     image: postgres:15-alpine
     container_name: archery_db
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 512m
     environment:
       POSTGRES_USER: ${DATABASE_USER}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
@@ -33,6 +37,10 @@ services:
       dockerfile: apps/api/Dockerfile
     container_name: archery_api
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 512m
     env_file:
       - .env
     environment:
@@ -69,6 +77,10 @@ services:
         NEXT_PUBLIC_GOOGLE_ANALYTICS_ID: ${NEXT_PUBLIC_GOOGLE_ANALYTICS_ID:-}
     container_name: archery_frontend
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 512m
     networks:
       - archery_network
       - traefik-public
