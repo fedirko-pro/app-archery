@@ -14,11 +14,14 @@ allowBuilds:
 auditConfig:
   ignoreGhsas:
     - GHSA-vfj7-8cjw-p6xm
+    # GHSA-gcqx-w48m-w2h4: deepmerge patched version 4.3.2 is not published yet
+    # (latest release is 4.3.1). Only reachable via build/test tooling.
+    - GHSA-gcqx-w48m-w2h4
 
 overrides:
   '@isaacs/brace-expansion': '>=5.0.1'
   brace-expansion: '>=5.0.11'
-  minimatch: '>=10.2.5'
+  minimatch: '>=11.0.1'
   '@angular-devkit/core>ajv': '>=8.18.0'
   '@rushstack/node-core-library>ajv': '>=8.18.0'
   body-parser: '>=2.4.0'
@@ -27,7 +30,7 @@ overrides:
   fast-uri: '>=4.2.3'
   figlet: '>=1.11.3'
   handlebars: '>=4.7.10'
-  glob: '>=10.5.0'
+  glob: '>=14.0.2'
   '@istanbuljs/load-nyc-config>js-yaml': '3.15.2'
   'cosmiconfig>js-yaml': '>=4.3.2'
   lodash: '>=4.17.23'
@@ -37,7 +40,7 @@ overrides:
   picomatch: '>=4.0.4'
   postcss: '>=8.5.18'
   proxy-addr: '>=2.0.8'
-  qs: '>=6.16.0'
+  qs: '>=6.16.1'
   sharp: '>=0.35.4'
   source-map-js: '>=1.2.2'
   tmp: '>=0.2.4'
