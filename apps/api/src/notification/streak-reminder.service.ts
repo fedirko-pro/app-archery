@@ -1,4 +1,4 @@
-import { EntityManager } from '@mikro-orm/core';
+import { CreateRequestContext, EntityManager } from '@mikro-orm/core';
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 import { NotificationTypes } from '@sokil/shared-types';
@@ -30,6 +30,7 @@ export class StreakReminderService {
    * 6 or more consecutive days (respects the per-user streak reminder setting).
    */
   @Cron('0 8 * * *', { timeZone: 'Europe/Lisbon' })
+  @CreateRequestContext()
   async remindDormantSessions(): Promise<void> {
     try {
       const now = new Date();
@@ -89,6 +90,7 @@ export class StreakReminderService {
   }
 
   @Cron('0 18 * * *', { timeZone: 'Europe/Lisbon' })
+  @CreateRequestContext()
   async remindAtRiskStreaks(): Promise<void> {
     try {
       const now = new Date();
