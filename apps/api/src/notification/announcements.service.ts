@@ -2,6 +2,7 @@ import { EntityManager } from '@mikro-orm/core';
 import { ForbiddenException, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import {
   AnnouncementDto,
+  AnnouncementRecipientDto,
   AnnouncementsListDto,
   AudienceCountDto,
   SendAnnouncementRequest,
@@ -23,6 +24,7 @@ import {
 import { User } from '../user/entity/user.entity';
 import { Roles } from '../user/types';
 import { NotificationBroadcast } from './announcement.entity';
+import { Notification } from './notification.entity';
 import { NotificationsService } from './notifications.service';
 
 export interface SendAnnouncementInput {
@@ -62,8 +64,10 @@ export class AnnouncementsService {
       },
     );
 
+    const items = await Promise.all(rows.map((row) => this.toDto(row)));
+
     return {
-      items: rows.map((row) => this.toDto(row)),
+      items,
       total,
     };
   }
@@ -241,8 +245,8 @@ export class AnnouncementsService {
     return [];
   }
 
-  private toDto(row: NotificationBroadcast): AnnouncementDto {
-    return {
+  private async toDto(row: NotificationBroadcast): Promise<AnnouncementDto> {
+    const dto: AnnouncementDto = {
       id: row.id,
       audienceType: row.audienceType as AnnouncementDto['audienceType'],
       title: row.title ?? null,
@@ -253,5 +257,21 @@ export class AnnouncementsService {
       tournamentTitle: row.tournamentTitle ?? null,
       createdAt: row.createdAt.toISOString(),
     };
+
+    if (row.audienceType === 'users') {
+      const notifications = await this.em.find(
+        Notification,
+        { broadcast: { id: row.id } },
+        { populate: ['user'] },
+      );
+      dto.recipients = notifications.map((n) => ({
+        id: n.user.id,
+        firstName: n.user.firstName ?? null,
+        lastName: n.user.lastName ?? null,
+        email: n.user.email,
+      }));
+    }
+
+    return dto;
   }
 }

@@ -1,6 +1,7 @@
 import type {
   AnnouncementAudienceType,
   AnnouncementDto,
+  AnnouncementRecipientDto,
   AnnouncementsListDto,
   ApiError,
   ApplicantStubDto,
@@ -30,6 +31,7 @@ import type {
 export type {
   AnnouncementAudienceType,
   AnnouncementDto,
+  AnnouncementRecipientDto,
   AnnouncementsListDto,
   ApiError,
   ApplicantStubDto,

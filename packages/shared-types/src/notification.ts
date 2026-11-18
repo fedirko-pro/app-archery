@@ -70,6 +70,13 @@ export interface SendAnnouncementRequest {
   link?: string;
 }
 
+export interface AnnouncementRecipientDto {
+  id: string;
+  firstName: string | null;
+  lastName: string | null;
+  email: string;
+}
+
 export interface AnnouncementDto {
   id: string;
   audienceType: AnnouncementAudienceType;
@@ -80,6 +87,7 @@ export interface AnnouncementDto {
   tournamentId: string | null;
   tournamentTitle: string | null;
   createdAt: string;
+  recipients?: AnnouncementRecipientDto[];
 }
 
 export interface AnnouncementsListDto {

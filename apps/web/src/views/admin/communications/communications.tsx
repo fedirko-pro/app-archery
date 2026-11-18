@@ -1,3 +1,4 @@
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
@@ -6,12 +7,16 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Chip from '@mui/material/Chip';
 import CircularProgress from '@mui/material/CircularProgress';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import type React from 'react';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import apiService from '../../../services/api';
-import type { AnnouncementDto } from '../../../services/types';
+import type { AnnouncementDto, AnnouncementRecipientDto } from '../../../services/types';
 import { formatDateTime } from '../../../utils/date-utils';
 import SendAnnouncementDialog from './send-announcement-dialog';
 
@@ -56,6 +61,42 @@ const Communications: React.FC = () => {
       default:
         return t('pages.communications.audience.users');
     }
+  };
+
+  const AudienceChip = ({
+    audienceType,
+    recipients,
+  }: {
+    audienceType: string;
+    recipients?: AnnouncementRecipientDto[];
+  }) => {
+    const label = audienceLabel(audienceType);
+
+    if (audienceType !== 'users' || !recipients?.length) {
+      return <Chip label={label} size="small" />;
+    }
+
+    return (
+      <Tooltip
+        title={
+          <List sx={{ minWidth: 280, maxWidth: 400, p: 1 }}>
+            {recipients.map((recipient) => (
+              <ListItem key={recipient.id} dense>
+                <ListItemText
+                  primary={`${recipient.firstName ?? ''} ${recipient.lastName ?? ''}`.trim()}
+                  secondary={recipient.email}
+                />
+              </ListItem>
+            ))}
+          </List>
+        }
+        arrow
+        enterDelay={200}
+        leaveDelay={100}
+      >
+        <Chip label={label} size="small" icon={<InfoOutlinedIcon fontSize="small" />} />
+      </Tooltip>
+    );
   };
 
   return (
@@ -118,7 +159,7 @@ const Communications: React.FC = () => {
                   <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
                     {item.title || item.message}
                   </Typography>
-                  <Chip label={audienceLabel(item.audienceType)} size="small" />
+                  <AudienceChip audienceType={item.audienceType} recipients={item.recipients} />
                 </Box>
                 {item.title && (
                   <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
