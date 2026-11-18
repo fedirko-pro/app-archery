@@ -209,8 +209,8 @@ docker exec archery_api wget -qO- --spider http://127.0.0.1:3000 && echo "API OK
 | --------- | ---------------------------------------- | ------------------- |
 | Container | `archery_api`                            | NestJS API          |
 | Container | `archery_frontend`                       | Next.js             |
-| Container | `archery_db`                             | PostgreSQL 15       |
-| Volume    | `test-archery_archery-api_postgres_data` | Active DB data      |
+| Container | `archery_db`                             | PostgreSQL 18       |
+| Volume    | `test-archery_archery_pg18_data`         | Active DB data      |
 | Network   | `test-archery_archery_network`           | Internal bridge     |
 | Network   | `traefik-public`                         | Shared with Traefik |
 
