@@ -3,6 +3,7 @@ export class PublicAchievementShareDto {
   titleKey: string;
   descriptionKey: string;
   icon: string;
+  shareImage?: string;
   rarity: string;
   earned: boolean;
   earnedDate?: string | null;

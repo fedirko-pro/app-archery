@@ -1,10 +1,10 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { TrainingService } from '../training/training.service';
 import {
   ACHIEVEMENT_CATALOG_BY_ID,
   AchievementRarity,
   isValidAchievementId,
-} from './achievement-catalog';
+} from '@sokil/shared-types';
+import { TrainingService } from '../training/training.service';
 import { AchievementsService } from './achievements.service';
 import { PublicAchievementShareDto } from './dto/public-achievement-share.dto';
 import { PublicProfileDto, PublicProgressStatsDto } from './dto/public-profile.dto';
@@ -132,6 +132,7 @@ export class PublicProfileService {
       titleKey: catalog.titleKey,
       descriptionKey: catalog.descriptionKey,
       icon: catalog.icon,
+      shareImage: catalog.shareImage,
       rarity: catalog.rarity as AchievementRarity,
       earned: true,
       earnedDate: row.earnedAt.toISOString(),

@@ -139,7 +139,10 @@ const AchievementSharePage: React.FC = () => {
                 url={shareUrl}
                 title={shareTitle}
                 text={description}
-                imageUrl={pickAchievementShareImage(achievement.icon, achievement.owner.picture)}
+                imageUrl={pickAchievementShareImage(
+                  achievement.shareImage ?? achievement.icon,
+                  achievement.owner.picture,
+                )}
                 size="small"
               />
             </Stack>

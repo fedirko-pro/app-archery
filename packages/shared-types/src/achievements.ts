@@ -40,6 +40,7 @@ export interface AchievementDef {
   category: AchievementCategory;
   rarity: AchievementRarity;
   icon: string;
+  shareImage?: string;
   titleKey: string;
   descriptionKey: string;
   type: 'computed' | 'event';
@@ -61,6 +62,29 @@ export interface AchievementStatsSnapshot {
   kilogramsLifted: number;
 }
 
+// Rarity color mapping for placeholder images (using hex without # for URLs)
+const RARITY_COLORS: Record<AchievementRarity, string> = {
+  common: '9E9E9E', // Grey
+  rare: '2196F3', // Blue
+  epic: '9C27B0', // Purple
+  legendary: 'FF9800', // Amber/Orange
+};
+
+/**
+ * Generates a placeholder image URL for an achievement using placehold.co.
+ * The image will have the achievement's emoji and rarity-based background color.
+ */
+function generateAchievementShareImage(
+  _id: string,
+  icon: string,
+  rarity: AchievementRarity,
+): string {
+  const color = RARITY_COLORS[rarity];
+  const encodedIcon = encodeURIComponent(icon);
+  // placehold.co format: https://placehold.co/{width}x{height}/{bgColor}/{textColor}?text={text}&font=roboto
+  return `https://placehold.co/1200x630/${color}/FFFFFF?text=${encodedIcon}&font=roboto`;
+}
+
 export const ACHIEVEMENT_CATALOG: AchievementDef[] = [
   // Onboarding
   {
@@ -68,6 +92,7 @@ export const ACHIEVEMENT_CATALOG: AchievementDef[] = [
     category: 'onboarding',
     rarity: 'common',
     icon: '🏹',
+    shareImage: generateAchievementShareImage('first-session', '🏹', 'common'),
     titleKey: 'achievements.firstSession.title',
     descriptionKey: 'achievements.firstSession.description',
     type: 'computed',
@@ -78,6 +103,7 @@ export const ACHIEVEMENT_CATALOG: AchievementDef[] = [
     category: 'onboarding',
     rarity: 'common',
     icon: '🎯',
+    shareImage: generateAchievementShareImage('first-equipment', '🎯', 'common'),
     titleKey: 'achievements.firstEquipment.title',
     descriptionKey: 'achievements.firstEquipment.description',
     type: 'computed',
@@ -88,6 +114,7 @@ export const ACHIEVEMENT_CATALOG: AchievementDef[] = [
     category: 'onboarding',
     rarity: 'common',
     icon: '👤',
+    shareImage: generateAchievementShareImage('profile-complete', '👤', 'common'),
     titleKey: 'achievements.profileComplete.title',
     descriptionKey: 'achievements.profileComplete.description',
     type: 'computed',
@@ -99,6 +126,7 @@ export const ACHIEVEMENT_CATALOG: AchievementDef[] = [
     category: 'consistency',
     rarity: 'common',
     icon: '🔥',
+    shareImage: generateAchievementShareImage('streak-2-weeks', '🔥', 'common'),
     titleKey: 'achievements.streak2Weeks.title',
     descriptionKey: 'achievements.streak2Weeks.description',
     type: 'computed',
@@ -109,6 +137,7 @@ export const ACHIEVEMENT_CATALOG: AchievementDef[] = [
     category: 'consistency',
     rarity: 'rare',
     icon: '🔥',
+    shareImage: generateAchievementShareImage('streak-4-weeks', '🔥', 'rare'),
     titleKey: 'achievements.streak4Weeks.title',
     descriptionKey: 'achievements.streak4Weeks.description',
     type: 'computed',
@@ -119,6 +148,7 @@ export const ACHIEVEMENT_CATALOG: AchievementDef[] = [
     category: 'consistency',
     rarity: 'epic',
     icon: '🔥',
+    shareImage: generateAchievementShareImage('streak-12-weeks', '🔥', 'epic'),
     titleKey: 'achievements.streak12Weeks.title',
     descriptionKey: 'achievements.streak12Weeks.description',
     type: 'computed',
@@ -129,6 +159,7 @@ export const ACHIEVEMENT_CATALOG: AchievementDef[] = [
     category: 'consistency',
     rarity: 'legendary',
     icon: '🔥',
+    shareImage: generateAchievementShareImage('streak-26-weeks', '🔥', 'legendary'),
     titleKey: 'achievements.streak26Weeks.title',
     descriptionKey: 'achievements.streak26Weeks.description',
     type: 'computed',
@@ -140,6 +171,7 @@ export const ACHIEVEMENT_CATALOG: AchievementDef[] = [
     category: 'volume',
     rarity: 'common',
     icon: '➡️',
+    shareImage: generateAchievementShareImage('arrows-500', '➡️', 'common'),
     titleKey: 'achievements.arrows500.title',
     descriptionKey: 'achievements.arrows500.description',
     type: 'computed',
@@ -150,6 +182,7 @@ export const ACHIEVEMENT_CATALOG: AchievementDef[] = [
     category: 'volume',
     rarity: 'rare',
     icon: '➡️',
+    shareImage: generateAchievementShareImage('arrows-2500', '➡️', 'rare'),
     titleKey: 'achievements.arrows2500.title',
     descriptionKey: 'achievements.arrows2500.description',
     type: 'computed',
@@ -160,6 +193,7 @@ export const ACHIEVEMENT_CATALOG: AchievementDef[] = [
     category: 'volume',
     rarity: 'epic',
     icon: '➡️',
+    shareImage: generateAchievementShareImage('arrows-10000', '➡️', 'epic'),
     titleKey: 'achievements.arrows10000.title',
     descriptionKey: 'achievements.arrows10000.description',
     type: 'computed',
@@ -170,6 +204,7 @@ export const ACHIEVEMENT_CATALOG: AchievementDef[] = [
     category: 'volume',
     rarity: 'legendary',
     icon: '➡️',
+    shareImage: generateAchievementShareImage('arrows-25000', '➡️', 'legendary'),
     titleKey: 'achievements.arrows25000.title',
     descriptionKey: 'achievements.arrows25000.description',
     type: 'computed',
@@ -181,6 +216,7 @@ export const ACHIEVEMENT_CATALOG: AchievementDef[] = [
     category: 'volume',
     rarity: 'common',
     icon: '📅',
+    shareImage: generateAchievementShareImage('sessions-10', '📅', 'common'),
     titleKey: 'achievements.sessions10.title',
     descriptionKey: 'achievements.sessions10.description',
     type: 'computed',
@@ -191,6 +227,7 @@ export const ACHIEVEMENT_CATALOG: AchievementDef[] = [
     category: 'volume',
     rarity: 'rare',
     icon: '📅',
+    shareImage: generateAchievementShareImage('sessions-50', '📅', 'rare'),
     titleKey: 'achievements.sessions50.title',
     descriptionKey: 'achievements.sessions50.description',
     type: 'computed',
@@ -201,6 +238,7 @@ export const ACHIEVEMENT_CATALOG: AchievementDef[] = [
     category: 'volume',
     rarity: 'epic',
     icon: '📅',
+    shareImage: generateAchievementShareImage('sessions-150', '📅', 'epic'),
     titleKey: 'achievements.sessions150.title',
     descriptionKey: 'achievements.sessions150.description',
     type: 'computed',
@@ -211,6 +249,7 @@ export const ACHIEVEMENT_CATALOG: AchievementDef[] = [
     category: 'volume',
     rarity: 'legendary',
     icon: '📅',
+    shareImage: generateAchievementShareImage('sessions-500', '📅', 'legendary'),
     titleKey: 'achievements.sessions500.title',
     descriptionKey: 'achievements.sessions500.description',
     type: 'computed',
@@ -222,6 +261,7 @@ export const ACHIEVEMENT_CATALOG: AchievementDef[] = [
     category: 'exploration',
     rarity: 'common',
     icon: '📏',
+    shareImage: generateAchievementShareImage('distances-3', '📏', 'common'),
     titleKey: 'achievements.distances3.title',
     descriptionKey: 'achievements.distances3.description',
     type: 'computed',
@@ -232,6 +272,7 @@ export const ACHIEVEMENT_CATALOG: AchievementDef[] = [
     category: 'exploration',
     rarity: 'rare',
     icon: '📏',
+    shareImage: generateAchievementShareImage('distances-5', '📏', 'rare'),
     titleKey: 'achievements.distances5.title',
     descriptionKey: 'achievements.distances5.description',
     type: 'computed',
@@ -242,6 +283,7 @@ export const ACHIEVEMENT_CATALOG: AchievementDef[] = [
     category: 'exploration',
     rarity: 'common',
     icon: '🎯',
+    shareImage: generateAchievementShareImage('target-types-3', '🎯', 'common'),
     titleKey: 'achievements.targetTypes3.title',
     descriptionKey: 'achievements.targetTypes3.description',
     type: 'computed',
@@ -252,6 +294,7 @@ export const ACHIEVEMENT_CATALOG: AchievementDef[] = [
     category: 'exploration',
     rarity: 'rare',
     icon: '💯',
+    shareImage: generateAchievementShareImage('scored-sessions-5', '💯', 'rare'),
     titleKey: 'achievements.scoredSessions5.title',
     descriptionKey: 'achievements.scoredSessions5.description',
     type: 'computed',
@@ -263,6 +306,7 @@ export const ACHIEVEMENT_CATALOG: AchievementDef[] = [
     category: 'tournaments',
     rarity: 'common',
     icon: '📝',
+    shareImage: generateAchievementShareImage('first-application', '📝', 'common'),
     titleKey: 'achievements.firstApplication.title',
     descriptionKey: 'achievements.firstApplication.description',
     type: 'computed',
@@ -273,6 +317,7 @@ export const ACHIEVEMENT_CATALOG: AchievementDef[] = [
     category: 'tournaments',
     rarity: 'rare',
     icon: '🏅',
+    shareImage: generateAchievementShareImage('competitor', '🏅', 'rare'),
     titleKey: 'achievements.competitor.title',
     descriptionKey: 'achievements.competitor.description',
     type: 'event',
@@ -282,6 +327,7 @@ export const ACHIEVEMENT_CATALOG: AchievementDef[] = [
     category: 'tournaments',
     rarity: 'epic',
     icon: '🏅',
+    shareImage: generateAchievementShareImage('seasoned-competitor', '🏅', 'epic'),
     titleKey: 'achievements.seasonedCompetitor.title',
     descriptionKey: 'achievements.seasonedCompetitor.description',
     type: 'computed',
@@ -293,6 +339,7 @@ export const ACHIEVEMENT_CATALOG: AchievementDef[] = [
     category: 'mastery',
     rarity: 'legendary',
     icon: '🏆',
+    shareImage: generateAchievementShareImage('tournament-champion', '🏆', 'legendary'),
     titleKey: 'achievements.tournamentChampion.title',
     descriptionKey: 'achievements.tournamentChampion.description',
     type: 'event',
@@ -302,6 +349,7 @@ export const ACHIEVEMENT_CATALOG: AchievementDef[] = [
     category: 'mastery',
     rarity: 'epic',
     icon: '⭐',
+    shareImage: generateAchievementShareImage('personal-best', '⭐', 'epic'),
     titleKey: 'achievements.personalBest.title',
     descriptionKey: 'achievements.personalBest.description',
     type: 'event',
@@ -312,6 +360,7 @@ export const ACHIEVEMENT_CATALOG: AchievementDef[] = [
     category: 'volume',
     rarity: 'common',
     icon: '🥾',
+    shareImage: generateAchievementShareImage('distance-10km', '🥾', 'common'),
     titleKey: 'achievements.distance10km.title',
     descriptionKey: 'achievements.distance10km.description',
     type: 'computed',
@@ -322,6 +371,7 @@ export const ACHIEVEMENT_CATALOG: AchievementDef[] = [
     category: 'volume',
     rarity: 'rare',
     icon: '🥾',
+    shareImage: generateAchievementShareImage('distance-marathon', '🥾', 'rare'),
     titleKey: 'achievements.distanceMarathon.title',
     descriptionKey: 'achievements.distanceMarathon.description',
     type: 'computed',
@@ -332,6 +382,7 @@ export const ACHIEVEMENT_CATALOG: AchievementDef[] = [
     category: 'volume',
     rarity: 'epic',
     icon: '🥾',
+    shareImage: generateAchievementShareImage('distance-250km', '🥾', 'epic'),
     titleKey: 'achievements.distance250km.title',
     descriptionKey: 'achievements.distance250km.description',
     type: 'computed',
@@ -342,6 +393,7 @@ export const ACHIEVEMENT_CATALOG: AchievementDef[] = [
     category: 'volume',
     rarity: 'legendary',
     icon: '🗺️',
+    shareImage: generateAchievementShareImage('distance-there-and-back', '🗺️', 'legendary'),
     titleKey: 'achievements.distanceThereAndBack.title',
     descriptionKey: 'achievements.distanceThereAndBack.description',
     type: 'computed',
@@ -353,6 +405,7 @@ export const ACHIEVEMENT_CATALOG: AchievementDef[] = [
     category: 'volume',
     rarity: 'common',
     icon: '🏋️',
+    shareImage: generateAchievementShareImage('lift-1t', '🏋️', 'common'),
     titleKey: 'achievements.lift1t.title',
     descriptionKey: 'achievements.lift1t.description',
     type: 'computed',
@@ -363,6 +416,7 @@ export const ACHIEVEMENT_CATALOG: AchievementDef[] = [
     category: 'volume',
     rarity: 'rare',
     icon: '🐘',
+    shareImage: generateAchievementShareImage('lift-elephant', '🐘', 'rare'),
     titleKey: 'achievements.liftElephant.title',
     descriptionKey: 'achievements.liftElephant.description',
     type: 'computed',
@@ -373,6 +427,7 @@ export const ACHIEVEMENT_CATALOG: AchievementDef[] = [
     category: 'volume',
     rarity: 'epic',
     icon: '🐋',
+    shareImage: generateAchievementShareImage('lift-blue-whale', '🐋', 'epic'),
     titleKey: 'achievements.liftBlueWhale.title',
     descriptionKey: 'achievements.liftBlueWhale.description',
     type: 'computed',
@@ -383,6 +438,7 @@ export const ACHIEVEMENT_CATALOG: AchievementDef[] = [
     category: 'volume',
     rarity: 'legendary',
     icon: '🏋️',
+    shareImage: generateAchievementShareImage('lift-kiloton', '🏋️', 'legendary'),
     titleKey: 'achievements.liftKiloton.title',
     descriptionKey: 'achievements.liftKiloton.description',
     type: 'computed',

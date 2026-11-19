@@ -371,6 +371,7 @@ export interface PublicAchievementShareDto {
   titleKey: string;
   descriptionKey: string;
   icon: string;
+  shareImage?: string;
   rarity: string;
   earned: boolean;
   earnedDate?: string | null;
@@ -387,6 +388,7 @@ export interface AchievementProgressDto {
   category: string;
   rarity: 'common' | 'rare' | 'epic' | 'legendary';
   icon: string;
+  shareImage?: string;
   titleKey: string;
   descriptionKey: string;
   type: 'computed' | 'event';

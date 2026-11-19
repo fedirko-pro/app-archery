@@ -125,7 +125,10 @@ export default function AchievementUnlockedDialog({
           url={shareUrl}
           title={t('achievementShare.shareTitle', { title: t(achievement.titleKey) })}
           text={t(achievement.descriptionKey)}
-          imageUrl={pickAchievementShareImage(achievement.icon, user?.picture)}
+          imageUrl={pickAchievementShareImage(
+            achievement.shareImage ?? achievement.icon,
+            user?.picture,
+          )}
           buttonLabel={t('achievements.share')}
           variant="button"
           size="small"

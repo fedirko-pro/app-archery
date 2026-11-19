@@ -5,6 +5,7 @@ export class AchievementProgressDto {
   category: AchievementCategory;
   rarity: AchievementRarity;
   icon: string;
+  shareImage?: string;
   titleKey: string;
   descriptionKey: string;
   type: 'computed' | 'event';

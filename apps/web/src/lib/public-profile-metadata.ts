@@ -75,7 +75,7 @@ export function buildAchievementShareMetadata(
   const description = t(achievement.descriptionKey);
   const shareTitle = t('achievementShare.shareTitle', { title });
   const imageUrl = resolveAchievementShareOgImage(
-    achievement.icon,
+    achievement.shareImage ?? achievement.icon,
     achievement.owner.picture,
     siteUrl,
   );
