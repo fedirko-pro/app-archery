@@ -177,7 +177,7 @@ importers:
         version: 6.6.15(@mikro-orm/core@6.6.15)
       '@nestjs/cli':
         specifier: ^10.4.9
-        version: 10.4.9(esbuild@0.28.1)(lightningcss@1.33.0)(postcss@8.5.23)(uglify-js@3.19.3)
+        version: 10.4.9(esbuild@0.28.1)(lightningcss@1.33.0)(postcss@8.5.33)(uglify-js@3.19.3)
       '@nestjs/schematics':
         specifier: ^10.2.3
         version: 10.2.3(chokidar@3.6.0)(typescript@5.9.3)
@@ -237,7 +237,7 @@ importers:
         version: 29.4.11(@babel/core@7.29.7(supports-color@8.1.1))(@jest/transform@29.7.0(supports-color@8.1.1))(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(esbuild@0.28.1)(jest-util@29.7.0)(jest@29.7.0(@types/node@22.20.0)(babel-plugin-macros@3.1.0)(supports-color@8.1.1)(ts-node@10.9.2(@types/node@22.20.0)(typescript@5.9.3)))(typescript@5.9.3)
       ts-loader:
         specifier: ^9.5.7
-        version: 9.6.2(typescript@5.9.3)(webpack@5.108.2(esbuild@0.28.1)(lightningcss@1.33.0)(postcss@8.5.23)(uglify-js@3.19.3))
+        version: 9.6.2(typescript@5.9.3)(webpack@5.108.2(esbuild@0.28.1)(lightningcss@1.33.0)(postcss@8.5.33)(uglify-js@3.19.3))
       ts-node:
         specifier: ^10.9.2
         version: 10.9.2(@types/node@22.20.0)(typescript@5.9.3)
@@ -267,10 +267,10 @@ importers:
         version: 7.3.11(@emotion/react@11.14.0(@types/react@19.2.17)(react@18.3.1)(supports-color@8.1.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.17)(react@18.3.1)(supports-color@8.1.1))(@types/react@19.2.17)(react@18.3.1)(supports-color@8.1.1))(@types/react@19.2.17)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@mui/material-nextjs':
         specifier: ^9.1.1
-        version: 9.1.1(@emotion/cache@11.14.0)(@emotion/react@11.14.0(@types/react@19.2.17)(react@18.3.1)(supports-color@8.1.1))(@types/react@19.2.17)(next@15.5.28(@babel/core@7.29.7(supports-color@8.1.1))(@playwright/test@1.61.1)(@types/node@26.0.1)(babel-plugin-macros@3.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.101.0))(react@18.3.1)
+        version: 9.1.1(@emotion/cache@11.14.0)(@emotion/react@11.14.0(@types/react@19.2.17)(react@18.3.1)(supports-color@8.1.1))(@types/react@19.2.17)(next@15.5.29(@babel/core@7.29.7(supports-color@8.1.1))(@playwright/test@1.61.1)(@types/node@26.0.1)(babel-plugin-macros@3.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.101.0))(react@18.3.1)
       '@serwist/next':
         specifier: ^9.5.11
-        version: 9.5.11(next@15.5.28(@babel/core@7.29.7(supports-color@8.1.1))(@playwright/test@1.61.1)(@types/node@26.0.1)(babel-plugin-macros@3.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.101.0))(react@18.3.1)(typescript@5.9.3)(webpack@5.108.2(esbuild@0.28.1)(lightningcss@1.33.0)(postcss@8.5.23)(uglify-js@3.19.3))
+        version: 9.5.11(next@15.5.29(@babel/core@7.29.7(supports-color@8.1.1))(@playwright/test@1.61.1)(@types/node@26.0.1)(babel-plugin-macros@3.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.101.0))(react@18.3.1)(typescript@5.9.3)(webpack@5.108.2(esbuild@0.28.1)(lightningcss@1.33.0)(postcss@8.5.33)(uglify-js@3.19.3))
       '@sokil/shared-configs':
         specifier: workspace:*
         version: link:../../packages/shared-configs
@@ -293,8 +293,8 @@ importers:
         specifier: ^8.2.1
         version: 8.2.1
       next:
-        specifier: ^15.5.28
-        version: 15.5.28(@babel/core@7.29.7(supports-color@8.1.1))(@playwright/test@1.61.1)(@types/node@26.0.1)(babel-plugin-macros@3.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.101.0)
+        specifier: ^15.5.29
+        version: 15.5.29(@babel/core@7.29.7(supports-color@8.1.1))(@playwright/test@1.61.1)(@types/node@26.0.1)(babel-plugin-macros@3.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.101.0)
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -1548,57 +1548,57 @@ packages:
       '@nestjs/core': ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0 || ^11.0.0
       reflect-metadata: ^0.1.13 || ^0.2.0
 
-  '@next/env@15.5.28':
-    resolution: {integrity: sha512-xxW5EBI8fMPuVTPBW7LL980IRbuDXlbkUAwp9DDhtb4Lnich3nJ13uYpvrX4VE74hWPf6AvHHAMmGCidcHjbfg==}
+  '@next/env@15.5.29':
+    resolution: {integrity: sha512-9SrTiTsgORa+KfhlXXAGC1eSs847E+d2MQTPUX+n7R5XA8g/B6ZitfL6GoYHNMLwG3Hzs1wjDH0/ME5WrGMqBQ==}
 
-  '@next/swc-darwin-arm64@15.5.28':
-    resolution: {integrity: sha512-dPoQYXcfSIqx5o+TOXVXO7kONK5qbtNRDeiTfII0bT3puGIT6VF5e0QwmxNZfEZ5Zety5f3m9P/p4xqwfiLlPg==}
+  '@next/swc-darwin-arm64@15.5.29':
+    resolution: {integrity: sha512-vozRDuM23T0faRR0O3oN1eRqjEqUue4Eljhkb9f7urQgzmyzve7j3atzTv3Z1AnjQ9IeVY0X3aS1/an56TOiTg==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [darwin]
 
-  '@next/swc-darwin-x64@15.5.28':
-    resolution: {integrity: sha512-RgCJ7buBivTH+6sddqaVm+/v8kwMHlFkobvdt3DfETutws5HrxnToMIWSN9X3MZ3aAi7BbKrGZZWUDQLEycXqw==}
+  '@next/swc-darwin-x64@15.5.29':
+    resolution: {integrity: sha512-FzrcEzMZVcp/SqFXCW5SXyPil10bB9l5wpTBapEs9ZMqke3W+hyC5mNAdAa1divn+4SZ7LD5BtK67XvK7SucWQ==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [darwin]
 
-  '@next/swc-linux-arm64-gnu@15.5.28':
-    resolution: {integrity: sha512-OHXQe13olE59aKe++zHavGcJPh5SLHXi6Anret3BBeq1+qhSuOJDNAli/EDDfxs6UTqA4Qddo4uyYry2slyjiQ==}
+  '@next/swc-linux-arm64-gnu@15.5.29':
+    resolution: {integrity: sha512-FWbWE5P313Yy5062vgY9UspNz/t6Ve/s35X9v6YU7ilsbhqKGabPBPIWcMEPhyomeRdwfv19NAITkU2FFIhGwA==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
     libc: [glibc]
 
-  '@next/swc-linux-arm64-musl@15.5.28':
-    resolution: {integrity: sha512-nTB7bB6vfn4ezCJNYP43ukt2o8L3+WxKF/sTcTxepdXsJh3SM9RhlU7wrZYbH7L4HO5M87dqDTwm8587vAkCiw==}
+  '@next/swc-linux-arm64-musl@15.5.29':
+    resolution: {integrity: sha512-xjTHrVisb9GeDSNFOwJI+4UJrKdwlpjz95q8sEvQh46yUp3+JikNcf26pode/HlHktSdJwcHx3iVMCjfPcnU+A==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
     libc: [musl]
 
-  '@next/swc-linux-x64-gnu@15.5.28':
-    resolution: {integrity: sha512-WXCfVI32rW3xCusoUX1RpZKtyChWU2Zwe27JUDmM3KrXwcDNc9vV4zEq0GKFAURnuQ/Ouo/XqPvB0yh445XZCg==}
+  '@next/swc-linux-x64-gnu@15.5.29':
+    resolution: {integrity: sha512-5WqW7kHscT02wyF8TlbYv9+zx3KhnQeZwk+FkTCr1r7TuvMrqqOZ3RDkdDKl3O0M0Er3VuQEzoEIrj8VX5fjaw==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
     libc: [glibc]
 
-  '@next/swc-linux-x64-musl@15.5.28':
-    resolution: {integrity: sha512-Miq+NDb/HWsXuxseYxMM6fuEOQXgTziarkKIRpVKCn8W69cEfhQaQr+90pO+u4q2CbJR2wzXmUuCFyZaJs/Nng==}
+  '@next/swc-linux-x64-musl@15.5.29':
+    resolution: {integrity: sha512-I0QJ1Be9vtdq5FABhNcSbkELllA91WnhG+m4BjJHCn1bXAIL8AuDABIKIJ7Bz84T/sIkZP6TvOEWJcKckrX3yQ==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
     libc: [musl]
 
-  '@next/swc-win32-arm64-msvc@15.5.28':
-    resolution: {integrity: sha512-5LR79lemgDlgxvG7MQJ+zHCkVcrUoQuO7CiIvq3I58vNW4goSOE2b+19Z6FujRWMouvni4gvudYFuFuNxolGWA==}
+  '@next/swc-win32-arm64-msvc@15.5.29':
+    resolution: {integrity: sha512-q4fQFWtR7nH7ZDhU8RIvwNW0S/nHImaZkoOSw7rOXFgoP51HTesm8/8P/w3ACjc9GxqytXj0LZZesykK3arFBw==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [win32]
 
-  '@next/swc-win32-x64-msvc@15.5.28':
-    resolution: {integrity: sha512-GNipvXUYROSTf4PXEyH95FrWImIB5zdaK6uEOg0RP1/X2drnvoMwiBkJ0VWdzX7w3iiBm3y5g2TxkKDGVTOQcg==}
+  '@next/swc-win32-x64-msvc@15.5.29':
+    resolution: {integrity: sha512-putWQ+CTEJunAPIPDPfb06Kc4emhYpdM5FoCDHSkC/ym7Dy2xOBMPgBjBbRkw2Hp5/550ACYxCmUtV4k4ui3Iw==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [win32]
@@ -2587,8 +2587,8 @@ packages:
     resolution: {integrity: sha512-Gmy6FhYlCY7uOElZUSbxo2UCDH8owEk996gkbrpsgGtrJLM3J7jGxl9Ic7Qwwj4ivOE5AWZWRMecDdF7hqGjFA==}
     engines: {node: '>=10'}
 
-  caniuse-lite@1.0.30001809:
-    resolution: {integrity: sha512-xxWVywk6a6Arlk+hymeycyn/VgqEfLDxupvhH/xiY5SJ/18kmi9o6MiO320DCUzypORHLtvh0I4i04tUhCNHNQ==}
+  caniuse-lite@1.0.30001826:
+    resolution: {integrity: sha512-wTB+9tIbLro/BCXwLuNV1meHE4L9dS6dArMDwgYfNBPMYScqClHyGunhkCSDtHhe/69Xl0sHlKgBVZ+fNsYtWA==}
 
   canvas-confetti@1.9.4:
     resolution: {integrity: sha512-yxQbJkAVrFXWNbTUjPqjF7G+g6pDotOUHGbkZq2NELZUMDpiJ85rIEazVb8GTaAptNW2miJAXbs1BtioA251Pw==}
@@ -4258,8 +4258,8 @@ packages:
   neo-async@2.6.2:
     resolution: {integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==}
 
-  next@15.5.28:
-    resolution: {integrity: sha512-JjhLBBY1PNnuwPtcZ7t8yxVeJVYvD2Jyp633J+gRCNbzSt7N0E+xqCf6uQiff3+3qmUkwcF/ksfSsK1xsZ76Tw==}
+  next@15.5.29:
+    resolution: {integrity: sha512-93AMszTCdi9Az7fD5VzcWy46SHCdQF45+i53K0LpDc4dDXCwB9P1SxP1wBYZKW6dF3HJnz41jyEni1vmgCluiw==}
     engines: {node: ^18.18.0 || ^19.8.0 || >= 20.0.0}
     hasBin: true
     peerDependencies:
@@ -4527,6 +4527,10 @@ packages:
 
   postcss@8.5.23:
     resolution: {integrity: sha512-g50586zr4bZmwFiTlflMu8E0bDTb5I5gertgwAKmsdUlTQIhZtunzUlD1WSzwcVWPoAVpsrA6vlfCD7oXvRwgg==}
+    engines: {node: ^10 || ^12 || >=14}
+
+  postcss@8.5.33:
+    resolution: {integrity: sha512-RVHEU9/Pp1Fnjr/MpAJsZoADukCKhfIi15OunEYiGktIkYLkPVvC1sioWolGDS7XByMTx9m/IGbro0Js13zhnQ==}
     engines: {node: ^10 || ^12 || >=14}
 
   postgres-array@2.0.0:
@@ -5249,6 +5253,9 @@ packages:
 
   tslib@2.8.1:
     resolution: {integrity: sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==}
+
+  tslib@2.9.1:
+    resolution: {integrity: sha512-a4Ux9VKuIMHsOS7ENbEq6hK2ZGYIT27Rtl0E4eD9KqwxhKiQeMZE/9xb3IdYwWaSOyIBQLExhQgXDTYoiCxnWA==}
 
   turbo@2.10.8:
     resolution: {integrity: sha512-9+8YX5QOkGXzZxcIykTHgaooRHGMWO+jfdyRK0o+rN0U7hBIig2MrJ8r/aNzIPDPhdA73SGb0O+tIztaModTMg==}
@@ -6104,7 +6111,7 @@ snapshots:
 
   '@emnapi/runtime@1.11.3':
     dependencies:
-      tslib: 2.8.1
+      tslib: 2.9.1
     optional: true
 
   '@emotion/babel-plugin@11.13.5(supports-color@8.1.1)':
@@ -6698,11 +6705,11 @@ snapshots:
     optionalDependencies:
       '@types/react': 19.2.17
 
-  '@mui/material-nextjs@9.1.1(@emotion/cache@11.14.0)(@emotion/react@11.14.0(@types/react@19.2.17)(react@18.3.1)(supports-color@8.1.1))(@types/react@19.2.17)(next@15.5.28(@babel/core@7.29.7(supports-color@8.1.1))(@playwright/test@1.61.1)(@types/node@26.0.1)(babel-plugin-macros@3.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.101.0))(react@18.3.1)':
+  '@mui/material-nextjs@9.1.1(@emotion/cache@11.14.0)(@emotion/react@11.14.0(@types/react@19.2.17)(react@18.3.1)(supports-color@8.1.1))(@types/react@19.2.17)(next@15.5.29(@babel/core@7.29.7(supports-color@8.1.1))(@playwright/test@1.61.1)(@types/node@26.0.1)(babel-plugin-macros@3.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.101.0))(react@18.3.1)':
     dependencies:
       '@babel/runtime': 7.29.7
       '@emotion/react': 11.14.0(@types/react@19.2.17)(react@18.3.1)(supports-color@8.1.1)
-      next: 15.5.28(@babel/core@7.29.7(supports-color@8.1.1))(@playwright/test@1.61.1)(@types/node@26.0.1)(babel-plugin-macros@3.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.101.0)
+      next: 15.5.29(@babel/core@7.29.7(supports-color@8.1.1))(@playwright/test@1.61.1)(@types/node@26.0.1)(babel-plugin-macros@3.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.101.0)
       react: 18.3.1
     optionalDependencies:
       '@emotion/cache': 11.14.0
@@ -6785,7 +6792,7 @@ snapshots:
     optionalDependencies:
       '@types/react': 19.2.17
 
-  '@nestjs/cli@10.4.9(esbuild@0.28.1)(lightningcss@1.33.0)(postcss@8.5.23)(uglify-js@3.19.3)':
+  '@nestjs/cli@10.4.9(esbuild@0.28.1)(lightningcss@1.33.0)(postcss@8.5.33)(uglify-js@3.19.3)':
     dependencies:
       '@angular-devkit/core': 17.3.11(chokidar@3.6.0)
       '@angular-devkit/schematics': 17.3.11(chokidar@3.6.0)
@@ -6795,7 +6802,7 @@ snapshots:
       chokidar: 3.6.0
       cli-table3: 0.6.5
       commander: 4.1.1
-      fork-ts-checker-webpack-plugin: 9.0.2(typescript@5.7.2)(webpack@5.108.2(esbuild@0.28.1)(lightningcss@1.33.0)(postcss@8.5.23)(uglify-js@3.19.3))
+      fork-ts-checker-webpack-plugin: 9.0.2(typescript@5.7.2)(webpack@5.108.2(esbuild@0.28.1)(lightningcss@1.33.0)(postcss@8.5.33)(uglify-js@3.19.3))
       glob: 14.0.6
       inquirer: 8.2.6
       node-emoji: 1.11.0
@@ -6804,7 +6811,7 @@ snapshots:
       tsconfig-paths: 4.2.0
       tsconfig-paths-webpack-plugin: 4.2.0
       typescript: 5.7.2
-      webpack: 5.108.2(esbuild@0.28.1)(lightningcss@1.33.0)(postcss@8.5.23)(uglify-js@3.19.3)
+      webpack: 5.108.2(esbuild@0.28.1)(lightningcss@1.33.0)(postcss@8.5.33)(uglify-js@3.19.3)
       webpack-node-externals: 3.0.0
     transitivePeerDependencies:
       - '@minify-html/node'
@@ -6930,30 +6937,30 @@ snapshots:
       '@nestjs/core': 11.1.18(@nestjs/common@11.1.27(class-transformer@0.5.1)(class-validator@0.14.4)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(@nestjs/platform-express@11.1.27)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       reflect-metadata: 0.2.2
 
-  '@next/env@15.5.28': {}
+  '@next/env@15.5.29': {}
 
-  '@next/swc-darwin-arm64@15.5.28':
+  '@next/swc-darwin-arm64@15.5.29':
     optional: true
 
-  '@next/swc-darwin-x64@15.5.28':
+  '@next/swc-darwin-x64@15.5.29':
     optional: true
 
-  '@next/swc-linux-arm64-gnu@15.5.28':
+  '@next/swc-linux-arm64-gnu@15.5.29':
     optional: true
 
-  '@next/swc-linux-arm64-musl@15.5.28':
+  '@next/swc-linux-arm64-musl@15.5.29':
     optional: true
 
-  '@next/swc-linux-x64-gnu@15.5.28':
+  '@next/swc-linux-x64-gnu@15.5.29':
     optional: true
 
-  '@next/swc-linux-x64-musl@15.5.28':
+  '@next/swc-linux-x64-musl@15.5.29':
     optional: true
 
-  '@next/swc-win32-arm64-msvc@15.5.28':
+  '@next/swc-win32-arm64-msvc@15.5.29':
     optional: true
 
-  '@next/swc-win32-x64-msvc@15.5.28':
+  '@next/swc-win32-x64-msvc@15.5.29':
     optional: true
 
   '@noble/hashes@1.8.0': {}
@@ -7151,16 +7158,16 @@ snapshots:
     transitivePeerDependencies:
       - browserslist
 
-  '@serwist/next@9.5.11(next@15.5.28(@babel/core@7.29.7(supports-color@8.1.1))(@playwright/test@1.61.1)(@types/node@26.0.1)(babel-plugin-macros@3.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.101.0))(react@18.3.1)(typescript@5.9.3)(webpack@5.108.2(esbuild@0.28.1)(lightningcss@1.33.0)(postcss@8.5.23)(uglify-js@3.19.3))':
+  '@serwist/next@9.5.11(next@15.5.29(@babel/core@7.29.7(supports-color@8.1.1))(@playwright/test@1.61.1)(@types/node@26.0.1)(babel-plugin-macros@3.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.101.0))(react@18.3.1)(typescript@5.9.3)(webpack@5.108.2(esbuild@0.28.1)(lightningcss@1.33.0)(postcss@8.5.33)(uglify-js@3.19.3))':
     dependencies:
       '@serwist/build': 9.5.11(browserslist@4.28.8)(typescript@5.9.3)
       '@serwist/utils': 9.5.11(browserslist@4.28.8)
-      '@serwist/webpack-plugin': 9.5.11(browserslist@4.28.8)(typescript@5.9.3)(webpack@5.108.2(esbuild@0.28.1)(lightningcss@1.33.0)(postcss@8.5.23)(uglify-js@3.19.3))
+      '@serwist/webpack-plugin': 9.5.11(browserslist@4.28.8)(typescript@5.9.3)(webpack@5.108.2(esbuild@0.28.1)(lightningcss@1.33.0)(postcss@8.5.33)(uglify-js@3.19.3))
       '@serwist/window': 9.5.11(browserslist@4.28.8)(typescript@5.9.3)
       browserslist: 4.28.8
       glob: 14.0.6
       kolorist: 1.8.0
-      next: 15.5.28(@babel/core@7.29.7(supports-color@8.1.1))(@playwright/test@1.61.1)(@types/node@26.0.1)(babel-plugin-macros@3.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.101.0)
+      next: 15.5.29(@babel/core@7.29.7(supports-color@8.1.1))(@playwright/test@1.61.1)(@types/node@26.0.1)(babel-plugin-macros@3.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.101.0)
       react: 18.3.1
       semver: 7.7.4
       serwist: 9.5.11(browserslist@4.28.8)(typescript@5.9.3)
@@ -7174,7 +7181,7 @@ snapshots:
     optionalDependencies:
       browserslist: 4.28.8
 
-  '@serwist/webpack-plugin@9.5.11(browserslist@4.28.8)(typescript@5.9.3)(webpack@5.108.2(esbuild@0.28.1)(lightningcss@1.33.0)(postcss@8.5.23)(uglify-js@3.19.3))':
+  '@serwist/webpack-plugin@9.5.11(browserslist@4.28.8)(typescript@5.9.3)(webpack@5.108.2(esbuild@0.28.1)(lightningcss@1.33.0)(postcss@8.5.33)(uglify-js@3.19.3))':
     dependencies:
       '@serwist/build': 9.5.11(browserslist@4.28.8)(typescript@5.9.3)
       '@serwist/utils': 9.5.11(browserslist@4.28.8)
@@ -7182,7 +7189,7 @@ snapshots:
       zod: 4.6.7
     optionalDependencies:
       typescript: 5.9.3
-      webpack: 5.108.2(esbuild@0.28.1)(lightningcss@1.33.0)(postcss@8.5.23)(uglify-js@3.19.3)
+      webpack: 5.108.2(esbuild@0.28.1)(lightningcss@1.33.0)(postcss@8.5.33)(uglify-js@3.19.3)
     transitivePeerDependencies:
       - browserslist
 
@@ -7211,11 +7218,11 @@ snapshots:
 
   '@swc/helpers@0.5.15':
     dependencies:
-      tslib: 2.8.1
+      tslib: 2.9.1
 
   '@swc/helpers@0.5.23':
     dependencies:
-      tslib: 2.8.1
+      tslib: 2.9.1
 
   '@testing-library/dom@10.4.1':
     dependencies:
@@ -7897,7 +7904,7 @@ snapshots:
   browserslist@4.28.8:
     dependencies:
       baseline-browser-mapping: 2.11.20
-      caniuse-lite: 1.0.30001809
+      caniuse-lite: 1.0.30001826
       electron-to-chromium: 1.5.420
       node-releases: 2.0.54
       update-browserslist-db: 1.3.2(browserslist@4.28.8)
@@ -7948,7 +7955,7 @@ snapshots:
 
   camelcase@6.3.0: {}
 
-  caniuse-lite@1.0.30001809: {}
+  caniuse-lite@1.0.30001826: {}
 
   canvas-confetti@1.9.4: {}
 
@@ -8611,7 +8618,7 @@ snapshots:
       unicode-properties: 1.4.1
       unicode-trie: 2.0.0
 
-  fork-ts-checker-webpack-plugin@9.0.2(typescript@5.7.2)(webpack@5.108.2(esbuild@0.28.1)(lightningcss@1.33.0)(postcss@8.5.23)(uglify-js@3.19.3)):
+  fork-ts-checker-webpack-plugin@9.0.2(typescript@5.7.2)(webpack@5.108.2(esbuild@0.28.1)(lightningcss@1.33.0)(postcss@8.5.33)(uglify-js@3.19.3)):
     dependencies:
       '@babel/code-frame': 7.29.7
       chalk: 4.1.2
@@ -8626,7 +8633,7 @@ snapshots:
       semver: 7.8.5
       tapable: 2.3.3
       typescript: 5.7.2
-      webpack: 5.108.2(esbuild@0.28.1)(lightningcss@1.33.0)(postcss@8.5.23)(uglify-js@3.19.3)
+      webpack: 5.108.2(esbuild@0.28.1)(lightningcss@1.33.0)(postcss@8.5.33)(uglify-js@3.19.3)
 
   form-data@4.0.6:
     dependencies:
@@ -9671,17 +9678,17 @@ snapshots:
 
   minimist@1.2.8: {}
 
-  minimizer-webpack-plugin@5.6.1(esbuild@0.28.1)(lightningcss@1.33.0)(postcss@8.5.23)(uglify-js@3.19.3)(webpack@5.108.2(esbuild@0.28.1)(lightningcss@1.33.0)(postcss@8.5.23)(uglify-js@3.19.3)):
+  minimizer-webpack-plugin@5.6.1(esbuild@0.28.1)(lightningcss@1.33.0)(postcss@8.5.33)(uglify-js@3.19.3)(webpack@5.108.2(esbuild@0.28.1)(lightningcss@1.33.0)(postcss@8.5.33)(uglify-js@3.19.3)):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.31
       jest-worker: 27.5.1
       schema-utils: 4.3.3
       terser: 5.48.0
-      webpack: 5.108.2(esbuild@0.28.1)(lightningcss@1.33.0)(postcss@8.5.23)(uglify-js@3.19.3)
+      webpack: 5.108.2(esbuild@0.28.1)(lightningcss@1.33.0)(postcss@8.5.33)(uglify-js@3.19.3)
     optionalDependencies:
       esbuild: 0.28.1
       lightningcss: 1.33.0
-      postcss: 8.5.23
+      postcss: 8.5.33
       uglify-js: 3.19.3
 
   minipass@7.1.3: {}
@@ -9708,24 +9715,24 @@ snapshots:
 
   neo-async@2.6.2: {}
 
-  next@15.5.28(@babel/core@7.29.7(supports-color@8.1.1))(@playwright/test@1.61.1)(@types/node@26.0.1)(babel-plugin-macros@3.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.101.0):
+  next@15.5.29(@babel/core@7.29.7(supports-color@8.1.1))(@playwright/test@1.61.1)(@types/node@26.0.1)(babel-plugin-macros@3.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.101.0):
     dependencies:
-      '@next/env': 15.5.28
+      '@next/env': 15.5.29
       '@swc/helpers': 0.5.15
-      caniuse-lite: 1.0.30001809
-      postcss: 8.5.23
+      caniuse-lite: 1.0.30001826
+      postcss: 8.5.33
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
       styled-jsx: 5.1.6(@babel/core@7.29.7(supports-color@8.1.1))(babel-plugin-macros@3.1.0)(react@18.3.1)
     optionalDependencies:
-      '@next/swc-darwin-arm64': 15.5.28
-      '@next/swc-darwin-x64': 15.5.28
-      '@next/swc-linux-arm64-gnu': 15.5.28
-      '@next/swc-linux-arm64-musl': 15.5.28
-      '@next/swc-linux-x64-gnu': 15.5.28
-      '@next/swc-linux-x64-musl': 15.5.28
-      '@next/swc-win32-arm64-msvc': 15.5.28
-      '@next/swc-win32-x64-msvc': 15.5.28
+      '@next/swc-darwin-arm64': 15.5.29
+      '@next/swc-darwin-x64': 15.5.29
+      '@next/swc-linux-arm64-gnu': 15.5.29
+      '@next/swc-linux-arm64-musl': 15.5.29
+      '@next/swc-linux-x64-gnu': 15.5.29
+      '@next/swc-linux-x64-musl': 15.5.29
+      '@next/swc-win32-arm64-msvc': 15.5.29
+      '@next/swc-win32-x64-msvc': 15.5.29
       '@playwright/test': 1.61.1
       sass: 1.101.0
       sharp: 0.35.5(@types/node@26.0.1)
@@ -9958,6 +9965,12 @@ snapshots:
   pony-cause@2.1.11: {}
 
   postcss@8.5.23:
+    dependencies:
+      nanoid: 3.3.18
+      picocolors: 1.1.1
+      source-map-js: 1.2.2
+
+  postcss@8.5.33:
     dependencies:
       nanoid: 3.3.18
       picocolors: 1.1.1
@@ -10226,7 +10239,7 @@ snapshots:
 
   rxjs@7.8.1:
     dependencies:
-      tslib: 2.8.1
+      tslib: 2.9.1
 
   rxjs@7.8.2:
     dependencies:
@@ -10678,13 +10691,13 @@ snapshots:
       esbuild: 0.28.1
       jest-util: 29.7.0
 
-  ts-loader@9.6.2(typescript@5.9.3)(webpack@5.108.2(esbuild@0.28.1)(lightningcss@1.33.0)(postcss@8.5.23)(uglify-js@3.19.3)):
+  ts-loader@9.6.2(typescript@5.9.3)(webpack@5.108.2(esbuild@0.28.1)(lightningcss@1.33.0)(postcss@8.5.33)(uglify-js@3.19.3)):
     dependencies:
       chalk: 4.1.2
       picomatch: 4.0.4
       source-map: 0.7.6
       typescript: 5.9.3
-      webpack: 5.108.2(esbuild@0.28.1)(lightningcss@1.33.0)(postcss@8.5.23)(uglify-js@3.19.3)
+      webpack: 5.108.2(esbuild@0.28.1)(lightningcss@1.33.0)(postcss@8.5.33)(uglify-js@3.19.3)
 
   ts-node@10.9.2(@types/node@22.20.0)(typescript@5.9.3):
     dependencies:
@@ -10718,6 +10731,8 @@ snapshots:
       strip-bom: 3.0.0
 
   tslib@2.8.1: {}
+
+  tslib@2.9.1: {}
 
   turbo@2.10.8:
     optionalDependencies:
@@ -10923,7 +10938,7 @@ snapshots:
 
   webpack-sources@3.5.0: {}
 
-  webpack@5.108.2(esbuild@0.28.1)(lightningcss@1.33.0)(postcss@8.5.23)(uglify-js@3.19.3):
+  webpack@5.108.2(esbuild@0.28.1)(lightningcss@1.33.0)(postcss@8.5.33)(uglify-js@3.19.3):
     dependencies:
       '@types/estree': 1.0.9
       '@types/json-schema': 7.0.15
@@ -10941,7 +10956,7 @@ snapshots:
       graceful-fs: 4.2.11
       loader-runner: 4.3.2
       mime-db: 1.54.0
-      minimizer-webpack-plugin: 5.6.1(esbuild@0.28.1)(lightningcss@1.33.0)(postcss@8.5.23)(uglify-js@3.19.3)(webpack@5.108.2(esbuild@0.28.1)(lightningcss@1.33.0)(postcss@8.5.23)(uglify-js@3.19.3))
+      minimizer-webpack-plugin: 5.6.1(esbuild@0.28.1)(lightningcss@1.33.0)(postcss@8.5.33)(uglify-js@3.19.3)(webpack@5.108.2(esbuild@0.28.1)(lightningcss@1.33.0)(postcss@8.5.33)(uglify-js@3.19.3))
       neo-async: 2.6.2
       schema-utils: 4.3.3
       tapable: 2.3.3
