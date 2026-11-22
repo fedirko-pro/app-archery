@@ -88,6 +88,8 @@ function templateSuffix(type: string): string {
     [NotificationTypes.FederationMembershipRejected]: 'federationMembershipRejected',
     [NotificationTypes.Announcement]: 'announcementMessage',
     [NotificationTypes.TrainingStreakAtRisk]: 'trainingStreakAtRisk',
+    [NotificationTypes.TrainingStreakReminder]: 'trainingStreakReminder',
+    [NotificationTypes.TournamentCreated]: 'tournamentCreated',
   };
   return known[type] ?? '';
 }
