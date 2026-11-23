@@ -8,7 +8,7 @@ const RARITY_COLORS: Record<string, string> = {
   legendary: '#FF9800',
 };
 
-export async function GET(request: Request, { params }: { params: Promise<{ file: string }> }) {
+export async function GET(_request: Request, { params }: { params: Promise<{ file: string }> }) {
   const { file } = await params;
   const id = file.replace(/\.png$/i, '');
   const def = ACHIEVEMENT_CATALOG_BY_ID[id];
