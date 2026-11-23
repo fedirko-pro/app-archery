@@ -39,7 +39,7 @@ apps/web            — Next.js 15 frontend (@sokil/web), port 3001
 apps/api            — NestJS 11 backend (@sokil/api), port 3000
 packages/shared-types   — Shared TypeScript types
 packages/shared-configs — Shared ESLint / TS config
-deploy/             — Production Docker Compose (Traefik)
+deploy/             — Production Docker Compose (Traefik); deploy/prod/ has the VPS deploy script + docs
 ```
 
 ## Quick start (local)

@@ -41,7 +41,7 @@ Per-package equivalent: `pnpm --filter @sokil/web <script>` /
 - Live and test frontends are **separate origins**, so PWA/service-worker state,
   installed-app identity, and `localStorage` do not carry between them.
 - `NEXT_PUBLIC_*` env vars are inlined at build time; changing them requires a
-  frontend rebuild (see `deploy/deploy.sh`).
+  frontend rebuild (see `deploy/prod/README.md`).
 
 ## PWA notes
 
@@ -82,6 +82,9 @@ All work happens on `dev`. Commit and push only to `dev`. Sync `dev` into `main`
 
 ## Deployment
 
-See `DEPLOYMENT.md` (Hostinger VPS + Traefik). Deploy from `origin/main`
-(live) / `origin/dev` (test): `bash deploy/deploy.sh` on the VPS. Builds one
-service at a time to avoid OOM on the 4 GB VPS.
+See `DEPLOYMENT.md` (Hostinger VPS + Traefik) and `deploy/prod/README.md`.
+Deploy on the VPS from `origin/main` (live: `bash /srv/sokil/deploy.sh api|frontend`)
+or `origin/dev` (test: `bash /srv/test-archery/deploy.sh api|frontend`). The script
+has `--dry-run`, `--force` and `rollback`, checks CI, backs up the DB when migrations
+change, and builds one service at a time to avoid OOM on the 4 GB VPS.
+`deploy/deploy.sh` is legacy.
