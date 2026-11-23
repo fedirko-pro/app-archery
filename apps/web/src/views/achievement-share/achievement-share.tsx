@@ -17,7 +17,7 @@ import { Link, useParams } from 'react-router';
 import AchievementMedallion from '@/components/achievements/AchievementMedallion';
 import ShareMenu from '@/components/share/ShareMenu';
 import { useAuth } from '@/contexts/auth-context';
-import { pickAchievementShareImage } from '@/lib/share-og-image';
+import { achievementShareImagePath, pickAchievementShareImage } from '@/lib/share-og-image';
 import apiService from '@/services/api';
 import type { PublicAchievementShareDto } from '@/services/types';
 import { getAvatarInitials, resolveUserAvatarWithCacheBust } from '@/utils/placeholder-images';
@@ -140,7 +140,7 @@ const AchievementSharePage: React.FC = () => {
                 title={shareTitle}
                 text={description}
                 imageUrl={pickAchievementShareImage(
-                  achievement.shareImage ?? achievement.icon,
+                  achievementShareImagePath(achievement.id),
                   achievement.owner.picture,
                 )}
                 size="small"
