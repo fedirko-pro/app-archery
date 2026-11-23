@@ -1470,6 +1470,7 @@
     "glossaryNoResults": "Nenhum termo correspondente"
   },
   "achievementShare": {
+    "cta": "Acompanha os teus treinos e ganha conquistas no Sokil",
     "badge": "Conquista",
     "earnedBy": "Arqueiro",
     "shareTitle": "Nova conquista: {{title}}",

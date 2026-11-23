@@ -40,7 +40,11 @@ describe('buildAchievementShareMetadata', () => {
     );
 
     expect(metadata.openGraph?.title).toBe('New achievement: Warming Up — Serhii Fedirko');
-    expect(metadata.description).toBe('Train at least once a week for 2 weeks in a row');
+    expect(metadata.description).toBe(
+      'Train at least once a week for 2 weeks in a row · Track your training and earn achievements in Sokil',
+    );
+    expect(metadata.openGraph?.description).toBe(metadata.description);
+    expect(metadata.twitter?.description).toBe(metadata.description);
     expect(JSON.stringify(metadata)).not.toContain('achievements.streak2Weeks');
   });
 

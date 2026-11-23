@@ -124,7 +124,7 @@ export default function AchievementUnlockedDialog({
         <PrivacyAwareShareMenu
           url={shareUrl}
           title={t('achievementShare.shareTitle', { title: t(achievement.titleKey) })}
-          text={t(achievement.descriptionKey)}
+          text={`${t(achievement.descriptionKey)} · ${t('achievementShare.cta')}`}
           imageUrl={pickAchievementShareImage(
             achievementShareImagePath(achievement.id),
             user?.picture,

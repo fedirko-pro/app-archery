@@ -72,7 +72,7 @@ export function buildAchievementShareMetadata(
   const ownerName = displayName(achievement.owner);
   const pageUrl = `${siteUrl}/${lang}/archers/${achievement.owner.id}/achievements/${achievement.id}`;
   const title = t(achievement.titleKey);
-  const description = t(achievement.descriptionKey);
+  const description = `${t(achievement.descriptionKey)} · ${t('achievementShare.cta')}`;
   const shareTitle = t('achievementShare.shareTitle', { title });
   const imageUrl = resolveAchievementShareOgImage(
     achievementShareImagePath(achievement.id),

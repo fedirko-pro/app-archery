@@ -138,7 +138,7 @@ const AchievementSharePage: React.FC = () => {
               <ShareMenu
                 url={shareUrl}
                 title={shareTitle}
-                text={description}
+                text={`${description} · ${t('achievementShare.cta')}`}
                 imageUrl={pickAchievementShareImage(
                   achievementShareImagePath(achievement.id),
                   achievement.owner.picture,
