@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# LEGACY: superseded by deploy/prod/deploy.sh (locking, CI gate, backups, rollback, health checks).
+# Kept unchanged below for reference; prefer the new script on the VPS (see deploy/prod/README.md).
 # Safe production deploy for the Hostinger VPS (~4GB RAM).
 # Builds and recreates services one at a time (avoids OOM from parallel Next.js + API builds).
 #

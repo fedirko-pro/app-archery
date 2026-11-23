@@ -1,0 +1,116 @@
+# Production stack for sokil.app: PostgreSQL + API + Frontend (Traefik)
+#
+# VPS layout:
+#   /srv/sokil/
+#   +-- .env                        # Prod secrets (DO NOT commit)
+#   +-- docker-compose.prod.yml     # Site-specific compose (tracked in git: deploy/prod/)
+#   +-- deploy.sh                   # Deploy script (tracked in git: deploy/prod/)
+#   +-- src/                        # git repo (tracks main)
+#
+# Deploy: bash /srv/sokil/deploy.sh api|frontend   (see deploy/prod/README.md)
+
+services:
+  db:
+    image: postgres:18-alpine
+    container_name: sokil_db
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 512m
+    environment:
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DATABASE_NAME}
+    volumes:
+      - sokil_pg18_data:/var/lib/postgresql
+    networks:
+      - sokil_network
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${DATABASE_USER} -d ${DATABASE_NAME}']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: ./src
+      dockerfile: apps/api/Dockerfile
+    container_name: sokil_api
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 512m
+    env_file:
+      - .env
+    environment:
+      DATABASE_HOST: db
+      NODE_ENV: production
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./src/uploads:/app/uploads
+      - ./src/apps/api/uploads:/app/apps/api/uploads
+    networks:
+      - sokil_network
+      - traefik-public
+    healthcheck:
+      test: ['CMD-SHELL', 'wget -q -O /dev/null http://127.0.0.1:3000/ || exit 1']
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.docker.network=traefik-public'
+      - 'traefik.http.routers.sokil-api.rule=Host(`api.sokil.app`)'
+      - 'traefik.http.routers.sokil-api.entrypoints=websecure'
+      - 'traefik.http.routers.sokil-api.tls.certresolver=le'
+      - 'traefik.http.services.sokil-api.loadbalancer.server.port=3000'
+    # Migrations are NOT run here any more: deploy.sh runs `mikro-orm migration:up` as an explicit step
+    # (after a pre-deploy backup when migrations changed) before the new container starts.
+    command: ['node', 'dist/src/main.js']
+
+  frontend:
+    build:
+      context: ./src
+      dockerfile: apps/web/Dockerfile
+      args:
+        NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL}
+        NEXT_PUBLIC_GOOGLE_AUTH_URL: ${NEXT_PUBLIC_GOOGLE_AUTH_URL}
+        NEXT_PUBLIC_APP_BUILD_ID: ${APP_BUILD_ID:-local}
+        NEXT_PUBLIC_SITE_MODE: ${NEXT_PUBLIC_SITE_MODE:-prod}
+        NEXT_PUBLIC_GOOGLE_ANALYTICS_ID: ${NEXT_PUBLIC_GOOGLE_ANALYTICS_ID:-}
+    container_name: sokil_frontend
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 512m
+    networks:
+      - sokil_network
+      - traefik-public
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.docker.network=traefik-public'
+      - 'traefik.http.routers.sokil-front.rule=Host(`sokil.app`)'
+      - 'traefik.http.routers.sokil-front.entrypoints=websecure'
+      - 'traefik.http.routers.sokil-front.tls.certresolver=le'
+      - 'traefik.http.services.sokil-front.loadbalancer.server.port=3001'
+    healthcheck:
+      test: ['CMD', 'wget', '--no-verbose', '--tries=1', '--spider', 'http://127.0.0.1:3001/']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+networks:
+  sokil_network:
+    driver: bridge
+  traefik-public:
+    external: true
+
+volumes:
+  sokil-api_postgres_data:
+  sokil_pg18_data:

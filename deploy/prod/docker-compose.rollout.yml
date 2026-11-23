@@ -1,0 +1,79 @@
+# Blue-green rollout twins for sokil.app.
+#
+# Used by /srv/sokil/deploy.sh to achieve zero-downtime deploys:
+#   1. Build the new image.
+#   2. Start the *_new twin (same image + same Traefik labels). Traefik then
+#      load-balances between the old container and the twin.
+#   3. Wait until the twin is healthy (new code validated).
+#   4. Recreate the main service from the new image, wait for it to be healthy.
+#   5. Remove the twin.
+#
+# The twins are never part of the regular stack; deploy.sh creates/removes them.
+
+services:
+  api_new:
+    image: sokil-api:latest
+    container_name: sokil_api_new
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 512m
+    env_file:
+      - .env
+    environment:
+      DATABASE_HOST: db
+      NODE_ENV: production
+    volumes:
+      - ./src/uploads:/app/uploads
+      - ./src/apps/api/uploads:/app/apps/api/uploads
+    networks:
+      - sokil_network
+      - traefik-public
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.docker.network=traefik-public'
+      - 'traefik.http.routers.sokil-api.rule=Host(`api.sokil.app`)'
+      - 'traefik.http.routers.sokil-api.entrypoints=websecure'
+      - 'traefik.http.routers.sokil-api.tls.certresolver=le'
+      - 'traefik.http.services.sokil-api.loadbalancer.server.port=3000'
+    healthcheck:
+      test: ['CMD-SHELL', 'wget -q -O /dev/null http://127.0.0.1:3000/ || exit 1']
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
+    # Migrations are NOT run here any more: deploy.sh runs `mikro-orm migration:up` as an explicit step
+    # (after a pre-deploy backup when migrations changed) before the new container starts.
+    command: ['node', 'dist/src/main.js']
+
+  frontend_new:
+    image: sokil-frontend:latest
+    container_name: sokil_frontend_new
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 512m
+    networks:
+      - sokil_network
+      - traefik-public
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.docker.network=traefik-public'
+      - 'traefik.http.routers.sokil-front.rule=Host(`sokil.app`)'
+      - 'traefik.http.routers.sokil-front.entrypoints=websecure'
+      - 'traefik.http.routers.sokil-front.tls.certresolver=le'
+      - 'traefik.http.services.sokil-front.loadbalancer.server.port=3001'
+    healthcheck:
+      test: ['CMD', 'wget', '--no-verbose', '--tries=1', '--spider', 'http://127.0.0.1:3001/']
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 5s
+
+networks:
+  sokil_network:
+    name: sokil_sokil_network
+  traefik-public:
+    external: true
