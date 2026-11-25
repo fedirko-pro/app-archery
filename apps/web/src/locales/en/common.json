@@ -1711,7 +1711,7 @@
   },
   "legal": {
     "navLabel": "Legal",
-    "updated": "Last updated: 2 October 2026",
+    "updated": "Last updated: 25 November 2026",
     "nav": {
       "privacy": "Privacy policy",
       "terms": "Terms and conditions",
@@ -1726,27 +1726,27 @@
       },
       "data": {
         "title": "What we collect",
-        "body": "Account details: email address, a hashed password or a Google sign-in identifier, name, profile photo, biography, location, country, language, federation number, nationality, gender, bow categories, club, division, and profile visibility.\n\nTraining and equipment: sessions, scores, and bow setups. These stay on your device. If you leave sync turned on, a copy is stored on our server.\n\nActivity in the service: tournament applications, club and federation membership, in-app notifications, and an optional push-notification subscription for a device you enable.\n\nTechnical data: a session cookie, a CSRF cookie, your language, your theme, and a small cached profile on the device. We also use Google Analytics."
+        "body": "Account details: email address, a hashed password or a Google sign-in identifier, name, profile photo, biography, location, country, language, federation number, nationality, gender, bow categories, club, division, and profile visibility.\n\nTraining and equipment: sessions, scores, and bow setups. These stay on your device. If you leave sync turned on, a copy is stored on our server.\n\nActivity in the service: tournament applications, club and federation membership, in-app notifications, and an optional push-notification subscription for a device you enable.\n\nTechnical data: a session cookie, a CSRF cookie, your language, your theme, and a small cached profile on the device. If you accept analytics cookies, we also use Google Analytics (details below)."
       },
       "purposes": {
         "title": "Why we use it",
-        "body": "We use this data to create and protect your account, keep you signed in, store the training data you choose to sync, run clubs, federations, and tournament applications, and send service messages such as password resets and the notifications you turn on.\n\nAnalytics helps us see how the app is used."
+        "body": "We use this data to create and protect your account, keep you signed in, store the training data you choose to sync, run clubs, federations, and tournament applications, and send service messages such as password resets and the notifications you turn on.\n\nIf you accept analytics cookies, Google Analytics gives us aggregate usage statistics, such as which pages are opened and how often people sign up, sign in and log training sessions. We use them only to improve the app, never for advertising."
       },
       "bases": {
         "title": "Legal bases",
-        "body": "We process account, sync, and application data to provide the service you asked for (contract).\n\nWe process the session cookie and related security data to keep accounts safe and the service working (legitimate interests).\n\nPush notifications are optional and based on your consent. You can turn them off in the app. Google Analytics on https://sokil.app uses cookies. You can block non-essential cookies in your browser."
+        "body": "We process account, sync, and application data to provide the service you asked for (contract).\n\nWe process the session cookie and related security data to keep accounts safe and the service working (legitimate interests).\n\nPush notifications are optional and based on your consent. You can turn them off in the app. Google Analytics is also based on your consent: it runs only after you choose Accept in the cookie banner, and you can withdraw consent at any time under “Cookie settings”."
       },
       "cookies": {
         "title": "Cookies and storage on your device",
-        "body": "session — an httpOnly cookie that keeps you signed in. It is required.\n\ncsrf — a cookie the app reads so it can send a matching token when you change data. It is required to prevent forged requests.\n\nappLang and i18nextLng — remember your language.\n\nLocal storage — training and equipment, your theme, a short cached profile, and whether you dismissed a tip. This stays on your device until you clear it.\n\nGoogle Analytics cookies — set by Google to measure visits."
+        "body": "session — an httpOnly cookie that keeps you signed in. It is required.\n\ncsrf — a cookie the app reads so it can send a matching token when you change data. It is required to prevent forged requests.\n\nappLang and i18nextLng — remember your language.\n\nLocal storage — training and equipment, your theme, a short cached profile, and whether you dismissed a tip. This stays on your device until you clear it.\n\n_ga and _ga_<ID> — Google Analytics 4 cookies set by Google to tell visits apart and measure sessions. They are optional and set only after you choose Accept in the cookie banner. They expire after up to 2 years.\n\nWe use Google Consent Mode v2: analytics storage is allowed only after you accept, and advertising storage is always denied. Google Analytics never collects data on admin pages or for admin accounts.\n\nsokil_cookie_consent — local storage that remembers your cookie choice.\n\nTo change your choice, open “Cookie settings” in the menu, on the About page or at the bottom of the legal pages. If you withdraw consent, Google Analytics stops and its _ga cookies are deleted."
       },
       "sharing": {
         "title": "Who we share it with",
-        "body": "We do not sell personal data.\n\nThe company that hosts our servers stores what is needed to run Sokil. Email we send, such as a password reset, goes through our mail provider. If you sign in with Google, Google handles that sign-in. Google Analytics receives usage data.\n\nClub and federation admins can see membership and the applications you send them. Other people see your profile only as far as your visibility setting allows: personal, limited, or public."
+        "body": "We do not sell personal data.\n\nThe company that hosts our servers stores what is needed to run Sokil. Email we send, such as a password reset, goes through our mail provider. If you sign in with Google, Google handles that sign-in. If you accept analytics cookies, Google receives usage data through Google Analytics. When you are signed in, this includes your account’s random ID, never your name or email address.\n\nClub and federation admins can see membership and the applications you send them. Other people see your profile only as far as your visibility setting allows: personal, limited, or public."
       },
       "retention": {
         "title": "How long we keep it",
-        "body": "Account data stays until you delete the account or ask us to delete it. Training data on the server stays while sync is on and the account exists. Data that never leaves your device stays until you remove it.\n\nThe session cookie ends when you log out or the session expires. Analytics data is kept by Google under Google’s own settings."
+        "body": "Account data stays until you delete the account or ask us to delete it. Training data on the server stays while sync is on and the account exists. Data that never leaves your device stays until you remove it.\n\nThe session cookie ends when you log out or the session expires. In Google Analytics, detailed event data is kept for 2 months and user-level data for 14 months after your last activity. The _ga cookies expire after up to 2 years, or right away if you withdraw consent."
       },
       "rights": {
         "title": "Your rights",
