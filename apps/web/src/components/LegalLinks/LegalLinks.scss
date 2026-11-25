@@ -6,7 +6,8 @@
   gap: 0.35rem 0.85rem;
   margin: 0.85rem 0 0;
 
-  a {
+  a,
+  &__button {
     font-size: 0.75rem;
     line-height: 1.35;
     color: var(--text-secondary);
@@ -19,6 +20,14 @@
       }
     }
   }
+
+  &__button {
+    padding: 0;
+    border: 0;
+    background: none;
+    font-family: inherit;
+    cursor: pointer;
+  }
 }
 
 .menu .legal-links {
@@ -26,7 +35,8 @@
   margin: 2px 0 0;
   gap: 0.2rem 0.7rem;
 
-  a {
+  a,
+  .legal-links__button {
     font-size: 11px;
     color: rgba(255, 255, 255, 0.62);
 

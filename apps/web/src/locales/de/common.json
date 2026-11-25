@@ -1850,5 +1850,15 @@
         "body": "Schreib an contact@fedirko.pro."
       }
     }
+  },
+  "cookieConsent": {
+    "title": "Cookies",
+    "message": "Wir möchten Google-Analytics-Cookies verwenden, um zu verstehen, wie Sokil genutzt wird, und die App zu verbessern. Sie werden nur gesetzt, wenn du zustimmst. Du kannst deine Auswahl jederzeit unter „Cookie-Einstellungen“ ändern.",
+    "privacyLink": "Datenschutzerklärung",
+    "accept": "Akzeptieren",
+    "reject": "Ablehnen",
+    "settings": "Cookie-Einstellungen",
+    "currentGranted": "Aktuelle Auswahl: Analyse-Cookies akzeptiert.",
+    "currentDenied": "Aktuelle Auswahl: Analyse-Cookies abgelehnt."
   }
 }

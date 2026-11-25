@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
 
 import { useCurrentLang } from '../../hooks/use-current-lang';
+import { CookieSettingsLink } from '../analytics/CookieSettingsLink';
 import { LEGAL_LINKS, type LegalPageId } from './legal-pages';
 
 const LegalLinks = ({ omit }: { omit?: LegalPageId }) => {
@@ -18,6 +19,7 @@ const LegalLinks = ({ omit }: { omit?: LegalPageId }) => {
           {t(`legal.nav.${link.id}`)}
         </Link>
       ))}
+      <CookieSettingsLink className="legal-links__button" />
     </nav>
   );
 };
