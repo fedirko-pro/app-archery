@@ -8,7 +8,7 @@ import type {
 import { displayName } from '@/utils/user-display';
 import { alternateOgLocales, toOgLocale } from './og-locale';
 import type { ServerTranslate } from './server-i18n';
-import { resolveAchievementShareOgImage } from './share-og-image';
+import { achievementShareImagePath, resolveAchievementShareOgImage } from './share-og-image';
 
 export const DEFAULT_PROFILE_OG_IMAGE_PATH = '/og/default-tournament-banner.png';
 
@@ -72,10 +72,10 @@ export function buildAchievementShareMetadata(
   const ownerName = displayName(achievement.owner);
   const pageUrl = `${siteUrl}/${lang}/archers/${achievement.owner.id}/achievements/${achievement.id}`;
   const title = t(achievement.titleKey);
-  const description = t(achievement.descriptionKey);
+  const description = `${t(achievement.descriptionKey)} · ${t('achievementShare.cta')}`;
   const shareTitle = t('achievementShare.shareTitle', { title });
   const imageUrl = resolveAchievementShareOgImage(
-    achievement.shareImage ?? achievement.icon,
+    achievementShareImagePath(achievement.id),
     achievement.owner.picture,
     siteUrl,
   );

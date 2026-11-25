@@ -33,7 +33,8 @@ over between them. Installing the test site PWA has no effect on the live site.
     +-- packages/
     +-- deploy/
         +-- docker-compose.prod.yml  # Canonical compose (reference)
-        +-- deploy.sh                # Recommended deploy script
+        +-- deploy.sh                # LEGACY, replaced by deploy/prod/deploy.sh
+        +-- prod/                    # Current deploy script + prod compose (see prod/README.md)
         +-- diagnose-vps.sh          # Read-only troubleshooting
 ```
 
@@ -52,21 +53,33 @@ free -h   # Swap should show ~2G
 
 ## Deployment
 
-### Recommended: use `deploy.sh`
+### Recommended: use the VPS deploy script
 
-Builds **one service at a time** and recreates containers (reloads `.env`).
+The current script lives in `deploy/prod/` (full docs: `deploy/prod/README.md`). It is installed as
+`/srv/sokil/deploy.sh` (prod, branch `main`) and `/srv/test-archery/deploy.sh` (test, branch `dev` by default).
+`deploy/deploy.sh` is **legacy**; do not use it.
 
 ```bash
 ssh root@148.230.116.33
-cd /srv/test-archery/src
-git pull origin main
 
-bash deploy/deploy.sh              # API, then frontend (~15-25 min total)
-bash deploy/deploy.sh api            # API only (~5-10 min)
-bash deploy/deploy.sh frontend       # Frontend only (~15-20 min)
+# prod (main). Run api first, wait until it is ready, then frontend.
+bash /srv/sokil/deploy.sh api
+bash /srv/sokil/deploy.sh frontend
+
+# test (dev by default; GIT_BRANCH=main also works)
+bash /srv/test-archery/deploy.sh api
+bash /srv/test-archery/deploy.sh frontend
+
+bash /srv/sokil/deploy.sh --dry-run api   # show the plan, change nothing
+bash /srv/sokil/deploy.sh --force api     # skip the CI-green requirement
+bash /srv/sokil/deploy.sh rollback api    # previous image; the database is NOT rolled back
 ```
 
-Build logs are saved to `/tmp/build-api.log` and `/tmp/build-frontend.log`.
+The script pulls the branch itself (fast-forward only, clean tree required), checks that CI is green
+(token: `/root/.config/sokil-deploy/gh-token`, fine-grained read-only: Actions, Commit statuses, Metadata),
+takes a `pg_dump` into `/var/backups/vps/predeploy/` when migrations changed, runs migrations as an explicit step,
+swaps the container (prod: blue-green, no downtime; test: in-place), waits for health and checks the public URL.
+Only one deploy runs at a time and it keeps going if SSH disconnects. Logs: `/var/log/vps-deploy/`, summary: `/var/log/deploys.log`.
 
 ### Manual deploy (same idea)
 
@@ -227,7 +240,7 @@ docker network create traefik-public   # if missing
 
 ## Git Workflow
 
-- Deploy from `origin/main`: push locally, `git pull` on VPS, `bash deploy/deploy.sh`
+- Deploy from `origin/main` (prod) or `origin/dev` (test): push, then run `bash /srv/sokil/deploy.sh api|frontend` (or `/srv/test-archery/deploy.sh`) on the VPS; the script pulls the branch itself
 - Canonical compose reference: `deploy/docker-compose.prod.yml` in git
 - Live compose: `/srv/test-archery/docker-compose.prod.yml` (VPS patches below)
 

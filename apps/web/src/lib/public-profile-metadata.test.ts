@@ -40,7 +40,11 @@ describe('buildAchievementShareMetadata', () => {
     );
 
     expect(metadata.openGraph?.title).toBe('New achievement: Warming Up — Serhii Fedirko');
-    expect(metadata.description).toBe('Train at least once a week for 2 weeks in a row');
+    expect(metadata.description).toBe(
+      'Train at least once a week for 2 weeks in a row · Track your training and earn achievements in Sokil',
+    );
+    expect(metadata.openGraph?.description).toBe(metadata.description);
+    expect(metadata.twitter?.description).toBe(metadata.description);
     expect(JSON.stringify(metadata)).not.toContain('achievements.streak2Weeks');
   });
 
@@ -69,7 +73,7 @@ describe('buildAchievementShareMetadata', () => {
     );
   });
 
-  it('uses the branded site image when the icon is not a picture and there is no avatar', () => {
+  it('uses the self-hosted achievement card as the Open Graph image', () => {
     const metadata = buildAchievementShareMetadata(
       achievement,
       'en',
@@ -79,7 +83,7 @@ describe('buildAchievementShareMetadata', () => {
 
     expect(metadata.openGraph?.images).toEqual([
       {
-        url: 'https://sokil.app/og/og-image-v2.png',
+        url: 'https://sokil.app/og/achievement/streak-2-weeks.png',
         width: 1200,
         height: 630,
         alt: 'Warming Up',
@@ -87,7 +91,7 @@ describe('buildAchievementShareMetadata', () => {
     ]);
   });
 
-  it('proxies a Google avatar for the Open Graph image', () => {
+  it('does not use the owner avatar for the achievement Open Graph image', () => {
     const metadata = buildAchievementShareMetadata(
       {
         ...achievement,
@@ -102,8 +106,8 @@ describe('buildAchievementShareMetadata', () => {
     );
     const serialized = JSON.stringify(metadata.openGraph?.images);
 
-    expect(serialized).toContain('https://sokil.app/og/share-image?src=');
-    expect(serialized).toContain('s512-c');
+    expect(serialized).toContain('https://sokil.app/og/achievement/streak-2-weeks.png');
+    expect(serialized).not.toContain('googleusercontent');
   });
 });
 

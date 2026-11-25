@@ -1473,6 +1473,7 @@
     "glossaryNoResults": "No hay términos coincidentes"
   },
   "achievementShare": {
+    "cta": "Registra tus entrenamientos y consigue logros en Sokil",
     "badge": "Logro",
     "earnedBy": "Arquero",
     "shareTitle": "Nuevo logro: {{title}}",

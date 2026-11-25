@@ -2,6 +2,11 @@ import { isExternalPlaceholderUrl } from '@/utils/placeholder-images';
 
 import { resolveSiteOgImage, SITE_OG_IMAGE_PATH } from './site-metadata';
 
+/** Self-hosted generated achievement card (placehold.co is rejected as a placeholder host). */
+export function achievementShareImagePath(achievementId: string): string {
+  return `/og/achievement/${encodeURIComponent(achievementId)}.png`;
+}
+
 export const SHARE_OG_IMAGE_PROXY_PATH = '/og/share-image';
 
 const GOOGLE_AVATAR_HOST_SUFFIX = 'googleusercontent.com';
