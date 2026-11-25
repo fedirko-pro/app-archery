@@ -10,6 +10,7 @@ import {
 } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 
+import { trackAuthEvent } from '../components/analytics/gtag';
 import apiService from '../services/api';
 import { getCachedUser, setCachedUser } from '../utils/cached-user';
 import { fromI18nLang, getCurrentI18nLang, normalizeAppLang } from '../utils/i18n-lang';
@@ -98,6 +99,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
       setUser(userData);
       setCachedUser(userData);
+      trackAuthEvent('login', 'email', userData);
       handlePostAuthRedirect(userData);
 
       return response;
@@ -123,6 +125,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
       setUser(userProfile);
       setCachedUser(userProfile);
+      trackAuthEvent('sign_up', 'email', userProfile);
       handlePostAuthRedirect(userProfile);
 
       return response;

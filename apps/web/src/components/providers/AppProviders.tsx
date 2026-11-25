@@ -17,6 +17,7 @@ import { createAppTheme } from '../../theme/create-app-theme';
 import AppBottomChrome from '../AppBottomChrome/AppBottomChrome';
 import AppStatusBar from '../AppStatusBar';
 import { AppUpdatePrompt } from '../AppUpdatePrompt';
+import { AnalyticsAccessTracker } from '../analytics/AnalyticsAccessTracker';
 import { UserIdentityTracker } from '../analytics/UserIdentityTracker';
 import I18nDevOverlay from '../dev/I18nDevOverlay';
 import { ErrorBoundary } from '../ErrorBoundary';
@@ -67,6 +68,7 @@ export function RouterShell({ children }: RouterShellProps) {
       <NotificationsProvider>
         <LocalDataProvider>
           <AchievementCelebrationProvider>
+            <AnalyticsAccessTracker />
             <UserIdentityTracker />
             <ScrollToTop />
             <Header />
