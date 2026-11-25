@@ -4,6 +4,7 @@ import { Box, CircularProgress, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { isRecentSignUp, trackAuthEvent } from '@/components/analytics/gtag';
 import { ClientOnly } from '@/components/ClientOnly/ClientOnly';
 import apiService from '@/services/api';
 import { getDefaultAppLang } from '@/utils/i18n-lang';
@@ -46,6 +47,11 @@ function GoogleCallbackInner() {
 
         await apiService.exchangeOAuthCode(code);
         const userData = await apiService.getProfile();
+        trackAuthEvent(
+          isRecentSignUp(userData?.createdAt) ? 'sign_up' : 'login',
+          'google',
+          userData,
+        );
         window.location.href = resolvePostAuthPath(lang, userData);
       } catch {
         setError(t('auth.googleAuthFailed'));
