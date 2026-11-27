@@ -9,6 +9,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { trackEvent } from '../../components/analytics/gtag';
 import SafeDialog from '../../components/SafeDialog/SafeDialog';
 import { useAchievementCelebration } from '../../contexts/achievement-celebration-context';
 import { type LocalTrainingSession, useLocalData } from '../../contexts/local-data-context';
@@ -58,6 +59,12 @@ const FinishSessionDialog: React.FC<FinishSessionDialogProps> = ({ open, session
         scoreTotal: parsedScore,
         notes: notes.trim() || undefined,
         mood: mood || undefined,
+      });
+      trackEvent('training_session_logged', {
+        shots_count: session.shotsCount ?? 0,
+        arrows_per_set: session.arrowsPerSet,
+        has_score: parsedScore !== undefined,
+        has_mood: Boolean(mood),
       });
       await celebrateAfterSync().catch(() => {
         /* non-blocking */

@@ -337,8 +337,8 @@
       "deleteWarning": "Esta regla no puede eliminarse si tiene divisiones o categorías de arco relacionadas.",
       "codeNameRequired": "El código y el nombre de la regla son obligatorios",
       "createSuccess": "Regla creada con éxito",
-      "deleteError": "Error al eliminar la regla. Puede tener divisiones o categorías de arco relacionadas.",
-      "saveError": "Error al guardar la regla",
+      "deleteError": "No se pudo eliminar la regla. Puede tener divisiones o categorías de arco relacionadas.",
+      "saveError": "No se pudo guardar la regla",
       "updateSuccess": "Regla actualizada con éxito",
       "saveSuccess": "Regla guardada con éxito",
       "deleteSuccess": "Regla eliminada con éxito"
@@ -350,44 +350,70 @@
       "confirmDelete": "¿Estás seguro de que quieres eliminar esta categoría?",
       "deleteSuccess": "Categoría eliminada correctamente",
       "deleteError": "Error al eliminar la categoría",
+      "code": "Código",
       "create": "Crear categoría",
       "editTitle": "Editar categoría",
       "createTitle": "Crear categoría",
-      "code": "Código",
-      "name": "Nombre",
-      "rule": "Regla",
-      "descriptionEn": "Descripción (EN)",
-      "descriptionPt": "Descripción (PT)",
-      "descriptionIt": "Descripción (IT)",
-      "descriptionUk": "Descripción (UA)",
-      "descriptionEs": "Descripción (ES)",
       "descriptionDe": "Descripción (DE)",
-      "ruleCitation": "Cita de la regla (texto del enlace)",
+      "descriptionEn": "Descripción (EN)",
+      "descriptionEs": "Descripción (ES)",
+      "descriptionIt": "Descripción (IT)",
+      "descriptionPt": "Descripción (PT)",
+      "descriptionUk": "Descripción (UA)",
+      "empty": "No se encontraron categorías. Haz clic en «Crear categoría» para añadir una.",
       "loadError": "No se pudo cargar la categoría",
+      "name": "Nombre",
       "requiredFields": "Código, nombre y regla son obligatorios",
-      "saveError": "Error al guardar la categoría",
-      "empty": "No se encontraron categorías. Haz clic en «Crear categoría» para añadir una."
+      "rule": "Regla",
+      "ruleCitation": "Cita de la regla (texto del enlace)",
+      "saveError": "No se pudo guardar la categoría"
+    },
+    "converter": {
+      "title": "Conversor de tiro con arco",
+      "description": "Convertir entre pulgadas/cm, libras/kg, granos/gramos, yardas/metros"
+    },
+    "calculator": {
+      "title": "Calculadora de tiro con arco",
+      "description": "FOC, peso de flecha, energía cinética, longitud de tiro, sugerencia de spine y granos por libra"
+    },
+    "scoringDemo": {
+      "title": "Tarjeta de puntuación (demo sin papel)",
+      "description": "Demo interactiva de una tarjeta de puntuación de torneo. Las puntuaciones son de ejemplo y no se guardan.",
+      "division": "División",
+      "gender": "Género",
+      "category": "Categoría",
+      "patrol": "Patrulla nº",
+      "date": "Fecha",
+      "set": "Serie",
+      "sum": "Suma",
+      "total": "Total",
+      "totalScores": "Puntuación total",
+      "submit": "Enviar",
+      "submitted": "Enviado",
+      "confirmTitle": "Resultados enviados",
+      "confirmMessage": "¡Gracias por enviar tus puntuaciones! Los datos se han enviado al servidor (o se enviarán cuando vuelvas a estar en línea) y se procesarán automáticamente. Los ganadores se determinarán en cuanto el resto de patrullas hayan enviado sus resultados.",
+      "confirmClose": "Aceptar"
     },
     "divisions": {
       "title": "Divisiones",
       "description": "Divisiones de competición agrupadas por reglas",
-      "deleteConfirm": "¿Seguro que quieres eliminar esta división?",
-      "deleteSuccess": "División eliminada con éxito",
-      "deleteError": "No se pudo eliminar la división",
-      "nameRequired": "El nombre de la división es obligatorio",
-      "ruleRequired": "Selecciona una regla",
-      "saveSuccess": "División guardada con éxito",
-      "saveError": "Error al guardar la división",
       "create": "Crear división",
       "createTitle": "Crear división",
+      "deleteConfirm": "¿Seguro que quieres eliminar esta división?",
+      "deleteError": "No se pudo eliminar la división",
+      "deleteSuccess": "División eliminada con éxito",
+      "descriptionPlaceholder": "p. ej. Arqueros adultos...",
       "editTitle": "Editar división",
+      "empty": "No se encontraron divisiones. Haz clic en «Crear división» para añadir una.",
       "name": "Nombre de la división",
       "namePlaceholder": "p. ej. Adulto, Junior, Veterano",
+      "nameRequired": "El nombre de la división es obligatorio",
+      "noDescription": "Sin descripción disponible",
       "rule": "Regla",
-      "selectRule": "Seleccionar una regla",
-      "descriptionPlaceholder": "p. ej. Arqueros adultos...",
-      "empty": "No se encontraron divisiones. Haz clic en «Crear división» para añadir una.",
-      "noDescription": "Sin descripción disponible"
+      "ruleRequired": "Seleccionar una regla",
+      "saveError": "No se pudo guardar la división",
+      "saveSuccess": "División guardada con éxito",
+      "selectRule": "Seleccionar una regla"
     },
     "clubs": {
       "deleteConfirm": "¿Está seguro de que desea eliminar este club?",
@@ -433,7 +459,11 @@
       "shortCodeHelp": "Usado en tarjetas de puntuación (3–5 letras)",
       "city": "Ciudad",
       "description": "Descripción",
-      "publicClub": "Club público (visible en el directorio)"
+      "publicClub": "Club público (visible en el directorio)",
+      "clubLogo": "Logo del Club",
+      "logoSaved": "Logo del club guardado correctamente",
+      "logoSubheader": "Selecciona una imagen y luego arrastra para reposicionar (PNG, JPG hasta 10MB)",
+      "logoReady": "Logo listo — se subirá al guardar"
     },
     "myClub": {
       "title": "Mi club",
@@ -455,32 +485,6 @@
       "memberRemoved": "Miembro eliminado",
       "removeError": "No se pudo eliminar el miembro",
       "confirmRemove": "¿Está seguro de que desea eliminar a este miembro?"
-    },
-    "converter": {
-      "title": "Conversor de tiro con arco",
-      "description": "Convertir entre pulgadas/cm, libras/kg, granos/gramos, yardas/metros"
-    },
-    "calculator": {
-      "title": "Calculadora de tiro con arco",
-      "description": "FOC, peso de flecha, energía cinética, longitud de tiro, sugerencia de spine y granos por libra"
-    },
-    "scoringDemo": {
-      "title": "Tarjeta de puntuación (demo sin papel)",
-      "description": "Demo interactiva de una tarjeta de puntuación de torneo. Las puntuaciones son de ejemplo y no se guardan.",
-      "division": "División",
-      "gender": "Género",
-      "category": "Categoría",
-      "patrol": "Patrulla nº",
-      "date": "Fecha",
-      "set": "Serie",
-      "sum": "Suma",
-      "total": "Total",
-      "totalScores": "Puntuación total",
-      "submit": "Enviar",
-      "submitted": "Enviado",
-      "confirmTitle": "Resultados enviados",
-      "confirmMessage": "¡Gracias por enviar tus puntuaciones! Los datos se han enviado al servidor (o se enviarán cuando vuelvas a estar en línea) y se procesarán automáticamente. Los ganadores se determinarán en cuanto el resto de patrullas hayan enviado sus resultados.",
-      "confirmClose": "Aceptar"
     },
     "about": {
       "title": "Acerca de Sokil",
@@ -936,6 +940,165 @@
       }
     }
   },
+  "pwa": {
+    "workingOffline": "Trabajando sin conexión",
+    "showingCachedData": "Mostrando últimos datos guardados",
+    "installPrompt": "Instala Sokil en tu pantalla de inicio para acceso rápido y una experiencia similar a una app.",
+    "install": "Instalar",
+    "installing": "Instalando…",
+    "dismiss": "Ahora no",
+    "installAria": "Aviso para instalar la aplicación",
+    "iosInstallPrompt": "Añade Sokil a la pantalla de inicio: toca Compartir y luego Añadir a pantalla de inicio.",
+    "iosInstallAria": "Consejo: añadir a pantalla de inicio",
+    "updateAvailable": "Hay una nueva versión disponible.",
+    "updateReload": "Recargar"
+  },
+  "payments": {
+    "title": "Mis Pagos (Demo)",
+    "demoNotice": "Esta es una página de demostración. Los pagos se vincularán a tu cuenta real en el futuro.",
+    "paymentMethods": "Métodos de Pago",
+    "subscriptions": "Suscripciones",
+    "paymentHistory": "Historial de Pagos",
+    "expires": "Expira",
+    "default": "Predeterminado",
+    "monthlyClubFee": "Cuota Mensual del Club",
+    "premium": "Premium",
+    "activatedByFederation": "Activado por tu Federación",
+    "premiumHint": "La membresía Premium desbloquea funciones adicionales de la aplicación. Se puede comprar individualmente o ser proporcionada por Club/Federación",
+    "month": "mes",
+    "active": "Activo",
+    "startDate": "Fecha de inicio",
+    "nextBillingDate": "Próximo cargo",
+    "date": "Fecha",
+    "description": "Descripción",
+    "amount": "Importe",
+    "status": "Estado",
+    "paid": "Pagado"
+  },
+  "statistics": {
+    "title": "Mis Estadísticas",
+    "signInBanner": {
+      "title": "Inicia sesión para ver tus estadísticas completas",
+      "subtitle": "Registra flechas disparadas, sesiones de entrenamiento y actividad en torneos",
+      "signIn": "Iniciar sesión",
+      "createAccount": "Crear cuenta"
+    },
+    "sections": {
+      "activity": "Actividad",
+      "arrows": "Flechas Disparadas",
+      "distance": "Distancia Recorrida",
+      "lifted": "Peso Levantado",
+      "habits": "Hábitos de Entrenamiento",
+      "tournaments": "Torneos",
+      "equipment": "Rendimiento por equipo",
+      "scoring": "Puntuación",
+      "info": {
+        "activity": "Resumen de la actividad de tu cuenta: cuándo te uniste, cuántas sesiones has registrado y tu racha de entrenamiento actual.",
+        "arrows": "Aquí contamos todas las sesiones de entrenamiento y los torneos confirmados.",
+        "distance": "Calculamos la distancia hasta la diana y de vuelta desde la posición de tiro.",
+        "lifted": "Calculamos esto según la configuración de arco usada en sesiones de entrenamiento y torneos.",
+        "habits": "Tus patrones de entrenamiento más habituales: media de flechas por sesión, distancia preferida, tipo de diana y equipo.",
+        "tournaments": "Recuento de solicitudes a torneos que has enviado, incluidas las aprobadas y rechazadas.",
+        "scoring": "Puntuaciones de sesiones de entrenamiento finalizadas en las que registraste un resultado.",
+        "equipment": "Desglose del rendimiento por configuración de arco usada en tus sesiones registradas."
+      }
+    },
+    "memberSince": "Miembro desde",
+    "memberSinceEmpty": "¿Aún no? ¡Regístrate!",
+    "totalSessions": "Sesiones totales",
+    "currentStreak": "Racha actual",
+    "weeks": "semanas seguidas",
+    "thisWeek": "Esta semana",
+    "thisMonth": "Este mes",
+    "thisYear": "Este año",
+    "total": "Total",
+    "meters": "metros",
+    "totalLifted": "Total levantado",
+    "kilograms": "kilogramos",
+    "avgShotsPerSession": "Media de flechas / sesión",
+    "topDistance": "Distancia más entrenada",
+    "topTargetType": "Diana más usada",
+    "applied": "Enviadas",
+    "approved": "Aprobadas",
+    "rejected": "Rechazadas",
+    "shotsByMonth": "Flechas por mes",
+    "sessionsByMonth": "Sesiones por mes",
+    "arrows": "flechas",
+    "sessions": "sesiones",
+    "loadError": "Error al cargar las estadísticas",
+    "emptyState": {
+      "chartsIntro": "Registra sesiones de entrenamiento para desbloquear tus tendencias mensuales.",
+      "ghostTitle": "Tus gráficos aparecerán aquí",
+      "ghostSubtitle": "Sigue flechas y sesiones a lo largo del tiempo cuando empieces a registrar.",
+      "logSession": "Registrar sesión"
+    },
+    "avgScore": "Puntuación media",
+    "bestSession": "Mejor sesión",
+    "byEquipment": {
+      "arrows": "Flechas",
+      "avgShots": "Media flechas / sesión",
+      "empty": "Registra sesiones con un setup de arco para comparar el rendimiento de tu equipo.",
+      "sessions": "Sesiones"
+    },
+    "mostUsedEquipment": "Setup más usado",
+    "noScoringData": "Termina sesiones con puntuación para ver tendencias.",
+    "scoreByDistance": "Puntuación media por distancia"
+  },
+  "dashboard": {
+    "title": "Inicio",
+    "thisWeekArrows": "Flechas de esta semana",
+    "currentStreak": "Racha actual",
+    "lastSession": "Última sesión",
+    "recentSessions": "Sesiones recientes",
+    "noSessions": "Aún no hay sesiones de entrenamiento. ¡Registra la primera!",
+    "logTraining": "Registrar entrenamiento",
+    "logTrainingTitle": "¿Listo para entrenar?",
+    "logTrainingSubtitle": "Registra flechas, distancia y equipo.",
+    "continueSession": "Continuar sesión",
+    "continueSessionTitle": "Sesión en curso",
+    "offlineNetworkHint": "Disponible cuando vuelvas a estar en línea",
+    "logTodaysSession": "Registrar sesión de hoy",
+    "sameAsLastTime": "Igual que la última vez",
+    "upcomingTournaments": "Próximos torneos",
+    "discoveryDisclaimer": "Según tu perfil y actividad, estos próximos torneos pueden interesarte.",
+    "appliedTournamentsDisclaimer": "Próximos eventos a los que te has inscrito.",
+    "browseAllTournaments": "Ver todos los torneos",
+    "viewAllApplications": "Ver todas las solicitudes",
+    "viewAllTrainings": "Ver todos los entrenamientos",
+    "viewStatistics": "Ver estadísticas completas",
+    "bowSetupPrompt": {
+      "title": "Añade tu configuración de arco",
+      "subtitle": "Vincular sesiones a tu equipo ayuda a seguir el rendimiento. Puedes añadir una configuración en cualquier momento — incluso al editar una sesión.",
+      "logSession": "Registrar sesión",
+      "dismiss": "Recordarme mañana"
+    },
+    "streakAtRisk": {
+      "title": "Mantén tu racha de {{count}} semanas",
+      "subtitle": "Registra una sesión esta semana antes de que termine.",
+      "logSession": "Registrar sesión de hoy",
+      "dismiss": "Recordarme mañana",
+      "statSubtitle": "en riesgo"
+    },
+    "monthlySummary": {
+      "title": "Tu {{month}} en resumen",
+      "sessions": "{{count}} sesiones",
+      "arrows": "{{count}} flechas",
+      "viewStatistics": "Ver estadísticas completas",
+      "dismiss": "Entendido"
+    },
+    "tournamentFeedback": {
+      "title": "¿Qué tal fue {{title}}?",
+      "subtitle": "Ayúdanos a mejorar",
+      "leaveFeedback": "Dejar comentario",
+      "dismiss": "Ahora no"
+    },
+    "lastAchievement": {
+      "title": "Último logro desbloqueado",
+      "viewAll": "Ver todos",
+      "noneYet": "Aún no has desbloqueado ningún logro. ¡Registra una sesión para empezar!",
+      "earnedOn": "Desbloqueado el {{date}}"
+    }
+  },
   "trainings": {
     "title": "Mis Entrenamientos",
     "info": "El capítulo \"Mis entrenamientos\" permite crear cualquier cantidad de entrenamientos personales, seleccionar diana, distancia, cantidad de flechas, etc.\nPara cada entrenamiento hay estadísticas detalladas disponibles. El usuario puede compartir sus estadísticas.\nIMPORTANTE: la información del entrenamiento no se envía a ningún lado y se almacena solo en tu dispositivo (al menos por ahora)",
@@ -1214,8 +1377,24 @@
       "desc": "Estimación de spine a partir de peso de tracción, longitud de flecha, y peso de punta. Basado en gráficas Easton simplificadas — usa tablas del fabricante para ajuste final.",
       "drawWeight": "Peso de tracción (lbs)",
       "arrowLength": "Longitud de flecha (pulg)",
-      "pointWeight": "Peso de punta (gr)",
-      "result": "Spine sugerido"
+      "pointWeight": "Peso de punta (granos)",
+      "result": "Sobre {{low}}–{{high}} spine",
+      "resultHint": "Libras efectivas usadas: {{dw}} lb · solo orientación",
+      "consultManual": "Consulta siempre el manual y la tabla de spine del fabricante antes de elegir flechas.",
+      "resultBelowMin": "Menos de 10 lb de spine",
+      "resultHintWood": "Spine de madera en lb · solo orientación",
+      "woodNote": "El spine de madera necesario varía según el tipo de arco (sobre la mano o con repisa), la cuerda y el estilo de tiro. Afina con prueba de bare-shaft."
+    },
+    "gpp": {
+      "short": "GPP",
+      "title": "Granos por libra",
+      "desc": "Peso de flecha dividido por libras. Se usa a menudo como comprobación rápida del setup.",
+      "arrowWeight": "Peso de flecha (granos)",
+      "drawWeight": "Libras (lb)",
+      "hintLight": "Ligero para muchos setups de caza — bien para algunos arcos de diana",
+      "hintTarget": "Rango habitual de diana / velocidad",
+      "hintHunting": "Rango habitual de caza",
+      "hintHeavy": "Setup pesado — más lento, más impulso"
     }
   }
 }

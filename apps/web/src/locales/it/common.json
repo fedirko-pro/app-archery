@@ -1745,7 +1745,7 @@
   },
   "legal": {
     "navLabel": "Informazioni legali",
-    "updated": "Ultimo aggiornamento: 2 ottobre 2026",
+    "updated": "Ultimo aggiornamento: 25 novembre 2026",
     "nav": {
       "privacy": "Informativa sulla privacy",
       "terms": "Termini e condizioni",
@@ -1760,27 +1760,27 @@
       },
       "data": {
         "title": "Quali dati raccogliamo",
-        "body": "Dati dell’account: indirizzo email, una password con hash o un identificativo di accesso Google, nome, foto del profilo, biografia, località, paese, lingua, numero di federazione, nazionalità, genere, categorie di arco, club, divisione e visibilità del profilo.\n\nAllenamento e attrezzatura: sessioni, punteggi e setup dell’arco. Restano sul tuo dispositivo. Se lasci attiva la sincronizzazione, una copia viene salvata sul nostro server.\n\nAttività nel servizio: iscrizioni ai tornei, appartenenza a club e federazioni, avvisi nell’app e un abbonamento facoltativo alle notifiche push sul dispositivo che attivi.\n\nDati tecnici: un cookie di sessione, un cookie CSRF, la tua lingua, il tema e un breve profilo in cache sul dispositivo. Usiamo anche Google Analytics."
+        "body": "Dati dell’account: indirizzo email, una password con hash o un identificativo di accesso Google, nome, foto del profilo, biografia, località, paese, lingua, numero di federazione, nazionalità, genere, categorie di arco, club, divisione e visibilità del profilo.\n\nAllenamento e attrezzatura: sessioni, punteggi e setup dell’arco. Restano sul tuo dispositivo. Se lasci attiva la sincronizzazione, una copia viene salvata sul nostro server.\n\nAttività nel servizio: iscrizioni ai tornei, appartenenza a club e federazioni, avvisi nell’app e un abbonamento facoltativo alle notifiche push sul dispositivo che attivi.\n\nDati tecnici: un cookie di sessione, un cookie CSRF, la tua lingua, il tema e un breve profilo in cache sul dispositivo. Se accetti i cookie di analisi, usiamo anche Google Analytics (dettagli più sotto)."
       },
       "purposes": {
         "title": "Perché li usiamo",
-        "body": "Usiamo questi dati per creare e proteggere il tuo account, mantenerti connesso, salvare gli allenamenti che scegli di sincronizzare, gestire club, federazioni e iscrizioni, e inviare messaggi di servizio come il recupero della password e gli avvisi che attivi.\n\nLe analitiche ci aiutano a vedere come viene usata l’app."
+        "body": "Usiamo questi dati per creare e proteggere il tuo account, mantenerti connesso, salvare gli allenamenti che scegli di sincronizzare, gestire club, federazioni e iscrizioni, e inviare messaggi di servizio come il recupero della password e gli avvisi che attivi.\n\nSe accetti i cookie di analisi, Google Analytics ci fornisce statistiche di utilizzo aggregate, come quali pagine vengono aperte e quanto spesso le persone si registrano, accedono e salvano allenamenti. Le usiamo solo per migliorare l’app, mai per la pubblicità."
       },
       "bases": {
         "title": "Basi giuridiche",
-        "body": "Trattiamo i dati di account, sincronizzazione e iscrizioni per fornire il servizio che hai chiesto (contratto).\n\nTrattiamo il cookie di sessione e i dati di sicurezza collegati per proteggere gli account e far funzionare il servizio (interessi legittimi).\n\nLe notifiche push sono facoltative e si basano sul tuo consenso. Puoi disattivarle nell’app. Google Analytics su https://sokil.app usa cookie. Puoi bloccare i cookie non essenziali nel browser."
+        "body": "Trattiamo i dati di account, sincronizzazione e iscrizioni per fornire il servizio che hai chiesto (contratto).\n\nTrattiamo il cookie di sessione e i dati di sicurezza collegati per proteggere gli account e far funzionare il servizio (interessi legittimi).\n\nLe notifiche push sono facoltative e si basano sul tuo consenso. Puoi disattivarle nell’app. Anche Google Analytics si basa sul tuo consenso: funziona solo dopo che scegli «Accetta» nel banner dei cookie, e puoi revocare il consenso in qualsiasi momento da «Impostazioni cookie»."
       },
       "cookies": {
         "title": "Cookie e memoria sul dispositivo",
-        "body": "session — un cookie httpOnly che ti tiene connesso. È necessario.\n\ncsrf — un cookie che l’app legge per inviare un token corrispondente quando modifichi i dati. È necessario per impedire richieste falsificate.\n\nappLang e i18nextLng — ricordano la tua lingua.\n\nMemoria locale — allenamento e attrezzatura, il tema, un breve profilo in cache e se hai chiuso un avviso. Resta sul dispositivo finché non la cancelli.\n\nCookie di Google Analytics — impostati da Google per misurare le visite."
+        "body": "session — un cookie httpOnly che ti tiene connesso. È necessario.\n\ncsrf — un cookie che l’app legge per inviare un token corrispondente quando modifichi i dati. È necessario per impedire richieste falsificate.\n\nappLang e i18nextLng — ricordano la tua lingua.\n\nMemoria locale — allenamento e attrezzatura, il tema, un breve profilo in cache e se hai chiuso un avviso. Resta sul dispositivo finché non la cancelli.\n\n_ga e _ga_<ID> — cookie di Google Analytics 4, impostati da Google per distinguere le visite e misurare le sessioni. Sono facoltativi e vengono impostati solo dopo che scegli «Accetta» nel banner dei cookie. Scadono al massimo dopo 2 anni.\n\nUsiamo Google Consent Mode v2: l’archiviazione per l’analisi è consentita solo dopo il tuo consenso, quella pubblicitaria è sempre negata. Google Analytics non raccoglie mai dati nelle pagine di amministrazione né per gli account amministratore.\n\nsokil_cookie_consent — memoria locale che ricorda la tua scelta sui cookie.\n\nPer cambiare la tua scelta, apri «Impostazioni cookie» nel menu, nella pagina «Informazioni sull’app» o in fondo alle pagine legali. Se revochi il consenso, Google Analytics si ferma e i suoi cookie _ga vengono eliminati."
       },
       "sharing": {
         "title": "Con chi li condividiamo",
-        "body": "Non vendiamo dati personali.\n\nL’azienda che ospita i nostri server conserva ciò che serve per far funzionare Sokil. Le email che inviamo, come il recupero della password, passano dal nostro fornitore di posta. Se entri con Google, Google gestisce quell’accesso. Google Analytics riceve dati di utilizzo.\n\nGli amministratori di un club o di una federazione possono vedere l’appartenenza e le iscrizioni che invii loro. Le altre persone vedono il tuo profilo solo nei limiti della visibilità che scegli: personale, limitata o pubblica."
+        "body": "Non vendiamo dati personali.\n\nL’azienda che ospita i nostri server conserva ciò che serve per far funzionare Sokil. Le email che inviamo, come il recupero della password, passano dal nostro fornitore di posta. Se entri con Google, Google gestisce quell’accesso. Se accetti i cookie di analisi, Google riceve dati di utilizzo tramite Google Analytics. Se hai effettuato l’accesso, includono l’identificativo casuale del tuo account, mai il tuo nome o il tuo indirizzo email.\n\nGli amministratori di un club o di una federazione possono vedere l’appartenenza e le iscrizioni che invii loro. Le altre persone vedono il tuo profilo solo nei limiti della visibilità che scegli: personale, limitata o pubblica."
       },
       "retention": {
         "title": "Per quanto tempo li conserviamo",
-        "body": "I dati dell’account restano finché non elimini l’account o non ci chiedi di cancellarli. Gli allenamenti sul server restano finché la sincronizzazione è attiva e l’account esiste. I dati che non lasciano il dispositivo restano finché non li rimuovi.\n\nIl cookie di sessione termina quando esci o quando la sessione scade. Google conserva i dati di analitica secondo le proprie impostazioni."
+        "body": "I dati dell’account restano finché non elimini l’account o non ci chiedi di cancellarli. Gli allenamenti sul server restano finché la sincronizzazione è attiva e l’account esiste. I dati che non lasciano il dispositivo restano finché non li rimuovi.\n\nIl cookie di sessione termina quando esci o quando la sessione scade. In Google Analytics i dati dettagliati sugli eventi vengono conservati per 2 mesi e i dati a livello di utente per 14 mesi dalla tua ultima attività. I cookie _ga scadono al massimo dopo 2 anni, oppure subito se revochi il consenso."
       },
       "rights": {
         "title": "I tuoi diritti",
@@ -1884,5 +1884,15 @@
         "body": "Scrivi a contact@fedirko.pro."
       }
     }
+  },
+  "cookieConsent": {
+    "title": "Cookie",
+    "message": "Vorremmo usare i cookie di Google Analytics per capire come viene usato Sokil e migliorarlo. Vengono impostati solo se accetti. Puoi cambiare la tua scelta in qualsiasi momento da «Impostazioni cookie».",
+    "privacyLink": "Informativa sulla privacy",
+    "accept": "Accetta",
+    "reject": "Rifiuta",
+    "settings": "Impostazioni cookie",
+    "currentGranted": "Scelta attuale: cookie di analisi accettati.",
+    "currentDenied": "Scelta attuale: cookie di analisi rifiutati."
   }
 }
