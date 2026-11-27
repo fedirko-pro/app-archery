@@ -368,11 +368,15 @@ export interface PublicProfileDto {
 
 export interface PublicAchievementShareDto {
   id: string;
+  branch: 'onboarding' | 'discipline' | 'endurance' | 'fieldcraft' | 'arena';
+  subtrack?: 'arrows' | 'sessions' | 'distance' | 'weight';
+  tier: number;
   titleKey: string;
   descriptionKey: string;
   icon: string;
   shareImage?: string;
   rarity: string;
+  rarityHex: string;
   earned: boolean;
   earnedDate?: string | null;
   owner: {
@@ -381,23 +385,34 @@ export interface PublicAchievementShareDto {
     lastName?: string;
     picture?: string;
   };
+  badge512?: string;
+  thumb256?: string;
+  ogCard1200?: string;
 }
 
 export interface AchievementProgressDto {
   id: string;
-  category: string;
+  branch: 'onboarding' | 'discipline' | 'endurance' | 'fieldcraft' | 'arena';
+  subtrack?: 'arrows' | 'sessions' | 'distance' | 'weight';
+  tier: number;
+  parentIds: string[];
   rarity: 'common' | 'rare' | 'epic' | 'legendary';
+  rarityHex: string;
+  evaluationMode: 'client_offline' | 'server_verified';
   icon: string;
   shareImage?: string;
   titleKey: string;
   descriptionKey: string;
-  type: 'computed' | 'event';
   earned: boolean;
   progress: number;
   current?: number;
   threshold?: number;
   earnedAt?: string | null;
   source?: 'computed' | 'granted';
+  prerequisitesMet?: boolean;
+  badge512?: string;
+  thumb256?: string;
+  ogCard1200?: string;
 }
 
 export interface AchievementsListDto {

@@ -104,8 +104,15 @@ const AchievementSharePage: React.FC = () => {
             <Typography variant="h4" textAlign="center">
               {title}
             </Typography>
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1, flexWrap: 'wrap' }}>
               <Chip label={t(`achievements.rarity.${achievement.rarity}`)} size="small" />
+              {achievement.subtrack && (
+                <Chip
+                  label={t(`achievements.subtracks.${achievement.subtrack}`)}
+                  size="small"
+                  variant="outlined"
+                />
+              )}
             </Box>
             <Typography variant="body1" color="text.secondary" textAlign="center">
               {description}
@@ -140,7 +147,7 @@ const AchievementSharePage: React.FC = () => {
                 title={shareTitle}
                 text={`${description} · ${t('achievementShare.cta')}`}
                 imageUrl={pickAchievementShareImage(
-                  achievementShareImagePath(achievement.id),
+                  achievement.ogCard1200 ?? achievementShareImagePath(achievement.id),
                   achievement.owner.picture,
                 )}
                 size="small"

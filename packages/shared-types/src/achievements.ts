@@ -1,12 +1,10 @@
+export type AchievementBranch = 'onboarding' | 'discipline' | 'endurance' | 'fieldcraft' | 'arena';
+
+export type EnduranceSubtrack = 'arrows' | 'sessions' | 'distance' | 'weight';
+
 export type AchievementRarity = 'common' | 'rare' | 'epic' | 'legendary';
 
-export type AchievementCategory =
-  | 'onboarding'
-  | 'consistency'
-  | 'volume'
-  | 'exploration'
-  | 'tournaments'
-  | 'mastery';
+export type EvaluationMode = 'client_offline' | 'server_verified';
 
 export type AchievementMetric =
   | 'sessionsTotal'
@@ -20,31 +18,37 @@ export type AchievementMetric =
   | 'equipmentSetsUsed'
   | 'profileComplete'
   | 'metersTraveledTotal'
-  | 'kilogramsLifted';
-
-/** Pounds to kilograms conversion factor. */
-export const LB_TO_KG = 0.45359237;
-
-/** Convert a draw weight in pounds to kilograms. Returns 0 when undefined. */
-export function lbsToKg(lbs?: number | null): number {
-  return typeof lbs === 'number' && Number.isFinite(lbs) ? lbs * LB_TO_KG : 0;
-}
+  | 'kilogramsLifted'
+  | 'distinctEquipmentSets'
+  | 'distinctBowStyles'
+  | 'fieldOr3dSessions'
+  | 'maxScoringRingEnds';
 
 export interface AchievementCriteria {
   metric: AchievementMetric;
-  threshold: number;
+  target: number;
 }
 
-export interface AchievementDef {
+export interface AchievementAssets {
+  badge512: string;
+  thumb256: string;
+  ogCard1200: string;
+}
+
+export interface AchievementDefinition {
   id: string;
-  category: AchievementCategory;
-  rarity: AchievementRarity;
-  icon: string;
-  shareImage?: string;
   titleKey: string;
   descriptionKey: string;
-  type: 'computed' | 'event';
-  criteria?: AchievementCriteria;
+  icon: string;
+  branch: AchievementBranch;
+  subtrack?: EnduranceSubtrack;
+  tier: number;
+  parentIds: string[];
+  rarity: AchievementRarity;
+  rarityHex: string;
+  evaluationMode: EvaluationMode;
+  criteria: AchievementCriteria;
+  assets: AchievementAssets;
 }
 
 export interface AchievementStatsSnapshot {
@@ -60,395 +64,700 @@ export interface AchievementStatsSnapshot {
   profileComplete: boolean;
   metersTraveledTotal: number;
   kilogramsLifted: number;
+  distinctEquipmentSets: number;
+  distinctBowStyles: number;
+  fieldOr3dSessions: number;
+  maxScoringRingEnds: number;
 }
 
-// Rarity color mapping for placeholder images (using hex without # for URLs)
-const RARITY_COLORS: Record<AchievementRarity, string> = {
-  common: '9E9E9E', // Grey
-  rare: '2196F3', // Blue
-  epic: '9C27B0', // Purple
-  legendary: 'FF9800', // Amber/Orange
+/** Pounds to kilograms conversion factor. */
+export const LB_TO_KG = 0.45359237;
+
+/** Convert a draw weight in pounds to kilograms. Returns 0 when undefined. */
+export function lbsToKg(lbs?: number | null): number {
+  return typeof lbs === 'number' && Number.isFinite(lbs) ? lbs * LB_TO_KG : 0;
+}
+
+// Rarity color mapping (matches design spec)
+const RARITY_HEX: Record<AchievementRarity, string> = {
+  common: '#9E9E9E',
+  rare: '#2196F3',
+  epic: '#9C27B0',
+  legendary: '#FF9800',
 };
 
 /**
- * Generates a placeholder image URL for an achievement using placehold.co.
- * The image will have the achievement's emoji and rarity-based background color.
+ * Generates a placeholder image URL for an achievement.
+ * Uses local asset paths in production, placehold.co for development.
  */
-function generateAchievementShareImage(
-  _id: string,
-  icon: string,
+function generateAssetUrl(
+  id: string,
+  size: '512' | '256' | 'og',
   rarity: AchievementRarity,
 ): string {
-  const color = RARITY_COLORS[rarity];
-  const encodedIcon = encodeURIComponent(icon);
-  // placehold.co format: https://placehold.co/{width}x{height}/{bgColor}/{textColor}?text={text}&font=roboto
-  return `https://placehold.co/1200x630/${color}/FFFFFF?text=${encodedIcon}&font=roboto`;
+  // In production, these would be local assets: /assets/achievements/{id}_{size}.png
+  // For now, use placehold.co with rarity color
+  const color = RARITY_HEX[rarity].slice(1); // remove #
+  const encodedId = encodeURIComponent(id);
+  if (size === 'og') {
+    return `https://placehold.co/1200x630/${color}/FFFFFF?text=${encodedId}&font=roboto`;
+  }
+  const dim = size === '512' ? '512x512' : '256x256';
+  return `https://placehold.co/${dim}/${color}/FFFFFF?text=${encodedId}&font=roboto`;
 }
 
-export const ACHIEVEMENT_CATALOG: AchievementDef[] = [
-  // Onboarding
+function assetsFor(id: string, rarity: AchievementRarity): AchievementAssets {
+  return {
+    badge512: generateAssetUrl(id, '512', rarity),
+    thumb256: generateAssetUrl(id, '256', rarity),
+    ogCard1200: generateAssetUrl(id, 'og', rarity),
+  };
+}
+
+export const ACHIEVEMENT_CATALOG: AchievementDefinition[] = [
+  // ============================================================
+  // ONBOARDING (tier 1-4)
+  // ============================================================
   {
     id: 'first-session',
-    category: 'onboarding',
-    rarity: 'common',
-    icon: '🏹',
-    shareImage: generateAchievementShareImage('first-session', '🏹', 'common'),
     titleKey: 'achievements.firstSession.title',
     descriptionKey: 'achievements.firstSession.description',
-    type: 'computed',
-    criteria: { metric: 'sessionsTotal', threshold: 1 },
+    icon: '🏹',
+    branch: 'onboarding',
+    tier: 1,
+    parentIds: [],
+    rarity: 'common',
+    rarityHex: RARITY_HEX.common,
+    evaluationMode: 'client_offline',
+    criteria: { metric: 'sessionsTotal', target: 1 },
+    assets: assetsFor('first-session', 'common'),
   },
   {
     id: 'first-equipment',
-    category: 'onboarding',
-    rarity: 'common',
-    icon: '🎯',
-    shareImage: generateAchievementShareImage('first-equipment', '🎯', 'common'),
     titleKey: 'achievements.firstEquipment.title',
     descriptionKey: 'achievements.firstEquipment.description',
-    type: 'computed',
-    criteria: { metric: 'equipmentSetsUsed', threshold: 1 },
+    icon: '🎯',
+    branch: 'onboarding',
+    tier: 2,
+    parentIds: [],
+    rarity: 'common',
+    rarityHex: RARITY_HEX.common,
+    evaluationMode: 'client_offline',
+    criteria: { metric: 'equipmentSetsUsed', target: 1 },
+    assets: assetsFor('first-equipment', 'common'),
   },
   {
     id: 'profile-complete',
-    category: 'onboarding',
-    rarity: 'common',
-    icon: '👤',
-    shareImage: generateAchievementShareImage('profile-complete', '👤', 'common'),
     titleKey: 'achievements.profileComplete.title',
     descriptionKey: 'achievements.profileComplete.description',
-    type: 'computed',
-    criteria: { metric: 'profileComplete', threshold: 1 },
+    icon: '👤',
+    branch: 'onboarding',
+    tier: 3,
+    parentIds: [],
+    rarity: 'common',
+    rarityHex: RARITY_HEX.common,
+    evaluationMode: 'client_offline',
+    criteria: { metric: 'profileComplete', target: 1 },
+    assets: assetsFor('profile-complete', 'common'),
   },
-  // Consistency (best-ever streak weeks)
+  {
+    id: 'offline-session',
+    titleKey: 'achievements.offlineSession.title',
+    descriptionKey: 'achievements.offlineSession.description',
+    icon: '📱',
+    branch: 'onboarding',
+    tier: 4,
+    parentIds: ['first-session'],
+    rarity: 'common',
+    rarityHex: RARITY_HEX.common,
+    evaluationMode: 'client_offline',
+    criteria: { metric: 'sessionsTotal', target: 1 },
+    assets: assetsFor('offline-session', 'common'),
+  },
+
+  // ============================================================
+  // DISCIPLINE — Consistency Streaks (tier 1-5)
+  // ============================================================
   {
     id: 'streak-2-weeks',
-    category: 'consistency',
-    rarity: 'common',
-    icon: '🔥',
-    shareImage: generateAchievementShareImage('streak-2-weeks', '🔥', 'common'),
     titleKey: 'achievements.streak2Weeks.title',
     descriptionKey: 'achievements.streak2Weeks.description',
-    type: 'computed',
-    criteria: { metric: 'streakWeeksBest', threshold: 2 },
+    icon: '🔥',
+    branch: 'discipline',
+    tier: 1,
+    parentIds: [],
+    rarity: 'common',
+    rarityHex: RARITY_HEX.common,
+    evaluationMode: 'client_offline',
+    criteria: { metric: 'streakWeeksBest', target: 2 },
+    assets: assetsFor('streak-2-weeks', 'common'),
   },
   {
     id: 'streak-4-weeks',
-    category: 'consistency',
-    rarity: 'rare',
-    icon: '🔥',
-    shareImage: generateAchievementShareImage('streak-4-weeks', '🔥', 'rare'),
     titleKey: 'achievements.streak4Weeks.title',
     descriptionKey: 'achievements.streak4Weeks.description',
-    type: 'computed',
-    criteria: { metric: 'streakWeeksBest', threshold: 4 },
+    icon: '🔥',
+    branch: 'discipline',
+    tier: 2,
+    parentIds: ['streak-2-weeks'],
+    rarity: 'rare',
+    rarityHex: RARITY_HEX.rare,
+    evaluationMode: 'client_offline',
+    criteria: { metric: 'streakWeeksBest', target: 4 },
+    assets: assetsFor('streak-4-weeks', 'rare'),
   },
   {
     id: 'streak-12-weeks',
-    category: 'consistency',
-    rarity: 'epic',
-    icon: '🔥',
-    shareImage: generateAchievementShareImage('streak-12-weeks', '🔥', 'epic'),
     titleKey: 'achievements.streak12Weeks.title',
     descriptionKey: 'achievements.streak12Weeks.description',
-    type: 'computed',
-    criteria: { metric: 'streakWeeksBest', threshold: 12 },
+    icon: '🔥',
+    branch: 'discipline',
+    tier: 3,
+    parentIds: ['streak-4-weeks'],
+    rarity: 'epic',
+    rarityHex: RARITY_HEX.epic,
+    evaluationMode: 'client_offline',
+    criteria: { metric: 'streakWeeksBest', target: 12 },
+    assets: assetsFor('streak-12-weeks', 'epic'),
   },
   {
     id: 'streak-26-weeks',
-    category: 'consistency',
-    rarity: 'legendary',
-    icon: '🔥',
-    shareImage: generateAchievementShareImage('streak-26-weeks', '🔥', 'legendary'),
     titleKey: 'achievements.streak26Weeks.title',
     descriptionKey: 'achievements.streak26Weeks.description',
-    type: 'computed',
-    criteria: { metric: 'streakWeeksBest', threshold: 26 },
+    icon: '🔥',
+    branch: 'discipline',
+    tier: 4,
+    parentIds: ['streak-12-weeks'],
+    rarity: 'epic',
+    rarityHex: RARITY_HEX.epic,
+    evaluationMode: 'client_offline',
+    criteria: { metric: 'streakWeeksBest', target: 26 },
+    assets: assetsFor('streak-26-weeks', 'epic'),
   },
-  // Volume — arrows
+  {
+    id: 'streak-52-weeks',
+    titleKey: 'achievements.streak52Weeks.title',
+    descriptionKey: 'achievements.streak52Weeks.description',
+    icon: '🔥',
+    branch: 'discipline',
+    tier: 5,
+    parentIds: ['streak-26-weeks'],
+    rarity: 'legendary',
+    rarityHex: RARITY_HEX.legendary,
+    evaluationMode: 'client_offline',
+    criteria: { metric: 'streakWeeksBest', target: 52 },
+    assets: assetsFor('streak-52-weeks', 'legendary'),
+  },
+
+  // ============================================================
+  // ENDURANCE — Arrows (tier 1-4)
+  // ============================================================
   {
     id: 'arrows-500',
-    category: 'volume',
-    rarity: 'common',
-    icon: '➡️',
-    shareImage: generateAchievementShareImage('arrows-500', '➡️', 'common'),
     titleKey: 'achievements.arrows500.title',
     descriptionKey: 'achievements.arrows500.description',
-    type: 'computed',
-    criteria: { metric: 'shotsTotal', threshold: 500 },
+    icon: '➡️',
+    branch: 'endurance',
+    subtrack: 'arrows',
+    tier: 1,
+    parentIds: [],
+    rarity: 'common',
+    rarityHex: RARITY_HEX.common,
+    evaluationMode: 'client_offline',
+    criteria: { metric: 'shotsTotal', target: 500 },
+    assets: assetsFor('arrows-500', 'common'),
   },
   {
     id: 'arrows-2500',
-    category: 'volume',
-    rarity: 'rare',
-    icon: '➡️',
-    shareImage: generateAchievementShareImage('arrows-2500', '➡️', 'rare'),
     titleKey: 'achievements.arrows2500.title',
     descriptionKey: 'achievements.arrows2500.description',
-    type: 'computed',
-    criteria: { metric: 'shotsTotal', threshold: 2500 },
+    icon: '➡️',
+    branch: 'endurance',
+    subtrack: 'arrows',
+    tier: 2,
+    parentIds: ['arrows-500'],
+    rarity: 'rare',
+    rarityHex: RARITY_HEX.rare,
+    evaluationMode: 'client_offline',
+    criteria: { metric: 'shotsTotal', target: 2500 },
+    assets: assetsFor('arrows-2500', 'rare'),
   },
   {
     id: 'arrows-10000',
-    category: 'volume',
-    rarity: 'epic',
-    icon: '➡️',
-    shareImage: generateAchievementShareImage('arrows-10000', '➡️', 'epic'),
     titleKey: 'achievements.arrows10000.title',
     descriptionKey: 'achievements.arrows10000.description',
-    type: 'computed',
-    criteria: { metric: 'shotsTotal', threshold: 10000 },
+    icon: '➡️',
+    branch: 'endurance',
+    subtrack: 'arrows',
+    tier: 3,
+    parentIds: ['arrows-2500'],
+    rarity: 'epic',
+    rarityHex: RARITY_HEX.epic,
+    evaluationMode: 'client_offline',
+    criteria: { metric: 'shotsTotal', target: 10000 },
+    assets: assetsFor('arrows-10000', 'epic'),
   },
   {
     id: 'arrows-25000',
-    category: 'volume',
-    rarity: 'legendary',
-    icon: '➡️',
-    shareImage: generateAchievementShareImage('arrows-25000', '➡️', 'legendary'),
     titleKey: 'achievements.arrows25000.title',
     descriptionKey: 'achievements.arrows25000.description',
-    type: 'computed',
-    criteria: { metric: 'shotsTotal', threshold: 25000 },
+    icon: '➡️',
+    branch: 'endurance',
+    subtrack: 'arrows',
+    tier: 4,
+    parentIds: ['arrows-10000'],
+    rarity: 'legendary',
+    rarityHex: RARITY_HEX.legendary,
+    evaluationMode: 'client_offline',
+    criteria: { metric: 'shotsTotal', target: 25000 },
+    assets: assetsFor('arrows-25000', 'legendary'),
   },
-  // Volume — sessions
+
+  // ============================================================
+  // ENDURANCE — Sessions (tier 1-4)
+  // ============================================================
   {
     id: 'sessions-10',
-    category: 'volume',
-    rarity: 'common',
-    icon: '📅',
-    shareImage: generateAchievementShareImage('sessions-10', '📅', 'common'),
     titleKey: 'achievements.sessions10.title',
     descriptionKey: 'achievements.sessions10.description',
-    type: 'computed',
-    criteria: { metric: 'sessionsTotal', threshold: 10 },
+    icon: '📅',
+    branch: 'endurance',
+    subtrack: 'sessions',
+    tier: 1,
+    parentIds: [],
+    rarity: 'common',
+    rarityHex: RARITY_HEX.common,
+    evaluationMode: 'client_offline',
+    criteria: { metric: 'sessionsTotal', target: 10 },
+    assets: assetsFor('sessions-10', 'common'),
   },
   {
     id: 'sessions-50',
-    category: 'volume',
-    rarity: 'rare',
-    icon: '📅',
-    shareImage: generateAchievementShareImage('sessions-50', '📅', 'rare'),
     titleKey: 'achievements.sessions50.title',
     descriptionKey: 'achievements.sessions50.description',
-    type: 'computed',
-    criteria: { metric: 'sessionsTotal', threshold: 50 },
+    icon: '📅',
+    branch: 'endurance',
+    subtrack: 'sessions',
+    tier: 2,
+    parentIds: ['sessions-10'],
+    rarity: 'rare',
+    rarityHex: RARITY_HEX.rare,
+    evaluationMode: 'client_offline',
+    criteria: { metric: 'sessionsTotal', target: 50 },
+    assets: assetsFor('sessions-50', 'rare'),
   },
   {
     id: 'sessions-150',
-    category: 'volume',
-    rarity: 'epic',
-    icon: '📅',
-    shareImage: generateAchievementShareImage('sessions-150', '📅', 'epic'),
     titleKey: 'achievements.sessions150.title',
     descriptionKey: 'achievements.sessions150.description',
-    type: 'computed',
-    criteria: { metric: 'sessionsTotal', threshold: 150 },
+    icon: '📅',
+    branch: 'endurance',
+    subtrack: 'sessions',
+    tier: 3,
+    parentIds: ['sessions-50'],
+    rarity: 'epic',
+    rarityHex: RARITY_HEX.epic,
+    evaluationMode: 'client_offline',
+    criteria: { metric: 'sessionsTotal', target: 150 },
+    assets: assetsFor('sessions-150', 'epic'),
   },
   {
     id: 'sessions-500',
-    category: 'volume',
-    rarity: 'legendary',
-    icon: '📅',
-    shareImage: generateAchievementShareImage('sessions-500', '📅', 'legendary'),
     titleKey: 'achievements.sessions500.title',
     descriptionKey: 'achievements.sessions500.description',
-    type: 'computed',
-    criteria: { metric: 'sessionsTotal', threshold: 500 },
-  },
-  // Exploration
-  {
-    id: 'distances-3',
-    category: 'exploration',
-    rarity: 'common',
-    icon: '📏',
-    shareImage: generateAchievementShareImage('distances-3', '📏', 'common'),
-    titleKey: 'achievements.distances3.title',
-    descriptionKey: 'achievements.distances3.description',
-    type: 'computed',
-    criteria: { metric: 'distinctDistances', threshold: 3 },
-  },
-  {
-    id: 'distances-5',
-    category: 'exploration',
-    rarity: 'rare',
-    icon: '📏',
-    shareImage: generateAchievementShareImage('distances-5', '📏', 'rare'),
-    titleKey: 'achievements.distances5.title',
-    descriptionKey: 'achievements.distances5.description',
-    type: 'computed',
-    criteria: { metric: 'distinctDistances', threshold: 5 },
-  },
-  {
-    id: 'target-types-3',
-    category: 'exploration',
-    rarity: 'common',
-    icon: '🎯',
-    shareImage: generateAchievementShareImage('target-types-3', '🎯', 'common'),
-    titleKey: 'achievements.targetTypes3.title',
-    descriptionKey: 'achievements.targetTypes3.description',
-    type: 'computed',
-    criteria: { metric: 'distinctTargetTypes', threshold: 3 },
-  },
-  {
-    id: 'scored-sessions-5',
-    category: 'exploration',
-    rarity: 'rare',
-    icon: '💯',
-    shareImage: generateAchievementShareImage('scored-sessions-5', '💯', 'rare'),
-    titleKey: 'achievements.scoredSessions5.title',
-    descriptionKey: 'achievements.scoredSessions5.description',
-    type: 'computed',
-    criteria: { metric: 'scoredSessions', threshold: 5 },
-  },
-  // Tournaments
-  {
-    id: 'first-application',
-    category: 'tournaments',
-    rarity: 'common',
-    icon: '📝',
-    shareImage: generateAchievementShareImage('first-application', '📝', 'common'),
-    titleKey: 'achievements.firstApplication.title',
-    descriptionKey: 'achievements.firstApplication.description',
-    type: 'computed',
-    criteria: { metric: 'applicationsSubmitted', threshold: 1 },
-  },
-  {
-    id: 'competitor',
-    category: 'tournaments',
-    rarity: 'rare',
-    icon: '🏅',
-    shareImage: generateAchievementShareImage('competitor', '🏅', 'rare'),
-    titleKey: 'achievements.competitor.title',
-    descriptionKey: 'achievements.competitor.description',
-    type: 'event',
-  },
-  {
-    id: 'seasoned-competitor',
-    category: 'tournaments',
-    rarity: 'epic',
-    icon: '🏅',
-    shareImage: generateAchievementShareImage('seasoned-competitor', '🏅', 'epic'),
-    titleKey: 'achievements.seasonedCompetitor.title',
-    descriptionKey: 'achievements.seasonedCompetitor.description',
-    type: 'computed',
-    criteria: { metric: 'applicationsApproved', threshold: 5 },
-  },
-  // Mastery — event-only (admin grant / future tournament results)
-  {
-    id: 'tournament-champion',
-    category: 'mastery',
+    icon: '📅',
+    branch: 'endurance',
+    subtrack: 'sessions',
+    tier: 4,
+    parentIds: ['sessions-150'],
     rarity: 'legendary',
-    icon: '🏆',
-    shareImage: generateAchievementShareImage('tournament-champion', '🏆', 'legendary'),
-    titleKey: 'achievements.tournamentChampion.title',
-    descriptionKey: 'achievements.tournamentChampion.description',
-    type: 'event',
+    rarityHex: RARITY_HEX.legendary,
+    evaluationMode: 'client_offline',
+    criteria: { metric: 'sessionsTotal', target: 500 },
+    assets: assetsFor('sessions-500', 'legendary'),
   },
-  {
-    id: 'personal-best',
-    category: 'mastery',
-    rarity: 'epic',
-    icon: '⭐',
-    shareImage: generateAchievementShareImage('personal-best', '⭐', 'epic'),
-    titleKey: 'achievements.personalBest.title',
-    descriptionKey: 'achievements.personalBest.description',
-    type: 'event',
-  },
-  // Volume — meters traveled (walking to targets and back)
+
+  // ============================================================
+  // ENDURANCE — Distance (tier 1-7)
+  // ============================================================
   {
     id: 'distance-10km',
-    category: 'volume',
-    rarity: 'common',
-    icon: '🥾',
-    shareImage: generateAchievementShareImage('distance-10km', '🥾', 'common'),
     titleKey: 'achievements.distance10km.title',
     descriptionKey: 'achievements.distance10km.description',
-    type: 'computed',
-    criteria: { metric: 'metersTraveledTotal', threshold: 10_000 },
+    icon: '🥾',
+    branch: 'endurance',
+    subtrack: 'distance',
+    tier: 1,
+    parentIds: [],
+    rarity: 'common',
+    rarityHex: RARITY_HEX.common,
+    evaluationMode: 'client_offline',
+    criteria: { metric: 'metersTraveledTotal', target: 10000 },
+    assets: assetsFor('distance-10km', 'common'),
   },
   {
     id: 'distance-marathon',
-    category: 'volume',
-    rarity: 'rare',
-    icon: '🥾',
-    shareImage: generateAchievementShareImage('distance-marathon', '🥾', 'rare'),
     titleKey: 'achievements.distanceMarathon.title',
     descriptionKey: 'achievements.distanceMarathon.description',
-    type: 'computed',
-    criteria: { metric: 'metersTraveledTotal', threshold: 42_195 },
+    icon: '🥾',
+    branch: 'endurance',
+    subtrack: 'distance',
+    tier: 2,
+    parentIds: ['distance-10km'],
+    rarity: 'rare',
+    rarityHex: RARITY_HEX.rare,
+    evaluationMode: 'client_offline',
+    criteria: { metric: 'metersTraveledTotal', target: 42195 },
+    assets: assetsFor('distance-marathon', 'rare'),
+  },
+  {
+    id: 'distance-100km',
+    titleKey: 'achievements.distance100km.title',
+    descriptionKey: 'achievements.distance100km.description',
+    icon: '🥾',
+    branch: 'endurance',
+    subtrack: 'distance',
+    tier: 3,
+    parentIds: ['distance-marathon'],
+    rarity: 'rare',
+    rarityHex: RARITY_HEX.rare,
+    evaluationMode: 'client_offline',
+    criteria: { metric: 'metersTraveledTotal', target: 100000 },
+    assets: assetsFor('distance-100km', 'rare'),
   },
   {
     id: 'distance-250km',
-    category: 'volume',
-    rarity: 'epic',
-    icon: '🥾',
-    shareImage: generateAchievementShareImage('distance-250km', '🥾', 'epic'),
     titleKey: 'achievements.distance250km.title',
     descriptionKey: 'achievements.distance250km.description',
-    type: 'computed',
-    criteria: { metric: 'metersTraveledTotal', threshold: 250_000 },
+    icon: '🥾',
+    branch: 'endurance',
+    subtrack: 'distance',
+    tier: 4,
+    parentIds: ['distance-100km'],
+    rarity: 'epic',
+    rarityHex: RARITY_HEX.epic,
+    evaluationMode: 'client_offline',
+    criteria: { metric: 'metersTraveledTotal', target: 250000 },
+    assets: assetsFor('distance-250km', 'epic'),
+  },
+  {
+    id: 'distance-500km',
+    titleKey: 'achievements.distance500km.title',
+    descriptionKey: 'achievements.distance500km.description',
+    icon: '🥾',
+    branch: 'endurance',
+    subtrack: 'distance',
+    tier: 5,
+    parentIds: ['distance-250km'],
+    rarity: 'epic',
+    rarityHex: RARITY_HEX.epic,
+    evaluationMode: 'client_offline',
+    criteria: { metric: 'metersTraveledTotal', target: 500000 },
+    assets: assetsFor('distance-500km', 'epic'),
+  },
+  {
+    id: 'distance-1000km',
+    titleKey: 'achievements.distance1000km.title',
+    descriptionKey: 'achievements.distance1000km.description',
+    icon: '🥾',
+    branch: 'endurance',
+    subtrack: 'distance',
+    tier: 6,
+    parentIds: ['distance-500km'],
+    rarity: 'epic',
+    rarityHex: RARITY_HEX.epic,
+    evaluationMode: 'client_offline',
+    criteria: { metric: 'metersTraveledTotal', target: 1000000 },
+    assets: assetsFor('distance-1000km', 'epic'),
   },
   {
     id: 'distance-there-and-back',
-    category: 'volume',
-    rarity: 'legendary',
-    icon: '🗺️',
-    shareImage: generateAchievementShareImage('distance-there-and-back', '🗺️', 'legendary'),
     titleKey: 'achievements.distanceThereAndBack.title',
     descriptionKey: 'achievements.distanceThereAndBack.description',
-    type: 'computed',
-    criteria: { metric: 'metersTraveledTotal', threshold: 3_000_000 },
+    icon: '🗺️',
+    branch: 'endurance',
+    subtrack: 'distance',
+    tier: 7,
+    parentIds: ['distance-1000km'],
+    rarity: 'legendary',
+    rarityHex: RARITY_HEX.legendary,
+    evaluationMode: 'client_offline',
+    criteria: { metric: 'metersTraveledTotal', target: 3000000 },
+    assets: assetsFor('distance-there-and-back', 'legendary'),
   },
-  // Volume — kilograms lifted (draw weight per shot)
+
+  // ============================================================
+  // ENDURANCE — Weight (tier 1-4)
+  // ============================================================
   {
     id: 'lift-1t',
-    category: 'volume',
-    rarity: 'common',
-    icon: '🏋️',
-    shareImage: generateAchievementShareImage('lift-1t', '🏋️', 'common'),
     titleKey: 'achievements.lift1t.title',
     descriptionKey: 'achievements.lift1t.description',
-    type: 'computed',
-    criteria: { metric: 'kilogramsLifted', threshold: 1_000 },
+    icon: '🏋️',
+    branch: 'endurance',
+    subtrack: 'weight',
+    tier: 1,
+    parentIds: [],
+    rarity: 'common',
+    rarityHex: RARITY_HEX.common,
+    evaluationMode: 'client_offline',
+    criteria: { metric: 'kilogramsLifted', target: 1000 },
+    assets: assetsFor('lift-1t', 'common'),
   },
   {
     id: 'lift-elephant',
-    category: 'volume',
-    rarity: 'rare',
-    icon: '🐘',
-    shareImage: generateAchievementShareImage('lift-elephant', '🐘', 'rare'),
     titleKey: 'achievements.liftElephant.title',
     descriptionKey: 'achievements.liftElephant.description',
-    type: 'computed',
-    criteria: { metric: 'kilogramsLifted', threshold: 6_000 },
+    icon: '🐘',
+    branch: 'endurance',
+    subtrack: 'weight',
+    tier: 2,
+    parentIds: ['lift-1t'],
+    rarity: 'rare',
+    rarityHex: RARITY_HEX.rare,
+    evaluationMode: 'client_offline',
+    criteria: { metric: 'kilogramsLifted', target: 6000 },
+    assets: assetsFor('lift-elephant', 'rare'),
   },
   {
     id: 'lift-blue-whale',
-    category: 'volume',
-    rarity: 'epic',
-    icon: '🐋',
-    shareImage: generateAchievementShareImage('lift-blue-whale', '🐋', 'epic'),
     titleKey: 'achievements.liftBlueWhale.title',
     descriptionKey: 'achievements.liftBlueWhale.description',
-    type: 'computed',
-    criteria: { metric: 'kilogramsLifted', threshold: 150_000 },
+    icon: '🐋',
+    branch: 'endurance',
+    subtrack: 'weight',
+    tier: 3,
+    parentIds: ['lift-elephant'],
+    rarity: 'epic',
+    rarityHex: RARITY_HEX.epic,
+    evaluationMode: 'client_offline',
+    criteria: { metric: 'kilogramsLifted', target: 150000 },
+    assets: assetsFor('lift-blue-whale', 'epic'),
   },
   {
     id: 'lift-kiloton',
-    category: 'volume',
-    rarity: 'legendary',
-    icon: '🏋️',
-    shareImage: generateAchievementShareImage('lift-kiloton', '🏋️', 'legendary'),
     titleKey: 'achievements.liftKiloton.title',
     descriptionKey: 'achievements.liftKiloton.description',
-    type: 'computed',
-    criteria: { metric: 'kilogramsLifted', threshold: 1_000_000 },
+    icon: '🏋️',
+    branch: 'endurance',
+    subtrack: 'weight',
+    tier: 4,
+    parentIds: ['lift-blue-whale'],
+    rarity: 'legendary',
+    rarityHex: RARITY_HEX.legendary,
+    evaluationMode: 'client_offline',
+    criteria: { metric: 'kilogramsLifted', target: 1000000 },
+    assets: assetsFor('lift-kiloton', 'legendary'),
+  },
+
+  // ============================================================
+  // FIELDCRAFT — Exploration (tier 1-6)
+  // ============================================================
+  {
+    id: 'distances-3',
+    titleKey: 'achievements.distances3.title',
+    descriptionKey: 'achievements.distances3.description',
+    icon: '📏',
+    branch: 'fieldcraft',
+    tier: 1,
+    parentIds: [],
+    rarity: 'common',
+    rarityHex: RARITY_HEX.common,
+    evaluationMode: 'client_offline',
+    criteria: { metric: 'distinctDistances', target: 3 },
+    assets: assetsFor('distances-3', 'common'),
+  },
+  {
+    id: 'distances-5',
+    titleKey: 'achievements.distances5.title',
+    descriptionKey: 'achievements.distances5.description',
+    icon: '📏',
+    branch: 'fieldcraft',
+    tier: 2,
+    parentIds: ['distances-3'],
+    rarity: 'rare',
+    rarityHex: RARITY_HEX.rare,
+    evaluationMode: 'client_offline',
+    criteria: { metric: 'distinctDistances', target: 5 },
+    assets: assetsFor('distances-5', 'rare'),
+  },
+  {
+    id: 'target-types-3',
+    titleKey: 'achievements.targetTypes3.title',
+    descriptionKey: 'achievements.targetTypes3.description',
+    icon: '🎯',
+    branch: 'fieldcraft',
+    tier: 3,
+    parentIds: [],
+    rarity: 'common',
+    rarityHex: RARITY_HEX.common,
+    evaluationMode: 'client_offline',
+    criteria: { metric: 'distinctTargetTypes', target: 3 },
+    assets: assetsFor('target-types-3', 'common'),
+  },
+  {
+    id: 'field-or-3d',
+    titleKey: 'achievements.fieldOr3d.title',
+    descriptionKey: 'achievements.fieldOr3d.description',
+    icon: '🌲',
+    branch: 'fieldcraft',
+    tier: 4,
+    parentIds: ['target-types-3'],
+    rarity: 'rare',
+    rarityHex: RARITY_HEX.rare,
+    evaluationMode: 'client_offline',
+    criteria: { metric: 'fieldOr3dSessions', target: 1 },
+    assets: assetsFor('field-or-3d', 'rare'),
+  },
+  {
+    id: 'bow-switch',
+    titleKey: 'achievements.bowSwitch.title',
+    descriptionKey: 'achievements.bowSwitch.description',
+    icon: '🏹',
+    branch: 'fieldcraft',
+    tier: 5,
+    parentIds: ['first-equipment'],
+    rarity: 'common',
+    rarityHex: RARITY_HEX.common,
+    evaluationMode: 'client_offline',
+    criteria: { metric: 'distinctEquipmentSets', target: 2 },
+    assets: assetsFor('bow-switch', 'common'),
+  },
+  {
+    id: 'style-versatility',
+    titleKey: 'achievements.styleVersatility.title',
+    descriptionKey: 'achievements.styleVersatility.description',
+    icon: '🎯',
+    branch: 'fieldcraft',
+    tier: 6,
+    parentIds: ['bow-switch'],
+    rarity: 'rare',
+    rarityHex: RARITY_HEX.rare,
+    evaluationMode: 'client_offline',
+    criteria: { metric: 'distinctBowStyles', target: 2 },
+    assets: assetsFor('style-versatility', 'rare'),
+  },
+
+  // ============================================================
+  // ARENA — Tournaments & Mastery (tier 1-7)
+  // ============================================================
+  {
+    id: 'first-application',
+    titleKey: 'achievements.firstApplication.title',
+    descriptionKey: 'achievements.firstApplication.description',
+    icon: '📝',
+    branch: 'arena',
+    tier: 1,
+    parentIds: ['profile-complete'],
+    rarity: 'common',
+    rarityHex: RARITY_HEX.common,
+    evaluationMode: 'client_offline',
+    criteria: { metric: 'applicationsSubmitted', target: 1 },
+    assets: assetsFor('first-application', 'common'),
+  },
+  {
+    id: 'competitor',
+    titleKey: 'achievements.competitor.title',
+    descriptionKey: 'achievements.competitor.description',
+    icon: '🏅',
+    branch: 'arena',
+    tier: 2,
+    parentIds: ['first-application'],
+    rarity: 'rare',
+    rarityHex: RARITY_HEX.rare,
+    evaluationMode: 'server_verified',
+    criteria: { metric: 'applicationsApproved', target: 1 },
+    assets: assetsFor('competitor', 'rare'),
+  },
+  {
+    id: 'seasoned-competitor',
+    titleKey: 'achievements.seasonedCompetitor.title',
+    descriptionKey: 'achievements.seasonedCompetitor.description',
+    icon: '🏅',
+    branch: 'arena',
+    tier: 3,
+    parentIds: ['competitor'],
+    rarity: 'epic',
+    rarityHex: RARITY_HEX.epic,
+    evaluationMode: 'server_verified',
+    criteria: { metric: 'applicationsApproved', target: 5 },
+    assets: assetsFor('seasoned-competitor', 'epic'),
+  },
+  {
+    id: 'tournament-champion',
+    titleKey: 'achievements.tournamentChampion.title',
+    descriptionKey: 'achievements.tournamentChampion.description',
+    icon: '🏆',
+    branch: 'arena',
+    tier: 4,
+    parentIds: ['seasoned-competitor'],
+    rarity: 'legendary',
+    rarityHex: RARITY_HEX.legendary,
+    evaluationMode: 'server_verified',
+    criteria: { metric: 'applicationsApproved', target: 1 },
+    assets: assetsFor('tournament-champion', 'legendary'),
+  },
+  {
+    id: 'scored-sessions-5',
+    titleKey: 'achievements.scoredSessions5.title',
+    descriptionKey: 'achievements.scoredSessions5.description',
+    icon: '💯',
+    branch: 'arena',
+    tier: 5,
+    parentIds: [],
+    rarity: 'rare',
+    rarityHex: RARITY_HEX.rare,
+    evaluationMode: 'client_offline',
+    criteria: { metric: 'scoredSessions', target: 5 },
+    assets: assetsFor('scored-sessions-5', 'rare'),
+  },
+  {
+    id: 'clean-end',
+    titleKey: 'achievements.cleanEnd.title',
+    descriptionKey: 'achievements.cleanEnd.description',
+    icon: '🎯',
+    branch: 'arena',
+    tier: 6,
+    parentIds: ['scored-sessions-5'],
+    rarity: 'rare',
+    rarityHex: RARITY_HEX.rare,
+    evaluationMode: 'client_offline',
+    criteria: { metric: 'maxScoringRingEnds', target: 1 },
+    assets: assetsFor('clean-end', 'rare'),
+  },
+  {
+    id: 'personal-best',
+    titleKey: 'achievements.personalBest.title',
+    descriptionKey: 'achievements.personalBest.description',
+    icon: '⭐',
+    branch: 'arena',
+    tier: 7,
+    parentIds: ['scored-sessions-5'],
+    rarity: 'epic',
+    rarityHex: RARITY_HEX.epic,
+    evaluationMode: 'server_verified',
+    criteria: { metric: 'scoredSessions', target: 1 },
+    assets: assetsFor('personal-best', 'epic'),
   },
 ];
 
-export const ACHIEVEMENT_CATALOG_BY_ID: Record<string, AchievementDef> = Object.fromEntries(
+export const ACHIEVEMENT_CATALOG_BY_ID: Record<string, AchievementDefinition> = Object.fromEntries(
   ACHIEVEMENT_CATALOG.map((a) => [a.id, a]),
 );
+
+export const BRANCH_ORDER: AchievementBranch[] = [
+  'onboarding',
+  'discipline',
+  'endurance',
+  'fieldcraft',
+  'arena',
+];
+export const ENDURANCE_SUBTRACK_ORDER: EnduranceSubtrack[] = [
+  'arrows',
+  'sessions',
+  'distance',
+  'weight',
+];
 
 export const RARITY_ORDER: Record<AchievementRarity, number> = {
   legendary: 4,
@@ -487,25 +796,33 @@ function getMetricValue(snapshot: AchievementStatsSnapshot, metric: AchievementM
       return snapshot.metersTraveledTotal;
     case 'kilogramsLifted':
       return snapshot.kilogramsLifted;
+    case 'distinctEquipmentSets':
+      return snapshot.distinctEquipmentSets;
+    case 'distinctBowStyles':
+      return snapshot.distinctBowStyles;
+    case 'fieldOr3dSessions':
+      return snapshot.fieldOr3dSessions;
+    case 'maxScoringRingEnds':
+      return snapshot.maxScoringRingEnds;
     default:
       return 0;
   }
 }
 
 export function evaluateComputedProgress(
-  def: AchievementDef,
+  def: AchievementDefinition,
   snapshot: AchievementStatsSnapshot,
-): { earned: boolean; progress: number; current: number; threshold: number } {
-  if (def.type === 'event' || !def.criteria) {
-    return { earned: false, progress: 0, current: 0, threshold: 0 };
+): { earned: boolean; progress: number; current: number; target: number } {
+  if (def.evaluationMode === 'server_verified' || !def.criteria) {
+    return { earned: false, progress: 0, current: 0, target: 0 };
   }
 
   const current = getMetricValue(snapshot, def.criteria.metric);
-  const threshold = def.criteria.threshold;
-  const earned = current >= threshold;
-  const progress = threshold > 0 ? Math.min(100, Math.round((current / threshold) * 100)) : 0;
+  const target = def.criteria.target;
+  const earned = current >= target;
+  const progress = target > 0 ? Math.min(100, Math.round((current / target) * 100)) : 0;
 
-  return { earned, progress, current, threshold };
+  return { earned, progress, current, target };
 }
 
 export interface AchievementCompletionSummary {
@@ -517,7 +834,7 @@ export interface AchievementCompletionSummary {
 
 export function summarizeCompletion(
   earnedIds: Set<string>,
-  catalog: AchievementDef[] = ACHIEVEMENT_CATALOG,
+  catalog: AchievementDefinition[] = ACHIEVEMENT_CATALOG,
 ): AchievementCompletionSummary {
   const activeCatalog = catalog.filter((a) => ACHIEVEMENT_CATALOG_BY_ID[a.id]);
   const earnedInCatalog = [...earnedIds].filter((id) => isValidAchievementId(id));
@@ -554,4 +871,45 @@ export function sortAchievements<
     }
     return RARITY_ORDER[b.rarity] - RARITY_ORDER[a.rarity];
   });
+}
+
+// Helper to get achievements in branch/track order for UI rendering
+export function getAchievementsByBranch(branch: AchievementBranch): AchievementDefinition[] {
+  return ACHIEVEMENT_CATALOG.filter((a) => a.branch === branch).sort((a, b) => a.tier - b.tier);
+}
+
+export function getEnduranceBySubtrack(subtrack: EnduranceSubtrack): AchievementDefinition[] {
+  return ACHIEVEMENT_CATALOG.filter(
+    (a) => a.branch === 'endurance' && a.subtrack === subtrack,
+  ).sort((a, b) => a.tier - b.tier);
+}
+
+export function getAllEndurance(): AchievementDefinition[] {
+  return ACHIEVEMENT_CATALOG.filter((a) => a.branch === 'endurance').sort((a, b) => {
+    const subOrder = { arrows: 0, sessions: 1, distance: 2, weight: 3 };
+    const aSub = subOrder[a.subtrack ?? 'arrows'];
+    const bSub = subOrder[b.subtrack ?? 'arrows'];
+    if (aSub !== bSub) return aSub - bSub;
+    return a.tier - b.tier;
+  });
+}
+
+// Check if all parent achievements are earned
+export function arePrerequisitesMet(def: AchievementDefinition, earnedIds: Set<string>): boolean {
+  return def.parentIds.every((parentId) => earnedIds.has(parentId));
+}
+
+// Get the next locked achievement in a track (for in-progress highlighting)
+export function getNextInTrack(
+  branch: AchievementBranch,
+  subtrack: EnduranceSubtrack | undefined,
+  earnedIds: Set<string>,
+): AchievementDefinition | null {
+  let track: AchievementDefinition[];
+  if (branch === 'endurance' && subtrack) {
+    track = getEnduranceBySubtrack(subtrack);
+  } else {
+    track = getAchievementsByBranch(branch);
+  }
+  return track.find((a) => !earnedIds.has(a.id)) ?? null;
 }

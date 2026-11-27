@@ -27,7 +27,7 @@ import type { AchievementProgressDto } from '@/services/types';
 import { RARITY_ICON_COLORS } from '@/theme/achievementTokens';
 import { displayName } from '@/utils/user-display';
 
-type CategoryFilter = 'all' | AchievementProgressDto['category'];
+type CategoryFilter = 'all' | AchievementProgressDto['branch'];
 
 const getRarityIcon = (rarity: AchievementProgressDto['rarity']) => {
   switch (rarity) {
@@ -82,7 +82,7 @@ const UserAchievementsPage: React.FC = () => {
 
   const filterByCategory = useCallback(
     (items: AchievementProgressDto[]) =>
-      categoryFilter === 'all' ? items : items.filter((a) => a.category === categoryFilter),
+      categoryFilter === 'all' ? items : items.filter((a) => a.branch === categoryFilter),
     [categoryFilter],
   );
 
@@ -102,11 +102,10 @@ const UserAchievementsPage: React.FC = () => {
   const categories: CategoryFilter[] = [
     'all',
     'onboarding',
-    'consistency',
-    'volume',
-    'exploration',
-    'tournaments',
-    'mastery',
+    'discipline',
+    'endurance',
+    'fieldcraft',
+    'arena',
   ];
 
   if (loading && !data) {

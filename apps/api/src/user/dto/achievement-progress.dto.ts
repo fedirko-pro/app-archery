@@ -1,20 +1,34 @@
-import { AchievementCategory, AchievementRarity } from '@sokil/shared-types';
+import {
+  AchievementBranch,
+  AchievementRarity,
+  EnduranceSubtrack,
+  EvaluationMode,
+} from '@sokil/shared-types';
 
 export class AchievementProgressDto {
   id: string;
-  category: AchievementCategory;
+  branch: AchievementBranch;
+  subtrack?: EnduranceSubtrack;
+  tier: number;
+  parentIds: string[];
   rarity: AchievementRarity;
+  rarityHex: string;
+  evaluationMode: EvaluationMode;
   icon: string;
   shareImage?: string;
   titleKey: string;
   descriptionKey: string;
-  type: 'computed' | 'event';
   earned: boolean;
   progress: number;
   current?: number;
   threshold?: number;
   earnedAt?: string | null;
   source?: 'computed' | 'granted';
+  prerequisitesMet?: boolean;
+  // Asset URLs
+  badge512?: string;
+  thumb256?: string;
+  ogCard1200?: string;
 }
 
 export class AchievementsListDto {

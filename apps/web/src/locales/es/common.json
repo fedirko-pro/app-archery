@@ -1,6 +1,6 @@
 {
   "footer": {
-    "about": "Acerca de la app"
+    "about": "Sobre la app"
   },
   "social": {
     "facebook": "Facebook",
@@ -26,14 +26,14 @@
     "calculator": "Calculadora",
     "categories": "Categorías",
     "rules": "Reglas",
-    "about": "Acerca de la app",
+    "about": "Sobre la app",
     "users": "Usuarios",
-    "userApplications": "Solicitudes de torneos",
+    "userApplications": "Solicitudes de torneo",
     "accessControl": "Control de acceso",
     "divisions": "Divisiones",
-    "scoringDemo": "Tarjeta de Puntuación (demo sin papel)",
+    "scoringDemo": "Tarjeta de puntuación (demo sin papel)",
     "glossary": "Glosario",
-    "fieldGuide": "Guía de Campo",
+    "fieldGuide": "Guía de campo",
     "myClub": "Mi club",
     "myFederation": "Mi federación",
     "notifications": "Notificaciones",
@@ -41,15 +41,17 @@
   },
   "accessControl": {
     "title": "Control de acceso",
-    "description": "Gestionar roles de usuario. Solo los Administradores generales pueden acceder a esta página y cambiar roles.",
+    "description": "Gestiona roles de usuario. Solo los administradores generales pueden acceder a esta página y cambiar roles.",
+    "descriptionEdit": "Gestiona permisos por rol. Solo el administrador general puede editar. Otros administradores solo pueden ver.",
+    "descriptionView": "Ver permisos por rol. Solo el administrador general puede editar.",
     "name": "Nombre",
-    "email": "Correo electrónico",
+    "email": "Email",
     "role": "Rol",
-    "fetchError": "Error al cargar usuarios",
+    "fetchError": "Error al obtener usuarios",
     "updateSuccess": "Rol actualizado correctamente",
-    "updateError": "Error al actualizar el rol",
+    "updateError": "Error al actualizar rol",
     "roleUser": "Usuario",
-    "roleClubAdmin": "Admin del club",
+    "roleClubAdmin": "Admin de club",
     "roleFederationAdmin": "Admin de federación",
     "roleGeneralAdmin": "Admin general",
     "rolesAndPermissions": "Roles y permisos",
@@ -59,29 +61,27 @@
     "permDeleteTournament": "Eliminar torneos",
     "permCreateEditUser": "Crear / Editar usuarios",
     "permDeleteUser": "Eliminar usuarios",
-    "permViewApplications": "Ver solicitudes de torneos",
+    "permViewApplications": "Ver solicitudes de torneo",
     "permEditApplications": "Editar / Aprobar / Rechazar solicitudes",
-    "permApplyOtherUsers": "Inscribir otros usuarios en torneos",
+    "permApplyOtherUsers": "Inscribir a otros usuarios en torneos",
     "permPatrolsPdf": "Gestionar patrullas y generar PDFs",
     "permReferenceData": "Gestionar categorías, clubes, divisiones, reglas",
-    "permAccessControl": "Control de acceso (cambiar roles)",
-    "descriptionEdit": "Gestionar permisos por rol. Solo el Administrador general puede editar. Otros administradores solo pueden ver.",
-    "descriptionView": "Ver permisos por rol. Solo el Administrador general puede editar."
+    "permAccessControl": "Control de acceso (cambiar roles)"
   },
   "admin": {
     "editProfile": "Editar perfil",
     "resetPassword": "Restablecer contraseña",
     "sending": "Enviando...",
     "deleteUser": "Eliminar usuario",
-    "deleteUserConfirm": "¿Está seguro de que desea eliminar este usuario? Esta acción no se puede deshacer.",
-    "deleteUserError": "Error al eliminar el usuario",
+    "deleteUserConfirm": "¿Estás seguro de que quieres eliminar este usuario? No se puede deshacer.",
+    "deleteUserError": "Error al eliminar usuario",
     "applyUser": {
       "title": "Inscribir usuario en torneo",
       "tournament": "Torneo",
       "selectUser": "Seleccionar usuario",
-      "selectUserRequired": "Por favor seleccione un usuario",
-      "divisionRequired": "Por favor seleccione una división",
-      "categoryRequired": "Por favor seleccione una categoría de arco",
+      "selectUserRequired": "Por favor selecciona un usuario",
+      "divisionRequired": "Por favor selecciona una división",
+      "categoryRequired": "Por favor selecciona una categoría de arco",
       "submit": "Enviar solicitud",
       "submitting": "Enviando...",
       "submitError": "Error al enviar la solicitud",
@@ -103,187 +103,214 @@
       "epic": "Épico",
       "legendary": "Legendario"
     },
-    "firstBullseye": {
-      "title": "Primera Diana",
-      "description": "Consigue tu primer tiro perfecto de 10 puntos en competición"
+    "firstSession": {
+      "title": "Primeros pasos",
+      "description": "Registra tu primera sesión de entrenamiento"
     },
-    "perfectRound": {
-      "title": "Ronda Perfecta",
-      "description": "Logra una puntuación perfecta en una sola ronda (todos 10)"
+    "firstEquipment": {
+      "title": "Equípate",
+      "description": "Añade tu primer set de equipamiento"
     },
-    "tournamentWinner": {
-      "title": "Campeón del Torneo",
-      "description": "Gana el primer lugar en un torneo oficial"
+    "profileComplete": {
+      "title": "Identidad lista",
+      "description": "Completa tu perfil de arquero"
     },
-    "consistentArcher": {
-      "title": "Arquero Consistente",
-      "description": "Completa 10 torneos sin fallar ningún objetivo"
+    "offlineSession": {
+      "title": "Arquero sin conexión",
+      "description": "Registra y completa una sesión de entrenamiento sin conexión y sincronízala"
     },
-    "longDistance": {
-      "title": "Maestro de Larga Distancia",
-      "description": "Marca 8+ en todas las flechas a distancia máxima (60m+)"
+    "streak2Weeks": {
+      "title": "Calentamiento",
+      "description": "Entrena al menos una vez por semana durante 2 semanas seguidas"
     },
-    "teamSpirit": {
-      "title": "Espíritu de Equipo",
-      "description": "Participa en 5 competiciones por equipos"
+    "streak4Weeks": {
+      "title": "Arquero constante",
+      "description": "Mantén una racha de entrenamiento de 4 semanas"
     },
-    "precisionMaster": {
-      "title": "Maestro de la Precisión",
-      "description": "Mantén una precisión del 95%+ durante 100 flechas consecutivas"
+    "streak12Weeks": {
+      "title": "Rutina de hierro",
+      "description": "Mantén una racha de entrenamiento de 12 semanas"
     },
-    "arrows10000": {
-      "description": "Dispara 10 000 flechas en entrenamiento",
-      "title": "Veterano de flechas"
+    "streak26Weeks": {
+      "title": "Arquero todo el año",
+      "description": "Mantén una racha de entrenamiento de 26 semanas"
     },
-    "arrows2500": {
-      "description": "Dispara 2500 flechas en entrenamiento",
-      "title": "Adepto de flechas"
-    },
-    "arrows25000": {
-      "description": "Dispara 25 000 flechas en entrenamiento",
-      "title": "Leyenda de flechas"
+    "streak52Weeks": {
+      "title": "Arquero de un año",
+      "description": "Mantén una racha de entrenamiento de 52 semanas"
     },
     "arrows500": {
-      "description": "Dispara 500 flechas en entrenamiento",
-      "title": "Aprendiz de flechas"
+      "title": "Aprendiz de flechas",
+      "description": "Dispara 500 flechas en entrenamiento"
+    },
+    "arrows2500": {
+      "title": "Adepto de flechas",
+      "description": "Dispara 2,500 flechas en entrenamiento"
+    },
+    "arrows10000": {
+      "title": "Veterano de flechas",
+      "description": "Dispara 10,000 flechas en entrenamiento"
+    },
+    "arrows25000": {
+      "title": "Leyenda de flechas",
+      "description": "Dispara 25,000 flechas en entrenamiento"
+    },
+    "sessions10": {
+      "title": "Práctica regular",
+      "description": "Completa 10 sesiones de entrenamiento"
+    },
+    "sessions50": {
+      "title": "Arquero dedicado",
+      "description": "Completa 50 sesiones de entrenamiento"
+    },
+    "sessions150": {
+      "title": "Devoto del entrenamiento",
+      "description": "Completa 150 sesiones de entrenamiento"
+    },
+    "sessions500": {
+      "title": "Habitual del campo",
+      "description": "Completa 500 sesiones de entrenamiento"
+    },
+    "distance10km": {
+      "title": "Caminante del campo",
+      "description": "Camina 10 km hacia y desde tus dianas"
+    },
+    "distanceMarathon": {
+      "title": "Maratoniano",
+      "description": "Camina un maratón (42,195 km) hacia y desde tus dianas"
+    },
+    "distance100km": {
+      "title": "Caminante centenario",
+      "description": "Camina 100 km hacia y desde tus dianas"
+    },
+    "distance250km": {
+      "title": "Pionero",
+      "description": "Camina 250 km hacia y desde tus dianas"
+    },
+    "distance500km": {
+      "title": "Viajero",
+      "description": "Camina 500 km hacia y desde tus dianas"
+    },
+    "distance1000km": {
+      "title": "Botas de siete leguas",
+      "description": "Camina 1,000 km hacia y desde tus dianas"
+    },
+    "distanceThereAndBack": {
+      "title": "Ida y vuelta",
+      "description": "Camina 3,000 km — el viaje de ida y vuelta de Bilbo a la Montaña Solitaria"
+    },
+    "lift1t": {
+      "title": "Brazos de hierro",
+      "description": "Tira un total acumulado de 1,000 kg (1 tonelada)"
+    },
+    "liftElephant": {
+      "title": "Levanta el elefante",
+      "description": "Tira un total acumulado de 6,000 kg — el peso de un elefante africano"
+    },
+    "liftBlueWhale": {
+      "title": "Levanta la ballena azul",
+      "description": "Tira un total acumulado de 150,000 kg — el peso de una ballena azul"
+    },
+    "liftKiloton": {
+      "title": "Arquero kilotón",
+      "description": "Tira un total acumulado de 1,000,000 kg (1,000 toneladas)"
+    },
+    "distances3": {
+      "title": "Explorador de distancias",
+      "description": "Entrena en 3 distancias diferentes"
+    },
+    "distances5": {
+      "title": "Domador de distancias",
+      "description": "Entrena en 5 distancias diferentes"
+    },
+    "targetTypes3": {
+      "title": "Variedad de dianas",
+      "description": "Entrena con 3 tipos de diana diferentes"
+    },
+    "fieldOr3d": {
+      "title": "Hacia lo salvaje",
+      "description": "Completa una sesión en un recorrido de campo o 3D"
+    },
+    "bowSwitch": {
+      "title": "Explorador de carcaj",
+      "description": "Registra sesiones de entrenamiento con 2 sets de equipamiento diferentes"
+    },
+    "styleVersatility": {
+      "title": "Cambio de estilo",
+      "description": "Dispara con 2 estilos o clases de arco distintas"
+    },
+    "scoredSessions5": {
+      "title": "Seguimiento de puntuación",
+      "description": "Registra puntuaciones en 5 sesiones de entrenamiento"
+    },
+    "cleanEnd": {
+      "title": "Agrupación cerrada",
+      "description": "Registra una tanda puntuada con todas las flechas en el anillo máximo"
+    },
+    "firstApplication": {
+      "title": "En la lista de salida",
+      "description": "Envía tu primera solicitud de torneo"
+    },
+    "competitor": {
+      "title": "Competidor",
+      "description": "Consigue la aprobación de tu primera solicitud de torneo"
+    },
+    "seasonedCompetitor": {
+      "title": "Competidor experimentado",
+      "description": "Consigue la aprobación de 5 solicitudes de torneo"
+    },
+    "tournamentChampion": {
+      "title": "Campeón del torneo",
+      "description": "Gana el primer puesto en un torneo oficial"
+    },
+    "personalBest": {
+      "title": "Mejor marca personal",
+      "description": "Establece una nueva mejor marca personal en competición"
     },
     "categories": {
       "all": "Todos",
-      "consistency": "Constancia",
-      "exploration": "Exploración",
-      "mastery": "Maestría",
       "onboarding": "Primeros pasos",
-      "tournaments": "Torneos",
-      "volume": "Volumen"
+      "discipline": "Disciplina",
+      "endurance": "Resistencia",
+      "fieldcraft": "Campo",
+      "arena": "Arena"
     },
-    "competitor": {
-      "description": "Consigue la aprobación de tu primera solicitud de torneo",
-      "title": "Competidor"
-    },
-    "distance10km": {
-      "description": "Camina 10 km hacia y desde tus dianas",
-      "title": "Caminante del campo"
-    },
-    "distance250km": {
-      "description": "Camina 250 km hacia y desde tus dianas",
-      "title": "Pionero"
-    },
-    "distanceMarathon": {
-      "description": "Camina un maratón (42,195 km) hacia y desde tus dianas",
-      "title": "Maratoniano"
-    },
-    "distanceThereAndBack": {
-      "description": "Camina 3000 km — el viaje de ida y vuelta de Bilbo a la Montaña Solitaria",
-      "title": "Ida y vuelta"
-    },
-    "distances3": {
-      "description": "Entrena en 3 distancias diferentes",
-      "title": "Explorador de distancias"
-    },
-    "distances5": {
-      "description": "Entrena en 5 distancias diferentes",
-      "title": "Domador de distancias"
-    },
-    "firstApplication": {
-      "description": "Envía tu primera solicitud de torneo",
-      "title": "En la lista de salida"
-    },
-    "firstEquipment": {
-      "description": "Añade tu primer set de equipo",
-      "title": "Equípate"
-    },
-    "firstSession": {
-      "description": "Registra tu primera sesión de entrenamiento",
-      "title": "Primeros pasos"
-    },
-    "guestHint": "Inicia sesión para guardar tus logros y sincronizarlos entre dispositivos.",
-    "lift1t": {
-      "description": "Tira un total acumulado de 1000 kg (1 tonelada)",
-      "title": "Brazos de hierro"
-    },
-    "liftBlueWhale": {
-      "description": "Tira un total acumulado de 150 000 kg — el peso de una ballena azul",
-      "title": "Levanta la ballena azul"
-    },
-    "liftElephant": {
-      "description": "Tira un total acumulado de 6000 kg — el peso de un elefante africano",
-      "title": "Levanta el elefante"
-    },
-    "liftKiloton": {
-      "description": "Tira un total acumulado de 1 000 000 kg (1000 toneladas)",
-      "title": "Arquero kilotón"
+    "subtracks": {
+      "arrows": "Flechas",
+      "sessions": "Sesiones",
+      "distance": "Distancia",
+      "weight": "Peso"
     },
     "locked": {
-      "eventHint": "Este logro se otorga en eventos especiales o por resultados de torneo."
+      "eventHint": "Este logro se otorga en eventos especiales o por resultados de torneo.",
+      "serverVerifiedHint": "Este logro es verificado por oficiales de torneo y otorgado en el servidor.",
+      "prerequisitesNotMet": "Completa primero los logros prerrequisitos."
     },
+    "prerequisites": "Prerrequisitos",
+    "inProgress": "En progreso",
+    "guestHint": "Inicia sesión para guardar tus logros y sincronizarlos entre dispositivos.",
     "new": "NUEVO",
-    "personalBest": {
-      "description": "Establece una nueva mejor marca personal en competición",
-      "title": "Mejor marca personal"
-    },
-    "profileComplete": {
-      "description": "Completa tu perfil de arquero",
-      "title": "Identidad lista"
-    },
-    "scoredSessions5": {
-      "description": "Registra puntuaciones en 5 sesiones de entrenamiento",
-      "title": "Seguimiento de puntuación"
-    },
-    "seasonedCompetitor": {
-      "description": "Consigue la aprobación de 5 solicitudes de torneo",
-      "title": "Competidor experimentado"
-    },
     "sections": {
       "locked": "Bloqueados",
       "unlocked": "Desbloqueados"
     },
-    "sessions10": {
-      "description": "Completa 10 sesiones de entrenamiento",
-      "title": "Práctica regular"
-    },
-    "sessions150": {
-      "description": "Completa 150 sesiones de entrenamiento",
-      "title": "Devoto del entrenamiento"
-    },
-    "sessions50": {
-      "description": "Completa 50 sesiones de entrenamiento",
-      "title": "Arquero dedicado"
-    },
-    "sessions500": {
-      "description": "Completa 500 sesiones de entrenamiento",
-      "title": "Habitual del campo"
-    },
     "shareProgress": "Compartir mi progreso",
     "shareProgressText": "{{earned}} de {{total}} logros desbloqueados en Sokil",
     "shareProgressTitle": "Mis logros de tiro con arco",
-    "streak12Weeks": {
-      "description": "Mantén una racha de entrenamiento de 12 semanas",
-      "title": "Rutina de hierro"
-    },
-    "streak26Weeks": {
-      "description": "Mantén una racha de entrenamiento de 26 semanas",
-      "title": "Arquero todo el año"
-    },
-    "streak2Weeks": {
-      "description": "Entrena al menos una vez por semana durante 2 semanas seguidas",
-      "title": "Calentamiento"
-    },
-    "streak4Weeks": {
-      "description": "Mantén una racha de entrenamiento de 4 semanas",
-      "title": "Arquero constante"
-    },
-    "targetTypes3": {
-      "description": "Entrena con 3 tipos de diana diferentes",
-      "title": "Variedad de dianas"
-    },
-    "tournamentChampion": {
-      "description": "Gana el primer puesto en un torneo oficial",
-      "title": "Campeón del torneo"
-    },
     "unlocked": {
       "nice": "¡Genial!",
       "title": "¡Logro desbloqueado!"
     }
+  },
+  "progressShare": {
+    "notFoundTitle": "Progreso no disponible",
+    "notFoundMessage": "Este enlace de progreso compartido es privado o no existe.",
+    "badge": "Progreso de logros",
+    "title": "Colección de logros",
+    "topBadges": "Mejores insignias",
+    "by": "Arquero",
+    "shareTitle": "Logros de {{name}} en Sokil",
+    "shareText": "{{earned}} de {{total}} logros desbloqueados"
   },
   "pages": {
     "rules": {
@@ -310,11 +337,11 @@
       "deleteWarning": "Esta regla no puede eliminarse si tiene divisiones o categorías de arco relacionadas.",
       "codeNameRequired": "El código y el nombre de la regla son obligatorios",
       "createSuccess": "Regla creada con éxito",
-      "deleteError": "No se pudo eliminar la regla. Puede tener divisiones o categorías de arco relacionadas.",
-      "deleteSuccess": "Regla eliminada con éxito",
-      "saveError": "No se pudo guardar la regla",
+      "deleteError": "Error al eliminar la regla. Puede tener divisiones o categorías de arco relacionadas.",
+      "saveError": "Error al guardar la regla",
+      "updateSuccess": "Regla actualizada con éxito",
       "saveSuccess": "Regla guardada con éxito",
-      "updateSuccess": "Regla actualizada con éxito"
+      "deleteSuccess": "Regla eliminada con éxito"
     },
     "categories": {
       "title": "Categorías de arco",
@@ -323,70 +350,44 @@
       "confirmDelete": "¿Estás seguro de que quieres eliminar esta categoría?",
       "deleteSuccess": "Categoría eliminada correctamente",
       "deleteError": "Error al eliminar la categoría",
-      "code": "Código",
       "create": "Crear categoría",
-      "createTitle": "Crear categoría",
-      "descriptionDe": "Descripción (DE)",
-      "descriptionEn": "Descripción (EN)",
-      "descriptionEs": "Descripción (ES)",
-      "descriptionIt": "Descripción (IT)",
-      "descriptionPt": "Descripción (PT)",
-      "descriptionUk": "Descripción (UA)",
       "editTitle": "Editar categoría",
-      "empty": "No se encontraron categorías. Haz clic en «Crear categoría» para añadir una.",
-      "loadError": "No se pudo cargar la categoría",
+      "createTitle": "Crear categoría",
+      "code": "Código",
       "name": "Nombre",
-      "requiredFields": "Código, nombre y regla son obligatorios",
       "rule": "Regla",
+      "descriptionEn": "Descripción (EN)",
+      "descriptionPt": "Descripción (PT)",
+      "descriptionIt": "Descripción (IT)",
+      "descriptionUk": "Descripción (UA)",
+      "descriptionEs": "Descripción (ES)",
+      "descriptionDe": "Descripción (DE)",
       "ruleCitation": "Cita de la regla (texto del enlace)",
-      "saveError": "No se pudo guardar la categoría"
-    },
-    "converter": {
-      "title": "Conversor de tiro con arco",
-      "description": "Convertir entre pulgadas/cm, libras/kg, granos/gramos, yardas/metros"
-    },
-    "calculator": {
-      "title": "Calculadora de tiro con arco",
-      "description": "FOC, peso de flecha, energía cinética, longitud de tiro, sugerencia de spine y granos por libra"
-    },
-    "scoringDemo": {
-      "title": "Tarjeta de puntuación (demo sin papel)",
-      "description": "Demo interactiva de una tarjeta de puntuación de torneo. Las puntuaciones son de ejemplo y no se guardan.",
-      "division": "División",
-      "gender": "Género",
-      "category": "Categoría",
-      "patrol": "Patrulla nº",
-      "date": "Fecha",
-      "set": "Serie",
-      "sum": "Suma",
-      "total": "Total",
-      "totalScores": "Puntuación total",
-      "submit": "Enviar",
-      "submitted": "Enviado",
-      "confirmTitle": "Resultados enviados",
-      "confirmMessage": "¡Gracias por enviar tus puntuaciones! Los datos se han enviado al servidor (o se enviarán cuando vuelvas a estar en línea) y se procesarán automáticamente. Los ganadores se determinarán en cuanto el resto de patrullas hayan enviado sus resultados.",
-      "confirmClose": "Aceptar"
+      "loadError": "No se pudo cargar la categoría",
+      "requiredFields": "Código, nombre y regla son obligatorios",
+      "saveError": "Error al guardar la categoría",
+      "empty": "No se encontraron categorías. Haz clic en «Crear categoría» para añadir una."
     },
     "divisions": {
       "title": "Divisiones",
       "description": "Divisiones de competición agrupadas por reglas",
+      "deleteConfirm": "¿Seguro que quieres eliminar esta división?",
+      "deleteSuccess": "División eliminada con éxito",
+      "deleteError": "No se pudo eliminar la división",
+      "nameRequired": "El nombre de la división es obligatorio",
+      "ruleRequired": "Selecciona una regla",
+      "saveSuccess": "División guardada con éxito",
+      "saveError": "Error al guardar la división",
       "create": "Crear división",
       "createTitle": "Crear división",
-      "deleteConfirm": "¿Seguro que quieres eliminar esta división?",
-      "deleteError": "No se pudo eliminar la división",
-      "deleteSuccess": "División eliminada con éxito",
-      "descriptionPlaceholder": "p. ej. Arqueros adultos...",
       "editTitle": "Editar división",
-      "empty": "No se encontraron divisiones. Haz clic en «Crear división» para añadir una.",
       "name": "Nombre de la división",
       "namePlaceholder": "p. ej. Adulto, Junior, Veterano",
-      "nameRequired": "El nombre de la división es obligatorio",
-      "noDescription": "Sin descripción disponible",
       "rule": "Regla",
-      "ruleRequired": "Selecciona una regla",
-      "saveError": "No se pudo guardar la división",
-      "saveSuccess": "División guardada con éxito",
-      "selectRule": "Seleccionar una regla"
+      "selectRule": "Seleccionar una regla",
+      "descriptionPlaceholder": "p. ej. Arqueros adultos...",
+      "empty": "No se encontraron divisiones. Haz clic en «Crear división» para añadir una.",
+      "noDescription": "Sin descripción disponible"
     },
     "clubs": {
       "deleteConfirm": "¿Está seguro de que desea eliminar este club?",
@@ -455,59 +456,85 @@
       "removeError": "No se pudo eliminar el miembro",
       "confirmRemove": "¿Está seguro de que desea eliminar a este miembro?"
     },
+    "converter": {
+      "title": "Conversor de tiro con arco",
+      "description": "Convertir entre pulgadas/cm, libras/kg, granos/gramos, yardas/metros"
+    },
+    "calculator": {
+      "title": "Calculadora de tiro con arco",
+      "description": "FOC, peso de flecha, energía cinética, longitud de tiro, sugerencia de spine y granos por libra"
+    },
+    "scoringDemo": {
+      "title": "Tarjeta de puntuación (demo sin papel)",
+      "description": "Demo interactiva de una tarjeta de puntuación de torneo. Las puntuaciones son de ejemplo y no se guardan.",
+      "division": "División",
+      "gender": "Género",
+      "category": "Categoría",
+      "patrol": "Patrulla nº",
+      "date": "Fecha",
+      "set": "Serie",
+      "sum": "Suma",
+      "total": "Total",
+      "totalScores": "Puntuación total",
+      "submit": "Enviar",
+      "submitted": "Enviado",
+      "confirmTitle": "Resultados enviados",
+      "confirmMessage": "¡Gracias por enviar tus puntuaciones! Los datos se han enviado al servidor (o se enviarán cuando vuelvas a estar en línea) y se procesarán automáticamente. Los ganadores se determinarán en cuanto el resto de patrullas hayan enviado sus resultados.",
+      "confirmClose": "Aceptar"
+    },
     "about": {
       "title": "Acerca de Sokil",
       "intro": "Sokil es tu compañero de tiro con arco — ya dispares por diversión, entrenes en serio o ayudes a gestionar un club o federación.\n\nRegistra sesiones en el campo, mira cómo crece tu progreso y celebra las pequeñas victorias. También funciona sin conexión — mala señal en el campo ya no es un problema.\n\nLos clubes mantienen el contacto con sus miembros. Las federaciones pasan menos tiempo en papeleo y más en el deporte.\n\nInstálala en el móvil, elige tu idioma y hazla tuya. Tus datos son tuyos y tú decides qué compartir.\n\nHecho por arqueros, para comunidades de tiro con arco.",
       "archerTitle": "Para arqueros",
-      "archerIntro": "Dispares dos veces por semana o dos veces al mes — Sokil te ayuda a mantener el hábito y ver lo lejos que has llegado.",
+      "archerIntro": "Ya dispares dos veces a la semana o dos veces al mes, Sokil te ayuda a mantener el hábito y ver qué tal has llegado.",
       "clubTitle": "Para clubes",
-      "clubIntro": "Gestiona tu club desde un solo lugar — menos correos, más tiempo con tus miembros.",
+      "clubIntro": "Gestiona tu club desde un solo lugar — menos administración por email, más tiempo con tus miembros.",
       "federationTitle": "Para federaciones",
-      "federationIntro": "Menos logística, más atención a que los torneos funcionen bien.",
+      "federationIntro": "Menos tiempo en logística, más tiempo haciendo que los torneos funcionen sin problemas.",
       "archers": {
-        "home": "Inicio - Empieza con un resumen de la semana: flechas, racha, sesiones recientes y lo que viene",
-        "trainingLog": "Registro de entrenamientos - Captura cómo se sintió la sesión, no solo la puntuación. Distancia, diana, ánimo, flechas — incluso sin conexión",
-        "equipment": "Equipamiento - Guarda tus configuraciones de arco en un solo sitio — sin adivinar qué flechas usaste la última vez",
-        "statistics": "Estadísticas - Detecta patrones: qué mejora, qué equipo funciona mejor, qué tan constante eres",
-        "achievements": "Logros - Gana insignias de entrenamientos y torneos reales — y comparte las que te enorgullecen",
-        "profileSharing": "Tu perfil - Muestra al mundo (o solo a tu club) quién eres como arquero, con privacidad bajo tu control",
-        "notifications": "Notificaciones - No te pierdas una aprobación, una invitación o ese momento satisfactorio de desbloquear algo nuevo",
-        "tournamentApplications": "Torneos - Solicita en pocos toques, sigue el estado y deja tu opinión después del evento",
-        "onboarding": "Primeros pasos - Una configuración rápida para registrar tu primera sesión, no pelear con ajustes",
-        "fieldGuide": "Guía de campo - Útil en el campo: glosario cuando los términos confunden, conversor y calculadoras para dudas de equipo"
+        "home": "Inicio - Comienza cada visita con una instantánea de tu semana: flechas disparadas, tu racha, sesiones recientes y lo que viene",
+        "trainingLog": "Registro de entrenamiento - Captura cómo se sintió una sesión, no solo la puntuación. Distancia, diana, estado de ánimo, flechas — guardado incluso sin conexión",
+        "equipment": "Equipamiento - Mantén tus configuraciones de arco en un solo lugar para que no adivines qué flechas usaste la última vez",
+        "statistics": "Estadísticas - Detecta patrones en tu tiro: qué mejora, qué equipamiento funciona mejor, qué tan constante has sido",
+        "achievements": "Logros - Gana insignias de tu entrenamiento real y torneos — luego comparte las que te enorgullecen",
+        "profileSharing": "Tu perfil - Muestra al mundo (o solo a tu club) quién eres como arquero, con controles de privacidad bajo tu mando",
+        "notifications": "Notificaciones - Nunca te pierdas una aprobación, una invitación o ese momento satisfactorio al desbloquear algo nuevo",
+        "tournamentApplications": "Torneos - Inscribe en unos toques, sigue tu solicitud, y cuéntale a los organizadores qué pensaste después del evento",
+        "onboarding": "Primeros pasos - Una configuración guiada rápida para que estés listo para registrar tu primera sesión, no peleando con ajustes",
+        "fieldGuide": "Guía de campo - Herramientas útiles en el campo: un glosario cuando la terminología se pone borrosa, un conversor de unidades, y calculadoras para dudas de ajuste de arco"
       },
       "clubs": {
         "publicProfiles": "Perfil público - Una página de inicio para tu club que miembros y recién llegados pueden encontrar y compartir",
-        "joinInvitations": "Hacer crecer el club - Solicitudes de ingreso o invitaciones directas — todos saben quién está dentro",
-        "myClub": "Mi club - Aprueba solicitudes, gestiona la plantilla e invita a nuevos miembros sin hojas de cálculo",
-        "clubTournaments": "Eventos del club - Organiza tus propios tiros y torneos sin herramientas de nivel federación",
-        "clubCommunications": "Mantenerse en contacto - Envía actualizaciones donde las verán — dentro de la app"
+        "joinInvitations": "Haciendo crecer tu club - Deja que la gente solicite unirse o invítalos directamente — todos saben quién está dentro",
+        "myClub": "Mi Club - Aprueba solicitudes de ingreso, gestiona tu plantilla, e invita nuevos miembros sin perseguir hojas de cálculo",
+        "clubTournaments": "Eventos de club - Organiza tus propios disparos y torneos sin necesidad de herramientas de nivel federación",
+        "clubCommunications": "Mantente en contacto - Envía actualizaciones a tus miembros donde realmente las verán — dentro de la app"
       },
       "federations": {
-        "tournamentManagement": "Torneos - Publica eventos con todos los detalles: dónde, cuándo, cómo inscribirse y qué hay adjunto",
-        "applicationsWorkflow": "Solicitudes - Revisa, aprueba o rechaza con un motivo claro; inscribe a otros cuando haga falta",
-        "patrols": "Patrullas - Agrupa tiradores de forma justa, ajusta grupos sobre la marcha e imprime tarjetas de puntuación cuando estés listo",
-        "tournamentFeedback": "Valoraciones - Escucha a los participantes tras el evento — qué funcionó y qué no, con sus palabras",
-        "communications": "Anuncios - Llega a todos, a un grupo seleccionado o solo a quienes están inscritos en un torneo",
-        "federationMembership": "Red federativa - Trae clubes a la federación y mantén la jerarquía clara",
-        "referenceData": "Reglas y referencia - Reglamentos oficiales, divisiones y categorías — lo que los organizadores consultan",
-        "adminTools": "Administración - Gestiona usuarios y permisos para que las personas adecuadas puedan hacer lo necesario"
+        "tournamentManagement": "Torneos - Publica eventos con todos los detalles que los arqueros necesitan: dónde, cuándo, cómo inscribirse, y qué está adjunto",
+        "applicationsWorkflow": "Solicitudes - Revisa inscripciones, aprueba o rechaza con una razón clara, e inscribe arqueros en su nombre cuando sea necesario",
+        "patrols": "Patrullas - Agrupa tiradores de forma justa, ajusta grupos sobre la marcha, e imprime tarjetas de puntuación cuando estés listo",
+        "tournamentFeedback": "Feedback - Escucha a los participantes después del evento — qué funcionó, qué no, en sus propias palabras",
+        "communications": "Anuncios - Alcanza a todos, un grupo seleccionado, o solo los inscritos en un torneo",
+        "federationMembership": "Red de federaciones - Incorpora clubes a tu federación y mantén la jerarquía clara",
+        "referenceData": "Reglas y referencia - Libros de reglas oficiales, divisiones y categorías de arco — el material al que recurren los organizadores",
+        "adminTools": "Administración - Gestiona usuarios y permisos para que las personas correctas puedan hacer las cosas correctas"
       },
-      "plannedTitle": "Qué viene",
-      "plannedIntro": "Seguimos construyendo. Esto es hacia lo que vamos.",
+      "plannedTitle": "Qué sigue",
+      "plannedIntro": "Seguimos construyendo. Esto es hacia lo que trabajamos.",
       "planned": {
         "socialSharing": "Mejor compartir - Más formas de celebrar resultados con amigos y compañeros de club",
-        "duels": "Desafíos amistosos - Duelos ligeros entre arqueros",
-        "knowledgeBase": "Base de conocimientos - Una biblioteca más profunda más allá del glosario",
-        "payments": "Pagos - Cuotas de torneos y membresías (ya hay una demo)",
-        "paperlessScoring": "Puntuación sin papel - De la demo de tarjetas al puntuaje completo de competición",
-        "calendar": "Calendario - Torneos y eventos próximos de un vistazo",
+        "duels": "Desafíos amistosos - Enfrentamientos ligeros cara a cara con otros arqueros",
+        "knowledgeBase": "Base de conocimiento - Una biblioteca de tiro con arco más profunda más allá del glosario",
+        "payments": "Pagos - Cuotas de torneo y membresías (ya hay una demo)",
+        "paperlessScoring": "Puntuación sin papel - De tarjetas de demo a puntuación completa de competición",
+        "calendar": "Calendario - Ve próximos torneos y eventos de un vistazo",
         "newsFeed": "Feed de noticias - Un hogar público para noticias y actualizaciones de torneos",
-        "more": "Y más cosas con las que aún soñamos..."
+        "more": "Y más que aún estamos soñando..."
       },
-      "socialTitle": "Sigue a Sokil",
-      "socialText": "Noticias, fotos del campo y novedades del producto están en Facebook, X y Threads.",
-      "contact": "Para solicitudes de funciones, informes de errores o preguntas, por favor contacte",
+      "socialTitle": "Sigue Sokil",
+      "socialText": "Noticias, fotos de campo, y actualizaciones de producto en vivo en Facebook, X, y Threads.",
+      "contact": "Para solicitudes de funciones, informes de errores, o preguntas, por favor contacta",
       "authorsTitle": "Autores",
       "authorMariia": "Mariia Fedirko",
       "authorSerhii": "Serhii Fedirko",
@@ -517,12 +544,12 @@
       "title": "Torneos",
       "futureTournaments": "Futuros",
       "pastTournaments": "Pasados",
-      "create": "Crear torneo",
+      "create": "Crear Torneo",
       "edit": "Editar",
       "delete": "Eliminar",
-      "apply": "Aplicar",
-      "viewApplications": "Ver solicitudes",
-      "viewDetails": "Ver detalles",
+      "apply": "Inscribirse",
+      "viewApplications": "Ver Solicitudes",
+      "viewDetails": "Ver Detalles",
       "backToList": "Volver a torneos",
       "notFound": "Torneo no encontrado",
       "share": "Compartir",
@@ -534,170 +561,167 @@
       "shareLinkedIn": "LinkedIn",
       "shareEmail": "Email",
       "linkCopied": "¡Enlace copiado al portapapeles!",
-      "copyLink": "Copia este enlace:",
-      "copyFailed": "Error al copiar el enlace al portapapeles",
-      "targetCount": "Número de dianas",
-      "checkApplications": "Revisar solicitudes",
-      "viewFeedback": "Ver comentarios",
-      "applyOtherUser": "Inscribir otro usuario",
+      "copyLink": "Copiar este enlace:",
+      "copyFailed": "No se pudo copiar el enlace al portapapeles",
+      "targetCount": "Número de Dianas",
+      "checkApplications": "Revisar Solicitudes",
+      "viewFeedback": "Ver Feedback",
+      "applyOtherUser": "Inscribir a otro usuario",
       "start": "Inicio",
       "end": "Fin",
       "location": "Ubicación",
       "country": "País",
       "countryFilter": "País",
       "allCountries": "Todos los países",
-      "noUpcomingInCountry": "No hay torneos próximos en {{country}}.",
+      "noUpcomingInCountry": "No hay torneos futuros en {{country}}.",
       "noPastInCountry": "No hay torneos pasados en {{country}}.",
-      "noUpcomingAll": "No hay torneos próximos.",
+      "noUpcomingAll": "No hay torneos futuros.",
       "noPastAll": "No hay torneos pasados.",
-      "multipleApplications": "Solicitudes múltiples",
-      "multipleAllowed": "Permitido (categorías diferentes)",
+      "multipleApplications": "Múltiples solicitudes",
+      "multipleAllowed": "Permitido (distintas categorías)",
       "multipleNotAllowed": "No permitido",
-      "fetchError": "No se pudieron obtener los torneos",
-      "createError": "No se pudo crear el torneo",
-      "deleteError": "No se pudo eliminar el torneo",
-      "deleteConfirm": "¿Seguro que deseas eliminar este torneo?",
-      "updateError": "No se pudo actualizar el torneo",
-      "editDialogTitle": "Editar torneo",
-      "createDialogTitle": "Crear torneo",
+      "fetchError": "Error al obtener torneos",
+      "createError": "Error al crear torneo",
+      "deleteError": "Error al eliminar torneo",
+      "deleteConfirm": "¿Estás seguro de que quieres eliminar este torneo?",
+      "updateError": "Error al actualizar torneo",
+      "editDialogTitle": "Editar Torneo",
+      "createDialogTitle": "Crear Torneo",
+      "banner": "Banner del Torneo",
+      "bannerSubheader": "PNG o JPG hasta 10MB. La imagen completa se mantiene en sus proporciones originales.",
       "bannerSaved": "Banner guardado correctamente",
-      "attachmentsSaved": "{{count}} archivo(s) subido(s) correctamente",
+      "attachmentsSaved": "{{count}} archivo(s) subidos correctamente",
+      "dragToReposition": "Ningún banner seleccionado",
+      "attachments": "Adjuntos adicionales",
+      "attachmentsSubheader": "Sube reglas personalizadas, imágenes, o documentos (PNG, JPG, PDF, DOC, DOCX hasta {{maxSize}} cada uno, máx {{maxFiles}} archivos)",
+      "addFiles": "Añadir Archivos",
+      "filesCount": "{{count}}/{{max}} archivos",
+      "noAttachments": "No se han añadido adjuntos aún",
+      "tooManyFiles": "Máximo {{maxFiles}} archivos permitidos. Puedes subir {{remaining}} archivo(s) más.",
+      "unsupportedFileType": "{{fileName}}: Tipo de archivo no soportado. Permitidos: PNG, JPG, PDF, DOC, DOCX",
+      "fileTooLarge": "{{fileName}}: Archivo demasiado grande (máx {{maxSize}})",
+      "fileReadError": "{{fileName}}: Error al leer el archivo",
+      "uploadFailed": "Subida fallida. Inténtalo de nuevo.",
+      "uploading": "Subiendo...",
+      "deleteFileFailed": "Error al eliminar el archivo. Inténtalo de nuevo.",
+      "creating": "Creando...",
+      "updating": "Actualizando...",
       "form": {
         "title": "Título",
-        "shortDescription": "Descripción breve",
-        "shortDescriptionHelper": "Se muestra en la lista de torneos y al compartir. Si se deja vacío, se usa el primer párrafo de la descripción. Hasta {{max}} caracteres.",
+        "shortDescription": "Descripción corta",
+        "shortDescriptionHelper": "Se muestra en la lista de torneos y al compartir. Si está vacío, se usa el primer párrafo de la descripción. Hasta {{max}} caracteres.",
         "description": "Descripción",
-        "descriptionHelper": "Detalles completos en la página del torneo.",
+        "descriptionHelper": "Detalles completos mostrados en la página del torneo.",
         "startDate": "Fecha de inicio",
-        "endDate": "Fecha de fin (opcional - por defecto la fecha de inicio)",
-        "endDateHelper": "Déjalo vacío para usar la fecha de inicio",
-        "applicationDeadline": "Fecha límite de solicitud (opcional - 5 días antes del inicio)",
-        "applicationDeadlineHelper": "Déjalo vacío para establecer 5 días antes del inicio",
+        "endDate": "Fecha de fin (opcional - por defecto fecha de inicio)",
+        "endDateHelper": "Dejar vacío para usar la fecha de inicio",
+        "applicationDeadline": "Fecha límite de inscripción (opcional - por defecto 5 días antes del inicio)",
+        "applicationDeadlineHelper": "Dejar vacío para establecer 5 días antes de la fecha de inicio",
         "address": "Dirección",
-        "allowMultipleLabel": "Permitir múltiples solicitudes por usuario (solo categorías diferentes)",
-        "collectFeedbackLabel": "Recopilar comentarios de los participantes",
-        "announcementOnlyLabel": "Solo anuncio (las inscripciones a través de Sokil están desactivadas)",
-        "announcementOnlyHelper": "Actívalo cuando esto sea una copia de un anuncio oficial y los organizadores no acepten inscripciones en Sokil.",
-        "basicInfo": "Información básica",
         "country": "País",
+        "allowMultipleLabel": "Permitir múltiples solicitudes de un usuario (solo distintas categorías)",
+        "collectFeedbackLabel": "Recopilar feedback de participantes",
+        "announcementOnlyLabel": "Solo anuncio (las inscripciones a través de Sokil están desactivadas)",
+        "announcementOnlyHelper": "Activa cuando esto es una copia de un aviso oficial y los organizadores no están recibiendo inscripciones en Sokil.",
+        "basicInfo": "Información básica",
         "rules": "Reglas",
-        "selectRules": "Seleccionar reglas",
-        "targetCount": "Número de dianas",
-        "targetCountHelper": "Número de dianas/patrullas del torneo"
+        "selectRules": "Seleccionar Reglas",
+        "targetCount": "Número de Dianas",
+        "targetCountHelper": "Número de dianas/patrullas para el torneo"
       },
       "feedback": {
-        "title": "¿Qué tal fue {{title}}?",
-        "subtitle": "Ayúdanos a mejorar — valora tu experiencia y deja un comentario opcional.",
+        "title": "¿Qué tal {{title}}?",
+        "subtitle": "Por favor ayúdanos a mejorar — valora tu experiencia y deja un comentario opcional.",
         "ratingLabel": "Tu valoración",
-        "ratingRequired": "Selecciona una valoración antes de enviar.",
+        "ratingRequired": "Por favor selecciona una valoración antes de enviar.",
         "commentLabel": "Comentario (opcional)",
-        "commentPlaceholder": "¿Qué salió bien? ¿Qué se podría mejorar?",
-        "commentHelper": "Tu opinión ayuda a los organizadores a mejorar futuros eventos.",
-        "submit": "Enviar comentario",
+        "commentPlaceholder": "¿Qué fue bien? ¿Qué podría mejorar?",
+        "commentHelper": "Tu feedback ayuda a los organizadores a mejorar futuros eventos.",
+        "submit": "Enviar feedback",
         "submitting": "Enviando...",
-        "submitError": "No se pudo enviar el comentario. Inténtalo de nuevo.",
-        "loadError": "No se pudo cargar el formulario de comentarios.",
-        "notCollecting": "Este torneo no recopila comentarios de los participantes.",
-        "notYetAvailable": "Los comentarios estarán disponibles después de que termine el torneo.",
-        "thankYouTitle": "¡Gracias por tu comentario!",
+        "submitError": "Error al enviar el feedback. Inténtalo de nuevo.",
+        "loadError": "Error al cargar el formulario de feedback.",
+        "notCollecting": "Este torneo no recopila feedback de participantes.",
+        "notYetAvailable": "El feedback estará disponible después de que termine el torneo.",
+        "thankYouTitle": "¡Gracias por tu feedback!",
         "thankYouMessage": "Tu respuesta ha sido registrada.",
-        "backToHome": "Volver al inicio",
+        "backToHome": "Volver al Inicio",
         "admin": {
-          "title": "Comentarios — {{title}}",
+          "title": "Feedback — {{title}}",
           "averageRating": "Valoración media",
-          "totalFeedbacks": "Total de comentarios",
+          "totalFeedbacks": "Total de feedbacks",
           "participant": "Participante",
           "rating": "Valoración",
           "comment": "Comentario",
           "date": "Fecha",
-          "empty": "Aún no hay comentarios.",
-          "loadError": "No se pudieron cargar los comentarios.",
-          "noPermission": "No tienes permiso para ver los comentarios de este torneo.",
+          "empty": "No se ha enviado feedback aún.",
+          "loadError": "Error al cargar el feedback.",
+          "noPermission": "No tienes permiso para ver el feedback de este torneo.",
           "unknownUser": "Usuario desconocido"
         }
       },
-      "addFiles": "Añadir archivos",
       "applicationDeadline": "Fecha límite de inscripción",
-      "applicationDeadlinePassedTitle": "Plazo de inscripción cerrado",
-      "applicationDeadlinePassedMessage": "El plazo de inscripción ha terminado, pero puedes intentar contactar al organizador directamente.",
-      "announcementApplyTitle": "Las inscripciones aún no se aceptan a través de Sokil",
-      "announcementApplyMessage": "Sokil ya puede recoger inscripciones, pero los organizadores de este torneo todavía no lo usan. Contacta con ellos o con la federación directamente.",
-      "applicationSubmitted": "¡Solicitud enviada con éxito!",
-      "attachments": "Archivos adjuntos adicionales",
-      "attachmentsReady": "{{count}} archivo(s) listo(s) — se subirán al guardar",
-      "attachmentsSubheader": "Sube reglas personalizadas, imágenes o documentos (PNG, JPG, PDF, DOC, DOCX hasta {{maxSize}} cada uno, máx. {{maxFiles}} archivos)",
-      "banner": "Banner del torneo",
+      "applicationDeadlinePassedTitle": "Fecha límite de inscripción alcanzada",
+      "applicationDeadlinePassedMessage": "La fecha límite de inscripción se ha alcanzado, pero puedes intentar contactar al organizador directamente.",
+      "announcementApplyTitle": "Las inscripciones no se hacen a través de Sokil aún",
+      "announcementApplyMessage": "Sokil ya puede recopilar inscripciones, pero los organizadores de este torneo no están usando eso aún. Por favor contacta con ellos o la federación directamente.",
+      "applicationSubmitted": "¡Inscripción enviada correctamente!",
+      "attachmentsReady": "{{count}} archivo(s) listos — se subirán al guardar",
       "bannerReady": "Banner listo — se subirá al guardar",
-      "bannerSubheader": "PNG o JPG hasta 10 MB. La imagen se conserva completa, con sus proporciones originales.",
-      "creating": "Creando...",
-      "deleteFileFailed": "No se pudo eliminar el archivo. Inténtalo de nuevo.",
-      "dragToReposition": "Ningún banner seleccionado",
-      "fileReadError": "{{fileName}}: no se pudo leer el archivo",
-      "fileTooLarge": "{{fileName}}: el archivo es demasiado grande (máx. {{maxSize}})",
-      "filesCount": "{{count}}/{{max}} archivos",
-      "noAttachments": "Aún no hay archivos adjuntos",
       "noRulesAssigned": "No especificado",
       "notSpecified": "No especificado",
       "preparing": "Preparando...",
-      "rules": "Reglas",
-      "tooManyFiles": "Máximo {{maxFiles}} archivos. Puedes subir {{remaining}} más.",
-      "unsupportedFileType": "{{fileName}}: tipo de archivo no compatible. Permitidos: PNG, JPG, PDF, DOC, DOCX",
-      "updating": "Actualizando...",
-      "uploadFailed": "Error al subir. Inténtalo de nuevo.",
-      "uploading": "Subiendo..."
+      "rules": "Reglas"
     },
     "applications": {
-      "title": "Mis solicitudes de torneos",
-      "fetchError": "No se pudieron obtener las solicitudes",
-      "empty": "Todavía no has enviado ninguna solicitud de torneo.",
+      "title": "Mis Solicitudes de Torneo",
+      "fetchError": "Error al obtener solicitudes",
+      "empty": "No has enviado ninguna solicitud de torneo aún.",
       "findNextTournament": "Encuentra tu próximo torneo",
       "dates": "Fechas",
       "category": "Categoría",
       "division": "División",
-      "equipment": "Equipo",
+      "equipment": "Equipamiento",
       "notes": "Notas",
-      "rejectionReason": "Motivo del rechazo",
-      "appliedOn": "Aplicado el",
+      "rejectionReason": "Motivo de rechazo",
+      "appliedOn": "Inscrito el",
       "withdraw": "Retirar",
-      "withdrawTitle": "Retirar solicitud",
-      "withdrawConfirm": "¿Seguro que deseas retirar esta solicitud? Esta acción no se puede deshacer.",
-      "withdrawReason": "Motivo de retiro",
-      "withdrawReasonPlaceholder": "Indica el motivo del retiro...",
-      "withdrawReasonRequired": "El motivo de retiro es obligatorio",
-      "withdrawFailed": "No se pudo retirar la solicitud"
+      "withdrawTitle": "Retirar Solicitud",
+      "withdrawConfirm": "¿Estás seguro de que quieres retirar esta solicitud? Esta acción no se puede deshacer.",
+      "withdrawReason": "Motivo de retirada",
+      "withdrawReasonPlaceholder": "Por favor proporciona un motivo para retirar...",
+      "withdrawReasonRequired": "Se requiere un motivo de retirada",
+      "withdrawFailed": "Error al retirar la solicitud"
     },
     "publicApplication": {
       "notFound": "Torneo no encontrado",
-      "share": "Compartir",
-      "linkCopied": "¡Enlace copiado al portapapeles!",
-      "copyLink": "Copia este enlace:",
-      "applyFor": "Aplicar para {{title}}",
-      "signInPrompt": "Para enviar tu solicitud a este torneo, necesitas crear una cuenta o iniciar sesión en tu cuenta existente.",
-      "applicationSubmitted": "¡Solicitud enviada correctamente!",
-      "redirectInfo": "Después del registro o inicio de sesión, volverás a este formulario."
+      "applyFor": "Inscribirse en {{title}}",
+      "signInPrompt": "Para enviar tu inscripción para este torneo, necesitas crear una cuenta o iniciar sesión en tu cuenta existente.",
+      "redirectInfo": "Después del registro o inicio de sesión, serás redirigido de nuevo a este formulario de inscripción.",
+      "applicationSubmitted": "¡Inscripción enviada correctamente!"
     },
     "applicationForm": {
-      "title": "Enviar solicitud para {{title}}",
-      "submit": "Enviar solicitud",
+      "title": "Enviar Solicitud para {{title}}",
+      "submit": "Enviar Solicitud",
       "submitting": "Enviando...",
-      "submitError": "No se pudo enviar la solicitud",
+      "submitError": "Error al enviar la solicitud",
       "category": "Categoría",
       "division": "División",
-      "equipment": "Equipo",
-      "notes": "Notas adicionales",
+      "equipment": "Equipamiento",
+      "notes": "Notas Adicionales",
       "notesPlaceholder": "Cualquier información adicional sobre tu participación...",
       "opts": {
         "recurve": "Recurvo",
         "compound": "Compuesto",
-        "barebow": "Barebow",
+        "barebow": "Arco desnudo",
         "traditional": "Tradicional",
-        "longbow": "Longbow",
+        "longbow": "Arco largo",
         "men": "Hombres",
         "women": "Mujeres",
         "mixed": "Mixto",
         "olympic": "Recurvo Olímpico",
-        "compoundBow": "Arco compuesto",
-        "traditionalBow": "Arco tradicional",
+        "compoundBow": "Arco Compuesto",
+        "traditionalBow": "Arco Tradicional",
         "female": "Femenino",
         "male": "Masculino",
         "other": "Otro"
@@ -706,54 +730,54 @@
       "nationality": "Nacionalidad"
     },
     "admin": {
-      "favoriteCategories": "Categorías Favoritas",
-      "backToPanel": "Volver al panel de administración",
-      "commentOptional": "Comentario (opcional)",
-      "commentPlaceholder": "Añade una nota sobre este usuario...",
-      "createAndInvite": "Crear e invitar",
-      "createUser": "Crear usuario",
-      "createUserFailed": "No se pudo crear el usuario",
-      "createUserSuccess": "Usuario {{name}} creado con éxito. Recibirá un email de invitación.",
-      "createUserTitle": "Crear nuevo usuario",
-      "creating": "Creando...",
-      "editProfile": "Editar perfil",
-      "email": "Email",
-      "emailRequired": "El email es obligatorio",
-      "fetchUserError": "No se pudieron cargar los datos del usuario",
-      "fetchUsersError": "No se pudieron cargar los usuarios",
-      "firstName": "Nombre",
-      "firstNameRequired": "El nombre es obligatorio",
-      "invalidEmail": "Formato de email no válido",
-      "lastName": "Apellidos",
-      "lastNameRequired": "Los apellidos son obligatorios",
-      "notSet": "No establecido",
-      "panelDescription": "Gestiona usuarios, consulta perfiles y restablece contraseñas. Solo para administradores.",
-      "panelTitle": "Panel de administración",
-      "resetEmailFailed": "No se pudo enviar el email de restablecimiento",
-      "resetEmailSent": "Email de restablecimiento enviado a {{email}}",
-      "resetPassword": "Restablecer contraseña",
+      "favoriteCategories": "Categorías favoritas",
+      "panelTitle": "Panel de Administración",
+      "panelDescription": "Gestiona usuarios, ve perfiles, y restablece contraseñas. Solo administradores pueden acceder a este panel.",
+      "usersTitle": "Gestión de Usuarios",
+      "createUser": "Crear Usuario",
+      "createUserTitle": "Crear Nuevo Usuario",
       "table": {
-        "actions": "Acciones",
-        "club": "Club",
+        "name": "Nombre",
         "email": "Email",
         "gender": "Género",
-        "name": "Nombre"
+        "club": "Club",
+        "actions": "Acciones"
       },
-      "updateUserError": "No se pudo actualizar el usuario. Inténtalo de nuevo.",
-      "updateUserSuccess": "¡Usuario actualizado con éxito!",
+      "notSet": "No establecido",
+      "fetchUsersError": "Error al obtener usuarios",
+      "resetEmailSent": "Email de restablecimiento enviado a {{email}}",
+      "resetEmailFailed": "Error al enviar email de restablecimiento",
+      "createUserSuccess": "Usuario {{name}} creado correctamente. Recibirán un email de invitación.",
+      "createUserFailed": "Error al crear usuario",
+      "viewProfile": "Ver Perfil",
+      "editProfile": "Editar Perfil",
+      "resetPassword": "Restablecer Contraseña",
+      "backToPanel": "Volver al Panel de Admin",
       "userNotFound": "Usuario no encontrado",
-      "usersTitle": "Gestión de usuarios",
-      "viewProfile": "Ver perfil"
+      "fetchUserError": "Error al obtener datos del usuario",
+      "updateUserError": "Error al actualizar usuario. Inténtalo de nuevo.",
+      "updateUserSuccess": "¡Usuario actualizado correctamente!",
+      "firstName": "Nombre",
+      "lastName": "Apellidos",
+      "email": "Email",
+      "commentOptional": "Comentario (opcional)",
+      "commentPlaceholder": "Añade una nota sobre este usuario...",
+      "firstNameRequired": "El nombre es obligatorio",
+      "lastNameRequired": "Los apellidos son obligatorios",
+      "emailRequired": "El email es obligatorio",
+      "invalidEmail": "Formato de email inválido",
+      "creating": "Creando...",
+      "createAndInvite": "Crear e Invitar"
     },
     "communications": {
       "title": "Comunicaciones",
       "description": "Envía notificaciones a tus usuarios y revisa tus mensajes enviados.",
       "sendButton": "Enviar notificación",
-      "empty": "Aún no has enviado ninguna notificación.",
+      "empty": "No has enviado ninguna notificación aún.",
       "loadError": "No se pudieron cargar las notificaciones. Inténtalo de nuevo.",
       "messageRequired": "El mensaje es obligatorio",
       "selectUsers": "Selecciona al menos un destinatario",
-      "sendError": "No se pudo enviar la notificación. Inténtalo de nuevo.",
+      "sendError": "Error al enviar la notificación. Inténtalo de nuevo.",
       "sendSuccess": "Notificación enviada",
       "recipients": "{{count}} destinatarios",
       "audience": {
@@ -764,7 +788,7 @@
       "dialog": {
         "title": "Enviar notificación",
         "global": "Notificación global",
-        "globalWarning": "Estás a punto de enviar una notificación a los {{count}} usuarios de tu ámbito. Asegúrate de que este mensaje sea relevante para todos.",
+        "globalWarning": "Vas a enviar una notificación a todos los {{count}} usuarios en tu ámbito. Asegúrate de que este mensaje es relevante para todos.",
         "recipients": "Destinatarios",
         "searchPlaceholder": "Buscar usuarios...",
         "titleLabel": "Título (opcional)",
@@ -774,19 +798,19 @@
         "sending": "Enviando..."
       },
       "tournament": {
-        "dialogTitle": "Notificar a los participantes del torneo",
-        "warning": "Esto notificará a los {{count}} participantes aprobados."
+        "dialogTitle": "Notificar a participantes del torneo",
+        "warning": "Esto notificará a todos los {{count}} participantes aprobados."
       }
     },
     "adminApplications": {
-      "title": "Gestión de solicitudes de torneos",
-      "selectTournament": "Seleccionar torneo",
+      "title": "Gestión de Solicitudes de Torneo",
+      "selectTournament": "Seleccionar Torneo",
       "noApplications": "No se encontraron solicitudes para este torneo.",
-      "managePatrols": "Gestionar patrullas",
+      "managePatrols": "Gestionar Patrullas",
       "notifyParticipants": "Notificar participantes",
-      "notifySuccess": "Notificación enviada a los participantes",
-      "fetchError": "Error al cargar las solicitudes",
-      "fetchTournamentsError": "Error al cargar los torneos",
+      "notifySuccess": "Notificación enviada a participantes",
+      "fetchError": "Error al obtener solicitudes",
+      "fetchTournamentsError": "Error al obtener torneos",
       "statsTotal": "Total",
       "statsPending": "Pendientes",
       "statsApproved": "Aprobadas",
@@ -797,9 +821,9 @@
         "gender": "Género",
         "category": "Categoría",
         "division": "División",
-        "equipment": "Equipo",
+        "equipment": "Equipamiento",
         "status": "Estado",
-        "applied": "Solicitado",
+        "applied": "Inscrito",
         "actions": "Acciones"
       },
       "actions": {
@@ -816,1073 +840,382 @@
         "withdrawn": "Retirada"
       },
       "dialog": {
-        "title": "Detalles de la solicitud - {{name}}",
-        "titleFallback": "Detalles de la solicitud",
+        "title": "Detalles de Solicitud - {{name}}",
+        "titleFallback": "Detalles de Solicitud",
         "tournament": "Torneo",
         "category": "Categoría",
         "division": "División",
-        "equipment": "Equipo",
+        "equipment": "Equipamiento",
         "notes": "Notas",
-        "noNotes": "No se proporcionaron notas",
+        "noNotes": "Sin notas",
         "statusLabel": "Estado",
-        "rejectionReason": "Motivo del rechazo",
-        "rejectionReasonPlaceholder": "Por favor, proporciona un motivo para el rechazo...",
-        "rejectionReasonRequired": "El motivo de rechazo es obligatorio",
+        "rejectionReason": "Motivo de rechazo",
+        "rejectionReasonPlaceholder": "Por favor proporciona un motivo de rechazo...",
+        "rejectionReasonRequired": "Se requiere un motivo de rechazo",
         "cancel": "Cancelar",
-        "updateStatus": "Actualizar estado"
+        "updateStatus": "Actualizar Estado"
       },
       "notifications": {
-        "approvedSuccess": "Solicitud de {{name}} aprobada exitosamente",
-        "rejectedSuccess": "Solicitud de {{name}} rechazada exitosamente",
-        "updateSuccess": "Estado de la solicitud actualizado exitosamente",
-        "approveFailed": "Error al aprobar la solicitud de {{name}}",
-        "rejectFailed": "Error al rechazar la solicitud de {{name}}",
-        "updateFailed": "Error al actualizar el estado de la solicitud",
-        "approveFailedGeneric": "Error al aprobar la solicitud",
-        "rejectFailedGeneric": "Error al rechazar la solicitud"
+        "approvedSuccess": "Solicitud de {{name}} aprobada correctamente",
+        "rejectedSuccess": "Solicitud de {{name}} rechazada correctamente",
+        "updateSuccess": "Estado de solicitud actualizado correctamente",
+        "approveFailed": "Error al aprobar solicitud de {{name}}",
+        "rejectFailed": "Error al rechazar solicitud de {{name}}",
+        "updateFailed": "Error al actualizar estado de solicitud",
+        "approveFailedGeneric": "Error al aprobar solicitud",
+        "rejectFailedGeneric": "Error al rechazar solicitud"
       },
       "tournament": {
         "startDate": "Fecha de inicio",
-        "endDate": "Fecha de finalización",
-        "applicationDeadline": "Fecha límite de solicitud"
+        "endDate": "Fecha de fin",
+        "applicationDeadline": "Fecha límite de inscripción"
       }
     },
     "patrols": {
-      "avgSize": "Tamaño medio",
-      "cannotMove": "No se puede mover al miembro",
-      "categoryMatch": "Coincidencia de categoría",
-      "clubDiversity": "Diversidad de clubes",
-      "confirmDeleteRedistribute": "¿Eliminar esta patrulla y redistribuir a sus miembros?",
-      "confirmGenerate": "¿Generar patrullas a partir de las solicitudes aprobadas? Se crearán nuevas asignaciones.",
-      "confirmRegenerate": "Esto ELIMINARÁ todas las patrullas existentes y generará nuevas a partir de las solicitudes aprobadas. ¿Continuar?",
-      "delete": "Eliminar",
-      "deleteRedistributeError": "No se pudo eliminar la patrulla ni redistribuir a los miembros.",
-      "deleteRedistributeSuccess": "Patrulla eliminada y miembros redistribuidos.",
-      "deleteTooltip": "Eliminar patrulla y redistribuir miembros",
-      "divisionMatch": "Coincidencia de división",
-      "empty": "Aún no hay patrullas. Genéralas a partir de las solicitudes aprobadas cuando estés listo.",
-      "genderMatch": "Coincidencia de género",
-      "generate": "Generar patrullas",
-      "generateError": "No se pudieron generar las patrullas. Inténtalo de nuevo.",
+      "title": "Gestión de Patrullas",
+      "saveChanges": "Guardar Cambios",
+      "saving": "Guardando...",
       "generateList": "Generar lista de patrullas",
       "generateScoreCards": "Generar tarjetas de puntuación",
-      "generateSuccess": "Patrullas generadas a partir de las solicitudes aprobadas",
+      "regenerate": "Regenerar",
+      "retry": "Reintentar",
       "generating": "Generando...",
-      "judge": "Juez",
-      "leader": "Líder",
-      "listPdfError": "No se pudo generar la lista de patrullas. Inténtalo de nuevo.",
-      "loadError": "No se pudieron cargar las patrullas. Inténtalo de nuevo.",
-      "makeJudge": "Hacer juez",
-      "makeLeader": "Hacer líder",
-      "memberActions": "Acciones del miembro",
-      "membersCount": "{{count}} miembros",
-      "moveToPatrol": "Mover a patrulla",
-      "noClub": "Sin club",
-      "openingListPdf": "Abriendo PDF de la lista de patrullas...",
+      "generate": "Generar patrullas",
+      "empty": "No hay patrullas aún. Genera patrullas a partir de solicitudes aprobadas cuando estés listo.",
+      "confirmGenerate": "Generar patrullas a partir de solicitudes aprobadas? Esto creará nuevas asignaciones de patrullas.",
+      "confirmRegenerate": "Esto ELIMINARÁ todas las patrullas existentes y regenerará nuevas a partir de solicitudes aprobadas. ¿Continuar?",
+      "confirmDeleteRedistribute": "Eliminar esta patrulla y redistribuir sus miembros?",
+      "loadError": "Error al cargar patrullas. Inténtalo de nuevo.",
+      "saveSuccess": "¡Patrullas guardadas correctamente!",
+      "saveError": "Error al guardar patrullas. Inténtalo de nuevo.",
+      "cannotMove": "No se puede mover miembro",
+      "generateSuccess": "Patrullas generadas a partir de solicitudes aprobadas",
+      "generateError": "Error al generar patrullas. Inténtalo de nuevo.",
+      "openingListPdf": "Abriendo PDF de lista de patrullas...",
+      "listPdfError": "Error al generar lista de patrullas. Inténtalo de nuevo.",
       "openingScoreCardsPdf": "Abriendo PDF de tarjetas de puntuación...",
-      "participants": "Participantes",
+      "scoreCardsPdfError": "Error al generar tarjetas de puntuación. Inténtalo de nuevo.",
+      "deleteRedistributeSuccess": "Patrulla eliminada y miembros redistribuidos.",
+      "deleteRedistributeError": "Error al eliminar patrulla y redistribuir miembros.",
+      "regenerateSuccess": "¡Patrullas regeneradas correctamente!",
+      "regenerateError": "Error al regenerar patrullas",
+      "leader": "Líder",
+      "judge": "Juez",
+      "memberActions": "Acciones de miembro",
+      "makeLeader": "Hacer Líder",
+      "makeJudge": "Hacer Juez",
+      "removeRole": "Eliminar Rol",
+      "moveToPatrol": "Mover a patrulla",
       "patrolN": "Patrulla {{number}}",
       "patrolTitle": "PATRULLA {{number}}",
-      "regenerate": "Regenerar",
-      "regenerateError": "No se pudieron regenerar las patrullas",
-      "regenerateSuccess": "¡Patrullas regeneradas con éxito!",
-      "removeRole": "Quitar rol",
-      "retry": "Reintentar",
-      "saveChanges": "Guardar cambios",
-      "saveError": "No se pudieron guardar las patrullas. Inténtalo de nuevo.",
-      "saveSuccess": "¡Patrullas guardadas con éxito!",
-      "saving": "Guardando...",
-      "scoreCardsPdfError": "No se pudieron generar las tarjetas de puntuación. Inténtalo de nuevo.",
+      "membersCount": "{{count}} miembros",
+      "delete": "Eliminar",
+      "deleteTooltip": "Eliminar patrulla y redistribuir miembros",
       "statistics": "Estadísticas",
-      "title": "Gestión de patrullas",
+      "participants": "Participantes",
+      "avgSize": "Tam. medio",
+      "categoryMatch": "Coincidencia categoría",
+      "clubDiversity": "Diversidad de club",
+      "divisionMatch": "Coincidencia división",
+      "genderMatch": "Coincidencia género",
       "unknown": "Desconocido",
-      "validation": {
-        "divisionMismatch": "La división del miembro ({{member}}) difiere de la división dominante de la patrulla ({{dominant}})",
-        "genderMismatch": "El género del miembro difiere del género dominante de la patrulla",
-        "invalid": "Patrulla o miembro no válido",
-        "sourceTooSmall": "La patrulla de origen quedaría demasiado pequeña (mínimo 3 miembros)"
-      },
+      "noClub": "Sin club",
       "warnings": {
-        "missingJudges": "Solo {{count}} juez(es) asignado(s)",
-        "missingLeader": "No hay líder asignado",
-        "mixedDivisions": "Divisiones mixtas en la patrulla",
-        "mixedGenders": "Géneros mixtos en la patrulla",
         "sameClubJudges": "Los jueces son del mismo club",
-        "sizeImbalance": "El tamaño de la patrulla ({{count}}) difiere significativamente del promedio"
+        "missingJudges": "Solo {{count}} juez(s) asignado(s)",
+        "missingLeader": "No hay líder asignado",
+        "mixedDivisions": "Divisiones mezcladas en patrulla",
+        "mixedGenders": "Géneros mezclados en patrulla",
+        "sizeImbalance": "Tamaño de patrulla ({{count}}) difiere significativamente de la media"
+      },
+      "validation": {
+        "invalid": "Patrulla o miembro inválido",
+        "sourceTooSmall": "La patrulla origen sería demasiado pequeña (mínimo 3 miembros requeridos)",
+        "divisionMismatch": "División del miembro ({{member}}) difiere de la división dominante de la patrulla ({{dominant}})",
+        "genderMismatch": "Género del miembro difiere del género dominante de la patrulla"
       }
     }
   },
-  "forms": {
-    "email": "Email",
-    "password": "Contraseña",
-    "firstName": "Nombre",
-    "lastName": "Apellido",
-    "currentPassword": "Contraseña actual",
-    "newPassword": "Nueva contraseña",
-    "confirmPassword": "Confirmar nueva contraseña",
-    "bio": "Bio",
-    "location": "Ubicación",
-    "website": "Sitio web",
-    "profilePictureUrl": "URL de la foto de perfil",
-    "federationNumber": "Número de federación",
-    "categories": "Categorías favoritas",
-    "selectCategories": "Selecciona categorías favoritas",
-    "preferredDivision": "División preferida",
-    "selectDivision": "Selecciona división",
-    "applicationLanguage": "Idioma de la aplicación",
-    "role": "Rol",
-    "club": "Club",
-    "country": "País",
-    "countryNotSet": "No establecido",
-    "gender": "Género",
-    "genderFemale": "Femenino",
-    "genderMale": "Masculino",
-    "genderOther": "Otro",
-    "nationality": "Nacionalidad",
-    "noClub": "Sin club",
-    "none": "Ninguno"
-  },
-  "reset": {
-    "invalidLink": "Enlace de restablecimiento inválido. Solicita un nuevo restablecimiento de contraseña.",
-    "minLength": "La contraseña debe tener al menos 8 caracteres",
-    "mismatch": "Las contraseñas no coinciden",
-    "requirements": "La contraseña debe contener al menos una mayúscula, una minúscula y un número",
-    "success": "¡La contraseña se ha restablecido correctamente! Redirigiendo al inicio de sesión...",
-    "failed": "No se pudo restablecer la contraseña",
-    "title": "Restablecer contraseña",
-    "subtitle": "Ingresa tu nueva contraseña abajo",
-    "new": "Nueva contraseña",
-    "confirm": "Confirmar nueva contraseña",
-    "strength": "Fortaleza de la contraseña",
-    "submit": "Restablecer contraseña",
-    "submitLoading": "Restableciendo contraseña...",
-    "strengthFair": "Aceptable",
-    "strengthGood": "Buena",
-    "strengthStrong": "Fuerte",
-    "strengthWeak": "Débil"
-  },
-  "profile": {
-    "joined": "Se unió",
-    "recentlyJoined": "Se unió recientemente",
-    "progressTitle": "Tu progreso",
-    "latestAchievement": "Último logro",
-    "viewAllAchievements": "Ver todos los logros ({{earned}}/{{total}})",
-    "noAchievementsYet": "Aún no hay logros desbloqueados",
-    "accountInfo": "Cuenta",
-    "signInMethod": "Método de inicio de sesión",
-    "signedInWithGoogle": "Inició sesión con Google",
-    "signedInWithFacebook": "Inició sesión con Facebook",
-    "signedInWithEmail": "Inició sesión con email",
-    "personalInfo": "Información personal",
-    "federationNumber": "Número de federación",
-    "nationality": "Nacionalidad",
-    "gender": "Género",
-    "club": "Club",
-    "bowCategories": "Categorías favoritas",
-    "preferredDivision": "División preferida",
-    "aboutMe": "Sobre mí",
-    "location": "Ubicación",
-    "editProfile": "Editar perfil",
-    "setPassword": "Establecer contraseña",
-    "changePassword": "Cambiar contraseña",
-    "setPasswordSubtitle": "Establece una contraseña para habilitar el inicio de sesión con email/contraseña",
-    "changePasswordSubtitle": "Actualiza tu contraseña para mantener tu cuenta segura",
-    "setPasswordSuccess": "¡Contraseña establecida correctamente! Ahora puedes iniciar sesión con email/contraseña.",
-    "changePasswordSuccess": "¡Contraseña cambiada correctamente!",
-    "settingPassword": "Estableciendo contraseña...",
-    "changingPassword": "Cambiando contraseña...",
-    "emailImmutable": "El email no se puede cambiar",
-    "bioPlaceholder": "Cuéntanos sobre ti...",
-    "locationPlaceholder": "Ciudad, País",
-    "websitePlaceholder": "https://example.com",
-    "avatarPlaceholder": "https://example.com/avatar.jpg",
-    "fedNumberPlaceholder": "Introduce tu número de federación",
-    "changeUserRole": "Cambiar rol del usuario",
-    "saving": "Guardando...",
-    "saveProfile": "Guardar perfil",
-    "avatar": "Avatar",
-    "uploadPhoto": "Subir foto",
-    "changePhoto": "Cambiar foto",
-    "cropAndSave": "Recortar y guardar",
-    "avatarSaved": "Avatar guardado correctamente",
-    "removePhoto": "Eliminar foto",
-    "unsupportedType": "Tipo de archivo no compatible. Permitidos: PNG, JPG, JPEG",
-    "imageTooLarge": "La imagen es demasiado grande (máx. 3MB).",
-    "dragToReposition": "Selecciona una imagen y arrastra para reposicionar",
-    "zoom": "Zoom",
-    "avatarSubheader": "Selecciona una imagen y arrástrala para reposicionarla (PNG, JPG hasta 3MB)",
-    "userIdRequired": "Se requiere ID de usuario para subir avatar",
-    "profileSaved": "¡Perfil guardado correctamente!",
-    "avatarSaveFailed": "No se pudo guardar el avatar",
-    "clubs": "Clubes",
-    "confirmLeaveClub": "¿Seguro que quieres dejar este club?",
-    "cropAndUse": "Recortar y usar",
-    "invalidCrop": "Parámetros de recorte no válidos. Prueba a ajustar la imagen.",
-    "leaveClub": "Dejar club",
-    "pending": "pendiente",
-    "pendingInvitation": "Invitación pendiente",
-    "unverifiedClub": "No verificado",
-    "updateError": "No se pudo actualizar el perfil. Inténtalo de nuevo.",
-    "verifiedClubMember": "Miembro verificado del club"
-  },
-  "role": {
-    "user": "Usuario",
-    "admin": "Admin"
-  },
-  "notFound": {
-    "title": "Página no encontrada",
-    "subtitle": "La página que buscas puede haber sido eliminada o no estar disponible temporalmente.",
-    "goHome": "Ir al inicio",
-    "tournament": {
-      "title": "Torneo no encontrado",
-      "subtitle": "Este torneo puede haber sido eliminado o el enlace es incorrecto.",
-      "goToList": "Ver torneos"
-    }
-  },
-  "common": {
-    "or": "o",
-    "cancel": "Cancelar",
-    "update": "Actualizar",
-    "create": "Crear",
-    "back": "Atrás",
-    "download": "Descargar",
-    "backToList": "Volver al listado",
-    "save": "Guardar",
-    "saving": "Guardando...",
-    "delete": "Eliminar",
-    "deleting": "Eliminando...",
-    "close": "Cerrar",
-    "edit": "Editar",
-    "loading": "Cargando...",
-    "facebookSigninUnavailable": "El inicio de sesión con Facebook aún no está implementado.",
-    "facebookSignupUnavailable": "El registro con Facebook aún no está implementado.",
-    "nationalityPortuguese": "Portuguesa",
-    "nationalityOther": "Otra",
-    "sending": "Enviando..."
-  },
-  "sharing": {
-    "authRequiredTitle": "Inicia sesión para compartir",
-    "authRequiredMessage": "Compartir logros y progreso está disponible solo para usuarios registrados. Inicia sesión o crea una cuenta para compartir.",
-    "goToProfileSettings": "Abrir ajustes del perfil",
-    "notEarnedMessage": "Podrás compartir este logro cuando lo desbloquees.",
-    "notEarnedTitle": "Logro aún no conseguido",
-    "privacyPersonalMessage": "Tu ajuste de privacidad es {{visibility}}. Para compartir, cambia la visibilidad a Limitada o Pública.",
-    "privacyPersonalTitle": "La compartición está en Personal"
-  },
-  "auth": {
-    "logout": "Cerrar sesión",
-    "signIn": "Iniciar sesión",
-    "signUp": "Registrarse",
-    "forgotPassword": "¿Olvidaste tu contraseña?",
-    "noAccount": "¿No tienes una cuenta?",
-    "signingIn": "Iniciando sesión...",
-    "signInWithGoogle": "Iniciar sesión con Google",
-    "alreadyAccount": "¿Ya tienes una cuenta?",
-    "signUpWithGoogle": "Registrarse con Google",
-    "signingUp": "Registrándose...",
-    "backToSignIn": "Volver al inicio de sesión",
-    "validationEmail": "Por favor, introduce una dirección de correo válida.",
-    "validationPasswordMin": "La contraseña debe tener al menos 6 caracteres.",
-    "validationFirstNameRequired": "El nombre es obligatorio.",
-    "validationLastNameRequired": "El apellido es obligatorio.",
-    "signInSubtitle": "Sigue tu entrenamiento, gana logros y sincroniza de forma segura. Tú eliges qué compartir.",
-    "signUpSubtitle": "Únete a la comunidad — registra sesiones, sincroniza de forma segura entre dispositivos y comparte tu progreso en tus términos.",
-    "signUpSyncNote": "Sokil funciona sin conexión en este dispositivo. Tras crear tu cuenta, eliges si respaldar entrenamientos y equipo en tu cuenta para usarlos en otros dispositivos.",
-    "googleAuthFailed": "Autenticación fallida",
-    "googleCompleting": "Completando la autenticación de Google...",
-    "googleFailed": "Falló la autenticación de Google",
-    "googleRedirecting": "Redirigiendo a la página de inicio de sesión...",
-    "receiveUpdates": "Quiero recibir novedades por correo electrónico.",
-    "acceptLegal": "Acepto los <terms>Términos y condiciones</terms>, la <privacy>Política de privacidad</privacy>, el <notice>Aviso legal</notice> y <cancellation>Cancelación y reembolsos</cancellation>.",
-    "acceptLegalRequired": "Acepta estas condiciones para crear una cuenta."
-  },
-  "dialog": {
-    "yes": "Sí",
-    "no": "No"
-  },
-  "errorBoundary": {
-    "title": "Algo salió mal",
-    "reload": "Recargar página",
-    "retry": "Reintentar",
-    "routeSubtitle": "Ocurrió un error inesperado al cargar esta página.",
-    "routeTitle": "Esta página no se pudo cargar"
-  },
   "trainings": {
-    "title": "Mis entrenamientos",
-    "info": "La sección \"Mis entrenamientos\" permite crear cualquier cantidad de entrenamientos personales, seleccionar objetivo, distancia, cantidad de flechas, etc.\nPara cada entrenamiento hay estadísticas detalladas. El usuario puede compartir sus resultados.\nIMPORTANTE: la información del entrenamiento no se envía a ningún lugar y se almacena solo en tu dispositivo (por ahora)",
+    "title": "Mis Entrenamientos",
+    "info": "El capítulo \"Mis entrenamientos\" permite crear cualquier cantidad de entrenamientos personales, seleccionar diana, distancia, cantidad de flechas, etc.\nPara cada entrenamiento hay estadísticas detalladas disponibles. El usuario puede compartir sus estadísticas.\nIMPORTANTE: la información del entrenamiento no se envía a ningún lado y se almacena solo en tu dispositivo (al menos por ahora)",
     "deleteQ": "¿Eliminar entrenamiento?",
-    "deleteHint": "Todos los resultados de este entrenamiento serán eliminados",
-    "add": "Agregar entrenamiento",
-    "moreDetails": "Más detalles",
+    "deleteHint": "Todos los resultados de este entrenamiento se eliminarán",
+    "add": "Añadir entrenamiento",
+    "empty": "No hay sesiones de entrenamiento aún. ¡Añade la primera!",
     "emptyState": {
-      "intro": "Empieza con una sesión habitual o añade la tuya.",
-      "orBlank": "O añadir sesión en blanco",
+      "intro": "Empieza con una sesión común o añade la tuya propia.",
+      "orBlank": "O añade una sesión en blanco",
       "templates": {
-        "indoor18m": "18m indoor · 60 flechas",
-        "outdoor70m": "70m outdoor · 72 flechas",
+        "indoor18m": "18m interior · 60 flechas",
+        "outdoor70m": "70m exterior · 72 flechas",
         "quickLog": "Registro rápido"
       }
     },
-    "equipment": {
-      "optionalHint": "Aún no hay configuración de arco (opcional — puedes añadirla después al editar)",
-      "createSetup": "Crear configuración",
-      "addFullDetails": "Añadir detalles completos",
-      "goToEquipment": "Mi equipo",
-      "unspecified": "No especificado"
-    },
-    "addCustomField": "Añadir campo",
-    "addSet": "Añadir serie",
-    "addShot": "Añadir tiro",
-    "arrowsPerSet": "Flechas por serie",
-    "customFields": "Campos adicionales",
+    "session": "Sesión de entrenamiento",
     "date": "Fecha",
-    "deleteConfirm": "¿Seguro que quieres eliminar esta sesión de entrenamiento?",
-    "finishQ": "¿Terminar entrenamiento?",
-    "finishConfirm": "¿Seguro que quieres terminar esta sesión de entrenamiento?",
-    "deleteError": "No se pudo eliminar la sesión de entrenamiento",
+    "shotsCount": "Número de flechas",
     "distance": "Distancia",
-    "empty": "Aún no hay sesiones de entrenamiento. ¡Añade la primera!",
-    "equipmentSet": "Set de equipo",
+    "targetType": "Tipo de diana",
+    "equipmentSet": "Set de equipamiento",
+    "noEquipment": "Sin equipamiento seleccionado",
+    "customFields": "Campos adicionales",
+    "addCustomField": "Añadir campo",
+    "moreDetails": "Más detalles",
     "fieldKey": "Nombre del campo",
     "fieldValue": "Valor",
-    "finishSession": "Terminar",
-    "inProgress": "En curso",
+    "deleteConfirm": "¿Estás seguro de que quieres eliminar esta sesión de entrenamiento?",
+    "finishQ": "¿Finalizar entrenamiento?",
+    "finishConfirm": "¿Estás seguro de que quieres finalizar esta sesión de entrenamiento?",
+    "saveError": "Error al guardar la sesión de entrenamiento",
+    "deleteError": "Error al eliminar la sesión de entrenamiento",
+    "syncing": "Sincronizando...",
+    "syncSuccess": "Datos sincronizados correctamente",
+    "syncError": "La sincronización falló",
+    "inProgress": "En progreso",
+    "replaceActiveSession": {
+      "title": "Sesión ya en progreso",
+      "message": "¿Quieres finalizar la sesión de entrenamiento anterior y empezar una nueva?",
+      "editCurrent": "No, editar actual",
+      "startNew": "Sí, empezar nueva"
+    },
+    "addShot": "Añadir flecha",
+    "removeShot": "Eliminar flecha",
+    "addSet": "Añadir serie",
+    "finishSession": "Finalizar",
+    "arrowsPerSet": "Flechas por serie",
+    "scoreTotal": "Puntuación total",
+    "notes": "Notas",
     "mood": "¿Cómo te sentiste?",
     "moodOptions": {
-      "amazing": "Increíble",
       "bad": "Mal",
+      "normal": "Normal",
       "good": "Bien",
-      "normal": "Normal"
+      "amazing": "Increíble"
     },
-    "noEquipment": "Ningún equipo seleccionado",
-    "notes": "Notas",
-    "removeShot": "Eliminar tiro",
-    "replaceActiveSession": {
-      "editCurrent": "No, editar la actual",
-      "message": "¿Quieres terminar la sesión anterior y empezar una nueva?",
-      "startNew": "Sí, empezar nueva",
-      "title": "Sesión ya en curso"
+    "equipment": {
+      "optionalHint": "Sin configuración de arco aún (opcional — puedes añadirla luego al editar)",
+      "createSetup": "Crear configuración",
+      "addFullDetails": "Añadir detalles completos",
+      "goToEquipment": "Mi Equipamiento",
+      "unspecified": "No especificado"
+    }
+  },
+  "equipment": {
+    "title": "Mi Equipamiento",
+    "empty": "No hay sets de equipamiento aún. ¡Añade tu primer set de arco/ballesta!",
+    "emptyState": {
+      "intro": "Registra especificaciones de arco y flechas para comparar rendimiento en estadísticas.",
+      "logSessionLink": "O añade una configuración rápida mientras registras una sesión"
     },
-    "saveError": "No se pudo guardar la sesión de entrenamiento",
-    "scoreTotal": "Puntuación total",
-    "session": "Sesión de entrenamiento",
-    "shotsCount": "Número de tiros",
-    "syncError": "Error de sincronización",
-    "syncSuccess": "Datos sincronizados con éxito",
-    "syncing": "Sincronizando...",
-    "targetType": "Tipo de diana"
+    "addSet": "Añadir set",
+    "editSet": "Editar set",
+    "setName": "Nombre del set",
+    "bowType": "Tipo",
+    "bow": "Arco",
+    "crossbow": "Ballesta",
+    "manufacturer": "Fabricante",
+    "model": "Modelo",
+    "drawWeight": "Peso de tracción (lbs)",
+    "arrowGroup": "Flecha",
+    "arrowLength": "Longitud de flecha",
+    "arrowSpine": "Spine",
+    "arrowWeight": "Peso de flecha",
+    "arrowMaterial": "Material de flecha",
+    "arrowMaterials": {
+      "wood": "Madera",
+      "carbon": "Carbono",
+      "fiberglass": "Fibra de vidrio",
+      "aluminium": "Aluminio",
+      "mix": "Mezcla",
+      "custom": "Personalizado"
+    },
+    "customArrowMaterial": "Material personalizado",
+    "customArrowMaterialPlaceholder": "p. ej. bambú",
+    "length": "Longitud",
+    "weight": "Peso",
+    "material": "Material",
+    "customFields": "Campos adicionales",
+    "addCustomField": "Añadir campo",
+    "fieldKey": "Nombre del campo",
+    "fieldValue": "Valor",
+    "deleteConfirm": "¿Estás seguro de que quieres eliminar este set de equipamiento?",
+    "saveError": "Error al guardar el set de equipamiento",
+    "deleteError": "Error al eliminar el set de equipamiento",
+    "nameRequired": "El nombre del set es obligatorio",
+    "default": "Predeterminado",
+    "setDefault": "Establecer como predeterminado"
+  },
+  "onboarding": {
+    "title": "Bienvenido a Sokil",
+    "skip": "Saltar",
+    "continue": "Continuar",
+    "finish": "Finalizar",
+    "stepProgress": "Paso {{current}} de {{total}}",
+    "aboutYou": "Sobre ti",
+    "equipmentAdded": "Equipamiento favorito guardado",
+    "addAnotherSetup": "Añadir otra configuración",
+    "readyForFirstSession": "Todo listo — ahora puedes registrar tu primera sesión de entrenamiento.",
+    "createFirstTrainingSession": "Crear mi primera sesión de entrenamiento",
+    "preferences": "Preferencias",
+    "syncHelper": "Respaldos de tus sesiones de entrenamiento y equipamiento entre dispositivos cuando estás en línea.",
+    "syncPrivacyNote": "Solo entrenamientos y equipamiento se sincronizan con tu cuenta. Puedes desactivarlo en cualquier momento en ajustes. La visibilidad del perfil controla quién puede ver tu progreso compartido.",
+    "steps": {
+      "profile": "Tu perfil",
+      "equipment": "Equipamiento favorito",
+      "getStarted": "Empezar",
+      "profileExplanation": "Ayuda a tus amigos a reconocerte. Puedes cambiar esto en cualquier momento en Perfil.",
+      "equipmentExplanation": "Tu configuración de arco predeterminada se preselecciona al registrar sesiones. Añade más sets después en Mi Equipamiento.",
+      "getStartedExplanation": "Elige tus preferencias de sincronización y quién puede ver tu perfil al compartir progreso."
+    }
+  },
+  "privacy": {
+    "visibility": {
+      "title": "Visibilidad del perfil",
+      "personal": {
+        "label": "Personal",
+        "helper": "Solo tú puedes ver tu enlace de perfil compartido. Los botones de compartir te recordarán cambiar este ajuste."
+      },
+      "limited": {
+        "label": "Limitado",
+        "helper": "Los miembros del club y administradores de federación pueden ver tu perfil cuando han iniciado sesión."
+      },
+      "public": {
+        "label": "Público",
+        "helper": "Cualquiera con el enlace puede ver tu perfil y logros compartidos."
+      }
+    }
+  },
+  "sharing": {
+    "privacyPersonalTitle": "Compartir está configurado como Personal",
+    "privacyPersonalMessage": "Tu ajuste de privacidad es {{visibility}}. Para compartir esto, abre tu perfil y cambia la visibilidad a Limitado o Público.",
+    "goToProfileSettings": "Abrir ajustes de perfil",
+    "notEarnedTitle": "Logro no desbloqueado aún",
+    "notEarnedMessage": "Puedes compartir este logro después de desbloquearlo.",
+    "authRequiredTitle": "Inicia sesión para compartir",
+    "authRequiredMessage": "Compartir logros y progreso está disponible para usuarios registrados. Inicia sesión o crea una cuenta para compartir."
+  },
+  "publicProfile": {
+    "notFoundTitle": "Perfil no disponible",
+    "notFoundMessage": "Este perfil es privado o no existe.",
+    "progressTitle": "Instantánea de progreso",
+    "weeklyArrows": "Flechas esta semana",
+    "streak": "Racha de entrenamiento",
+    "streakWeeks": "{{count}} semanas",
+    "totalArrows": "Total de flechas",
+    "latestAchievement": "Último logro",
+    "viewAchievements": "Ver logros",
+    "shareText": "{{name}} en Sokil",
+    "ogDescription": "{{arrows}} flechas esta semana · {{weeks}} semanas de racha en Sokil"
+  },
+  "userAchievements": {
+    "title": "Logros de {{name}}",
+    "backToProfile": "Volver al perfil",
+    "archer": "Arquero"
+  },
+  "achievementShare": {
+    "cta": "Registra tu entrenamiento y gana logros en Sokil",
+    "notFoundTitle": "Logro no disponible",
+    "notFoundMessage": "Este enlace de logro compartido es privado o no existe.",
+    "badge": "Logro",
+    "earnedBy": "Arquero",
+    "shareTitle": "Nuevo logro: {{title}}"
+  },
+  "localData": {
+    "localStorageBadge": "Datos locales en el dispositivo",
+    "syncButton": "Sincronizar",
+    "syncDialogTitle": "Almacenamiento de datos",
+    "syncDialogText": "Tus datos se almacenan de forma segura SOLO en este dispositivo. Para guardar y sincronizar entre dispositivos, necesitas iniciar sesión.",
+    "syncDialogAction": "Iniciar sesión para sincronizar",
+    "syncToggleLabel": "Sincronizar entrenamientos y equipamiento",
+    "syncToggleDescription": "Cuando está activado, tus sesiones de entrenamiento y sets de equipamiento se sincronizan automáticamente con tu cuenta cuando estás en línea.",
+    "syncOffBanner": "Tus sesiones y equipamiento se almacenan solo en este dispositivo. Activa la sincronización para respaldarlos entre dispositivos.",
+    "pendingSyncBanner": "{{count}} elemento esperando sincronización",
+    "pendingSyncBanner_other": "{{count}} elementos esperando sincronización",
+    "syncNow": "Sincronizar ahora"
   },
   "units": {
     "inch": "Pulgada",
     "centimeter": "Centímetro",
     "pound": "Libra",
     "kilogram": "Kilogramo",
-    "grain": "Grain",
+    "grain": "Grano",
     "gram": "Gramo",
     "yard": "Yarda",
     "meter": "Metro"
   },
   "converter": {
     "inchCm": {
-      "short": "Pulgada - cm",
+      "short": "Pulg - cm",
       "long": "Pulgada - Centímetro",
       "desc": "Usado para medir longitud de arco y flecha, etc."
     },
     "poundKg": {
       "short": "Libra - kg",
       "long": "Libra - Kilogramo",
-      "desc": "Usado para medir la potencia del arco"
+      "desc": "Usado para medir peso de tracción del arco"
     },
     "grainG": {
-      "short": "Grain - g",
-      "long": "Grain - Gramo",
-      "desc": "Usado para medir el peso de la flecha/punta, etc."
+      "short": "Grano - g",
+      "long": "Grano - Gramo",
+      "desc": "Usado para medir peso de flecha/punta, etc."
     },
     "yardM": {
       "short": "Yarda - m",
       "long": "Yarda - Metro",
-      "desc": "Conversiones de distancia de tiro"
+      "desc": "Conversiones de distancia de campo"
     }
   },
   "calculator": {
     "enterValues": "Introduce valores para calcular",
     "foc": {
       "short": "FOC",
-      "title": "Front of Center",
-      "desc": "Mide la longitud de la flecha y el punto de equilibrio desde la garganta del nock. FOC típico de diana ≈ 7–12%; caza a menudo 10–18%.",
+      "title": "Frente al Centro",
+      "desc": "Mide la longitud de la flecha y el punto de equilibrio desde la garganta del nock. El FOC objetivo típico es de unos 7–12%; para caza a menudo 10–18%.",
       "arrowLength": "Longitud de flecha (pulg)",
       "balancePoint": "Punto de equilibrio (pulg)",
-      "balanceHint": "Desde la garganta del nock al punto de equilibrio",
-      "hintLow": "Algo bajo — habitual en algunos setups de diana",
-      "hintTarget": "Rango típico de diana / sala",
+      "balanceHint": "Desde garganta del nock al punto de equilibrio",
+      "hintLow": "En el lado bajo — común en algunas configuraciones de diana",
+      "hintTarget": "Típico rango objetivo / interior",
       "hintHunting": "FOC típico de caza / exterior",
-      "hintHigh": "FOC alto — comprueba vuelo y clearance",
-      "traditionalNote": "Estas bandas de FOC sirven para setups modernos de tiro/caza; los arcos largos tradicionales y las flechas de madera pueden quedar fuera de ellas."
+      "hintHigh": "FOC alto — verifica vuelo y holgura",
+      "traditionalNote": "Estas bandas FOC se ajustan a configuraciones modernas de objetivo/caza; arcos largos tradicionales y flechas de madera pueden quedar fuera."
     },
     "arrowWeight": {
       "short": "GPI",
       "title": "Peso de flecha",
-      "desc": "Peso total desde el GPI del tubo más punta, insert, nock y plumas.",
+      "desc": "Peso total de la flecha desde GPI del tubo más punta, inserto, nock, y plumas.",
       "gpi": "GPI del tubo (gr/pulg)",
       "shaftLength": "Longitud del tubo (pulg)",
-      "point": "Punta (granos)",
-      "insert": "Insert (granos)",
-      "nock": "Nock (granos)",
-      "fletching": "Plumas (granos)"
+      "point": "Punta (gr)",
+      "insert": "Inserto (gr)",
+      "nock": "Nock (gr)",
+      "fletching": "Plumas (gr)"
     },
     "ke": {
       "short": "KE",
-      "title": "Energía cinética e impulso",
-      "desc": "Estima energía cinética (ft·lb) e impulso a partir del peso y la velocidad de la flecha.",
-      "arrowWeight": "Peso de flecha (granos)",
+      "title": "Energía cinética y momentum",
+      "desc": "Estima energía cinética (ft·lb) y momentum desde peso de flecha y velocidad.",
+      "arrowWeight": "Peso de flecha (gr)",
       "speed": "Velocidad (fps)",
-      "resultHint": "Cronografa el arco para mayor precisión"
+      "resultHint": "Cronografía tu arco para mejor precisión"
     },
     "drawLength": {
       "short": "Tiro",
       "title": "Estimación de longitud de tiro",
-      "desc": "Estimación estilo AMO: envergadura (punta de dedo a punta de dedo) ÷ 2,5. Confirma con una medición correcta.",
+      "desc": "Estimación estilo AMO: envergadura (punta de dedos a punta de dedos, brazos extendidos) ÷ 2.5. Confirma con una medición adecuada de longitud de tiro.",
       "wingspan": "Envergadura (pulg)",
-      "wingspanHint": "Brazos extendidos, punta de dedo a punta de dedo",
-      "resultHint": "Solo estimación — verifica en tabla de tiro o con un entrenador"
+      "wingspanHint": "Brazos extendidos, punta de dedos a punta de dedos",
+      "resultHint": "Solo estimación — verifica en tabla de tiro o con entrenador"
     },
     "spine": {
       "short": "Spine",
       "title": "Sugerencia de spine",
-      "desc": "Banda aproximada de spine de carbono según libras, longitud de flecha y peso de punta. Consulta siempre la tabla del fabricante.",
-      "descWood": "Banda aproximada de spine de madera (lb) para arcos tradicionales según tus libras de tiro y longitud de flecha. Base: punta de 125 granos; ±5 lb por cada 25 granos de punta (70–150 granos).",
-      "arrowType": "Tipo de flecha",
-      "arrowTypeCarbon": "Carbono",
-      "arrowTypeWood": "Madera",
-      "drawWeight": "Libras (lb)",
+      "desc": "Estimación de spine a partir de peso de tracción, longitud de flecha, y peso de punta. Basado en gráficas Easton simplificadas — usa tablas del fabricante para ajuste final.",
+      "drawWeight": "Peso de tracción (lbs)",
       "arrowLength": "Longitud de flecha (pulg)",
-      "pointWeight": "Peso de punta (granos)",
-      "result": "Sobre {{low}}–{{high}} spine",
-      "resultHint": "Libras efectivas usadas: {{dw}} lb · solo orientación",
-      "consultManual": "Consulta siempre el manual y la tabla de spine del fabricante antes de elegir flechas.",
-      "resultBelowMin": "Menos de 10 lb de spine",
-      "resultHintWood": "Spine de madera en lb · solo orientación",
-      "woodNote": "El spine de madera necesario varía según el tipo de arco (sobre la mano o con repisa), la cuerda y el estilo de tiro. Afina con prueba de bare-shaft."
-    },
-    "gpp": {
-      "short": "GPP",
-      "title": "Granos por libra",
-      "desc": "Peso de flecha dividido por libras. Se usa a menudo como comprobación rápida del setup.",
-      "arrowWeight": "Peso de flecha (granos)",
-      "drawWeight": "Libras (lb)",
-      "hintLight": "Ligero para muchos setups de caza — bien para algunos arcos de diana",
-      "hintTarget": "Rango habitual de diana / velocidad",
-      "hintHunting": "Rango habitual de caza",
-      "hintHeavy": "Setup pesado — más lento, más impulso"
-    }
-  },
-  "clubs": {
-    "clubLogo": "Logo del Club",
-    "logoSaved": "Logo del club guardado correctamente",
-    "logoSubheader": "Selecciona una imagen y luego arrastra para reposicionar (PNG, JPG hasta 10MB)",
-    "logoReady": "Logo listo — se subirá al guardar"
-  },
-  "pwa": {
-    "workingOffline": "Trabajando sin conexión",
-    "showingCachedData": "Mostrando últimos datos guardados",
-    "installPrompt": "Instala Sokil en tu pantalla de inicio para acceso rápido y una experiencia similar a una app.",
-    "install": "Instalar",
-    "installing": "Instalando…",
-    "dismiss": "Ahora no",
-    "installAria": "Aviso para instalar la aplicación",
-    "iosInstallPrompt": "Añade Sokil a la pantalla de inicio: toca Compartir y luego Añadir a pantalla de inicio.",
-    "iosInstallAria": "Consejo: añadir a pantalla de inicio",
-    "updateAvailable": "Hay una nueva versión disponible.",
-    "updateReload": "Recargar"
-  },
-  "payments": {
-    "title": "Mis Pagos (Demo)",
-    "demoNotice": "Esta es una página de demostración. Los pagos se vincularán a tu cuenta real en el futuro.",
-    "paymentMethods": "Métodos de Pago",
-    "subscriptions": "Suscripciones",
-    "paymentHistory": "Historial de Pagos",
-    "expires": "Expira",
-    "default": "Predeterminado",
-    "monthlyClubFee": "Cuota Mensual del Club",
-    "premium": "Premium",
-    "activatedByFederation": "Activado por tu Federación",
-    "premiumHint": "La membresía Premium desbloquea funciones adicionales de la aplicación. Se puede comprar individualmente o ser proporcionada por Club/Federación",
-    "month": "mes",
-    "active": "Activo",
-    "startDate": "Fecha de inicio",
-    "nextBillingDate": "Próximo cargo",
-    "date": "Fecha",
-    "description": "Descripción",
-    "amount": "Importe",
-    "status": "Estado",
-    "paid": "Pagado"
-  },
-  "statistics": {
-    "title": "Mis Estadísticas",
-    "signInBanner": {
-      "title": "Inicia sesión para ver tus estadísticas completas",
-      "subtitle": "Registra flechas disparadas, sesiones de entrenamiento y actividad en torneos",
-      "signIn": "Iniciar sesión",
-      "createAccount": "Crear cuenta"
-    },
-    "sections": {
-      "activity": "Actividad",
-      "arrows": "Flechas Disparadas",
-      "distance": "Distancia Recorrida",
-      "lifted": "Peso Levantado",
-      "habits": "Hábitos de Entrenamiento",
-      "tournaments": "Torneos",
-      "equipment": "Rendimiento por equipo",
-      "scoring": "Puntuación",
-      "info": {
-        "activity": "Resumen de la actividad de tu cuenta: cuándo te uniste, cuántas sesiones has registrado y tu racha de entrenamiento actual.",
-        "arrows": "Aquí contamos todas las sesiones de entrenamiento y los torneos confirmados.",
-        "distance": "Calculamos la distancia hasta la diana y de vuelta desde la posición de tiro.",
-        "lifted": "Calculamos esto según la configuración de arco usada en sesiones de entrenamiento y torneos.",
-        "habits": "Tus patrones de entrenamiento más habituales: media de flechas por sesión, distancia preferida, tipo de diana y equipo.",
-        "tournaments": "Recuento de solicitudes a torneos que has enviado, incluidas las aprobadas y rechazadas.",
-        "scoring": "Puntuaciones de sesiones de entrenamiento finalizadas en las que registraste un resultado.",
-        "equipment": "Desglose del rendimiento por configuración de arco usada en tus sesiones registradas."
-      }
-    },
-    "memberSince": "Miembro desde",
-    "memberSinceEmpty": "¿Aún no? ¡Regístrate!",
-    "totalSessions": "Sesiones totales",
-    "currentStreak": "Racha actual",
-    "weeks": "semanas seguidas",
-    "thisWeek": "Esta semana",
-    "thisMonth": "Este mes",
-    "thisYear": "Este año",
-    "total": "Total",
-    "meters": "metros",
-    "totalLifted": "Total levantado",
-    "kilograms": "kilogramos",
-    "avgShotsPerSession": "Media de flechas / sesión",
-    "topDistance": "Distancia más entrenada",
-    "topTargetType": "Diana más usada",
-    "applied": "Enviadas",
-    "approved": "Aprobadas",
-    "rejected": "Rechazadas",
-    "shotsByMonth": "Flechas por mes",
-    "sessionsByMonth": "Sesiones por mes",
-    "arrows": "flechas",
-    "sessions": "sesiones",
-    "loadError": "Error al cargar las estadísticas",
-    "emptyState": {
-      "chartsIntro": "Registra sesiones de entrenamiento para desbloquear tus tendencias mensuales.",
-      "ghostTitle": "Tus gráficos aparecerán aquí",
-      "ghostSubtitle": "Sigue flechas y sesiones a lo largo del tiempo cuando empieces a registrar.",
-      "logSession": "Registrar sesión"
-    },
-    "avgScore": "Puntuación media",
-    "bestSession": "Mejor sesión",
-    "byEquipment": {
-      "arrows": "Flechas",
-      "avgShots": "Media flechas / sesión",
-      "empty": "Registra sesiones con un setup de arco para comparar el rendimiento de tu equipo.",
-      "sessions": "Sesiones"
-    },
-    "mostUsedEquipment": "Setup más usado",
-    "noScoringData": "Termina sesiones con puntuación para ver tendencias.",
-    "scoreByDistance": "Puntuación media por distancia"
-  },
-  "dashboard": {
-    "title": "Inicio",
-    "thisWeekArrows": "Flechas de esta semana",
-    "currentStreak": "Racha actual",
-    "lastSession": "Última sesión",
-    "recentSessions": "Sesiones recientes",
-    "noSessions": "Aún no hay sesiones de entrenamiento. ¡Registra la primera!",
-    "logTraining": "Registrar entrenamiento",
-    "logTrainingTitle": "¿Listo para entrenar?",
-    "logTrainingSubtitle": "Registra flechas, distancia y equipo.",
-    "continueSession": "Continuar sesión",
-    "continueSessionTitle": "Sesión en curso",
-    "offlineNetworkHint": "Disponible cuando vuelvas a estar en línea",
-    "logTodaysSession": "Registrar sesión de hoy",
-    "sameAsLastTime": "Igual que la última vez",
-    "upcomingTournaments": "Próximos torneos",
-    "discoveryDisclaimer": "Según tu perfil y actividad, estos próximos torneos pueden interesarte.",
-    "appliedTournamentsDisclaimer": "Próximos eventos a los que te has inscrito.",
-    "browseAllTournaments": "Ver todos los torneos",
-    "viewAllApplications": "Ver todas las solicitudes",
-    "viewAllTrainings": "Ver todos los entrenamientos",
-    "viewStatistics": "Ver estadísticas completas",
-    "bowSetupPrompt": {
-      "title": "Añade tu configuración de arco",
-      "subtitle": "Vincular sesiones a tu equipo ayuda a seguir el rendimiento. Puedes añadir una configuración en cualquier momento — incluso al editar una sesión.",
-      "logSession": "Registrar sesión",
-      "dismiss": "Recordarme mañana"
-    },
-    "streakAtRisk": {
-      "title": "Mantén tu racha de {{count}} semanas",
-      "subtitle": "Registra una sesión esta semana antes de que termine.",
-      "logSession": "Registrar sesión de hoy",
-      "dismiss": "Recordarme mañana",
-      "statSubtitle": "en riesgo"
-    },
-    "monthlySummary": {
-      "title": "Tu {{month}} en resumen",
-      "sessions": "{{count}} sesiones",
-      "arrows": "{{count}} flechas",
-      "viewStatistics": "Ver estadísticas completas",
-      "dismiss": "Entendido"
-    },
-    "tournamentFeedback": {
-      "title": "¿Qué tal fue {{title}}?",
-      "subtitle": "Ayúdanos a mejorar",
-      "leaveFeedback": "Dejar comentario",
-      "dismiss": "Ahora no"
-    },
-    "lastAchievement": {
-      "title": "Logro más reciente",
-      "earnedOn": "Obtenido el {{date}}",
-      "viewAll": "Ver todos"
-    }
-  },
-  "onboarding": {
-    "title": "Bienvenido a Sokil",
-    "skip": "Omitir",
-    "continue": "Continuar",
-    "finish": "Finalizar",
-    "aboutYou": "Sobre ti",
-    "equipmentAdded": "Equipo favorito guardado",
-    "addAnotherSetup": "Añadir otro set",
-    "readyForFirstSession": "Todo listo — ahora puedes registrar tu primera sesión de entrenamiento.",
-    "createFirstTrainingSession": "Crear mi primera sesión de entrenamiento",
-    "preferences": "Preferencias",
-    "syncHelper": "Respalda tus sesiones de entrenamiento y equipo en todos los dispositivos cuando estés en línea.",
-    "syncPrivacyNote": "Solo se sincronizan entrenamientos y equipo. Puedes desactivarlo en cualquier momento en ajustes. Compartir progreso es una opción aparte abajo.",
-    "shareToggleLabel": "Compartir mi progreso",
-    "shareHelper": "Cuando esté activado, podrás compartir estadísticas semanales y logros con amigos (próximamente).",
-    "steps": {
-      "profile": "Tu perfil",
-      "equipment": "Equipo favorito",
-      "getStarted": "Empezar",
-      "profileExplanation": "Ayuda a tus amigos a reconocerte. Puedes cambiarlo en cualquier momento en Perfil.",
-      "equipmentExplanation": "Tu configuración de arco predeterminada se preselecciona al registrar sesiones de entrenamiento. Añade más sets después en Mi equipo.",
-      "getStartedExplanation": "Elige tus preferencias de sincronización y compartir. La sincronización mantiene tus sesiones de entrenamiento y equipo respaldados en todos los dispositivos."
-    },
-    "stepProgress": "Paso {{current}} de {{total}}"
-  },
-  "fieldGuide": {
-    "title": "Guía de Campo",
-    "glossary": "Glosario",
-    "glossaryDesc": "Términos y abreviaturas comunes usados en el tiro con arco",
-    "glossarySearch": "Buscar términos",
-    "glossaryNoResults": "No hay términos coincidentes"
-  },
-  "achievementShare": {
-    "cta": "Registra tus entrenamientos y consigue logros en Sokil",
-    "badge": "Logro",
-    "earnedBy": "Arquero",
-    "shareTitle": "Nuevo logro: {{title}}",
-    "notFoundMessage": "Este enlace de logro es privado o no existe.",
-    "notFoundTitle": "Logro no disponible"
-  },
-  "buttons": {
-    "ok": "OK"
-  },
-  "equipment": {
-    "addCustomField": "Añadir campo",
-    "addSet": "Añadir set",
-    "arrowGroup": "Flecha",
-    "arrowLength": "Longitud de flecha",
-    "arrowMaterial": "Material de flecha",
-    "arrowMaterials": {
-      "aluminium": "Aluminio",
-      "carbon": "Carbono",
-      "custom": "Personalizado",
-      "fiberglass": "Fibra de vidrio",
-      "mix": "Mix",
-      "wood": "Madera"
-    },
-    "customArrowMaterial": "Material personalizado",
-    "customArrowMaterialPlaceholder": "p. ej. bambú",
-    "arrowSpine": "Spine",
-    "arrowWeight": "Peso de flecha",
-    "bow": "Arco",
-    "bowType": "Tipo",
-    "crossbow": "Ballesta",
-    "customFields": "Campos adicionales",
-    "default": "Predeterminado",
-    "deleteConfirm": "¿Seguro que quieres eliminar este set de equipo?",
-    "deleteError": "No se pudo eliminar el set de equipo",
-    "drawWeight": "Peso de tiro (lbs)",
-    "editSet": "Editar set",
-    "empty": "Aún no hay sets de equipo. ¡Añade tu primer set de arco/ballesta!",
-    "emptyState": {
-      "intro": "Registra las especificaciones del arco y las flechas para comparar el rendimiento en estadísticas.",
-      "logSessionLink": "O añade una configuración rápida al registrar una sesión"
-    },
-    "fieldKey": "Nombre del campo",
-    "fieldValue": "Valor",
-    "length": "Longitud",
-    "manufacturer": "Fabricante",
-    "material": "Material",
-    "model": "Modelo",
-    "nameRequired": "El nombre del set es obligatorio",
-    "saveError": "No se pudo guardar el set de equipo",
-    "setDefault": "Establecer como predeterminado",
-    "setName": "Nombre del set",
-    "title": "Mi equipo",
-    "weight": "Peso"
-  },
-  "fileAttachments": {
-    "delete": "Eliminar"
-  },
-  "forgotPassword": {
-    "body": "Introduce el email de tu cuenta y te enviaremos un enlace para restablecer la contraseña.",
-    "close": "Cerrar",
-    "continue": "Continuar",
-    "email": "Dirección de email",
-    "error": "No se pudo enviar el email de restablecimiento. Inténtalo de nuevo.",
-    "sending": "Enviando...",
-    "success": "Si existe una cuenta con ese email, se ha enviado un enlace de restablecimiento.",
-    "title": "Restablecer contraseña"
-  },
-  "header": {
-    "home": "Inicio",
-    "testSite": "Sitio de prueba"
-  },
-  "invitations": {
-    "acceptError": "No se pudo aceptar la invitación",
-    "accepted": "¡Te has unido al club!",
-    "federationAccepted": "¡Tu club se ha unido a la federación!",
-    "goToProfile": "Ir al perfil",
-    "invalidToken": "Enlace de invitación no válido",
-    "loginRequired": "Inicio de sesión requerido",
-    "loginToAccept": "Inicia sesión para aceptar esta invitación al club.",
-    "loginToAcceptFederation": "Inicia sesión para aceptar esta invitación a la federación."
-  },
-  "languageToggler": {
-    "label": "Idioma"
-  },
-  "themeSwitcher": {
-    "toDark": "Cambiar a tema oscuro",
-    "toLight": "Cambiar a tema claro"
-  },
-  "localData": {
-    "localStorageBadge": "Datos locales en el dispositivo",
-    "pendingSyncBanner": "{{count}} elemento esperando sincronización",
-    "pendingSyncBanner_other": "{{count}} elementos esperando sincronización",
-    "syncButton": "Sincronizar",
-    "syncDialogAction": "Inicia sesión para sincronizar",
-    "syncDialogText": "Tus datos se almacenan de forma SEGURA SOLO en este dispositivo. Para guardar y sincronizar entre dispositivos, debes iniciar sesión.",
-    "syncDialogTitle": "Almacenamiento de datos",
-    "syncNow": "Sincronizar ahora",
-    "syncOffBanner": "Tus sesiones y equipo se guardan solo en este dispositivo. Activa la sincronización para respaldarlos entre dispositivos.",
-    "syncToggleDescription": "Cuando está activado, tus sesiones de entrenamiento y equipos se sincronizan automáticamente con tu cuenta cuando estás en línea.",
-    "syncToggleLabel": "Sincronizar entrenamientos y equipo"
-  },
-  "logoUploader": {
-    "corsPreviewUnavailable": "Vista previa no disponible — restricción CORS. Sube una imagen nueva para editar.",
-    "currentLogo": "Logo actual: {{name}}"
-  },
-  "components": {
-    "avatarUploader": {
-      "cropLabel": "Recortar avatar"
-    },
-    "bannerUploader": {
-      "cropLabel": "Recortar banner"
-    },
-    "logoUploader": {
-      "cropLabel": "Recortar logotipo"
-    }
-  },
-  "myClub": {
-    "adminBadge": "Admin"
-  },
-  "privacy": {
-    "visibility": {
-      "limited": {
-        "helper": "Los miembros del club y los administradores de la federación pueden ver tu perfil cuando han iniciado sesión.",
-        "label": "Limitada"
-      },
-      "personal": {
-        "helper": "Solo tú puedes ver el enlace de tu perfil compartido. Los botones para compartir te recordarán cambiar este ajuste.",
-        "label": "Personal"
-      },
-      "public": {
-        "helper": "Cualquiera con el enlace puede ver tu perfil y los logros compartidos.",
-        "label": "Público"
-      },
-      "title": "Visibilidad del perfil"
-    }
-  },
-  "progressShare": {
-    "badge": "Progreso de logros",
-    "by": "Arquero",
-    "notFoundMessage": "Este enlace de progreso es privado o no existe.",
-    "notFoundTitle": "Progreso no disponible",
-    "shareText": "{{earned}} de {{total}} logros desbloqueados",
-    "shareTitle": "Logros de {{name}} en Sokil",
-    "title": "Colección de logros",
-    "topBadges": "Mejores insignias"
-  },
-  "publicProfile": {
-    "latestAchievement": "Último logro",
-    "notFoundMessage": "Este perfil es privado o no existe.",
-    "notFoundTitle": "Perfil no disponible",
-    "ogDescription": "{{arrows}} flechas esta semana · racha de {{weeks}} semanas en Sokil",
-    "progressTitle": "Resumen de progreso",
-    "shareText": "{{name}} en Sokil",
-    "streak": "Racha de entrenamiento",
-    "streakWeeks": "{{count}} semanas",
-    "totalArrows": "Flechas totales",
-    "viewAchievements": "Ver logros",
-    "weeklyArrows": "Flechas esta semana"
-  },
-  "userAchievements": {
-    "archer": "Arquero",
-    "backToProfile": "Volver al perfil",
-    "title": "Logros de {{name}}"
-  },
-  "notifications": {
-    "title": "Notificaciones",
-    "empty": "Aún no tienes notificaciones.",
-    "fetchError": "No se pudieron cargar las notificaciones. Inténtalo de nuevo.",
-    "markAllRead": "Marcar todo como leído",
-    "markAllError": "No se pudieron marcar las notificaciones como leídas.",
-    "openRelated": "Abrir relacionado",
-    "achievementUnlocked": {
-      "title": "Nuevo logro",
-      "body": "Has desbloqueado \"{{achievementName}}\"."
-    },
-    "tournamentApplicationApproved": {
-      "title": "Solicitud aprobada",
-      "body": "Tu solicitud a \"{{tournamentTitle}}\" fue aprobada."
-    },
-    "tournamentApplicationRejected": {
-      "title": "Solicitud rechazada",
-      "body": "Tu solicitud a \"{{tournamentTitle}}\" fue rechazada."
-    },
-    "tournamentApplicationSubmitted": {
-      "title": "Solicitud enviada",
-      "body": "Tu solicitud a \"{{tournamentTitle}}\" fue enviada."
-    },
-    "clubInvitationReceived": {
-      "title": "Invitación a club",
-      "body": "{{invitedByName}} te invitó a unirte a \"{{clubName}}\"."
-    },
-    "clubJoinApproved": {
-      "title": "Unión al club aprobada",
-      "body": "Tu solicitud para unirte a \"{{clubName}}\" fue aprobada."
-    },
-    "clubJoinRejected": {
-      "title": "Unión al club rechazada",
-      "body": "Tu solicitud para unirte a \"{{clubName}}\" fue rechazada."
-    },
-    "clubJoinSubmitted": {
-      "title": "Solicitud de unión enviada",
-      "body": "Tu solicitud para unirte a \"{{clubName}}\" fue enviada."
-    },
-    "federationMembershipApproved": {
-      "title": "Membresía de federación aprobada",
-      "body": "\"{{clubName}}\" ahora es miembro de \"{{federationName}}\"."
-    },
-    "federationMembershipRejected": {
-      "title": "Membresía de federación finalizada",
-      "body": "\"{{clubName}}\" ya no es miembro de \"{{federationName}}\"."
-    },
-    "privacyVisibilityChanged": {
-      "title": "Privacidad actualizada",
-      "body": "La visibilidad del perfil cambió de {{previousVisibilityLabel}} a {{visibilityLabel}}."
-    },
-    "passwordChanged": {
-      "title": "Contraseña cambiada",
-      "body": "La contraseña de tu cuenta se cambió correctamente."
-    },
-    "announcementMessage": {
-      "title": "Mensaje de {{senderName}}",
-      "body": "{{message}}"
-    },
-    "trainingStreakAtRisk": {
-      "title": "No pierdas tu racha de entrenamiento",
-      "body": "Llevas una racha de {{priorStreakWeeks}} semanas. Registra una sesión esta semana para no perderla."
-    },
-    "trainingStreakReminder": {
-      "title": "Hora de entrenar",
-      "body": "No has registrado una sesión de entrenamiento desde hace {{days}} días. Una sesión corta mantiene tu rutina."
-    },
-    "tournamentCreated": {
-      "title": "Nuevo torneo cerca de ti",
-      "body": "Se acaba de anunciar \"{{tournamentTitle}}\" en tu país."
-    },
-    "push": {
-      "denied": "Las notificaciones están bloqueadas en los ajustes del navegador.",
-      "iosInstall": "Añade Sokil a la pantalla de inicio para recibir notificaciones en el iPhone.",
-      "unavailable": "Las notificaciones push no están disponibles en este navegador.",
-      "error": "No se pudieron actualizar las notificaciones push."
-    },
-    "settings": {
-      "title": "Ajustes de notificaciones",
-      "open": "Ajustes de notificaciones",
-      "close": "Cerrar",
-      "saveError": "No se pudieron guardar los ajustes de notificaciones.",
-      "phone": {
-        "title": "Notificaciones push",
-        "description": "Recibe notificaciones en este dispositivo."
-      },
-      "newTournaments": {
-        "title": "Nuevos torneos",
-        "description": "Avísame cuando se anuncie un nuevo torneo en mi país."
-      },
-      "streakReminder": {
-        "title": "Racha de entrenamiento",
-        "description": "Recuérdame si no he registrado entrenamiento durante 6 días."
-      },
-      "appUpdates": {
-        "title": "Actualizaciones de la app",
-        "description": "Entérate de las novedades de la app en cuanto estén disponibles."
-      },
-      "status": {
-        "sleepy": "Todas desactivadas",
-        "partial": "Algunas activadas",
-        "inspired": "Todas activadas"
-      }
-    }
-  },
-  "legal": {
-    "navLabel": "Información legal",
-    "updated": "Última actualización: 2 de octubre de 2026",
-    "nav": {
-      "privacy": "Política de privacidad",
-      "terms": "Términos y condiciones",
-      "notice": "Aviso legal",
-      "cancellation": "Cancelación y reembolsos"
-    },
-    "privacy": {
-      "title": "Política de privacidad",
-      "controller": {
-        "title": "Quiénes somos",
-        "body": "Sokil se presta desde Portugal, en la Unión Europea. Esta política cubre https://sokil.app.\n\nPara preguntas de privacidad, escribe a contact@fedirko.pro."
-      },
-      "data": {
-        "title": "Qué datos recogemos",
-        "body": "Datos de la cuenta: correo electrónico, una contraseña con hash o un identificador de acceso con Google, nombre, foto de perfil, biografía, ubicación, país, idioma, número de federación, nacionalidad, género, categorías de arco, club, división y visibilidad del perfil.\n\nEntrenamiento y equipo: sesiones, puntuaciones y configuraciones del arco. Se quedan en tu dispositivo. Si dejas la sincronización activada, guardamos una copia en nuestro servidor.\n\nActividad en el servicio: inscripciones a torneos, pertenencia a un club o federación, avisos dentro de la app y una suscripción opcional a notificaciones push en un dispositivo que actives.\n\nDatos técnicos: una cookie de sesión, una cookie CSRF, tu idioma, tu tema y un perfil breve en caché en el dispositivo. También usamos Google Analytics."
-      },
-      "purposes": {
-        "title": "Para qué los usamos",
-        "body": "Usamos estos datos para crear y proteger tu cuenta, mantener tu sesión, guardar los entrenamientos que decides sincronizar, gestionar clubes, federaciones e inscripciones, y enviar mensajes de servicio como el restablecimiento de la contraseña y los avisos que actives.\n\nLas analíticas nos ayudan a ver cómo se usa la app."
-      },
-      "bases": {
-        "title": "Bases legales",
-        "body": "Tratamos los datos de la cuenta, la sincronización y las inscripciones para prestar el servicio que pides (contrato).\n\nTratamos la cookie de sesión y los datos de seguridad relacionados para proteger las cuentas y mantener el servicio (intereses legítimos).\n\nLas notificaciones push son opcionales y se basan en tu consentimiento. Puedes desactivarlas en la app. Google Analytics en https://sokil.app usa cookies. Puedes bloquear las cookies no esenciales en el navegador."
-      },
-      "cookies": {
-        "title": "Cookies y almacenamiento en tu dispositivo",
-        "body": "session — una cookie httpOnly que mantiene tu sesión. Es necesaria.\n\ncsrf — una cookie que la app lee para enviar un token coincidente cuando cambias datos. Es necesaria para impedir solicitudes falsificadas.\n\nappLang e i18nextLng — recuerdan tu idioma.\n\nAlmacenamiento local — entrenamiento y equipo, tu tema, un perfil breve en caché y si cerraste un aviso. Permanece en tu dispositivo hasta que lo borres.\n\nCookies de Google Analytics — colocadas por Google para medir las visitas."
-      },
-      "sharing": {
-        "title": "Con quién las compartimos",
-        "body": "No vendemos datos personales.\n\nLa empresa que aloja nuestros servidores guarda lo necesario para operar Sokil. El correo que enviamos, como el restablecimiento de la contraseña, pasa por nuestro proveedor de correo. Si entras con Google, Google gestiona ese acceso. Google Analytics recibe datos de uso.\n\nLos administradores de un club o federación pueden ver la pertenencia y las inscripciones que les envías. Las demás personas ven tu perfil solo en la medida que permite tu visibilidad: personal, limitada o pública."
-      },
-      "retention": {
-        "title": "Cuánto tiempo los conservamos",
-        "body": "Los datos de la cuenta se conservan hasta que eliminas la cuenta o nos pides que los borremos. Los entrenamientos en el servidor se conservan mientras la sincronización está activa y la cuenta existe. Los datos que no salen de tu dispositivo permanecen hasta que los quitas.\n\nLa cookie de sesión termina cuando cierras la sesión o cuando la sesión caduca. Google conserva los datos de analíticas según su propia configuración."
-      },
-      "rights": {
-        "title": "Tus derechos",
-        "body": "Si estás en la Unión Europea, puedes pedirnos una copia de tus datos, que los corrijamos, los borremos, limitemos su uso o te los entreguemos en un formato portable. Puedes oponerte al tratamiento basado en intereses legítimos y retirar el consentimiento en cualquier momento.\n\nPara ejercer estos derechos, escribe a contact@fedirko.pro. También puedes reclamar ante la autoridad de protección de datos de tu país."
-      },
-      "children": {
-        "title": "Menores",
-        "body": "Sokil no está dirigido a menores de 16 años. No crees una cuenta si tienes menos de 16."
-      },
-      "changes": {
-        "title": "Cambios",
-        "body": "Cuando esta política cambie, actualizaremos esta página y la fecha de arriba."
-      }
-    },
-    "terms": {
-      "title": "Términos y condiciones",
-      "agreement": {
-        "title": "Acuerdo",
-        "body": "Estos términos son el acuerdo para usar Sokil. Al crear una cuenta o seguir usando la app, los aceptas. Si no los aceptas, no uses Sokil."
-      },
-      "service": {
-        "title": "El servicio",
-        "body": "Sokil es un compañero de tiro con arco para registrar entrenamientos, guardar el equipo, unirte a clubes e inscribirte en torneos. Sokil es gratuito. Algunas funciones posteriores pueden requerir una suscripción. Algunas funciones siguen en desarrollo. La pantalla de pagos puede mostrar ejemplos. Esos ejemplos no son un pago real ni un cargo."
-      },
-      "accounts": {
-        "title": "Cuentas",
-        "body": "Usa un correo real. Eres responsable de tu contraseña y de lo que ocurra en tu cuenta. Puedes entrar con correo o con Google.\n\nMantén el perfil al día cuando un club o una federación dependan de él, incluido el nombre y el número de federación si los indicas."
-      },
-      "use": {
-        "title": "Uso aceptable",
-        "body": "No intentes acceder a la cuenta de otra persona, interrumpir el servicio, subir contenido ilícito ni usar Sokil para acosar a nadie. Las herramientas de club y federación son solo para la comunidad que administras."
-      },
-      "content": {
-        "title": "Tu contenido",
-        "body": "Los registros de entrenamiento, las fotos y los textos que añades siguen siendo tuyos. Nos permites guardarlos y mostrarlos para que el servicio funcione, incluido un perfil visible para tu club o para el público cuando eliges esa visibilidad.\n\nEres responsable del contenido que publicas y de tener derecho a compartirlo."
-      },
-      "organizers": {
-        "title": "Clubes y federaciones",
-        "body": "Si administras un club o una federación, puedes ver y gestionar miembros e inscripciones en ese ámbito. Usa ese acceso solo para esa comunidad y aplica las mismas reglas de privacidad cuando trates datos de otras personas."
-      },
-      "availability": {
-        "title": "Disponibilidad",
-        "body": "Sokil se ofrece tal como está disponible. Podemos cambiar, pausar o retirar funciones, también durante un mantenimiento. El entrenamiento guardado solo en tu dispositivo puede perderse si vacías el navegador o desinstalas la app. Conserva una copia propia de lo que no te puedas permitir perder."
-      },
-      "payments": {
-        "title": "Pagos",
-        "body": "Sokil es gratuito. Algunas funciones posteriores pueden requerir una suscripción. Si se añade una suscripción, el precio, lo que compras y cómo cancelar se mostrarán antes de que pagues. La página de cancelación y reembolsos se aplicará a esos pagos."
-      },
-      "liability": {
-        "title": "Responsabilidad",
-        "body": "Las puntuaciones, las estadísticas y las calculadoras de Sokil son herramientas para tu propio entrenamiento. No son resultados oficiales de competición.\n\nEn la medida en que la ley lo permite, no respondemos de pérdidas indirectas o consecuentes, incluidos los datos perdidos o un evento al que no llegues. Esto no limita la responsabilidad que la ley no permite limitar."
-      },
-      "ending": {
-        "title": "Fin del uso",
-        "body": "Puedes dejar de usar Sokil en cualquier momento y pedirnos que eliminemos tu cuenta en contact@fedirko.pro. Podemos suspender o cerrar una cuenta que incumpla estos términos o ponga en riesgo a otras personas."
-      },
-      "law": {
-        "title": "Qué ley se aplica",
-        "body": "Sokil se presta desde Portugal, en la Unión Europea. Estos términos siguen el Derecho de la Unión Europea. Si eres consumidor en la UE, conservas las protecciones obligatorias del país donde vives, incluido el derecho a reclamar ante tus tribunales locales."
-      }
-    },
-    "notice": {
-      "title": "Aviso legal",
-      "operator": {
-        "title": "Operador",
-        "body": "Sokil se presta desde Portugal, en la Unión Europea."
-      },
-      "contact": {
-        "title": "Contacto",
-        "body": "Correo: contact@fedirko.pro"
-      },
-      "sites": {
-        "title": "Sitio web",
-        "body": "https://sokil.app"
-      },
-      "content": {
-        "title": "Responsabilidad del contenido",
-        "body": "El contenido editorial de Sokil es responsabilidad nuestra. Los perfiles, las páginas de club y la información de los torneos los publican las personas que los crean."
-      }
-    },
-    "cancellation": {
-      "title": "Cancelación y reembolsos",
-      "now": {
-        "title": "El servicio es gratuito",
-        "body": "Sokil es gratuito. Crear una cuenta no cuesta nada. Algunas funciones posteriores pueden requerir una suscripción. La pantalla de pagos muestra ejemplos para que veas el diseño. Esos ejemplos no son cargos reales y no hay nada que reembolsar."
-      },
-      "withdrawal": {
-        "title": "Si se añade una suscripción",
-        "body": "Si eres consumidor en la Unión Europea y más adelante se añade una suscripción, puedes desistir de esa compra en un plazo de 14 días sin dar un motivo.\n\nLos 14 días empiezan el día en que se celebra el contrato. Te informaremos de nuevo de este derecho antes de que pagues."
-      },
-      "how": {
-        "title": "Cómo cancelar",
-        "body": "Escribe a contact@fedirko.pro con el correo de tu cuenta y lo que quieres cancelar. Basta cualquier declaración clara de desistimiento. Confirmaremos la recepción y, si corresponde un reembolso, devolveremos el pago por el mismo medio que usaste, sin un cargo extra, en un plazo de 14 días."
-      },
-      "exceptions": {
-        "title": "Cuándo pueden no aplicar los 14 días",
-        "body": "En el contenido digital que nos pides empezar de inmediato, el derecho de desistimiento puede terminar cuando la prestación haya comenzado, si aceptaste eso y reconociste que pierdes el derecho. Pediremos ese acuerdo por separado, antes de que pagues. No se aplica al servicio gratuito que usas hoy."
-      },
-      "contact": {
-        "title": "Preguntas",
-        "body": "Escribe a contact@fedirko.pro."
-      }
+      "pointWeight": "Peso de punta (gr)",
+      "result": "Spine sugerido"
     }
   }
 }

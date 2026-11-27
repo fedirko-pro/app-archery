@@ -6,14 +6,19 @@ import { getLatestEarnedAchievement } from './achievement-utils';
 function achievement(id: string, earned: boolean, earnedAt?: string): AchievementProgressDto {
   return {
     id,
-    category: 'volume',
+    branch: 'endurance',
+    subtrack: 'arrows',
+    tier: 1,
+    parentIds: [],
     rarity: 'common',
+    rarityHex: '#9E9E9E',
+    evaluationMode: 'client_offline',
     icon: '🏹',
     titleKey: `achievements.${id}.title`,
     descriptionKey: `achievements.${id}.description`,
-    type: 'computed',
     earned,
     progress: earned ? 100 : 0,
+    threshold: 100,
     earnedAt: earnedAt ?? null,
   };
 }

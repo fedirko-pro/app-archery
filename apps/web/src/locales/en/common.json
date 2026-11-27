@@ -107,16 +107,25 @@
     },
     "categories": {
       "all": "All",
-      "onboarding": "Getting started",
-      "consistency": "Consistency",
-      "volume": "Volume",
-      "exploration": "Exploration",
-      "tournaments": "Tournaments",
-      "mastery": "Mastery"
+      "onboarding": "Getting Started",
+      "discipline": "Discipline",
+      "endurance": "Endurance",
+      "fieldcraft": "Fieldcraft",
+      "arena": "Arena"
+    },
+    "subtracks": {
+      "arrows": "Arrows",
+      "sessions": "Sessions",
+      "distance": "Distance",
+      "weight": "Weight"
     },
     "locked": {
-      "eventHint": "This achievement is awarded at special events or by tournament results."
+      "eventHint": "This achievement is awarded at special events or by tournament results.",
+      "serverVerifiedHint": "This achievement is verified by tournament officials and awarded on the server.",
+      "prerequisitesNotMet": "Complete the prerequisite achievements first."
     },
+    "prerequisites": "Prerequisites",
+    "inProgress": "In Progress",
     "unlocked": {
       "title": "Achievement Unlocked!",
       "nice": "Nice!"
@@ -139,6 +148,10 @@
       "title": "Identity Set",
       "description": "Complete your archer profile"
     },
+    "offlineSession": {
+      "title": "Off-Grid Archer",
+      "description": "Log and complete a training session while offline and sync it"
+    },
     "streak2Weeks": {
       "title": "Warming Up",
       "description": "Train at least once a week for 2 weeks in a row"
@@ -154,6 +167,10 @@
     "streak26Weeks": {
       "title": "Year-Round Archer",
       "description": "Maintain a 26-week training streak"
+    },
+    "streak52Weeks": {
+      "title": "One-Year Archer",
+      "description": "Maintain a 52-week training streak"
     },
     "arrows500": {
       "title": "Arrow Apprentice",
@@ -187,42 +204,6 @@
       "title": "Range Regular",
       "description": "Complete 500 training sessions"
     },
-    "distances3": {
-      "title": "Distance Explorer",
-      "description": "Train at 3 different distances"
-    },
-    "distances5": {
-      "title": "Range Rover",
-      "description": "Train at 5 different distances"
-    },
-    "targetTypes3": {
-      "title": "Target Variety",
-      "description": "Train with 3 different target types"
-    },
-    "scoredSessions5": {
-      "title": "Score Tracker",
-      "description": "Log scores in 5 training sessions"
-    },
-    "firstApplication": {
-      "title": "On the Start List",
-      "description": "Submit your first tournament application"
-    },
-    "competitor": {
-      "title": "Competitor",
-      "description": "Get your first tournament application approved"
-    },
-    "seasonedCompetitor": {
-      "title": "Seasoned Competitor",
-      "description": "Get 5 tournament applications approved"
-    },
-    "tournamentChampion": {
-      "title": "Tournament Champion",
-      "description": "Win first place in an official tournament"
-    },
-    "personalBest": {
-      "title": "Personal Best",
-      "description": "Set a new personal best score in competition"
-    },
     "distance10km": {
       "title": "Range Walker",
       "description": "Walk 10 km to and from your targets"
@@ -231,9 +212,21 @@
       "title": "Marathoner",
       "description": "Walk a marathon (42.195 km) to and from your targets"
     },
+    "distance100km": {
+      "title": "Century Strider",
+      "description": "Walk 100 km to and from your targets"
+    },
     "distance250km": {
       "title": "Trailblazer",
       "description": "Walk 250 km to and from your targets"
+    },
+    "distance500km": {
+      "title": "Wayfarer",
+      "description": "Walk 500 km to and from your targets"
+    },
+    "distance1000km": {
+      "title": "Thousand-League Boots",
+      "description": "Walk 1,000 km to and from your targets"
     },
     "distanceThereAndBack": {
       "title": "There and Back Again",
@@ -254,6 +247,58 @@
     "liftKiloton": {
       "title": "Kiloton Archer",
       "description": "Draw a cumulative 1,000,000 kg (1,000 tonnes)"
+    },
+    "distances3": {
+      "title": "Distance Explorer",
+      "description": "Train at 3 different distances"
+    },
+    "distances5": {
+      "title": "Range Rover",
+      "description": "Train at 5 different distances"
+    },
+    "targetTypes3": {
+      "title": "Target Variety",
+      "description": "Train with 3 different target types"
+    },
+    "fieldOr3d": {
+      "title": "Into the Wild",
+      "description": "Complete a session on a Field or 3D target course"
+    },
+    "bowSwitch": {
+      "title": "Quiver Explorer",
+      "description": "Log training sessions with 2 different equipment sets"
+    },
+    "styleVersatility": {
+      "title": "Style Shifter",
+      "description": "Shoot across 2 distinct bow styles or classes"
+    },
+    "scoredSessions5": {
+      "title": "Score Tracker",
+      "description": "Log scores in 5 training sessions"
+    },
+    "cleanEnd": {
+      "title": "Tight Grouping",
+      "description": "Log a scored end with all arrows in the maximum scoring ring"
+    },
+    "firstApplication": {
+      "title": "On the Start List",
+      "description": "Submit your first tournament application"
+    },
+    "competitor": {
+      "title": "Competitor",
+      "description": "Get your first tournament application approved"
+    },
+    "seasonedCompetitor": {
+      "title": "Seasoned Competitor",
+      "description": "Get 5 tournament applications approved"
+    },
+    "tournamentChampion": {
+      "title": "Tournament Champion",
+      "description": "Win first place in an official tournament"
+    },
+    "personalBest": {
+      "title": "Personal Best",
+      "description": "Set a new personal best score in competition"
     }
   },
   "progressShare": {

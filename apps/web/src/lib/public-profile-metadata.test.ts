@@ -22,12 +22,21 @@ const owner = {
 
 const achievement: PublicAchievementShareDto = {
   id: 'streak-2-weeks',
+  branch: 'discipline',
+  subtrack: undefined,
+  tier: 1,
   titleKey: 'achievements.streak2Weeks.title',
   descriptionKey: 'achievements.streak2Weeks.description',
   icon: 'flame',
+  shareImage: undefined,
   rarity: 'common',
+  rarityHex: '#9E9E9E',
   earned: true,
+  earnedDate: '2026-06-15T00:00:00.000Z',
   owner,
+  badge512: undefined,
+  thumb256: undefined,
+  ogCard1200: undefined,
 };
 
 describe('buildAchievementShareMetadata', () => {

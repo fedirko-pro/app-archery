@@ -1,84 +1,169 @@
 @use '../../sass/helpers/variables' as *;
 
-.achievements-grid {
-  display: grid;
-  grid-template-columns: 1fr;
+.achievements-container {
+  // Vertical spine layout handled by inline styles in component
+}
+
+.achievement-node {
+  position: relative;
+  display: flex;
   gap: 1.5rem;
+  padding: 1rem;
+  min-height: 96px;
 
-  @media (min-width: 600px) {
-    grid-template-columns: repeat(2, 1fr);
+  &::before {
+    content: '';
+    position: absolute;
+    left: 36px;
+    top: 48px;
+    bottom: 48px;
+    width: 2px;
+    background: rgba(0, 0, 0, 0.12);
+    border-style: dashed;
+    z-index: 0;
   }
 
-  @media (min-width: 900px) {
-    grid-template-columns: repeat(3, 1fr);
+  &:first-child::before {
+    top: 48px;
   }
 
-  @media (min-width: 1200px) {
-    grid-template-columns: repeat(4, 1fr);
+  &:last-child::before {
+    bottom: 48px;
   }
 
-  &--locked {
-    @media (min-width: 600px) {
-      grid-template-columns: repeat(3, 1fr);
-    }
-
-    @media (min-width: 900px) {
-      grid-template-columns: repeat(4, 1fr);
-    }
-
-    @media (min-width: 1200px) {
-      grid-template-columns: repeat(5, 1fr);
-    }
+  &--earned::before {
+    background: var(--achievement-rarity-color, #2196f3);
+    border-style: solid;
   }
 }
 
-.achievement-card {
+.achievement-node__badge {
   position: relative;
-  overflow: visible;
-  transition:
-    transform 0.2s,
-    box-shadow 0.2s;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 72px;
+  flex-shrink: 0;
+}
 
-  &--earned:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+.achievement-node__icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  transition: all 0.2s ease;
+
+  &--earned {
+    box-shadow: 0 0 16px var(--achievement-glow, rgba(33, 150, 243, 0.45));
+  }
+
+  &--in-progress {
+    border: 3px solid var(--achievement-rarity-color, #2196f3);
+    box-shadow: 0 0 12px var(--achievement-rarity-color, #2196f3) 60;
   }
 
   &--locked {
-    opacity: 0.85;
+    background: linear-gradient(135deg, #e0e0e0 0%, #bdbdbd 100%) !important;
+    filter: grayscale(85%);
+  }
+}
 
-    &:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+.achievement-node__content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+}
+
+.achievement-node__title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.achievement-node__title {
+  color: var(--mui-palette-text-primary);
+  opacity: 1;
+}
+
+.achievement-node__title--locked {
+  color: var(--mui-palette-text-disabled);
+  opacity: 0.6;
+}
+
+.achievement-node__description {
+  margin-bottom: 0.75rem;
+  line-height: 1.4;
+  opacity: 1;
+}
+
+.achievement-node__description--locked {
+  opacity: 0.6;
+}
+
+.achievement-node__progress {
+  width: 100%;
+}
+
+.achievement-node__progress-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.achievement-node__earned-date {
+  margin-top: 0.5rem;
+  display: block;
+}
+
+.achievement-node__prerequisites-hint {
+  margin-top: 0.5rem;
+  display: block;
+}
+
+.achievement-node__share {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 48px;
+  padding: 0 1rem;
+}
+
+/* Branch tabs */
+.achievements-branch-tabs {
+  margin-bottom: 1.5rem;
+}
+
+.achievements-subtrack-tabs {
+  margin-bottom: 1.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 599px) {
+  .achievement-node {
+    gap: 1rem;
+    padding: 0.75rem;
+    min-height: 88px;
+
+    &::before {
+      left: 28px;
     }
   }
 
-  &__new-badge {
-    position: absolute;
-    top: 8px;
-    left: 8px;
-    z-index: 1;
+  .achievement-node__badge {
+    width: 64px;
   }
 
-  &__medallion-wrap {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 1.25rem 1rem 0.75rem;
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0.02) 0%, transparent 100%);
-
-    .achievement-medallion {
-      width: 50%;
-      min-width: 50%;
-    }
-
-    &--compact {
-      padding: 1rem 0.75rem 0.5rem;
-
-      .achievement-medallion {
-        width: 50%;
-        min-width: 50%;
-      }
-    }
+  .achievement-node__icon {
+    width: 48px;
+    height: 48px;
+    font-size: 24px;
   }
 }

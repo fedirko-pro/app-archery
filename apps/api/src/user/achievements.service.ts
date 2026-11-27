@@ -4,6 +4,7 @@ import {
   ACHIEVEMENT_CATALOG,
   ACHIEVEMENT_CATALOG_BY_ID,
   AchievementStatsSnapshot,
+  arePrerequisitesMet,
   evaluateComputedProgress,
   isValidAchievementId,
   lbsToKg,
@@ -41,24 +42,46 @@ export class AchievementsService {
     const distanceSet = new Set<string>();
     const targetTypeSet = new Set<string>();
     const equipmentSetIds = new Set<string>();
+    const bowStyleSet = new Set<string>();
     let scoredSessions = 0;
+    let fieldOr3dSessions = 0;
+    let maxScoringRingEnds = 0;
 
     for (const s of finishedSessions) {
       if (s.distance) distanceSet.add(s.distance);
       if (s.targetType) targetTypeSet.add(s.targetType);
       if (s.equipmentSetId) equipmentSetIds.add(s.equipmentSetId);
       if (s.scoreTotal !== undefined && s.scoreTotal !== null) scoredSessions++;
+      // Check for field or 3D target types
+      if (
+        s.targetType &&
+        (s.targetType.toLowerCase().includes('field') || s.targetType.toLowerCase().includes('3d'))
+      ) {
+        fieldOr3dSessions++;
+      }
+      // Check for perfect end (all arrows in max scoring ring)
+      // This would need more detailed score data; placeholder for now
+      if (s.scoreTotal !== undefined && s.scoreTotal !== null && s.shotsCount) {
+        const maxPossibleScore = s.shotsCount * 10; // Assuming 10-ring target
+        if (s.scoreTotal === maxPossibleScore && s.shotsCount >= 3) {
+          maxScoringRingEnds++;
+        }
+      }
     }
 
     const equipmentSets = await this.equipmentService.findAllForUser(userId);
     const equipmentCount = Math.max(equipmentSets.length, equipmentSetIds.size);
+
+    // Count distinct bow styles from equipment sets
+    for (const set of equipmentSets) {
+      if (set.bowType) bowStyleSet.add(set.bowType);
+    }
 
     const drawWeightById = new Map(equipmentSets.map((set) => [set.id, set.drawWeight]));
     let kilogramsLifted = 0;
     for (const s of finishedSessions) {
       const shots = s.shotsCount ?? 0;
       if (shots <= 0 || !s.equipmentSetId) continue;
-      // numeric columns may be returned as strings by the driver
       const rawWeight = drawWeightById.get(s.equipmentSetId);
       const kg = lbsToKg(rawWeight == null ? undefined : Number(rawWeight));
       if (kg > 0) kilogramsLifted += shots * kg;
@@ -81,6 +104,10 @@ export class AchievementsService {
       profileComplete,
       metersTraveledTotal: stats.metersTraveled.total,
       kilogramsLifted: Math.round(kilogramsLifted),
+      distinctEquipmentSets: equipmentSetIds.size,
+      distinctBowStyles: bowStyleSet.size,
+      fieldOr3dSessions,
+      maxScoringRingEnds,
     };
   }
 
@@ -97,8 +124,11 @@ export class AchievementsService {
     const newlyUnlocked: string[] = [];
 
     for (const def of ACHIEVEMENT_CATALOG) {
-      if (def.type !== 'computed' || !def.criteria) continue;
+      if (def.evaluationMode !== 'client_offline' || !def.criteria) continue;
       if (existingIds.has(def.id)) continue;
+
+      // Check prerequisites
+      if (!arePrerequisitesMet(def, existingIds)) continue;
 
       const { earned } = evaluateComputedProgress(def, snapshot);
       if (!earned) continue;
@@ -170,6 +200,7 @@ export class AchievementsService {
     const snapshot = await this.buildSnapshot(userId);
     const earnedRows = await this.getEarnedRows(userId);
     const earnedMap = new Map(earnedRows.map((r) => [r.achievementId, r]));
+    const earnedIds = new Set(earnedRows.map((r) => r.achievementId));
 
     const achievements: AchievementProgressDto[] = ACHIEVEMENT_CATALOG.map((def) => {
       const row = earnedMap.get(def.id);
@@ -178,45 +209,60 @@ export class AchievementsService {
       if (earned) {
         return {
           id: def.id,
-          category: def.category,
+          branch: def.branch,
+          subtrack: def.subtrack,
+          tier: def.tier,
+          parentIds: def.parentIds,
           rarity: def.rarity,
-          icon: def.icon,
-          shareImage: def.shareImage,
+          rarityHex: def.rarityHex,
+          evaluationMode: def.evaluationMode,
+          icon: def.icon, // Keep for backward compat
+          shareImage: def.assets.ogCard1200,
           titleKey: def.titleKey,
           descriptionKey: def.descriptionKey,
-          type: def.type,
           earned: true,
           progress: 100,
-          current: def.criteria?.threshold,
-          threshold: def.criteria?.threshold,
+          current: def.criteria.target,
+          threshold: def.criteria.target,
           earnedAt: row!.earnedAt.toISOString(),
           source: row!.source,
         };
       }
 
+      // Check if prerequisites are met for locked achievements
+      const prerequisitesMet = arePrerequisitesMet(def, earnedIds);
+
       const evalResult =
-        def.type === 'computed'
+        def.evaluationMode === 'client_offline' && def.criteria
           ? evaluateComputedProgress(def, snapshot)
-          : { earned: false, progress: 0, current: 0, threshold: 0 };
+          : { earned: false, progress: 0, current: 0, target: 0 };
 
       return {
         id: def.id,
-        category: def.category,
+        branch: def.branch,
+        subtrack: def.subtrack,
+        tier: def.tier,
+        parentIds: def.parentIds,
         rarity: def.rarity,
+        rarityHex: def.rarityHex,
+        evaluationMode: def.evaluationMode,
         icon: def.icon,
-        shareImage: def.shareImage,
+        shareImage: def.assets.ogCard1200,
         titleKey: def.titleKey,
         descriptionKey: def.descriptionKey,
-        type: def.type,
         earned: false,
         progress: evalResult.progress,
         current: evalResult.current,
-        threshold: evalResult.threshold || def.criteria?.threshold,
+        threshold: evalResult.target || def.criteria?.target,
         earnedAt: null,
+        prerequisitesMet,
+        // Include assets for UI
+        badge512: def.assets.badge512,
+        thumb256: def.assets.thumb256,
+        ogCard1200: def.assets.ogCard1200,
       };
     });
 
-    const earnedIds = new Set(earnedRows.map((r) => r.achievementId));
     const completion = summarizeCompletion(earnedIds);
 
     return {
@@ -267,5 +313,12 @@ export class AchievementsService {
         picture: user.picture,
       },
     };
+  }
+
+  // Retroactive unlock check for login/migration
+  async runRetroactiveUnlockCheck(userId: string): Promise<string[]> {
+    // This re-runs syncComputed which already checks all criteria against current snapshot
+    // and unlocks any newly eligible achievements
+    return this.syncComputed(userId);
   }
 }

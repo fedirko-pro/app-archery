@@ -1,9 +1,5 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
-import {
-  ACHIEVEMENT_CATALOG_BY_ID,
-  AchievementRarity,
-  isValidAchievementId,
-} from '@sokil/shared-types';
+import { ACHIEVEMENT_CATALOG_BY_ID, isValidAchievementId } from '@sokil/shared-types';
 import { TrainingService } from '../training/training.service';
 import { AchievementsService } from './achievements.service';
 import { PublicAchievementShareDto } from './dto/public-achievement-share.dto';
@@ -129,11 +125,15 @@ export class PublicProfileService {
 
     return {
       id: achievementId,
+      branch: catalog.branch,
+      subtrack: catalog.subtrack,
+      tier: catalog.tier,
       titleKey: catalog.titleKey,
       descriptionKey: catalog.descriptionKey,
       icon: catalog.icon,
-      shareImage: catalog.shareImage,
-      rarity: catalog.rarity as AchievementRarity,
+      shareImage: catalog.assets.ogCard1200,
+      rarity: catalog.rarity,
+      rarityHex: catalog.rarityHex,
       earned: true,
       earnedDate: row.earnedAt.toISOString(),
       owner: {
@@ -142,6 +142,9 @@ export class PublicProfileService {
         lastName: user.lastName,
         picture: user.picture,
       },
+      badge512: catalog.assets.badge512,
+      thumb256: catalog.assets.thumb256,
+      ogCard1200: catalog.assets.ogCard1200,
     };
   }
 }
